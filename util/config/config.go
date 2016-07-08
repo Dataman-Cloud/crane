@@ -12,7 +12,10 @@ import (
 )
 
 type Config struct {
-	Addr string
+	RolexAddr       string
+	DockerHost      string
+	DockerTlsVerify string
+	DockerCertPath  string
 }
 
 var config Config
@@ -22,17 +25,22 @@ func GetConfig() *Config {
 }
 
 type EnvEntry struct {
-	HOST string `required:"true"`
-	PORT uint16 `required:"true"`
+	ROLEX_ADDR        string `required:"true"`
+	DOCKER_TLS_VERIFY string `required:"true"`
+	DOCKER_HOST       string `required:"true"`
+	DOCKER_CERT_PATH  string `required:"true"`
 }
 
 func InitConfig(envFile string) *Config {
 	loadEnvFile(envFile)
 
 	envEntry := NewEnvEntry()
+	config.RolexAddr = envEntry.ROLEX_ADDR
+	config.DockerHost = envEntry.DOCKER_HOST
+	config.DockerTlsVerify = envEntry.DOCKER_TLS_VERIFY
+	config.DockerCertPath = envEntry.DOCKER_CERT_PATH
 
-	config.Addr = envEntry.STATUS_ADDR
-
+	return &config
 }
 
 func NewEnvEntry() *EnvEntry {
