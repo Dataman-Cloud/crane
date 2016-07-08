@@ -3,7 +3,7 @@ package main
 import (
 	"net/http"
 
-	"github.com/Dataman-Cloud/rolex/router"
+	"github.com/Dataman-Cloud/rolex/api"
 
 	log "github.com/Dataman-Cloud/rolex/util/log"
 	"golang.org/x/net/context"
@@ -11,12 +11,14 @@ import (
 
 func main() {
 
+	api := &api.Api{}
+
 	ctx := context.Background()
 	ctx = log.WithLogger(ctx, log.G(ctx).WithField("module", "main"))
 
 	server := &http.Server{
 		Addr:           "0.0.0.0:5013",
-		Handler:        router.ApiRouter(),
+		Handler:        api.ApiRouter(),
 		MaxHeaderBytes: 1 << 20,
 	}
 

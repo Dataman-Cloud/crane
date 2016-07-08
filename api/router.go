@@ -1,13 +1,12 @@
-package router
+package api
 
 import (
-	"github.com/Dataman-Cloud/rolex/api"
-	"github.com/Dataman-Cloud/rolex/router/middlewares"
+	"github.com/Dataman-Cloud/rolex/api/middlewares"
 
 	"github.com/gin-gonic/gin"
 )
 
-func ApiRouter() *gin.Engine {
+func (api *Api) ApiRouter() *gin.Engine {
 	router := gin.New()
 	router.Use(gin.Logger(), gin.Recovery())
 

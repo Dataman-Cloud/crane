@@ -4,4 +4,4 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func HealthCheck(ctx *gin.Context) {}
+func (api *Api) HealthCheck(ctx *gin.Context) {}
