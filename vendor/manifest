@@ -10,6 +10,14 @@
 			"notests": true
 		},
 		{
+			"importpath": "github.com/denisenkom/go-mssqldb",
+			"repository": "https://github.com/denisenkom/go-mssqldb",
+			"vcs": "git",
+			"revision": "c5885153c18c8e4cdde7608f3fa65c2df212d3cb",
+			"branch": "master",
+			"notests": true
+		},
+		{
 			"importpath": "github.com/dustin/go-broadcast",
 			"repository": "https://github.com/dustin/go-broadcast",
 			"vcs": "",
@@ -30,6 +38,14 @@
 			"revision": "3852dcfda249c2097355a6aabb199a28d97b30df",
 			"branch": "master",
 			"path": "/proto"
+		},
+		{
+			"importpath": "github.com/jinzhu/gorm",
+			"repository": "https://github.com/jinzhu/gorm",
+			"vcs": "git",
+			"revision": "3324ab20633e8c7ec6d6b1f7a714a1a6e06fec08",
+			"branch": "master",
+			"notests": true
 		},
 		{
 			"importpath": "github.com/manucorporat/sse",
