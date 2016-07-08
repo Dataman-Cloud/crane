@@ -7,11 +7,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (api *Api) ListNode(ctx *gin.Context)   {}
-func (api *Api) CreateNode(ctx *gin.Context) {}
-func (api *Api) UpdateNode(ctx *gin.Context) {}
-func (api *Api) DeleteNode(ctx *gin.Context) {}
-=
+func (api *Api) InspectNode(ctx *gin.Context) {}
+func (api *Api) ListNode(ctx *gin.Context)    {}
+func (api *Api) CreateNode(ctx *gin.Context)  {}
+func (api *Api) UpdateNode(ctx *gin.Context)  {}
+func (api *Api) RemoveNode(ctx *gin.Context)  {}
+
 func GetNodes(c *gin.Context) {
 	client, err := dockerclient.NewDockerGoClient("http://192.168.59.106:2376")
 	if err != nil {
