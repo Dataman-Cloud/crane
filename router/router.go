@@ -18,6 +18,7 @@ func ApiRouter() *gin.Engine {
 	v1 := router.Group("/api/v1", middlewares.Authorization)
 	{
 		v1.GET("/health", api.HealthCheck)
+		v1.GET("/nodes", api.GetNodes)
 	}
 
 	return router
