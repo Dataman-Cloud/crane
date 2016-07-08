@@ -4,7 +4,6 @@ MAINTAINER yqguo yqguo@dataman-inc.com
 WORKDIR /
 
 COPY rolex/rolex /
-COPY rolex/sql /sql
 ENTRYPOINT ["./rolex"]
 
 
