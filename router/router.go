@@ -1,8 +1,8 @@
 package router
 
 import (
-	"github.com/Dataman-Cloud/newworld/rolex-go/api"
-	"github.com/Dataman-Cloud/newworld/rolex-go/router/middlewares"
+	"github.com/Dataman-Cloud/rolex/api"
+	"github.com/Dataman-Cloud/rolex/router/middlewares"
 
 	"github.com/gin-gonic/gin"
 )
@@ -15,9 +15,9 @@ func ApiRouter() *gin.Engine {
 		c.String(200, "pass")
 	})
 
-	groupv1 := router.Group("/api/v1", middlewares.Authorization)
+	v1 := router.Group("/api/v1", middlewares.Authorization)
 	{
-		router.GET("/health", api.HealthCheck)
+		v1.GET("/health", api.HealthCheck)
 	}
 
 	return router

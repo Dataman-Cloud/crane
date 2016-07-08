@@ -1,13 +1,14 @@
 package main
 
 import (
-	"github.com/Dataman-Cloud/newworld/rolex-go/router/router"
+	"net/http"
 
-	"github.com/gin-gonic/gin"
+	"github.com/Dataman-Cloud/rolex/router"
+
+	log "github.com/Sirupsen/logrus"
 )
 
 func main() {
-	gin.SetMode(gin.ReleaseMode)
 	server := &http.Server{
 		Addr:           "0.0.0.0:5013",
 		Handler:        router.ApiRouter(),
