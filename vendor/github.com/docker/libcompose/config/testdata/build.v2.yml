@@ -1,0 +1,18 @@
+version: "2"
+
+services:
+  simple1:
+    build: .
+  simple2:
+    context: ./dir
+  simple3:
+    context: ./another
+    dockerfile: alternate
+    args:
+      buildno: 1
+      user: vincent
+  simple4:
+    context: ./another
+    args:
+      buildno: 2
+      user: josh
