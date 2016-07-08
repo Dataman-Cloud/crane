@@ -1,0 +1,10 @@
+FROM demoregistry.dataman-inc.com/library/centos7-base:20160602202509
+MAINTAINER yqguo yqguo@dataman-inc.com
+
+WORKDIR /
+
+COPY rolex/rolex /
+ENTRYPOINT ["./rolex"]
+
+
+#demoregistry.dataman-inc.com/shurenyun/centos7-rolex:tag

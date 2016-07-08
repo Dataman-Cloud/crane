@@ -1,6 +1,5 @@
 # Rolex Go for Dataman-inc
 
-
 ## 代码 branch 规划
 
 - master 分支是 开发分支， review 过的代码会放到 master 分支， 大家共同维护。
@@ -24,5 +23,12 @@
 
  ## 参考资料
 
-* swarm 中文文档： https://yeasy.gitbooks.io/docker_practice/content/swarm/usage.html
+o* swarm 中文文档： https://yeasy.gitbooks.io/docker_practice/content/swarm/usage.html
 * docker 学习大杂烩：https://github.com/veggiemonk/awesome-docker
+
+## swarm stack使用
+
+docker stack支持compose功能，现在这个功能点在实验阶段必须要装实验版docker才能看到，
+同时安装docker-compose，安装完毕编写docker-compose.yml文件,
+使用docker-compose bundle功能生成root.dab文件，然后使用docker stack deploy -f root.dab stackname命令部署服务。
+
