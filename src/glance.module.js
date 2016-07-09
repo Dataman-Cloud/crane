@@ -5,10 +5,11 @@
             'ui-notification',
             'ui.router',
             'ngMaterial',
-            'glance.utils',
             'ngCookies',
             'ngAnimate',
             'ngSocket',
-            'ngSanitize'
+            'ngSanitize',
+            'glance.utils',
+            'glance.layout'
         ]);
 })();

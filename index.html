@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>数人云</title>
+    <base href="/">
     <!--build:css css/style.css-->
     <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="bower_components/angular-ui-notification/dist/angular-ui-notification.min.css">
@@ -29,14 +30,14 @@
         </div>
         <div class="menu-sidebar" flex layout-align="space-between stretch" layout="column">
             <ul>
-                <li title="应用管理" data-ui-sref-active="active">
-                    <md-button data-ui-sref="app" data-ui-sref-opts="{inherit: false}"><i
-                            class="fa fa-cube"></i>应用管理
-                    </md-button>
-                </li>
                 <li title="应用编排" data-ui-sref-active="active">
                     <md-button data-ui-sref="layout" data-ui-sref-opts="{reload: true, inherit: false}"><i
                             class="fa fa-cubes"></i>应用编排
+                    </md-button>
+                </li>
+                <li title="应用管理" data-ui-sref-active="active">
+                    <md-button data-ui-sref="app" data-ui-sref-opts="{inherit: false}"><i
+                            class="fa fa-cube"></i>应用管理
                     </md-button>
                 </li>
             </ul>
@@ -49,7 +50,7 @@
                     <md-button href="http://open.shurenyun.com" target="_blank"><i class="fa fa-coffee"></i>数人社区</md-button>
                 </li>
                 <li>
-                    <md-button  data-demo-disable><i class="fa fa-pencil-square-o"></i>工单反馈
+                    <md-button><i class="fa fa-pencil-square-o"></i>工单反馈
                     </md-button>
                 </li>
             </ul>
@@ -132,7 +133,7 @@
     </md-sidenav>
 </div>
 <div class="tab-rb-feedback ng-hide" style="bottom: 76px;">
-    <a href="#" data-demo-disable>
+    <a href="#">
         <i class="glyphicon glyphicon-gift"></i>
         <em>试用</em>
     </a>
@@ -174,6 +175,7 @@
 
 <script src="src/glance.module.js" type="text/javascript"></script>
 <script src="src/glance.run.js" type="text/javascript"></script>
+<script src="src/glance.config.js" type="text/javascript"></script>
 <script src="src/glance.ctrl.js" type="text/javascript"></script>
 
 <script src="src/utils/utils.module.js" type="text/javascript"></script>
@@ -189,6 +191,14 @@
 <script src="src/utils/modals/alert.service.js" type="text/javascript"></script>
 <script src="src/utils/modals/form.service.js" type="text/javascript"></script>
 
+<script src="src/applayout/layout.module.js" type="text/javascript"></script>
+<script src="src/applayout/layout.config.js" type="text/javascript"></script>
+<script src="src/applayout/layout.route.js" type="text/javascript"></script>
+<script src="src/applayout/services/layout-backend.service.js" type="text/javascript"></script>
+<script src="src/applayout/services/layout-curd-service.js" type="text/javascript"></script>
+<script src="src/applayout/createupdate/create-update.ctrl.js" type="text/javascript"></script>
+<script src="src/applayout/list/list.ctrl.js" type="text/javascript"></script>
+
 <!--endbuild-->
 
 <!--build:js(build) js/directive.js-->
@@ -200,7 +210,6 @@
 <script src="src/directives/dm-tab-sref.directive.js" type="text/javascript"></script>
 <script src="src/directives/dm-trigger-prev-click.directive.js" type="text/javascript"></script>
 <script src="src/directives/dm-check-include.directive.js" type="text/javascript"></script>
-<script src="src/directives/dm-demo-disable.directive.js" type="text/javascript"></script>
 <script src="src/directives/dm-no-equal.directive.js" type="text/javascript"></script>
 <script src="src/directives/dm-password.js" type="text/javascript"></script>
 <!--endbuild-->
