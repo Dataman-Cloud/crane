@@ -3,7 +3,6 @@ package dockerclient
 import (
 	"crypto/tls"
 	"crypto/x509"
-	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -14,7 +13,6 @@ import (
 	"github.com/Dataman-Cloud/rolex/util/config"
 
 	log "github.com/Sirupsen/logrus"
-	"github.com/docker/engine-api/types/swarm"
 	goclient "github.com/fsouza/go-dockerclient"
 )
 
@@ -88,22 +86,6 @@ func NewRolexDockerClient(config *config.Config) (*RolexDockerClient, error) {
 		HttpClient:   httpClient,
 		HttpEndpoint: strings.Replace(config.DockerHost, "tcp", "https", -1),
 	}, nil
-}
-
-// NodeList returns the list of nodes.
-func (client *RolexDockerClient) Nodelist(opts NodeListOptions) ([]swarm.Node, error) {
-	var nodes []swarm.Node
-
-	content, err := client.HttpGet("nodes")
-	if err != nil {
-		return nodes, err
-	}
-
-	if err := json.Unmarshal(content, &nodes); err != nil {
-		return nodes, err
-	}
-
-	return nodes, nil
 }
 
 // execute http get request use default timeout

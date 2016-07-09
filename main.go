@@ -5,8 +5,8 @@ import (
 	"net/http"
 
 	"github.com/Dataman-Cloud/rolex/api"
+	"github.com/Dataman-Cloud/rolex/dockerclient"
 	"github.com/Dataman-Cloud/rolex/util/config"
-	"github.com/Dataman-Cloud/rolex/util/dockerclient"
 
 	log "github.com/Dataman-Cloud/rolex/util/log"
 	"golang.org/x/net/context"
