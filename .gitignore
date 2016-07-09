@@ -1,0 +1,10 @@
+*.mdb
+*.ldb
+*.sln
+*.config
+*.idea
+.DS_Store
+
+Debug/
+node_modules/
+bower_components/
