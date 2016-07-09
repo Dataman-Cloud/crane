@@ -7,6 +7,7 @@ import (
 	"github.com/docker/engine-api/types/swarm"
 )
 
+// ServiceCreate creates a new Service.
 func (client *RolexDockerClient) ServiceCreate(service swarm.ServiceSpec, options types.ServiceCreateOptions) (types.ServiceCreateResponse, error) {
 	var response types.ServiceCreateResponse
 	serviceParam, err := json.Marshal(service)
@@ -24,4 +25,25 @@ func (client *RolexDockerClient) ServiceCreate(service swarm.ServiceSpec, option
 	}
 
 	return response, nil
+}
+
+// ServiceList returns the list of services.
+func (client *RolexDockerClient) ServiceList(options types.ServiceListOptions) ([]swarm.Service, error) {
+	var services []swarm.Service
+	content, err := client.HttpGet("/services")
+	if err != nil {
+		return services, err
+	}
+
+	if err := json.Unmarshal(content, &services); err != nil {
+		return services, err
+	}
+
+	return services, nil
+}
+
+// ServiceRemove kills and removes a service.
+func (client *RolexDockerClient) ServiceRemove(serviceID string) error {
+	_, err := client.HttpDelete("/services" + serviceID)
+	return err
 }

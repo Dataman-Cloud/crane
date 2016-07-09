@@ -121,7 +121,7 @@ func (client *RolexDockerClient) HttpDelete(requestPath string) ([]byte, error) 
 		return nil, err
 	}
 
-	if resp.StatusCode != http.StatusOK {
+	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusNoContent {
 		return nil, fmt.Errorf("http response status code is %d not 200", resp.StatusCode)
 	}
 
