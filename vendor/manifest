@@ -8,6 +8,26 @@
 			"branch": "master"
 		},
 		{
+			"importpath": "github.com/denisenkom/go-mssqldb",
+			"repository": "https://github.com/denisenkom/go-mssqldb",
+			"revision": "c5885153c18c8e4cdde7608f3fa65c2df212d3cb",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/docker/distribution/digest",
+			"repository": "https://github.com/docker/distribution",
+			"revision": "4e17ab5d319ac5b70b2769442947567a83386fbc",
+			"branch": "master",
+			"path": "/digest"
+		},
+		{
+			"importpath": "github.com/docker/distribution/reference",
+			"repository": "https://github.com/docker/distribution",
+			"revision": "4e17ab5d319ac5b70b2769442947567a83386fbc",
+			"branch": "master",
+			"path": "/reference"
+		},
+		{
 			"importpath": "github.com/docker/docker/opts",
 			"repository": "https://github.com/docker/docker",
 			"revision": "63186c06cb7ea5c437d6a3faa1c3f190134c7be5",
@@ -78,6 +98,13 @@
 			"path": "/pkg/system"
 		},
 		{
+			"importpath": "github.com/docker/engine-api/types",
+			"repository": "https://github.com/docker/engine-api",
+			"revision": "98348ad6f9c89bb10f31ac32cd1b12cbadd292b6",
+			"branch": "master",
+			"path": "/types"
+		},
+		{
 			"importpath": "github.com/docker/engine-api/types/filters",
 			"repository": "https://github.com/docker/engine-api",
 			"revision": "1d247454d4307fb1ddf10d09fd2996394b085904",
@@ -99,18 +126,17 @@
 			"path": "/types/versions"
 		},
 		{
+			"importpath": "github.com/docker/go-connections/nat",
+			"repository": "https://github.com/docker/go-connections",
+			"revision": "990a1a1a70b0da4c4cb70e117971a4f0babfbf1a",
+			"branch": "master",
+			"path": "/nat"
+		},
+		{
 			"importpath": "github.com/docker/go-units",
 			"repository": "https://github.com/docker/go-units",
 			"revision": "f2d77a61e3c169b43402a0a1e84f06daf29b8190",
 			"branch": "master"
-		},
-		{
-			"importpath": "github.com/denisenkom/go-mssqldb",
-			"repository": "https://github.com/denisenkom/go-mssqldb",
-			"vcs": "git",
-			"revision": "c5885153c18c8e4cdde7608f3fa65c2df212d3cb",
-			"branch": "master",
-			"notests": true
 		},
 		{
 			"importpath": "github.com/dustin/go-broadcast",
@@ -138,13 +164,6 @@
 			"path": "/proto"
 		},
 		{
-			"importpath": "github.com/jinzhu/gorm",
-			"repository": "https://github.com/jinzhu/gorm",
-			"vcs": "git",
-			"revision": "3324ab20633e8c7ec6d6b1f7a714a1a6e06fec08",
-			"branch": "master",
-        },
-        {
 			"importpath": "github.com/gorilla/context",
 			"repository": "https://github.com/gorilla/context",
 			"revision": "aed02d124ae4a0e94fea4541c8effd05bf0c8296",
@@ -160,6 +179,12 @@
 			"importpath": "github.com/hashicorp/go-cleanhttp",
 			"repository": "https://github.com/hashicorp/go-cleanhttp",
 			"revision": "ad28ea4487f05916463e2423a55166280e8254b5",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/jinzhu/gorm",
+			"repository": "https://github.com/jinzhu/gorm",
+			"revision": "3324ab20633e8c7ec6d6b1f7a714a1a6e06fec08",
 			"branch": "master"
 		},
 		{
