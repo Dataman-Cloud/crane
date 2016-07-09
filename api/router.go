@@ -22,6 +22,9 @@ func (api *Api) ApiRouter() *gin.Engine {
 		v1.GET("/health", api.HealthCheck)
 		v1.GET("/nodes", api.ListNodes)
 		v1.GET("/nodes/:id", api.InspectNode)
+
+		v1.GET("/containers", api.ListContainers)
+		v1.GET("/containers/:id", api.InspectContainer)
 	}
 
 	return router
