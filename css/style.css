@@ -1,0 +1,2277 @@
+/*
+* Base structure
+*/
+body, html {
+    font-size: 12px;
+    font-family: Helvetica, Arial, "Hiragino Sans GB", "Microsoft Yahei", "微软雅黑", STHeiti, "华文细黑", sans-serif;
+    font-weight: 100;
+    background-color: #F1F1F1;
+    color: #3D3D3D;
+    letter-spacing: 0.2px;
+}
+
+::selection {
+    background: #427fed;
+    color: #FFF;
+}
+
+::-moz-selection {
+    background: #427fed;
+    color: #FFF;
+}
+
+::-webkit-selection {
+    background: #427fed;
+    color: #FFF;
+}
+
+section {
+    margin: 20px 0 40px 0;
+}
+
+a, a:hover, a:visited {
+    color: #427fed;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+a.btn {
+    color: #FFF;
+}
+
+.btn {
+    border-radius: 4px;
+}
+
+.btn-default, a.btn-default {
+    background-color: #FFF;
+    border: 1px solid #CCCCCC;
+    color: #666;
+}
+
+.control-label {
+    font-size: 14px;
+}
+
+.form-btnbar-b {
+    margin-top: 50px;
+}
+
+.form-btnbar-b .btn {
+    margin-right: 18px;
+}
+
+a.remove {
+    cursor: pointer;
+    color: #000000;
+}
+
+/*
+ * Global add-ons
+ */
+
+.sub-header {
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+/*
+ * Top navigation
+ * Hide default border to remove 1px line.
+ */
+.navbar-fixed-top {
+    border: 0;
+}
+
+/*
+ * Sidebar
+ */
+.sidebar {
+    position: fixed;
+    top: 0px;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    display: block;
+    padding: 20px;
+    overflow-x: hidden;
+    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+    background-color: #3D3D3D;
+    border-right: 1px solid #eee;
+}
+
+.sidebar .sidebar-logo {
+    position: absolute;
+    bottom: 50px;
+    width: 50%;
+    height: 30px;
+    left: 25%;
+    background: url(../pics/dataman-logo.svg) no-repeat top center;
+}
+
+.sidebar .sidebar-logo {
+    opacity: 0.6;
+    filter: alpha(opacity=60);
+    transition: all 0.25s ease-out 0s;
+}
+
+.sidebar .sidebar-logo:hover {
+    opacity: 1;
+    filter: alpha(opacity=100);
+}
+
+.sidebar .user {
+    text-align: center;
+    padding: 20px 0 50px 0;
+}
+
+.sidebar .user img {
+    width: 68px;
+    height: 68px;
+}
+
+.sidebar .user h5 {
+    color: #9B9B9B;
+    font-weight: normal;
+    font-size: 12px;
+}
+
+/* Sidebar navigation */
+.nav-sidebar {
+    margin-right: -21px; /* 20px padding + 1px border */
+    margin-bottom: 20px;
+    margin-left: -20px;
+}
+
+.nav-sidebar > li > a {
+    padding-right: 20px;
+    padding-left: 20px;
+    text-align: center;
+    font-size: 14px;
+    transition: all 0.3s ease-out 0s;
+    color: #9b9b9b;
+}
+
+.nav-sidebar > li > a:focus, .nav-sidebar > li > a:hover {
+    background: rgba(241, 241, 241, 0.5);
+    color: #F1F1F1;
+}
+
+.nav-sidebar > .active > a,
+.nav-sidebar > .active > a:hover,
+.nav-sidebar > .active > a:focus {
+    color: #3D3D3D;
+    background-color: #F1F1F1;
+}
+
+.nav-sidebar > li > a span.glyphicon {
+    margin-right: 6px;
+}
+
+.nav-sidebar-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.nav-sidebar-footer li {
+    width: 50%;
+    float: left;
+    border-right: 1px solid #3d3d3d;
+    list-style: none;
+}
+
+.nav-sidebar-footer li:last-child {
+    border-right: 0;
+}
+
+.nav-sidebar-footer li div {
+    display: inline-block;
+}
+
+.nav-sidebar-footer li a {
+    background: #303030;
+    color: #9b9b9b;
+    display: block;
+    height: 40px;
+    text-align: center;
+    font-size: 12px;
+    vertical-align: middle;
+    overflow: hidden;
+    padding-top: 11px;
+}
+
+.nav-sidebar-footer li a:hover {
+    background: rgba(241, 241, 241, 0.5);
+    color: #F1F1F1;
+    text-decoration: none;
+}
+
+.nav-sidebar-footer li a div {
+    background-repeat: no-repeat;
+    padding-left: 24px;
+    width: auto;
+    height: 18px;
+    line-height: 20px;
+}
+
+.nav-sidebar-footer li a:hover div {
+    color: #FFF;
+}
+
+.nav-sidebar-footer li a div.userdoc {
+    background-image: url(../pics/ico-userdoc.svg);
+}
+
+.nav-sidebar-footer li a:hover div.userdoc {
+    background-image: url(../pics/ico-userdoc-hover.svg);
+}
+
+.nav-sidebar-footer li a div.bbs {
+    background-image: url(../pics/ico-bbs.svg);
+}
+
+.nav-sidebar-footer li a:hover div.bbs {
+    background-image: url(../pics/ico-bbs-hover.svg);
+}
+
+/*
+ * Main content
+ */
+
+.main .page-header {
+    margin-top: 0;
+    height: 90px;
+    background-color: #FFF;
+    border-bottom: 3px solid #DCDCDC;
+    margin-right: -15px;
+    margin-left: -15px;
+    margin-bottom: 0;
+}
+
+.main .page-header h1 {
+    margin: 27px 0 0 20px;
+    font-weight: 400;
+    float: left;
+}
+
+.main .page-header small {
+    font-size: 12px;
+    color: rgb(119, 119, 119);
+    float: left;
+    padding-left: 15px;
+    vertical-align: bottom;
+    margin: 20px 0px 0px 15px;
+    border-left: 1px solid #CCC;
+}
+
+.main .page-header .btn {
+    margin-top: 27px;
+    margin-right: 40px;
+    float: right;
+}
+
+/**/
+.main-container {
+    margin: 0 auto;
+}
+
+.main-container header {
+    vertical-align: bottom;
+}
+
+.main-container header h2 {
+    height: 20px;
+    font-size: 18px;
+    font-weight: 400;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.main-container header h2 .label {
+    padding-bottom: 0;
+    font-size: 11px;
+    font-weight: normal;
+    margin-right: 3px;
+}
+
+.main-container header h2 .modify-name {
+    margin: 0 12px 0 6px;
+}
+
+.main-container header .nav-tabs {
+    float: right;
+    margin-top: 0px;
+    margin-right: 40px;
+    border-bottom: 0;
+    font-size: 14px;
+}
+
+.main-container header .nav-tabs > li > a {
+    height: 30px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+.main-container header .nav-tabs > li > a:hover {
+    border-bottom: 0;
+}
+
+.main-container header .nav-tabs > li.active > a, .main-container header .nav-tabs > li.active > a:focus, .main-container header .nav-tabs > li.active > a:hover {
+    background-color: transparent;
+    border: 0;
+    border-bottom: 3px solid #EF831E;
+}
+
+.main-container .main-container-body {
+    position: relative;
+    /*background-color: #FFF;*/
+    padding: 30px;
+}
+
+/* 点击弹出按钮组 */
+.btn-group-toggle button {
+    background: url(../pics/bg-button-normal.png) no-repeat;
+    background-size: cover;
+    width: 65px;
+    height: 38px;
+    padding: 0;
+    border: 0;
+    position: absolute;
+    top: -10px;
+    right: 10px;
+}
+
+.btn-group-toggle button:hover {
+    background: url(../pics/bg-button-hover.png) no-repeat;
+    background-size: cover;
+    box-shadow: none;
+}
+
+.btn-group-toggle.open .dropdown-toggle {
+    background: url(../pics/bg-button-selected.png) no-repeat;
+    background-size: cover;
+    box-shadow: none;
+}
+
+.btn-group-toggle.open button {
+    border-radius: 0px;
+}
+
+.btn-group-toggle {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+}
+
+.main-container footer {
+    line-height: 24px;
+    color: #9B9B9B;
+}
+
+.server-ico-list .main-body-content {
+    padding-right: 40px;
+}
+
+/* 无集群时，新建集群按钮 */
+.btn-add-cluster {
+    display: block;
+    width: 200px;
+    height: 200px;
+    text-align: center;
+    color: #FFF;
+    background-color: #4386fc;
+    text-decoration: none;
+    font-size: 20px;
+    padding-top: 55px;
+    margin: 15% auto;
+    border-radius: 100px;
+}
+
+.btn-add-cluster:hover {
+    background: #2263d6;
+    color: #FFF;
+    text-decoration: none;
+}
+
+.btn-add-cluster:visited {
+    color: #FFF;
+}
+
+.btn-add-cluster img {
+    margin-bottom: 15px;
+}
+
+/* 集群详情 */
+.cluster-detail .cluster-title {
+    height: 45px;
+}
+
+.cluster-detail .cluster-title h3 {
+    margin: 0;
+}
+
+/* 主机详情 */
+.server-detail a {
+    text-decoration: underline;
+}
+
+.server-detail a:hover {
+    text-decoration: none;
+}
+
+.server-detail .main-container-body {
+    padding: 20px;
+}
+
+.server-detail .server-detail-title {
+    margin-bottom: 0;
+}
+
+.server-detail em {
+    font-style: normal;
+    font-size: 14px;
+}
+
+.server-detail em sub {
+    bottom: 0;
+    font-size: 60%;
+    margin-left: 3px;
+}
+
+.server-detail .server-info {
+    margin: 0;
+    padding: 0;
+}
+
+.server-detail .server-info li {
+    margin-bottom: 12px;
+    font-size: 12px;
+    color: #AAA;
+    list-style: none;
+}
+
+.server-detail .server-info li div {
+    display: inline-block;
+    width: 80px;
+    font-weight: 400;
+}
+
+.server-detail .server-info em {
+    color: #262626;
+    font-size: 13px;
+    font-weight: 400;
+}
+
+.server-detail .server-info li.tag-list .title {
+    float: left;
+}
+
+.server-detail .server-info li.tag-list .list {
+    margin-left: 80px;
+    display: block;
+    width: auto;
+}
+
+.server-detail .server-status {
+    font-size: 12px;
+    color: #AAA;
+    background-size: 100px;
+    background-repeat: no-repeat;
+    background-position: right -10px center;
+    height: 57px;
+    padding-top: 10px;
+    overflow: hidden;
+}
+
+.server-detail .server-status-normal {
+    background-image: url(../pics/ico-service-status-normal.png);
+}
+
+.server-detail .server-status-disconnect {
+    background-image: url(../pics/ico-service-status-disconnect.png);
+}
+
+.server-detail .server-status-warning {
+    background-image: url(../pics/ico-service-status-warning.png);
+}
+
+.server-detail .server-status-reset {
+    background-image: url(../pics/ico-service-status-reset.png);
+}
+
+.server-detail .server-status em {
+    font-size: 20px;
+    font-weight: normal;
+    display: block;
+    margin-top: -2px;
+}
+
+.server-detail .server-app-status {
+    margin: 0;
+    padding: 0;
+}
+
+.server-detail .server-app-status li {
+    font-size: 11px;
+    float: left;
+    margin: 0;
+    list-style: none;
+    text-align: center;
+    width: 16%;
+    height: 75px;
+}
+
+.server-detail .server-app-status div {
+    width: 30px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.server-detail .server-app-status em {
+    margin-top: 6px;
+    line-height: 1;
+    display: block;
+    font-size: 10px;
+    text-align: center;
+}
+
+.server-detail .server-app-status span.version {
+    font-size: 9px;
+    color: #BBB;
+    display: block;
+}
+
+.server-detail .server-app-status .btn {
+    font-size: 11px;
+    height: 14px;
+    line-height: 14px;
+    padding-top: 0;
+    padding-bottom: 0;
+    position: absolute;
+    top: -10px;
+    right: -30px;
+}
+
+.server-detail .server-app-status .btn:before {
+    content: "";
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 10px solid #f0ad4e;
+    position: absolute;
+    bottom: -4px;
+    left: -5px;
+    transform: rotate(50deg);
+}
+
+.server-detail .server-app-status .btn:hover:before {
+    border-top: 10px solid #ec971f;
+}
+
+/* 日志显示 */
+.log-screen {
+    padding: 9px;
+    background-color: #000;
+    color: #FFF;
+    min-height: 200px;
+    max-height: 400px;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+.log-screen code {
+    background-color: transparent;
+    color: #FFF;
+    padding: 0;
+}
+
+.log-screen ul {
+    padding: 0;
+}
+
+.log-screen li {
+    list-style: none;
+}
+
+.log-screen li a {
+    display: block;
+    padding: 10px 40px 10px 10px;
+    color: #DDD;
+}
+
+.log-screen li a:hover, .log-screen li a:active {
+    background: rgba(52, 152, 219, 0.4) url(../pics/arrow-right.png) right no-repeat;
+    text-decoration: none;
+    color: #FFF;
+}
+
+.log-screen li a:focus {
+    text-decoration: none;
+}
+
+.selected-log-list li {
+    padding: 10px 10px 10px 50px;
+    color: #DDD;
+}
+
+.selected-log-list li.active {
+    font-size: 13px;
+    background: rgba(52, 152, 219, 0.4);
+    color: #FFF;
+}
+
+/* 复制添加主机代码 */
+.copy-code-agent {
+    background-color: #F3F3F3;
+    padding: 0;
+    vertical-align: middle;
+    margin-bottom: 20px;
+}
+
+.copy-code-agent header {
+    background: #EAEAEA;
+}
+
+.copy-code-agent header h5 {
+    margin: 0 130px 0 0;
+    padding: 9px 0 0 12px;
+}
+
+.copy-code-agent header h5 .help-block {
+    font-size: 10px;
+    line-height: 1.5;
+    margin-top: 3px;
+    margin-bottom: 6px;
+}
+
+.copy-code-agent header .btn {
+    float: right;
+}
+
+.copy-code-agent code {
+    background-color: transparent;
+    font-size: 11px;
+    display: block;
+    padding: 12px;
+    margin-bottom: 6px;
+}
+
+.copy-code-agent button {
+    float: right;
+    height: 30px;
+    font-size: 12px;
+    border-radius: 0;
+    border: 0;
+}
+
+.copy-code-agent button em {
+    font-style: normal;
+}
+
+/* 创建集群 */
+.create-cluster form {
+    margin: 30px 0;
+}
+
+.create-cluster .form-control-static {
+    font-size: 14px;
+}
+
+.create-cluster .btn-radios .btn {
+    width: 30%;
+    margin-right: 2%;
+    white-space: normal;
+}
+
+.create-cluster .btn-radios .btn h2 {
+    margin-top: 12px;
+}
+
+.create-cluster .btn-radios .btn p {
+    font-size: 12px;
+}
+
+/* 闪烁提示 */
+.alert-process {
+    margin: 20px auto 0 auto;
+    text-align: center;
+    background-color: rgba(170, 206, 54, 0.2);
+    font-size: 14px;
+    padding: 10px;
+    -moz-animation: bg 5s infinite ease-in-out;
+    -webkit-animation: bg 5s infinite ease-in-out;
+}
+
+/* 完成提示 */
+.connected-bar {
+    margin: 20px auto 0 auto;
+    text-align: center;
+    background-color: rgba(0, 191, 255, 0.2);
+    font-size: 14px;
+    padding: 10px;
+}
+
+@-moz-keyframes bg {
+    0% {
+        background: rgba(170, 206, 54, 0.2);
+    }
+    25% {
+        background: rgba(170, 206, 54, 0.5);
+    }
+    50% {
+        background: rgba(170, 206, 54, 0.1);
+    }
+    75% {
+        background: rgba(170, 206, 54, 0.3);
+    }
+    100% {
+        background: rgba(170, 206, 54, 0.2);
+    }
+}
+
+@-webkit-keyframes bg {
+    0% {
+        background: rgba(170, 206, 54, 0.2);
+    }
+    25% {
+        background: rgba(170, 206, 54, 0.5);
+    }
+    50% {
+        background: rgba(170, 206, 54, 0.1);
+    }
+    75% {
+        background: rgba(170, 206, 54, 0.3);
+    }
+    100% {
+        background: rgba(170, 206, 54, 0.2);
+    }
+}
+
+/* 响应式布局 */
+@media screen and (max-width: 992px) {
+    .sidebar {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .nav-sidebar > li > a .text {
+        display: none;
+    }
+
+    .nav-sidebar > li > a .glyphicon {
+        font-size: 18px;
+    }
+
+    .sidebar .user {
+        padding-top: 0;
+    }
+
+    .sidebar .user img {
+        border-radius: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    .sidebar .sidebar-logo {
+        background: url(../pics/dataman-logo-icon.svg) no-repeat top center;
+    }
+
+    .nav-sidebar-footer li a div span {
+        display: none;
+    }
+}
+
+.welcome {
+    text-align: center;
+    margin-top: 150px;
+}
+
+.welcome div {
+    position: relative;
+}
+
+.welcome div:after {
+    content: "url(../pics/arrow.svg)";
+    position: absolute;
+    top: 40px;
+    right: -15px;
+}
+
+.welcome div.last-step:after {
+    content: "";
+}
+
+.welcome div h1 {
+    font-size: 36px;
+    color: #B8B8B8;
+    margin-bottom: 0;
+}
+
+.welcome div h2 {
+    font-size: 24px;
+    color: #333;
+    margin-top: 0;
+}
+
+.welcome div a {
+    text-decoration: none;
+}
+
+/* 集群主机图标列表展示 */
+.cluster-status-panel {
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1001;
+}
+
+.cluster-status-panel .cluster-status-main {
+    background: #FFF;
+    width: 60%;
+    margin: 10px auto 0 auto;
+}
+
+.cluster-status-panel header {
+    background-color: #EEE;
+    border-bottom: 1px solid #e5e5e5;
+    min-height: 16px;
+    padding: 12px 15px 6px 15px;
+}
+
+.cluster-status-panel header h3 {
+    margin: 0;
+}
+
+.cluster-status-panel header img {
+    float: left;
+    margin-right: 6px;
+}
+
+.cluster-status-panel footer {
+    border-top: 1px solid #e5e5e5;
+    padding: 10px 15px;
+    text-align: right;
+}
+
+.cluster-status-panel .cluster-status-content {
+    vertical-align: middle;
+    padding: 15px;
+}
+
+.cluster-status-panel .cluster-status-content ul {
+    margin-bottom: 0;
+    padding-left: 26px;
+    height: 45px;
+    overflow: auto;
+}
+
+.cluster-status-panel .cluster-status-content li {
+    list-style: none;
+    margin-bottom: 3px;
+    font-size: 12px;
+}
+
+.cluster-service-status-number, .cluster-service-ico-list {
+    font-size: 0;
+    margin: 0 0 20px 0;
+    padding: 0;
+}
+
+.cluster-service-status-number {
+    margin-bottom: 50px;
+}
+
+.cluster-service-status-number li {
+    display: inline-block;
+    list-style: none;
+    font-size: 12px;
+}
+
+.cluster-service-status-number li span {
+    font-size: 24px;
+}
+
+.cluster-service-status-number li a {
+    display: block;
+    height: 28px;
+    background-repeat: no-repeat;
+    background-position: bottom left;
+    background-size: 22px;
+    padding-left: 30px;
+    margin-right: 34px;
+    color: #4A4A4A;
+}
+
+.cluster-service-status-number li.running a {
+    background-image: url(../pics/ico-node-status-running.png);
+}
+
+.cluster-service-status-number li.terminated a {
+    background-image: url(../pics/ico-node-status-terminated.png);
+}
+
+.cluster-service-status-number li.failed a {
+    background-image: url(../pics/ico-node-status-failed.png);
+}
+
+.cluster-service-status-number li.installing a {
+    background-image: url(../pics/ico-node-status-installing.png);
+}
+
+.cluster-service-status-number li.unselected {
+    filter: alpha(opacity=40);
+    opacity: 0.4;
+}
+
+.cluster-service-ico-list li {
+    float: left;
+    list-style: none;
+    margin-right: 20px;
+    max-height: 16px;
+}
+
+.cluster-service-ico-list li:nth-child(10n) {
+    float: none;
+}
+
+.cluster-service-ico-list .tooltip.top {
+    margin-top: -9px;
+}
+
+.cluster-service-ico-list .tooltip.in {
+    filter: alpha(opacity=100);
+    opacity: 1;
+}
+
+.cluster-service-ico-list .tooltip-inner {
+    background-color: #DFDFDF;
+    color: #000;
+    border: 1px solid #FFF;
+}
+
+.cluster-service-ico-list .tooltip.top .tooltip-arrow {
+    border-top-color: #DFDFDF;
+}
+
+.cluster-service-ico-list footer {
+    padding-left: 300px;
+}
+
+.box-hide {
+    height: 100px;
+    overflow: hidden;
+}
+
+.switch-show-hidden {
+    margin-left: 280px;
+    color: #9B9B9B;
+}
+
+/* 集群详情 */
+.cluster-detail .cluster-title {
+    height: 45px;
+}
+
+.cluster-detail .cluster-title h3 {
+    margin: 0;
+}
+
+.cluster-detail .cluster-title .main-container-body {
+    height: 45px;
+    padding-top: 12px;
+    padding-bottom: 0;
+}
+
+#cluster-cpu-chart {
+    height: 300px;
+}
+
+#cluster-memory-chart {
+    height: 300px;
+}
+
+#cluster-disk-chart {
+    height: 300px;
+}
+
+/* ============ 添加主机 ============= */
+/* 添加主机 */
+.add-node {
+    font-size: 14px;
+}
+
+.add-node li {
+    list-style: none;
+    margin-bottom: 40px;
+}
+
+.add-node li span {
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.add-node li span pre {
+    display: inline;
+    padding: 0 6px;
+    margin: 0 6px;
+}
+
+.add-node .btn-group {
+    margin-right: 20px;
+}
+
+.add-node .checkbox-inline {
+    font-size: 12px;
+}
+
+.add-node .checkbox-inline input {
+    margin-top: 1px;
+}
+
+.add-node .alert-info strong {
+    margin-left: 20px;
+    margin-bottom: 10px;
+}
+
+.add-node .alert-info li {
+    margin: 0;
+    padding: 0;
+    list-style: decimal;
+    font-size: 12px;
+    margin-bottom: 3px
+}
+
+/* 主机详情 */
+.server-detail a {
+    text-decoration: underline;
+}
+
+.server-detail a:hover {
+    text-decoration: none;
+}
+
+.server-detail .main-container-body {
+    padding: 20px;
+}
+
+.server-detail .server-detail-title {
+    margin-bottom: 0;
+}
+
+.server-detail em {
+    font-style: normal;
+    font-size: 14px;
+}
+
+.server-detail em sub {
+    bottom: 0;
+    font-size: 60%;
+    margin-left: 3px;
+}
+
+.server-detail .server-info {
+    margin: 0;
+    padding: 0;
+}
+
+.server-detail .server-info li {
+    margin-bottom: 12px;
+    font-size: 12px;
+    color: #AAA;
+    list-style: none;
+}
+
+.server-detail .server-info li > div {
+    display: inline-block;
+    width: 70px;
+}
+
+.server-detail .server-info em {
+    color: #333;
+}
+
+.server-detail .server-status {
+    font-size: 12px;
+    color: #AAA;
+    background-size: 100px;
+    background-repeat: no-repeat;
+    background-position: right -10px center;
+    height: 57px;
+    padding-top: 10px;
+    overflow: hidden;
+}
+
+.server-detail .node-status-running {
+    background-image: url(../pics/ico-node-status-running.png);
+}
+
+.server-detail .node-status-terminated {
+    background-image: url(../pics/ico-node-status-terminated.png);
+}
+
+.server-detail .node-status-failed {
+    background-image: url(../pics/ico-node-status-failed.png);
+}
+
+.server-detail .node-status-installing {
+    background-image: url(../pics/ico-node-status-installing.png);
+}
+
+.server-detail .server-status em {
+    font-size: 20px;
+    font-weight: normal;
+    display: block;
+    margin-top: -2px;
+}
+
+.server-detail .server-app-status {
+    text-align: center;
+}
+
+.server-detail .server-app-status img {
+    margin-bottom: 0px;
+}
+
+.search-log label {
+    margin-bottom: 2px;
+}
+
+.search-log .form-group {
+    margin-bottom: 10px;
+}
+
+.cluster-nodes table span.bg-primary {
+    display: inline-block;
+    margin-right: 3px;
+    padding: 0 3px;
+}
+
+.cluster-nodes td.agent-version span {
+    position: relative;
+}
+
+.cluster-nodes td.agent-version span em {
+    position: absolute;
+    top: -8px;
+    right: -55px;
+    font-style: normal;
+    font-weight: normal;
+    padding: 2px 3px 1px 3px;
+    font-size: 10px !important;
+}
+
+.cluster-nodes td.agent-version span em:before {
+    content: "";
+    width: 0;
+    height: 0;
+    border-left: 3px solid transparent;
+    border-right: 3px solid transparent;
+    border-top: 5px solid #d9534f;
+    position: absolute;
+    bottom: -2px;
+    left: -3px;
+    transform: rotate(47deg);
+    z-index: 0;
+}
+
+#node-cpu-chart {
+    height: 300px;
+}
+
+#node-memory-chart {
+    height: 300px;
+}
+
+#node-disk-chart {
+    height: 300px;
+}
+
+#node-diskio-chart {
+    height: 300px;
+}
+
+#node-netio-chart {
+    height: 300px;
+}
+
+/*loading*/
+#main {
+    position: relative;
+}
+
+.loading-style {
+    position: absolute;
+    top: 100px;
+    left: 50%;
+}
+
+.loader-inner > div {
+    background-color: #337ab7;
+}
+
+.charts-loading {
+    left: 100px;
+}
+
+.ball-spin-fade-loader {
+    position: relative;
+    padding: 30px;
+    top: 0px;
+    left: 200px;
+}
+
+/*集群状态遮罩层*/
+.cluster-manage {
+    position: relative;
+}
+
+.cluster-manage .cluster-status-disconnect {
+    height: 340px;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1001;
+}
+
+.cluster-manage .cluster-status-disconnect .disconnect-content {
+    width: 560px;
+    height: 245px;
+    padding: 15px 25px;
+    background-color: #FFF;
+    border-radius: 4px;
+    margin: 48px auto 0 auto;
+}
+
+.cluster-manage .disconnect-content h3 {
+    color: #D0021B;
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0 0 5px 0;
+}
+
+.cluster-manage .disconnect-content h4 {
+    color: #000;
+    font-size: 12px;
+    margin: 0 0 15px 0;
+}
+
+.cluster-manage .disconnect-content ul {
+    margin-left: 24px;
+    margin-bottom: 20px;
+    padding-left: 0;
+}
+
+.cluster-manage .disconnect-content li {
+    list-style: none;
+    line-height: 20px;
+}
+
+.cluster-manage footer {
+    text-align: right;
+}
+
+/* 工单入口 */
+.tab-rb-feedback {
+    background-color: #f0ad4e;
+    border-radius: 3px 0 0 3px;
+    cursor: pointer;
+    height: 35px;
+    position: fixed;
+    bottom: 40px;
+    right: 0px;
+    width: 35px;
+    z-index: 20;
+}
+
+.tab-rb-feedback a {
+    color: #FFF;
+}
+
+.tab-rb-feedback i {
+    background-color: #f0ad4e;
+    height: 35px;
+    position: relative;
+    width: 35px;
+    z-index: 2;
+    font-size: 20px;
+    line-height: 35px;
+    text-align: center;
+    left: 0;
+    top: 0;
+}
+
+.tab-rb-feedback em {
+    background-color: #f0ad4e;
+    border-radius: 3px 0 0 3px;
+    color: #fff;
+    height: 35px;
+    left: 35px;
+    line-height: 35px;
+    position: absolute;
+    text-align: center;
+    top: 0;
+    transition: left 0.3s ease-in-out 0.1s;
+    width: 50px;
+    z-index: 1;
+    font-style: normal;
+}
+
+.tab-rb-feedback a:hover em {
+    left: -50px;
+}
+
+/* 新建应用 */
+.new-app label small {
+    font-weight: normal;
+    color: #CCC;
+    display: block;
+}
+
+.new-app .well {
+    padding: 19px 0;
+}
+
+.new-app .ad-set {
+    margin-bottom: 15px;
+    display: inline-block;
+    padding-left: 8px;
+}
+
+/* 应用事件 */
+#timeline {
+    list-style: none;
+    margin: 0 0 30px 160px;
+    padding-left: 30px;
+    border-left: 6px solid #eee9dc;
+}
+
+#timeline li {
+    margin: 40px 0;
+    position: relative;
+}
+
+#timeline li:first-child {
+    margin-top: 0;
+}
+
+#timeline .date {
+    margin-top: -8px;
+    top: 50%;
+    left: -190px;
+    font-size: 0.95em;
+    line-height: 20px;
+    position: absolute;
+    font-size: 14px;
+}
+
+#timeline .circle {
+    margin-top: -8px;
+    top: 50%;
+    left: -41px;
+    width: 16px;
+    height: 16px;
+    background: #FFF;
+    border: 3px solid #eee9dc;
+    border-radius: 50%;
+    display: block;
+    position: absolute;
+}
+
+#timeline .content {
+    padding: 15px;
+    border-color: #eee9dc;
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 0.5em;
+    position: relative;
+}
+
+#timeline .content:before, #timeline .content:after {
+    content: "";
+    width: 0;
+    height: 0;
+    border: solid transparent;
+    position: absolute;
+    pointer-events: none;
+    right: 100%;
+}
+
+#timeline .content:before {
+    border-right-color: inherit;
+    border-width: 15px;
+    top: 50%;
+    margin-top: -15px;
+}
+
+#timeline .content:after {
+    border-width: 17px;
+    top: 50%;
+    margin-top: -17px;
+}
+
+#timeline .content p {
+    text-align: justify;
+    word-break: break-word;
+    margin: 0;
+    color: #BBB;
+}
+
+#timeline .content p em {
+    margin: 0 20px 0 0;
+    color: #3d3d3d;
+    font-style: normal;
+}
+
+/*应用实例*/
+.server-detail .server-info-instance li {
+    display: block;
+    margin-right: 0px;
+}
+
+/* 新建应用 */
+.new-app label small {
+    font-weight: normal;
+    color: #CCC;
+    display: block;
+}
+
+.new-app .well {
+    padding: 19px 30px;
+}
+
+.new-app .ad-set {
+    margin-bottom: 15px;
+    display: inline-block;
+    padding-left: 8px;
+}
+
+.new-app .item-header {
+    border-bottom: 1px solid #CCC;
+    margin: 40px 0 20px 0;
+}
+
+.new-app .item-header:first-child {
+    margin-top: 0px;
+}
+
+.new-app .form-inline .form-group {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.new-app .form-inline input, .new-app .form-inline select {
+    margin-left: 6px;
+    margin-right: 12px;
+}
+
+.new-app table {
+    margin: 20px 0 0 0;
+}
+
+.new-app table td, .new-app table th {
+    background: #FFF;
+}
+
+/* 应用配置 */
+.app-config dl, .app-config dt, .app-config dd {
+    display: inline-block;
+}
+
+.app-config dl {
+    min-width: 40%;
+}
+
+.app-config h4 {
+    background: url(../pics/bg-line-gray.png) repeat-x left;
+}
+
+.app-config h4 span {
+    background: #FFF;
+    padding-right: 12px;
+}
+
+/* 滑动条 */
+rzslider .rz-bubble.rz-limit {
+    bottom: 3px;
+}
+
+rzslider .rz-bubble {
+    font-size: 11px;
+}
+
+.progress {
+    margin-bottom: 0px;
+    height: 15px;
+    position: relative;
+}
+
+.progress span {
+    color: black;
+    white-space: nowrap;
+    position: absolute;
+    left: 6px;
+    top: -2px;
+    font-size: 11px;
+}
+
+/*添加主机 主机类型提示*/
+.prompt-box {
+    position: absolute;
+    right: -205px;
+    top: -60px;
+    background: #FFF;
+    border: 1px solid #EEE;
+    padding: 10px;
+    box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.1);
+    font-size: 11px;
+    background-color: #fcf8e3;
+    font-weight: 100;
+    text-align: left;
+}
+
+.prompt-last {
+    right: -100px;
+    top: -43px;
+}
+
+/* dashboard */
+.dashboard .main-container-body {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.dashboard h2 {
+    color: #666;
+    margin: 0 0 20px 0;
+    font-weight: normal;
+    font-size: 18px;
+}
+
+.dashboard .dashboard-left {
+    float: left;
+    width: 450px;
+    padding-top: 30px;
+    text-align: center;
+}
+
+.dashboard .dashboard-right {
+    margin-left: 480px;
+    height: 300px;
+    overflow-y: auto;
+}
+
+.dashboard .dashboard-cluster {
+    margin-bottom: 60px;
+    position: relative;
+}
+
+.dashboard .dashboard-cluster > div {
+    display: inline-block;
+    text-align: center;
+    vertical-align: top;
+    margin: 0 30px;
+}
+
+.dashboard .dashboard-cluster .cluster-piechart-num {
+    margin-top: 9px;
+    font-size: 10px;
+    color: #CCC;
+}
+
+.dashboard .dashboard-cluster .cluster-piechart-num em {
+    font-size: 20px;
+    color: #333;
+    font-style: normal;
+}
+
+.dashboard .dashboard-app {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.dashboard .dashboard-app h5 {
+    color: #999;
+    margin-top: 0;
+    font-size: 12px;
+}
+
+.dashboard .dashboard-app piechart {
+    display: block;
+    margin: 0 0 15px 0;
+}
+
+.dashboard .dashboard-app .app-info {
+    text-align: center;
+    display: inline-block;
+    margin: 0 20px 10px 20px;
+}
+
+.dashboard .cluster-service-status-number {
+    margin-bottom: 10px;
+}
+
+.dashboard .cluster-service-status-number li a {
+    background-size: 18px;
+    cursor: text;
+    padding-left: 20px;
+    margin-right: 15px;
+}
+
+.dashboard .cluster-service-status-number li a:hover {
+    text-decoration: none;
+}
+
+.breadcrumb {
+    padding: 8px 0 0 0;
+    background-color: transparent;
+}
+
+.select-nodetype-panel h3 {
+    margin: 0 0 30px 0;
+}
+
+.select-nodetype-panel .nodetype-new, .select-nodetype-panel .nodetype-old {
+    background-color: #EEEEEE;
+    padding: 10px 20px 20px 20px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+}
+
+.select-nodetype-panel .nodetype-new {
+    margin-bottom: 50px;
+}
+
+.select-nodetype-panel .select-cloudcompany li {
+    display: inline-block;
+    margin-right: 40px;
+}
+
+.select-nodetype-panel .select-cloudcompany a img {
+    height: 30px;
+}
+
+.select-nodetype-panel .select-cloudcompany a:hover img {
+    opacity: 1;
+}
+
+.select-nodetype-panel .thumbnail img {
+    margin: 30px auto;
+}
+
+.select-nodetype-panel .thumbnail h3 {
+    margin-bottom: 10px;
+}
+
+.select-nodetype-panel .caption {
+    padding: 9px 18px;
+}
+
+.select-nodetype-panel .caption p {
+    min-height: 150px;
+}
+
+.select-nodetype-panel .buynode-step .thumbnail img {
+    width: 95%;
+}
+
+.select-nodetype-panel .buynode-step .text-center img {
+    height: 50px;
+    width: auto;
+    margin: 0;
+}
+
+.select-nodetype-panel .buynode-step .text-center {
+    height: 50px;
+    line-height: 50px;
+    margin-top: 80px;
+    margin-bottom: 80px;
+}
+
+.select-nodetype-panel .buynode-step .text-center span {
+    font-size: 25px;
+    padding: 0 24px;
+}
+
+.select-nodetype-panel .buynode-step .caption {
+    border-top: 1px solid #DDD;
+    padding: 18px;
+    background-color: #EEE;
+}
+
+.select-nodetype-panel .buynode-step .caption p {
+    min-height: auto;
+}
+
+.select-nodetype-panel .buynode-step .text-right .btn {
+    width: 120px;
+}
+
+.select-nodetype-panel .buynode-step .text-right {
+    margin-top: 50px;
+}
+
+.font-blue {
+    color: blue;
+}
+
+.main-news {
+    margin: 20px 0 -20px 0;
+}
+
+.main-news .main-container .main-container-body {
+    padding-top: 15px;
+    padding-bottom: 15px
+}
+
+.main-news .news-hot {
+    float: left;
+    width: 50%;
+    margin-right: 2%;
+}
+
+.main-news .news-hot h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-weight: 500;
+    color: #666666;
+}
+
+.main-news .news-hot h4 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #777;
+}
+
+.main-news .news-hot p {
+    margin-top: 0;
+    margin-bottom: 0px;
+    color: #777;
+}
+
+.main-news .news-list {
+    float: left;
+    width: 30%;
+    margin-right: 5%;
+    padding-top: 30px;
+}
+
+.main-news .news-list ul {
+    border-left: 1px solid #CCC;
+    margin-left: 5%;
+}
+
+.main-news .news-list li {
+    margin-bottom: 3px;
+}
+
+.main-news .news-more {
+    float: right;
+    width: 10%;
+    padding-top: 40px;
+}
+
+.datetimepicker-wrapper input {
+    height: 30px;
+}
+
+.form-group .multiSelect > button {
+    min-height: 30px !important;
+    width: 100%;
+    text-align: left;
+}
+
+.datetimepicker-wrapper > input {
+    width: 110px !important;
+}
+
+.main-news {
+    margin: 20px 0 0 0;
+}
+
+.main-news .main-container .main-container-body {
+    padding-top: 15px;
+    padding-bottom: 15px
+}
+
+.main-news .news-hot {
+    float: left;
+    width: 50%;
+    margin-right: 2%;
+}
+
+.main-news .news-hot h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-weight: 500;
+    color: #666666;
+}
+
+.main-news .news-hot h4 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #777;
+}
+
+.main-news .news-hot p {
+    margin-top: 0;
+    margin-bottom: 0px;
+    color: #777;
+}
+
+.main-news .news-list {
+    float: left;
+    width: 30%;
+    margin-right: 5%;
+    padding-top: 30px;
+}
+
+.main-news .news-list ul {
+    border-left: 1px solid #CCC;
+    margin-left: 5%;
+}
+
+.main-news .news-list li {
+    margin-bottom: 3px;
+}
+
+.main-news .news-more {
+    float: right;
+    width: 10%;
+    padding-top: 40px;
+}
+
+.app-detail-header h3 {
+    margin: 0 0 6px 0;
+}
+
+.app-detail-header dt {
+    display: inline-block;
+}
+
+.app-detail-header dd {
+    display: inline-block;
+    margin: 0 21px 0 6px;
+}
+
+.app-detail-header dl {
+    margin-bottom: 0;
+}
+
+.tag {
+    background-color: #999;
+    border-radius: 2px 10px 10px 2px;
+    color: #FFF;
+    display: inline-block;
+    font-size: 12px;
+    line-height: 1;
+    margin-right: 10px;
+    margin-top: 6px;
+    padding: 5px 20px 3px 6px;
+    position: relative;
+}
+
+.tag.selected {
+    background-color: #5bc0de;
+}
+
+.tag.selected em {
+    background: rgba(255, 255, 255, 1);
+    border-radius: 2px;
+    display: block;
+    height: 4px;
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    width: 4px;
+    transition: transform 0.5s;
+    -moz-transition: -moz-transform 0.5s;
+    -webkit-transition: -webkit-transform 0.5s;
+    -o-transition: -o-transform 0.5s;
+}
+
+.tag:hover {
+    background-color: #31b0d5;
+    cursor: pointer;
+}
+
+.tag.selected:hover em.line-left {
+    background: rgba(255, 244, 170, 1);
+    border-radius: 0px;
+    height: 1px;
+    position: absolute;
+    right: 5px;
+    top: 9px;
+    width: 10px;
+    transform: rotate(45deg);
+}
+
+.tag.selected:hover em.line-right {
+    background: rgba(255, 244, 170, 1);
+    border-radius: 0px;
+    display: block;
+    height: 1px;
+    position: absolute;
+    right: 5px;
+    top: 9px;
+    width: 10px;
+    transform: rotate(-45deg);
+}
+
+.btn-add-tag {
+    border: 0;
+    font-size: 14px;
+    height: 20px;
+    line-height: 1;
+    padding: 0 0 0 0;
+    width: 20px;
+}
+
+.btn-create-tag {
+    border: 0;
+    font-size: 14px;
+    height: 20px;
+    line-height: 1;
+    padding: 0 0 0 0;
+}
+
+.modal-tag ul {
+    padding: 0;
+    margin: 0;
+}
+
+.modal-tag li {
+    margin-bottom: 0;
+    display: inline-block;
+    list-style: none;
+    padding-right: 12px;
+    margin-right: 15px;
+    position: relative;
+}
+
+.modal-tag li .tag {
+    margin-right: 0;
+}
+
+.modal-tag li a {
+    color: #a94442;
+    display: none;
+    position: absolute;
+    right: -6px;
+    top: 10px;
+}
+
+.modal-tag li a:hover {
+    color: #f03535;
+}
+
+.modal-tag li:hover a {
+    display: inline;
+}
+
+.panel-create-tag {
+    background: #DDD;
+    border-radius: 4px;
+    margin-top: 20px;
+    padding: 10px;
+    text-align: center;
+}
+
+.btn-dropdown-info .dropdown-menu li {
+    padding: 5px 20px;
+}
+
+.badge {
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+rzslider .rz-pointer {
+    background-color: #5bc0de !important;
+}
+
+rzslider .rz-bar.rz-selection {
+    background-color: #5bc0de !important;
+}
+
+.required:after {
+    content: ' *';
+    color: #e32;
+    display: inline;
+}
+
+.demo-hide {
+    display: none !important;
+}
+
+.ico-app-status {
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+    position: relative;
+    text-align: center;
+}
+
+.ico-app-status.status-download {
+    background-color: #2ecd71;
+}
+
+.ico-app-status.status-download .arrow-download {
+    height: 8px;
+    width: 8px;
+    background: white;
+    margin: 0 auto;
+    position: relative;
+    top: 0px;
+    animation: myfirst 4s infinite;
+    -moz-animation: myfirst 4s infinite; /* Firefox */
+    -webkit-animation: myfirst 4s infinite; /* Safari and Chrome */
+    -o-animation: myfirst 4s infinite; /* Opera */
+}
+
+@keyframes myfirst {
+    0% {
+        top: 0px;
+    }
+    50% {
+        background: white;
+    }
+    100% {
+        background: transparent;
+        top: 8px;
+    }
+}
+
+@-moz-keyframes myfirst /* Firefox */
+{
+    0% {
+        top: 0px;
+    }
+    50% {
+        background: white;
+    }
+    100% {
+        background: transparent;
+        top: 8px;
+    }
+}
+
+@-webkit-keyframes myfirst /* Safari and Chrome */
+{
+    0% {
+        top: 0px;
+    }
+    50% {
+        background: white;
+    }
+    100% {
+        background: transparent;
+        top: 8px;
+    }
+}
+
+@-o-keyframes myfirst /* Opera */
+{
+    0% {
+        top: 0px;
+    }
+    50% {
+        background: white;
+    }
+    100% {
+        background: transparent;
+        top: 8px;
+    }
+}
+
+.ico-app-status.status-download .arrow-download:before {
+    content: "";
+    position: absolute;
+    top: 8px;
+    left: -5px;
+    width: 0;
+    height: 0;
+    border-left: 9px solid transparent;
+    border-right: 9px solid transparent;
+    border-top: 8px solid white;
+    animation: arrow 4s infinite;
+    -moz-animation: arrow 4s infinite; /* Firefox */
+    -webkit-animation: arrow 4s infinite; /* Safari and Chrome */
+    -o-animation: arrow 4s infinite; /* Opera */
+}
+
+@keyframes arrow /* Firefox */
+{
+    50% {
+        border-top-color: white;
+    }
+    100% {
+        border-color: transparent;
+    }
+}
+
+@-moz-keyframes arrow /* Firefox */
+{
+    50% {
+        border-top-color: white;
+    }
+    100% {
+        border-color: transparent;
+    }
+}
+
+@-webkit-keyframes arrow /* Safari and Chrome */
+{
+    50% {
+        border-top-color: white;
+    }
+    100% {
+        border-color: transparent;
+    }
+}
+
+@-o-keyframes arrow /* Opera */
+{
+    50% {
+        border-top-color: white;
+    }
+    100% {
+        border-color: transparent;
+    }
+}
+
+.ico-app-status.status-download .service {
+    height: 5px;
+    width: 20px;
+    background: white;
+    margin: 0 auto;
+    position: absolute;
+    bottom: 6px;
+    left: 5px
+}
+
+.ico-app-status.status-download .service:before {
+    content: "";
+    width: 3px;
+    height: 1px;
+    background: #2ecd71;
+    position: absolute;
+    right: 2px;
+    top: 1px;
+}
+
+.ico-app-status.status-reset {
+    background-color: #67b2e5;
+}
+
+.ico-app-status.status-reset .glyphicon-cog {
+    color: #FFF;
+    font-size: 20px;
+    position: relative;
+    top: 5px;
+    animation: rotate 4s infinite;
+    -moz-animation: rotate 4s infinite; /* Firefox */
+    -webkit-animation: rotate 4s infinite; /* Safari and Chrome */
+    -o-animation: rotate 4s infinite; /* Opera */
+}
+
+@keyframes rotate /* Firefox */
+{
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@-moz-keyframes rotate /* Firefox */
+{
+    from {
+        -moz-transform: rotate(0deg);
+    }
+    to {
+        -moz-transform: rotate(360deg);
+    }
+}
+
+@-webkit-keyframes rotate /* Safari and Chrome */
+{
+    from {
+        -webkit-transform: rotate(0deg);
+    }
+    to {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@-o-keyframes rotate /* Opera */
+{
+    from {
+        -o-transform: rotate(0deg);
+    }
+    to {
+        -o-transform: rotate(360deg);
+    }
+}
+
+#createPortModule label.radio-inline {
+    width: 90px;
+    font-size: 14px;
+}
+
+#createPortModule span.ip {
+    display: inline-block;
+    width: 110px;
+}
+
+#createPortModule span.port {
+    display: inline-block;
+    width: 40px;
+}
+
+#createPortModule span.portrange {
+    display: inline-block;
+    width: 115px;
+}
+
+#appTdCluster a.danger {
+    color: darkorange;
+}
+
+/* 多选框 hover 样式*/
+.multiSelect .multiSelectItem:hover,
+.multiSelect .multiSelectGroup:hover {
+    background-image: linear-gradient(#427fed, #427fed) !important;
+    color: #fff !important;
+    cursor: pointer;
+    border: 1px solid #ccc !important;
+}
+
+/* 多选框 Select 样式 */
+.multiSelect .multiSelectItem:not(.multiSelectGroup).selected {
+    background-image: linear-gradient(#427fed, #427fed);
+    color: #fff;
+    cursor: pointer;
+    border-top: 1px solid #e4e4e4;
+    border-left: 1px solid #e4e4e4;
+    border-right: 1px solid #d9d9d9;
+}
+.multiSelect .buttonLabel {
+    font-size: 12px;
+    padding: 4px 0;
+
+}
