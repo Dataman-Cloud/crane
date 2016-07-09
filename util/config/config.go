@@ -17,12 +17,12 @@ type Config struct {
 	DockerTlsVerify string
 	DockerCertPath  string
 
-	HOST  string
-	PORT  uint64
-	Mysql MysqlConfig
+	HOST string
+	PORT uint64
+	Db   DbConfig
 }
 
-type MysqlConfig struct {
+type DbConfig struct {
 	UserName     string
 	PassWord     string
 	Host         string
@@ -44,13 +44,13 @@ type EnvEntry struct {
 	DOCKER_HOST       string `required:"true"`
 	DOCKER_CERT_PATH  string `required:"true"`
 
-	ROLEX_MYSQL_USER           string `required:"true"`
-	ROLEX_MYSQL_PASSWORD       string `required:"true"`
-	ROLEX_MYSQL_HOST           string `required:"true"`
-	ROLEX_MYSQL_PORT           uint16 `required:"true"`
-	ROLEX_MYSQL_DB             string `required:"true"`
-	ROLEX_MYSQL_MAX_IDLE_CONNS uint16 `required:"true"`
-	ROLEX_MYSQL_MAX_OPEN_CONNS uint16 `required:"true"`
+	ROLEX_DB_USER           string `required:"true"`
+	ROLEX_DB_PASSWORD       string `required:"true"`
+	ROLEX_DB_HOST           string `required:"true"`
+	ROLEX_DB_PORT           uint16 `required:"true"`
+	ROLEX_DB_DB             string `required:"true"`
+	ROLEX_DB_MAX_IDLE_CONNS uint16 `required:"true"`
+	ROLEX_DB_MAX_OPEN_CONNS uint16 `required:"true"`
 }
 
 func InitConfig(envFile string) *Config {
@@ -62,13 +62,13 @@ func InitConfig(envFile string) *Config {
 	config.DockerTlsVerify = envEntry.DOCKER_TLS_VERIFY
 	config.DockerCertPath = envEntry.DOCKER_CERT_PATH
 
-	config.Mysql.UserName = envEntry.ROLEX_MYSQL_USER
-	config.Mysql.PassWord = envEntry.ROLEX_MYSQL_PASSWORD
-	config.Mysql.Host = envEntry.ROLEX_MYSQL_HOST
-	config.Mysql.Port = envEntry.ROLEX_MYSQL_PORT
-	config.Mysql.DataBase = envEntry.ROLEX_MYSQL_DB
-	config.Mysql.MaxIdleConns = envEntry.ROLEX_MYSQL_MAX_IDLE_CONNS
-	config.Mysql.MaxOpenConns = envEntry.ROLEX_MYSQL_MAX_OPEN_CONNS
+	config.Db.UserName = envEntry.ROLEX_DB_USER
+	config.Db.PassWord = envEntry.ROLEX_DB_PASSWORD
+	config.Db.Host = envEntry.ROLEX_DB_HOST
+	config.Db.Port = envEntry.ROLEX_DB_PORT
+	config.Db.DataBase = envEntry.ROLEX_DB_DB
+	config.Db.MaxIdleConns = envEntry.ROLEX_DB_MAX_IDLE_CONNS
+	config.Db.MaxOpenConns = envEntry.ROLEX_DB_MAX_OPEN_CONNS
 	return &config
 }
 
