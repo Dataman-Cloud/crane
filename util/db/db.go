@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/Dataman-Cloud/rolex/model"
+	"github.com/Dataman-Cloud/rolex/util/config"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/jinzhu/gorm"
@@ -22,26 +23,21 @@ func DB() *gorm.DB {
 
 func InitDB() {
 	var err error
-	/*conf := config.Pairs()
+	conf := config.GetConfig()
 	uri := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=true&loc=Local",
-	conf.Db.User,
-	conf.Db.Password,
-	conf.Db.Host,
-	conf.Db.Port,
-	conf.Db.Name)*/
-	uri := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=true&loc=Local",
-		"root",
-		"111111",
-		"localhost",
-		3306,
-		"rolex")
+		conf.Mysql.UserName,
+		conf.Mysql.PassWord,
+		conf.Mysql.Host,
+		conf.Mysql.Port,
+		conf.Mysql.DataBase)
 	log.Infof("mysql connection uri: %s", uri)
+
 	db, err = gorm.Open("mysql", uri)
 	if err != nil {
 		log.Fatalf("init mysql error: %v", err)
 	}
-	//db.DB().SetMaxIdleConns(conf.Db.MaxIdleConns)
-	//db.DB().SetMaxOpenConns(conf.Db.MaxOpenConns)
+	db.DB().SetMaxIdleConns(int(conf.Mysql.MaxIdleConns))
+	db.DB().SetMaxOpenConns(int(conf.Mysql.MaxOpenConns))
 
 	MigriateTable()
 }

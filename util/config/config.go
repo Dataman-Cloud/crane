@@ -16,6 +16,20 @@ type Config struct {
 	DockerHost      string
 	DockerTlsVerify string
 	DockerCertPath  string
+
+	HOST  string
+	PORT  uint64
+	Mysql MysqlConfig
+}
+
+type MysqlConfig struct {
+	UserName     string
+	PassWord     string
+	Host         string
+	Port         uint16
+	DataBase     string
+	MaxIdleConns uint16
+	MaxOpenConns uint16
 }
 
 var config Config
@@ -29,6 +43,14 @@ type EnvEntry struct {
 	DOCKER_TLS_VERIFY string `required:"true"`
 	DOCKER_HOST       string `required:"true"`
 	DOCKER_CERT_PATH  string `required:"true"`
+
+	ROLEX_MYSQL_USER           string `required:"true"`
+	ROLEX_MYSQL_PASSWORD       string `required:"true"`
+	ROLEX_MYSQL_HOST           string `required:"true"`
+	ROLEX_MYSQL_PORT           uint16 `required:"true"`
+	ROLEX_MYSQL_DB             string `required:"true"`
+	ROLEX_MYSQL_MAX_IDLE_CONNS uint16 `required:"true"`
+	ROLEX_MYSQL_MAX_OPEN_CONNS uint16 `required:"true"`
 }
 
 func InitConfig(envFile string) *Config {
@@ -40,6 +62,13 @@ func InitConfig(envFile string) *Config {
 	config.DockerTlsVerify = envEntry.DOCKER_TLS_VERIFY
 	config.DockerCertPath = envEntry.DOCKER_CERT_PATH
 
+	config.Mysql.UserName = envEntry.ROLEX_MYSQL_USER
+	config.Mysql.PassWord = envEntry.ROLEX_MYSQL_PASSWORD
+	config.Mysql.Host = envEntry.ROLEX_MYSQL_HOST
+	config.Mysql.Port = envEntry.ROLEX_MYSQL_PORT
+	config.Mysql.DataBase = envEntry.ROLEX_MYSQL_DB
+	config.Mysql.MaxIdleConns = envEntry.ROLEX_MYSQL_MAX_IDLE_CONNS
+	config.Mysql.MaxOpenConns = envEntry.ROLEX_MYSQL_MAX_OPEN_CONNS
 	return &config
 }
 
