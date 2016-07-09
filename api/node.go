@@ -13,7 +13,7 @@ func (api *Api) CreateNode(ctx *gin.Context)  {}
 func (api *Api) UpdateNode(ctx *gin.Context)  {}
 func (api *Api) RemoveNode(ctx *gin.Context)  {}
 
-func GetNodes(c *gin.Context) {
+func (api *Api) GetNodes(c *gin.Context) {
 	client, err := dockerclient.NewDockerGoClient("http://192.168.59.106:2376")
 	if err != nil {
 		c.JSON(http.StatusServiceUnavailable, err.Error())
