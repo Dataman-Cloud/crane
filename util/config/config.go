@@ -16,6 +16,20 @@ type Config struct {
 	DockerHost      string
 	DockerTlsVerify string
 	DockerCertPath  string
+
+	HOST string
+	PORT uint64
+	Db   DbConfig
+}
+
+type DbConfig struct {
+	UserName     string
+	PassWord     string
+	Host         string
+	Port         uint16
+	DataBase     string
+	MaxIdleConns uint16
+	MaxOpenConns uint16
 }
 
 var config Config
@@ -29,6 +43,14 @@ type EnvEntry struct {
 	DOCKER_TLS_VERIFY string `required:"true"`
 	DOCKER_HOST       string `required:"true"`
 	DOCKER_CERT_PATH  string `required:"true"`
+
+	ROLEX_DB_USER           string `required:"true"`
+	ROLEX_DB_PASSWORD       string `required:"true"`
+	ROLEX_DB_HOST           string `required:"true"`
+	ROLEX_DB_PORT           uint16 `required:"true"`
+	ROLEX_DB_DB             string `required:"true"`
+	ROLEX_DB_MAX_IDLE_CONNS uint16 `required:"true"`
+	ROLEX_DB_MAX_OPEN_CONNS uint16 `required:"true"`
 }
 
 func InitConfig(envFile string) *Config {
@@ -40,6 +62,13 @@ func InitConfig(envFile string) *Config {
 	config.DockerTlsVerify = envEntry.DOCKER_TLS_VERIFY
 	config.DockerCertPath = envEntry.DOCKER_CERT_PATH
 
+	config.Db.UserName = envEntry.ROLEX_DB_USER
+	config.Db.PassWord = envEntry.ROLEX_DB_PASSWORD
+	config.Db.Host = envEntry.ROLEX_DB_HOST
+	config.Db.Port = envEntry.ROLEX_DB_PORT
+	config.Db.DataBase = envEntry.ROLEX_DB_DB
+	config.Db.MaxIdleConns = envEntry.ROLEX_DB_MAX_IDLE_CONNS
+	config.Db.MaxOpenConns = envEntry.ROLEX_DB_MAX_OPEN_CONNS
 	return &config
 }
 
