@@ -32,13 +32,13 @@ func InitDB() {
 		conf.Db.DataBase)
 	log.Infof("mysql connection uri: %s", uri)
 
+	log.Infof("mysql connection uri: %s", uri)
 	db, err = gorm.Open("mysql", uri)
 	if err != nil {
 		log.Fatalf("init mysql error: %v", err)
 	}
 	db.DB().SetMaxIdleConns(int(conf.Db.MaxIdleConns))
 	db.DB().SetMaxOpenConns(int(conf.Db.MaxOpenConns))
-
 	MigriateTable()
 }
 

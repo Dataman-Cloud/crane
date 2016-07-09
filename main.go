@@ -8,7 +8,7 @@ import (
 	"github.com/Dataman-Cloud/rolex/dockerclient"
 	"github.com/Dataman-Cloud/rolex/util/config"
 
-	//"github.com/Dataman-Cloud/rolex/util/db"
+	"github.com/Dataman-Cloud/rolex/util/db"
 	log "github.com/Dataman-Cloud/rolex/util/log"
 
 	"golang.org/x/net/context"
@@ -20,7 +20,7 @@ var (
 
 func main() {
 	flag.Parse()
-	//db.InitDB()
+	db.InitDB()
 
 	ctx := context.Background()
 	conf := config.InitConfig(*envFile)
