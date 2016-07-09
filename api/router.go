@@ -1,12 +1,13 @@
 package api
 
 import (
+	"time"
+
 	"github.com/Dataman-Cloud/rolex/api/middlewares"
 	"github.com/Dataman-Cloud/rolex/util/log"
 	"github.com/Sirupsen/logrus"
 
 	"github.com/gin-gonic/gin"
-	"time"
 )
 
 func (api *Api) ApiRouter() *gin.Engine {
@@ -25,6 +26,8 @@ func (api *Api) ApiRouter() *gin.Engine {
 
 		v1.GET("/containers", api.ListContainers)
 		v1.GET("/containers/:id", api.InspectContainer)
+
+		v1.POST("/services/create", api.ServiceCreate)
 	}
 
 	return router
