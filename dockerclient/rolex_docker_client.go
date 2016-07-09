@@ -21,13 +21,14 @@ const (
 )
 
 type RolexDockerClient struct {
-	Client       DockerClient
+	DockerClientInterface
+	DockerClient *goclient.Client
 	HttpClient   *http.Client
 	HttpEndpoint string
 }
 
 func (dg *RolexDockerClient) Ping() error {
-	return dg.Client.Ping()
+	return dg.DockerClient.Ping()
 }
 
 func NewRolexDockerClient(config *config.Config) (*RolexDockerClient, error) {
@@ -82,7 +83,7 @@ func NewRolexDockerClient(config *config.Config) (*RolexDockerClient, error) {
 	}
 
 	return &RolexDockerClient{
-		Client:       client,
+		DockerClient: client,
 		HttpClient:   httpClient,
 		HttpEndpoint: strings.Replace(config.DockerHost, "tcp", "https", -1),
 	}, nil
@@ -109,7 +110,12 @@ func (client *RolexDockerClient) HttpGet(requestPath string) ([]byte, error) {
 
 // execute http delete request use default timeout
 func (client *RolexDockerClient) HttpDelete(requestPath string) ([]byte, error) {
-	resp, err := client.HttpClient.Delete(client.HttpEndpoint + "/" + requestPath)
+	request, err := http.NewRequest("DELETE", client.HttpEndpoint+"/"+requestPath, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := client.HttpClient.Do(request)
 	if err != nil {
 		return nil, err
 	}
