@@ -8,7 +8,7 @@ import (
 )
 
 func (api *Api) InspectNode(ctx *gin.Context) {
-	node, err := api.GetDockerClient().NodeInspect(dockerclient.NodeListOptions{}, ctx.Param("id"))
+	node, err := api.GetDockerClient().NodeInspect(ctx.Param("id"))
 	if err != nil {
 		ctx.JSON(http.StatusServiceUnavailable, err.Error())
 		return
@@ -31,11 +31,11 @@ func (api *Api) CreateNode(ctx *gin.Context) {}
 func (api *Api) UpdateNode(ctx *gin.Context) {}
 
 func (api *Api) RemoveNode(ctx *gin.Context) {
-	err := api.GetDockerClient().NodeDelete(dockerclient.NodeListOptions{}, ctx.Param("id"))
+	err := api.GetDockerClient().NodeDelete(ctx.Param("id"))
 	if err != nil {
 		ctx.JSON(http.StatusServiceUnavailable, err.Error())
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"code": 0})
+	ctx.JSON(http.StatusOK, gin.H{"code": "0"})
 }

@@ -24,7 +24,7 @@ func (client *RolexDockerClient) NodeList(opts NodeListOptions) ([]swarm.Node, e
 }
 
 // Inspect node returns the single node.
-func (client *RolexDockerClient) NodeInspect(opts NodeListOptions, nodeId string) (swarm.Node, error) {
+func (client *RolexDockerClient) NodeInspect(nodeId string) (swarm.Node, error) {
 	var node swarm.Node
 
 	content, err := client.HttpGet(path.Join("nodes", nodeId))
@@ -40,7 +40,7 @@ func (client *RolexDockerClient) NodeInspect(opts NodeListOptions, nodeId string
 }
 
 // Remove a single node
-func (client *RolexDockerClient) NodeRemove(opts NodeListOptions, nodeId string) error {
+func (client *RolexDockerClient) NodeRemove(nodeId string) error {
 	content, err := client.HttpDelete(path.Join("nodes", nodeId))
 	if err != nil {
 		return err
