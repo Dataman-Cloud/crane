@@ -90,8 +90,26 @@ func NewRolexDockerClient(config *config.Config) (*RolexDockerClient, error) {
 
 // execute http get request use default timeout
 func (client *RolexDockerClient) HttpGet(requestPath string) ([]byte, error) {
-	fmt.Println(client.HttpEndpoint)
 	resp, err := client.HttpClient.Get(client.HttpEndpoint + "/" + requestPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("http response status code is %d not 200", resp.StatusCode)
+	}
+
+	if resp.Body == nil {
+		return nil, nil
+	}
+	defer resp.Body.Close()
+
+	return ioutil.ReadAll(resp.Body)
+}
+
+// execute http delete request use default timeout
+func (client *RolexDockerClient) HttpDelete(requestPath string) ([]byte, error) {
+	resp, err := client.HttpClient.Delete(client.HttpEndpoint + "/" + requestPath)
 	if err != nil {
 		return nil, err
 	}

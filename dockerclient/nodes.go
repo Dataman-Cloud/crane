@@ -38,3 +38,13 @@ func (client *RolexDockerClient) NodeInspect(opts NodeListOptions, nodeId string
 
 	return node, nil
 }
+
+// Remove a single node
+func (client *RolexDockerClient) NodeRemove(opts NodeListOptions, nodeId string) error {
+	content, err := client.HttpDelete(path.Join("nodes", nodeId))
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
