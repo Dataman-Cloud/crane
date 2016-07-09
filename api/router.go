@@ -28,6 +28,8 @@ func (api *Api) ApiRouter() *gin.Engine {
 		v1.GET("/containers/:id", api.InspectContainer)
 
 		v1.POST("/services/create", api.ServiceCreate)
+		v1.GET("/services", api.ServiceList)
+		v1.DELETE("/services/:id", api.ServiceRemove)
 	}
 
 	return router
