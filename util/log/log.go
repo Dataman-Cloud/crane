@@ -1,10 +1,11 @@
 package log
 
 import (
+	"time"
+
 	"github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/net/context"
-	"time"
 )
 
 var (
