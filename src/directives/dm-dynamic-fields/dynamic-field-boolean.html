@@ -1,0 +1,12 @@
+<label class="form-label form-control-static"><span class="text-danger" data-ng-show="fieldData.required">*</span> {/fieldData.label/}</label>
+
+<div class="ember-view form-control-static">
+    <label class="col-md-3 hand">
+        <input type="radio" data-ng-model="fieldData.default" ng-value="'true'" ng-required="fieldData.required" name="{/fieldData.variable/}"> True
+    </label>
+
+    <label class="hand">
+        <input type="radio" data-ng-model="fieldData.default" ng-value="'false'" ng-required="fieldData.required" name="{/fieldData.variable/}"> False
+    </label>
+</div>
+<p class="help-block">{/fieldData.description/}</p>

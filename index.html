@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html data-ng-app="glance" data-ng-controller="RootCtrl as rootCtrl">
+<head>
+    <meta charset="utf-8">
+    <title>数人云</title>
+    <!--build:css css/style.css-->
+    <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="bower_components/angular-ui-notification/dist/angular-ui-notification.min.css">
+    <link rel="stylesheet" type="text/css" href="bower_components/angular/angular-csp.css">
+    <link rel="stylesheet" type="text/css" href="bower_components/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="bower_components/angular-material/angular-material.css">
+    <link rel="stylesheet" type="text/css" href="bower_components/angular-material-data-table/dist/md-data-table.css">
+    <link rel="stylesheet" type="text/css" href="bower_components/angular-loading-bar/build/loading-bar.css">
+    <link rel="stylesheet" type="text/css" href="bower_components/codemirror/lib/codemirror.css">
+    <link rel="stylesheet" type="text/css" href="bower_components/codemirror/theme/midnight.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/shurenyun.css">
+    <link rel="stylesheet" type="text/css" href="css/material.css">
+    <!--endbuild-->
+    <link rel="shortcut icon" type="image/x-icon" href="pics/favicon.ico"/>
+</head>
+
+<body>
+<div layout="row" class="main" ng-cloak>
+    <aside class="sidebar-main" data-ng-class="{'sidebar-main_two' : rootCtrl.isShortMenu}" layout="column">
+        <div class="logo">
+            <a href="#"><img src="pics/logo-white-full.svg" data-ng-show="!rootCtrl.isShortMenu"></a>
+            <a href="#"><img src="pics/logo-white-small.jpg" data-ng-show="rootCtrl.isShortMenu"></a>
+        </div>
+        <div class="menu-sidebar" flex layout-align="space-between stretch" layout="column">
+            <ul>
+                <li title="应用管理" data-ui-sref-active="active">
+                    <md-button data-ui-sref="app" data-ui-sref-opts="{inherit: false}"><i
+                            class="fa fa-cube"></i>应用管理
+                    </md-button>
+                </li>
+                <li title="应用编排" data-ui-sref-active="active">
+                    <md-button data-ui-sref="layout" data-ui-sref-opts="{reload: true, inherit: false}"><i
+                            class="fa fa-cubes"></i>应用编排
+                    </md-button>
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    <md-button target="_blank"><i class="fa fa-book"></i>用户手册
+                    </md-button>
+                </li>
+                <li>
+                    <md-button href="http://open.shurenyun.com" target="_blank"><i class="fa fa-coffee"></i>数人社区</md-button>
+                </li>
+                <li>
+                    <md-button  data-demo-disable><i class="fa fa-pencil-square-o"></i>工单反馈
+                    </md-button>
+                </li>
+            </ul>
+        </div>
+    </aside>
+    <div layout="column" flex>
+        <nav class="nav-main">
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <md-button class="md-icon-button" aria-label="Settings" data-ng-click="rootCtrl.togShortMenu()">
+                        <i class="fa fa-bars"></i>
+                    </md-button>
+                    <span flex></span>
+
+                    <md-menu>
+                        <md-button class="md-icon-button" aria-label="More" ng-click="$mdOpenMenu($event)">
+                            <i class="fa fa-th"></i>
+                        </md-button>
+                        <md-menu-content>
+                            <md-menu-item>
+                                <md-button>
+                                    新建集群
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-item>
+                                <md-button >
+                                    新建应用
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-item>
+                                <md-button>
+                                    新建镜像
+                                </md-button>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+
+                    <md-button class="md-icon-button" aria-label="More" ng-click="rootCtrl.noticeNav.buildToggler()"
+                               ng-hide="rootCtrl.noticeNav.isOpenNav()">
+                        <i class="fa fa-bell"></i>
+                    </md-button>
+
+                    <md-menu>
+                        <md-button class="md-icon-button" aria-label="More" ng-click="$mdOpenMenu($event)">
+                            <i class="fa fa-user"></i>
+                        </md-button>
+                        <md-menu-content>
+                            <md-menu-item>
+                                <md-button>
+                                    <md-icon md-svg-src="pics/ic_people.svg" aria-label="ic_people "></md-icon>
+                                    用户中心
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-item>
+                                <md-button>
+                                    <md-icon md-svg-src="pics/ic_power_settings.svg" aria-label="ic_power_settings "></md-icon>
+                                    退出
+                                </md-button>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+                    
+                </div>
+            </md-toolbar>
+        </nav>
+        <div class="main-container" flex data-ui-view></div>
+    </div>
+
+    <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="noticeNav">
+        <md-toolbar class="md-theme-light">
+            <h1 class="md-toolbar-tools">公告栏</h1>
+        </md-toolbar>
+        <md-content layout-padding>
+            <div>
+                <md-content>
+                    <div>暂无公告</div>
+                </md-content>
+            </div>
+        </md-content>
+    </md-sidenav>
+</div>
+<div class="tab-rb-feedback ng-hide" style="bottom: 76px;">
+    <a href="#" data-demo-disable>
+        <i class="glyphicon glyphicon-gift"></i>
+        <em>试用</em>
+    </a>
+</div>
+
+<!--build:js js/script.js-->
+<script src="bower_components/jquery/dist/jquery.js" type="text/javascript"></script>
+<script src="bower_components/bootstrap/dist/js/bootstrap.js" type="text/javascript"></script>
+<script src="bower_components/js-yaml/dist/js-yaml.js" type="text/javascript"></script>
+<script src="bower_components/codemirror/lib/codemirror.js" type="text/javascript"></script>
+<script src="bower_components/codemirror/mode/yaml/yaml.js" type="text/javascript"></script>
+<!--endbuild-->
+
+<!--build:js js/angular.js-->
+<script src="bower_components/angular/angular.js" type="text/javascript"></script>
+<script src="bower_components/angular-cookies/angular-cookies.js" type="text/javascript"></script>
+<script src="bower_components/angular-messages/angular-messages.js" type="text/javascript"></script>
+<script src="bower_components/angular-ui-router/release/angular-ui-router.js" type="text/javascript"></script>
+<script src="bower_components/angular-ui-codemirror/ui-codemirror.js" type="text/javascript"></script>
+<script src="bower_components/angular-sanitize/angular-sanitize.js" type="text/javascript"></script>
+<script src="bower_components/angular-aria/angular-aria.js" type="text/javascript"></script>
+<script src="bower_components/angular-material/angular-material.js" type="text/javascript"></script>
+<script src="bower_components/ngSocket/dist/ngSocket.js"></script>
+<script src="bower_components/zeroclipboard/dist/ZeroClipboard.js" type="text/javascript"></script>
+<script src="bower_components/angular-animate/angular-animate.min.js" type="text/javascript"></script>
+<script src="bower_components/angular-ui-notification/dist/angular-ui-notification.min.js" type="text/javascript"></script>
+<script src="bower_components/echarts/build/dist/echarts-all.js" type="text/javascript"></script>
+<script src="bower_components/showdown/src/showdown.js" type="text/javascript"></script>
+<script src="bower_components/angular-markdown-directive/markdown.js" type="text/javascript"></script>
+<script src="bower_components/angular-base64/angular-base64.min.js" type="text/javascript"></script>
+<script src="bower_components/angular-material-data-table/dist/md-data-table.js" type="text/javascript"></script>
+<script src="bower_components/angular-loading-bar/build/loading-bar.js" type="text/javascript"></script>
+
+<!--endbuild-->
+
+<!--build:js(build) js/main.js-->
+<script src="src/constants.js" type="text/javascript"></script>
+<script src="src/confdev.js" type="text/javascript"></script>
+
+<script src="src/glance.module.js" type="text/javascript"></script>
+<script src="src/glance.run.js" type="text/javascript"></script>
+<script src="src/glance.ctrl.js" type="text/javascript"></script>
+
+<script src="src/utils/utils.module.js" type="text/javascript"></script>
+<script src="src/utils/utils.config.js" type="text/javascript"></script>
+<script src="src/utils/services/utils.service.js" type="text/javascript"></script>
+<script src="src/utils/services/ghttp.service.js" type="text/javascript"></script>
+<script src="src/utils/services/mdTable.service.js" type="text/javascript"></script>
+<script src="src/utils/services/mdSideNav.service.js" type="text/javascript"></script>
+<script src="src/utils/services/timing.service.js" type="text/javascript"></script>
+<script src="src/utils/services/line-chart.service.js" type="text/javascript"></script>
+<script src="src/utils/services/bar-chart.service.js" type="text/javascript"></script>
+<script src="src/utils/modals/confirm.service.js" type="text/javascript"></script>
+<script src="src/utils/modals/alert.service.js" type="text/javascript"></script>
+<script src="src/utils/modals/form.service.js" type="text/javascript"></script>
+
+<!--endbuild-->
+
+<!--build:js(build) js/directive.js-->
+<script src="src/directives/dm-copy.directive.js" type="text/javascript"></script>
+<script src="src/directives/dm-permit-click.directive.js" type="text/javascript"></script>
+<script src="src/directives/dm-dynamic-fields/dynamic-field-vali.directive.js" type="text/javascript"></script>
+<script src="src/directives/dm-dynamic-field.directive.js" type="text/javascript"></script>
+<script src="src/directives/positive-integer.directive.js" type="text/javascript"></script>
+<script src="src/directives/dm-tab-sref.directive.js" type="text/javascript"></script>
+<script src="src/directives/dm-trigger-prev-click.directive.js" type="text/javascript"></script>
+<script src="src/directives/dm-check-include.directive.js" type="text/javascript"></script>
+<script src="src/directives/dm-demo-disable.directive.js" type="text/javascript"></script>
+<script src="src/directives/dm-no-equal.directive.js" type="text/javascript"></script>
+<script src="src/directives/dm-password.js" type="text/javascript"></script>
+<!--endbuild-->
+
+
+<!--build:js js/template.js-->
+<!-- inject:template.js -->
+<!-- angular templates will be automatically converted in js and inserted here -->
+<!-- endinject -->
+<!--endbuild-->
+
+<!-- baidu -->
+<!--<script>-->
+    <!--if (RUNNING_ENV === "prod") {-->
+        <!--var _hmt = _hmt || [];-->
+        <!--(function () {-->
+            <!--var hm = document.createElement("script");-->
+            <!--hm.src = "//hm.baidu.com/hm.js?cd74c0fcc0c51aecc3bb276315e35e6a";-->
+            <!--var s = document.getElementsByTagName("script")[0];-->
+            <!--s.parentNode.insertBefore(hm, s);-->
+        <!--})();-->
+    <!--}-->
+<!--</script>-->
+
+</body>
+</html>
