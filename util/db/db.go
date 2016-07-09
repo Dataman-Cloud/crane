@@ -1,8 +1,6 @@
 package db
 
 import (
-	"fmt"
-
 	"github.com/Dataman-Cloud/rolex/model"
 	"github.com/Dataman-Cloud/rolex/util/config"
 
@@ -24,21 +22,14 @@ func DB() *gorm.DB {
 func InitDB() {
 	var err error
 	conf := config.GetConfig()
-	uri := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=true&loc=Local",
-		conf.Db.UserName,
-		conf.Db.PassWord,
-		conf.Db.Host,
-		conf.Db.Port,
-		conf.Db.DataBase)
-	log.Infof("mysql connection uri: %s", uri)
+	log.Infof("mysql connection uri: %s", conf.DbDSN)
 
-	log.Infof("mysql connection uri: %s", uri)
-	db, err = gorm.Open("mysql", uri)
+	db, err = gorm.Open(conf.DbDriver, conf.DbDSN)
 	if err != nil {
 		log.Fatalf("init mysql error: %v", err)
 	}
-	db.DB().SetMaxIdleConns(int(conf.Db.MaxIdleConns))
-	db.DB().SetMaxOpenConns(int(conf.Db.MaxOpenConns))
+	db.DB().SetMaxIdleConns(5)
+	db.DB().SetMaxOpenConns(50)
 	MigriateTable()
 }
 
