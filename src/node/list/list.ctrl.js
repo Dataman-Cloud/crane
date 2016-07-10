@@ -1,12 +1,14 @@
 (function () {
     'use strict';
-    angular.module('glance.app')
-        .controller('AppListCtrl', AppListCtrl);
+    angular.module('glance.node')
+        .controller('NodeListCtrl', NodeListCtrl);
 
 
     /* @ngInject */
-    function AppListCtrl(apps) {
+    function NodeListCtrl(nodes) {
         var self = this;
+
+        self.nodes = nodes;
 
         activate();
 

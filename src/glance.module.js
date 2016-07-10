@@ -11,6 +11,7 @@
             'ngSanitize',
             'glance.utils',
             'glance.layout',
-            'glance.app'
+            'glance.app',
+            'glance.node'
         ]);
 })();
