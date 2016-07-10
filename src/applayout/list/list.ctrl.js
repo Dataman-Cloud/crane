@@ -5,7 +5,7 @@
 
 
     /* @ngInject */
-    function LayoutListCtrl($timeout, $rootScope, $scope, layoutBackend, utils, layoutCurd) {
+    function LayoutListCtrl(layoutBackend, utils, layoutCurd) {
         var self = this;
 
         activate();

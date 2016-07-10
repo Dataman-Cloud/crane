@@ -1,0 +1,51 @@
+<div class="main-content app-layout">
+    <section class="main-section">
+        <header layout="row" layout-align="end start">
+            <div class="info" flex>
+                <h2>应用列表</h2>
+            </div>
+            <div layout-align="end center" class="operation">
+                <md-button class="md-fab md-mini" aria-label="创建应用" data-ui-sref="app.create">
+                    <md-tooltip md-direction="top">创建应用</md-tooltip>
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                </md-button>
+            </div>
+        </header>
+
+        <div class="main-content">
+
+            <!-- hide search
+                <md-toolbar class="md-table-toolbar md-default">
+                    <div class="md-toolbar-tools">
+                        <form flex name="filter.form">
+                            <input type="text" ng-model="appListCtrl.filter" placeholder="搜索"
+                                   my-enter="appListCtrl.table.doSearch(appListCtrl.filter)">
+                        </form>
+                    </div>
+                </md-toolbar>
+            -->
+
+            <md-table-container>
+                <table md-table>
+                    <thead md-head>
+                    <tr md-row>
+                        <th md-column>实例名称</th>
+                        <th md-column>状态</th>
+                        <th md-column>启动时间</th>
+                    </tr>
+                    </thead>
+                    <tbody md-body>
+                    <tr md-row ng-repeat="app in [{name: '2048', status: 'running', create: '2016.7.10'},{}]">
+                        <td md-cell>{/app.name/}</td>
+                        <td md-cell>{/app.status/}</td>
+                        <td md-cell>{/app.create/}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="alert alert-warning text-center" data-ng-if="false">
+                    未查询到实例信息
+                </div>
+            </md-table-container>
+        </div>
+    </section>
+</div>

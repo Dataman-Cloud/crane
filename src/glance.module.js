@@ -10,6 +10,7 @@
             'ngSocket',
             'ngSanitize',
             'glance.utils',
-            'glance.layout'
+            'glance.layout',
+            'glance.app'
         ]);
 })();
