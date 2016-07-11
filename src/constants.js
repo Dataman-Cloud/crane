@@ -8,25 +8,21 @@ MESSAGE_CODE = {
 };
 
 STACK_DEFAULT = {
-    DockerCompose: 'mysql:\n' +
-    '  image:  catalog.shurenyun.com/library/mysql\n' +
-    '  restart: always\n' +
-    '  ports:\n' +
-    '    - "3306:3306"\n' +
-    '  environment:\n' +
-    '    MYSQL_ROOT_PASSWORD: foobar\n' +
-    'wordpress:\n' +
-    '  image:  catalog.shurenyun.com/library/wordpress\n' +
-    '  restart: always\n' +
-    '  ports:\n' +
-    '    - "80:80"\n' +
-    '  environment:\n' +
-    '    WORDPRESS_DB_HOST: mysql:3306\n' +
-    '    WORDPRESS_DB_USER: root\n' +
-    '    WORDPRESS_DB_PASSWORD: foobar\n' +
-    '  links:\n' +
-    '    - mysql:mysql\n'
-};
+    JsonCompose: '{\n' +
+    '  "name": 2048,\n' +
+    '  "cpu": 0.1,\n' +
+    '  "mem": 64\n' +
+    '}\n',
+    JsonObj: {
+        a: 1,
+        b: 2,
+        c: 3,
+        d: {
+            a: 1
+        }
+    }
+}
+;
 
 BACKEND_URL = {
     node: {
