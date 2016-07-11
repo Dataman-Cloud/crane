@@ -45,6 +45,11 @@
                             class="fa fa-server"></i>主机管理
                     </md-button>
                 </li>
+                <li title="网络管理" data-ui-sref-active="active">
+                    <md-button data-ui-sref="network" data-ui-sref-opts="{inherit: false}"><i
+                            class="fa fa-edge"></i>网络管理
+                    </md-button>
+                </li>
             </ul>
         </div>
     </aside>
@@ -70,6 +75,11 @@
                             <md-menu-item>
                                 <md-button>
                                     新建编排
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-item>
+                                <md-button>
+                                    新建网络
                                 </md-button>
                             </md-menu-item>
                         </md-menu-content>
@@ -195,6 +205,14 @@
 <script src="src/node/services/node-curd-service.js" type="text/javascript"></script>
 <script src="src/node/create/create.ctrl.js" type="text/javascript"></script>
 <script src="src/node/list/list.ctrl.js" type="text/javascript"></script>
+
+<script src="src/network/network.module.js" type="text/javascript"></script>
+<script src="src/network/network.config.js" type="text/javascript"></script>
+<script src="src/network/network.route.js" type="text/javascript"></script>
+<script src="src/network/services/network-backend.service.js" type="text/javascript"></script>
+<script src="src/network/services/network-curd-service.js" type="text/javascript"></script>
+<script src="src/network/create/create.ctrl.js" type="text/javascript"></script>
+<script src="src/network/list/list.ctrl.js" type="text/javascript"></script>
 
 <!--endbuild-->
 

@@ -12,6 +12,7 @@
             'app.utils',
             'app.stack',
             'app.app',
-            'app.node'
+            'app.node',
+            'app.network'
         ]);
 })();
