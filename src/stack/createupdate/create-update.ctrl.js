@@ -7,21 +7,18 @@
     function StackCreateCtrl($timeout, $scope, $state, Notification, stackBackend, target, $stateParams) {
         var self = this;
 
-        var yamlForm = {
-            compose: ''
-        };
-        var patt = new RegExp("^[a-z|_]+$");
-
         self.target = target;
+        self.supportReadFile = false;
         self.refreshCodeMirror = false;
 
         self.editorOptions = {
-            mode: 'yaml',
-            lineNumbers: true,
             theme: 'midnight',
+            lineNumbers: true,
+            indentWithTabs: true,
             matchBrackets: true,
+            mode: 'Javascript',
             tabSize: 2,
-            'extraKeys': {
+            extraKeys: {
                 Tab: function (cm) {
                     var spaces = new Array(cm.getOption('indentUnit') + 1).join(' ');
                     cm.replaceSelection(spaces);
@@ -29,24 +26,26 @@
             }
         };
 
+        self.json = angular.toJson(STACK_DEFAULT.JsonObj, '\t') || "";
+
         self.form = {
             name: "",
-            compose: STACK_DEFAULT.DockerCompose || ""
+            json: ""
         };
 
         self.errorInfo = {
-            compose: ''
+            json: ''
         };
 
         self.onFileSelect = onFileSelect;
         self.create = create;
         self.update = update;
-        self.onChangeYaml = onChangeYaml;
+        self.jsonChange = jsonChange;
 
         activate();
 
         function activate() {
-            generateYaml('compose');
+            self.supportReadFile = !!(window.File && window.FileReader && window.FileList && window.Blob);
 
             // cload timeout is 10, set long for it;
             var timeoutPromise = $timeout(function () {
@@ -59,46 +58,8 @@
 
         }
 
-        function generateYaml(name) {
-            var keyList;
-            if (!self.form[name]) {
-                yamlForm[name] = '';
-                self.errorInfo[name] = '';
-                return false;
-            }
-
-            if (!self.form[name].trim()) {
-                yamlForm[name] = '';
-                self.errorInfo[name] = '不能为空';
-                return false;
-            }
-
-            try {
-                yamlForm[name] = jsyaml.load(self.form[name]);
-            } catch (err) {
-                yamlForm[name] = '';
-                self.errorInfo[name] = err.message;
-                return false;
-            }
-            if (typeof(yamlForm[name]) === 'string') {
-                yamlForm[name] = '';
-                self.errorInfo[name] = '必须有多级结构';
-                return false;
-            }
-            keyList = Object.keys(yamlForm[name]);
-            for (var i = 0; i < keyList.length; i++) {
-                var result = patt.test(keyList[i]);
-                if (!result) {
-                    yamlForm[name] = '';
-                    self.errorInfo[name] = '第一级只能由小写字母和下划线组成';
-                    return false;
-                }
-            }
-            self.errorInfo[name] = '';
-            return true;
-        }
-
         function create() {
+            self.form.json = angular.fromJson(self.json);
             console.log(self.form)
         }
 
@@ -106,8 +67,11 @@
             ///
         }
 
-        function onChangeYaml(name) {
-            generateYaml(name);
+        function jsonChange() {
+            //clean error Info
+            self.errorInfo.json = '';
+
+            jsonValidate()
         }
 
         function onFileSelect(files) {
@@ -117,12 +81,21 @@
             var reader = new FileReader();
             reader.onload = (function (theFile) {
                 return function (e) {
-                    self.form.compose = e.target.result;
+                    self.json = e.target.result;
+                    jsonChange();
                     $scope.$digest();
                 };
             })(file);
 
             reader.readAsText(file);
+        }
+
+        function jsonValidate() {
+            try {
+                JSON.parse(self.json)
+            } catch (err) {
+                self.errorInfo.json = 'JSON 格式有误';
+            }
         }
     }
 })();

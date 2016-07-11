@@ -21,47 +21,17 @@
                     <div flex></div>
                 </div>
 
-                <!--<div layout="row" layout-align="end start" class="form-group form-group-textarea">-->
-                    <!--<label flex="15">Docker Compose</label>-->
-                    <!--<div flex="50" layout="column">-->
-                        <!--<div layout="row"-->
-                             <!--data-ng-class="{ 'has-error' : createStack.dockerCompose.$invalid || stackCreateCtrl.errorInfo.compose }">-->
-                            <!--<div class="CodeMirror-container">-->
-                                <!--<textarea data-ng-model="stackCreateCtrl.form.compose"-->
-                                          <!--data-required="required" name="dockerCompose"-->
-                                          <!--ui-codemirror ui-codemirror-opts="stackCreateCtrl.editorOptions"-->
-                                          <!--ui-refresh="stackCreateCtrl.refreshCodeMirror"-->
-                                          <!--data-ng-change="stackCreateCtrl.onChangeYaml('compose')">-->
-
-                                <!--</textarea>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--<p class="help-info-bottom error-info" data-ng-show="createStack.dockerCompose.$invalid">-->
-                            <!--不能为空-->
-                        <!--</p>-->
-                        <!--<p class="help-info-bottom error-info" data-ng-show="stackCreateCtrl.errorInfo.compose">-->
-                            <!--{/stackCreateCtrl.errorInfo.compose/}-->
-                        <!--</p>-->
-                        <!--<p class="help-info-bottom">-->
-                            <!--<input id="dockerFileInput" name="file" type="file" class="ng-hide"-->
-                                   <!--accept="text/plain, .yaml, .yml" onchange="angular.element(this).scope().stackCreateCtrl.onFileSelect(this.files)">-->
-                            <!--<md-button class="md-primary" trigger-prev-click><i class="fa fa-upload"></i> 从文件中读取</md-button>-->
-                        <!--</p>-->
-                    <!--</div>-->
-                    <!--<div flex></div>-->
-                <!--</div>-->
-
                 <div layout="row" layout-align="end start" class="form-group form-group-textarea">
-                    <label flex="15">Docker Json</label>
+                    <label flex="15">Stack Json</label>
                     <div flex="50" layout="column">
                         <div layout="row"
                              data-ng-class="{ 'has-error' : createStack.dockerCompose.$invalid || stackCreateCtrl.errorInfo.compose }">
                             <div class="CodeMirror-container">
-                                <textarea data-ng-model="stackCreateCtrl.form.compose"
+                                <textarea data-ng-model="stackCreateCtrl.json"
                                           data-required="required" name="dockerCompose"
                                           ui-codemirror ui-codemirror-opts="stackCreateCtrl.editorOptions"
                                           ui-refresh="stackCreateCtrl.refreshCodeMirror"
-                                          data-ng-change="stackCreateCtrl.onChangeYaml('compose')">
+                                          data-ng-change="stackCreateCtrl.jsonChange()">
 
                                 </textarea>
                             </div>
@@ -69,12 +39,12 @@
                         <p class="help-info-bottom error-info" data-ng-show="createStack.dockerCompose.$invalid">
                             不能为空
                         </p>
-                        <p class="help-info-bottom error-info" data-ng-show="stackCreateCtrl.errorInfo.compose">
-                            {/stackCreateCtrl.errorInfo.compose/}
+                        <p class="help-info-bottom error-info" data-ng-show="stackCreateCtrl.errorInfo.json">
+                            {/stackCreateCtrl.errorInfo.json/}
                         </p>
                         <p class="help-info-bottom">
                             <input id="dockerFileInput" name="file" type="file" class="ng-hide"
-                                   accept="text/plain, .yaml, .yml" onchange="angular.element(this).scope().stackCreateCtrl.onFileSelect(this.files)">
+                                   accept="text/plain, .json" onchange="angular.element(this).scope().stackCreateCtrl.onFileSelect(this.files)">
                             <md-button class="md-primary" trigger-prev-click><i class="fa fa-upload"></i> 从文件中读取</md-button>
                         </p>
                     </div>
@@ -84,12 +54,12 @@
                 <div layout="row" class="form-footer-button">
                     <div flex-offset="15" layout="row" layout-align="end end">
                         <md-button class="md-raised md-primary" data-ng-if="stackCreateCtrl.target === 'create'"
-                                   data-ng-disabled="createStack.$invalid || stackCreateCtrl.errorInfo.compose"
+                                   data-ng-disabled="createStack.$invalid || stackCreateCtrl.errorInfo.json"
                                    data-ng-click="stackCreateCtrl.create()">
                             确认
                         </md-button>
                         <md-button class="md-raised md-primary" data-ng-if="stackCreateCtrl.target === 'update'"
-                                   data-ng-disabled="createStack.$invalid || stackCreateCtrl.errorInfo.compose"
+                                   data-ng-disabled="createStack.$invalid || stackCreateCtrl.errorInfo.json"
                                    data-ng-click="stackCreateCtrl.update()">
                             确认
                         </md-button>
