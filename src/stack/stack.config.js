@@ -3,7 +3,7 @@
  */
 (function () {
     'use strict';
-    angular.module('glance.layout')
+    angular.module('app.stack')
         .config(configure);
 
     /* @ngInject */

@@ -1,10 +1,10 @@
 (function () {
     'use strict';
-    angular.module('glance.layout')
-        .controller('LayoutCreateCtrl', LayoutCreateCtrl);
+    angular.module('app.stack')
+        .controller('StackCreateCtrl', StackCreateCtrl);
 
     /* @ngInject */
-    function LayoutCreateCtrl($timeout, $scope, $state, Notification, layoutBackend, target, $stateParams) {
+    function StackCreateCtrl($timeout, $scope, $state, Notification, stackBackend, target, $stateParams) {
         var self = this;
 
         var yamlForm = {

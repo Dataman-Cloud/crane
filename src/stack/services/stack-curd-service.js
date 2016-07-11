@@ -3,12 +3,12 @@
  */
 (function () {
     'use strict';
-    angular.module('glance.layout')
-        .factory('layoutCurd', layoutCurd);
+    angular.module('app.stack')
+        .factory('stackCurd', stackCurd);
 
 
     /* @ngInject */
-    function layoutCurd(layoutBackend, confirmModal, formModal) {
+    function stackCurd(stackBackend, confirmModal, formModal) {
         //////
         return {
 

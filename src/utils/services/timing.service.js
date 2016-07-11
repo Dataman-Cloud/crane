@@ -1,6 +1,6 @@
 (function () {
     'use strict';
-    angular.module('glance.utils')
+    angular.module('app.utils')
         .factory('timing', timing);
 
     /* @ngInject */

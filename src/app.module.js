@@ -1,6 +1,6 @@
 (function () {
     'use strict';
-    angular.module('glance',
+    angular.module('app',
         [
             'ui-notification',
             'ui.router',
@@ -9,9 +9,9 @@
             'ngAnimate',
             'ngSocket',
             'ngSanitize',
-            'glance.utils',
-            'glance.layout',
-            'glance.app',
-            'glance.node'
+            'app.utils',
+            'app.stack',
+            'app.app',
+            'app.node'
         ]);
 })();

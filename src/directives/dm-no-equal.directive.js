@@ -3,7 +3,7 @@
  */
 (function () {
     'use strict';
-    angular.module('glance')
+    angular.module('app')
         .directive('dmNoEqual', dmNoEqual);
 
     function dmNoEqual() {

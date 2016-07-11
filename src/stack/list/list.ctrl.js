@@ -1,11 +1,11 @@
 (function () {
     'use strict';
-    angular.module('glance.layout')
-        .controller('LayoutListCtrl', LayoutListCtrl);
+    angular.module('app.stack')
+        .controller('StackListCtrl', StackListCtrl);
 
 
     /* @ngInject */
-    function LayoutListCtrl(layoutBackend, utils, layoutCurd) {
+    function StackListCtrl(stackBackend, utils, stackCurd) {
         var self = this;
 
         activate();

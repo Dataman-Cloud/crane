@@ -3,7 +3,7 @@
  */
 (function () {
     'use strict';
-    angular.module('glance.app')
+    angular.module('app.app')
         .config(configure);
 
     /* @ngInject */

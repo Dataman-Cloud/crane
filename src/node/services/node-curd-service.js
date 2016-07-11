@@ -3,7 +3,7 @@
  */
 (function () {
     'use strict';
-    angular.module('glance.node')
+    angular.module('app.node')
         .factory('nodeCurd', nodeCurd);
 
 

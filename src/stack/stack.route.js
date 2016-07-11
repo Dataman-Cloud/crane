@@ -1,35 +1,35 @@
 (function () {
     'use strict';
-    angular.module('glance.layout')
+    angular.module('app.stack')
         .config(route);
 
     /* @ngInject */
     function route($stateProvider, $locationProvider, $interpolateProvider) {
         $stateProvider
-            .state('layout', {
-                url: '/layout',
+            .state('stack', {
+                url: '/stack',
                 template: '<ui-view/>',
                 targetState: 'list'
             })
-            .state('layout.list', {
+            .state('stack.list', {
                 url: '/list',
-                templateUrl: '/src/applayout/list/list.html',
-                controller: 'LayoutListCtrl as layoutListCtrl'
+                templateUrl: '/src/stack/list/list.html',
+                controller: 'StackListCtrl as stackListCtrl'
             })
-            .state('layout.create', {
+            .state('stack.create', {
                 url: '/create',
-                templateUrl: '/src/applayout/createupdate/create-update.html',
-                controller: 'LayoutCreateCtrl as layoutCreateCtrl',
+                templateUrl: '/src/stack/createupdate/create-update.html',
+                controller: 'StackCreateCtrl as stackCreateCtrl',
                 resolve: {
                     target: function () {
                         return 'create'
                     }
                 }
             })
-            .state('layout.update', {
+            .state('stack.update', {
                 url: '/update/:cluster_id/:stack_id',
-                templateUrl: '/src/applayout/createupdate/create-update.html',
-                controller: 'LayoutCreateCtrl as layoutCreateCtrl',
+                templateUrl: '/src/stack/createupdate/create-update.html',
+                controller: 'StackCreateCtrl as stackCreateCtrl',
                 resolve: {
                     target: function () {
                         return 'update'

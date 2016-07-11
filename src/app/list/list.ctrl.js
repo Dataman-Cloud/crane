@@ -1,6 +1,6 @@
 (function () {
     'use strict';
-    angular.module('glance.app')
+    angular.module('app.app')
         .controller('AppListCtrl', AppListCtrl);
 
 

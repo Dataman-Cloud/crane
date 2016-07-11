@@ -1,5 +1,5 @@
 (function () {
     'use strict';
-    angular.module('glance.node', ['ui-notification', 'ui.router',
-        'glance.utils', 'ngMaterial', 'md.data.table']);
+    angular.module('app.node', ['ui-notification', 'ui.router',
+        'app.utils', 'ngMaterial', 'md.data.table']);
 })();
