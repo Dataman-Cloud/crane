@@ -21,7 +21,7 @@
             } else {
                 base = BACKEND_URL_BASE.defaultBase;
             }
-            return base + BACKEND_URL[categoryKey][detailKey];
+            return base + $rootScope.BACKEND_URL[categoryKey][detailKey];
         }
 
         function buildFullURL(name, params) {

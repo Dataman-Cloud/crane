@@ -4,7 +4,7 @@
         .controller('StackCreateCtrl', StackCreateCtrl);
 
     /* @ngInject */
-    function StackCreateCtrl($timeout, $scope, $state, Notification, stackBackend, target, $stateParams) {
+    function StackCreateCtrl($timeout, $scope, $rootScope, $state, Notification, stackBackend, target, $stateParams) {
         var self = this;
 
         self.target = target;
@@ -26,7 +26,7 @@
             }
         };
 
-        self.json = angular.toJson(STACK_DEFAULT.JsonObj, '\t') || "";
+        self.json = angular.toJson($rootScope.STACK_DEFAULT.JsonObj, '\t') || "";
 
         self.form = {
             name: "",
