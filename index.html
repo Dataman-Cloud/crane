@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html data-ng-app="glance" data-ng-controller="RootCtrl as rootCtrl">
+<html data-ng-app="app" data-ng-controller="RootCtrl as rootCtrl">
 <head>
     <meta charset="utf-8">
     <title>数人云</title>
+    <base href="/">
     <!--build:css css/style.css-->
     <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="bower_components/angular-ui-notification/dist/angular-ui-notification.min.css">
@@ -29,27 +30,19 @@
         </div>
         <div class="menu-sidebar" flex layout-align="space-between stretch" layout="column">
             <ul>
+                <li title="应用编排" data-ui-sref-active="active">
+                    <md-button data-ui-sref="stack" data-ui-sref-opts="{reload: true, inherit: false}"><i
+                            class="fa fa-cubes"></i>应用编排
+                    </md-button>
+                </li>
                 <li title="应用管理" data-ui-sref-active="active">
                     <md-button data-ui-sref="app" data-ui-sref-opts="{inherit: false}"><i
                             class="fa fa-cube"></i>应用管理
                     </md-button>
                 </li>
-                <li title="应用编排" data-ui-sref-active="active">
-                    <md-button data-ui-sref="layout" data-ui-sref-opts="{reload: true, inherit: false}"><i
-                            class="fa fa-cubes"></i>应用编排
-                    </md-button>
-                </li>
-            </ul>
-            <ul>
-                <li>
-                    <md-button target="_blank"><i class="fa fa-book"></i>用户手册
-                    </md-button>
-                </li>
-                <li>
-                    <md-button href="http://open.shurenyun.com" target="_blank"><i class="fa fa-coffee"></i>数人社区</md-button>
-                </li>
-                <li>
-                    <md-button  data-demo-disable><i class="fa fa-pencil-square-o"></i>工单反馈
+                <li title="主机管理" data-ui-sref-active="active">
+                    <md-button data-ui-sref="node" data-ui-sref-opts="{inherit: false}"><i
+                            class="fa fa-server"></i>主机管理
                     </md-button>
                 </li>
             </ul>
@@ -71,17 +64,12 @@
                         <md-menu-content>
                             <md-menu-item>
                                 <md-button>
-                                    新建集群
+                                    新建主机
                                 </md-button>
                             </md-menu-item>
                             <md-menu-item>
                                 <md-button >
-                                    新建应用
-                                </md-button>
-                            </md-menu-item>
-                            <md-menu-item>
-                                <md-button>
-                                    新建镜像
+                                    新建编排
                                 </md-button>
                             </md-menu-item>
                         </md-menu-content>
@@ -131,12 +119,6 @@
         </md-content>
     </md-sidenav>
 </div>
-<div class="tab-rb-feedback ng-hide" style="bottom: 76px;">
-    <a href="#" data-demo-disable>
-        <i class="glyphicon glyphicon-gift"></i>
-        <em>试用</em>
-    </a>
-</div>
 
 <!--build:js js/script.js-->
 <script src="bower_components/jquery/dist/jquery.js" type="text/javascript"></script>
@@ -172,9 +154,10 @@
 <script src="src/constants.js" type="text/javascript"></script>
 <script src="src/confdev.js" type="text/javascript"></script>
 
-<script src="src/glance.module.js" type="text/javascript"></script>
-<script src="src/glance.run.js" type="text/javascript"></script>
-<script src="src/glance.ctrl.js" type="text/javascript"></script>
+<script src="src/app.module.js" type="text/javascript"></script>
+<script src="src/app.run.js" type="text/javascript"></script>
+<script src="src/app.config.js" type="text/javascript"></script>
+<script src="src/app.ctrl.js" type="text/javascript"></script>
 
 <script src="src/utils/utils.module.js" type="text/javascript"></script>
 <script src="src/utils/utils.config.js" type="text/javascript"></script>
@@ -189,6 +172,30 @@
 <script src="src/utils/modals/alert.service.js" type="text/javascript"></script>
 <script src="src/utils/modals/form.service.js" type="text/javascript"></script>
 
+<script src="src/stack/stack.module.js" type="text/javascript"></script>
+<script src="src/stack/stack.config.js" type="text/javascript"></script>
+<script src="src/stack/stack.route.js" type="text/javascript"></script>
+<script src="src/stack/services/stack-backend.service.js" type="text/javascript"></script>
+<script src="src/stack/services/stack-curd-service.js" type="text/javascript"></script>
+<script src="src/stack/createupdate/create-update.ctrl.js" type="text/javascript"></script>
+<script src="src/stack/list/list.ctrl.js" type="text/javascript"></script>
+
+<script src="src/app/app.module.js" type="text/javascript"></script>
+<script src="src/app/app.config.js" type="text/javascript"></script>
+<script src="src/app/app.route.js" type="text/javascript"></script>
+<script src="src/app/services/app-backend.service.js" type="text/javascript"></script>
+<script src="src/app/services/app-curd-service.js" type="text/javascript"></script>
+<script src="src/app/createupdate/create-update.ctrl.js" type="text/javascript"></script>
+<script src="src/app/list/list.ctrl.js" type="text/javascript"></script>
+
+<script src="src/node/node.module.js" type="text/javascript"></script>
+<script src="src/node/node.config.js" type="text/javascript"></script>
+<script src="src/node/node.route.js" type="text/javascript"></script>
+<script src="src/node/services/node-backend.service.js" type="text/javascript"></script>
+<script src="src/node/services/node-curd-service.js" type="text/javascript"></script>
+<script src="src/node/create/create.ctrl.js" type="text/javascript"></script>
+<script src="src/node/list/list.ctrl.js" type="text/javascript"></script>
+
 <!--endbuild-->
 
 <!--build:js(build) js/directive.js-->
@@ -200,7 +207,6 @@
 <script src="src/directives/dm-tab-sref.directive.js" type="text/javascript"></script>
 <script src="src/directives/dm-trigger-prev-click.directive.js" type="text/javascript"></script>
 <script src="src/directives/dm-check-include.directive.js" type="text/javascript"></script>
-<script src="src/directives/dm-demo-disable.directive.js" type="text/javascript"></script>
 <script src="src/directives/dm-no-equal.directive.js" type="text/javascript"></script>
 <script src="src/directives/dm-password.js" type="text/javascript"></script>
 <!--endbuild-->

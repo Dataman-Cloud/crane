@@ -1,6 +1,6 @@
 (function () {
     'use strict';
-    angular.module('glance')
+    angular.module('app')
         .directive('triggerPrevClick', triggerPrevClick);
 
     /* @ngInject */

@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('glance.utils').factory('gHttp', gHttp);
+    angular.module('app.utils').factory('gHttp', gHttp);
 
     /* @ngInject */
     function gHttp(utils, $q, $rootScope, $http, Notification, $state, $cookies, cfpLoadingBar) {

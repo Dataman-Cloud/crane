@@ -1,14 +1,17 @@
 (function () {
     'use strict';
-    angular.module('glance',
+    angular.module('app',
         [
             'ui-notification',
             'ui.router',
             'ngMaterial',
-            'glance.utils',
             'ngCookies',
             'ngAnimate',
             'ngSocket',
-            'ngSanitize'
+            'ngSanitize',
+            'app.utils',
+            'app.stack',
+            'app.app',
+            'app.node'
         ]);
 })();

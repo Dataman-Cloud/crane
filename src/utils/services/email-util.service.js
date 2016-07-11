@@ -4,7 +4,7 @@
 (function () {
     'use strict';
 
-    angular.module('glance.utils').factory('emailUtil', emailUtil);
+    angular.module('app.utils').factory('emailUtil', emailUtil);
 
     /* @ngInject */
     function emailUtil() {
