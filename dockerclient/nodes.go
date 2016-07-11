@@ -4,11 +4,12 @@ import (
 	"encoding/json"
 	"path"
 
+	"github.com/docker/engine-api/types"
 	"github.com/docker/engine-api/types/swarm"
 )
 
 // NodeList returns the list of nodes.
-func (client *RolexDockerClient) NodeList(opts NodeListOptions) ([]swarm.Node, error) {
+func (client *RolexDockerClient) NodeList(opts types.NodeListOptions) ([]swarm.Node, error) {
 	var nodes []swarm.Node
 
 	content, err := client.HttpGet("nodes")
@@ -41,7 +42,7 @@ func (client *RolexDockerClient) NodeInspect(nodeId string) (swarm.Node, error) 
 
 // Remove a single node
 func (client *RolexDockerClient) NodeRemove(nodeId string) error {
-	content, err := client.HttpDelete(path.Join("nodes", nodeId))
+	_, err := client.HttpDelete(path.Join("nodes", nodeId))
 	if err != nil {
 		return err
 	}

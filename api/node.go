@@ -3,7 +3,7 @@ package api
 import (
 	"net/http"
 
-	"github.com/Dataman-Cloud/rolex/dockerclient"
+	"github.com/docker/engine-api/types"
 	"github.com/gin-gonic/gin"
 )
 
@@ -18,7 +18,7 @@ func (api *Api) InspectNode(ctx *gin.Context) {
 }
 
 func (api *Api) ListNodes(ctx *gin.Context) {
-	nodes, err := api.GetDockerClient().NodeList(dockerclient.NodeListOptions{})
+	nodes, err := api.GetDockerClient().NodeList(types.NodeListOptions{})
 	if err != nil {
 		ctx.JSON(http.StatusServiceUnavailable, err.Error())
 		return
@@ -31,7 +31,7 @@ func (api *Api) CreateNode(ctx *gin.Context) {}
 func (api *Api) UpdateNode(ctx *gin.Context) {}
 
 func (api *Api) RemoveNode(ctx *gin.Context) {
-	err := api.GetDockerClient().NodeDelete(ctx.Param("id"))
+	err := api.GetDockerClient().NodeRemove(ctx.Param("id"))
 	if err != nil {
 		ctx.JSON(http.StatusServiceUnavailable, err.Error())
 		return
