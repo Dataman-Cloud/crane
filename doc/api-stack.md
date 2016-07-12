@@ -49,7 +49,7 @@ services:
    curl -v -X POST http://localhost:5013/api/v1/stacks -H Content-Type:application/json -d \ 
    '
    {
-     "NameSpace":"test-2",
+     "Namespace":"test-2",
      "Stack"{
         "Services": {
           "redis": {
@@ -81,11 +81,11 @@ services:
   "code": 0,
   "data": [
     {
-      "Name": "stack-test",
+      "Namespace": "stack-test",
       "ServiceCount": 1
     },
     {
-      "Name": "test-2",
+      "Namespace": "test-2",
       "ServiceCount": 1
     }
   ]
@@ -103,7 +103,7 @@ services:
   {
   "code": 0,
   "data": {
-    "NameSpace": "stack-test",
+    "Namespace": "stack-test",
     "Stack": {
       "Version": "",
       "Services": {
