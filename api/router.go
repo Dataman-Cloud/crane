@@ -31,6 +31,14 @@ func (api *Api) ApiRouter() *gin.Engine {
 		v1.POST("/services/create", api.ServiceCreate)
 		v1.GET("/services", api.ServiceList)
 		v1.DELETE("/services/:id", api.ServiceRemove)
+
+		v1.POST("/networks/:id/container", api.ConnectNetwork)
+		v1.DELETE("/networks/:id/container", api.DisconnectNetwork)
+
+		v1.POST("/networks", api.CreateNetwork)
+		v1.GET("/networks/:id", api.InspectNetwork)
+		v1.GET("/networks", api.ListNetworks)
+		v1.DELETE("/networks/:id", api.RemoveNetwork)
 	}
 
 	return router
