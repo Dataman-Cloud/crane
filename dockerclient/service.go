@@ -47,3 +47,19 @@ func (client *RolexDockerClient) ServiceRemove(serviceID string) error {
 	_, err := client.HttpDelete("/services" + serviceID)
 	return err
 }
+
+// ServiceUpdate updates a Service.o
+// TODO attention docker update
+func (client *RolexDockerClient) ServiceUpdate(serviceID string, version swarm.Version, service swarm.ServiceSpec, header map[string][]string) error {
+	serviceParam, err := json.Marshal(service)
+	if err != nil {
+		return err
+	}
+
+	_, err = client.HttpPost("services/"+serviceID+"/update", serviceParam)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

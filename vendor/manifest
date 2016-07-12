@@ -28,6 +28,13 @@
 			"path": "/reference"
 		},
 		{
+			"importpath": "github.com/docker/docker/api/client/bundlefile",
+			"repository": "https://github.com/docker/docker",
+			"revision": "8f3be176d26948dfac9b6d855034dabae78454be",
+			"branch": "master",
+			"path": "/api/client/bundlefile"
+		},
+		{
 			"importpath": "github.com/docker/docker/opts",
 			"repository": "https://github.com/docker/docker",
 			"revision": "63186c06cb7ea5c437d6a3faa1c3f190134c7be5",
