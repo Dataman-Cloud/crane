@@ -5,25 +5,25 @@ import (
 )
 
 func (client *RolexDockerClient) ConnectNetwork(id string, opts goclient.NetworkConnectionOptions) error {
-	return client.DockerClient.ConnectNetwork(id, opts)
+	return client.SwarmClient().ConnectNetwork(id, opts)
 }
 
 func (client *RolexDockerClient) CreateNetwork(opts goclient.CreateNetworkOptions) (*goclient.Network, error) {
-	return client.DockerClient.CreateNetwork(opts)
+	return client.SwarmClient().CreateNetwork(opts)
 }
 
 func (client *RolexDockerClient) DisconnectNetwork(id string, opts goclient.NetworkConnectionOptions) error {
-	return client.DockerClient.DisconnectNetwork(id, opts)
+	return client.SwarmClient().DisconnectNetwork(id, opts)
 }
 
 func (client *RolexDockerClient) InspectNetwork(id string) (*goclient.Network, error) {
-	return client.DockerClient.NetworkInfo(id)
+	return client.SwarmClient().NetworkInfo(id)
 }
 
 func (client *RolexDockerClient) ListNetworks(opts goclient.NetworkFilterOpts) ([]goclient.Network, error) {
-	return client.DockerClient.FilteredListNetworks(opts)
+	return client.SwarmClient().FilteredListNetworks(opts)
 }
 
 func (client *RolexDockerClient) RemoveNetwork(id string) error {
-	return client.DockerClient.RemoveNetwork(id)
+	return client.SwarmClient().RemoveNetwork(id)
 }
