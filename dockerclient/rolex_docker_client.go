@@ -1,10 +1,8 @@
 package dockerclient
 
 import (
-	"bytes"
 	"crypto/tls"
 	"crypto/x509"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"path/filepath"
@@ -23,52 +21,35 @@ const (
 
 type RolexDockerClient struct {
 	DockerClientInterface
-	DockerClient *goclient.Client
+	swarmClient  *goclient.Client // client connect to swarm cluster
+	dockerClient *goclient.Client // client connect to individual node
 	HttpClient   *http.Client
 	HttpEndpoint string
 }
 
-func (dg *RolexDockerClient) Ping() error {
-	return dg.DockerClient.Ping()
+func (client *RolexDockerClient) SwarmClient() *goclient.Client {
+	return client.swarmClient
+}
+
+func (client *RolexDockerClient) DockerClient(nodeId string) *goclient.Client {
+	//TODO connect to a docker node
+	return client.dockerClient
+}
+
+func (client *RolexDockerClient) Ping() error {
+	return client.SwarmClient().Ping()
 }
 
 func NewRolexDockerClient(config *config.Config) (*RolexDockerClient, error) {
 	var err error
-	var client *goclient.Client
+	var swarmClient *goclient.Client
 	var httpClient *http.Client
 
 	if config.DockerTlsVerify == "1" {
-		tlsCaCert := filepath.Join(config.DockerCertPath, "ca.pem")
-		tlsCert := filepath.Join(config.DockerCertPath, "cert.pem")
-		tlsKey := filepath.Join(config.DockerCertPath, "key.pem")
-		client, err = goclient.NewVersionedTLSClient(config.DockerHost, tlsCert, tlsKey, tlsCaCert, "1.23")
-
-		// Load CA cert
-		caCert, err := ioutil.ReadFile(tlsCaCert)
-		if err != nil {
-			log.Fatal(err)
-		}
-		caCertPool := x509.NewCertPool()
-		caCertPool.AppendCertsFromPEM(caCert)
-
-		httpTLSCert, err := tls.LoadX509KeyPair(tlsCert, tlsKey)
-		if err != nil {
-			return nil, err
-		}
-
-		tlsConfig := &tls.Config{
-			Certificates: []tls.Certificate{httpTLSCert},
-			RootCAs:      caCertPool,
-		}
-		tlsConfig.BuildNameToCertificate()
-
-		httpClient = &http.Client{Transport: &http.Transport{
-			TLSClientConfig: tlsConfig,
-		},
-			Timeout: defaultHttpRequestTimeout,
-		}
+		swarmClient, err = NewSwarmClientTls(config)
+		httpClient, err = NewHttpClientTls(config)
 	} else {
-		client, err = goclient.NewVersionedClient(config.DockerHost, "1.23")
+		swarmClient, err = goclient.NewVersionedClient(config.DockerHost, "1.23")
 		httpClient = &http.Client{Timeout: defaultHttpRequestTimeout}
 	}
 
@@ -77,83 +58,53 @@ func NewRolexDockerClient(config *config.Config) (*RolexDockerClient, error) {
 		return nil, err
 	}
 
-	err = client.Ping()
+	err = swarmClient.Ping()
 	if err != nil {
 		log.Error("Unable to ping docker daemon. Ensure docker is running endpoint ", config.DockerHost, "err", err)
 		return nil, err
 	}
 
 	return &RolexDockerClient{
-		DockerClient: client,
+		swarmClient:  swarmClient,
 		HttpClient:   httpClient,
 		HttpEndpoint: strings.Replace(config.DockerHost, "tcp", "https", -1),
 	}, nil
 }
 
-// execute http get request use default timeout
-func (client *RolexDockerClient) HttpGet(requestPath string) ([]byte, error) {
-	resp, err := client.HttpClient.Get(client.HttpEndpoint + "/" + requestPath)
-	if err != nil {
-		return nil, err
-	}
-
-	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("http response status code is %d", resp.StatusCode)
-	}
-
-	if resp.Body == nil {
-		return nil, nil
-	}
-	defer resp.Body.Close()
-
-	return ioutil.ReadAll(resp.Body)
+func NewSwarmClientTls(config *config.Config) (*goclient.Client, error) {
+	tlsCaCert := filepath.Join(config.DockerCertPath, "ca.pem")
+	tlsCert := filepath.Join(config.DockerCertPath, "cert.pem")
+	tlsKey := filepath.Join(config.DockerCertPath, "key.pem")
+	return goclient.NewVersionedTLSClient(config.DockerHost, tlsCert, tlsKey, tlsCaCert, "1.23")
 }
 
-// execute http delete request use default timeout
-func (client *RolexDockerClient) HttpDelete(requestPath string) ([]byte, error) {
-	req, err := http.NewRequest("DELETE", client.HttpEndpoint+"/"+requestPath, nil)
+func NewHttpClientTls(config *config.Config) (*http.Client, error) {
+	tlsCaCert := filepath.Join(config.DockerCertPath, "ca.pem")
+	tlsCert := filepath.Join(config.DockerCertPath, "cert.pem")
+	tlsKey := filepath.Join(config.DockerCertPath, "key.pem")
+
+	caCert, err := ioutil.ReadFile(tlsCaCert)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := client.HttpClient.Do(req)
+	caCertPool := x509.NewCertPool()
+	caCertPool.AppendCertsFromPEM(caCert)
+	httpTLSCert, err := tls.LoadX509KeyPair(tlsCert, tlsKey)
 	if err != nil {
 		return nil, err
 	}
 
-	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusNoContent {
-		return nil, fmt.Errorf("http response status code is %d", resp.StatusCode)
+	tlsConfig := &tls.Config{
+		Certificates: []tls.Certificate{httpTLSCert},
+		RootCAs:      caCertPool,
 	}
 
-	if resp.Body == nil {
-		return nil, nil
-	}
-	defer resp.Body.Close()
+	tlsConfig.BuildNameToCertificate()
 
-	return ioutil.ReadAll(resp.Body)
-}
+	httpClient := &http.Client{Transport: &http.Transport{
+		TLSClientConfig: tlsConfig,
+	}, Timeout: defaultHttpRequestTimeout}
 
-func (client *RolexDockerClient) HttpPost(requestPath string, body []byte) ([]byte, error) {
-	req, err := http.NewRequest("POST", client.HttpEndpoint+"/"+requestPath, bytes.NewBuffer(body))
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
-
-	resp, err := client.HttpClient.Do(req)
-	if err != nil {
-		return nil, err
-	}
-
-	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusCreated {
-		return nil, fmt.Errorf("http response status code is %d", resp.StatusCode)
-	}
-
-	if resp.Body == nil {
-		return nil, nil
-	}
-	defer resp.Body.Close()
-
-	return ioutil.ReadAll(resp.Body)
+	return httpClient, nil
 }
