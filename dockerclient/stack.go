@@ -16,6 +16,13 @@ const (
 	labelNamespace       = "com.docker.stack.namespace"
 )
 
+type Stack struct {
+	// Name is the name of the stack
+	Name string
+	// Services is the number of the services
+	Services int
+}
+
 //StackDeploy deploy a new stack
 func (client *RolexDockerClient) StackDeploy(bundle *bundlefile.Bundlefile, namespace string) error {
 	//networks := client.getUniqueNetworkNames(bundle.Services)
@@ -25,6 +32,43 @@ func (client *RolexDockerClient) StackDeploy(bundle *bundlefile.Bundlefile, name
 	//}
 
 	return client.deployServices(bundle.Services, namespace)
+}
+
+// StackList list all stack
+func (client *RolexDockerClient) StackList() ([]Stack, error) {
+	filter := filters.NewArgs()
+	filter.Add("label", labelNamespace)
+	services, err := client.ServiceList(types.ServiceListOptions{Filter: filter})
+	if err != nil {
+		return nil, err
+	}
+
+	stackMap := make(map[string]Stack, 0)
+	for _, service := range services {
+		labels := service.Spec.Labels
+		name, ok := labels[labelNamespace]
+		if !ok {
+			log.Errorf("Cannot get label %s for service %s", labelNamespace, service.ID)
+			continue
+		}
+
+		stack, ok := stackMap[name]
+		if !ok {
+			stackMap[name] = Stack{
+				Name:     name,
+				Services: 1,
+			}
+		} else {
+			stack.Services++
+		}
+	}
+
+	var stacks []Stack
+	for _, stack := range stackMap {
+		stacks = append(stacks, stack)
+	}
+
+	return stacks, nil
 }
 
 func (client *RolexDockerClient) getUniqueNetworkNames(services map[string]bundlefile.Service) []string {

@@ -10,7 +10,6 @@ import (
 )
 
 func (api *Api) InspectStack(ctx *gin.Context) {}
-func (api *Api) ListStack(ctx *gin.Context)    {}
 func (api *Api) UpdateStack(ctx *gin.Context)  {}
 func (api *Api) RemoveStack(ctx *gin.Context)  {}
 
@@ -38,4 +37,17 @@ func (api *Api) StackCreate(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": "success"})
+	return
+}
+
+func (api *Api) StackList(ctx *gin.Context) {
+	stacks, err := api.GetDockerClient().StackList()
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, err.Error())
+		log.Error("Stack deploy got error: ", err)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": stacks})
+	return
 }
