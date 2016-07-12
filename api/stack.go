@@ -53,10 +53,6 @@ func (api *Api) ListStack(ctx *gin.Context) {
 
 func (api *Api) InspectStack(ctx *gin.Context) {
 	namespace := ctx.Param("name")
-	if namespace == "" {
-		ctx.JSON(http.StatusBadRequest, "stack name is empty")
-		return
-	}
 
 	bundle, err := api.GetDockerClient().InspectStack(namespace)
 	if err != nil {
