@@ -5,8 +5,9 @@ import (
 	"net/http"
 
 	log "github.com/Sirupsen/logrus"
-	"github.com/docker/docker/api/client/bundlefile"
 	"github.com/gin-gonic/gin"
+
+	"github.com/Dataman-Cloud/rolex/dockerclient"
 )
 
 func (api *Api) InspectStack(ctx *gin.Context) {}
@@ -14,9 +15,9 @@ func (api *Api) UpdateStack(ctx *gin.Context)  {}
 func (api *Api) RemoveStack(ctx *gin.Context)  {}
 
 func (api *Api) CreateStack(ctx *gin.Context) {
-	stackBundlefile := bundlefile.Bundlefile{}
+	stackBundle := dockerclient.Bundle{}
 
-	if err := ctx.BindJSON(&stackBundlefile); err != nil {
+	if err := ctx.BindJSON(&stackBundle); err != nil {
 		switch jsonErr := err.(type) {
 		case *json.SyntaxError:
 			log.Errorf("Stack JSON syntax error at byte %v: %s", jsonErr.Offset, jsonErr.Error())
@@ -29,8 +30,7 @@ func (api *Api) CreateStack(ctx *gin.Context) {
 		return
 	}
 
-	namespace := ctx.Param("name")
-	if err := api.GetDockerClient().DeployStack(&stackBundlefile, namespace); err != nil {
+	if err := api.GetDockerClient().DeployStack(&stackBundle); err != nil {
 		ctx.JSON(http.StatusInternalServerError, err.Error())
 		log.Error("Stack deploy got error: ", err)
 		return

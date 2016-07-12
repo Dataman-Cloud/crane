@@ -41,7 +41,7 @@ func (api *Api) ApiRouter() *gin.Engine {
 		v1.GET("/networks", api.ListNetworks)
 		v1.DELETE("/networks/:id", api.RemoveNetwork)
 
-		v1.POST("/stacks/:name", api.CreateStack)
+		v1.POST("/stacks", api.CreateStack)
 		v1.GET("/stacks", api.ListStack)
 	}
 

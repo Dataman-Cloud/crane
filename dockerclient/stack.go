@@ -16,6 +16,12 @@ const (
 	labelNamespace       = "com.docker.stack.namespace"
 )
 
+// bundle stores the contents of services and stack name
+type Bundle struct {
+	bundlefile.Bundlefile
+	NameSpace string
+}
+
 type Stack struct {
 	// Name is the name of the stack
 	Name string
@@ -24,14 +30,14 @@ type Stack struct {
 }
 
 //StackDeploy deploy a new stack
-func (client *RolexDockerClient) DeployStack(bundle *bundlefile.Bundlefile, namespace string) error {
+func (client *RolexDockerClient) DeployStack(bundle *Bundle) error {
 	//networks := client.getUniqueNetworkNames(bundle.Services)
 
 	//if err := client.updateNetworks(networks, namespace); err != nil {
 	//	return err
 	//}
 
-	return client.deployServices(bundle.Services, namespace)
+	return client.deployServices(bundle.Services, bundle.NameSpace)
 }
 
 // StackList list all stack
