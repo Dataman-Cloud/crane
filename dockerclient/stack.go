@@ -18,15 +18,15 @@ const (
 
 // bundle stores the contents of services and stack name
 type Bundle struct {
-	bundlefile.Bundlefile
-	NameSpace string
+	Stack     bundlefile.Bundlefile `json:"Stack"`
+	Namespace string                `josn:"Namespace"`
 }
 
 type Stack struct {
 	// Name is the name of the stack
-	Name string
+	Namespace string `json:"Namespace"`
 	// Services is the number of the services
-	ServiceCount int
+	ServiceCount int `json:"ServiceCount"`
 }
 
 //StackDeploy deploy a new stack
@@ -37,7 +37,7 @@ func (client *RolexDockerClient) DeployStack(bundle *Bundle) error {
 	//	return err
 	//}
 
-	return client.deployServices(bundle.Services, bundle.NameSpace)
+	return client.deployServices(bundle.Stack.Services, bundle.Namespace)
 }
 
 // StackList list all stack
@@ -61,7 +61,7 @@ func (client *RolexDockerClient) ListStack() ([]Stack, error) {
 		stack, ok := stackMap[name]
 		if !ok {
 			stackMap[name] = Stack{
-				Name:         name,
+				Namespace:    name,
 				ServiceCount: 1,
 			}
 		} else {
@@ -99,8 +99,8 @@ func (client *RolexDockerClient) InspectStack(namespace string) (*Bundle, error)
 	}
 
 	return &Bundle{
-		NameSpace: namespace,
-		Bundlefile: bundlefile.Bundlefile{
+		Namespace: namespace,
+		Stack: bundlefile.Bundlefile{
 			Services: stackServices,
 		},
 		//TODO stack version is missing
