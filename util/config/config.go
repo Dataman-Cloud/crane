@@ -8,6 +8,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/Dataman-Cloud/rolex/util"
 	log "github.com/Sirupsen/logrus"
 )
 
@@ -18,9 +19,17 @@ type Config struct {
 	DockerCertPath  string
 	DbDriver        string
 	DbDSN           string
+	FeatureFlags    []string
 
 	HOST string
 	PORT uint64
+
+	//registry
+	RegistryPrivateKeyPath string
+}
+
+func (c *Config) FeatureEnabled(feature string) bool {
+	return util.StringInSlice(feature, c.FeatureFlags)
 }
 
 var config Config
@@ -35,8 +44,10 @@ type EnvEntry struct {
 	DOCKER_HOST       string `required:"true"`
 	DOCKER_CERT_PATH  string `required:"true"`
 
-	ROLEX_DB_DRIVER string `required:"true"`
-	ROLEX_DB_DSN    string `required:"true"`
+	ROLEX_DB_DRIVER                 string `required:"true"`
+	ROLEX_DB_DSN                    string `required:"true"`
+	ROLEX_FEATURE_FLAGS             string `required:"false"`
+	ROLEX_REGISTRY_PRIVATE_KEY_PATH string `required:"false"`
 }
 
 func InitConfig(envFile string) *Config {
@@ -50,6 +61,9 @@ func InitConfig(envFile string) *Config {
 
 	config.DbDriver = envEntry.ROLEX_DB_DRIVER
 	config.DbDSN = envEntry.ROLEX_DB_DSN
+	config.FeatureFlags = strings.SplitN(envEntry.ROLEX_FEATURE_FLAGS, ",", -1)
+
+	config.RegistryPrivateKeyPath = envEntry.ROLEX_REGISTRY_PRIVATE_KEY_PATH
 	return &config
 }
 

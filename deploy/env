@@ -6,3 +6,4 @@ DOCKER_MACHINE_NAME="manager"
 
 ROLEX_DB_DSN=root:111111@tcp(localhost:3306)/rolex?charset=utf8&parseTime=true&loc=Loca
 ROLEX_DB_DRIVER=mysql
+ROLEX_REGISTRY_PRIVATE_KEY_PATH="/Users/cmingxu/Code/GO/packages/src/github.com/Dataman-Cloud/rolex/doc/registry/private_key.pem"
