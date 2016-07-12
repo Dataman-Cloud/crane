@@ -14,7 +14,7 @@ func (api *Api) ApiRouter() *gin.Engine {
 	router := gin.New()
 	router.Use(log.Ginrus(logrus.StandardLogger(), time.RFC3339, true), gin.Recovery())
 
-	//router.Use(auth.OptionHandler)
+	//router.Use(OptionHandler)
 	router.GET("/", func(c *gin.Context) {
 		c.String(200, "pass")
 	})
