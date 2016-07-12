@@ -34,6 +34,7 @@
 		{
 			"importpath": "github.com/docker/docker/api/client/bundlefile",
 			"repository": "https://github.com/docker/docker",
+			"vcs": "",
 			"revision": "8f3be176d26948dfac9b6d855034dabae78454be",
 			"branch": "master",
 			"path": "/api/client/bundlefile"
@@ -204,14 +205,6 @@
 			"vcs": "",
 			"revision": "ad28ea4487f05916463e2423a55166280e8254b5",
 			"branch": "master"
-		},
-		{
-			"importpath": "github.com/itsjamie/gin-cors",
-			"repository": "https://github.com/itsjamie/gin-cors",
-			"vcs": "git",
-			"revision": "97b4a9da79331dfa2b6d35f4cdd1e50f5148859c",
-			"branch": "master",
-			"notests": true
 		},
 		{
 			"importpath": "github.com/jinzhu/gorm",
