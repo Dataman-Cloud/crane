@@ -23,54 +23,61 @@
 
 ## 环境启动
 
-- 第一种方法: 项目根目录下执行 ```python3 -m http.server 8001 ``` 具体端口自己定
-- 第二种方法: 单独为项目配置一个 ngnix 文件并启动:
+### 在 Linux 下面
 
-```shell
-#user  nginx;
-worker_processes  1;
+  - 第一种方法: 项目根目录下执行 ```python3 -m http.server 8001 ``` 具体端口自己定
+  - 第二种方法: `./start.sh` , 该命令会启动一个 nginx container， 并监听 80 端口。
 
-events {
-    worker_connections  1024;
-}
+### 在 MacOS 下面
 
+  - 第一种方法: 项目根目录下执行 ```python3 -m http.server 8001 ``` 具体端口自己定
+  - 第二种方法: 单独为项目配置一个 ngnix 文件并启动:
 
-http {
-    include       /usr/local/etc/nginx/mime.types;
-    default_type  application/octet-stream;
+  ```shell
+  #user  nginx;
+  worker_processes  1;
 
-    index    index.html;
-
-
-    sendfile        on;
-    #tcp_nopush     on;
-
-    keepalive_timeout  65;
-
-    #gzip  on;
-
-    server {
-        listen       8001;
-        server_name  blackmamba;
-        root    /Users/my9074/work/blackmamba;
+  events {
+      worker_connections  1024;
+  }
 
 
-        # serve static files
-        location ~ ^/(images|javascript|js|css|flash|media|static)/  {
-          expires 30d;
-        }
+  http {
+      include       /usr/local/etc/nginx/mime.types;
+      default_type  application/octet-stream;
 
-        location / {
-          try_files $uri /index.html;
-        }
+      index    index.html;
 
-        location /auth {
-          try_files $uri /auth-index.html;
-        }
 
-    }
-}
-```
+      sendfile        on;
+      #tcp_nopush     on;
+
+      keepalive_timeout  65;
+
+      #gzip  on;
+
+      server {
+          listen       8001;
+          server_name  blackmamba;
+          root    /Users/my9074/work/blackmamba;
+
+
+          # serve static files
+          location ~ ^/(images|javascript|js|css|flash|media|static)/  {
+            expires 30d;
+          }
+
+          location / {
+            try_files $uri /index.html;
+          }
+
+          location /auth {
+            try_files $uri /auth-index.html;
+          }
+
+      }
+  }
+  ```
 
 
 
