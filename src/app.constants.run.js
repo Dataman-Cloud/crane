@@ -14,6 +14,8 @@
             unknow: 10000
         };
 
+        $rootScope.CODE_MESSAGE = {};
+
         $rootScope.STACK_DEFAULT = {
             JsonObj: {
                 "Services": {
@@ -47,6 +49,11 @@
             },
             service: {
                 services: 'api/v1/services'
+            },
+            network: {
+                network: 'api/v1/networks/$network_id',
+                container: 'api/v1/networks/$network_id/container',
+                networks: 'api/v1/networks'
             }
         };
 

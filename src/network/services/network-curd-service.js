@@ -8,11 +8,38 @@
 
 
     /* @ngInject */
-    function networkCurd(nodeBackend) {
+    function networkCurd(networkBackend, $state, confirmModal) {
         //////
         return {
-
+            create: create,
+            deleteNetwork: deleteNetwork,
+            connectNetwork: connectNetwork,
+            disconnectNetwork: disconnectNetwork
         };
+
+        function create(data, form) {
+            networkBackend.create(data, form)
+                .then(function (data) {
+                    $state.go('network.list')
+                })
+        }
+
+        function deleteNetwork(id) {
+            confirmModal.open("是否确认删除该网络？").then(function () {
+                networkBackend.deleteNetwork(id)
+                    .then(function (data) {
+                        $state.reload()
+                    })
+            });
+        }
+
+        function connectNetwork(data, id) {
+
+        }
+
+        function disconnectNetwork(id) {
+
+        }
 
     }
 })();

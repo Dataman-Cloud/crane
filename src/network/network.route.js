@@ -14,12 +14,20 @@
             .state('network.list', {
                 url: '/list',
                 templateUrl: '/src/network/list/list.html',
-                controller: 'NetworkListCtrl as networkListCtrl'
+                controller: 'NetworkListCtrl as networkListCtrl',
+                resolve: {
+                    networks: getNetworks
+                }
             })
             .state('network.create', {
                 url: '/create',
                 templateUrl: '/src/network/create/create.html',
                 controller: 'CreateCtrl as createCtrl'
             });
+
+        /* @ngInject */
+        function getNetworks(networkBackend) {
+            return networkBackend.listNetwork()
+        }
     }
 })();

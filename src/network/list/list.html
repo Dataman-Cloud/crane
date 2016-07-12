@@ -29,24 +29,46 @@
                 <table md-table>
                     <thead md-head>
                     <tr md-row>
-                        <th md-column>ID</th>
-                        <th md-column>创建时间</th>
-                        <th md-column>更新时间</th>
+                        <th md-column>名称</th>
                         <th md-column>类型</th>
-                        <th md-column>Hostname</th>
-                        <th md-column>OS</th>
-                        <th md-column>状态</th>
+                        <th md-column>内部模式</th>
+                        <th md-column>子网掩码</th>
+                        <th md-column>网关</th>
+                        <th md-column>IP 范围</th>
+                        <th md-column>操作</th>
                     </tr>
                     </thead>
                     <tbody md-body>
-                    <tr md-row ng-repeat="network in []">
-                        <td md-cell>{/network.ID/}</td>
-                        <td md-cell>{/network.CreatedAt/}</td>
-                        <td md-cell>{/network.UpdatedAt/}</td>
-                        <td md-cell>{/network.Spec.Role/}</td>
-                        <td md-cell>{/network.Description.Hostname/}</td>
-                        <td md-cell>{/network.Description.Platform.OS/}</td>
-                        <td md-cell>{/network.Status.State/}</td>
+                    <tr md-row ng-repeat="network in networkListCtrl.networks">
+                        <td md-cell>{/network.Name/}</td>
+                        <td md-cell>{/network.Driver/}</td>
+                        <td md-cell>{/network.Internal/}</td>
+                        <td md-cell>{/network.IPAM.Config[0].Subnet || '未配置'/}</td>
+                        <td md-cell>{/network.IPAM.Config[0].Gateway || '未配置'/}</td>
+                        <td md-cell>{/network.IPAM.Config[0].IPRange || '未配置'/}</td>
+                        <td md-cell>
+                            <md-menu md-offset="0 -5">
+                                <md-button aria-label="appListMenu" class="md-button md-raised"
+                                           ng-click="$mdOpenMenu($event)">
+                                    <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                                </md-button>
+                                <md-menu-content width="2">
+                                    <md-menu-item>
+                                        <md-button aria-label="Connect">连接网络
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item>
+                                        <md-button aria-label="Disconnect">断开网络
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item>
+                                        <md-button aria-label="delete"
+                                                   data-ng-click="networkListCtrl.deleteNetwork(network.Id)">删除
+                                        </md-button>
+                                    </md-menu-item>
+                                </md-menu-content>
+                            </md-menu>
+                        </td>
                     </tr>
                     </tbody>
                 </table>

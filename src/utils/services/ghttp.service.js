@@ -130,8 +130,8 @@
                 } else if (status == 404 || data.code === $rootScope.MESSAGE_CODE.noExist) {
                     $state.go('404');
                 } else {
-                    if (!this.options.ignoreCodes.includes(data.code) && CODE_MESSAGE[data.code]) {
-                        Notification.error(CODE_MESSAGE[data.code]);
+                    if (!this.options.ignoreCodes.includes(data.code) && $rootScope.CODE_MESSAGE[data.code]) {
+                        Notification.error($rootScope.CODE_MESSAGE[data.code]);
                     }
                     deferred.reject(data)
                 }

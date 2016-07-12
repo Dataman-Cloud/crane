@@ -5,13 +5,31 @@
 
 
     /* @ngInject */
-    function NetworkListCtrl() {
+    function NetworkListCtrl(networks, networkCurd) {
         var self = this;
+        self.networks = networks;
+        console.log(networks);
+
+        self.deleteNetwork = deleteNetwork;
+        self.connectNetwork = connectNetwork;
+        self.disconnectNetwork = disconnectNetwork;
 
         activate();
 
         function activate() {
             ///
+        }
+
+        function deleteNetwork(id) {
+            networkCurd.deleteNetwork(id)
+        }
+
+        function connectNetwork(id) {
+
+        }
+
+        function disconnectNetwork(id) {
+
         }
     }
 })();
