@@ -29,9 +29,9 @@ func (api *Api) ApiRouter() *gin.Engine {
 		v1.GET("/containers", api.ListContainers)
 		v1.GET("/containers/:id", api.InspectContainer)
 
-		v1.POST("/services", api.ServiceCreate)
-		v1.GET("/services", api.ServiceList)
-		v1.DELETE("/services/:id", api.ServiceRemove)
+		v1.POST("/services", api.CreateService)
+		v1.GET("/services", api.ListService)
+		v1.DELETE("/services/:id", api.RemoveService)
 
 		v1.POST("/networks/:id/container", api.ConnectNetwork)
 		v1.DELETE("/networks/:id/container", api.DisconnectNetwork)
@@ -41,7 +41,8 @@ func (api *Api) ApiRouter() *gin.Engine {
 		v1.GET("/networks", api.ListNetworks)
 		v1.DELETE("/networks/:id", api.RemoveNetwork)
 
-		v1.POST("/stacks/:name", api.StackCreate)
+		v1.POST("/stacks/:name", api.CreateStack)
+		v1.GET("/stacks", api.ListStack)
 	}
 
 	return router

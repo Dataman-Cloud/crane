@@ -10,11 +10,10 @@ import (
 )
 
 func (api *Api) InspectStack(ctx *gin.Context) {}
-func (api *Api) ListStack(ctx *gin.Context)    {}
 func (api *Api) UpdateStack(ctx *gin.Context)  {}
 func (api *Api) RemoveStack(ctx *gin.Context)  {}
 
-func (api *Api) StackCreate(ctx *gin.Context) {
+func (api *Api) CreateStack(ctx *gin.Context) {
 	stackBundlefile := bundlefile.Bundlefile{}
 
 	if err := ctx.BindJSON(&stackBundlefile); err != nil {
@@ -31,11 +30,24 @@ func (api *Api) StackCreate(ctx *gin.Context) {
 	}
 
 	namespace := ctx.Param("name")
-	if err := api.GetDockerClient().StackDeploy(&stackBundlefile, namespace); err != nil {
+	if err := api.GetDockerClient().DeployStack(&stackBundlefile, namespace); err != nil {
 		ctx.JSON(http.StatusInternalServerError, err.Error())
 		log.Error("Stack deploy got error: ", err)
 		return
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": "success"})
+	return
+}
+
+func (api *Api) ListStack(ctx *gin.Context) {
+	stacks, err := api.GetDockerClient().ListStack()
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, err.Error())
+		log.Error("Stack deploy got error: ", err)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": stacks})
+	return
 }
