@@ -54,13 +54,13 @@ func NewRolexDockerClient(config *config.Config) (*RolexDockerClient, error) {
 	}
 
 	if err != nil {
-		log.Error("Unable to connect to docker daemon . Ensure docker is running endpoint ", config.DockerHost, "err", err)
+		log.Error("Unable to connect to docker daemon . Ensure docker is running endpoint ", config.DockerHost, "err: ", err)
 		return nil, err
 	}
 
 	err = swarmClient.Ping()
 	if err != nil {
-		log.Error("Unable to ping docker daemon. Ensure docker is running endpoint ", config.DockerHost, "err", err)
+		log.Error("Unable to ping docker daemon. Ensure docker is running endpoint ", config.DockerHost, "err: ", err)
 		return nil, err
 	}
 
