@@ -8,7 +8,7 @@ import (
 )
 
 // ServiceCreate creates a new Service.
-func (client *RolexDockerClient) ServiceCreate(service swarm.ServiceSpec, options types.ServiceCreateOptions) (types.ServiceCreateResponse, error) {
+func (client *RolexDockerClient) CreateService(service swarm.ServiceSpec, options types.ServiceCreateOptions) (types.ServiceCreateResponse, error) {
 	var response types.ServiceCreateResponse
 	serviceParam, err := json.Marshal(service)
 	if err != nil {
@@ -28,7 +28,7 @@ func (client *RolexDockerClient) ServiceCreate(service swarm.ServiceSpec, option
 }
 
 // ServiceList returns the list of services.
-func (client *RolexDockerClient) ServiceList(options types.ServiceListOptions) ([]swarm.Service, error) {
+func (client *RolexDockerClient) ListService(options types.ServiceListOptions) ([]swarm.Service, error) {
 	var services []swarm.Service
 	content, err := client.HttpGet("/services")
 	if err != nil {
@@ -43,14 +43,14 @@ func (client *RolexDockerClient) ServiceList(options types.ServiceListOptions) (
 }
 
 // ServiceRemove kills and removes a service.
-func (client *RolexDockerClient) ServiceRemove(serviceID string) error {
+func (client *RolexDockerClient) RemoveService(serviceID string) error {
 	_, err := client.HttpDelete("/services" + serviceID)
 	return err
 }
 
 // ServiceUpdate updates a Service.o
 // TODO attention docker update
-func (client *RolexDockerClient) ServiceUpdate(serviceID string, version swarm.Version, service swarm.ServiceSpec, header map[string][]string) error {
+func (client *RolexDockerClient) UpdateService(serviceID string, version swarm.Version, service swarm.ServiceSpec, header map[string][]string) error {
 	serviceParam, err := json.Marshal(service)
 	if err != nil {
 		return err

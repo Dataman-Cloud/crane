@@ -24,7 +24,7 @@ type Stack struct {
 }
 
 //StackDeploy deploy a new stack
-func (client *RolexDockerClient) StackDeploy(bundle *bundlefile.Bundlefile, namespace string) error {
+func (client *RolexDockerClient) DeployStack(bundle *bundlefile.Bundlefile, namespace string) error {
 	//networks := client.getUniqueNetworkNames(bundle.Services)
 
 	//if err := client.updateNetworks(networks, namespace); err != nil {
@@ -35,10 +35,10 @@ func (client *RolexDockerClient) StackDeploy(bundle *bundlefile.Bundlefile, name
 }
 
 // StackList list all stack
-func (client *RolexDockerClient) StackList() ([]Stack, error) {
+func (client *RolexDockerClient) ListStack() ([]Stack, error) {
 	filter := filters.NewArgs()
 	filter.Add("label", labelNamespace)
-	services, err := client.ServiceList(types.ServiceListOptions{Filter: filter})
+	services, err := client.ListService(types.ServiceListOptions{Filter: filter})
 	if err != nil {
 		return nil, err
 	}
@@ -190,13 +190,13 @@ func (client *RolexDockerClient) deployServices(services map[string]bundlefile.S
 			log.Infof("Updating service %s (id %s)", name, service.ID)
 
 			// docker TODO(nishanttotla): Pass headers with X-Registry-Auth
-			if err := client.ServiceUpdate(service.ID, service.Version, serviceSpec, nil); err != nil {
+			if err := client.UpdateService(service.ID, service.Version, serviceSpec, nil); err != nil {
 				return err
 			}
 		} else {
 			log.Infof("Creating service %s", name)
 			// docker TODO(nishanttotla): Pass headers with X-Registry-Auth
-			if _, err := client.ServiceCreate(serviceSpec, types.ServiceCreateOptions{}); err != nil {
+			if _, err := client.CreateService(serviceSpec, types.ServiceCreateOptions{}); err != nil {
 				return err
 			}
 		}
@@ -234,7 +234,7 @@ func (client *RolexDockerClient) getStackFilter(namespace string) filters.Args {
 
 // get service by default stack labels
 func (client *RolexDockerClient) filterStackServices(namespace string) ([]swarm.Service, error) {
-	return client.ServiceList(types.ServiceListOptions{Filter: client.getStackFilter(namespace)})
+	return client.ListService(types.ServiceListOptions{Filter: client.getStackFilter(namespace)})
 }
 
 // get network by default filter
