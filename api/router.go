@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"github.com/Dataman-Cloud/rolex/api/middlewares"
-	"github.com/Dataman-Cloud/rolex/api/registry"
+	"github.com/Dataman-Cloud/rolex/plugins/registry"
 	"github.com/Dataman-Cloud/rolex/util/log"
 
 	"github.com/Sirupsen/logrus"

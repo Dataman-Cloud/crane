@@ -104,12 +104,12 @@ func makeTokenCore(issuer, subject, audience string, expiration int,
 		Audience:   audience,
 		Expiration: now.Add(time.Duration(expiration) * time.Minute).Unix(),
 		// for testing purpose
-		//IssuedAt:   now.Add(-1 * time.Duration(644) * time.Second).Unix(),
-		//NotBefore:  now.Add(-1 * time.Duration(644) * time.Second).Unix(),
-		NotBefore: now.Unix(),
-		IssuedAt:  now.Unix(),
-		JWTID:     jwtID,
-		Access:    access,
+		IssuedAt:  now.Add(-1 * time.Duration(644) * time.Second).Unix(),
+		NotBefore: now.Add(-1 * time.Duration(644) * time.Second).Unix(),
+		//NotBefore: now.Unix(),
+		//IssuedAt:  now.Unix(),
+		JWTID:  jwtID,
+		Access: access,
 	}
 
 	var joseHeaderBytes, claimSetBytes []byte

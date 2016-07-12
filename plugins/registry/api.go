@@ -1,12 +1,17 @@
 package registry
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
+	"regexp"
+	"strings"
 
 	"github.com/Dataman-Cloud/rolex/util/config"
 	"github.com/gin-gonic/gin"
 )
+
+const manifestPattern = `^application/vnd.docker.distribution.manifest.v\d`
 
 type Registry struct {
 	Config *config.Config
@@ -20,6 +25,7 @@ func (registry *Registry) Token(ctx *gin.Context) {
 	scope := ctx.Query("scope")
 
 	if len(scope) == 0 && !authenticated {
+		fmt.Println("xxxxx")
 		ctx.JSON(http.StatusUnauthorized, gin.H{})
 		return
 	}
@@ -43,4 +49,26 @@ func (registry *Registry) Token(ctx *gin.Context) {
 // TODO check if account valid here
 func authenticate(principal, password string) bool {
 	return true
+}
+
+func (registry *Registry) Notifications(ctx *gin.Context) {
+	notification := &Notification{}
+	if err := ctx.BindJSON(&notification); err != nil {
+		switch jsonErr := err.(type) {
+		case *json.SyntaxError:
+			fmt.Printf("Notification JSON syntax error at byte %v: %s", jsonErr.Offset, jsonErr.Error())
+		case *json.UnmarshalTypeError:
+			fmt.Printf("Unexpected type at by type %v. Expected %s but received %s.",
+				jsonErr.Offset, jsonErr.Type, jsonErr.Value)
+		}
+	}
+
+	for _, e := range notification.Events {
+		matched, _ := regexp.MatchString(manifestPattern, e.Target.MediaType)
+		if matched && strings.HasPrefix(ctx.Request.UserAgent(), "docker") {
+			fmt.Println(e)
+		}
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{})
 }
