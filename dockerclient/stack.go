@@ -20,7 +20,7 @@ type Stack struct {
 	// Name is the name of the stack
 	Name string
 	// Services is the number of the services
-	Services int
+	ServiceCount int
 }
 
 //StackDeploy deploy a new stack
@@ -55,11 +55,11 @@ func (client *RolexDockerClient) ListStack() ([]Stack, error) {
 		stack, ok := stackMap[name]
 		if !ok {
 			stackMap[name] = Stack{
-				Name:     name,
-				Services: 1,
+				Name:         name,
+				ServiceCount: 1,
 			}
 		} else {
-			stack.Services++
+			stack.ServiceCount++
 		}
 	}
 
