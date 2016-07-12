@@ -10,9 +10,8 @@ import (
 	"github.com/Dataman-Cloud/rolex/dockerclient"
 )
 
-func (api *Api) InspectStack(ctx *gin.Context) {}
-func (api *Api) UpdateStack(ctx *gin.Context)  {}
-func (api *Api) RemoveStack(ctx *gin.Context)  {}
+func (api *Api) UpdateStack(ctx *gin.Context) {}
+func (api *Api) RemoveStack(ctx *gin.Context) {}
 
 func (api *Api) CreateStack(ctx *gin.Context) {
 	stackBundle := dockerclient.Bundle{}
@@ -49,5 +48,19 @@ func (api *Api) ListStack(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": stacks})
+	return
+}
+
+func (api *Api) InspectStack(ctx *gin.Context) {
+	namespace := ctx.Param("name")
+
+	bundle, err := api.GetDockerClient().InspectStack(namespace)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, err.Error())
+		log.Error("InspectStack got error: ", err)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": bundle})
 	return
 }
