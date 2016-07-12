@@ -77,6 +77,61 @@ func (client *RolexDockerClient) ListStack() ([]Stack, error) {
 	return stacks, nil
 }
 
+// Inspect stack get stack info
+func (client *RolexDockerClient) InspectStack(namespace string) (*Bundle, error) {
+	filter := filters.NewArgs()
+	filter.Add("label", labelNamespace)
+	services, err := client.ListService(types.ServiceListOptions{Filter: filter})
+	if err != nil {
+		return nil, err
+	}
+
+	stackServices := make(map[string]bundlefile.Service)
+	for _, swarmService := range services {
+		labels := swarmService.Spec.Labels
+		name, ok := labels[labelNamespace]
+		if !ok || name != namespace {
+			log.Errorf("Cannot get label %s for service %s", labelNamespace, swarmService.ID)
+			continue
+		}
+
+		stackServices[swarmService.Spec.Name] = client.ConvertStackService(swarmService.Spec)
+	}
+
+	return &Bundle{
+		NameSpace: namespace,
+		Bundlefile: bundlefile.Bundlefile{
+			Services: stackServices,
+		},
+		//TODO stack version is missing
+	}, nil
+}
+
+// convert swarm service to bundle service
+func (client *RolexDockerClient) ConvertStackService(swarmService swarm.ServiceSpec) bundlefile.Service {
+	containerSepc := swarmService.TaskTemplate.ContainerSpec
+	bundleService := bundlefile.Service{
+		Image:      containerSepc.Image,
+		Command:    containerSepc.Command,
+		Args:       containerSepc.Args,
+		Env:        containerSepc.Env,
+		WorkingDir: &containerSepc.Dir,
+		User:       &containerSepc.User,
+		Labels:     containerSepc.Labels,
+	}
+
+	var ports []bundlefile.Port
+	for _, portSepc := range swarmService.EndpointSpec.Ports {
+		ports = append(ports, bundlefile.Port{
+			Protocol: string(portSepc.Protocol),
+			Port:     portSepc.TargetPort,
+		})
+	}
+
+	bundleService.Ports = ports
+	return bundleService
+}
+
 func (client *RolexDockerClient) getUniqueNetworkNames(services map[string]bundlefile.Service) []string {
 	networkSet := make(map[string]bool)
 
