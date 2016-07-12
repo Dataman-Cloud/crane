@@ -98,7 +98,7 @@ func (client *RolexDockerClient) HttpGet(requestPath string) ([]byte, error) {
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("http response status code is %d not 200", resp.StatusCode)
+		return nil, fmt.Errorf("http response status code is %d", resp.StatusCode)
 	}
 
 	if resp.Body == nil {
@@ -122,7 +122,7 @@ func (client *RolexDockerClient) HttpDelete(requestPath string) ([]byte, error) 
 	}
 
 	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusNoContent {
-		return nil, fmt.Errorf("http response status code is %d not 200", resp.StatusCode)
+		return nil, fmt.Errorf("http response status code is %d", resp.StatusCode)
 	}
 
 	if resp.Body == nil {
@@ -147,7 +147,7 @@ func (client *RolexDockerClient) HttpPost(requestPath string, body []byte) ([]by
 	}
 
 	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusCreated {
-		return nil, fmt.Errorf("http response status code is %d not 200", resp.StatusCode)
+		return nil, fmt.Errorf("http response status code is %d", resp.StatusCode)
 	}
 
 	if resp.Body == nil {
@@ -156,5 +156,4 @@ func (client *RolexDockerClient) HttpPost(requestPath string, body []byte) ([]by
 	defer resp.Body.Close()
 
 	return ioutil.ReadAll(resp.Body)
-
 }
