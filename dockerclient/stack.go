@@ -24,7 +24,6 @@ func (client *RolexDockerClient) StackDeploy(bundle *bundlefile.Bundlefile, name
 	//	return err
 	//}
 
-	log.Infof("services %+v", bundle.Services)
 	return client.deployServices(bundle.Services, namespace)
 }
 
