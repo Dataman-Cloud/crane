@@ -1,6 +1,7 @@
 package api
 
 import (
+	"encoding/json"
 	"net/http"
 
 	goclient "github.com/fsouza/go-dockerclient"
@@ -67,9 +68,13 @@ func (api *Api) InspectNetwork(ctx *gin.Context) {
 }
 
 func (api *Api) ListNetworks(ctx *gin.Context) {
-	var filter goclient.NetworkFilterOpts
+	filter := goclient.NetworkFilterOpts{}
 
-	if err := ctx.BindJSON(&filter); err != nil {
+	fp := ctx.Query("filters")
+	if fp == "" {
+		fp = "{}"
+	}
+	if err := json.Unmarshal([]byte(fp), &filter); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"code": 1, "data": err.Error()})
 		return
 	}
@@ -89,5 +94,5 @@ func (api *Api) RemoveNetwork(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusNoContent, gin.H{"code": 0, "data": "remove success"})
+	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": "remove success"})
 }
