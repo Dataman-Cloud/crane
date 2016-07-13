@@ -91,7 +91,7 @@ func (api *Api) ListNetworks(ctx *gin.Context) {
 
 func (api *Api) RemoveNetwork(ctx *gin.Context) {
 	if err := api.GetDockerClient().RemoveNetwork(ctx.Param("id")); err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"code": 1, "data": err.Error()})
+		ctx.JSON(http.StatusForbidden, gin.H{"code": 1, "data": err.Error()})
 		return
 	}
 
