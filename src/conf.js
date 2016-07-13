@@ -6,6 +6,6 @@
 BACKEND_URL_BASE = {
     defaultBase: "http://localhost:8000/",
     node: 'http://localhost:5013/',
-    service: 'http://localhost:5013/',
+    stack: 'http://localhost:5013/',
     network: 'http://localhost:5013/'
 };

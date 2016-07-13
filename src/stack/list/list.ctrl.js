@@ -5,13 +5,9 @@
 
 
     /* @ngInject */
-    function StackListCtrl(stackBackend, utils, stackCurd) {
+    function StackListCtrl(stacks, stackBackend) {
         var self = this;
-
-        activate();
-
-        function activate() {
-
-        }
+        
+        self.stacks = stacks
     }
 })();

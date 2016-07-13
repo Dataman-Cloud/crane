@@ -5,7 +5,7 @@
                 <h2>应用编排</h2>
             </div>
             <div layout-align="end center" class="operation">
-                <md-button class="md-fab md-mini" aria-label="部署最新镜像" data-ui-sref="stack.create">
+                <md-button class="md-fab md-mini" aria-label="新建编排" data-ui-sref="stack.create">
                     <i class="fa fa-plus" aria-hidden="true"></i>
                     <md-tooltip md-direction="top">
                         新建编排
@@ -14,7 +14,32 @@
             </div>
         </header>
         <div class="main-content">
-            待添加
+            <md-table-container>
+                <table md-table>
+                    <thead md-head>
+                    <tr md-row>
+                        <th md-column>名称</th>
+                        <th md-column>服务数量</th>
+                        <th md-column>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody md-body>
+                    <tr md-row ng-repeat="stack in stackListCtrl.stacks">
+                        <td md-cell>
+                            <a data-ui-sref="stack.detail{stack_name: stack.Namespace}">{/stack.Namespace/}</a>
+                        </td>
+                        <td md-cell>
+                            {/stack.ServiceCount/}
+                        </td>
+                        <td md-cell>
+                            <md-button aria-label="delete" class="md-button md-raised">
+                                删除
+                            </md-button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </md-table-container>
         </div>
 
         <footer></footer>

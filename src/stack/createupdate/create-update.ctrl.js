@@ -26,21 +26,21 @@
             }
         };
 
-        self.json = angular.toJson($rootScope.STACK_DEFAULT.JsonObj, '\t') || "";
+        self.stack = angular.toJson($rootScope.STACK_DEFAULT.JsonObj, '\t') || "";
 
         self.form = {
-            name: "",
-            json: ""
+            Namespace: "",
+            Stack: ""
         };
 
         self.errorInfo = {
-            json: ''
+            stack: ''
         };
 
         self.onFileSelect = onFileSelect;
         self.create = create;
         self.update = update;
-        self.jsonChange = jsonChange;
+        self.stackChange = stackChange;
 
         activate();
 
@@ -59,19 +59,21 @@
         }
 
         function create() {
-            self.form.json = angular.fromJson(self.json);
-            console.log(self.form)
+            self.form.Stack = angular.fromJson(self.stack);
+            stackBackend.createStack(self.form, $scope.staticForm).then(function (data) {
+                $state.go('stack.list');
+            });
         }
 
         function update() {
             ///
         }
 
-        function jsonChange() {
+        function stackChange() {
             //clean error Info
-            self.errorInfo.json = '';
+            self.errorInfo.stack = '';
 
-            jsonValidate()
+            stackValidate()
         }
 
         function onFileSelect(files) {
@@ -81,8 +83,8 @@
             var reader = new FileReader();
             reader.onload = (function (theFile) {
                 return function (e) {
-                    self.json = e.target.result;
-                    jsonChange();
+                    self.stack = e.target.result;
+                    stackChange();
                     $scope.$digest();
                 };
             })(file);
@@ -90,11 +92,11 @@
             reader.readAsText(file);
         }
 
-        function jsonValidate() {
+        function stackValidate() {
             try {
-                JSON.parse(self.json)
+                JSON.parse(self.stack)
             } catch (err) {
-                self.errorInfo.json = 'JSON 格式有误';
+                self.errorInfo.stack = 'JSON 格式有误';
             }
         }
     }

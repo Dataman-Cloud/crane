@@ -14,7 +14,10 @@
             .state('stack.list', {
                 url: '/list',
                 templateUrl: '/src/stack/list/list.html',
-                controller: 'StackListCtrl as stackListCtrl'
+                controller: 'StackListCtrl as stackListCtrl',
+                resolve: {
+                    stacks: listStacks
+                }
             })
             .state('stack.create', {
                 url: '/create',
@@ -27,7 +30,7 @@
                 }
             })
             .state('stack.update', {
-                url: '/update/:cluster_id/:stack_id',
+                url: '/update/:stack_name',
                 templateUrl: '/src/stack/createupdate/create-update.html',
                 controller: 'StackCreateCtrl as stackCreateCtrl',
                 resolve: {
@@ -35,6 +38,14 @@
                         return 'update'
                     }
                 }
+            })
+            .state('stack.detail', {
+                url: '/detail/:stack_name'
             });
+    }
+    
+    /*@ngInject*/
+    function listStacks(stackBackend) {
+        return stackBackend.listStacks();
     }
 })();
