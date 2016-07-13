@@ -32,6 +32,9 @@ func (api *Api) ApiRouter() *gin.Engine {
 		v1.GET("/nodes", api.ListNodes)
 		v1.GET("/nodes/:id", api.InspectNode)
 
+		// Going to delegate to /nodes/:id
+		// v1.GET("/nodes/leader_manager", api.LeaderNode)
+
 		v1.GET("/containers", api.ListContainers)
 		v1.GET("/containers/:id", api.InspectContainer)
 
