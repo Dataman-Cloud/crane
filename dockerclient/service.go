@@ -15,8 +15,8 @@ type ServiceStatus struct {
 	Name        string    `json:"Name"`
 	TaskRunning int       `json:"TaskRunning"`
 	TaskTotal   int       `json:"TaskTotal"`
-	Image       string    `josn:"Images"`
-	Command     string    `josn:"Command"`
+	Image       string    `json:"Images"`
+	Command     string    `json:"Command"`
 	CreatedAt   time.Time `json:"CreatedAt"`
 	UpdatedAt   time.Time `json:"UpdatedAt"`
 }
@@ -46,7 +46,7 @@ func (client *RolexDockerClient) CreateService(service swarm.ServiceSpec, option
 }
 
 // ServiceList returns the list of services config
-func (client *RolexDockerClient) ListServiceConfig(options types.ServiceListOptions) ([]swarm.Service, error) {
+func (client *RolexDockerClient) ListServiceSpec(options types.ServiceListOptions) ([]swarm.Service, error) {
 	var services []swarm.Service
 	content, err := client.HttpGet("/services")
 	if err != nil {
@@ -62,7 +62,7 @@ func (client *RolexDockerClient) ListServiceConfig(options types.ServiceListOpti
 
 // ListService return the list of service staus and core config
 func (client *RolexDockerClient) ListService(options types.ServiceListOptions) ([]ServiceStatus, error) {
-	services, err := client.ListServiceConfig(options)
+	services, err := client.ListServiceSpec(options)
 	if err != nil {
 		return nil, err
 	}

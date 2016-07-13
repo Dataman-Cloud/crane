@@ -44,7 +44,7 @@ func (client *RolexDockerClient) DeployStack(bundle *Bundle) error {
 func (client *RolexDockerClient) ListStack() ([]Stack, error) {
 	filter := filters.NewArgs()
 	filter.Add("label", labelNamespace)
-	services, err := client.ListServiceConfig(types.ServiceListOptions{Filter: filter})
+	services, err := client.ListServiceSpec(types.ServiceListOptions{Filter: filter})
 	if err != nil {
 		return nil, err
 	}
@@ -81,7 +81,7 @@ func (client *RolexDockerClient) ListStack() ([]Stack, error) {
 func (client *RolexDockerClient) ListStackService(namespace string) ([]ServiceStatus, error) {
 	filter := filters.NewArgs()
 	filter.Add("label", labelNamespace)
-	services, err := client.ListServiceConfig(types.ServiceListOptions{Filter: filter})
+	services, err := client.ListServiceSpec(types.ServiceListOptions{Filter: filter})
 	if err != nil {
 		return nil, err
 	}
@@ -109,7 +109,7 @@ func (client *RolexDockerClient) ListStackService(namespace string) ([]ServiceSt
 func (client *RolexDockerClient) InspectStack(namespace string) (*Bundle, error) {
 	filter := filters.NewArgs()
 	filter.Add("label", labelNamespace)
-	services, err := client.ListServiceConfig(types.ServiceListOptions{Filter: filter})
+	services, err := client.ListServiceSpec(types.ServiceListOptions{Filter: filter})
 	if err != nil {
 		return nil, err
 	}
@@ -323,7 +323,7 @@ func (client *RolexDockerClient) getStackFilter(namespace string) filters.Args {
 
 // get service by default stack labels
 func (client *RolexDockerClient) filterStackServices(namespace string) ([]swarm.Service, error) {
-	return client.ListServiceConfig(types.ServiceListOptions{Filter: client.getStackFilter(namespace)})
+	return client.ListServiceSpec(types.ServiceListOptions{Filter: client.getStackFilter(namespace)})
 }
 
 // get network by default filter
