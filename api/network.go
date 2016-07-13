@@ -4,24 +4,41 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/Dataman-Cloud/rolex/model"
+
 	goclient "github.com/fsouza/go-dockerclient"
 	"github.com/gin-gonic/gin"
 )
 
-func (api *Api) ConnectNetwork(ctx *gin.Context) {
-	var netWorkOption goclient.NetworkConnectionOptions
+const (
+	NETWORK_CONNECT    = "connect"
+	NETWORK_DISCONNECT = "disconnect"
+)
 
-	if err := ctx.BindJSON(&netWorkOption); err != nil {
+func (api *Api) ConnectNetwork(ctx *gin.Context) {
+	var connectNetwork model.ConnectNetwork
+
+	if err := ctx.BindJSON(&connectNetwork); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"code": 1, "data": err.Error()})
 		return
 	}
 
-	if err := api.GetDockerClient().ConnectNetwork(ctx.Param("id"), netWorkOption); err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"code": 1, "data": err.Error()})
+	if connectNetwork.Method == NETWORK_CONNECT {
+		if err := api.GetDockerClient().ConnectNetwork(ctx.Param("id"), connectNetwork.NetworkOptions); err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"code": 1, "data": err.Error()})
+			return
+		}
+	} else if connectNetwork.Method == NETWORK_DISCONNECT {
+		if err := api.GetDockerClient().DisconnectNetwork(ctx.Param("id"), connectNetwork.NetworkOptions); err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"code": 1, "data": err.Error()})
+			return
+		}
+	} else {
+		ctx.JSON(http.StatusBadRequest, gin.H{"code": 1, "data": "Invalid request"})
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": "connect success"})
+	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": connectNetwork.Method + " success"})
 }
 
 func (api *Api) CreateNetwork(ctx *gin.Context) {
@@ -39,22 +56,6 @@ func (api *Api) CreateNetwork(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusCreated, gin.H{"code": 0, "data": network})
-}
-
-func (api *Api) DisconnectNetwork(ctx *gin.Context) {
-	var netWorkOption goclient.NetworkConnectionOptions
-
-	if err := ctx.BindJSON(&netWorkOption); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": 1, "data": err.Error()})
-		return
-	}
-
-	if err := api.GetDockerClient().DisconnectNetwork(ctx.Param("id"), netWorkOption); err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"code": 1, "data": err.Error()})
-		return
-	}
-
-	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": "disconnect success"})
 }
 
 func (api *Api) InspectNetwork(ctx *gin.Context) {

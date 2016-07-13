@@ -33,13 +33,11 @@ func (api *Api) ApiRouter() *gin.Engine {
 		v1.GET("/services", api.ListService)
 		v1.DELETE("/services/:id", api.RemoveService)
 
-		v1.POST("/networks/:id/container", api.ConnectNetwork)
-		v1.DELETE("/networks/:id/container", api.DisconnectNetwork)
-
 		v1.POST("/networks", api.CreateNetwork)
-		v1.GET("/networks/:id", api.InspectNetwork)
 		v1.GET("/networks", api.ListNetworks)
 		v1.DELETE("/networks/:id", api.RemoveNetwork)
+		v1.GET("/networks/:id", api.InspectNetwork)
+		v1.PATCH("/networks/:id", api.ConnectNetwork)
 
 		v1.POST("/stacks", api.CreateStack)
 		v1.GET("/stacks", api.ListStack)

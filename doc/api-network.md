@@ -1,16 +1,19 @@
 ### Network
 
-#### `/networks/(id)/container`
+#### `/networks/(id)`
 
 **Request:**
 
 ```
-curl -XPOST -H "Content-Type: application/json" localhost:2375/networks/(id)/container -d '{
-  "Container":"3613f73ba0e4",
-  "EndpointConfig": {
-    "IPAMConfig": {
-        "IPv4Address":"172.24.56.89",
-        "IPv6Address":"2001:db8::5689"
+curl -XPATCH -H "Content-Type: application/json" localhost:2375/networks/(id) -d '{
+ "Method": "connect",
+ "NetworkOptions": {
+    "Container":"3613f73ba0e4",
+    "EndpointConfig": {
+      "IPAMConfig": {
+          "IPv4Address":"172.24.56.89",
+          "IPv6Address":"2001:db8::5689"
+      }
     }
   }
 }'
@@ -114,25 +117,6 @@ curl -XPOST -H "Content-Type: application/json" localhost:2375/networks -d '{
 }
 ```
 
-#### `/networks/(id)/container`
-
-**Request:**
-
-```
-curl -XDELETE -H "Content-Type: application/json" localhost:2375/networks/(id)/container -d '{
-  "Container":"3613f73ba0e4",
-  "Force":false
-}'
-```
-
-**Response:**
-
-```
-{
-    "code": 0,
-    "data": "disconnect success"
-}
-```
 
 #### `/networks/(id)`
 
@@ -282,3 +266,5 @@ curl -XDELETE localhost:2375/networks/(id)
 	"data": "remove success"
 }
 ```
+
+
