@@ -22,7 +22,7 @@
             .state('network.create', {
                 url: '/create',
                 templateUrl: '/src/network/create/create.html',
-                controller: 'CreateCtrl as createCtrl'
+                controller: 'NetworkCreateCtrl as networkCreateCtrl'
             });
 
         /* @ngInject */

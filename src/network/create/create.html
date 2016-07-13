@@ -11,7 +11,7 @@
                     <label flex="15">网络名称</label>
                     <div flex="50" layout="column">
                         <div flex="none">
-                            <input type="text" class="form-input" data-ng-model="createCtrl.form.Name"
+                            <input type="text" class="form-input" data-ng-model="networkCreateCtrl.form.Name"
                                    data-required="required" name="name">
                         </div>
 
@@ -29,7 +29,7 @@
                     <label flex="15">类型</label>
                     <div flex="30" layout="column">
                         <div flex>
-                            <md-radio-group ng-model="createCtrl.form.Driver" layout="row"
+                            <md-radio-group ng-model="networkCreateCtrl.form.Driver" layout="row"
                                             data-required="required" aria-label="Network type">
                                 <md-radio-button value="bridge" class="md-accent" flex>单机网络</md-radio-button>
                                 <md-radio-button value="overlay" class="md-accent" flex>虚拟网络</md-radio-button>
@@ -43,7 +43,7 @@
                     <label flex="15">子网掩码</label>
                     <div flex="50" layout="column">
                         <div flex="none">
-                            <input type="text" class="form-input" data-ng-model="createCtrl.form.IPAM.Config[0].Subnet"
+                            <input type="text" class="form-input" data-ng-model="networkCreateCtrl.form.IPAM.Config[0].Subnet"
                                    name="Subnet" placeholder="例:172.20.0.0/16 (可选)"
                                    data-ng-pattern="/^\d{1,3}(\.\d{1,3}){3}\/\d{1,2}$/">
                         </div>
@@ -62,7 +62,7 @@
                     <label flex="15">网关</label>
                     <div flex="50" layout="column">
                         <div flex="none">
-                            <input type="text" class="form-input" data-ng-model="createCtrl.form.IPAM.Config[0].Gateway"
+                            <input type="text" class="form-input" data-ng-model="networkCreateCtrl.form.IPAM.Config[0].Gateway"
                                    name="Gateway" placeholder="例:172.20.10.11 (可选)"
                                    data-ng-pattern="/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/">
                         </div>
@@ -82,10 +82,10 @@
                     <label flex="15">IP 范围</label>
                     <div flex="50" layout="column">
                         <div flex="none">
-                            <input type="text" class="form-input" data-ng-model="createCtrl.form.IPAM.Config[0].IPRange"
+                            <input type="text" class="form-input" data-ng-model="networkCreateCtrl.form.IPAM.Config[0].IPRange"
                                    name="IPRange" placeholder="例:172.20.10.0/24 (可选)"
                                    data-ng-pattern="/^\d{1,3}(\.\d{1,3}){3}\/\d{1,2}$/"
-                                   ng-required="createCtrl.form.IPAM.Config[0].IPRange">
+                                   ng-required="networkCreateCtrl.form.IPAM.Config[0].IPRange">
                         </div>
 
                         <div ng-messages="createNetwork.IPRange.$error" ng-if="createNetwork.IPRange.$dirty"
@@ -103,7 +103,7 @@
                     <label flex="15">内部模式</label>
                     <div flex="30" layout="column">
                         <div flex>
-                            <md-radio-group ng-model="createCtrl.form.Internal" layout="row"
+                            <md-radio-group ng-model="networkCreateCtrl.form.Internal" layout="row"
                                             data-required="required" aria-label="Network Internal">
                                 <md-radio-button ng-value="true" class="md-accent" flex>是</md-radio-button>
                                 <md-radio-button ng-value="false" class="md-accent" flex>否</md-radio-button>
@@ -119,14 +119,14 @@
                         <div flex>
                             <md-button class="md-primary"
                                        aria-label="Add mountpoints"
-                                       data-ng-click="createCtrl.addOption()">
+                                       data-ng-click="networkCreateCtrl.addOption()">
                                 <i class="fa fa-plus"></i>
                                 添加选项
                             </md-button>
                             可添加个多选项
                         </div>
                         <div class="add-row-container"
-                             data-ng-repeat="opt in createCtrl.options track by $index">
+                             data-ng-repeat="opt in networkCreateCtrl.options track by $index">
                             <ng-form name="options" layout="row" layout-align="start center">
                                 <input type="text" placeholder="KEY" flex="40"
                                        data-ng-model="opt.key" data-required="required"
@@ -136,7 +136,7 @@
                                        name="optValue" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/">
                                 <div flex-offset="5" flex>
                                     <md-button class="md-icon-button md-accent" aria-label="delete"
-                                               data-ng-click="createCtrl.deleteOption($index)">
+                                               data-ng-click="networkCreateCtrl.deleteOption($index)">
                                         <i class="fa fa-trash"></i>
                                     </md-button>
                                 </div>
@@ -162,7 +162,7 @@
                     <div flex-offset="15" layout="row" layout-align="end end">
                         <md-button class="md-raised md-primary"
                                    data-ng-disabled="createNetwork.$invalid"
-                                   data-ng-click="createCtrl.create()">
+                                   data-ng-click="networkCreateCtrl.create()">
                             确认
                         </md-button>
                         <md-button class="md-primary" data-ng-click="rootCtrl.goBack()">取 消</md-button>

@@ -1,10 +1,10 @@
 (function () {
     'use strict';
     angular.module('app.network')
-        .controller('CreateCtrl', CreateCtrl);
+        .controller('NetworkCreateCtrl', NetworkCreateCtrl);
 
     /* @ngInject */
-    function CreateCtrl(networkCurd, $scope) {
+    function NetworkCreateCtrl(networkCurd, $scope) {
         var self = this;
 
         self.form = {

@@ -13,7 +13,8 @@
         };
 
         $rootScope.CODE_MESSAGE = {
-            1: '系统自带网络,无法删除'
+            10001: '参数错误',
+            10002: '操作失败'
         };
 
         $rootScope.STACK_DEFAULT = {
@@ -30,7 +31,8 @@
 
         $rootScope.BACKEND_URL = {
             node: {
-                nodes: 'api/v1/nodes'
+                nodes: 'api/v1/nodes',
+                leader: 'api/v1/nodes/leader_manager'
             },
             stack: {
                 services: 'api/v1/services',

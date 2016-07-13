@@ -22,7 +22,7 @@
             .state('node.create', {
                 url: '/create',
                 templateUrl: '/src/node/create/create.html',
-                controller: 'CreateCtrl as createCtrl'
+                controller: 'NodeCreateCtrl as nodeCreateCtrl'
             });
 
         /* @ngInject */
