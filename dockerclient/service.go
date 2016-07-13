@@ -2,7 +2,6 @@ package dockerclient
 
 import (
 	"encoding/json"
-	"fmt"
 	"strings"
 	"time"
 
@@ -12,13 +11,14 @@ import (
 )
 
 type ServiceStatus struct {
-	ID        string    `json:"ID"`
-	Name      string    `json:"Name"`
-	Repliacs  string    `json:"Repliacs"`
-	Image     string    `josn:"Images"`
-	Command   string    `josn:"Command"`
-	CreatedAt time.Time `json:"CreatedAt"`
-	UpdatedAt time.Time `json:"UpdatedAt"`
+	ID          string    `json:"ID"`
+	Name        string    `json:"Name"`
+	TaskRunning int       `json:"TaskRunning"`
+	TaskTotal   int       `json:"TaskTotal"`
+	Image       string    `josn:"Images"`
+	Command     string    `josn:"Command"`
+	CreatedAt   time.Time `json:"CreatedAt"`
+	UpdatedAt   time.Time `json:"UpdatedAt"`
 }
 
 const (
@@ -103,21 +103,15 @@ func (client *RolexDockerClient) GetServicesStatus(services []swarm.Service) ([]
 	}
 
 	for _, service := range services {
-		repliacs := ""
-		if service.Spec.Mode.Replicated != nil && service.Spec.Mode.Replicated.Replicas != nil {
-			repliacs = fmt.Sprintf("%d/%d", running[service.ID], *service.Spec.Mode.Replicated.Replicas)
-		} else if service.Spec.Mode.Global != nil {
-			repliacs = "global"
-		}
-
 		serviceSt := ServiceStatus{
-			ID:        service.ID,
-			Name:      service.Spec.Name,
-			Repliacs:  repliacs,
-			Image:     service.Spec.TaskTemplate.ContainerSpec.Image,
-			Command:   strings.Join(service.Spec.TaskTemplate.ContainerSpec.Args, " "),
-			CreatedAt: service.CreatedAt,
-			UpdatedAt: service.UpdatedAt,
+			ID:          service.ID,
+			Name:        service.Spec.Name,
+			TaskRunning: running[service.ID],
+			TaskTotal:   len(activeNodes),
+			Image:       service.Spec.TaskTemplate.ContainerSpec.Image,
+			Command:     strings.Join(service.Spec.TaskTemplate.ContainerSpec.Args, " "),
+			CreatedAt:   service.CreatedAt,
+			UpdatedAt:   service.UpdatedAt,
 		}
 
 		servicesSt = append(servicesSt, serviceSt)
