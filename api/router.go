@@ -4,9 +4,10 @@ import (
 	"time"
 
 	"github.com/Dataman-Cloud/rolex/api/middlewares"
+	"github.com/Dataman-Cloud/rolex/plugins/registry"
 	"github.com/Dataman-Cloud/rolex/util/log"
-	"github.com/Sirupsen/logrus"
 
+	"github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
 )
 
@@ -19,6 +20,11 @@ func (api *Api) ApiRouter() *gin.Engine {
 	router.GET("/", func(c *gin.Context) {
 		c.String(200, "pass")
 	})
+
+	if api.Config.FeatureEnabled("registry") {
+		r := &registry.Registry{Config: api.Config}
+		r.RegisterApiForRegistry(router)
+	}
 
 	v1 := router.Group("/api/v1", middlewares.Authorization)
 	{

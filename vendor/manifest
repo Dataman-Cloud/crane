@@ -16,20 +16,12 @@
 			"branch": "master"
 		},
 		{
-			"importpath": "github.com/docker/distribution/digest",
+			"importpath": "github.com/docker/distribution",
 			"repository": "https://github.com/docker/distribution",
-			"vcs": "",
-			"revision": "4e17ab5d319ac5b70b2769442947567a83386fbc",
+			"vcs": "git",
+			"revision": "2052f29be605a2e4ab0ff81233f0595667b722c3",
 			"branch": "master",
-			"path": "/digest"
-		},
-		{
-			"importpath": "github.com/docker/distribution/reference",
-			"repository": "https://github.com/docker/distribution",
-			"vcs": "",
-			"revision": "4e17ab5d319ac5b70b2769442947567a83386fbc",
-			"branch": "master",
-			"path": "/reference"
+			"notests": true
 		},
 		{
 			"importpath": "github.com/docker/docker/api/client/bundlefile",
@@ -141,6 +133,14 @@
 			"vcs": "",
 			"revision": "f2d77a61e3c169b43402a0a1e84f06daf29b8190",
 			"branch": "master"
+		},
+		{
+			"importpath": "github.com/docker/libtrust",
+			"repository": "https://github.com/docker/libtrust",
+			"vcs": "git",
+			"revision": "aabc10ec26b754e797f9028f4589c5b7bd90dc20",
+			"branch": "master",
+			"notests": true
 		},
 		{
 			"importpath": "github.com/dustin/go-broadcast",
