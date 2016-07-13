@@ -125,3 +125,21 @@
     }
 ]
 ```
+
+#### Get Leader Manager
+**Request:**
+```
+    curl  192.168.59.106:2376/nodes/leader_manager
+```
+**Response**
+
+```
+{
+  "code": 0,
+  "data": {
+    "Leader": true,
+    "Reachability": "reachable",
+    "Addr": "10.0.2.15:2377"
+  }
+}
+```
