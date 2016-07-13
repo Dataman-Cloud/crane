@@ -26,7 +26,6 @@ type ServiceStatus struct {
 
 // Service scale instance
 type ServiceScale struct {
-	Name  string `json:"Name"`
 	Scale uint64 `json:"Scale"`
 }
 
@@ -155,8 +154,8 @@ func (client *RolexDockerClient) UpdateService(serviceID string, version swarm.V
 }
 
 // ScaleService update service replicas
-func (client *RolexDockerClient) ScaleService(serviceScale ServiceScale) error {
-	service, err := client.InspectServiceWithRaw(serviceScale.Name)
+func (client *RolexDockerClient) ScaleService(serviceID string, serviceScale ServiceScale) error {
+	service, err := client.InspectServiceWithRaw(serviceID)
 	if err != nil {
 		return err
 	}

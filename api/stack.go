@@ -52,7 +52,7 @@ func (api *Api) ListStack(ctx *gin.Context) {
 }
 
 func (api *Api) InspectStack(ctx *gin.Context) {
-	namespace := ctx.Param("name")
+	namespace := ctx.Param("namespace")
 
 	bundle, err := api.GetDockerClient().InspectStack(namespace)
 	if err != nil {
