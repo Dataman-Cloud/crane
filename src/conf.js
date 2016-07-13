@@ -4,8 +4,8 @@
  * ws是指websocket.
  */
 BACKEND_URL_BASE = {
-    defaultBase: "http://localhost:8000/",
-    node: 'http://localhost:5013/',
-    stack: 'http://localhost:5013/',
-    network: 'http://localhost:5013/'
+    defaultBase: "http://localhost:5013/",
+    node: null,
+    stack: null,
+    network: null
 };

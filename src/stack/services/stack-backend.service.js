@@ -8,7 +8,9 @@
     function stackBackend(gHttp) {
         return {
             createStack: createStack,
-            listStacks: listStacks
+            listStacks: listStacks,
+            getStack: getStack,
+            listStackServices: listStackServices
         };
         
         function createStack(data, form) {
@@ -17,6 +19,14 @@
         
         function listStacks() {
             return gHttp.Resource('stack.stacks').get();
+        }
+        
+        function getStack(stackName) {
+            return gHttp.Resource('stack.stack', {stack_name: stackName}).get(); 
+        }
+        
+        function listStackServices(stackName) {
+            return gHttp.Resource('stack.services', {stack_name: stackName}).get();
         }
     }
 })();

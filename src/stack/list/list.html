@@ -26,7 +26,7 @@
                     <tbody md-body>
                     <tr md-row ng-repeat="stack in stackListCtrl.stacks">
                         <td md-cell>
-                            <a data-ui-sref="stack.detail{stack_name: stack.Namespace}">{/stack.Namespace/}</a>
+                            <a data-ui-sref="stack.detail({stack_name: stack.Namespace})">{/stack.Namespace/}</a>
                         </td>
                         <td md-cell>
                             {/stack.ServiceCount/}

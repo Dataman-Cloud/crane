@@ -40,12 +40,36 @@
                 }
             })
             .state('stack.detail', {
-                url: '/detail/:stack_name'
+                url: '/detail/:stack_name',
+                templateUrl: '/src/stack/detail/detail.html',
+                controller: 'StackDetailCtrl as stackDetailCtrl',
+                targetState: 'service',
+                resolve: {
+                    stack: getStack
+                }
+            })
+            .state('stack.detail.service', {
+                url: '/service',
+                templateUrl: '/src/stack/detail/service.html',
+                controller: 'StackServiceCtrl as stackServiceCtrl',
+                resolve: {
+                    services: listStackServices 
+                }
             });
     }
     
     /*@ngInject*/
     function listStacks(stackBackend) {
         return stackBackend.listStacks();
+    }
+    
+    /*@ngInject*/
+    function getStack(stackBackend, $stateParams) {
+        return stackBackend.getStack($stateParams.stack_name);
+    }
+    
+    /*@ngInject*/
+    function listStackServices(stackBackend, $stateParams) {
+        return stackBackend.listStackServices($stateParams.stack_name);
     }
 })();

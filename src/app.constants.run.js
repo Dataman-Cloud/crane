@@ -35,8 +35,9 @@
                 leader: 'api/v1/nodes/leader_manager'
             },
             stack: {
-                services: 'api/v1/services',
-                stacks: 'api/v1/stacks'
+                stacks: 'api/v1/stacks',
+                stack: 'api/v1/stacks/$stack_name',
+                services: 'api/v1/stacks/$stack_name/services'
             },
             network: {
                 network: 'api/v1/networks/$network_id',
