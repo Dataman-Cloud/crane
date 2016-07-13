@@ -26,7 +26,9 @@
 ### 在 Linux 下面
 
   - 第一种方法: 项目根目录下执行 ```python3 -m http.server 8001 ``` 具体端口自己定
-  - 第二种方法: `./start.sh` , 该命令会启动一个 nginx container， 并监听 80 端口。
+  - 第二种方法:
+       - 编辑 src/conf.js , 将其中的 `localhost` 改成本机的 IP
+       - `./start.sh` , 该命令会启动一个 nginx container， 并监听 80 端口
 
 ### 在 MacOS 下面
 
