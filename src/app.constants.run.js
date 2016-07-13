@@ -37,7 +37,8 @@
             stack: {
                 stacks: 'api/v1/stacks',
                 stack: 'api/v1/stacks/$stack_name',
-                services: 'api/v1/stacks/$stack_name/services'
+                services: 'api/v1/stacks/$stack_name/services',
+                service: 'api/v1/stacks/$stack_name/services/$service_id'
             },
             network: {
                 network: 'api/v1/networks/$network_id',
