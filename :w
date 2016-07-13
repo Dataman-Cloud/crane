@@ -3,7 +3,6 @@ package dockerclient
 import (
 	"encoding/json"
 	"fmt"
-	"net/url"
 	"strconv"
 	"strings"
 	"time"
