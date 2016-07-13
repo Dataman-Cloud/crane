@@ -112,11 +112,18 @@ func (client *RolexDockerClient) GetServicesStatus(services []swarm.Service) ([]
 	}
 
 	for _, service := range services {
+		var taskTotal int
+		if service.Spec.Mode.Replicated != nil && service.Spec.Mode.Replicated.Replicas != nil {
+			taskTotal = int(*service.Spec.Mode.Replicated.Replicas)
+		} else if service.Spec.Mode.Global != nil {
+			taskTotal = len(activeNodes)
+		}
+
 		serviceSt := ServiceStatus{
 			ID:          service.ID,
 			Name:        service.Spec.Name,
 			TaskRunning: running[service.ID],
-			TaskTotal:   len(activeNodes),
+			TaskTotal:   taskTotal,
 			Image:       service.Spec.TaskTemplate.ContainerSpec.Image,
 			Command:     strings.Join(service.Spec.TaskTemplate.ContainerSpec.Args, " "),
 			CreatedAt:   service.CreatedAt,
