@@ -45,7 +45,7 @@ func (api *Api) ApiRouter() *gin.Engine {
 		v1.GET("/stacks", api.ListStack)
 		v1.GET("/stacks/:namespace", api.InspectStack)
 		v1.PATCH("/stacks/:namespace/services/:serviceID", api.ScaleService)
-		v1.GET("/stacks/:namespace/services/:serviceI", api.ListStackService)
+		v1.GET("/stacks/:namespace/services", api.ListStackService)
 	}
 
 	return router
