@@ -117,3 +117,26 @@ services:
   }
 }
 ```
+
+###ListStackService
+**Request**
+```
+  curl -X GET http://localhost:5013/api/v1/stacks/stack-test/services
+```
+**Response**
+```
+{
+  "code": 0,
+  "data": [
+    {
+      "ID": "b80av1uhbojtdwhyalpo9b38u",
+      "Name": "stack-test_redis",
+      "Repliacs": "1/1",
+      "Image": "redis",
+      "Command": "",
+      "CreatedAt": "2016-07-08T15:48:47.101448788Z",
+      "UpdatedAt": "2016-07-08T15:48:47.101448788Z"
+    }
+  ]
+}
+```
