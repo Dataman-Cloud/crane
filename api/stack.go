@@ -66,7 +66,7 @@ func (api *Api) InspectStack(ctx *gin.Context) {
 }
 
 func (api *Api) ListStackService(ctx *gin.Context) {
-	namespace := ctx.Param("name")
+	namespace := ctx.Param("namespace")
 
 	servicesStatus, err := api.GetDockerClient().ListStackService(namespace)
 	if err != nil {
