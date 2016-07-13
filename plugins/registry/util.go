@@ -155,3 +155,11 @@ func base64UrlEncode(b []byte) string {
 func GetPermission(username, project string) string {
 	return "RW"
 }
+
+func GenTokenForUI(config *config.Config, username, service, scope string) (string, error) {
+	access := ParseResourceActions(scope)
+	for _, a := range access {
+		FilterAccess(username, true, a)
+	}
+	return MakeToken(config, username, service, access)
+}
