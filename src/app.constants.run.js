@@ -9,12 +9,12 @@
             success: 0,
             dataInvalid: 10001,
             noExist: 10009,
-            needActive: 11005,
-            needLicence: 11011,
             unknow: 10000
         };
 
-        $rootScope.CODE_MESSAGE = {};
+        $rootScope.CODE_MESSAGE = {
+            1: '系统自带网络,无法删除'
+        };
 
         $rootScope.STACK_DEFAULT = {
             JsonObj: {

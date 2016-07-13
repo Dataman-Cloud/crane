@@ -8,7 +8,6 @@
     function NetworkListCtrl(networks, networkCurd) {
         var self = this;
         self.networks = networks;
-        console.log(networks);
 
         self.deleteNetwork = deleteNetwork;
         self.connectNetwork = connectNetwork;

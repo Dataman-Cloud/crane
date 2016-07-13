@@ -11,7 +11,6 @@
             'ngSanitize',
             'app.utils',
             'app.stack',
-            'app.app',
             'app.node',
             'app.network'
         ]);
