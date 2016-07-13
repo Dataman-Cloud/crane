@@ -30,3 +30,9 @@
   ```bash
   docker swarm join --manager --listen-addr $(hostname -i):2377 $FIRST_MANAGER_IP:2377
   ```
+
+3. 以 worker 角色加入 swarm 集群
+
+  ```bash
+  docker swarm join --listen-addr $(hostname -i):2377 $FIRST_MANAGER_IP:2377
+  ```
