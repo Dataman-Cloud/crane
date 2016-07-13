@@ -25,6 +25,9 @@ func (registry *Registry) RegistryAPIGet(path, username string) ([]byte, error) 
 		return result, nil
 	} else if response.StatusCode == http.StatusUnauthorized {
 		authenticate := response.Header.Get("WWW-Authenticate")
+		if len(strings.Split(authenticate, " ")) < 2 {
+			return nil, errors.New("malformat WWW-Authenticate header")
+		}
 		str := strings.Split(authenticate, " ")[1]
 		var service string
 		var scope string
@@ -35,6 +38,13 @@ func (registry *Registry) RegistryAPIGet(path, username string) ([]byte, error) 
 			} else if strings.Contains(s, "scope") {
 				scope = s
 			}
+		}
+
+		if len(strings.Split(service, "\"")) < 2 {
+			return nil, errors.New("malformat service")
+		}
+		if len(strings.Split(scope, "\"")) < 2 {
+			return nil, errors.New("malformat scope")
 		}
 		service = strings.Split(service, "\"")[1]
 		scope = strings.Split(scope, "\"")[1]
