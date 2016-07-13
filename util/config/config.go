@@ -26,6 +26,7 @@ type Config struct {
 
 	//registry
 	RegistryPrivateKeyPath string
+	RegistryAddr           string
 }
 
 func (c *Config) FeatureEnabled(feature string) bool {
@@ -48,6 +49,7 @@ type EnvEntry struct {
 	ROLEX_DB_DSN                    string `required:"true"`
 	ROLEX_FEATURE_FLAGS             string `required:"false"`
 	ROLEX_REGISTRY_PRIVATE_KEY_PATH string `required:"false"`
+	ROLEX_REGISTRY_ADDR             string `required:"false"`
 }
 
 func InitConfig(envFile string) *Config {
@@ -64,6 +66,7 @@ func InitConfig(envFile string) *Config {
 	config.FeatureFlags = strings.SplitN(envEntry.ROLEX_FEATURE_FLAGS, ",", -1)
 
 	config.RegistryPrivateKeyPath = envEntry.ROLEX_REGISTRY_PRIVATE_KEY_PATH
+	config.RegistryAddr = envEntry.ROLEX_REGISTRY_ADDR
 	return &config
 }
 
