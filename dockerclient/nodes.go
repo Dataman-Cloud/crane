@@ -9,7 +9,7 @@ import (
 )
 
 // NodeList returns the list of nodes.
-func (client *RolexDockerClient) NodeList(opts types.NodeListOptions) ([]swarm.Node, error) {
+func (client *RolexDockerClient) ListNode(opts types.NodeListOptions) ([]swarm.Node, error) {
 	var nodes []swarm.Node
 
 	content, err := client.HttpGet("nodes")
@@ -25,7 +25,7 @@ func (client *RolexDockerClient) NodeList(opts types.NodeListOptions) ([]swarm.N
 }
 
 // Inspect node returns the single node.
-func (client *RolexDockerClient) NodeInspect(nodeId string) (swarm.Node, error) {
+func (client *RolexDockerClient) InspectNode(nodeId string) (swarm.Node, error) {
 	var node swarm.Node
 
 	content, err := client.HttpGet(path.Join("nodes", nodeId))
@@ -41,7 +41,7 @@ func (client *RolexDockerClient) NodeInspect(nodeId string) (swarm.Node, error) 
 }
 
 // Remove a single node
-func (client *RolexDockerClient) NodeRemove(nodeId string) error {
+func (client *RolexDockerClient) RemoveNode(nodeId string) error {
 	_, err := client.HttpDelete(path.Join("nodes", nodeId))
 	if err != nil {
 		return err

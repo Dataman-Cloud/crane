@@ -64,3 +64,18 @@ func (api *Api) InspectStack(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": bundle})
 	return
 }
+
+func (api *Api) ListStackService(ctx *gin.Context) {
+	namespace := ctx.Param("name")
+
+	servicesStatus, err := api.GetDockerClient().ListStackService(namespace)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, err.Error())
+		log.Error("ListStackService got error: ", err)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": servicesStatus})
+	return
+
+}
