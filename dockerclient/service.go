@@ -2,6 +2,9 @@ package dockerclient
 
 import (
 	"encoding/json"
+	"fmt"
+	"net/url"
+	"strconv"
 	"strings"
 	"time"
 
@@ -21,6 +24,12 @@ type ServiceStatus struct {
 	UpdatedAt   time.Time `json:"UpdatedAt"`
 }
 
+// Service scale instance
+type ServiceScale struct {
+	Name  string `json:"Name"`
+	Scale uint64 `json:"Scale"`
+}
+
 const (
 	TaskRunningState = "running"
 )
@@ -33,7 +42,7 @@ func (client *RolexDockerClient) CreateService(service swarm.ServiceSpec, option
 		return response, err
 	}
 
-	content, err := client.HttpPost("services/create", serviceParam)
+	content, err := client.HttpPost("services/create", nil, serviceParam, nil)
 	if err != nil {
 		return response, err
 	}
@@ -70,6 +79,7 @@ func (client *RolexDockerClient) ListService(options types.ServiceListOptions) (
 	return client.GetServicesStatus(services)
 }
 
+// GetServicesStatus list services running status
 func (client *RolexDockerClient) GetServicesStatus(services []swarm.Service) ([]ServiceStatus, error) {
 	var servicesSt []ServiceStatus
 
@@ -134,10 +144,44 @@ func (client *RolexDockerClient) UpdateService(serviceID string, version swarm.V
 		return err
 	}
 
-	_, err = client.HttpPost("services/"+serviceID+"/update", serviceParam)
+	query := url.Values{}
+	query.Set("version", strconv.FormatUint(version.Index, 10))
+	_, err = client.HttpPost("services/"+serviceID+"/update", query, serviceParam, nil)
 	if err != nil {
 		return err
 	}
 
 	return nil
+}
+
+// ScaleService update service replicas
+func (client *RolexDockerClient) ScaleService(serviceScale ServiceScale) error {
+	service, err := client.InspectServiceWithRaw(serviceScale.Name)
+	if err != nil {
+		return err
+	}
+
+	serviceMode := &service.Spec.Mode
+	if serviceMode.Replicated == nil {
+		return fmt.Errorf("scale can only be used with replicated mode")
+	}
+	serviceMode.Replicated.Replicas = &serviceScale.Scale
+
+	return client.UpdateService(service.ID, service.Version, service.Spec, nil)
+}
+
+// InspectServiceWithRaw returns the service information and the raw data.
+func (client *RolexDockerClient) InspectServiceWithRaw(serviceID string) (swarm.Service, error) {
+	var service swarm.Service
+
+	content, err := client.HttpGet("/services/" + serviceID)
+	if err != nil {
+		return service, err
+	}
+
+	if err := json.Unmarshal(content, &service); err != nil {
+		return service, err
+	}
+
+	return service, nil
 }

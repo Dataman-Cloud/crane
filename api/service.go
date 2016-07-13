@@ -3,9 +3,13 @@ package api
 import (
 	"net/http"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/docker/engine-api/types"
 	"github.com/docker/engine-api/types/swarm"
 	"github.com/gin-gonic/gin"
+
+	"github.com/Dataman-Cloud/rolex/dockerclient"
+	"github.com/Dataman-Cloud/rolex/util"
 )
 
 func (api *Api) InspectService(ctx *gin.Context) {}
@@ -50,6 +54,24 @@ func (api *Api) RemoveService(ctx *gin.Context) {
 
 	if err := api.GetDockerClient().RemoveService(serviceID); err != nil {
 		ctx.JSON(http.StatusServiceUnavailable, err.Error())
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": "success"})
+	return
+}
+
+func (api *Api) ScaleService(ctx *gin.Context) {
+	var serviceScale dockerclient.ServiceScale
+	if err := ctx.BindJSON(&serviceScale); err != nil {
+		log.Error("Scale service got error: ", err)
+		ctx.JSON(http.StatusBadRequest, gin.H{"code": util.PARAMETER_ERROR, "data": err.Error()})
+		return
+	}
+
+	if err := api.GetDockerClient().ScaleService(serviceScale); err != nil {
+		log.Error("Scale service got error: ", err)
+		ctx.JSON(http.StatusBadRequest, gin.H{"code": util.PARAMETER_ERROR, "data": err.Error()})
 		return
 	}
 
