@@ -2,9 +2,27 @@ package dockerclient
 
 import (
 	"encoding/json"
+	"fmt"
+	"strings"
+	"time"
 
 	"github.com/docker/engine-api/types"
+	"github.com/docker/engine-api/types/filters"
 	"github.com/docker/engine-api/types/swarm"
+)
+
+type ServiceStatus struct {
+	ID        string    `json:"ID"`
+	Name      string    `json:"Name"`
+	Repliacs  string    `json:"Repliacs"`
+	Image     string    `josn:"Images"`
+	Command   string    `josn:"Command"`
+	CreatedAt time.Time `json:"CreatedAt"`
+	UpdatedAt time.Time `json:"UpdatedAt"`
+}
+
+const (
+	TaskRunningState = "running"
 )
 
 // ServiceCreate creates a new Service.
@@ -27,8 +45,8 @@ func (client *RolexDockerClient) CreateService(service swarm.ServiceSpec, option
 	return response, nil
 }
 
-// ServiceList returns the list of services.
-func (client *RolexDockerClient) ListService(options types.ServiceListOptions) ([]swarm.Service, error) {
+// ServiceList returns the list of services config
+func (client *RolexDockerClient) ListServiceConfig(options types.ServiceListOptions) ([]swarm.Service, error) {
 	var services []swarm.Service
 	content, err := client.HttpGet("/services")
 	if err != nil {
@@ -40,6 +58,72 @@ func (client *RolexDockerClient) ListService(options types.ServiceListOptions) (
 	}
 
 	return services, nil
+}
+
+// ListService return the list of service staus and core config
+func (client *RolexDockerClient) ListService(options types.ServiceListOptions) ([]ServiceStatus, error) {
+	services, err := client.ListServiceConfig(options)
+	if err != nil {
+		return nil, err
+	}
+
+	return client.GetServicesStatus(services)
+}
+
+func (client *RolexDockerClient) GetServicesStatus(services []swarm.Service) ([]ServiceStatus, error) {
+	var servicesSt []ServiceStatus
+
+	taskFilter := filters.NewArgs()
+	for _, service := range services {
+		taskFilter.Add("service", service.ID)
+	}
+
+	tasks, err := client.ListTasks(types.TaskListOptions{Filter: taskFilter})
+	if err != nil {
+		return servicesSt, err
+	}
+
+	nodes, err := client.ListNode(types.NodeListOptions{})
+	if err != nil {
+		return servicesSt, err
+	}
+
+	activeNodes := make(map[string]struct{})
+	for _, node := range nodes {
+		if node.Status.State == swarm.NodeStateReady {
+			activeNodes[node.ID] = struct{}{}
+		}
+	}
+
+	running := map[string]int{}
+	for _, task := range tasks {
+		if _, nodeActive := activeNodes[task.NodeID]; nodeActive && task.Status.State == TaskRunningState {
+			running[task.ServiceID]++
+		}
+	}
+
+	for _, service := range services {
+		repliacs := ""
+		if service.Spec.Mode.Replicated != nil && service.Spec.Mode.Replicated.Replicas != nil {
+			repliacs = fmt.Sprintf("%d/%d", running[service.ID], *service.Spec.Mode.Replicated.Replicas)
+		} else if service.Spec.Mode.Global != nil {
+			repliacs = "global"
+		}
+
+		serviceSt := ServiceStatus{
+			ID:        service.ID,
+			Name:      service.Spec.Name,
+			Repliacs:  repliacs,
+			Image:     service.Spec.TaskTemplate.ContainerSpec.Image,
+			Command:   strings.Join(service.Spec.TaskTemplate.ContainerSpec.Args, " "),
+			CreatedAt: service.CreatedAt,
+			UpdatedAt: service.UpdatedAt,
+		}
+
+		servicesSt = append(servicesSt, serviceSt)
+	}
+
+	return servicesSt, nil
 }
 
 // ServiceRemove kills and removes a service.

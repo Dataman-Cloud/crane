@@ -48,6 +48,7 @@ func (api *Api) ApiRouter() *gin.Engine {
 		v1.POST("/stacks", api.CreateStack)
 		v1.GET("/stacks", api.ListStack)
 		v1.GET("/stacks/:name", api.InspectStack)
+		v1.GET("/stacks/:name/services", api.ListStackService)
 	}
 
 	return router
