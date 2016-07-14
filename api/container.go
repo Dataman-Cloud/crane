@@ -31,7 +31,7 @@ func (api *Api) CreateContainer(ctx *gin.Context) {}
 func (api *Api) UpdateContainer(ctx *gin.Context) {}
 
 func (api *Api) RemoveContainer(ctx *gin.Context) {
-	opts := goclient.RemoveContainerOptions{ID: ctx.Param("container_id")}
+	opts := goclient.RemoveContainerOptions{ID: ctx.Param("container_id"), Force: true}
 	err := api.GetDockerClient().RemoveContainer(opts)
 	if err != nil {
 		ctx.JSON(http.StatusServiceUnavailable, err.Error())
@@ -39,4 +39,25 @@ func (api *Api) RemoveContainer(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{"code": 0})
+}
+
+func (api *Api) KillContainer(ctx *gin.Context) {
+	opts := goclient.KillContainerOptions{ID: ctx.Param("container_id")}
+	err := api.GetDockerClient().KillContainer(opts)
+	if err != nil {
+		ctx.JSON(http.StatusServiceUnavailable, err.Error())
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"code": 0})
+}
+
+func (api *Api) DiffContainer(ctx *gin.Context) {
+	changes, err := api.GetDockerClient().DiffContainer(ctx.Param("container_id"))
+	if err != nil {
+		ctx.JSON(http.StatusServiceUnavailable, err.Error())
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"code": changes})
 }

@@ -36,6 +36,9 @@ func (api *Api) ApiRouter() *gin.Engine {
 
 		v1.GET("/nodes/:id/containers", api.ListContainers)
 		v1.GET("/nodes/:id/containers/:container_id", api.InspectContainer)
+		v1.GET("/nodes/:id/containers/:container_id/diff", api.DiffContainer)
+		v1.DELETE("/nodes/:id/containers/:container_id", api.RemoveContainer)
+		v1.DELETE("/nodes/:id/containers/:container_id/kill", api.KillContainer)
 
 		v1.POST("/networks", api.CreateNetwork)
 		v1.GET("/networks", api.ListNetworks)
