@@ -46,6 +46,7 @@ func (api *Api) ApiRouter() *gin.Engine {
 		v1.POST("/stacks", api.CreateStack)
 		v1.GET("/stacks", api.ListStack)
 		v1.GET("/stacks/:namespace", api.InspectStack)
+		v1.DELETE("/stacks/:namespace", api.RemoveStack)
 		v1.PATCH("/stacks/:namespace/services/:serviceID", api.ScaleService)
 		v1.GET("/stacks/:namespace/services", api.ListStackService)
 	}
