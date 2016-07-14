@@ -11,7 +11,8 @@
             listStacks: listStacks,
             getStack: getStack,
             listStackServices: listStackServices,
-            upServiceScale: upServiceScale
+            upServiceScale: upServiceScale,
+            deleteStack: deleteStack
         };
         
         function createStack(data, form) {
@@ -24,6 +25,10 @@
         
         function getStack(stackName) {
             return gHttp.Resource('stack.stack', {stack_name: stackName}).get(); 
+        }
+        
+        function deleteStack(stackName) {
+            return gHttp.Resource('stack.stack', {stack_name: stackName}).delete();
         }
         
         function listStackServices(stackName) {

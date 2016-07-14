@@ -5,9 +5,11 @@
 
 
     /* @ngInject */
-    function StackListCtrl(stacks, stackBackend) {
+    function StackListCtrl(stacks, stackCurd) {
         var self = this;
         
         self.stacks = stacks
+        
+        self.deleteStack = stackCurd.deleteStack;
     }
 })();
