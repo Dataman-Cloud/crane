@@ -23,4 +23,9 @@ type DockerClientInterface interface {
 	InspectNetwork(id string) (*goclient.Network, error)
 	ListNetworks(opts goclient.NetworkFilterOpts) ([]goclient.Network, error)
 	RemoveNetwork(id string) error
+
+	InspectVolume(nodeId, name string) (*goclient.Volume, error)
+	ListVolumes(nodeId string, opts goclient.ListVolumesOptions) ([]goclient.Volume, error)
+	CreateVolume(nodeId string, opts goclient.CreateVolumeOptions) (*goclient.Volume, error)
+	RemoveVolume(nodeId string, name string) error
 }
