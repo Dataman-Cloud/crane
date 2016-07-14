@@ -48,6 +48,11 @@ func (api *Api) ApiRouter() *gin.Engine {
 		v1.GET("/stacks/:namespace", api.InspectStack)
 		v1.PATCH("/stacks/:namespace/services/:serviceID", api.ScaleService)
 		v1.GET("/stacks/:namespace/services", api.ListStackService)
+
+		v1.DELETE("/volumes/:node_id/:name", api.RemoveVolume)
+		v1.GET("/volumes/:node_id/:name", api.InspectVolume)
+		v1.GET("/volumes/:node_id", api.ListVolume)
+		v1.POST("/volumes/:node_id", api.CreateVolume)
 	}
 
 	misc := router.Group("/misc/v1")
