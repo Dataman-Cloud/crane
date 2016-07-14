@@ -43,7 +43,7 @@
 *  IPAM - 选择自定义IP组合network
 *  EnableIPv6 - 启动IPv6
 *  Options - network驱动特殊选项
-*  Lables - network标签，规定map结构:{"key":"value" [,"key2":"value2"]}
+*  Lables - network标签，规定map结构:{"key":"value" ,"key2":"value2"}
 
 |选项|等价|描述|
 | ---------------------------------------------- | ------- | --------------------------------- |
@@ -52,3 +52,4 @@
 |com.docker.network.bridge.enable_icc            |--icc    |开启或关闭内部container连通性      |
 |com.docker.network.bridge.host_binding_ipv4     |--ip     |绑定端口时的默认IP                 |
 |com.docker.network.mtu                          |--mtu    |设置container网络MTU               |
+
