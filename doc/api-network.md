@@ -37,6 +37,7 @@ curl -XPOST -H "Content-Type: application/json" localhost:2375/networks -d '{
   "Driver":"bridge",
   "EnableIPv6": true,
   "IPAM":{
+    "Driver": "default",
     "Config":[
        {
           "Subnet":"172.20.0.0/16",
