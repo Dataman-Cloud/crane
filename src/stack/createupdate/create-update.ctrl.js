@@ -26,7 +26,7 @@
             }
         };
 
-        self.stack = angular.toJson($rootScope.STACK_DEFAULT.JsonObj, '\t') || "";
+        self.stack = angular.toJson($rootScope.STACK_SAMPLES.singleService, '\t') || "";
 
         self.form = {
             Namespace: "",
