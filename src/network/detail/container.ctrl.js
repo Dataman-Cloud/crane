@@ -1,10 +1,10 @@
 (function () {
     'use strict';
     angular.module('app.network')
-        .controller('NetworkServiceCtrl', NetworkServiceCtrl);
+        .controller('NetworkContainerCtrl', NetworkContainerCtrl);
 
     /* @ngInject */
-    function NetworkServiceCtrl() {
+    function NetworkContainerCtrl() {
         var self = this;
 
     }

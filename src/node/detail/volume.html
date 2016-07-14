@@ -1,0 +1,31 @@
+<md-table-container>
+    <table md-table>
+        <thead md-head>
+        <tr md-row>
+            <th md-column>储存卷</th>
+            <th md-column>驱动</th>
+            <th md-column>服务</th>
+            <th md-column>主机名称</th>
+            <th md-column>挂载点</th>
+            <th md-column>操作</th>
+        </tr>
+        </thead>
+        <tbody md-body>
+        <tr md-row ng-repeat="volume in [{},{}]">
+            <td md-cell>0021d739</td>
+            <td md-cell>local</td>
+            <td md-cell>-</td>
+            <td md-cell>-</td>
+            <td md-cell>/data/docker/volumes/00</td>
+            <td md-cell>
+                <md-button aria-label="delete" class="md-button md-raised">
+                    删除
+                </md-button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="alert alert-warning text-center" data-ng-if="false">
+        未查询到储存卷信息
+    </div>
+</md-table-container>
