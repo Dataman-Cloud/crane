@@ -138,7 +138,7 @@ func (client *RolexDockerClient) GetServicesStatus(services []swarm.Service) ([]
 
 // ServiceRemove kills and removes a service.
 func (client *RolexDockerClient) RemoveService(serviceID string) error {
-	_, err := client.HttpDelete("/services" + serviceID)
+	_, err := client.HttpDelete("services/" + serviceID)
 	return err
 }
 

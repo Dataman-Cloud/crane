@@ -8,10 +8,10 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/Dataman-Cloud/rolex/dockerclient"
+	"github.com/Dataman-Cloud/rolex/util"
 )
 
 func (api *Api) UpdateStack(ctx *gin.Context) {}
-func (api *Api) RemoveStack(ctx *gin.Context) {}
 
 func (api *Api) CreateStack(ctx *gin.Context) {
 	stackBundle := dockerclient.Bundle{}
@@ -77,5 +77,16 @@ func (api *Api) ListStackService(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": servicesStatus})
 	return
+}
 
+func (api *Api) RemoveStack(ctx *gin.Context) {
+	namespace := ctx.Param("namespace")
+	if err := api.GetDockerClient().RemoveStack(namespace); err != nil {
+		log.Error("Remove stack got error: ", err)
+		ctx.JSON(http.StatusBadRequest, gin.H{"code": util.PARAMETER_ERROR, "data": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": "remove" + namespace + "success"})
+	return
 }

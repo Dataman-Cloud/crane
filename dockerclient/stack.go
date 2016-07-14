@@ -79,6 +79,53 @@ func (client *RolexDockerClient) ListStack() ([]Stack, error) {
 
 // ListStackServices return list of service staus and core config in stack
 func (client *RolexDockerClient) ListStackService(namespace string) ([]ServiceStatus, error) {
+	services, err := client.FilterServiceByStack(namespace)
+	if err != nil {
+		return nil, err
+	}
+
+	return client.GetServicesStatus(services)
+}
+
+// Inspect stack get stack info
+func (client *RolexDockerClient) InspectStack(namespace string) (*Bundle, error) {
+	services, err := client.FilterServiceByStack(namespace)
+	if err != nil {
+		return nil, err
+	}
+
+	stackServices := make(map[string]bundlefile.Service)
+	for _, swarmService := range services {
+		stackServices[swarmService.Spec.Name] = client.ConvertStackService(swarmService.Spec)
+	}
+
+	return &Bundle{
+		Namespace: namespace,
+		Stack: bundlefile.Bundlefile{
+			Services: stackServices,
+		},
+		//TODO stack version is missing
+	}, nil
+}
+
+// RemoceStack remove all service under the stack
+func (client *RolexDockerClient) RemoveStack(namespace string) error {
+	services, err := client.FilterServiceByStack(namespace)
+	if err != nil {
+		return err
+	}
+
+	for _, service := range services {
+		if err := client.RemoveService(service.ID); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+// filter service by stack name
+func (client *RolexDockerClient) FilterServiceByStack(namespace string) ([]swarm.Service, error) {
 	filter := filters.NewArgs()
 	filter.Add("label", labelNamespace)
 	services, err := client.ListServiceSpec(types.ServiceListOptions{Filter: filter})
@@ -102,37 +149,7 @@ func (client *RolexDockerClient) ListStackService(namespace string) ([]ServiceSt
 		stackServices = append(stackServices, service)
 	}
 
-	return client.GetServicesStatus(stackServices)
-}
-
-// Inspect stack get stack info
-func (client *RolexDockerClient) InspectStack(namespace string) (*Bundle, error) {
-	filter := filters.NewArgs()
-	filter.Add("label", labelNamespace)
-	services, err := client.ListServiceSpec(types.ServiceListOptions{Filter: filter})
-	if err != nil {
-		return nil, err
-	}
-
-	stackServices := make(map[string]bundlefile.Service)
-	for _, swarmService := range services {
-		labels := swarmService.Spec.Labels
-		name, ok := labels[labelNamespace]
-		if !ok || name != namespace {
-			log.Errorf("Cannot get label %s for service %s", labelNamespace, swarmService.ID)
-			continue
-		}
-
-		stackServices[swarmService.Spec.Name] = client.ConvertStackService(swarmService.Spec)
-	}
-
-	return &Bundle{
-		Namespace: namespace,
-		Stack: bundlefile.Bundlefile{
-			Services: stackServices,
-		},
-		//TODO stack version is missing
-	}, nil
+	return stackServices, nil
 }
 
 // convert swarm service to bundle service
