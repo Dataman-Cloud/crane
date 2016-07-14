@@ -34,6 +34,16 @@
                 url: '/container',
                 templateUrl: '/src/node/detail/container.html',
                 controller: 'NodeContainerCtrl as nodeContainerCtrl'
+            })
+            .state('node.detail.network', {
+                url: '/network',
+                templateUrl: '/src/node/detail/network.html',
+                controller: 'NodeNetworkCtrl as nodeNetworkCtrl'
+            })
+            .state('node.detail.volume', {
+                url: '/volume',
+                templateUrl: '/src/node/detail/volume.html',
+                controller: 'NodeVolumeCtrl as nodeVolumeCtrl'
             });
 
         /* @ngInject */

@@ -4,28 +4,32 @@
         <tr md-row>
             <th md-column>容器名称</th>
             <th md-column>服务</th>
-            <th md-column>创建时间</th>
-            <th md-column>端口</th>
+            <th md-column>IP/别名</th>
+            <th md-column>镜像</th>
             <th md-column>状态</th>
             <th md-column>操作</th>
         </tr>
         </thead>
         <tbody md-body>
         <tr md-row ng-repeat="container in [{},{}]">
-            <td md-cell>aaa</td>
-            <td md-cell>bbb</td>
-            <td md-cell>2016.7.14</td>
+            <td md-cell>high_leavitt</td>
             <td md-cell>-</td>
-            <td md-cell>运行中</td>
+            <td md-cell>172.17.0.2</td>
+            <td md-cell>rancher/server</td>
+            <td md-cell>Up</td>
             <td md-cell>
                 <md-menu md-offset="0 -5">
-                    <md-button aria-label="containerListMenu" class="md-button md-raised"
+                    <md-button aria-label="networkContainerMenu" class="md-button md-raised"
                                ng-click="$mdOpenMenu($event)">
                         <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
                     </md-button>
                     <md-menu-content width="2">
                         <md-menu-item>
-                            <md-button aria-label="delete">删除
+                            <md-button aria-label="Connect">连接
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button aria-label="Disconnect">断开
                             </md-button>
                         </md-menu-item>
                     </md-menu-content>

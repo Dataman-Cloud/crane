@@ -28,12 +28,12 @@
                 url: '/detail/:network_id',
                 templateUrl: '/src/network/detail/detail.html',
                 controller: 'NetworkDetailCtrl as NetworkDetailCtrl',
-                targetState: 'service'
+                targetState: 'container'
             })
-            .state('network.detail.service', {
-                url: '/service',
-                templateUrl: '/src/network/detail/service.html',
-                controller: 'NetworkServiceCtrl as networkServiceCtrl'
+            .state('network.detail.container', {
+                url: '/container',
+                templateUrl: '/src/network/detail/container.html',
+                controller: 'NetworkContainerCtrl as networkContainerCtrl'
             });
 
         /* @ngInject */

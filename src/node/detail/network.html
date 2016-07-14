@@ -2,24 +2,24 @@
     <table md-table>
         <thead md-head>
         <tr md-row>
-            <th md-column>容器名称</th>
-            <th md-column>服务</th>
-            <th md-column>创建时间</th>
-            <th md-column>端口</th>
-            <th md-column>状态</th>
+            <th md-column>网络名称</th>
+            <th md-column>应用</th>
+            <th md-column>作用范围</th>
+            <th md-column>类型</th>
+            <th md-column>容器数</th>
             <th md-column>操作</th>
         </tr>
         </thead>
         <tbody md-body>
-        <tr md-row ng-repeat="container in [{},{}]">
-            <td md-cell>aaa</td>
-            <td md-cell>bbb</td>
-            <td md-cell>2016.7.14</td>
+        <tr md-row ng-repeat="network in [{},{}]">
+            <td md-cell>host</td>
             <td md-cell>-</td>
-            <td md-cell>运行中</td>
+            <td md-cell>local</td>
+            <td md-cell>host</td>
+            <td md-cell>1</td>
             <td md-cell>
                 <md-menu md-offset="0 -5">
-                    <md-button aria-label="containerListMenu" class="md-button md-raised"
+                    <md-button aria-label="nodeNetworkMenu" class="md-button md-raised"
                                ng-click="$mdOpenMenu($event)">
                         <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
                     </md-button>
@@ -35,6 +35,6 @@
         </tbody>
     </table>
     <div class="alert alert-warning text-center" data-ng-if="false">
-        未查询到容器信息
+        未查询到网络信息
     </div>
 </md-table-container>
