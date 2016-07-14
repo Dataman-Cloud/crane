@@ -11,11 +11,11 @@
         <tbody md-body>
         <tr md-row ng-repeat="service in stackServiceCtrl.services">
             <td md-cell>{/service.Name/}</td>
-            <td md-cell>{/service.Image/}</td>
+            <td md-cell>{/service.Images/}</td>
             <td md-cell>{/service.TaskRunning/}/{/service.TaskTotal/}</td>
             <td md-cell>
                 <md-button aria-label="start" class="md-button md-raised"
-                           data-ng-click="">
+                           data-ng-click="stackServiceCtrl.upServiceScale($event, stackDetailCtrl.stack.Namespace, service.Name, service.TaskTotal)">
                     扩缩
                 </md-button>
             </td>
