@@ -33,7 +33,7 @@ func (client *RolexDockerClient) SwarmClient() *goclient.Client {
 
 func (client *RolexDockerClient) DockerClient(nodeId string) *goclient.Client {
 	//TODO connect to a docker node
-	return client.dockerClient
+	return client.swarmClient
 }
 
 func (client *RolexDockerClient) Ping() error {
