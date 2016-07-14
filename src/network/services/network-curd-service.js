@@ -8,7 +8,7 @@
 
 
     /* @ngInject */
-    function networkCurd(networkBackend, $state, confirmModal) {
+    function networkCurd(networkBackend, $state, confirmModal, Notification) {
         //////
         return {
             create: create,
@@ -28,6 +28,7 @@
             confirmModal.open("是否确认删除该网络？").then(function () {
                 networkBackend.deleteNetwork(id)
                     .then(function (data) {
+                        Notification.success('删除成功');
                         $state.reload()
                     })
             });

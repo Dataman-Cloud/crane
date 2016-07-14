@@ -4,8 +4,9 @@
         .run(run);
 
     /*@ngInject*/
-    function run($state, $rootScope) {
+    function run($state, $rootScope, $stateParams) {
         $rootScope.$state = $state;
+        $rootScope.$stateParams = $stateParams;
         $rootScope.Math = Math;
 
         $rootScope.$on('$stateChangeStart',

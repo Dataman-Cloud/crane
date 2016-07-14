@@ -1,3 +1,11 @@
+<md-toolbar class="md-table-toolbar md-default">
+    <div class="md-toolbar-tools">
+        <form flex name="filter">
+            <input type="text" ng-model="nodeVolumeCtrl.filter" placeholder="搜索">
+        </form>
+    </div>
+</md-toolbar>
+
 <md-table-container>
     <table md-table>
         <thead md-head>
@@ -11,21 +19,30 @@
         </tr>
         </thead>
         <tbody md-body>
-        <tr md-row ng-repeat="volume in [{},{}]">
-            <td md-cell>0021d739</td>
-            <td md-cell>local</td>
-            <td md-cell>-</td>
-            <td md-cell>-</td>
-            <td md-cell>/data/docker/volumes/00</td>
+        <tr md-row ng-repeat="volume in nodeVolumeCtrl.volumes | filter: nodeVolumeCtrl.filter">
             <td md-cell>
-                <md-button aria-label="delete" class="md-button md-raised">
+                <div style="max-width: 200px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
+                    {/volume.Name/}
+                </div>
+            </td>
+            <td md-cell>{/volume.Driver/}</td>
+            <td md-cell>-</td>
+            <td md-cell>-</td>
+            <td md-cell>
+                <div style="max-width: 200px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
+                    {/volume.Mountpoint/}
+                </div>
+            </td>
+            <td md-cell>
+                <md-button aria-label="delete" class="md-button md-raised"
+                           data-ng-click="nodeVolumeCtrl.deleteVolume(volume.Name)">
                     删除
                 </md-button>
             </td>
         </tr>
         </tbody>
     </table>
-    <div class="alert alert-warning text-center" data-ng-if="false">
+    <div class="alert alert-warning text-center" data-ng-if="!nodeVolumeCtrl.volumes.length">
         未查询到储存卷信息
     </div>
 </md-table-container>
