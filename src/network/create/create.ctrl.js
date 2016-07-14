@@ -13,7 +13,8 @@
             "Driver": "bridge",
             "EnableIPv6": false,
             "IPAM": {
-                Config: []
+                "Driver": "default",
+                "Config": []
             },
             "Internal": true,
             "Options": {},
