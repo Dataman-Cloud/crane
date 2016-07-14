@@ -108,7 +108,7 @@ func (client *RolexDockerClient) InspectStack(namespace string) (*Bundle, error)
 	}, nil
 }
 
-// RemoceStack remove all service under the stack
+// RemoveStack remove all service under the stack
 func (client *RolexDockerClient) RemoveStack(namespace string) error {
 	services, err := client.FilterServiceByStack(namespace)
 	if err != nil {

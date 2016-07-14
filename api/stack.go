@@ -87,6 +87,6 @@ func (api *Api) RemoveStack(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": "remove" + namespace + "success"})
+	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": "removed" + namespace + "success"})
 	return
 }
