@@ -28,7 +28,6 @@ func (api *Api) ApiRouter() *gin.Engine {
 
 	v1 := router.Group("/api/v1", middlewares.Authorization)
 	{
-		v1.GET("/health", api.HealthCheck)
 		v1.GET("/nodes", api.ListNodes)
 		v1.GET("/nodes/:id", api.InspectNode)
 
@@ -49,6 +48,13 @@ func (api *Api) ApiRouter() *gin.Engine {
 		v1.GET("/stacks/:namespace", api.InspectStack)
 		v1.PATCH("/stacks/:namespace/services/:serviceID", api.ScaleService)
 		v1.GET("/stacks/:namespace/services", api.ListStackService)
+	}
+
+	misc := router.Group("/misc/v1")
+	{
+		misc.GET("/help", api.Help(router))
+		misc.GET("/config", api.RolexConfig)
+		misc.GET("/health", api.HealthCheck)
 	}
 
 	return router
