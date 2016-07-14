@@ -1,0 +1,39 @@
+<div class="main-container app-layout">
+    <section class="main-section">
+        <header layout="row" layout-align="end start">
+            <div class="info" flex>
+                <h2>网络名</h2>
+                <dl>
+                    <dt>创建时间</dt>
+                    <dd>xxxx</dd>
+                    <dt>子网掩码</dt>
+                    <dd>xxxxx</dd>
+                </dl>
+            </div>
+            <div layout-align="end center" class="operation">
+                <md-fab-speed-dial md-open="false" md-direction="left"
+                                   class="md-scale">
+                    <md-fab-trigger>
+                        <md-button aria-label="menu" class="md-fab md-mini">
+                            <md-tooltip md-direction="top">更多操作</md-tooltip>
+                            <i class="fa fa-ellipsis-h"></i>
+                        </md-button>
+                    </md-fab-trigger>
+                    <md-fab-actions>
+                        <md-button aria-label="start" class="md-fab md-raised md-mini"
+                                   data-ng-click="">
+                            <md-tooltip md-direction="top">删除</md-tooltip>
+                            <i class="fa fa-trash"></i>
+                        </md-button>
+                    </md-fab-actions>
+                </md-fab-speed-dial>
+            </div>
+        </header>
+        <md-content>
+            <md-tabs md-dynamic-height md-border-bottom>
+                <md-tab label="服务" dm-tab-sref="network.detail.service"></md-tab>
+            </md-tabs>
+            <md-content class="md-padding main-tab-content" ui-view>
+            </md-content>
+    </section>
+</div>

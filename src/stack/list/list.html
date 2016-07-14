@@ -14,6 +14,15 @@
             </div>
         </header>
         <div class="main-content">
+
+            <md-toolbar class="md-table-toolbar md-default">
+                <div class="md-toolbar-tools">
+                    <form flex name="filter">
+                        <input type="text" ng-model="stackListCtrl.filter" placeholder="搜索">
+                    </form>
+                </div>
+            </md-toolbar>
+
             <md-table-container>
                 <table md-table>
                     <thead md-head>
@@ -24,7 +33,7 @@
                     </tr>
                     </thead>
                     <tbody md-body>
-                    <tr md-row ng-repeat="stack in stackListCtrl.stacks">
+                    <tr md-row ng-repeat="stack in stackListCtrl.stacks | filter: stackListCtrl.filter">
                         <td md-cell>
                             <a data-ui-sref="stack.detail({stack_name: stack.Namespace})">{/stack.Namespace/}</a>
                         </td>

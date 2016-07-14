@@ -14,43 +14,55 @@
 
         <div class="main-content">
 
-            <!-- hide search
-                <md-toolbar class="md-table-toolbar md-default">
-                    <div class="md-toolbar-tools">
-                        <form flex name="filter.form">
-                            <input type="text" ng-model="nodeListCtrl.filter" placeholder="搜索"
-                                   my-enter="nodeListCtrl.table.doSearch(nodeListCtrl.filter)">
-                        </form>
-                    </div>
-                </md-toolbar>
-            -->
+            <md-toolbar class="md-table-toolbar md-default">
+                <div class="md-toolbar-tools">
+                    <form flex name="filter">
+                        <input type="text" ng-model="nodeListCtrl.filter" placeholder="搜索">
+                    </form>
+                </div>
+            </md-toolbar>
 
             <md-table-container>
                 <table md-table>
                     <thead md-head>
                     <tr md-row>
                         <th md-column>ID</th>
-                        <th md-column>创建时间</th>
-                        <th md-column>更新时间</th>
                         <th md-column>类型</th>
+                        <th md-column>创建时间</th>
                         <th md-column>Hostname</th>
                         <th md-column>OS</th>
                         <th md-column>状态</th>
+                        <th md-column>操作</th>
                     </tr>
                     </thead>
                     <tbody md-body>
-                    <tr md-row ng-repeat="node in nodeListCtrl.nodes">
-                        <td md-cell>{/node.ID/}</td>
-                        <td md-cell>{/node.CreatedAt/}</td>
-                        <td md-cell>{/node.UpdatedAt/}</td>
+                    <tr md-row ng-repeat="node in nodeListCtrl.nodes | filter: nodeListCtrl.filter">
+                        <td md-cell>
+                            <a data-ui-sref="node.detail({node_id: node.ID})">{/node.ID/}</a>
+                        </td>
                         <td md-cell>{/node.Spec.Role/}</td>
+                        <td md-cell>{/node.CreatedAt | date: 'yyyy-MM-dd HH:mm:ss'/}</td>
                         <td md-cell>{/node.Description.Hostname/}</td>
                         <td md-cell>{/node.Description.Platform.OS/}</td>
                         <td md-cell>{/node.Status.State/}</td>
+                        <td md-cell>
+                            <md-menu md-offset="0 -5">
+                                <md-button aria-label="nodeListMenu" class="md-button md-raised"
+                                           ng-click="$mdOpenMenu($event)">
+                                    <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                                </md-button>
+                                <md-menu-content width="2">
+                                    <md-menu-item>
+                                        <md-button aria-label="Connect">删除
+                                        </md-button>
+                                    </md-menu-item>
+                                </md-menu-content>
+                            </md-menu>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
-                <div class="alert alert-warning text-center" data-ng-if="false">
+                <div class="alert alert-warning text-center" data-ng-if="!nodeListCtrl.nodes.length">
                     未查询到主机信息
                 </div>
             </md-table-container>

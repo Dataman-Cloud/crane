@@ -14,16 +14,13 @@
 
         <div class="main-content">
 
-            <!-- hide search
-                <md-toolbar class="md-table-toolbar md-default">
-                    <div class="md-toolbar-tools">
-                        <form flex name="filter.form">
-                            <input type="text" ng-model="nodeListCtrl.filter" placeholder="搜索"
-                                   my-enter="nodeListCtrl.table.doSearch(nodeListCtrl.filter)">
-                        </form>
-                    </div>
-                </md-toolbar>
-            -->
+            <md-toolbar class="md-table-toolbar md-default">
+                <div class="md-toolbar-tools">
+                    <form flex name="filter">
+                        <input type="text" ng-model="networkListCtrl.filter" placeholder="搜索">
+                    </form>
+                </div>
+            </md-toolbar>
 
             <md-table-container>
                 <table md-table>
@@ -39,8 +36,10 @@
                     </tr>
                     </thead>
                     <tbody md-body>
-                    <tr md-row ng-repeat="network in networkListCtrl.networks">
-                        <td md-cell>{/network.Name/}</td>
+                    <tr md-row ng-repeat="network in networkListCtrl.networks | filter: networkListCtrl.filter">
+                        <td md-cell>
+                            <a data-ui-sref="network.detail({network_id: network.Id})">{/network.Name/}</a>
+                        </td>
                         <td md-cell>{/network.Driver/}</td>
                         <td md-cell>{/network.Internal/}</td>
                         <td md-cell>{/network.IPAM.Config[0].Subnet || '未配置'/}</td>
@@ -72,7 +71,7 @@
                     </tr>
                     </tbody>
                 </table>
-                <div class="alert alert-warning text-center" data-ng-if="false">
+                <div class="alert alert-warning text-center" data-ng-if="!networkListCtrl.networks.length">
                     未查询到网络信息
                 </div>
             </md-table-container>
