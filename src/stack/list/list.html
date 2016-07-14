@@ -41,13 +41,20 @@
                             {/stack.ServiceCount/}
                         </td>
                         <td md-cell>
-                            <md-button aria-label="delete" class="md-button md-raised">
+                            <md-button aria-label="delete" class="md-button md-raised" data-ng-click="stackListCtrl.deleteStack($event, stack.Namespace)">
                                 删除
+                            </md-button>
+                            <md-button aria-label="delete" class="md-button md-raised">
+                                编辑
                             </md-button>
                         </td>
                     </tr>
                     </tbody>
                 </table>
+                
+                <div class="alert alert-warning text-center" data-ng-if="stackListCtrl.stacks.length <= 0">
+                    未查询到编排信息
+                </div>
             </md-table-container>
         </div>
 
