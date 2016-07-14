@@ -8,7 +8,7 @@ import (
 )
 
 func (api *Api) InspectContainer(ctx *gin.Context) {
-	container, err := api.GetDockerClient().InspectContainer(ctx.Param("id"))
+	container, err := api.GetDockerClient().InspectContainer(ctx.Param("container_id"))
 	if err != nil {
 		ctx.JSON(http.StatusServiceUnavailable, err.Error())
 		return
@@ -31,7 +31,7 @@ func (api *Api) CreateContainer(ctx *gin.Context) {}
 func (api *Api) UpdateContainer(ctx *gin.Context) {}
 
 func (api *Api) RemoveContainer(ctx *gin.Context) {
-	opts := goclient.RemoveContainerOptions{ID: ctx.Param("id")}
+	opts := goclient.RemoveContainerOptions{ID: ctx.Param("container_id")}
 	err := api.GetDockerClient().RemoveContainer(opts)
 	if err != nil {
 		ctx.JSON(http.StatusServiceUnavailable, err.Error())
