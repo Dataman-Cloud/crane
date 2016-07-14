@@ -60,3 +60,13 @@ func (api *Api) LeaderNode(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, gin.H{"code": 1, "data": ""})
 }
+
+func (api *Api) Info(ctx *gin.Context) {
+	info, err := api.GetDockerClient().Info(ctx.Param("id"))
+	if err != nil {
+		ctx.JSON(http.StatusServiceUnavailable, err.Error())
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"code": 1, "data": info})
+}
