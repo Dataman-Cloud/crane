@@ -22,10 +22,10 @@ func (api *Api) InspectVolume(ctx *gin.Context) {
 func (api *Api) ListVolume(ctx *gin.Context) {
 	var opts goclient.ListVolumesOptions
 
-	if err := ctx.BindJSON(&opts); err != nil {
+	/*if err := ctx.BindJSON(&opts); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"code": util.PARAMETER_ERROR, "data": err.Error()})
 		return
-	}
+	}*/
 
 	volumes, err := api.GetDockerClient().ListVolumes(ctx.Param("node_id"), opts)
 	if err != nil {
