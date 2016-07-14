@@ -1,0 +1,36 @@
+<md-table-container>
+    <table md-table>
+        <thead md-head>
+        <tr md-row>
+            <th md-column>容器名称</th>
+            <th md-column>服务</th>
+            <th md-column>创建时间</th>
+            <th md-column>操作</th>
+        </tr>
+        </thead>
+        <tbody md-body>
+        <tr md-row ng-repeat="container in []">
+            <td md-cell>aaa</td>
+            <td md-cell>bbb</td>
+            <td md-cell>2016.7.14</td>
+            <td md-cell>
+                <md-menu md-offset="0 -5">
+                    <md-button aria-label="containerListMenu" class="md-button md-raised"
+                               ng-click="$mdOpenMenu($event)">
+                        <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                    </md-button>
+                    <md-menu-content width="2">
+                        <md-menu-item>
+                            <md-button aria-label="delete">删除
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="alert alert-warning text-center" data-ng-if="false">
+        未查询到容器信息
+    </div>
+</md-table-container>

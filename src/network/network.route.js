@@ -23,6 +23,17 @@
                 url: '/create',
                 templateUrl: '/src/network/create/create.html',
                 controller: 'NetworkCreateCtrl as networkCreateCtrl'
+            })
+            .state('network.detail', {
+                url: '/detail/:network_id',
+                templateUrl: '/src/network/detail/detail.html',
+                controller: 'NetworkDetailCtrl as NetworkDetailCtrl',
+                targetState: 'service'
+            })
+            .state('network.detail.service', {
+                url: '/service',
+                templateUrl: '/src/network/detail/service.html',
+                controller: 'NetworkServiceCtrl as networkServiceCtrl'
             });
 
         /* @ngInject */

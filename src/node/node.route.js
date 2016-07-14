@@ -23,6 +23,17 @@
                 url: '/create',
                 templateUrl: '/src/node/create/create.html',
                 controller: 'NodeCreateCtrl as nodeCreateCtrl'
+            })
+            .state('node.detail', {
+                url: '/detail/:node_id',
+                templateUrl: '/src/node/detail/detail.html',
+                controller: 'NodeDetailCtrl as nodeDetailCtrl',
+                targetState: 'container'
+            })
+            .state('node.detail.container', {
+                url: '/container',
+                templateUrl: '/src/node/detail/container.html',
+                controller: 'NodeContainerCtrl as nodeContainerCtrl'
             });
 
         /* @ngInject */
