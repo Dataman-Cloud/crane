@@ -1,5 +1,12 @@
 # Rolex Go for Dataman-inc
 
+## Open ports between the hosts
+
+- TCP port 2377 for cluster management communications
+- TCP and UDP port 7946 for communication among nodes
+- TCP and UDP port 4789 for overlay network traffic
+
+
 ## 代码 branch 规划
 
 - master 分支是 开发分支， review 过的代码会放到 master 分支， 大家共同维护。
