@@ -9,7 +9,7 @@
 
         self.form = {
             "Name": "",
-            "CheckDuplicate": false,
+            "CheckDuplicate": true,
             "Driver": "bridge",
             "EnableIPv6": false,
             "IPAM": {
