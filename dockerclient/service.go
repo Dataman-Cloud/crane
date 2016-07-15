@@ -56,7 +56,7 @@ func (client *RolexDockerClient) CreateService(service swarm.ServiceSpec, option
 // ServiceList returns the list of services config
 func (client *RolexDockerClient) ListServiceSpec(options types.ServiceListOptions) ([]swarm.Service, error) {
 	var services []swarm.Service
-	content, err := client.HttpGet("/services")
+	content, err := client.HttpGet("/services", nil, nil)
 	if err != nil {
 		return services, err
 	}
@@ -180,7 +180,7 @@ func (client *RolexDockerClient) ScaleService(serviceID string, serviceScale Ser
 func (client *RolexDockerClient) InspectServiceWithRaw(serviceID string) (swarm.Service, error) {
 	var service swarm.Service
 
-	content, err := client.HttpGet("/services/" + serviceID)
+	content, err := client.HttpGet("/services/"+serviceID, nil, nil)
 	if err != nil {
 		return service, err
 	}

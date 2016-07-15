@@ -38,8 +38,7 @@ func (api *Api) ApiRouter() *gin.Engine {
 		v1.GET("/nodes/:id/containers", api.ListContainers)
 		v1.GET("/nodes/:id/containers/:container_id", api.InspectContainer)
 		v1.GET("/nodes/:id/containers/:container_id/diff", api.DiffContainer)
-		v1.DELETE("/nodes/:id/containers/:container_id", api.RemoveContainer)
-		v1.DELETE("/nodes/:id/containers/:container_id/kill", api.KillContainer)
+		v1.DELETE("/nodes/:id/containers/:container_id", api.DeleteContainer)
 
 		v1.POST("/networks", api.CreateNetwork)
 		v1.GET("/networks", api.ListNetworks)
@@ -51,8 +50,10 @@ func (api *Api) ApiRouter() *gin.Engine {
 		v1.GET("/stacks", api.ListStack)
 		v1.GET("/stacks/:namespace", api.InspectStack)
 		v1.DELETE("/stacks/:namespace", api.RemoveStack)
-		v1.PATCH("/stacks/:namespace/services/:serviceID", api.ScaleService)
+		v1.PATCH("/stacks/:namespace/services/:service_id", api.ScaleService)
 		v1.GET("/stacks/:namespace/services", api.ListStackService)
+		v1.GET("/stacks/:namespace/services/:service_id/tasks", api.ListTasks)
+		v1.GET("/stacks/:namespace/services/:service_id/tasks/:task_id", api.InspectTask)
 
 		v1.DELETE("/volumes/:node_id/:name", api.RemoveVolume)
 		v1.GET("/volumes/:node_id/:name", api.InspectVolume)

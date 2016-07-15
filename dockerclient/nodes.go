@@ -13,7 +13,7 @@ import (
 func (client *RolexDockerClient) ListNode(opts types.NodeListOptions) ([]swarm.Node, error) {
 	var nodes []swarm.Node
 
-	content, err := client.HttpGet("nodes")
+	content, err := client.HttpGet("nodes", nil, nil)
 	if err != nil {
 		return nodes, err
 	}
@@ -29,7 +29,7 @@ func (client *RolexDockerClient) ListNode(opts types.NodeListOptions) ([]swarm.N
 func (client *RolexDockerClient) InspectNode(nodeId string) (swarm.Node, error) {
 	var node swarm.Node
 
-	content, err := client.HttpGet(path.Join("nodes", nodeId))
+	content, err := client.HttpGet(path.Join("nodes", nodeId), nil, nil)
 	if err != nil {
 		return node, err
 	}

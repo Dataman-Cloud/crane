@@ -9,8 +9,9 @@ import (
 )
 
 // execute http get request use default timeout
-func (client *RolexDockerClient) HttpGet(requestPath string) ([]byte, error) {
-	resp, err := client.HttpClient.Get(client.HttpEndpoint + "/" + requestPath)
+func (client *RolexDockerClient) HttpGet(requestPath string, query url.Values, headers map[string][]string) ([]byte, error) {
+	apiPath := client.getAPIPath(client.HttpEndpoint+"/"+requestPath, query)
+	resp, err := client.HttpClient.Get(apiPath)
 	if err != nil {
 		return nil, err
 	}

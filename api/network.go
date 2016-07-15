@@ -4,12 +4,16 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/Dataman-Cloud/rolex/model"
 	"github.com/Dataman-Cloud/rolex/util"
 
 	goclient "github.com/fsouza/go-dockerclient"
 	"github.com/gin-gonic/gin"
 )
+
+type ConnectNetworkRequest struct {
+	Method         string
+	NetworkOptions goclient.NetworkConnectionOptions
+}
 
 const (
 	NETWORK_CONNECT    = "connect"
@@ -17,20 +21,20 @@ const (
 )
 
 func (api *Api) ConnectNetwork(ctx *gin.Context) {
-	var connectNetwork model.ConnectNetwork
+	var connectNetworkRequest ConnectNetworkRequest
 
-	if err := ctx.BindJSON(&connectNetwork); err != nil {
+	if err := ctx.BindJSON(&connectNetworkRequest); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"code": util.PARAMETER_ERROR, "data": err.Error()})
 		return
 	}
 
-	if connectNetwork.Method == NETWORK_CONNECT {
-		if err := api.GetDockerClient().ConnectNetwork(ctx.Param("id"), connectNetwork.NetworkOptions); err != nil {
+	if connectNetworkRequest.Method == NETWORK_CONNECT {
+		if err := api.GetDockerClient().ConnectNetwork(ctx.Param("id"), connectNetworkRequest.NetworkOptions); err != nil {
 			ctx.JSON(http.StatusInternalServerError, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
 			return
 		}
-	} else if connectNetwork.Method == NETWORK_DISCONNECT {
-		if err := api.GetDockerClient().DisconnectNetwork(ctx.Param("id"), connectNetwork.NetworkOptions); err != nil {
+	} else if connectNetworkRequest.Method == NETWORK_DISCONNECT {
+		if err := api.GetDockerClient().DisconnectNetwork(ctx.Param("id"), connectNetworkRequest.NetworkOptions); err != nil {
 			ctx.JSON(http.StatusInternalServerError, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
 			return
 		}
@@ -39,7 +43,7 @@ func (api *Api) ConnectNetwork(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"code": util.OPERATION_SUCCESS, "data": connectNetwork.Method + " success"})
+	ctx.JSON(http.StatusOK, gin.H{"code": util.OPERATION_SUCCESS, "data": connectNetworkRequest.Method + " success"})
 }
 
 func (api *Api) CreateNetwork(ctx *gin.Context) {
