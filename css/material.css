@@ -943,3 +943,9 @@ footer-content, md-toolbar {
     background: #CCC;
     border: none;
 }
+md-content h4 {
+    margin-top: 30px;
+}
+md-content h4:first-child {
+    margin-top: 0;
+}

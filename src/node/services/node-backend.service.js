@@ -13,9 +13,9 @@
             listVolumes: listVolumes,
             deleteVolume: deleteVolume,
             listImages: listImages,
-            getImageDetail: getImageDetail,
-            getImageHistory: getImageHistory,
-            listContainers: listContainers
+            listContainers: listContainers,
+            getImage: getImage,
+            getImageHistory: getImageHistory
         };
 
         function listNodes(params, loading) {
@@ -42,7 +42,7 @@
             return gHttp.Resource('node.images', {node_id: id}).get({params: params, "loading": loading});
         }
 
-        function getImageDetail(id, name) {
+        function getImage(id, name) {
             return gHttp.Resource('node.image', {node_id: id, image_name: name}).get();
         }
 

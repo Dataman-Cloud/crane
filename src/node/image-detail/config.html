@@ -1,0 +1,52 @@
+<h4>概述</h4>
+<dl class="list-dl-row">
+    <dt>创建时间</dt>
+    <dd>{/nodeImageConfigCtrl.image.Created | date: 'yyyy-MM-dd HH:mm:ss'/}</dd>
+    <dt>架构</dt>
+    <dd>{/nodeImageConfigCtrl.image.Architecture || '-'/}</dd>
+    <dt>操作系统</dt>
+    <dd>{/nodeImageConfigCtrl.image.Os || '-'/}</dd>
+    <dt>Docker 版本</dt>
+    <dd>{/nodeImageConfigCtrl.image.DockerVersion/}</dd>
+    <dt>镜像大小</dt>
+    <dd>{/nodeImageConfigCtrl.image.Size / (1024 * 1024) | limitTo: 6/} MB</dd>
+</dl>
+
+<h4>端口映射</h4>
+<md-table-container>
+    <table md-table>
+        <thead md-head>
+        <tr md-row>
+            <th md-column><span>端口</span></th>
+            <th md-column><span>协议</span></th>
+        </tr>
+        </thead>
+        <tbody md-body>
+        <tr md-row ng-repeat="(port, protocol)  in  nodeImageConfigCtrl.image.Config.ExposedPorts">
+            <td md-cell>{/port | spliceStr: '/': 'key'/}</td>
+            <td md-cell>{/port | spliceStr: '/': 'value'/}</td>
+        </tr>
+        </tbody>
+    </table>
+</md-table-container>
+
+<h4>环境变量</h4>
+<md-table-container>
+    <table md-table>
+        <thead md-head>
+        <tr md-row>
+            <th md-column><span>KEY</span></th>
+            <th md-column><span>VALUE</span></th>
+        </tr>
+        </thead>
+        <tbody md-body>
+        <tr md-row ng-repeat="env  in  nodeImageConfigCtrl.image.Config.Env">
+            <td md-cell>{/env | spliceStr: '=': 'key'/}</td>
+            <td md-cell>{/env | spliceStr: '=': 'value'/}</td>
+        </tr>
+        </tbody>
+    </table>
+</md-table-container>
+
+<h4>命令</h4>
+<code data-ng-repeat="cmd in nodeImageConfigCtrl.image.Config.Cmd track by $index">{/cmd/}</code>
