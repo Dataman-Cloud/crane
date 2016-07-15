@@ -38,7 +38,10 @@
             .state('node.detail.container', {
                 url: '/container',
                 templateUrl: '/src/node/detail/container.html',
-                controller: 'NodeContainerCtrl as nodeContainerCtrl'
+                controller: 'NodeContainerCtrl as nodeContainerCtrl',
+                resolve: {
+                    containers: listContainers
+                }
             })
             .state('node.detail.network', {
                 url: '/network',
@@ -75,6 +78,11 @@
         /* @ngInject */
         function listImages(nodeBackend, $stateParams) {
             return nodeBackend.listImages($stateParams.node_id)
+        }
+        
+        /* @ngInject */
+        function listContainers(nodeBackend, $stateParams) {
+            return nodeBackend.listContainers($stateParams.node_id);
         }
     }
 })();

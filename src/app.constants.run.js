@@ -50,7 +50,8 @@
                 volume: 'api/v1/volumes/$node_id/$volume_name',
                 images: 'api/v1/images/$node_id',
                 image: 'api/v1/images/$node_id/$image_name',
-                imageHistory: 'api/v1/images/$node_id/$image_name/history'
+                imageHistory: 'api/v1/images/$node_id/$image_name/history',
+                containers: 'api/v1/nodes/$node_id/containers'
             },
             stack: {
                 stacks: 'api/v1/stacks',
@@ -64,6 +65,10 @@
                 networks: 'api/v1/networks'
             }
         };
+        
+        $rootScope.CONTAINER_STATUS_LABELS = {
+                running: '运行中'
+        }
 
     }
 })();
