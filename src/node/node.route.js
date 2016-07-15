@@ -16,7 +16,7 @@
                 templateUrl: '/src/node/list/list.html',
                 controller: 'NodeListCtrl as nodeListCtrl',
                 resolve: {
-                    nodes: getNodes
+                    nodes: listNodes
                 }
             })
             .state('node.create', {
@@ -52,16 +52,29 @@
                 resolve: {
                     volumes: listVolumes
                 }
+            })
+            .state('node.detail.image', {
+                url: '/image',
+                templateUrl: '/src/node/detail/image.html',
+                controller: 'NodeImageCtrl as nodeImageCtrl',
+                resolve: {
+                    images: listImages
+                }
             });
 
         /* @ngInject */
-        function getNodes(nodeBackend) {
+        function listNodes(nodeBackend) {
             return nodeBackend.listNodes()
         }
 
         /* @ngInject */
         function listVolumes(nodeBackend, $stateParams) {
             return nodeBackend.listVolumes($stateParams.node_id)
+        }
+
+        /* @ngInject */
+        function listImages(nodeBackend, $stateParams) {
+            return nodeBackend.listImages($stateParams.node_id)
         }
     }
 })();

@@ -21,11 +21,11 @@
             JsonObj: {
                 "Services": {
                     "redis": {
-                      "Image": "redis@sha256:b50f15d427aea5b579f9bf972ab82ff8c1c47bffc0481b225c6a714095a9ec34"
+                        "Image": "redis@sha256:b50f15d427aea5b579f9bf972ab82ff8c1c47bffc0481b225c6a714095a9ec34"
                     }
-                    },
-                  "Version": "0.1"
-                }
+                },
+                "Version": "0.1"
+            }
 
         };
 
@@ -34,7 +34,10 @@
                 nodes: 'api/v1/nodes',
                 leader: 'api/v1/nodes/leader_manager',
                 volumes: 'api/v1/volumes/$node_id',
-                volume: 'api/v1/volumes/$node_id/$volume_name'
+                volume: 'api/v1/volumes/$node_id/$volume_name',
+                images: 'api/v1/images/$node_id',
+                image: 'api/v1/images/$node_id/$image_name',
+                imageHistory: 'api/v1/images/$node_id/$image_name/history'
             },
             stack: {
                 stacks: 'api/v1/stacks',

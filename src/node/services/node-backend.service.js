@@ -11,7 +11,10 @@
             getLeaderNode: getLeaderNode,
             createVolume: createVolume,
             listVolumes: listVolumes,
-            deleteVolume: deleteVolume
+            deleteVolume: deleteVolume,
+            listImages: listImages,
+            getImageDetail: getImageDetail,
+            getImageHistory: getImageHistory
         };
 
         function listNodes(params, loading) {
@@ -32,6 +35,18 @@
 
         function deleteVolume(id, name) {
             return gHttp.Resource('node.volume', {node_id: id, volume_name: name}).delete();
+        }
+
+        function listImages(id, params, loading) {
+            return gHttp.Resource('node.images', {node_id: id}).get({params: params, "loading": loading});
+        }
+
+        function getImageDetail(id, name) {
+            return gHttp.Resource('node.image', {node_id: id, image_name: name}).get();
+        }
+
+        function getImageHistory(id, name) {
+            return gHttp.Resource('node.imageHistory', {node_id: id, image_name: name}).get();
         }
     }
 })();
