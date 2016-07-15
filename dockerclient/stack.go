@@ -48,7 +48,7 @@ func (client *RolexDockerClient) ListStack() ([]Stack, error) {
 		return nil, err
 	}
 
-	stackMap := make(map[string]Stack, 0)
+	stackMap := make(map[string]*Stack, 0)
 	for _, service := range services {
 		labels := service.Spec.Labels
 		name, ok := labels[labelNamespace]
@@ -59,7 +59,7 @@ func (client *RolexDockerClient) ListStack() ([]Stack, error) {
 
 		stack, ok := stackMap[name]
 		if !ok {
-			stackMap[name] = Stack{
+			stackMap[name] = &Stack{
 				Namespace:    name,
 				ServiceCount: 1,
 			}
@@ -70,7 +70,7 @@ func (client *RolexDockerClient) ListStack() ([]Stack, error) {
 
 	var stacks []Stack
 	for _, stack := range stackMap {
-		stacks = append(stacks, stack)
+		stacks = append(stacks, *stack)
 	}
 
 	return stacks, nil
