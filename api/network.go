@@ -3,6 +3,7 @@ package api
 import (
 	"encoding/json"
 	"net/http"
+	"strings"
 
 	"github.com/Dataman-Cloud/rolex/model"
 	"github.com/Dataman-Cloud/rolex/util"
@@ -92,8 +93,14 @@ func (api *Api) ListNetworks(ctx *gin.Context) {
 
 func (api *Api) RemoveNetwork(ctx *gin.Context) {
 	if err := api.GetDockerClient().RemoveNetwork(ctx.Param("id")); err != nil {
-		ctx.JSON(http.StatusForbidden, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
-		return
+		if strings.Contains(err.Error(), "API error (500)") {
+			ctx.JSON(http.StatusForbidden, gin.H{"code": util.NETWORK_IN_USE, "data": err.Error()})
+			return
+		}
+		if strings.Contains(err.Error(), "API error (403)") {
+			ctx.JSON(http.StatusForbidden, gin.H{"code": util.NETWORK_PRE_DEFINED, "data": err.Error()})
+			return
+		}
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{"code": util.OPERATION_SUCCESS, "data": "remove success"})
