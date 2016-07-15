@@ -4,8 +4,9 @@
         .controller('NodeContainerCtrl', NodeContainerCtrl);
 
     /* @ngInject */
-    function NodeContainerCtrl() {
+    function NodeContainerCtrl(containers) {
         var self = this;
 
+        self.containers = containers;
     }
 })();

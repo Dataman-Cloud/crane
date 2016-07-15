@@ -4,19 +4,17 @@
         <tr md-row>
             <th md-column>容器名称</th>
             <th md-column>服务</th>
-            <th md-column>创建时间</th>
-            <th md-column>端口</th>
+            <th md-column>任务</th>
             <th md-column>状态</th>
             <th md-column>操作</th>
         </tr>
         </thead>
         <tbody md-body>
-        <tr md-row ng-repeat="container in [{},{}]">
-            <td md-cell>aaa</td>
-            <td md-cell>bbb</td>
-            <td md-cell>2016.7.14</td>
-            <td md-cell>-</td>
-            <td md-cell>运行中</td>
+        <tr md-row ng-repeat="container in nodeContainerCtrl.containers">
+            <td md-cell>{/container.Names[0]/}</td>
+            <td md-cell>{/container.Labels['com.docker.swarm.service.name']/}</td>
+            <td md-cell>{/container.Labels['com.docker.swarm.task.name']/}</td>
+            <td md-cell>{/CONTAINER_STATUS_LABELS[container.State]/}</td>
             <td md-cell>
                 <md-menu md-offset="0 -5">
                     <md-button aria-label="containerListMenu" class="md-button md-raised"
@@ -34,7 +32,7 @@
         </tr>
         </tbody>
     </table>
-    <div class="alert alert-warning text-center" data-ng-if="false">
+    <div class="alert alert-warning text-center" data-ng-if="nodeContainerCtrl.containers.length <= 0">
         未查询到容器信息
     </div>
 </md-table-container>
