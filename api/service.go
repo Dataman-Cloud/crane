@@ -62,7 +62,7 @@ func (api *Api) RemoveService(ctx *gin.Context) {
 }
 
 func (api *Api) ScaleService(ctx *gin.Context) {
-	serviceID := ctx.Param("serviceID")
+	serviceID := ctx.Param("service_id")
 	var serviceScale dockerclient.ServiceScale
 	if err := ctx.BindJSON(&serviceScale); err != nil {
 		log.Error("Scale service got error: ", err)
