@@ -63,6 +63,8 @@ func (api *Api) ApiRouter() *gin.Engine {
 		v1.GET("/images/:node_id", api.ListImages)
 		v1.GET("/images/:node_id/:name", api.InspectImage)
 		v1.GET("/images/:node_id/:name/history", api.ImageHistory)
+
+		v1.GET("/logs/:node_id/:container_id", api.Logs)
 	}
 
 	misc := router.Group("/misc/v1")

@@ -7,6 +7,7 @@ import (
 
 	"github.com/Dataman-Cloud/rolex/util"
 
+	log "github.com/Sirupsen/logrus"
 	goclient "github.com/fsouza/go-dockerclient"
 	"github.com/gin-gonic/gin"
 )
@@ -35,6 +36,7 @@ func (api *Api) ListImages(ctx *gin.Context) {
 
 	images, err := api.GetDockerClient().ListImages(ctx.Param("node_id"), opts)
 	if err != nil {
+		log.Errorf("get images list error: %v", err)
 		ctx.JSON(http.StatusInternalServerError, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
 		return
 	}
@@ -45,6 +47,7 @@ func (api *Api) ListImages(ctx *gin.Context) {
 func (api *Api) InspectImage(ctx *gin.Context) {
 	image, err := api.GetDockerClient().InspectImage(ctx.Param("node_id"), ctx.Param("name"))
 	if err != nil {
+		log.Errorf("inspect image error: %v", err)
 		ctx.JSON(http.StatusInternalServerError, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
 		return
 	}
@@ -55,6 +58,7 @@ func (api *Api) InspectImage(ctx *gin.Context) {
 func (api *Api) ImageHistory(ctx *gin.Context) {
 	historys, err := api.GetDockerClient().ImageHistory(ctx.Param("node_id"), ctx.Param("name"))
 	if err != nil {
+		log.Errorf("get image history error: %v", err)
 		ctx.JSON(http.StatusInternalServerError, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
 		return
 	}
