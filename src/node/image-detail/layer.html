@@ -1,0 +1,31 @@
+<md-table-container>
+    <table md-table>
+        <thead md-head>
+        <tr md-row>
+            <th md-column>层级</th>
+            <th md-column>创建时间</th>
+            <th md-column>大小</th>
+            <th md-column>命令</th>
+            <th md-column>标签</th>
+        </tr>
+        </thead>
+        <tbody md-body>
+        <tr md-row ng-repeat="layer in nodeImageLayerCtrl.layer track by $index">
+            <td md-cell>{/$index + 1/}</td>
+            <td md-cell>{/layer.Created * 1000 | date: 'yyyy-MM-dd HH:mm:ss'/}</td>
+            <td md-cell>{/layer.Size / (1024 * 1024) || '0' | limitTo: 5/} MB</td>
+            <td md-cell>
+                <div style="max-width: 350px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
+                    {/layer.CreatedBy/}
+                </div>
+            </td>
+            <td md-cell>
+                <span data-ng-repeat="tag in layer.Tags">{/tag/}</span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="alert alert-warning text-center" data-ng-if="!nodeImageLayerCtrl.layer.length">
+        未查询到层级信息
+    </div>
+</md-table-container>

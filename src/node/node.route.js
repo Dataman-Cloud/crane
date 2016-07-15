@@ -63,6 +63,27 @@
                 resolve: {
                     images: listImages
                 }
+            })
+            .state('node.imageDetail', {
+                url: '/:node_id/:image_name',
+                templateUrl: '/src/node/image-detail/detail.html',
+                targetState: 'config'
+            })
+            .state('node.imageDetail.config', {
+                url: '/config',
+                templateUrl: '/src/node/image-detail/config.html',
+                controller: 'NodeImageConfigCtrl as nodeImageConfigCtrl',
+                resolve: {
+                    image: getImage
+                }
+            })
+            .state('node.imageDetail.layer', {
+                url: '/layer',
+                templateUrl: '/src/node/image-detail/layer.html',
+                controller: 'NodeImageLayerCtrl as nodeImageLayerCtrl',
+                resolve: {
+                    layer: getLayer
+                }
             });
 
         /* @ngInject */
@@ -79,10 +100,21 @@
         function listImages(nodeBackend, $stateParams) {
             return nodeBackend.listImages($stateParams.node_id)
         }
-        
+
         /* @ngInject */
         function listContainers(nodeBackend, $stateParams) {
             return nodeBackend.listContainers($stateParams.node_id);
         }
+
+        /* @ngInject */
+        function getImage(nodeBackend, $stateParams) {
+            return nodeBackend.getImage($stateParams.node_id, $stateParams.image_name)
+        }
+
+        /* @ngInject */
+        function getLayer(nodeBackend, $stateParams) {
+            return nodeBackend.getImageHistory($stateParams.node_id, $stateParams.image_name)
+        }
+
     }
 })();
