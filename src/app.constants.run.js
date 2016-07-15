@@ -32,7 +32,9 @@
         $rootScope.BACKEND_URL = {
             node: {
                 nodes: 'api/v1/nodes',
-                leader: 'api/v1/nodes/leader_manager'
+                leader: 'api/v1/nodes/leader_manager',
+                volumes: 'api/v1/volumes/$node_id',
+                volume: 'api/v1/volumes/$node_id/$volume_name'
             },
             stack: {
                 stacks: 'api/v1/stacks',

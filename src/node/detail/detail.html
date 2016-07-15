@@ -23,6 +23,11 @@
                     </md-fab-trigger>
                     <md-fab-actions>
                         <md-button aria-label="start" class="md-fab md-raised md-mini"
+                                   data-ui-sref="node.createVolume({node_id: $stateParams.node_id})">
+                            <md-tooltip md-direction="top">创建存储</md-tooltip>
+                            <i class="fa fa-hdd-o"></i>
+                        </md-button>
+                        <md-button aria-label="start" class="md-fab md-raised md-mini"
                                    data-ng-click="">
                             <md-tooltip md-direction="top">删除</md-tooltip>
                             <i class="fa fa-trash"></i>
