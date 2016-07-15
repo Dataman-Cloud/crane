@@ -55,7 +55,7 @@ func (api *Api) CreateVolume(ctx *gin.Context) {
 
 func (api *Api) RemoveVolume(ctx *gin.Context) {
 	if err := api.GetDockerClient().RemoveVolume(ctx.Param("node_id"), ctx.Param("name")); err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
+		ctx.JSON(http.StatusForbidden, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
 		return
 	}
 

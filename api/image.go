@@ -33,7 +33,7 @@ func (api *Api) ListImages(ctx *gin.Context) {
 		opts.Filters = filters
 	}
 
-	images, err := api.GetDockerClient().ListImages(opts)
+	images, err := api.GetDockerClient().ListImages(ctx.Param("node_id"), opts)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
 		return
@@ -43,7 +43,7 @@ func (api *Api) ListImages(ctx *gin.Context) {
 }
 
 func (api *Api) InspectImage(ctx *gin.Context) {
-	image, err := api.GetDockerClient().InspectImage(ctx.Param("name"))
+	image, err := api.GetDockerClient().InspectImage(ctx.Param("node_id"), ctx.Param("name"))
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
 		return
@@ -53,7 +53,7 @@ func (api *Api) InspectImage(ctx *gin.Context) {
 }
 
 func (api *Api) ImageHistory(ctx *gin.Context) {
-	historys, err := api.GetDockerClient().ImageHistory(ctx.Param("name"))
+	historys, err := api.GetDockerClient().ImageHistory(ctx.Param("node_id"), ctx.Param("name"))
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
 		return
