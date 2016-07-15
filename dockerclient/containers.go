@@ -26,7 +26,7 @@ func (client *RolexDockerClient) KillContainer(opts goclient.KillContainerOption
 func (client *RolexDockerClient) DiffContainer(containerID string) ([]types.ContainerChange, error) {
 	var changes []types.ContainerChange
 
-	content, err := client.HttpGet("/containers/" + containerID + "/changes")
+	content, err := client.HttpGet("/containers/"+containerID+"/changes", nil, nil)
 	if err != nil {
 		return changes, err
 	}

@@ -53,6 +53,8 @@ func (api *Api) ApiRouter() *gin.Engine {
 		v1.DELETE("/stacks/:namespace", api.RemoveStack)
 		v1.PATCH("/stacks/:namespace/services/:serviceID", api.ScaleService)
 		v1.GET("/stacks/:namespace/services", api.ListStackService)
+		v1.GET("/stacks/:namespace/services/:service_id/tasks", api.ListTasks)
+		v1.GET("/stacks/:namespace/services/:service_id/tasks/:task_id", api.InspectTask)
 
 		v1.DELETE("/volumes/:node_id/:name", api.RemoveVolume)
 		v1.GET("/volumes/:node_id/:name", api.InspectVolume)
