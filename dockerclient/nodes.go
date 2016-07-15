@@ -6,6 +6,7 @@ import (
 
 	"github.com/docker/engine-api/types"
 	"github.com/docker/engine-api/types/swarm"
+	goclient "github.com/fsouza/go-dockerclient"
 )
 
 // NodeList returns the list of nodes.
@@ -48,4 +49,9 @@ func (client *RolexDockerClient) RemoveNode(nodeId string) error {
 	}
 
 	return nil
+}
+
+// docker info
+func (client *RolexDockerClient) Info(nodeId string) (*goclient.DockerInfo, error) {
+	return client.DockerClient(nodeId).Info()
 }

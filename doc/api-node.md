@@ -143,3 +143,97 @@
   }
 }
 ```
+
+
+#### Docker Info
+**Request:**
+```
+    curl  192.168.59.106:2376/nodes/:id/info
+```
+**Response**
+
+```
+
+{
+
+    "code": 1,
+    "data": {
+        "Architecture": "x86_64",
+        "BridgeNfIp6tables": true,
+        "BridgeNfIptables": true,
+        "CPUSet": true,
+        "CPUShares": true,
+        "CgroupDriver": "cgroupfs",
+        "ClusterAdvertise": "",
+        "ClusterStore": "",
+        "Containers": 40,
+        "ContainersPaused": 0,
+        "ContainersRunning": 1,
+        "ContainersStopped": 39,
+        "CpuCfsPeriod": true,
+        "CpuCfsQuota": true,
+        "Debug": true,
+        "DockerRootDir": "/mnt/sda1/var/lib/docker",
+        "Driver": "aufs",
+        "DriverStatus": [
+            [
+                "Root Dir",
+                "/mnt/sda1/var/lib/docker/aufs"
+            ],
+            [
+                "Backing Filesystem",
+                "extfs"
+            ],
+            [
+                "Dirs",
+                "105"
+            ],
+            [
+                "Dirperm1 Supported",
+                "true"
+            ]
+        ],
+        "ExecutionDriver": "",
+        "ExperimentalBuild": false,
+        "HttpProxy": "",
+        "HttpsProxy": "",
+        "ID": "5MCT:V6NB:ESQW:LMXP:WHW5:QUYD:G2XO:6VV3:FBEH:MCFM:7AMF:Z6DG",
+        "IPv4Forwarding": true,
+        "Images": 4,
+        "IndexServerAddress": "https://index.docker.io/v1/",
+        "KernelMemory": true,
+        "KernelVersion": "4.4.14-boot2docker",
+        "Labels": [
+            "provider=virtualbox"
+        ],
+        "LoggingDriver": "json-file",
+        "MemTotal": 1044250624,
+        "MemoryLimit": true,
+        "NCPU": 1,
+        "NEventsListener": 0,
+        "NFd": 41,
+        "NGoroutines": 166,
+        "Name": "manager",
+        "NoProxy": "",
+        "OSType": "linux",
+        "OomKillDisable": true,
+        "OperatingSystem": "Boot2Docker 1.12.0-rc3 (TCL 7.1); HEAD : 8d9ee9f - Sat Jul  2 05:02:44 UTC 2016",
+        "Plugins": {
+            "Authorization": null,
+            "Network": [
+                "null",
+                "host",
+                "overlay",
+                "bridge"
+            ],
+            "Volume": [
+                "local"
+            ]
+        },
+        "ServerVersion": "1.12.0-rc3",
+        "SwapLimit": true,
+        "SystemStatus": null,
+        "SystemTime": "2016-07-14T11:05:14.387778285Z"
+    }
+}
+```
