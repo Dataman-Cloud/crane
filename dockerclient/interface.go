@@ -29,7 +29,7 @@ type DockerClientInterface interface {
 	CreateVolume(nodeId string, opts goclient.CreateVolumeOptions) (*goclient.Volume, error)
 	RemoveVolume(nodeId string, name string) error
 
-	ListImages(opts goclient.ListImagesOptions) ([]goclient.APIImages, error)
-	InspectImage(name string) (*goclient.Image, error)
-	ImageHistory(name string) ([]goclient.ImageHistory, error)
+	ListImages(nodeId string, opts goclient.ListImagesOptions) ([]goclient.APIImages, error)
+	InspectImage(nodeId, name string) (*goclient.Image, error)
+	ImageHistory(nodeId, name string) ([]goclient.ImageHistory, error)
 }
