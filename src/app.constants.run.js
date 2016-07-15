@@ -17,16 +17,29 @@
             10002: '操作失败'
         };
 
-        $rootScope.STACK_DEFAULT = {
-            JsonObj: {
+        $rootScope.STACK_SAMPLES = {
+            singleService: {
                 "Services": {
                     "redis": {
-                        "Image": "redis@sha256:b50f15d427aea5b579f9bf972ab82ff8c1c47bffc0481b225c6a714095a9ec34"
+                      "Image": "redis@sha256:b50f15d427aea5b579f9bf972ab82ff8c1c47bffc0481b225c6a714095a9ec34",
+                      "network": ["bridge"]
+                    }
+                },
+                "Version": "0.1"
+            },
+            doubleServices: {
+                "Services": {
+                    "redis": {
+                      "Image": "redis@sha256:b50f15d427aea5b579f9bf972ab82ff8c1c47bffc0481b225c6a714095a9ec34",
+                      "network": ["ingress", "bridge"]
+                    },
+                    "nginx": {
+                      "Image": "nginx:stable-alpine",
+                      "network": ["ingress"]
                     }
                 },
                 "Version": "0.1"
             }
-
         };
 
         $rootScope.BACKEND_URL = {
