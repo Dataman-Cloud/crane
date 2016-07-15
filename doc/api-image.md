@@ -1,11 +1,11 @@
 ### Images
 
-#### `/images`
+#### `/images/(node_id)`
 
 **Request:**
 
 ```
-curl -XGET localhostL:2375/api/v1/images
+curl -XGET localhostL:2375/api/v1/images/(node_id)
 ```
 
 **Response:**

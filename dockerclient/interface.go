@@ -32,4 +32,6 @@ type DockerClientInterface interface {
 	ListImages(nodeId string, opts goclient.ListImagesOptions) ([]goclient.APIImages, error)
 	InspectImage(nodeId, name string) (*goclient.Image, error)
 	ImageHistory(nodeId, name string) ([]goclient.ImageHistory, error)
+
+	Logs(nodeId, containerId string, message chan string)
 }
