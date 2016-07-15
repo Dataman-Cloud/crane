@@ -4,6 +4,10 @@ import (
 	goclient "github.com/fsouza/go-dockerclient"
 )
 
+const (
+	defaultNetworkDriver = "overlay"
+)
+
 func (client *RolexDockerClient) ConnectNetwork(id string, opts goclient.NetworkConnectionOptions) error {
 	return client.SwarmClient().ConnectNetwork(id, opts)
 }

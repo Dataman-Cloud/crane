@@ -12,8 +12,7 @@ import (
 )
 
 const (
-	defaultNetworkDriver = "overlay"
-	labelNamespace       = "com.docker.stack.namespace"
+	labelNamespace = "com.docker.stack.namespace"
 )
 
 // bundle stores the contents of services and stack name
@@ -31,11 +30,11 @@ type Stack struct {
 
 //StackDeploy deploy a new stack
 func (client *RolexDockerClient) DeployStack(bundle *Bundle) error {
-	//networks := client.getUniqueNetworkNames(bundle.Services)
+	networks := client.getUniqueNetworkNames(bundle.Stack.Services)
 
-	//if err := client.updateNetworks(networks, namespace); err != nil {
-	//	return err
-	//}
+	if err := client.updateNetworks(networks, bundle.Namespace); err != nil {
+		return err
+	}
 
 	return client.deployServices(bundle.Stack.Services, bundle.Namespace)
 }
@@ -54,7 +53,7 @@ func (client *RolexDockerClient) ListStack() ([]Stack, error) {
 		labels := service.Spec.Labels
 		name, ok := labels[labelNamespace]
 		if !ok {
-			log.Errorf("Cannot get label %s for service %s", labelNamespace, service.ID)
+			log.Warnf("Cannot get label %s for service %s", labelNamespace, service.ID)
 			continue
 		}
 
@@ -280,7 +279,7 @@ func (client *RolexDockerClient) deployServices(services map[string]bundlefile.S
 			EndpointSpec: &swarm.EndpointSpec{
 				Ports: ports,
 			},
-			//Networks: client.convertNetworks(service.Networks, namespace, internalName),
+			Networks: client.convertNetworks(service.Networks, namespace, internalName),
 		}
 
 		cspec := &serviceSpec.TaskTemplate.ContainerSpec
