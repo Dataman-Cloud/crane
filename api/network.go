@@ -89,10 +89,7 @@ func (api *Api) InspectNetwork(ctx *gin.Context) {
 func (api *Api) ListNetworks(ctx *gin.Context) {
 	filter := goclient.NetworkFilterOpts{}
 
-	fp := ctx.Query("filters")
-	if fp == "" {
-		fp = "{}"
-	}
+	fp := ctx.DefaultQuery("filters", "{}")
 	if err := json.Unmarshal([]byte(fp), &filter); err != nil {
 		log.Errorf("list network request body parse json error: %v", err)
 		ctx.JSON(http.StatusBadRequest, gin.H{"code": util.PARAMETER_ERROR, "data": err.Error()})
