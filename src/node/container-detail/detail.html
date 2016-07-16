@@ -2,7 +2,17 @@
     <section class="main-section">
         <header layout="row" layout-align="end start">
             <div class="info" flex>
-                <h2>容器: {/$stateParams.container_name/}</h2>
+                <h2>{/nodeContainerDetailCtrl.container.Name/}</h2>
+                <dl class="list-dl-row">
+                    <dt>创建时间</dt>
+                    <dd>{/nodeContainerDetailCtrl.container.Created | date: 'yyyy-MM-dd HH:mm:ss'/}</dd>
+                    <dt>状态</dt>
+                    <dd>{/CONTAINER_STATUS_LABELS[nodeContainerDetailCtrl.container.State.Status] || '-'/}</dd>
+                    <dt>驱动</dt>
+                    <dd>{/nodeContainerDetailCtrl.container.Driver || '-'/}</dd>
+                    <dt>镜像名称</dt>
+                    <dd>{/nodeContainerDetailCtrl.container.Image/}</dd>
+                </dl>
             </div>
         </header>
         <md-content>

@@ -89,16 +89,20 @@
                 }
             })
             .state('node.containerDetail', {
-                url: '/containerDetail/:node_id/:container_name/:container_id',
+                url: '/containerDetail/:node_id/:container_id',
                 templateUrl: '/src/node/container-detail/detail.html',
-                targetState: 'config'
+                controller: 'NodeContainerDetailCtrl as nodeContainerDetailCtrl',
+                targetState: 'config',
+                resolve: {
+                    container: getContainer
+                }
+
             })
             .state('node.containerDetail.config', {
                 url: '/config',
                 templateUrl: '/src/node/container-detail/config.html',
                 controller: 'NodeContainerConfigCtrl as nodeContainerConfigCtrl',
                 resolve: {
-                    container: getContainer,
                     diffs: diffContainer
                 }
             })
