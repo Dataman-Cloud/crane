@@ -16,6 +16,7 @@ type DockerClientInterface interface {
 	InspectContainer(id string) (*goclient.Container, error)
 	ListContainers(opts goclient.ListContainersOptions) ([]goclient.APIContainers, error)
 	RemoveContainer(opts goclient.RemoveContainerOptions) error
+	LogsContainer(nodeId, containerId string, message chan string)
 
 	ConnectNetwork(id string, opts goclient.NetworkConnectionOptions) error
 	CreateNetwork(opts goclient.CreateNetworkOptions) (*goclient.Network, error)
@@ -30,8 +31,6 @@ type DockerClientInterface interface {
 	RemoveVolume(nodeId string, name string) error
 
 	ListImages(nodeId string, opts goclient.ListImagesOptions) ([]goclient.APIImages, error)
-	InspectImage(nodeId, name string) (*goclient.Image, error)
-	ImageHistory(nodeId, name string) ([]goclient.ImageHistory, error)
-
-	Logs(nodeId, containerId string, message chan string)
+	InspectImage(nodeId, imageId string) (*goclient.Image, error)
+	ImageHistory(nodeId, imageId string) ([]goclient.ImageHistory, error)
 }

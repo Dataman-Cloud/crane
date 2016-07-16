@@ -8,10 +8,10 @@ func (client *RolexDockerClient) ListImages(nodeId string, opts goclient.ListIma
 	return client.DockerClient(nodeId).ListImages(opts)
 }
 
-func (client *RolexDockerClient) InspectImage(nodeId, name string) (*goclient.Image, error) {
-	return client.DockerClient(nodeId).InspectImage(name)
+func (client *RolexDockerClient) InspectImage(nodeId, imageId string) (*goclient.Image, error) {
+	return client.DockerClient(nodeId).InspectImage(imageId)
 }
 
-func (client *RolexDockerClient) ImageHistory(nodeId, name string) ([]goclient.ImageHistory, error) {
-	return client.DockerClient(nodeId).ImageHistory(name)
+func (client *RolexDockerClient) ImageHistory(nodeId, imageId string) ([]goclient.ImageHistory, error) {
+	return client.DockerClient(nodeId).ImageHistory(imageId)
 }
