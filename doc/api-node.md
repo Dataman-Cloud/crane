@@ -237,3 +237,35 @@
     }
 }
 ```
+
+
+###UpdateNode
+
+**Request**
+
+```
+   curl -v -X PATCH http://localhost:5013/api/v1/nodes/$NODE_ID -H Content-Type:application/json -d \
+   '
+   {
+     "Spec": {
+         "Role": "worker",
+         "Membership": "accepted",
+         "Availability": "drain"
+     },
+     "Version": {
+         "Index": 1081
+     }
+   }
+   '
+```
+
+Membership: pending/accepted
+Availability: drain/active/pause
+
+**Response**
+```
+  {
+    "code": 0,
+    "data": "success"
+  }
+```
