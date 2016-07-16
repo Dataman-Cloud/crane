@@ -56,7 +56,17 @@ func (client *RolexDockerClient) CreateService(service swarm.ServiceSpec, option
 // ServiceList returns the list of services config
 func (client *RolexDockerClient) ListServiceSpec(options types.ServiceListOptions) ([]swarm.Service, error) {
 	var services []swarm.Service
-	content, err := client.HttpGet("/services", nil, nil)
+	query := url.Values{}
+	if options.Filter.Len() > 0 {
+		filterJSON, err := filters.ToParam(options.Filter)
+		if err != nil {
+			return nil, err
+		}
+
+		query.Set("filters", filterJSON)
+	}
+
+	content, err := client.HttpGet("/services", query, nil)
 	if err != nil {
 		return services, err
 	}
