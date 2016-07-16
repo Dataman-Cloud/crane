@@ -49,8 +49,8 @@
                 volumes: 'api/v1/volumes/$node_id',
                 volume: 'api/v1/volumes/$node_id/$volume_name',
                 images: 'api/v1/images/$node_id',
-                image: 'api/v1/images/$node_id/$image_name',
-                imageHistory: 'api/v1/images/$node_id/$image_name/history',
+                image: 'api/v1/images/$node_id/$image_id',
+                imageHistory: 'api/v1/images/$node_id/$image_id/history',
                 containers: 'api/v1/nodes/$node_id/containers'
             },
             stack: {

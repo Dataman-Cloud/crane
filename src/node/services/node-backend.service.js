@@ -26,28 +26,28 @@
             return gHttp.Resource('node.leader').get();
         }
 
-        function createVolume(data, id, form) {
-            return gHttp.Resource('node.volumes', {node_id: id}).post(data, {form: form});
+        function createVolume(data, nodeId, form) {
+            return gHttp.Resource('node.volumes', {node_id: nodeId}).post(data, {form: form});
         }
 
-        function listVolumes(id) {
-            return gHttp.Resource('node.volumes', {node_id: id}).get();
+        function listVolumes(nodeId) {
+            return gHttp.Resource('node.volumes', {node_id: nodeId}).get();
         }
 
-        function deleteVolume(id, name) {
-            return gHttp.Resource('node.volume', {node_id: id, volume_name: name}).delete();
+        function deleteVolume(nodeId, name) {
+            return gHttp.Resource('node.volume', {node_id: nodeId, volume_name: name}).delete();
         }
 
-        function listImages(id, params, loading) {
-            return gHttp.Resource('node.images', {node_id: id}).get({params: params, "loading": loading});
+        function listImages(nodeId, params, loading) {
+            return gHttp.Resource('node.images', {node_id: nodeId}).get({params: params, "loading": loading});
         }
 
-        function getImage(id, name) {
-            return gHttp.Resource('node.image', {node_id: id, image_name: name}).get();
+        function getImage(nodeId, imageId) {
+            return gHttp.Resource('node.image', {node_id: nodeId, image_id: imageId}).get();
         }
 
-        function getImageHistory(id, name) {
-            return gHttp.Resource('node.imageHistory', {node_id: id, image_name: name}).get();
+        function getImageHistory(nodeId, imageId) {
+            return gHttp.Resource('node.imageHistory', {node_id: nodeId, image_id: imageId}).get();
         }
         
         function listContainers(nodeId) {

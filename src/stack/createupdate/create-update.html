@@ -49,13 +49,22 @@
                         <p class="help-info-bottom error-info" data-ng-show="stackCreateCtrl.errorInfo.stack">
                             {/stackCreateCtrl.errorInfo.stack/}
                         </p>
-                        <p class="help-info-bottom">
-                            <input id="dockerFileInput" name="file" type="file" class="ng-hide"
-                                   accept="text/plain, .json"
-                                   onchange="angular.element(this).scope().stackCreateCtrl.onFileSelect(this.files)">
-                            <md-button class="md-primary" trigger-prev-click><i class="fa fa-upload"></i> 从文件中读取
-                            </md-button>
-                        </p>
+
+                        <div layout="row" layout-align="space-between center">
+                            <p class="help-info-bottom">
+                                <input id="dockerFileInput" name="file" type="file" class="ng-hide"
+                                       accept="text/plain, .json"
+                                       onchange="angular.element(this).scope().stackCreateCtrl.onFileSelect(this.files)">
+                                <md-button class="md-primary" trigger-prev-click><i class="fa fa-upload"></i> 从文件中读取
+                                </md-button>
+                            </p>
+
+                            <p class="help-info-bottom">
+                                <md-button class="md-primary" data-ng-click="stackCreateCtrl.example()"><i class="fa fa-file-text"></i> 样例
+                                </md-button>
+                            </p>
+                        </div>
+
                     </div>
                     <div flex></div>
                 </div>
