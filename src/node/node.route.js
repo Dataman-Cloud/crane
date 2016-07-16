@@ -68,17 +68,18 @@
                 }
             })
             .state('node.imageDetail', {
-                url: '/imageDetail/:node_id/:image_name/:image_id',
+                url: '/imageDetail/:node_id/:image_id',
                 templateUrl: '/src/node/image-detail/detail.html',
-                targetState: 'config'
+                controller: 'NodeImageDetailCtrl as nodeImageDetailCtrl',
+                targetState: 'config',
+                resolve: {
+                    image: getImage
+                }
             })
             .state('node.imageDetail.config', {
                 url: '/config',
                 templateUrl: '/src/node/image-detail/config.html',
-                controller: 'NodeImageConfigCtrl as nodeImageConfigCtrl',
-                resolve: {
-                    image: getImage
-                }
+                controller: 'NodeImageConfigCtrl as nodeImageConfigCtrl'
             })
             .state('node.imageDetail.layer', {
                 url: '/layer',
@@ -89,16 +90,20 @@
                 }
             })
             .state('node.containerDetail', {
-                url: '/containerDetail/:node_id/:container_name/:container_id',
+                url: '/containerDetail/:node_id/:container_id',
                 templateUrl: '/src/node/container-detail/detail.html',
-                targetState: 'config'
+                controller: 'NodeContainerDetailCtrl as nodeContainerDetailCtrl',
+                targetState: 'config',
+                resolve: {
+                    container: getContainer
+                }
+
             })
             .state('node.containerDetail.config', {
                 url: '/config',
                 templateUrl: '/src/node/container-detail/config.html',
                 controller: 'NodeContainerConfigCtrl as nodeContainerConfigCtrl',
                 resolve: {
-                    container: getContainer,
                     diffs: diffContainer
                 }
             })

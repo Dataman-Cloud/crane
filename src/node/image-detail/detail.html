@@ -2,7 +2,19 @@
     <section class="main-section">
         <header layout="row" layout-align="end start">
             <div class="info" flex>
-                <h2>镜像: {/$stateParams.image_name/}</h2>
+                <h2>{/nodeImageDetailCtrl.image.RepoTags[0]/}</h2>
+                <dl class="list-dl-row">
+                    <dt>创建时间</dt>
+                    <dd>{/nodeImageDetailCtrl.image.Created | date: 'yyyy-MM-dd HH:mm:ss'/}</dd>
+                    <dt>架构</dt>
+                    <dd>{/nodeImageDetailCtrl.image.Architecture || '-'/}</dd>
+                    <dt>操作系统</dt>
+                    <dd>{/nodeImageDetailCtrl.image.Os || '-'/}</dd>
+                    <dt>Docker 版本</dt>
+                    <dd>{/nodeImageDetailCtrl.image.DockerVersion/}</dd>
+                    <dt>镜像大小</dt>
+                    <dd>{/nodeImageDetailCtrl.image.Size / (1024 * 1024) | limitTo: 6/} MB</dd>
+                </dl>
             </div>
         </header>
         <md-content>
