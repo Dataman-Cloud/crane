@@ -65,7 +65,7 @@
                 }
             })
             .state('node.imageDetail', {
-                url: '/:node_id/:image_name',
+                url: '/:node_id/:image_name/:image_id',
                 templateUrl: '/src/node/image-detail/detail.html',
                 targetState: 'config'
             })
@@ -108,12 +108,12 @@
 
         /* @ngInject */
         function getImage(nodeBackend, $stateParams) {
-            return nodeBackend.getImage($stateParams.node_id, $stateParams.image_name)
+            return nodeBackend.getImage($stateParams.node_id, $stateParams.image_id)
         }
 
         /* @ngInject */
         function getLayer(nodeBackend, $stateParams) {
-            return nodeBackend.getImageHistory($stateParams.node_id, $stateParams.image_name)
+            return nodeBackend.getImageHistory($stateParams.node_id, $stateParams.image_id)
         }
 
     }
