@@ -54,6 +54,7 @@ func (api *Api) ApiRouter() *gin.Engine {
 		v1.GET("/nodes/:node_id/volumes/:volume_id", api.InspectVolume)
 		v1.POST("/nodes/:node_id/volumes", api.CreateVolume)
 		v1.DELETE("/nodes/:node_id/volumes/:volume_id", api.RemoveVolume)
+		v1.PATCH("/nodes/:node_id", api.UpdateNode)
 
 		v1.POST("/networks", api.CreateNetwork)
 		v1.GET("/networks", api.ListNetworks)
