@@ -1,7 +1,6 @@
 package api
 
 import (
-	"encoding/json"
 	"io"
 	"net/http"
 
@@ -9,6 +8,7 @@ import (
 
 	goclient "github.com/fsouza/go-dockerclient"
 	"github.com/gin-gonic/gin"
+	"github.com/manucorporat/sse"
 )
 
 type ContainerDeleteRequest struct {
@@ -91,7 +91,10 @@ func (api *Api) Logs(ctx *gin.Context) {
 	go api.GetDockerClient().LogsContainer(ctx.Param("node_id"), ctx.Param("container_id"), message)
 
 	ctx.Stream(func(w io.Writer) bool {
-		w.Write([]byte(<-message))
+		sse.Event{
+			Event: "container-logs",
+			Data:  <-message,
+		}.Render(ctx.Writer)
 		return true
 	})
 }
@@ -107,9 +110,10 @@ func (api *Api) Stats(ctx *gin.Context) {
 	go api.GetDockerClient().StatsContainer(ctx.Param("node_id"), ctx.Param("container_id"), stats, done)
 
 	ctx.Stream(func(w io.Writer) bool {
-		if data, err := json.Marshal(<-stats); err == nil {
-			w.Write(data)
-		}
+		sse.Event{
+			Event: "container-stats",
+			Data:  <-stats,
+		}.Render(ctx.Writer)
 		return true
 	})
 }
