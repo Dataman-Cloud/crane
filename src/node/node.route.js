@@ -68,17 +68,18 @@
                 }
             })
             .state('node.imageDetail', {
-                url: '/imageDetail/:node_id/:image_name/:image_id',
+                url: '/imageDetail/:node_id/:image_id',
                 templateUrl: '/src/node/image-detail/detail.html',
-                targetState: 'config'
+                controller: 'NodeImageDetailCtrl as nodeImageDetailCtrl',
+                targetState: 'config',
+                resolve: {
+                    image: getImage
+                }
             })
             .state('node.imageDetail.config', {
                 url: '/config',
                 templateUrl: '/src/node/image-detail/config.html',
-                controller: 'NodeImageConfigCtrl as nodeImageConfigCtrl',
-                resolve: {
-                    image: getImage
-                }
+                controller: 'NodeImageConfigCtrl as nodeImageConfigCtrl'
             })
             .state('node.imageDetail.layer', {
                 url: '/layer',
