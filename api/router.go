@@ -29,23 +29,26 @@ func (api *Api) ApiRouter() *gin.Engine {
 	v1 := router.Group("/api/v1", middlewares.Authorization)
 	{
 		v1.GET("/nodes", api.ListNodes)
-		v1.GET("/nodes/:id", api.InspectNode)
-		v1.GET("/nodes/:id/info", api.Info)
+		v1.GET("/nodes/:node_id", api.InspectNode)
+		v1.GET("/nodes/:node_id/info", api.Info)
 
 		// Going to delegate to /nodes/:id
 		// v1.GET("/nodes/leader_manager", api.LeaderNode)
 
-		v1.GET("/nodes/:id/containers", api.ListContainers)
-		v1.GET("/nodes/:id/containers/:container_id", api.InspectContainer)
-		v1.GET("/nodes/:id/containers/:container_id/diff", api.DiffContainer)
-		v1.DELETE("/nodes/:id/containers/:container_id", api.DeleteContainer)
-		v1.GET("/nodes/:node_id/:container_id/logs", api.Logs)
+		v1.GET("/nodes/:node_id/containers", api.ListContainers)
+		v1.GET("/nodes/:node_id/containers/:container_id", api.InspectContainer)
+		v1.GET("/nodes/:node_id/containers/:container_id/diff", api.DiffContainer)
+		v1.DELETE("/nodes/:node_id/containers/:container_id", api.DeleteContainer)
+		v1.GET("/nodes/:node_id/containers/:container_id/logs", api.Logs)
+		v1.GET("/nodes/:node_id/containers/:container_id/stats", api.Stats)
+		//v1.GET("/logs/:node_id/:container_id", api.Logs)
+		//v1.GET("/stats/:node_id/:container_id", api.Stats)
 
 		v1.POST("/networks", api.CreateNetwork)
 		v1.GET("/networks", api.ListNetworks)
-		v1.DELETE("/networks/:id", api.RemoveNetwork)
-		v1.GET("/networks/:id", api.InspectNetwork)
-		v1.PATCH("/networks/:id", api.ConnectNetwork)
+		v1.DELETE("/networks/:network_id", api.RemoveNetwork)
+		v1.GET("/networks/:network_id", api.InspectNetwork)
+		v1.PATCH("/networks/:network_id", api.ConnectNetwork)
 
 		v1.POST("/stacks", api.CreateStack)
 		v1.GET("/stacks", api.ListStack)

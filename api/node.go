@@ -8,10 +8,10 @@ import (
 )
 
 func (api *Api) InspectNode(ctx *gin.Context) {
-	if ctx.Param("id") == "leader_manager" { // ugly will remove later
+	if ctx.Param("node_id") == "leader_manager" { // ugly will remove later
 		api.LeaderNode(ctx)
 	} else {
-		node, err := api.GetDockerClient().InspectNode(ctx.Param("id"))
+		node, err := api.GetDockerClient().InspectNode(ctx.Param("node_id"))
 		if err != nil {
 			ctx.JSON(http.StatusServiceUnavailable, err.Error())
 			return
@@ -35,7 +35,7 @@ func (api *Api) CreateNode(ctx *gin.Context) {}
 func (api *Api) UpdateNode(ctx *gin.Context) {}
 
 func (api *Api) RemoveNode(ctx *gin.Context) {
-	err := api.GetDockerClient().RemoveNode(ctx.Param("id"))
+	err := api.GetDockerClient().RemoveNode(ctx.Param("node_id"))
 	if err != nil {
 		ctx.JSON(http.StatusServiceUnavailable, err.Error())
 		return
@@ -62,7 +62,7 @@ func (api *Api) LeaderNode(ctx *gin.Context) {
 }
 
 func (api *Api) Info(ctx *gin.Context) {
-	info, err := api.GetDockerClient().Info(ctx.Param("id"))
+	info, err := api.GetDockerClient().Info(ctx.Param("node_id"))
 	if err != nil {
 		ctx.JSON(http.StatusServiceUnavailable, err.Error())
 		return

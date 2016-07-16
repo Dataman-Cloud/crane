@@ -1,6 +1,7 @@
 package api
 
 import (
+	"encoding/json"
 	"io"
 	"net/http"
 
@@ -91,6 +92,24 @@ func (api *Api) Logs(ctx *gin.Context) {
 
 	ctx.Stream(func(w io.Writer) bool {
 		w.Write([]byte(<-message))
+		return true
+	})
+}
+
+func (api *Api) Stats(ctx *gin.Context) {
+	stats := make(chan *goclient.Stats, 10)
+	done := make(chan bool)
+
+	defer func() {
+		done <- true
+	}()
+
+	go api.GetDockerClient().StatsContainer(ctx.Param("node_id"), ctx.Param("container_id"), stats, done)
+
+	ctx.Stream(func(w io.Writer) bool {
+		if data, err := json.Marshal(<-stats); err == nil {
+			w.Write(data)
+		}
 		return true
 	})
 }

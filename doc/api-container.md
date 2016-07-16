@@ -318,7 +318,7 @@
 }
 ```
 
-### `/logs/(node_id)/(container_id)`
+### `/nodes/(node_id)/(container_id)/logs`
 
 **Request:**
 
@@ -329,4 +329,12 @@ curl -XGET localhost:2375/api/v1/nodes/(node_id)/(container_id)/logs
 **Response:**
 
 message streaming
+
+### `/nodes/(node_id)/(container_id)/stats`
+
+**Request:**
+
+```
+curl -XGET localhost:2375/api/v1/nodes/(node_id)/(container_id)/stats
+```
 
