@@ -8,6 +8,7 @@
     function nodeBackend(gHttp) {
         return {
             listNodes: listNodes,
+            getNode: getNode,
             getLeaderNode: getLeaderNode,
             createVolume: createVolume,
             listVolumes: listVolumes,
@@ -24,6 +25,10 @@
 
         function listNodes(params, loading) {
             return gHttp.Resource('node.nodes').get({params: params, "loading": loading});
+        }
+
+        function getNode(nodeId) {
+            return gHttp.Resource('node.node', {node_id: nodeId}).get();
         }
 
         function getLeaderNode() {
