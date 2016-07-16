@@ -137,7 +137,7 @@ func (client *RolexDockerClient) FilterServiceByStack(namespace string) ([]swarm
 		labels := service.Spec.Labels
 		name, ok := labels[labelNamespace]
 		if !ok {
-			log.Errorf("Cannot get label %s for service %s", labelNamespace, service.ID)
+			log.Warnf("Cannot get label %s for service %s", labelNamespace, service.ID)
 			continue
 		}
 
