@@ -44,7 +44,8 @@
         }
 
         function deleteVolume(nodeId, name) {
-            return gHttp.Resource('node.volume', {node_id: nodeId, volume_name: name}).delete();
+            //name == id, so use name to replace id
+            return gHttp.Resource('node.volume', {node_id: nodeId, volume_id: name}).delete();
         }
 
         function listImages(nodeId, params, loading) {

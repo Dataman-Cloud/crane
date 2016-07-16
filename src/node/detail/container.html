@@ -1,3 +1,11 @@
+<md-toolbar class="md-table-toolbar md-default">
+    <div class="md-toolbar-tools">
+        <form flex name="filter">
+            <input type="text" ng-model="nodeContainerCtrl.filter" placeholder="搜索">
+        </form>
+    </div>
+</md-toolbar>
+
 <md-table-container>
     <table md-table>
         <thead md-head>
@@ -10,7 +18,7 @@
         </tr>
         </thead>
         <tbody md-body>
-        <tr md-row ng-repeat="container in nodeContainerCtrl.containers">
+        <tr md-row ng-repeat="container in nodeContainerCtrl.containers | filter: nodeContainerCtrl.filter">
             <td md-cell>
                 <a data-ui-sref="node.containerDetail({node_id: $stateParams.node_id, container_id: container.Id})">{/container.Names[0]/}</a>
             <td md-cell>{/container.Labels['com.docker.swarm.service.name']/}</td>
