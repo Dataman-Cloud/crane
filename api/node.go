@@ -58,7 +58,7 @@ func (api *Api) LeaderNode(ctx *gin.Context) {
 		}
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"code": 1, "data": ""})
+	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": ""})
 }
 
 func (api *Api) Info(ctx *gin.Context) {
@@ -68,5 +68,5 @@ func (api *Api) Info(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"code": 1, "data": info})
+	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": info})
 }
