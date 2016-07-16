@@ -436,4 +436,78 @@ curl -XGET localhost:2375/api/v1/nodes/(node_id)/containers/(container_id)/stats
         "throttling_data" : {"periods":0,"throttled_periods":0,"throttled_time":0}
      }
   }
+
+#### StopContainer
+**Request:**
+```
+    curl  -X PATCH 192.168.59.106:2376/api/v1/nodes/:node_id/containers/:container_id -d '{"method": "stop"}'
+```
+**Response**
+```
+{
+    "code": 0,
+}
+```
+
+
+#### StartContainer
+**Request:**
+```
+    curl  -X PATCH 192.168.59.106:2376/api/v1/nodes/:node_id/containers/:container_id -d '{"method": "start"}'
+```
+**Response**
+```
+{
+    "code": 0,
+}
+```
+
+#### RestartContainer
+**Request:**
+```
+    curl  -X PATCH 192.168.59.106:2376/api/v1/nodes/:node_id/containers/:container_id -d '{"method": "restart"}'
+```
+**Response**
+```
+{
+    "code": 0,
+}
+```
+
+
+#### PauseContainer
+**Request:**
+```
+    curl  -X PATCH 192.168.59.106:2376/api/v1/nodes/:node_id/containers/:container_id -d '{"method": "pause"}'
+```
+**Response**
+```
+{
+    "code": 0,
+}
+```
+
+
+#### UnpauseContainer
+**Request:**
+```
+    curl  -X PATCH 192.168.59.106:2376/api/v1/nodes/:node_id/containers/:container_id -d '{"method": "unpause"}'
+```
+**Response**
+```
+{
+    "code": 0,
+}
+```
+
+#### ResizeTTYContainer
+**Request:**
+```
+    curl  -X PATCH 192.168.59.106:2376/api/v1/nodes/:node_id/containers/:container_id -d '{"method": "resizetty", "height": 496, "width": 512}'
+```
+**Response**
+```
+{
+    "code": 0,
+}
 ```
