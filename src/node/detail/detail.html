@@ -2,14 +2,31 @@
     <section class="main-section">
         <header layout="row" layout-align="end start">
             <div class="info" flex>
-                <h2>主机名</h2>
+                <h2>{/nodeDetailCtrl.node.Name/}</h2>
                 <dl>
-                    <dt>更新时间</dt>
-                    <dd>xxxx</dd>
-                    <dt>操作系统</dt>
-                    <dd>xxxxx</dd>
-                    <dt>Docker</dt>
-                    <dd>xxxxx</dd>
+                    <dt>系统</dt>
+                    <dd>{/nodeDetailCtrl.node.OperatingSystem/}</dd>
+                    <dt>架构</dt>
+                    <dd>{/nodeDetailCtrl.node.Architecture/}</dd>
+                    <dt>CPU</dt>
+                    <dd>{/nodeDetailCtrl.node.NCPU/} 核</dd>
+                    <dt>内存</dt>
+                    <dd>{/nodeDetailCtrl.node.MemTotal / (1024 * 1024) | limitTo: 6/} MB</dd>
+                </dl>
+
+                <br>
+
+                <dl>
+                    <dt>镜像个数</dt>
+                    <dd>{/nodeDetailCtrl.node.Images/}</dd>
+                    <dt>容器总数</dt>
+                    <dd>{/nodeDetailCtrl.node.Containers/}</dd>
+                    <dt>运行容器</dt>
+                    <dd>{/nodeDetailCtrl.node.ContainersRunning/}</dd>
+                    <dt>暂停容器</dt>
+                    <dd>{/nodeDetailCtrl.node.ContainersPaused/}</dd>
+                    <dt>停止容器</dt>
+                    <dd>{/nodeDetailCtrl.node.ContainersStopped/}</dd>
                 </dl>
             </div>
             <div layout-align="end center" class="operation">

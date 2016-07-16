@@ -4,8 +4,9 @@
         .controller('NodeDetailCtrl', NodeDetailCtrl);
 
     /* @ngInject */
-    function NodeDetailCtrl() {
+    function NodeDetailCtrl(node) {
         var self = this;
 
+        self.node = node
     }
 })();

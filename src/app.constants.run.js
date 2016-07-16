@@ -49,11 +49,12 @@
         $rootScope.NODE_ROLE = {
             worker: '工作节点',
             manager: '管理节点'
-        }
+        };
 
         $rootScope.BACKEND_URL = {
             node: {
                 nodes: 'api/v1/nodes',
+                node: 'api/v1/nodes/$node_id/info',
                 leader: 'api/v1/nodes/leader_manager',
                 volumes: 'api/v1/volumes/$node_id',
                 volume: 'api/v1/volumes/$node_id/$volume_name',
