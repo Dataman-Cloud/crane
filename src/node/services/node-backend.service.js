@@ -13,9 +13,12 @@
             listVolumes: listVolumes,
             deleteVolume: deleteVolume,
             listImages: listImages,
-            listContainers: listContainers,
             getImage: getImage,
-            getImageHistory: getImageHistory
+            getImageHistory: getImageHistory,
+            listContainers: listContainers,
+            getContainer: getContainer,
+            removeContainer: removeContainer,
+            killContainer: killContainer
         };
 
         function listNodes(params, loading) {
@@ -49,9 +52,29 @@
         function getImageHistory(nodeId, imageId) {
             return gHttp.Resource('node.imageHistory', {node_id: nodeId, image_id: imageId}).get();
         }
-        
+
         function listContainers(nodeId) {
             return gHttp.Resource('node.containers', {node_id: nodeId}).get();
+        }
+
+        function getContainer(nodeId, containerId) {
+            return gHttp.Resource('node.container', {node_id: nodeId, container_id: containerId}).get();
+        }
+
+        function removeContainer(nodeId, containerId) {
+            var data = {
+                method: 'rm'
+            };
+
+            return gHttp.Resource('node.container', {node_id: nodeId, container_id: containerId}).delete({data: data});
+        }
+
+        function killContainer(nodeId, containerId) {
+            var data = {
+                method: 'kill'
+            };
+
+            return gHttp.Resource('node.container', {node_id: nodeId, container_id: containerId}).delete({data: data});
         }
     }
 })();

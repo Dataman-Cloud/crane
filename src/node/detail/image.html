@@ -19,7 +19,7 @@
         <tbody md-body>
         <tr md-row ng-repeat="image in nodeImageCtrl.images | filter: nodeImageCtrl.filter">
             <td md-cell>
-                <a data-ui-sref="node.imageDetail({node_id: $stateParams.node_id, image_name: image.RepoTags[0], image_id: image.Id})">{/image.RepoTags[0]/}</a>
+                <a data-ui-sref="node.imageDetail({node_id: $stateParams.node_id, image_id: image.Id})">{/image.RepoTags[0]/}</a>
             </td>
             <td md-cell>{/image.Size / (1024 * 1024) | limitTo: 6/} MB</td>
             <td md-cell>{/image.Created * 1000| date: 'yyyy-MM-dd HH:mm:ss'/}</td>

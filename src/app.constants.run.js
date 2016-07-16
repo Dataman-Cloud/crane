@@ -21,8 +21,8 @@
             singleService: {
                 "Services": {
                     "redis": {
-                      "Image": "redis@sha256:b50f15d427aea5b579f9bf972ab82ff8c1c47bffc0481b225c6a714095a9ec34",
-                      "network": ["bridge"]
+                        "Image": "redis@sha256:b50f15d427aea5b579f9bf972ab82ff8c1c47bffc0481b225c6a714095a9ec34",
+                        "network": ["bridge"]
                     }
                 },
                 "Version": "0.1"
@@ -30,12 +30,12 @@
             doubleServices: {
                 "Services": {
                     "redis": {
-                      "Image": "redis@sha256:b50f15d427aea5b579f9bf972ab82ff8c1c47bffc0481b225c6a714095a9ec34",
-                      "network": ["ingress", "bridge"]
+                        "Image": "redis@sha256:b50f15d427aea5b579f9bf972ab82ff8c1c47bffc0481b225c6a714095a9ec34",
+                        "network": ["ingress", "bridge"]
                     },
                     "nginx": {
-                      "Image": "nginx:stable-alpine",
-                      "network": ["ingress"]
+                        "Image": "nginx:stable-alpine",
+                        "network": ["ingress"]
                     }
                 },
                 "Version": "0.1"
@@ -51,7 +51,9 @@
                 images: 'api/v1/images/$node_id',
                 image: 'api/v1/images/$node_id/$image_id',
                 imageHistory: 'api/v1/images/$node_id/$image_id/history',
-                containers: 'api/v1/nodes/$node_id/containers'
+                containers: 'api/v1/nodes/$node_id/containers',
+                container: 'api/v1/nodes/$node_id/containers/$container_id',
+                containerDiff: 'api/v1/nodes/$node_id/containers/$container_id/diff'
             },
             stack: {
                 stacks: 'api/v1/stacks',
@@ -65,10 +67,14 @@
                 networks: 'api/v1/networks'
             }
         };
-        
-        $rootScope.CONTAINER_STATUS_LABELS = {
-                running: '运行中'
-        }
 
+        $rootScope.CONTAINER_STATUS_LABELS = {
+            running: '运行中'
+        };
+
+        $rootScope.NODE_ROLE = {
+            worker: '工作节点',
+            manager: '管理节点'
+        }
     }
 })();
