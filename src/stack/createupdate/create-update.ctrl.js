@@ -41,6 +41,7 @@
         self.create = create;
         self.update = update;
         self.stackChange = stackChange;
+        self.example = example;
 
         activate();
 
@@ -98,6 +99,11 @@
             } catch (err) {
                 self.errorInfo.stack = 'JSON 格式有误';
             }
+        }
+
+        function example() {
+            self.stack = angular.toJson($rootScope.STACK_SAMPLES.doubleServices, '\t') || "";
+            stackChange();
         }
     }
 })();
