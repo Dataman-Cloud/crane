@@ -11,7 +11,9 @@
     function nodeCurd(nodeBackend, $state, confirmModal, Notification) {
         //////
         return {
-            deleteVolume: deleteVolume
+            deleteVolume: deleteVolume,
+            removeContainer: removeContainer,
+            killContainer: killContainer
         };
 
         function deleteVolume(id, name) {
@@ -19,6 +21,26 @@
                 nodeBackend.deleteVolume(id, name)
                     .then(function (data) {
                         Notification.success('删除成功');
+                        $state.reload()
+                    })
+            });
+        }
+
+        function removeContainer(nodeId, containerId) {
+            confirmModal.open("是否确认移除该容器？").then(function () {
+                nodeBackend.removeContainer(nodeId, containerId)
+                    .then(function (data) {
+                        Notification.success('移除成功');
+                        $state.reload()
+                    })
+            });
+        }
+
+        function killContainer(nodeId, containerId) {
+            confirmModal.open("是否确认杀死该容器？").then(function () {
+                nodeBackend.killContainer(nodeId, containerId)
+                    .then(function (data) {
+                        Notification.success('杀死成功');
                         $state.reload()
                     })
             });

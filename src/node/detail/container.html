@@ -11,7 +11,8 @@
         </thead>
         <tbody md-body>
         <tr md-row ng-repeat="container in nodeContainerCtrl.containers">
-            <td md-cell>{/container.Names[0]/}</td>
+            <td md-cell>
+                <a data-ui-sref="node.containerDetail({node_id: $stateParams.node_id, container_id: container.Id, container_name: container.Names[0]})">{/container.Names[0]/}</a>
             <td md-cell>{/container.Labels['com.docker.swarm.service.name']/}</td>
             <td md-cell>{/container.Labels['com.docker.swarm.task.name']/}</td>
             <td md-cell>{/CONTAINER_STATUS_LABELS[container.State]/}</td>
@@ -23,7 +24,11 @@
                     </md-button>
                     <md-menu-content width="2">
                         <md-menu-item>
-                            <md-button aria-label="delete">删除
+                            <md-button aria-label="rm" data-ng-click="nodeContainerCtrl.removeContainer(container.Id)">移除
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button aria-label="kill" data-ng-click="nodeContainerCtrl.killContainer(container.Id)">杀死
                             </md-button>
                         </md-menu-item>
                     </md-menu-content>

@@ -65,7 +65,7 @@
                 }
             })
             .state('node.imageDetail', {
-                url: '/:node_id/:image_name/:image_id',
+                url: '/imageDetail/:node_id/:image_name/:image_id',
                 templateUrl: '/src/node/image-detail/detail.html',
                 targetState: 'config'
             })
@@ -84,6 +84,25 @@
                 resolve: {
                     layer: getLayer
                 }
+            })
+            .state('node.containerDetail', {
+                url: '/containerDetail/:node_id/:container_name/:container_id',
+                templateUrl: '/src/node/container-detail/detail.html',
+                targetState: 'config'
+            })
+            .state('node.containerDetail.config', {
+                url: '/config',
+                templateUrl: '/src/node/container-detail/config.html',
+                controller: 'NodeContainerConfigCtrl as nodeContainerConfigCtrl',
+                resolve: {
+                    container: getContainer,
+                    diffs: diffContainer
+                }
+            })
+            .state('node.containerDetail.log', {
+                url: '/log',
+                templateUrl: '/src/node/container-detail/log.html',
+                controller: 'NodeContainerLogCtrl as nodeContainerLogCtrl'
             });
 
         /* @ngInject */
@@ -116,5 +135,14 @@
             return nodeBackend.getImageHistory($stateParams.node_id, $stateParams.image_id)
         }
 
+        /* @ngInject */
+        function getContainer(nodeBackend, $stateParams) {
+            return nodeBackend.getContainer($stateParams.node_id, $stateParams.container_id)
+        }
+
+        /* @ngInject */
+        function diffContainer(nodeBackend, $stateParams) {
+            return nodeBackend.diffContainer($stateParams.node_id, $stateParams.container_id);
+        }
     }
 })();

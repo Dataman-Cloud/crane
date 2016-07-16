@@ -1,0 +1,102 @@
+<h4>概述</h4>
+<dl class="list-dl-row">
+    <dt>创建时间</dt>
+    <dd>{/nodeContainerConfigCtrl.container.Created | date: 'yyyy-MM-dd HH:mm:ss'/}</dd>
+    <dt>状态</dt>
+    <dd>{/CONTAINER_STATUS_LABELS[nodeContainerConfigCtrl.container.State.Status] || '-'/}</dd>
+    <dt>驱动</dt>
+    <dd>{/nodeContainerConfigCtrl.container.Driver || '-'/}</dd>
+    <dt>镜像名称</dt>
+    <dd>{/nodeContainerConfigCtrl.container.Image/}</dd>
+</dl>
+
+<h4>端口映射</h4>
+<md-table-container>
+    <table md-table>
+        <thead md-head>
+        <tr md-row>
+            <th md-column><span>端口</span></th>
+            <th md-column><span>协议</span></th>
+        </tr>
+        </thead>
+        <tbody md-body>
+        <tr md-row ng-repeat="(port, protocol)  in  nodeContainerConfigCtrl.container.Config.ExposedPorts">
+            <td md-cell>{/port | spliceStr: '/': 'key'/}</td>
+            <td md-cell>{/port | spliceStr: '/': 'value'/}</td>
+        </tr>
+        </tbody>
+    </table>
+</md-table-container>
+
+<h4>环境变量</h4>
+<md-table-container>
+    <table md-table>
+        <thead md-head>
+        <tr md-row>
+            <th md-column><span>KEY</span></th>
+            <th md-column><span>VALUE</span></th>
+        </tr>
+        </thead>
+        <tbody md-body>
+        <tr md-row ng-repeat="env  in  nodeContainerConfigCtrl.container.Config.Env">
+            <td md-cell>{/env | spliceStr: '=': 'key'/}</td>
+            <td md-cell>{/env | spliceStr: '=': 'value'/}</td>
+        </tr>
+        </tbody>
+    </table>
+</md-table-container>
+
+<h4>标签</h4>
+<md-table-container>
+    <table md-table>
+        <thead md-head>
+        <tr md-row>
+            <th md-column><span>KEY</span></th>
+            <th md-column><span>VALUE</span></th>
+        </tr>
+        </thead>
+        <tbody md-body>
+        <tr md-row ng-repeat="(key, value)  in  nodeContainerConfigCtrl.container.Config.Labels">
+            <td md-cell>{/key/}</td>
+            <td md-cell>{/value/}</td>
+        </tr>
+        </tbody>
+    </table>
+</md-table-container>
+
+<h4>存储卷</h4>
+<md-table-container>
+    <table md-table>
+        <thead md-head>
+        <tr md-row>
+            <th md-column><span>路径</span></th>
+        </tr>
+        </thead>
+        <tbody md-body>
+        <tr md-row ng-repeat="(volume, obj)  in  nodeContainerConfigCtrl.container.Config.Volumes">
+            <td md-cell>{/volume/}</td>
+        </tr>
+        </tbody>
+    </table>
+</md-table-container>
+
+<h4>Diff</h4>
+<md-table-container>
+    <table md-table>
+        <thead md-head>
+        <tr md-row>
+            <th md-column>Kind</th>
+            <th md-column>Path</th>
+        </tr>
+        </thead>
+        <tbody md-body>
+        <tr md-row ng-repeat="diff  in  nodeContainerConfigCtrl.diffs">
+            <td md-cell>{/diff.Kind/}</td>
+            <td md-cell>{/diff.Path/}</td>
+        </tr>
+        </tbody>
+    </table>
+</md-table-container>
+
+<h4>命令</h4>
+<code data-ng-repeat="cmd in nodeContainerConfigCtrl.container.Config.Cmd track by $index">{/cmd/}</code>

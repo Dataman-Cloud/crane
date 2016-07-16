@@ -2,13 +2,13 @@
     <section class="main-section">
         <header layout="row" layout-align="end start">
             <div class="info" flex>
-                <h2>镜像: {/$stateParams.image_name/}</h2>
+                <h2>容器: {/$stateParams.container_name/}</h2>
             </div>
         </header>
         <md-content>
             <md-tabs md-dynamic-height md-border-bottom>
-                <md-tab label="配置" dm-tab-sref="node.imageDetail.config"></md-tab>
-                <md-tab label="层级" dm-tab-sref="node.imageDetail.layer"></md-tab>
+                <md-tab label="配置" dm-tab-sref="node.containerDetail.config"></md-tab>
+                <md-tab label="日志" dm-tab-sref="node.containerDetail.log"></md-tab>
             </md-tabs>
             <md-content class="md-padding main-tab-content" ui-view>
             </md-content>
