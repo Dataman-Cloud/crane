@@ -12,7 +12,7 @@
         <tbody md-body>
         <tr md-row ng-repeat="container in nodeContainerCtrl.containers">
             <td md-cell>
-                <a data-ui-sref="node.containerDetail({node_id: $stateParams.node_id, container_id: container.Id})">{/container.Names[0]/}</a>
+                <a data-ui-sref="node.containerDetail({node_id: $stateParams.node_id, container_id: container.Id, container_name: container.Names[0]})">{/container.Names[0]/}</a>
             <td md-cell>{/container.Labels['com.docker.swarm.service.name']/}</td>
             <td md-cell>{/container.Labels['com.docker.swarm.task.name']/}</td>
             <td md-cell>{/CONTAINER_STATUS_LABELS[container.State]/}</td>

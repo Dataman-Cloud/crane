@@ -18,7 +18,8 @@
             listContainers: listContainers,
             getContainer: getContainer,
             removeContainer: removeContainer,
-            killContainer: killContainer
+            killContainer: killContainer,
+            diffContainer: diffContainer
         };
 
         function listNodes(params, loading) {
@@ -75,6 +76,10 @@
             };
 
             return gHttp.Resource('node.container', {node_id: nodeId, container_id: containerId}).delete({data: data});
+        }
+
+        function diffContainer(nodeId, containerId) {
+            return gHttp.Resource('node.containerDiff', {node_id: nodeId, container_id: containerId}).get();
         }
     }
 })();

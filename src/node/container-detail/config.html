@@ -1,6 +1,3 @@
-<h4>名称: </h4>
-<h5>{/nodeContainerConfigCtrl.container.Name/}</h5>
-
 <h4>概述</h4>
 <dl class="list-dl-row">
     <dt>创建时间</dt>
@@ -78,6 +75,24 @@
         <tbody md-body>
         <tr md-row ng-repeat="(volume, obj)  in  nodeContainerConfigCtrl.container.Config.Volumes">
             <td md-cell>{/volume/}</td>
+        </tr>
+        </tbody>
+    </table>
+</md-table-container>
+
+<h4>Diff</h4>
+<md-table-container>
+    <table md-table>
+        <thead md-head>
+        <tr md-row>
+            <th md-column>Kind</th>
+            <th md-column>Path</th>
+        </tr>
+        </thead>
+        <tbody md-body>
+        <tr md-row ng-repeat="diff  in  nodeContainerConfigCtrl.diffs">
+            <td md-cell>{/diff.Kind/}</td>
+            <td md-cell>{/diff.Path/}</td>
         </tr>
         </tbody>
     </table>

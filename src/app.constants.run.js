@@ -42,6 +42,15 @@
             }
         };
 
+        $rootScope.CONTAINER_STATUS_LABELS = {
+            running: '运行中'
+        };
+
+        $rootScope.NODE_ROLE = {
+            worker: '工作节点',
+            manager: '管理节点'
+        }
+
         $rootScope.BACKEND_URL = {
             node: {
                 nodes: 'api/v1/nodes',
@@ -67,14 +76,5 @@
                 networks: 'api/v1/networks'
             }
         };
-
-        $rootScope.CONTAINER_STATUS_LABELS = {
-            running: '运行中'
-        };
-
-        $rootScope.NODE_ROLE = {
-            worker: '工作节点',
-            manager: '管理节点'
-        }
     }
 })();
