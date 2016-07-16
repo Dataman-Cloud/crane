@@ -35,14 +35,25 @@ func (api *Api) ApiRouter() *gin.Engine {
 		// Going to delegate to /nodes/:id
 		// v1.GET("/nodes/leader_manager", api.LeaderNode)
 
+		// Containers
 		v1.GET("/nodes/:node_id/containers", api.ListContainers)
 		v1.GET("/nodes/:node_id/containers/:container_id", api.InspectContainer)
 		v1.GET("/nodes/:node_id/containers/:container_id/diff", api.DiffContainer)
 		v1.DELETE("/nodes/:node_id/containers/:container_id", api.DeleteContainer)
 		v1.GET("/nodes/:node_id/containers/:container_id/logs", api.Logs)
 		v1.GET("/nodes/:node_id/containers/:container_id/stats", api.Stats)
-		//v1.GET("/logs/:node_id/:container_id", api.Logs)
-		//v1.GET("/stats/:node_id/:container_id", api.Stats)
+
+		// Images
+		v1.GET("/nodes/:node_id/images", api.ListImages)
+		v1.GET("/nodes/:node_id/images/:image_id", api.InspectImage)
+		v1.GET("/nodes/:node_id/images/:image_id/history", api.ImageHistory)
+		v1.DELETE("/nodes/:node_id/images/:image_id", api.RemoveImage)
+
+		// Volumes
+		v1.GET("/nodes/:node_id/volumes", api.ListVolume)
+		v1.GET("/nodes/:node_id/volumes/:volume_id", api.InspectVolume)
+		v1.POST("/nodes/:node_id/volumes", api.CreateVolume)
+		v1.DELETE("/nodes/:node_id/volumes/:volume_id", api.RemoveVolume)
 
 		v1.POST("/networks", api.CreateNetwork)
 		v1.GET("/networks", api.ListNetworks)
@@ -58,16 +69,6 @@ func (api *Api) ApiRouter() *gin.Engine {
 		v1.GET("/stacks/:namespace/services", api.ListStackService)
 		v1.GET("/stacks/:namespace/services/:service_id/tasks", api.ListTasks)
 		v1.GET("/stacks/:namespace/services/:service_id/tasks/:task_id", api.InspectTask)
-
-		v1.DELETE("/volumes/:node_id/:name", api.RemoveVolume)
-		v1.GET("/volumes/:node_id/:name", api.InspectVolume)
-		v1.GET("/volumes/:node_id", api.ListVolume)
-		v1.POST("/volumes/:node_id", api.CreateVolume)
-
-		v1.GET("/images/:node_id", api.ListImages)
-		v1.GET("/images/:node_id/:image_id", api.InspectImage)
-		v1.GET("/images/:node_id/:image_id/history", api.ImageHistory)
-
 	}
 
 	misc := router.Group("/misc/v1")

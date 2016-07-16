@@ -11,7 +11,7 @@ import (
 )
 
 func (api *Api) InspectVolume(ctx *gin.Context) {
-	volume, err := api.GetDockerClient().InspectVolume(ctx.Param("node_id"), ctx.Param("name"))
+	volume, err := api.GetDockerClient().InspectVolume(ctx.Param("node_id"), ctx.Param("volume_id"))
 	if err != nil {
 		log.Errorf("inspect volume error: %v", err)
 		ctx.JSON(http.StatusInternalServerError, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
@@ -59,7 +59,7 @@ func (api *Api) CreateVolume(ctx *gin.Context) {
 }
 
 func (api *Api) RemoveVolume(ctx *gin.Context) {
-	if err := api.GetDockerClient().RemoveVolume(ctx.Param("node_id"), ctx.Param("name")); err != nil {
+	if err := api.GetDockerClient().RemoveVolume(ctx.Param("node_id"), ctx.Param("volume_id")); err != nil {
 		log.Errorf("remove volume error: %v", err)
 		ctx.JSON(http.StatusForbidden, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
 		return
