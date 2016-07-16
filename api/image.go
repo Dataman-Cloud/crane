@@ -45,7 +45,7 @@ func (api *Api) ListImages(ctx *gin.Context) {
 }
 
 func (api *Api) InspectImage(ctx *gin.Context) {
-	image, err := api.GetDockerClient().InspectImage(ctx.Param("node_id"), ctx.Param("name"))
+	image, err := api.GetDockerClient().InspectImage(ctx.Param("node_id"), ctx.Param("image_id"))
 	if err != nil {
 		log.Errorf("inspect image error: %v", err)
 		ctx.JSON(http.StatusInternalServerError, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
@@ -56,7 +56,7 @@ func (api *Api) InspectImage(ctx *gin.Context) {
 }
 
 func (api *Api) ImageHistory(ctx *gin.Context) {
-	historys, err := api.GetDockerClient().ImageHistory(ctx.Param("node_id"), ctx.Param("name"))
+	historys, err := api.GetDockerClient().ImageHistory(ctx.Param("node_id"), ctx.Param("image_id"))
 	if err != nil {
 		log.Errorf("get image history error: %v", err)
 		ctx.JSON(http.StatusInternalServerError, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})

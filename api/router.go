@@ -39,6 +39,7 @@ func (api *Api) ApiRouter() *gin.Engine {
 		v1.GET("/nodes/:id/containers/:container_id", api.InspectContainer)
 		v1.GET("/nodes/:id/containers/:container_id/diff", api.DiffContainer)
 		v1.DELETE("/nodes/:id/containers/:container_id", api.DeleteContainer)
+		v1.GET("/nodes/:node_id/:container_id/logs", api.Logs)
 
 		v1.POST("/networks", api.CreateNetwork)
 		v1.GET("/networks", api.ListNetworks)
@@ -61,10 +62,9 @@ func (api *Api) ApiRouter() *gin.Engine {
 		v1.POST("/volumes/:node_id", api.CreateVolume)
 
 		v1.GET("/images/:node_id", api.ListImages)
-		v1.GET("/images/:node_id/:name", api.InspectImage)
-		v1.GET("/images/:node_id/:name/history", api.ImageHistory)
+		v1.GET("/images/:node_id/:image_id", api.InspectImage)
+		v1.GET("/images/:node_id/:image_id/history", api.ImageHistory)
 
-		v1.GET("/logs/:node_id/:container_id", api.Logs)
 	}
 
 	misc := router.Group("/misc/v1")

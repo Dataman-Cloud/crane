@@ -44,12 +44,12 @@ curl -XGET localhostL:2375/api/v1/images/(node_id)
 }
 ```
 
-### `/images/(node_id)/(name)`
+### `/images/(node_id)/(image_id)`
 
 **Request:**
 
 ```
-curl -XGET localhost:2375/api/v1/images/(node_id)/(name)
+curl -XGET localhost:2375/api/v1/images/(node_id)/(image_id)
 ```
 
 **Response:**
@@ -156,12 +156,12 @@ curl -XGET localhost:2375/api/v1/images/(node_id)/(name)
 }
 ```
 
-### `/images/(node_id)/(name)/history`
+### `/images/(node_id)/(image_id)/history`
 
 **Request:**
 
 ```
-curl -XGET localhost:2357/api/v1/images/(node_id)/(name)/history
+curl -XGET localhost:2357/api/v1/images/(node_id)/(image_id)/history
 ```
 
 **Response:**
@@ -203,4 +203,5 @@ curl -XGET localhost:2357/api/v1/images/(node_id)/(name)/history
     ]
 }
 ```
+
 

@@ -1,6 +1,7 @@
 package api
 
 import (
+	"io"
 	"net/http"
 
 	"github.com/Dataman-Cloud/rolex/util"
@@ -79,4 +80,17 @@ func (api *Api) DiffContainer(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{"code": changes})
+}
+
+func (api *Api) Logs(ctx *gin.Context) {
+	message := make(chan string)
+
+	defer close(message)
+
+	go api.GetDockerClient().LogsContainer(ctx.Param("node_id"), ctx.Param("container_id"), message)
+
+	ctx.Stream(func(w io.Writer) bool {
+		w.Write([]byte(<-message))
+		return true
+	})
 }
