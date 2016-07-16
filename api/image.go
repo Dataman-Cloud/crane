@@ -5,8 +5,6 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/Dataman-Cloud/rolex/util"
-
 	goclient "github.com/fsouza/go-dockerclient"
 	"github.com/gin-gonic/gin"
 )
@@ -35,29 +33,29 @@ func (api *Api) ListImages(ctx *gin.Context) {
 
 	images, err := api.GetDockerClient().ListImages(ctx.Param("node_id"), opts)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
+		api.ERROR(ctx, err)
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"code": util.OPERATION_SUCCESS, "data": images})
+	api.OK(ctx, http.StatusOK, images)
 }
 
 func (api *Api) InspectImage(ctx *gin.Context) {
 	image, err := api.GetDockerClient().InspectImage(ctx.Param("node_id"), ctx.Param("name"))
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
+		api.ERROR(ctx, err)
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"code": util.OPERATION_SUCCESS, "data": image})
+	api.OK(ctx, http.StatusOK, image)
 }
 
 func (api *Api) ImageHistory(ctx *gin.Context) {
-	historys, err := api.GetDockerClient().ImageHistory(ctx.Param("node_id"), ctx.Param("name"))
+	histories, err := api.GetDockerClient().ImageHistory(ctx.Param("node_id"), ctx.Param("name"))
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
+		api.ERROR(ctx, err)
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"code": util.OPERATION_SUCCESS, "data": historys})
+	api.OK(ctx, http.StatusOK, histories)
 }

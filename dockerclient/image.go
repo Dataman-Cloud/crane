@@ -1,11 +1,17 @@
 package dockerclient
 
 import (
+	"github.com/Dataman-Cloud/rolex/util/rerror"
 	goclient "github.com/fsouza/go-dockerclient"
 )
 
 func (client *RolexDockerClient) ListImages(nodeId string, opts goclient.ListImagesOptions) ([]goclient.APIImages, error) {
-	return client.DockerClient(nodeId).ListImages(opts)
+	images, err := client.DockerClient(nodeId).ListImages(opts)
+	if err != nil {
+		return images, rerror.NewRolexError(rerror.ENGINE_OPERATION_ERROR, err.Error())
+	}
+
+	return images, nil
 }
 
 func (client *RolexDockerClient) InspectImage(nodeId, name string) (*goclient.Image, error) {

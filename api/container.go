@@ -3,8 +3,6 @@ package api
 import (
 	"net/http"
 
-	"github.com/Dataman-Cloud/rolex/util"
-
 	goclient "github.com/fsouza/go-dockerclient"
 	"github.com/gin-gonic/gin"
 )
@@ -44,7 +42,7 @@ func (api *Api) UpdateContainer(ctx *gin.Context) {}
 func (api *Api) DeleteContainer(ctx *gin.Context) {
 	containerDeleteRequest := &ContainerDeleteRequest{}
 	if err := ctx.BindJSON(&containerDeleteRequest); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": util.PARAMETER_ERROR, "data": err.Error()})
+		api.ERROR(ctx, err)
 		return
 	}
 

@@ -4,11 +4,11 @@ import (
 	"encoding/json"
 	"net/http"
 
-	log "github.com/Sirupsen/logrus"
-	"github.com/gin-gonic/gin"
+	"github.com/Dataman-Cloud/rolex/util/rerror"
 
 	"github.com/Dataman-Cloud/rolex/dockerclient"
-	"github.com/Dataman-Cloud/rolex/util"
+	log "github.com/Sirupsen/logrus"
+	"github.com/gin-gonic/gin"
 )
 
 func (api *Api) UpdateStack(ctx *gin.Context) {}
@@ -83,7 +83,7 @@ func (api *Api) RemoveStack(ctx *gin.Context) {
 	namespace := ctx.Param("namespace")
 	if err := api.GetDockerClient().RemoveStack(namespace); err != nil {
 		log.Error("Remove stack got error: ", err)
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": util.PARAMETER_ERROR, "data": err.Error()})
+		api.ERROR(ctx, rerror.NewRolexError(rerror.PARAMETER_ERROR, "requst error"))
 		return
 	}
 
