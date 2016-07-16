@@ -31,18 +31,18 @@ func (api *Api) ConnectNetwork(ctx *gin.Context) {
 	}
 
 	if connectNetworkRequest.Method == NETWORK_CONNECT {
-		if err := api.GetDockerClient().ConnectNetwork(ctx.Param("id"), connectNetworkRequest.NetworkOptions); err != nil {
+		if err := api.GetDockerClient().ConnectNetwork(ctx.Param("network_id"), connectNetworkRequest.NetworkOptions); err != nil {
 			ctx.JSON(http.StatusInternalServerError, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
 			return
 		}
 	} else if connectNetworkRequest.Method == NETWORK_DISCONNECT {
-		if err := api.GetDockerClient().DisconnectNetwork(ctx.Param("id"), connectNetworkRequest.NetworkOptions); err != nil {
+		if err := api.GetDockerClient().DisconnectNetwork(ctx.Param("network_id"), connectNetworkRequest.NetworkOptions); err != nil {
 			log.Errorf("network connect error: %v", err)
 			ctx.JSON(http.StatusInternalServerError, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
 			return
 		}
 	} else if connectNetworkRequest.Method == NETWORK_DISCONNECT {
-		if err := api.GetDockerClient().DisconnectNetwork(ctx.Param("id"), connectNetworkRequest.NetworkOptions); err != nil {
+		if err := api.GetDockerClient().DisconnectNetwork(ctx.Param("network_id"), connectNetworkRequest.NetworkOptions); err != nil {
 			log.Errorf("network disconnect error: %v", err)
 			ctx.JSON(http.StatusInternalServerError, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
 			return
@@ -76,7 +76,7 @@ func (api *Api) CreateNetwork(ctx *gin.Context) {
 }
 
 func (api *Api) InspectNetwork(ctx *gin.Context) {
-	network, err := api.GetDockerClient().InspectNetwork(ctx.Param("id"))
+	network, err := api.GetDockerClient().InspectNetwork(ctx.Param("network_id"))
 	if err != nil {
 		log.Errorf("inspect network error: %v", err)
 		ctx.JSON(http.StatusInternalServerError, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
@@ -110,7 +110,7 @@ func (api *Api) ListNetworks(ctx *gin.Context) {
 }
 
 func (api *Api) RemoveNetwork(ctx *gin.Context) {
-	if err := api.GetDockerClient().RemoveNetwork(ctx.Param("id")); err != nil {
+	if err := api.GetDockerClient().RemoveNetwork(ctx.Param("network_id")); err != nil {
 		log.Errorf("remove network error: %v", err)
 		ctx.JSON(http.StatusForbidden, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
 		return

@@ -84,3 +84,14 @@ func logReader(input *io.PipeReader, message chan string) {
 		}
 	}
 }
+
+func (client *RolexDockerClient) StatsContainer(nodeId, containerId string, stats chan *goclient.Stats, done chan bool) {
+	opts := goclient.StatsOptions{
+		ID:     containerId,
+		Stats:  stats,
+		Stream: true,
+		Done:   done,
+	}
+	err := client.DockerClient(nodeId).Stats(opts)
+	log.Infof("stats of container error: %v", err)
+}

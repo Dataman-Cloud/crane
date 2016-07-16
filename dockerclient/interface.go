@@ -17,6 +17,7 @@ type DockerClientInterface interface {
 	ListContainers(opts goclient.ListContainersOptions) ([]goclient.APIContainers, error)
 	RemoveContainer(opts goclient.RemoveContainerOptions) error
 	LogsContainer(nodeId, containerId string, message chan string)
+	StatsContainer(nodeId, containerId string, stats chan *goclient.Stats, done chan bool)
 
 	ConnectNetwork(id string, opts goclient.NetworkConnectionOptions) error
 	CreateNetwork(opts goclient.CreateNetworkOptions) (*goclient.Network, error)
