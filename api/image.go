@@ -28,13 +28,11 @@ func (api *Api) ListImages(ctx *gin.Context) {
 	}
 
 	filters := make(map[string][]string)
-	queryFilters := ctx.Query("filters")
-	if queryFilters != "" {
-		if err := json.Unmarshal([]byte(queryFilters), &filters); err != nil {
-			log.Error("Unmarshal list images filters got error: ", err)
-			ctx.JSON(http.StatusBadRequest, gin.H{"code": util.PARAMETER_ERROR, "data": err.Error()})
-			return
-		}
+	queryFilters := ctx.DefaultQuery("filters", "{}")
+	if err := json.Unmarshal([]byte(queryFilters), &filters); err != nil {
+		log.Error("Unmarshal list images filters got error: ", err)
+		ctx.JSON(http.StatusBadRequest, gin.H{"code": util.PARAMETER_ERROR, "data": err.Error()})
+		return
 	}
 
 	opts := goclient.ListImagesOptions{
