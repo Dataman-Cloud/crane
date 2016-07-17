@@ -30,7 +30,7 @@
                         <th md-column>类型</th>
                         <th md-column>创建时间</th>
                         <th md-column>Hostname</th>
-                        <th md-column>激活</th>
+                        <th md-column>可用性</th>
                         <th md-column>状态</th>
                         <th md-column>操作</th>
                     </tr>
@@ -43,7 +43,7 @@
                         <td md-cell>{/NODE_ROLE[node.Spec.Role]/}</td>
                         <td md-cell>{/node.CreatedAt | date: 'yyyy-MM-dd HH:mm:ss'/}</td>
                         <td md-cell>{/node.Description.Hostname/}</td>
-                        <td md-cell>{/node.Spec.Availability === 'active' ? '是' : '否'/}</td>
+                        <td md-cell>{/AVAILABILITY[node.Spec.Availability]/}</td>
                         <td md-cell>{/node.Status.State/}</td>
                         <td md-cell>
                             <md-menu md-offset="0 -5">
@@ -53,7 +53,25 @@
                                 </md-button>
                                 <md-menu-content width="2">
                                     <md-menu-item>
-                                        <md-button aria-label="Connect">删除
+                                        <md-button aria-label="drain"
+                                                   data-ng-disabled="node.Spec.Availability !== 'active'"
+                                                   data-ng-click="nodeListCtrl.drainNode(node.ID, node)">下线
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item>
+                                        <md-button aria-label="active"
+                                                   data-ng-disabled="node.Spec.Availability === 'active'"
+                                                   data-ng-click="nodeListCtrl.activeNode(node.ID, node)">激活
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item>
+                                        <md-button aria-label="pause"
+                                                   data-ng-disabled="node.Spec.Availability !== 'active'"
+                                                   data-ng-click="nodeListCtrl.pauseNode(node.ID, node)">暂停
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item>
+                                        <md-button aria-label="delete">删除
                                         </md-button>
                                     </md-menu-item>
                                 </md-menu-content>
