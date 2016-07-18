@@ -2,11 +2,9 @@ package dockerclient
 
 import (
 	"bufio"
-	"encoding/json"
 	"io"
 
 	log "github.com/Sirupsen/logrus"
-	"github.com/docker/engine-api/types"
 	goclient "github.com/fsouza/go-dockerclient"
 )
 
@@ -26,19 +24,36 @@ func (client *RolexDockerClient) KillContainer(opts goclient.KillContainerOption
 	return client.DockerClient("placeholder").KillContainer(opts)
 }
 
-func (client *RolexDockerClient) DiffContainer(containerID string) ([]types.ContainerChange, error) {
-	var changes []types.ContainerChange
+func (client *RolexDockerClient) DiffContainer(containerID string) ([]goclient.Change, error) {
+	return client.DockerClient("placeholder").ContainerChanges(containerID)
+}
 
-	content, err := client.HttpGet("/containers/"+containerID+"/changes", nil, nil)
-	if err != nil {
-		return changes, err
-	}
+func (client *RolexDockerClient) RenameContainer(opts goclient.RenameContainerOptions) error {
+	return client.DockerClient("placeholder").RenameContainer(opts)
+}
 
-	if err := json.Unmarshal(content, &changes); err != nil {
-		return changes, err
-	}
+func (client *RolexDockerClient) StopContainer(containerId string, timeout uint) error {
+	return client.DockerClient("placeholder").StopContainer(containerId, timeout)
+}
 
-	return changes, nil
+func (client *RolexDockerClient) StartContainer(containerID string, hostconfig *goclient.HostConfig) error {
+	return client.DockerClient("placeholder").StartContainer(containerID, hostconfig)
+}
+
+func (client *RolexDockerClient) RestartContainer(containerId string, timeout uint) error {
+	return client.DockerClient("placeholder").RestartContainer(containerId, timeout)
+}
+
+func (client *RolexDockerClient) PauseContainer(containerID string) error {
+	return client.DockerClient("placeholder").PauseContainer(containerID)
+}
+
+func (client *RolexDockerClient) UnpauseContainer(containerID string) error {
+	return client.DockerClient("placeholder").UnpauseContainer(containerID)
+}
+
+func (client *RolexDockerClient) ResizeContainerTTY(containerID string, height, width int) error {
+	return client.DockerClient("placeholder").ResizeContainerTTY(containerID, height, width)
 }
 
 func (client *RolexDockerClient) LogsContainer(nodeId, containerId string, message chan string) {
