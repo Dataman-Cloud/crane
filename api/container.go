@@ -13,10 +13,10 @@ import (
 )
 
 type ContainerRequest struct {
-	Method string `json:"method"`
-	Name   string `json:"name"`
-	Height int    `json:"height"`
-	Width  int    `json:"widht"`
+	Method string `json:"Method"`
+	Name   string `json:"Name"`
+	Height int    `json:"Height"`
+	Width  int    `json:"Width"`
 }
 
 const (
