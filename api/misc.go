@@ -9,9 +9,11 @@ import (
 )
 
 type RolexConfigResponse struct {
-	Version      string `json:"version"`
-	BuildTime    string `json:"build"`
-	FeatureFlags string `json:"feature_flags"`
+	Version      string `json:"Version"`
+	BuildTime    string `json:"Build"`
+	FeatureFlags string `json:"FeatureFlags"`
+	RolexSecret  string `json:"RolexSecret"`
+	RolexCaHash  string `json:"RolexCaHash"`
 }
 
 func (api *Api) RolexConfig(ctx *gin.Context) {
@@ -20,6 +22,8 @@ func (api *Api) RolexConfig(ctx *gin.Context) {
 	config.BuildTime = version.BuildTime
 	config.FeatureFlags = strings.Join(api.GetConfig().FeatureFlags, ",")
 
+	config.RolexSecret = api.GetConfig().RolexSecret
+	config.RolexCaHash = api.GetConfig().RolexCaHash
 	ctx.JSON(http.StatusOK, gin.H{"code": 1, "data": config})
 }
 
@@ -29,8 +33,8 @@ func (api *Api) HealthCheck(ctx *gin.Context) {
 
 func (api *Api) Help(engine *gin.Engine) gin.HandlerFunc {
 	type RouteInfo struct {
-		Method string `json:"method"`
-		Path   string `json:"path"`
+		Method string `json:"Method"`
+		Path   string `json:"Path"`
 	}
 	routes := make([]*RouteInfo, 0)
 	for _, r := range engine.Routes() {

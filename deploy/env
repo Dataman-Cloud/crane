@@ -8,3 +8,6 @@ ROLEX_DB_DSN=root:111111@tcp(localhost:3306)/rolex?charset=utf8&parseTime=true&l
 ROLEX_DB_DRIVER=mysql
 ROLEX_REGISTRY_PRIVATE_KEY_PATH="/Users/cmingxu/Code/GO/packages/src/github.com/Dataman-Cloud/rolex/doc/registry/private_key.pem"
 ROLEX_REGISTRY_ADDR=192.168.99.100:5000
+
+ROLEX_SECRET="rolex"
+ROLEX_CA_HASH="sha256:8db604f91547c53b63f1ac6bb1b23e4d9c4d1dae3eefc46a813a9bf6d65e2c69"
