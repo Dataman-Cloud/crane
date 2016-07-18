@@ -7,11 +7,10 @@
         .controller('NodeContainerConfigCtrl', NodeContainerConfigCtrl);
 
     /* @ngInject */
-    function NodeContainerConfigCtrl(container, diffs) {
+    function NodeContainerConfigCtrl(container) {
         var self = this;
 
         self.container = container;
-        self.diffs = diffs;
 
     }
 })();

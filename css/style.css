@@ -582,7 +582,7 @@ a.remove {
     padding: 9px;
     background-color: #000;
     color: #FFF;
-    min-height: 200px;
+    min-height: 400px;
     max-height: 400px;
     overflow-y: auto;
     overflow-x: auto;

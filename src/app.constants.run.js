@@ -69,7 +69,9 @@
                 imageHistory: 'api/v1/nodes/$node_id/images/$image_id/history',
                 containers: 'api/v1/nodes/$node_id/containers',
                 container: 'api/v1/nodes/$node_id/containers/$container_id',
-                containerDiff: 'api/v1/nodes/$node_id/containers/$container_id/diff'
+                containerDiff: 'api/v1/nodes/$node_id/containers/$container_id/diff',
+                containerLog: 'api/v1/nodes/$node_id/containers/$container_id/logs',
+                containerStats: 'api/v1/nodes/$node_id/containers/$container_id/stats'
             },
             stack: {
                 stacks: 'api/v1/stacks',

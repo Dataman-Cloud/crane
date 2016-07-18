@@ -1,1 +1,8 @@
-日志
+<div class="log-screen" id="log">
+    <ul class="list-unstyled">
+        <li data-ng-repeat='log in nodeContainerLogCtrl.logs' >
+            {/log/}
+        </li>
+    </ul>
+    <code data-ng-if='nodeContainerLogCtrl.logs.length <= 0'>暂无日志</code>
+</div>

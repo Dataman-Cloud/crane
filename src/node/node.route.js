@@ -109,6 +109,11 @@
                 templateUrl: '/src/node/container-detail/log.html',
                 controller: 'NodeContainerLogCtrl as nodeContainerLogCtrl'
             })
+            .state('node.containerDetail.stats', {
+                url: '/stats',
+                templateUrl: '/src/node/container-detail/stats.html',
+                controller: 'NodeContainerStatsCtrl as nodeContainerStatsCtrl'
+            })
             .state('node.containerDetail.diff', {
                 url: '/diff',
                 templateUrl: '/src/node/container-detail/diff.html',

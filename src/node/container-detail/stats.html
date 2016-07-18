@@ -1,0 +1,8 @@
+<div id="state">
+    <ul class="list-unstyled">
+        <li data-ng-repeat='statsItem in nodeContainerStatsCtrl.stats' >
+            {/statsItem/}
+        </li>
+    </ul>
+    <code data-ng-if='nodeContainerStatsCtrl.stats.length <= 0'>暂无信息</code>
+</div>
