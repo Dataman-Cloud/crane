@@ -24,11 +24,11 @@ func (api *Api) RolexConfig(ctx *gin.Context) {
 
 	config.RolexSecret = api.GetConfig().RolexSecret
 	config.RolexCaHash = api.GetConfig().RolexCaHash
-	ctx.JSON(http.StatusOK, gin.H{"code": 1, "data": config})
+	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": config})
 }
 
 func (api *Api) HealthCheck(ctx *gin.Context) {
-	ctx.JSON(http.StatusOK, gin.H{"code": 1, "data": "ok"})
+	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": "ok"})
 }
 
 func (api *Api) Help(engine *gin.Engine) gin.HandlerFunc {
@@ -45,6 +45,6 @@ func (api *Api) Help(engine *gin.Engine) gin.HandlerFunc {
 	}
 
 	return func(ctx *gin.Context) {
-		ctx.JSON(http.StatusOK, gin.H{"code": 1, "data": routes})
+		ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": routes})
 	}
 }
