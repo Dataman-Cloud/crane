@@ -69,7 +69,8 @@
                 stacks: 'api/v1/stacks',
                 stack: 'api/v1/stacks/$stack_name',
                 services: 'api/v1/stacks/$stack_name/services',
-                service: 'api/v1/stacks/$stack_name/services/$service_id'
+                service: 'api/v1/stacks/$stack_name/services/$service_id',
+                tasks: 'api/v1/stacks/$stack_name/services/$service_id/tasks'
             },
             network: {
                 network: 'api/v1/networks/$network_id',

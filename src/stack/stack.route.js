@@ -55,6 +55,20 @@
                 resolve: {
                     services: listStackServices 
                 }
+            })
+            .state('stack.serviceDetail', {
+                url: '/serviceDetail/:stack_name/:service_id',
+                templateUrl: '/src/stack/service-detail/detail.html',
+                controller: 'ServiceDetailCtrl as serviceDetailCtrl',
+                targetState: 'task'
+            })
+            .state('stack.serviceDetail.task', {
+                url: '/task',
+                templateUrl: '/src/stack/service-detail/task.html',
+                controller: 'ServiceTaskCtrl as serviceTaskCtrl',
+                resolve: {
+                    tasks: listServiceTasks
+                }
             });
     }
     
@@ -71,5 +85,10 @@
     /*@ngInject*/
     function listStackServices(stackBackend, $stateParams) {
         return stackBackend.listStackServices($stateParams.stack_name);
+    }
+    
+    /*@ngInject*/
+    function listServiceTasks(stackBackend, $stateParams) {
+        return stackBackend.listServiceTasks($stateParams.stack_name, $stateParams.service_id);
     }
 })();

@@ -12,7 +12,8 @@
             getStack: getStack,
             listStackServices: listStackServices,
             upServiceScale: upServiceScale,
-            deleteStack: deleteStack
+            deleteStack: deleteStack,
+            listServiceTasks: listServiceTasks
         };
         
         function createStack(data, form) {
@@ -37,6 +38,10 @@
         
         function upServiceScale(stackName, serviceID, scale) {
             return gHttp.Resource('stack.service', {stack_name: stackName, service_id: serviceID}).patch({Scale: scale});
+        }
+        
+        function listServiceTasks(stackName, serviceID) {
+            return gHttp.Resource('stack.tasks', {stack_name: stackName, service_id: serviceID}).get();
         }
     }
 })();

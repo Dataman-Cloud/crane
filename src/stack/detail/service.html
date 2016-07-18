@@ -10,7 +10,7 @@
         </thead>
         <tbody md-body>
         <tr md-row ng-repeat="service in stackServiceCtrl.services">
-            <td md-cell>{/service.Name/}</td>
+            <td md-cell><a data-ui-sref="stack.serviceDetail({stack_name: stackDetailCtrl.stack.Namespace, service_id: service.ID})">{/service.Name/}</td>
             <td md-cell>{/service.Images/}</td>
             <td md-cell>{/service.TaskRunning/}/{/service.TaskTotal/}</td>
             <td md-cell>

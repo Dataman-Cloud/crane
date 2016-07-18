@@ -13,7 +13,8 @@
         return {
             deleteVolume: deleteVolume,
             removeContainer: removeContainer,
-            killContainer: killContainer
+            killContainer: killContainer,
+            getNodesMapping: getNodesMapping
         };
 
         function deleteVolume(id, name) {
@@ -44,6 +45,16 @@
                         $state.reload()
                     })
             });
+        }
+        
+        function getNodesMapping() {
+            return nodeBackend.listNodes().then(function (nodes) {
+                var mapping = {};
+                angular.forEach(nodes, function (node) {
+                    mapping[node.ID] = node;
+                });
+                return mapping;
+            })
         }
 
     }
