@@ -82,6 +82,9 @@
                 network: 'api/v1/networks/$network_id',
                 container: 'api/v1/networks/$network_id/container',
                 networks: 'api/v1/networks'
+            },
+            misc: {
+                config: 'misc/v1/config'
             }
         };
     }

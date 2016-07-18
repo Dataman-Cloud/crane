@@ -1,0 +1,42 @@
+<div class="main-content app-layout">
+    <section class="main-section">
+        <header layout="row" layout-align="end start">
+            <div class="info" flex>
+                <h2>Rolex 配置列表</h2>
+            </div>
+        </header>
+
+        <div class="main-content">
+
+            <md-table-container>
+                <table md-table>
+                    <tbody md-body>
+                    <tr md-row>
+                        <th>Version</th>
+                        <td md-cell>{/miscConfigCtrl.rolexconfig.Version/}</td>
+                    </tr>
+                    <tr md-row>
+                        <th>Build</th>
+                        <td md-cell>{/miscConfigCtrl.rolexconfig.Build/}</td>
+                    </tr>
+                    <tr md-row>
+                        <th>FeatureFlags</th>
+                        <td md-cell>{/miscConfigCtrl.rolexconfig.FeatureFlags || '未配置'/}</td>
+                    </tr>
+                    <tr md-row>
+                        <th>RolexSecret</th>
+                        <td md-cell>{/miscConfigCtrl.rolexconfig.RolexSecret/}</td>
+                    </tr>
+                    <tr md-row>
+                        <th>RolexCaHash</th>
+                        <td md-cell>{/miscConfigCtrl.rolexconfig.RolexCaHash/}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="alert alert-warning text-center" data-ng-if="!miscConfigCtrl.rolexconfig">
+                    未查询到信息
+                </div>
+            </md-table-container>
+        </div>
+    </section>
+</div>
