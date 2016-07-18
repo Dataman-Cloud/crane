@@ -31,3 +31,19 @@ func (client *RolexDockerClient) ListNetworks(opts goclient.NetworkFilterOpts) (
 func (client *RolexDockerClient) RemoveNetwork(id string) error {
 	return client.SwarmClient().RemoveNetwork(id)
 }
+
+func (client *RolexDockerClient) ConnectNodeNetwork(nodeID, networkID string, opts goclient.NetworkConnectionOptions) error {
+	return client.DockerClient(nodeID).ConnectNetwork(networkID, opts)
+}
+
+func (client *RolexDockerClient) DisconnectNodeNetwork(nodeID, networkID string, opts goclient.NetworkConnectionOptions) error {
+	return client.DockerClient(nodeID).DisconnectNetwork(networkID, opts)
+}
+
+func (client *RolexDockerClient) InspectNodeNetwork(nodeID, networkID string) (*goclient.Network, error) {
+	return client.DockerClient(nodeID).NetworkInfo(networkID)
+}
+
+func (client *RolexDockerClient) ListNodeNetworks(nodeID string, opts goclient.NetworkFilterOpts) ([]goclient.Network, error) {
+	return client.DockerClient(nodeID).FilteredListNetworks(opts)
+}

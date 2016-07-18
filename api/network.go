@@ -30,30 +30,28 @@ func (api *Api) ConnectNetwork(ctx *gin.Context) {
 		return
 	}
 
-	if connectNetworkRequest.Method == NETWORK_CONNECT {
-		if err := api.GetDockerClient().ConnectNetwork(ctx.Param("network_id"), connectNetworkRequest.NetworkOptions); err != nil {
+	networkID := ctx.Param("network_id")
+	switch connectNetworkRequest.Method {
+	case NETWORK_CONNECT:
+		if err := api.GetDockerClient().ConnectNetwork(networkID, connectNetworkRequest.NetworkOptions); err != nil {
+			log.Errorf("connect to network %s got error: %s", networkID, err.Error())
 			ctx.JSON(http.StatusInternalServerError, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
 			return
 		}
-	} else if connectNetworkRequest.Method == NETWORK_DISCONNECT {
-		if err := api.GetDockerClient().DisconnectNetwork(ctx.Param("network_id"), connectNetworkRequest.NetworkOptions); err != nil {
-			log.Errorf("network connect error: %v", err)
+	case NETWORK_DISCONNECT:
+		if err := api.GetDockerClient().DisconnectNetwork(networkID, connectNetworkRequest.NetworkOptions); err != nil {
+			log.Errorf("disconnect to network %s got error: %s", networkID, err)
 			ctx.JSON(http.StatusInternalServerError, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
 			return
 		}
-	} else if connectNetworkRequest.Method == NETWORK_DISCONNECT {
-		if err := api.GetDockerClient().DisconnectNetwork(ctx.Param("network_id"), connectNetworkRequest.NetworkOptions); err != nil {
-			log.Errorf("network disconnect error: %v", err)
-			ctx.JSON(http.StatusInternalServerError, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
-			return
-		}
-	} else {
+	default:
 		log.Error("connect network invalid request")
 		ctx.JSON(http.StatusBadRequest, gin.H{"code": util.PARAMETER_ERROR, "data": "Invalid request"})
 		return
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{"code": util.OPERATION_SUCCESS, "data": connectNetworkRequest.Method + " success"})
+	return
 }
 
 func (api *Api) CreateNetwork(ctx *gin.Context) {
@@ -114,4 +112,73 @@ func (api *Api) RemoveNetwork(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{"code": util.OPERATION_SUCCESS, "data": "remove success"})
+}
+
+func (api *Api) ConnectNodeNetwork(ctx *gin.Context) {
+	var connectNetworkRequest ConnectNetworkRequest
+	if err := ctx.BindJSON(&connectNetworkRequest); err != nil {
+		log.Errorf("connect network request body parse json error: %v", err)
+		ctx.JSON(http.StatusBadRequest, gin.H{"code": util.PARAMETER_ERROR, "data": err.Error()})
+		return
+	}
+
+	nodeID := ctx.Param("node_id")
+	networkID := ctx.Param("network_id")
+	switch connectNetworkRequest.Method {
+	case NETWORK_CONNECT:
+		if err := api.GetDockerClient().ConnectNodeNetwork(nodeID, networkID, connectNetworkRequest.NetworkOptions); err != nil {
+			log.Errorf("connect to node: %s network %s got error: %s", nodeID, networkID, err.Error())
+			ctx.JSON(http.StatusInternalServerError, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
+			return
+		}
+	case NETWORK_DISCONNECT:
+		if err := api.GetDockerClient().DisconnectNodeNetwork(nodeID, networkID, connectNetworkRequest.NetworkOptions); err != nil {
+			log.Errorf("disconnect to node: %s network %s got error: %s", nodeID, networkID, err)
+			ctx.JSON(http.StatusInternalServerError, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
+			return
+		}
+	default:
+		log.Error("connect network invalid request")
+		ctx.JSON(http.StatusBadRequest, gin.H{"code": util.PARAMETER_ERROR, "data": "Invalid request"})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"code": util.OPERATION_SUCCESS, "data": connectNetworkRequest.Method + " success"})
+	return
+}
+
+func (api *Api) InspectNodeNetwork(ctx *gin.Context) {
+	nodeID := ctx.Param("node_id")
+	networkID := ctx.Param("network_id")
+	network, err := api.GetDockerClient().InspectNodeNetwork(nodeID, networkID)
+	if err != nil {
+		log.Errorf("inspect network of node: %s networkid: %s got error: %s", nodeID, networkID, err)
+		ctx.JSON(http.StatusInternalServerError, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"code": util.OPERATION_SUCCESS, "data": network})
+	return
+}
+
+func (api *Api) ListNodeNetworks(ctx *gin.Context) {
+	nodeID := ctx.Param("node_id")
+	var filters goclient.NetworkFilterOpts
+
+	fp := ctx.DefaultQuery("filters", "{}")
+	if err := json.Unmarshal([]byte(fp), &filters); err != nil {
+		log.Error("list network request body parse json error: ", err)
+		ctx.JSON(http.StatusBadRequest, gin.H{"code": util.PARAMETER_ERROR, "data": err.Error()})
+		return
+	}
+
+	networks, err := api.GetDockerClient().ListNodeNetworks(nodeID, filters)
+	if err != nil {
+		log.Errorf("list network get network of %s got error: %s", nodeID, err)
+		ctx.JSON(http.StatusInternalServerError, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"code": util.OPERATION_SUCCESS, "data": networks})
+	return
 }
