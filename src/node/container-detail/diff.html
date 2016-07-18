@@ -1,0 +1,19 @@
+<md-table-container>
+    <table md-table>
+        <thead md-head>
+        <tr md-row>
+            <th md-column>变更方式</th>
+            <th md-column>文件路径</th>
+        </tr>
+        </thead>
+        <tbody md-body>
+        <tr md-row ng-repeat="diff  in  nodeContainerDiffCtrl.diffs">
+            <td md-cell>{/DIFF_KIND[diff.Kind]/}</td>
+            <td md-cell>{/diff.Path/}</td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="alert alert-warning text-center" data-ng-if="nodeContainerDiffCtrl.diffs <= 0">
+        未查询到变更信息
+    </div>
+</md-table-container>

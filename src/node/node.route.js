@@ -102,15 +102,20 @@
             .state('node.containerDetail.config', {
                 url: '/config',
                 templateUrl: '/src/node/container-detail/config.html',
-                controller: 'NodeContainerConfigCtrl as nodeContainerConfigCtrl',
-                resolve: {
-                    diffs: diffContainer
-                }
+                controller: 'NodeContainerConfigCtrl as nodeContainerConfigCtrl'
             })
             .state('node.containerDetail.log', {
                 url: '/log',
                 templateUrl: '/src/node/container-detail/log.html',
                 controller: 'NodeContainerLogCtrl as nodeContainerLogCtrl'
+            })
+            .state('node.containerDetail.diff', {
+                url: '/diff',
+                templateUrl: '/src/node/container-detail/diff.html',
+                controller: 'NodeContainerDiffCtrl as nodeContainerDiffCtrl',
+                resolve: {
+                    diffs: diffContainer
+                }
             });
 
         /* @ngInject */

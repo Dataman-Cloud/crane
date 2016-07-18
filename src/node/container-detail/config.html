@@ -68,23 +68,5 @@
     </table>
 </md-table-container>
 
-<h4>Diff</h4>
-<md-table-container>
-    <table md-table>
-        <thead md-head>
-        <tr md-row>
-            <th md-column>Kind</th>
-            <th md-column>Path</th>
-        </tr>
-        </thead>
-        <tbody md-body>
-        <tr md-row ng-repeat="diff  in  nodeContainerConfigCtrl.diffs">
-            <td md-cell>{/diff.Kind/}</td>
-            <td md-cell>{/diff.Path/}</td>
-        </tr>
-        </tbody>
-    </table>
-</md-table-container>
-
 <h4>命令</h4>
 <code data-ng-repeat="cmd in nodeContainerConfigCtrl.container.Config.Cmd track by $index">{/cmd/}</code>

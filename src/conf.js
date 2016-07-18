@@ -4,7 +4,7 @@
  * ws是指websocket.
  */
 BACKEND_URL_BASE = {
-    defaultBase: "http://localhost:5013/",
+    defaultBase: "http://192.168.1.229:5013/",
     node: null,
     stack: null,
     network: null

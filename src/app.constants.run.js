@@ -45,6 +45,12 @@
         $rootScope.CONTAINER_STATUS_LABELS = {
             running: '运行中'
         };
+        
+        $rootScope.DIFF_KIND = {
+            0: '修改',
+            1: '添加',
+            2: '删除'
+        }
 
         $rootScope.NODE_ROLE = {
             worker: '工作节点',
