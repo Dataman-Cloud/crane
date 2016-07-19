@@ -14,7 +14,10 @@
             deleteVolume: deleteVolume,
             removeContainer: removeContainer,
             killContainer: killContainer,
-            getNodesMapping: getNodesMapping
+            getNodesMapping: getNodesMapping,
+            drainNode: drainNode,
+            activeNode: activeNode,
+            pauseNode: pauseNode
         };
 
         function deleteVolume(id, name) {
@@ -46,7 +49,7 @@
                     })
             });
         }
-        
+
         function getNodesMapping() {
             return nodeBackend.listNodes().then(function (nodes) {
                 var mapping = {};
@@ -55,6 +58,36 @@
                 });
                 return mapping;
             })
+        }
+
+        function drainNode(nodeId, data) {
+            confirmModal.open("是否确认下线该主机？").then(function () {
+                nodeBackend.handleNode(nodeId, data, 'drain')
+                    .then(function (data) {
+                        Notification.success('下线成功');
+                        $state.reload()
+                    })
+            });
+        }
+
+        function activeNode(nodeId, data) {
+            confirmModal.open("是否确认激活该主机？").then(function () {
+                nodeBackend.handleNode(nodeId, data, 'active')
+                    .then(function (data) {
+                        Notification.success('激活成功');
+                        $state.reload()
+                    })
+            });
+        }
+
+        function pauseNode(nodeId, data) {
+            confirmModal.open("是否确认暂停该主机？").then(function () {
+                nodeBackend.handleNode(nodeId, data, 'pause')
+                    .then(function (data) {
+                        Notification.success('暂停成功');
+                        $state.reload()
+                    })
+            });
         }
 
     }

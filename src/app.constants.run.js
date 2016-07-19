@@ -4,7 +4,7 @@
         .run(run);
 
     /*@ngInject*/
-    function run($state, $rootScope) {
+    function run($rootScope) {
         $rootScope.MESSAGE_CODE = {
             success: 0,
             dataInvalid: 10001,
@@ -50,17 +50,24 @@
             0: '修改',
             1: '添加',
             2: '删除'
-        }
+        };
 
         $rootScope.NODE_ROLE = {
             worker: '工作节点',
             manager: '管理节点'
         };
 
+        $rootScope.AVAILABILITY = {
+            drain: '下线',
+            active: '激活',
+            pause: '暂停'
+        };
+
         $rootScope.BACKEND_URL = {
             node: {
                 nodes: 'api/v1/nodes',
-                node: 'api/v1/nodes/$node_id/info',
+                nodeInfo: 'api/v1/nodes/$node_id/info',
+                node: 'api/v1/nodes/$node_id',
                 leader: 'api/v1/nodes/leader_manager',
                 volumes: 'api/v1/nodes/$node_id/volumes',
                 volume: 'api/v1/nodes/$node_id/volumes/$volume_id',

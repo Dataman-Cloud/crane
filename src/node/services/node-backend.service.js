@@ -9,6 +9,7 @@
         return {
             listNodes: listNodes,
             getNode: getNode,
+            handleNode: handleNode,
             getLeaderNode: getLeaderNode,
             createVolume: createVolume,
             listVolumes: listVolumes,
@@ -27,8 +28,16 @@
             return gHttp.Resource('node.nodes').get({params: params, "loading": loading});
         }
 
+        function handleNode(nodeId, data, type) {
+            if (data && data.Spec) {
+                data.Spec.Availability = type
+            }
+
+            return gHttp.Resource('node.node', {node_id: nodeId}).patch(data);
+        }
+
         function getNode(nodeId) {
-            return gHttp.Resource('node.node', {node_id: nodeId}).get();
+            return gHttp.Resource('node.nodeInfo', {node_id: nodeId}).get();
         }
 
         function getLeaderNode() {
