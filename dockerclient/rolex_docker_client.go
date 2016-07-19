@@ -94,7 +94,7 @@ func (client *RolexDockerClient) DockerClient(ctx context.Context) *goclient.Cli
 		return dockerClient
 	}
 
-	host, err := client.NodeDaemonTCPEndpoint(node_id)
+	host, err := client.NodeDaemonEndpoint(node_id, "tcp")
 	if err != nil {
 		log.Error("unable to parse node ip for ", host)
 		return nil

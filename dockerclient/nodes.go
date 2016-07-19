@@ -5,6 +5,7 @@ import (
 	"net/url"
 	"path"
 	"strconv"
+	"strings"
 
 	"github.com/docker/engine-api/types"
 	"github.com/docker/engine-api/types/swarm"
@@ -46,7 +47,7 @@ func (client *RolexDockerClient) InspectNode(nodeId string) (swarm.Node, error) 
 
 // Remove a single node
 func (client *RolexDockerClient) RemoveNode(nodeId string) error {
-	_, err := client.HttpDelete(path.Join("nodes", nodeId))
+	_, err := client.HttpDelete(client.SwarmHttpEndpoint + "/" + path.Join("nodes", nodeId))
 	if err != nil {
 		return err
 	}
@@ -63,7 +64,7 @@ func (client *RolexDockerClient) UpdateNode(nodeId string, version swarm.Version
 
 	query := url.Values{}
 	query.Set("version", strconv.FormatUint(version.Index, 10))
-	_, err = client.HttpPost(path.Join("nodes", nodeId, "update"), query, nodeSpecJSON, nil)
+	_, err = client.HttpPost(client.SwarmHttpEndpoint+"/"+path.Join("nodes", nodeId, "update"), query, nodeSpecJSON, nil)
 	if err != nil {
 		return err
 	}
@@ -76,7 +77,7 @@ func (client *RolexDockerClient) Info(ctx context.Context) (*goclient.DockerInfo
 	return client.DockerClient(ctx).Info()
 }
 
-func (client *RolexDockerClient) NodeDaemonTCPEndpoint(nodeId string) (string, error) {
+func (client *RolexDockerClient) NodeDaemonEndpoint(nodeId string, protocol string) (string, error) {
 	var node swarm.Node
 
 	content, err := client.HttpGet(client.SwarmHttpEndpoint+"/"+path.Join("nodes", nodeId), nil, nil)
@@ -88,20 +89,14 @@ func (client *RolexDockerClient) NodeDaemonTCPEndpoint(nodeId string) (string, e
 		return "", err
 	}
 
-	return "tcp://" + client.Config.NodeIP + ":" + client.Config.NodePort, nil
-}
-
-func (client *RolexDockerClient) NodeDaemonHTTPEndpoint(nodeId string) (string, error) {
-	var node swarm.Node
-
-	content, err := client.HttpGet(client.SwarmHttpEndpoint+"/"+path.Join("nodes", nodeId), nil, nil)
-	if err != nil {
-		return "", err
+	switch strings.ToLower(protocol) {
+	case "http":
+		return "http://" + client.Config.NodeIP + ":" + client.Config.NodePort, nil
+	case "https":
+		return "https://" + client.Config.NodeIP + ":" + client.Config.NodePort, nil
+	case "tcp":
+		return "tcp://" + client.Config.NodeIP + ":" + client.Config.NodePort, nil
+	default:
+		return "tcp://" + client.Config.NodeIP + ":" + client.Config.NodePort, nil
 	}
-
-	if err := json.Unmarshal(content, &node); err != nil {
-		return "", err
-	}
-
-	return "https://" + client.Config.NodeIP + ":" + client.Config.NodePort, nil
 }
