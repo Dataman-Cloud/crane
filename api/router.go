@@ -41,8 +41,8 @@ func (api *Api) ApiRouter() *gin.Engine {
 		v1.GET("/nodes/:node_id/containers/:container_id", api.InspectContainer)
 		v1.GET("/nodes/:node_id/containers/:container_id/diff", api.DiffContainer)
 		v1.DELETE("/nodes/:node_id/containers/:container_id", api.DeleteContainer)
-		v1.GET("/nodes/:node_id/containers/:container_id/logs", api.Logs)
-		v1.GET("/nodes/:node_id/containers/:container_id/stats", api.Stats)
+		v1.GET("/nodes/:node_id/containers/:container_id/logs", api.LogsContainer)
+		v1.GET("/nodes/:node_id/containers/:container_id/stats", api.StatsContaienr)
 
 		// Images
 		v1.GET("/nodes/:node_id/images", api.ListImages)
