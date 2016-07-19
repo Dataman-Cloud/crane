@@ -10,6 +10,7 @@ import (
 	"github.com/docker/engine-api/types"
 	"github.com/docker/engine-api/types/swarm"
 	"github.com/gin-gonic/gin"
+	"golang.org/x/net/context"
 )
 
 // Node2Update represents a node spec to update.
@@ -98,7 +99,8 @@ func (api *Api) LeaderNode(ctx *gin.Context) {
 }
 
 func (api *Api) Info(ctx *gin.Context) {
-	info, err := api.GetDockerClient().Info(ctx.Param("node_id"))
+	rolexContext, _ := ctx.Get("rolexContext")
+	info, err := api.GetDockerClient().Info(rolexContext.(context.Context))
 	if err != nil {
 		ctx.JSON(http.StatusServiceUnavailable, err.Error())
 		return

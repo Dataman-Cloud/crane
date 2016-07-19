@@ -23,7 +23,7 @@ func (client *RolexDockerClient) ListTasks(options types.TaskListOptions) ([]swa
 	}
 
 	var tasks []swarm.Task
-	content, err := client.HttpGet("/tasks", query, nil)
+	content, err := client.HttpGet(client.SwarmHttpEndpoint+"/tasks", query, nil)
 	if err != nil {
 		return tasks, err
 	}
@@ -39,7 +39,7 @@ func (client *RolexDockerClient) ListTasks(options types.TaskListOptions) ([]swa
 func (client *RolexDockerClient) InspectTask(taskID string) (*swarm.Task, error) {
 	task := &swarm.Task{}
 
-	content, err := client.HttpGet("/tasks/"+taskID, nil, nil)
+	content, err := client.HttpGet(client.SwarmHttpEndpoint+"/tasks/"+taskID, nil, nil)
 	if err != nil {
 		return task, nil
 	}

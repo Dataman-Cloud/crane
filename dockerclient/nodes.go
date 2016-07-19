@@ -9,13 +9,14 @@ import (
 	"github.com/docker/engine-api/types"
 	"github.com/docker/engine-api/types/swarm"
 	goclient "github.com/fsouza/go-dockerclient"
+	"golang.org/x/net/context"
 )
 
 // NodeList returns the list of nodes.
 func (client *RolexDockerClient) ListNode(opts types.NodeListOptions) ([]swarm.Node, error) {
 	var nodes []swarm.Node
 
-	content, err := client.HttpGet("nodes", nil, nil)
+	content, err := client.HttpGet(client.SwarmHttpEndpoint+"/nodes", nil, nil)
 	if err != nil {
 		return nodes, err
 	}
@@ -31,7 +32,7 @@ func (client *RolexDockerClient) ListNode(opts types.NodeListOptions) ([]swarm.N
 func (client *RolexDockerClient) InspectNode(nodeId string) (swarm.Node, error) {
 	var node swarm.Node
 
-	content, err := client.HttpGet(path.Join("nodes", nodeId), nil, nil)
+	content, err := client.HttpGet(client.SwarmHttpEndpoint+"/"+path.Join("nodes", nodeId), nil, nil)
 	if err != nil {
 		return node, err
 	}
@@ -71,6 +72,36 @@ func (client *RolexDockerClient) UpdateNode(nodeId string, version swarm.Version
 }
 
 // docker info
-func (client *RolexDockerClient) Info(nodeId string) (*goclient.DockerInfo, error) {
-	return client.DockerClient(nodeId).Info()
+func (client *RolexDockerClient) Info(ctx context.Context) (*goclient.DockerInfo, error) {
+	return client.DockerClient(ctx).Info()
+}
+
+func (client *RolexDockerClient) NodeDaemonTCPEndpoint(nodeId string) (string, error) {
+	var node swarm.Node
+
+	content, err := client.HttpGet(client.SwarmHttpEndpoint+"/"+path.Join("nodes", nodeId), nil, nil)
+	if err != nil {
+		return "", err
+	}
+
+	if err := json.Unmarshal(content, &node); err != nil {
+		return "", err
+	}
+
+	return "tcp://" + client.Config.NodeIP + ":" + client.Config.NodePort, nil
+}
+
+func (client *RolexDockerClient) NodeDaemonHTTPEndpoint(nodeId string) (string, error) {
+	var node swarm.Node
+
+	content, err := client.HttpGet(client.SwarmHttpEndpoint+"/"+path.Join("nodes", nodeId), nil, nil)
+	if err != nil {
+		return "", err
+	}
+
+	if err := json.Unmarshal(content, &node); err != nil {
+		return "", err
+	}
+
+	return "https://" + client.Config.NodeIP + ":" + client.Config.NodePort, nil
 }

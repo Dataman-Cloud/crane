@@ -9,6 +9,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 	goclient "github.com/fsouza/go-dockerclient"
 	"github.com/gin-gonic/gin"
+	"golang.org/x/net/context"
 )
 
 type ConnectNetworkRequest struct {
@@ -115,6 +116,7 @@ func (api *Api) RemoveNetwork(ctx *gin.Context) {
 }
 
 func (api *Api) ConnectNodeNetwork(ctx *gin.Context) {
+	rolexContext, _ := ctx.Get("rolexContext")
 	var connectNetworkRequest ConnectNetworkRequest
 	if err := ctx.BindJSON(&connectNetworkRequest); err != nil {
 		log.Errorf("connect network request body parse json error: %v", err)
@@ -126,13 +128,13 @@ func (api *Api) ConnectNodeNetwork(ctx *gin.Context) {
 	networkID := ctx.Param("network_id")
 	switch connectNetworkRequest.Method {
 	case NETWORK_CONNECT:
-		if err := api.GetDockerClient().ConnectNodeNetwork(nodeID, networkID, connectNetworkRequest.NetworkOptions); err != nil {
+		if err := api.GetDockerClient().ConnectNodeNetwork(rolexContext.(context.Context), networkID, connectNetworkRequest.NetworkOptions); err != nil {
 			log.Errorf("connect to node: %s network %s got error: %s", nodeID, networkID, err.Error())
 			ctx.JSON(http.StatusInternalServerError, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
 			return
 		}
 	case NETWORK_DISCONNECT:
-		if err := api.GetDockerClient().DisconnectNodeNetwork(nodeID, networkID, connectNetworkRequest.NetworkOptions); err != nil {
+		if err := api.GetDockerClient().DisconnectNodeNetwork(rolexContext.(context.Context), networkID, connectNetworkRequest.NetworkOptions); err != nil {
 			log.Errorf("disconnect to node: %s network %s got error: %s", nodeID, networkID, err)
 			ctx.JSON(http.StatusInternalServerError, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
 			return
@@ -148,9 +150,10 @@ func (api *Api) ConnectNodeNetwork(ctx *gin.Context) {
 }
 
 func (api *Api) InspectNodeNetwork(ctx *gin.Context) {
+	rolexContext, _ := ctx.Get("rolexContext")
 	nodeID := ctx.Param("node_id")
 	networkID := ctx.Param("network_id")
-	network, err := api.GetDockerClient().InspectNodeNetwork(nodeID, networkID)
+	network, err := api.GetDockerClient().InspectNodeNetwork(rolexContext.(context.Context), networkID)
 	if err != nil {
 		log.Errorf("inspect network of node: %s networkid: %s got error: %s", nodeID, networkID, err)
 		ctx.JSON(http.StatusInternalServerError, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
@@ -162,6 +165,7 @@ func (api *Api) InspectNodeNetwork(ctx *gin.Context) {
 }
 
 func (api *Api) ListNodeNetworks(ctx *gin.Context) {
+	rolexContext, _ := ctx.Get("rolexContext")
 	nodeID := ctx.Param("node_id")
 	var filters goclient.NetworkFilterOpts
 
@@ -172,7 +176,7 @@ func (api *Api) ListNodeNetworks(ctx *gin.Context) {
 		return
 	}
 
-	networks, err := api.GetDockerClient().ListNodeNetworks(nodeID, filters)
+	networks, err := api.GetDockerClient().ListNodeNetworks(rolexContext.(context.Context), filters)
 	if err != nil {
 		log.Errorf("list network get network of %s got error: %s", nodeID, err)
 		ctx.JSON(http.StatusInternalServerError, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
