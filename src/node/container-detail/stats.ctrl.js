@@ -4,10 +4,11 @@
         .controller('NodeContainerStatsCtrl', NodeContainerStatsCtrl);
 
     /* @ngInject */
-    function NodeContainerStatsCtrl(stream, $stateParams, $scope) {
+    function NodeContainerStatsCtrl(stream, $stateParams, $scope, containerChart) {
         var self = this;
         
         self.stats = []
+        self.chartOptions = containerChart.Options();
         activate();
         
         function activate() {
@@ -17,7 +18,7 @@
         function listenStats() {
             stream = stream.Stream('node.containerStats', {node_id:$stateParams.node_id, container_id:$stateParams.container_id});
             stream.addHandler('container-stats', function (event) {
-                self.stats.push(event.data);
+                self.chartOptions.pushData(event.data);
                 $scope.$apply();
             });
             stream.start();

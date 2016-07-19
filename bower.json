@@ -34,6 +34,7 @@
     "font-awesome": "4.5.0",
     "echarts": "2.2.7",
     "zrender": "2.1.1",
-    "ngclipboard": "~1.1.1"
+    "ngclipboard": "~1.1.1",
+    "angular-nvd3": "^1.0.8"
   }
 }
