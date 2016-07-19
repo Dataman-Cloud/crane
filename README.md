@@ -23,14 +23,20 @@
 
 ## 环境启动
 
-### 在 Linux 下面
+### 通用启动方案
+    
+    - 项目目录下执行 ```npm install```
+    - 项目目录下执行 ```gulp serve```
+    - 打开浏览器 默认指定 5000 端口, 例如:http://localhost:5000
+    
+### 在 Linux 下面 (如果通用方案不行)
 
-  - 第一种方法: 项目根目录下执行 ```python3 -m http.server 8001 ``` 具体端口自己定
+  - 第一种方法: 项目根目录下执行 ```python3 -m http.server 8001``` 具体端口自己定
   - 第二种方法:
        - 编辑 src/conf.js , 将其中的 `localhost` 改成本机的 IP
        - `./start.sh` , 该命令会启动一个 nginx container， 并监听 80 端口
 
-### 在 MacOS 下面
+### 在 MacOS 下面 (如果通用方案不行)
 
   - 第一种方法: 项目根目录下执行 ```python3 -m http.server 8001 ``` 具体端口自己定
   - 第二种方法: 单独为项目配置一个 ngnix 文件并启动:
