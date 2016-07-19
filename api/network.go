@@ -186,3 +186,23 @@ func (api *Api) ListNodeNetworks(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"code": util.OPERATION_SUCCESS, "data": networks})
 	return
 }
+
+func (api *Api) CreateNodeNetwork(ctx *gin.Context) {
+	var netWorkOption goclient.CreateNetworkOptions
+	rolexContext, _ := ctx.Get("rolexContext")
+
+	if err := ctx.BindJSON(&netWorkOption); err != nil {
+		log.Errorf("create node network request body parse json error: %v", err)
+		ctx.JSON(http.StatusBadRequest, gin.H{"code": util.PARAMETER_ERROR, "data": err.Error()})
+		return
+	}
+
+	network, err := api.GetDockerClient().CreateNodeNetwork(rolexContext.(context.Context), netWorkOption)
+	if err != nil {
+		log.Errorf("create network error: %v", err)
+		ctx.JSON(http.StatusInternalServerError, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusCreated, gin.H{"code": util.OPERATION_SUCCESS, "data": network})
+}

@@ -58,6 +58,7 @@ func (api *Api) ApiRouter() *gin.Engine {
 		v1.PATCH("/nodes/:node_id", api.UpdateNode)
 
 		// Networks
+		v1.POST("/nodes/:node_id/networks", api.CreateNodeNetwork)
 		v1.GET("/nodes/:node_id/networks", api.ListNodeNetworks)
 		v1.GET("/nodes/:node_id/networks/:network_id", api.InspectNodeNetwork)
 		v1.PATCH("/nodes/:node_id/networks/:network_id", api.ConnectNodeNetwork)
