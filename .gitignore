@@ -24,3 +24,4 @@ _testmain.go
 *.prof
 /bin
 env_file
+deploy/env

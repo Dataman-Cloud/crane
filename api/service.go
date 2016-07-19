@@ -1,12 +1,16 @@
 package api
 
 import (
+	"io"
 	"net/http"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/docker/engine-api/types"
+	"github.com/docker/engine-api/types/filters"
 	"github.com/docker/engine-api/types/swarm"
 	"github.com/gin-gonic/gin"
+	"github.com/manucorporat/sse"
+	"golang.org/x/net/context"
 
 	"github.com/Dataman-Cloud/rolex/dockerclient"
 	"github.com/Dataman-Cloud/rolex/util"
@@ -88,4 +92,30 @@ func (api *Api) ScaleService(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": "success"})
 	return
+}
+
+func (api *Api) LogsService(ctx *gin.Context) {
+	taskFilter := filters.NewArgs()
+	taskFilter.Add("service", ctx.Param("service_id"))
+	message := make(chan string)
+	defer close(message)
+
+	tasks, err := api.GetDockerClient().ListTasks(types.TaskListOptions{Filter: taskFilter})
+	if err != nil {
+		ctx.JSON(http.StatusServiceUnavailable, err.Error())
+		return
+	}
+
+	for _, task := range tasks {
+		logContext := context.WithValue(context.Background(), "node_id", task.NodeID)
+		go api.GetDockerClient().LogsContainer(logContext, task.Status.ContainerStatus.ContainerID, message)
+	}
+
+	ctx.Stream(func(w io.Writer) bool {
+		sse.Event{
+			Event: "service-logs",
+			Data:  <-message,
+		}.Render(ctx.Writer)
+		return true
+	})
 }
