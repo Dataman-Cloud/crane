@@ -48,3 +48,7 @@ func (client *RolexDockerClient) InspectNodeNetwork(ctx context.Context, network
 func (client *RolexDockerClient) ListNodeNetworks(ctx context.Context, opts goclient.NetworkFilterOpts) ([]goclient.Network, error) {
 	return client.DockerClient(ctx).FilteredListNetworks(opts)
 }
+
+func (client *RolexDockerClient) CreateNodeNetwork(ctx context.Context, opts goclient.CreateNetworkOptions) (*goclient.Network, error) {
+	return client.DockerClient(ctx).CreateNetwork(opts)
+}
