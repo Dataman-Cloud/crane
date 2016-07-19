@@ -21,7 +21,8 @@
             getContainer: getContainer,
             removeContainer: removeContainer,
             killContainer: killContainer,
-            diffContainer: diffContainer
+            diffContainer: diffContainer,
+            listNetworks: listNetworks
         };
 
         function listNodes(params, loading) {
@@ -95,6 +96,10 @@
 
         function diffContainer(nodeId, containerId) {
             return gHttp.Resource('node.containerDiff', {node_id: nodeId, container_id: containerId}).get();
+        }
+
+        function listNetworks(nodeId) {
+            return gHttp.Resource('node.networks', {node_id: nodeId}).get();
         }
     }
 })();
