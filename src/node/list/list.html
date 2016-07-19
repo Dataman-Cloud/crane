@@ -26,25 +26,23 @@
                 <table md-table>
                     <thead md-head>
                     <tr md-row>
-                        <th md-column>ID</th>
-                        <th md-column>类型</th>
-                        <th md-column>创建时间</th>
-                        <th md-column>Hostname</th>
+                        <th md-column>主机名</th>
+                        <th md-column>集群角色</th>
                         <th md-column>可用性</th>
-                        <th md-column>状态</th>
+                        <th md-column>主机状态</th>
+                        <th md-column>创建时间</th>
                         <th md-column>操作</th>
                     </tr>
                     </thead>
                     <tbody md-body>
                     <tr md-row ng-repeat="node in nodeListCtrl.nodes | filter: nodeListCtrl.filter">
                         <td md-cell>
-                            <a data-ui-sref="node.detail({node_id: node.ID})">{/node.ID/}</a>
+                            <a data-ui-sref="node.detail({node_id: node.ID})">{/node.Description.Hostname/}</a>
                         </td>
                         <td md-cell>{/NODE_ROLE[node.Spec.Role]/}</td>
+                        <td md-cell>{/NODE_AVAILABILITY[node.Spec.Availability]/}</td>
+                        <td md-cell>{/NODE_STATE[node.Status.State]/}</td>
                         <td md-cell>{/node.CreatedAt | date: 'yyyy-MM-dd HH:mm:ss'/}</td>
-                        <td md-cell>{/node.Description.Hostname/}</td>
-                        <td md-cell>{/AVAILABILITY[node.Spec.Availability]/}</td>
-                        <td md-cell>{/node.Status.State/}</td>
                         <td md-cell>
                             <md-menu md-offset="0 -5">
                                 <md-button aria-label="nodeListMenu" class="md-button md-raised"
@@ -55,19 +53,19 @@
                                     <md-menu-item>
                                         <md-button aria-label="drain"
                                                    data-ng-disabled="node.Spec.Availability !== 'active'"
-                                                   data-ng-click="nodeListCtrl.drainNode(node.ID, node)">下线
+                                                   data-ng-click="nodeListCtrl.drainNode(node.ID, node)">停止调度
                                         </md-button>
                                     </md-menu-item>
                                     <md-menu-item>
                                         <md-button aria-label="active"
                                                    data-ng-disabled="node.Spec.Availability === 'active'"
-                                                   data-ng-click="nodeListCtrl.activeNode(node.ID, node)">激活
+                                                   data-ng-click="nodeListCtrl.activeNode(node.ID, node)">恢复调度
                                         </md-button>
                                     </md-menu-item>
                                     <md-menu-item>
                                         <md-button aria-label="pause"
                                                    data-ng-disabled="node.Spec.Availability !== 'active'"
-                                                   data-ng-click="nodeListCtrl.pauseNode(node.ID, node)">暂停
+                                                   data-ng-click="nodeListCtrl.pauseNode(node.ID, node)">暂停调度
                                         </md-button>
                                     </md-menu-item>
                                     <md-menu-item>
