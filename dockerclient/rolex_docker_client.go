@@ -119,7 +119,7 @@ func (client *RolexDockerClient) DockerClient(ctx context.Context) *goclient.Cli
 
 	client.DockerClientMutex.Lock()
 	client.dockerClients[node_id] = dockerClient
-	client.DockerClientMutex.Unlock()
+	defer client.DockerClientMutex.Unlock()
 
 	return dockerClient
 }
