@@ -57,10 +57,17 @@
             manager: '管理节点'
         };
 
-        $rootScope.AVAILABILITY = {
-            drain: '下线',
-            active: '激活',
-            pause: '暂停'
+        $rootScope.NODE_AVAILABILITY = {
+            drain: '停止调度',
+            active: '正常调度',
+            pause: '暂停调度'
+        };
+
+        $rootScope.NODE_STATE = {
+            unknown: '未知',
+            down: '下线',
+            ready: '就绪',
+            disconnected: '失联'
         };
 
         $rootScope.BACKEND_URL = {
