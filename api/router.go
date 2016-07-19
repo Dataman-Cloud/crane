@@ -74,6 +74,7 @@ func (api *Api) ApiRouter() *gin.Engine {
 		v1.GET("/stacks/:namespace", api.InspectStack)
 		v1.DELETE("/stacks/:namespace", api.RemoveStack)
 		v1.PATCH("/stacks/:namespace/services/:service_id", api.ScaleService)
+		v1.GET("/stacks/:namespace/services/:service_id", api.InspectService)
 		v1.GET("/stacks/:namespace/services", api.ListStackService)
 		v1.GET("/stacks/:namespace/services/:service_id/tasks", api.ListTasks)
 		v1.GET("/stacks/:namespace/services/:service_id/tasks/:task_id", api.InspectTask)
