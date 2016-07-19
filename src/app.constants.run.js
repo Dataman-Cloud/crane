@@ -85,7 +85,9 @@
                 container: 'api/v1/nodes/$node_id/containers/$container_id',
                 containerDiff: 'api/v1/nodes/$node_id/containers/$container_id/diff',
                 containerLog: 'api/v1/nodes/$node_id/containers/$container_id/logs',
-                containerStats: 'api/v1/nodes/$node_id/containers/$container_id/stats'
+                containerStats: 'api/v1/nodes/$node_id/containers/$container_id/stats',
+                networks: 'api/v1/nodes/$node_id/networks',
+                network: 'api/v1/nodes/$node_id/networks/$network_id'
             },
             stack: {
                 stacks: 'api/v1/stacks',

@@ -4,8 +4,9 @@
         .controller('NodeNetworkCtrl', NodeNetworkCtrl);
 
     /* @ngInject */
-    function NodeNetworkCtrl() {
+    function NodeNetworkCtrl(networks) {
         var self = this;
 
+        self.networks = networks;
     }
 })();

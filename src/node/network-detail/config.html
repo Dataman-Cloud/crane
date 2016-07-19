@@ -1,0 +1,32 @@
+<h4>基本信息</h4>
+<md-table-container layout-padding>
+    <dl layout="row">
+        <dt flex="10" layout-margin>作用范围</dt>
+        <dd layout-margin>{/nodeNetworkConfigCtrl.network.Scope/}</dd>
+    </dl>
+    <dl layout="row">
+        <dt flex="10" layout-margin>支持 IPv6</dt>
+        <dd layout-margin>{/nodeNetworkConfigCtrl.network.EnableIPv6/}</dd>
+    </dl>
+    <dl layout="row">
+        <dt flex="10" layout-margin>仅内部网络</dt>
+        <dd layout-margin>{/nodeNetworkConfigCtrl.network.Internal/}</dd>
+    </dl>
+</md-table-container>
+
+
+<h4>地址管理</h4>
+<md-table-container layout-padding>
+    <dl layout="row">
+        <dt flex="10" layout-margin>子网掩码</dt>
+        <dd layout-margin>{/nodeNetworkConfigCtrl.network.IPAM.Config[0].Subnet/}</dd>
+    </dl>
+    <dl layout="row">
+        <dt flex="10" layout-margin>网关 IP</dt>
+        <dd layout-margin>{/nodeNetworkConfigCtrl.network.IPAM.Config[0].Gateway/}</dd>
+    </dl>
+    <dl layout="row">
+        <dt flex="10" layout-margin>Options</dt>
+        <dd layout="column"><p layout-margin data-ng-repeat="(key, value) in nodeNetworkConfigCtrl.network.Options">{/key/} : {/value/}</p></dd>
+    </dl>
+</md-table-container>
