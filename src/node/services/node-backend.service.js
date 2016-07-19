@@ -22,7 +22,9 @@
             removeContainer: removeContainer,
             killContainer: killContainer,
             diffContainer: diffContainer,
-            listNetworks: listNetworks
+            listNetworks: listNetworks,
+            getNetwork: getNetwork,
+            createNetwork: createNetwork
         };
 
         function listNodes(params, loading) {
@@ -100,6 +102,14 @@
 
         function listNetworks(nodeId) {
             return gHttp.Resource('node.networks', {node_id: nodeId}).get();
+        }
+
+        function getNetwork(nodeId, networkId) {
+            return gHttp.Resource('node.network', {node_id: nodeId, network_id: networkId}).get();
+        }
+
+        function createNetwork(data, nodeId, form) {
+            return gHttp.Resource('node.networks', {node_id: nodeId}).post(data, {form: form});
         }
     }
 })();

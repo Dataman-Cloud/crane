@@ -29,6 +29,11 @@
                 templateUrl: '/src/node/create-volume/create.html',
                 controller: 'NodeCreateVolumeCtrl as nodeCreateVolumeCtrl'
             })
+            .state('node.createNetwork', {
+                url: '/createNetwork/:node_id',
+                templateUrl: '/src/node/create-network/create.html',
+                controller: 'NodeCreateNetworkCtrl as nodeCreateNetworkCtrl'
+            })
             .state('node.detail', {
                 url: '/detail/:node_id',
                 templateUrl: '/src/node/detail/detail.html',
@@ -124,6 +129,21 @@
                 resolve: {
                     diffs: diffContainer
                 }
+            })
+            .state('node.networkDetail', {
+                url: '/networkDetail/:node_id/:network_id',
+                templateUrl: '/src/node/network-detail/detail.html',
+                controller: 'NodeNetworkDetailCtrl as nodeNetworkDetailCtrl',
+                targetState: 'config',
+                resolve: {
+                    network: getNetwork
+                }
+
+            })
+            .state('node.networkDetail.config', {
+                url: '/config',
+                templateUrl: '/src/node/network-detail/config.html',
+                controller: 'NodeNetworkConfigCtrl as nodeNetworkConfigCtrl'
             });
 
         /* @ngInject */
@@ -174,6 +194,11 @@
         /* @ngInject */
         function diffContainer(nodeBackend, $stateParams) {
             return nodeBackend.diffContainer($stateParams.node_id, $stateParams.container_id);
+        }
+
+        /* @ngInject */
+        function getNetwork(nodeBackend, $stateParams) {
+            return nodeBackend.getNetwork($stateParams.node_id, $stateParams.network_id)
         }
     }
 })();

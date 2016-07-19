@@ -17,7 +17,8 @@
             getNodesMapping: getNodesMapping,
             drainNode: drainNode,
             activeNode: activeNode,
-            pauseNode: pauseNode
+            pauseNode: pauseNode,
+            createNetwork: createNetwork
         };
 
         function deleteVolume(id, name) {
@@ -88,6 +89,14 @@
                         $state.reload()
                     })
             });
+        }
+
+        function createNetwork(data, nodeId, form) {
+            nodeBackend.createNetwork(data, nodeId, form)
+                .then(function (data) {
+                    Notification.success('创建成功');
+                    $state.go('node.networkDetail', {node_id: nodeId, network_id: data.Id}, {reload: true})
+                })
         }
 
     }

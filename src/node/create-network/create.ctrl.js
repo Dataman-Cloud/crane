@@ -1,16 +1,16 @@
 (function () {
     'use strict';
-    angular.module('app.network')
-        .controller('NetworkCreateCtrl', NetworkCreateCtrl);
+    angular.module('app.node')
+        .controller('NodeCreateNetworkCtrl', NodeCreateNetworkCtrl);
 
     /* @ngInject */
-    function NetworkCreateCtrl(networkCurd, $scope) {
+    function NodeCreateNetworkCtrl($scope, $state, $stateParams, nodeCurd) {
         var self = this;
 
         self.form = {
             "Name": "",
             "CheckDuplicate": true,
-            "Driver": "overlay",
+            "Driver": "bridge",
             "EnableIPv6": false,
             "IPAM": {
                 "Driver": "default",
@@ -38,7 +38,7 @@
                 self.form.Options[item.key] = item.value
             });
 
-            networkCurd.create(self.form, $scope.createNetwork)
+            nodeCurd.createNetwork(self.form, $stateParams.node_id, $scope.createNetwork)
         }
 
         function addLabel() {

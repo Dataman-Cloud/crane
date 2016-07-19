@@ -19,7 +19,9 @@
         </thead>
         <tbody md-body>
         <tr md-row ng-repeat="network in nodeNetworkCtrl.networks | filter: nodeNetworkCtrl.filter">
-            <td md-cell>{/network.Name/}</td>
+            <td md-cell>
+                <a data-ui-sref="node.networkDetail({node_id: $stateParams.node_id, network_id: network.Id})">{/network.Name/}</a>
+            </td>
             <td md-cell>{/network.Scope/}</td>
             <td md-cell>{/network.Driver/}</td>
             <td md-cell>{/network.Containers | keylength/}</td>
