@@ -154,7 +154,7 @@ func (api *Api) DiffContainer(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": changes})
 }
 
-func (api *Api) Logs(ctx *gin.Context) {
+func (api *Api) LogsContainer(ctx *gin.Context) {
 	rolexContext, _ := ctx.Get("rolexContext")
 	message := make(chan string)
 
@@ -171,7 +171,7 @@ func (api *Api) Logs(ctx *gin.Context) {
 	})
 }
 
-func (api *Api) Stats(ctx *gin.Context) {
+func (api *Api) StatsContainer(ctx *gin.Context) {
 	rolexContext, _ := ctx.Get("rolexContext")
 	stats := make(chan *goclient.Stats, 10)
 	done := make(chan bool)
