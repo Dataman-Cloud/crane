@@ -60,7 +60,10 @@
                 url: '/serviceDetail/:stack_name/:service_id',
                 templateUrl: '/src/stack/service-detail/detail.html',
                 controller: 'ServiceDetailCtrl as serviceDetailCtrl',
-                targetState: 'task'
+                targetState: 'task',
+                resolve: {
+                    service: getService
+                }
             })
             .state('stack.serviceDetail.task', {
                 url: '/task',
@@ -86,7 +89,12 @@
     function listStackServices(stackBackend, $stateParams) {
         return stackBackend.listStackServices($stateParams.stack_name);
     }
-    
+
+    /*@ngInject*/
+    function getService(stackBackend, $stateParams) {
+        return stackBackend.getService($stateParams.stack_name, $stateParams.service_id);
+    }
+
     /*@ngInject*/
     function listServiceTasks(stackBackend, $stateParams) {
         return stackBackend.listServiceTasks($stateParams.stack_name, $stateParams.service_id);

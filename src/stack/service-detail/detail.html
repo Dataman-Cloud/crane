@@ -2,7 +2,7 @@
     <section class="main-section">
         <header layout="row" layout-align="end start">
             <div class="info" flex>
-                <h2>服务名称</h2>
+                <h2>{/serviceDetailCtrl.service.Spec.Name/}</h2>
                 <dl class="list-dl-row">
                     <dt>镜像名称</dt>
                     <dd>xxxxx</dd>
@@ -11,7 +11,7 @@
         </header>
         <md-content>
             <md-tabs md-dynamic-height md-border-bottom>
-                <md-tab label="任务" dm-tab-sref="node.containerDetail.config"></md-tab>
+                <md-tab label="任务列表" dm-tab-sref="node.containerDetail.config"></md-tab>
             </md-tabs>
             <md-content class="md-padding main-tab-content" ui-view>
             </md-content>

@@ -4,7 +4,8 @@
         .controller('ServiceDetailCtrl', ServiceDetailCtrl);
 
     /* @ngInject */
-    function ServiceDetailCtrl() {
+    function ServiceDetailCtrl(service) {
         var self = this;
+        self.service = service;
     }
 })();
