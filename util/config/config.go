@@ -24,13 +24,16 @@ type Config struct {
 	HOST string
 	PORT uint64
 
-	//registry
+	// registry
 	RegistryPrivateKeyPath string
 	RegistryAddr           string
 
 	//swarm cluster
 	RolexSecret string
 	RolexCaHash string
+	// To be removed, temp
+	NodeIP   string
+	NodePort string
 }
 
 func (c *Config) FeatureEnabled(feature string) bool {
@@ -57,6 +60,9 @@ type EnvEntry struct {
 
 	ROLEX_SECRET  string `required:"true"`
 	ROLEX_CA_HASH string `required:"true"`
+	// To be removed
+	NODE_IP   string `required:"true"`
+	NODE_PORT string `required:"true"`
 }
 
 func InitConfig(envFile string) *Config {
@@ -77,6 +83,9 @@ func InitConfig(envFile string) *Config {
 
 	config.RegistryPrivateKeyPath = envEntry.ROLEX_REGISTRY_PRIVATE_KEY_PATH
 	config.RegistryAddr = envEntry.ROLEX_REGISTRY_ADDR
+
+	config.NodeIP = envEntry.NODE_IP
+	config.NodePort = envEntry.NODE_PORT
 	return &config
 }
 

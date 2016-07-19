@@ -10,9 +10,11 @@ import (
 	log "github.com/Sirupsen/logrus"
 	goclient "github.com/fsouza/go-dockerclient"
 	"github.com/gin-gonic/gin"
+	"golang.org/x/net/context"
 )
 
 func (api *Api) ListImages(ctx *gin.Context) {
+	rolexContext, _ := ctx.Get("rolexContext")
 	all, err := strconv.ParseBool(ctx.DefaultQuery("all", "false"))
 	if err != nil {
 		log.Error("Parse param all of list images got error: ", err)
@@ -42,7 +44,7 @@ func (api *Api) ListImages(ctx *gin.Context) {
 		Filters: filters,
 	}
 
-	images, err := api.GetDockerClient().ListImages(ctx.Param("node_id"), opts)
+	images, err := api.GetDockerClient().ListImages(rolexContext.(context.Context), opts)
 	if err != nil {
 		log.Error("get images list error: ", err)
 		ctx.JSON(http.StatusInternalServerError, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
@@ -53,7 +55,8 @@ func (api *Api) ListImages(ctx *gin.Context) {
 }
 
 func (api *Api) InspectImage(ctx *gin.Context) {
-	image, err := api.GetDockerClient().InspectImage(ctx.Param("node_id"), ctx.Param("image_id"))
+	rolexContext, _ := ctx.Get("rolexContext")
+	image, err := api.GetDockerClient().InspectImage(rolexContext.(context.Context), ctx.Param("image_id"))
 	if err != nil {
 		log.Error("inspect image error: ", err)
 		ctx.JSON(http.StatusInternalServerError, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
@@ -64,7 +67,8 @@ func (api *Api) InspectImage(ctx *gin.Context) {
 }
 
 func (api *Api) ImageHistory(ctx *gin.Context) {
-	historys, err := api.GetDockerClient().ImageHistory(ctx.Param("node_id"), ctx.Param("image_id"))
+	rolexContext, _ := ctx.Get("rolexContext")
+	historys, err := api.GetDockerClient().ImageHistory(rolexContext.(context.Context), ctx.Param("image_id"))
 	if err != nil {
 		log.Error("get image history error: ", err)
 		ctx.JSON(http.StatusInternalServerError, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
@@ -76,10 +80,10 @@ func (api *Api) ImageHistory(ctx *gin.Context) {
 
 // RemoveImage remove image in assign host by image id/name
 func (api *Api) RemoveImage(ctx *gin.Context) {
+	rolexContext, _ := ctx.Get("rolexContext")
 	imageID := ctx.Param("image_id")
-	nodeID := ctx.Param("node_id")
-	if err := api.GetDockerClient().RemoveImage(nodeID, imageID); err != nil {
-		log.Error("Remove images in node %s image %s got error", nodeID, imageID, err)
+	if err := api.GetDockerClient().RemoveImage(rolexContext.(context.Context), imageID); err != nil {
+		log.Error("Remove images in  image %s got error", imageID, err)
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{"code": util.OPERATION_SUCCESS, "data": "remove image " + imageID + " success"})

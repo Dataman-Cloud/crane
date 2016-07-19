@@ -9,9 +9,9 @@ import (
 )
 
 // execute http get request use default timeout
-func (client *RolexDockerClient) HttpGet(requestPath string, query url.Values, headers map[string][]string) ([]byte, error) {
-	apiPath := client.getAPIPath(client.HttpEndpoint+"/"+requestPath, query)
-	resp, err := client.HttpClient.Get(apiPath)
+func (client *RolexDockerClient) HttpGet(requestUrl string, query url.Values, headers map[string][]string) ([]byte, error) {
+	apiPath := client.getAPIPath(requestUrl, query)
+	resp, err := client.SharedHttpClient.Get(apiPath)
 	if err != nil {
 		return nil, err
 	}
@@ -29,13 +29,13 @@ func (client *RolexDockerClient) HttpGet(requestPath string, query url.Values, h
 }
 
 // execute http delete request use default timeout
-func (client *RolexDockerClient) HttpDelete(requestPath string) ([]byte, error) {
-	req, err := http.NewRequest("DELETE", client.HttpEndpoint+"/"+requestPath, nil)
+func (client *RolexDockerClient) HttpDelete(requestUrl string) ([]byte, error) {
+	req, err := http.NewRequest("DELETE", requestUrl, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := client.HttpClient.Do(req)
+	resp, err := client.SharedHttpClient.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -52,8 +52,8 @@ func (client *RolexDockerClient) HttpDelete(requestPath string) ([]byte, error) 
 	return ioutil.ReadAll(resp.Body)
 }
 
-func (client *RolexDockerClient) HttpPost(requestPath string, query url.Values, body []byte, headers map[string][]string) ([]byte, error) {
-	apiPath := client.getAPIPath(client.HttpEndpoint+"/"+requestPath, query)
+func (client *RolexDockerClient) HttpPost(requestUrl string, query url.Values, body []byte, headers map[string][]string) ([]byte, error) {
+	apiPath := client.getAPIPath(requestUrl, query)
 	req, err := http.NewRequest("POST", apiPath, bytes.NewBuffer(body))
 
 	if err != nil {
@@ -68,7 +68,7 @@ func (client *RolexDockerClient) HttpPost(requestPath string, query url.Values, 
 		}
 	}
 
-	resp, err := client.HttpClient.Do(req)
+	resp, err := client.SharedHttpClient.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -85,8 +85,8 @@ func (client *RolexDockerClient) HttpPost(requestPath string, query url.Values, 
 	return ioutil.ReadAll(resp.Body)
 }
 
-func (client *RolexDockerClient) HttpPut(requestPath string, query url.Values, body []byte, headers map[string][]string) ([]byte, error) {
-	apiPath := client.getAPIPath(client.HttpEndpoint+"/"+requestPath, query)
+func (client *RolexDockerClient) HttpPut(requestUrl string, query url.Values, body []byte, headers map[string][]string) ([]byte, error) {
+	apiPath := client.getAPIPath(requestUrl, query)
 	req, err := http.NewRequest("PUT", apiPath, bytes.NewBuffer(body))
 	if err != nil {
 		return nil, err
@@ -99,7 +99,7 @@ func (client *RolexDockerClient) HttpPut(requestPath string, query url.Values, b
 		}
 	}
 
-	resp, err := client.HttpClient.Do(req)
+	resp, err := client.SharedHttpClient.Do(req)
 	if err != nil {
 		return nil, err
 	}

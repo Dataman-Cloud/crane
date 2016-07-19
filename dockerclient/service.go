@@ -66,7 +66,7 @@ func (client *RolexDockerClient) ListServiceSpec(options types.ServiceListOption
 		query.Set("filters", filterJSON)
 	}
 
-	content, err := client.HttpGet("/services", query, nil)
+	content, err := client.HttpGet(client.SwarmHttpEndpoint+"/services", query, nil)
 	if err != nil {
 		return services, err
 	}
@@ -190,7 +190,7 @@ func (client *RolexDockerClient) ScaleService(serviceID string, serviceScale Ser
 func (client *RolexDockerClient) InspectServiceWithRaw(serviceID string) (swarm.Service, error) {
 	var service swarm.Service
 
-	content, err := client.HttpGet("/services/"+serviceID, nil, nil)
+	content, err := client.HttpGet(client.SwarmHttpEndpoint+"/services/"+serviceID, nil, nil)
 	if err != nil {
 		return service, err
 	}

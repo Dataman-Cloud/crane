@@ -10,6 +10,7 @@ import (
 	goclient "github.com/fsouza/go-dockerclient"
 	"github.com/gin-gonic/gin"
 	"github.com/manucorporat/sse"
+	"golang.org/x/net/context"
 )
 
 type ContainerRequest struct {
@@ -29,7 +30,8 @@ const (
 )
 
 func (api *Api) InspectContainer(ctx *gin.Context) {
-	container, err := api.GetDockerClient().InspectContainer(ctx.Param("container_id"))
+	rolexContext, _ := ctx.Get("rolexContext")
+	container, err := api.GetDockerClient().InspectContainer(rolexContext.(context.Context), ctx.Param("container_id"))
 	if err != nil {
 		ctx.JSON(http.StatusServiceUnavailable, err.Error())
 		return
@@ -39,7 +41,8 @@ func (api *Api) InspectContainer(ctx *gin.Context) {
 }
 
 func (api *Api) ListContainers(ctx *gin.Context) {
-	containers, err := api.GetDockerClient().ListContainers(goclient.ListContainersOptions{})
+	rolexContext, _ := ctx.Get("rolexContext")
+	containers, err := api.GetDockerClient().ListContainers(rolexContext.(context.Context), goclient.ListContainersOptions{})
 	if err != nil {
 		ctx.JSON(http.StatusServiceUnavailable, err.Error())
 		return
@@ -49,6 +52,7 @@ func (api *Api) ListContainers(ctx *gin.Context) {
 }
 
 func (api *Api) PatchContainer(ctx *gin.Context) {
+	rolexContext, _ := ctx.Get("rolexContext")
 	containerRequest := &ContainerRequest{}
 	if err := ctx.BindJSON(&containerRequest); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"code": util.PARAMETER_ERROR, "data": err.Error()})
@@ -61,43 +65,43 @@ func (api *Api) PatchContainer(ctx *gin.Context) {
 			Name: containerRequest.Name,
 			ID:   ctx.Param("container_id"),
 		}
-		err := api.GetDockerClient().RenameContainer(opts)
+		err := api.GetDockerClient().RenameContainer(rolexContext.(context.Context), opts)
 		if err != nil {
 			ctx.JSON(http.StatusServiceUnavailable, err.Error())
 			return
 		}
 	case "stop":
-		err := api.GetDockerClient().StopContainer(ctx.Param("container_id"), CONTAINER_STOP_TIMEOUT)
+		err := api.GetDockerClient().StopContainer(rolexContext.(context.Context), ctx.Param("container_id"), CONTAINER_STOP_TIMEOUT)
 		if err != nil {
 			ctx.JSON(http.StatusServiceUnavailable, err.Error())
 			return
 		}
 	case "start":
-		err := api.GetDockerClient().StartContainer(ctx.Param("container_id"), nil)
+		err := api.GetDockerClient().StartContainer(rolexContext.(context.Context), ctx.Param("container_id"), nil)
 		if err != nil {
 			ctx.JSON(http.StatusServiceUnavailable, err.Error())
 			return
 		}
 	case "restart":
-		err := api.GetDockerClient().RestartContainer(ctx.Param("container_id"), CONTAINER_STOP_TIMEOUT)
+		err := api.GetDockerClient().RestartContainer(rolexContext.(context.Context), ctx.Param("container_id"), CONTAINER_STOP_TIMEOUT)
 		if err != nil {
 			ctx.JSON(http.StatusServiceUnavailable, err.Error())
 			return
 		}
 	case "pause":
-		err := api.GetDockerClient().PauseContainer(ctx.Param("container_id"))
+		err := api.GetDockerClient().PauseContainer(rolexContext.(context.Context), ctx.Param("container_id"))
 		if err != nil {
 			ctx.JSON(http.StatusServiceUnavailable, err.Error())
 			return
 		}
 	case "unpause":
-		err := api.GetDockerClient().UnpauseContainer(ctx.Param("container_id"))
+		err := api.GetDockerClient().UnpauseContainer(rolexContext.(context.Context), ctx.Param("container_id"))
 		if err != nil {
 			ctx.JSON(http.StatusServiceUnavailable, err.Error())
 			return
 		}
 	case "resizetty":
-		err := api.GetDockerClient().ResizeContainerTTY(ctx.Param("container_id"), containerRequest.Height, containerRequest.Width)
+		err := api.GetDockerClient().ResizeContainerTTY(rolexContext.(context.Context), ctx.Param("container_id"), containerRequest.Height, containerRequest.Width)
 		if err != nil {
 			ctx.JSON(http.StatusServiceUnavailable, err.Error())
 			return
@@ -111,6 +115,7 @@ func (api *Api) PatchContainer(ctx *gin.Context) {
 }
 
 func (api *Api) DeleteContainer(ctx *gin.Context) {
+	rolexContext, _ := ctx.Get("rolexContext")
 	containerRequest := &ContainerRequest{}
 	if err := ctx.BindJSON(&containerRequest); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"code": util.PARAMETER_ERROR, "data": err.Error()})
@@ -119,21 +124,19 @@ func (api *Api) DeleteContainer(ctx *gin.Context) {
 
 	if containerRequest.Method == CONTAINER_RMF {
 		opts := goclient.RemoveContainerOptions{ID: ctx.Param("container_id"), Force: true}
-		err := api.GetDockerClient().RemoveContainer(opts)
+		err := api.GetDockerClient().RemoveContainer(rolexContext.(context.Context), opts)
 		if err != nil {
 			ctx.JSON(http.StatusServiceUnavailable, err.Error())
 			return
 		}
-
 		ctx.JSON(http.StatusOK, gin.H{"code": 0})
 	} else if containerRequest.Method == CONTAINER_KILL {
 		opts := goclient.KillContainerOptions{ID: ctx.Param("container_id")}
-		err := api.GetDockerClient().KillContainer(opts)
+		err := api.GetDockerClient().KillContainer(rolexContext.(context.Context), opts)
 		if err != nil {
 			ctx.JSON(http.StatusServiceUnavailable, err.Error())
 			return
 		}
-
 		ctx.JSON(http.StatusOK, gin.H{"code": 0})
 	} else {
 		ctx.JSON(http.StatusBadRequest, gin.H{"code": 1})
@@ -141,7 +144,8 @@ func (api *Api) DeleteContainer(ctx *gin.Context) {
 }
 
 func (api *Api) DiffContainer(ctx *gin.Context) {
-	changes, err := api.GetDockerClient().DiffContainer(ctx.Param("container_id"))
+	rolexContext, _ := ctx.Get("rolexContext")
+	changes, err := api.GetDockerClient().DiffContainer(rolexContext.(context.Context), ctx.Param("container_id"))
 	if err != nil {
 		ctx.JSON(http.StatusServiceUnavailable, err.Error())
 		return
@@ -151,11 +155,12 @@ func (api *Api) DiffContainer(ctx *gin.Context) {
 }
 
 func (api *Api) Logs(ctx *gin.Context) {
+	rolexContext, _ := ctx.Get("rolexContext")
 	message := make(chan string)
 
 	defer close(message)
 
-	go api.GetDockerClient().LogsContainer(ctx.Param("node_id"), ctx.Param("container_id"), message)
+	go api.GetDockerClient().LogsContainer(rolexContext.(context.Context), ctx.Param("container_id"), message)
 
 	ctx.Stream(func(w io.Writer) bool {
 		sse.Event{
@@ -167,6 +172,7 @@ func (api *Api) Logs(ctx *gin.Context) {
 }
 
 func (api *Api) Stats(ctx *gin.Context) {
+	rolexContext, _ := ctx.Get("rolexContext")
 	stats := make(chan *goclient.Stats, 10)
 	done := make(chan bool)
 
@@ -174,7 +180,7 @@ func (api *Api) Stats(ctx *gin.Context) {
 		done <- true
 	}()
 
-	go api.GetDockerClient().StatsContainer(ctx.Param("node_id"), ctx.Param("container_id"), stats, done)
+	go api.GetDockerClient().StatsContainer(rolexContext.(context.Context), ctx.Param("container_id"), stats, done)
 
 	ctx.Stream(func(w io.Writer) bool {
 		sse.Event{
