@@ -46,6 +46,8 @@
             running: '运行中'
         };
         
+        $rootScope.CONTAINER_STATS_POINT_NUM = 180;
+        
         $rootScope.DIFF_KIND = {
             0: '修改',
             1: '添加',
