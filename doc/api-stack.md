@@ -182,3 +182,13 @@ services:
   }
 }
 ```
+#### ServiceLogs
+
+**Request:**
+
+```
+curl -XGET localhost:2375/api/v1/stacks/(namespace)/services/(service_id)/logs
+```
+
+**Response:**
+streaming
