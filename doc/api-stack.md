@@ -140,3 +140,45 @@ services:
   ]
 }
 ```
+
+###InspectStack
+**Request**
+```
+  curl -X GET http://localhost:5013/api/v1/stacks/$STACK_NAMESPACE/services/$SERVICE_ID
+```
+**Response**
+```
+{
+  "code": 0,
+  "data": {
+    "ID": "9nzcudpbmuouzn4ni9bndue8e",
+    "Version": {
+      "Index": 14
+    },
+    "CreatedAt": "2016-07-16T20:47:53.729317436Z",
+    "UpdatedAt": "2016-07-16T20:47:53.729317436Z",
+    "Spec": {
+      "Name": "test_redis",
+      "Labels": {
+        "com.docker.stack.namespace": "test"
+      },
+      "TaskTemplate": {
+        "ContainerSpec": {
+          "Image": "redis@sha256:b50f15d427aea5b579f9bf972ab82ff8c1c47bffc0481b225c6a714095a9ec34"
+        }
+      },
+      "Mode": {
+        "Replicated": {
+          "Replicas": 1
+        }
+      },
+      "EndpointSpec": {
+        "Mode": "vip"
+      }
+    },
+    "Endpoint": {
+      "Spec": {}
+    }
+  }
+}
+```

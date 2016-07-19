@@ -12,8 +12,18 @@ import (
 	"github.com/Dataman-Cloud/rolex/util"
 )
 
-func (api *Api) InspectService(ctx *gin.Context) {}
-func (api *Api) UpdateService(ctx *gin.Context)  {}
+func (api *Api) UpdateService(ctx *gin.Context) {}
+
+func (api *Api) InspectService(ctx *gin.Context) {
+	service, err := api.GetDockerClient().InspectServiceWithRaw(ctx.Param("service_id"))
+	if err != nil {
+		log.Errorf("inspect service error: %v", err)
+		ctx.JSON(http.StatusInternalServerError, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"code": util.OPERATION_SUCCESS, "data": service})
+}
 
 // ServiceCreate creates a new Service.
 func (api *Api) CreateService(ctx *gin.Context) {
