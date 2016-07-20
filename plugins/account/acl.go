@@ -149,3 +149,7 @@ func DefaultACLs() []*ACL {
 
 	return acls
 }
+
+func DefaultPermissions() []string {
+	acls := DefaultACLs{}
+}

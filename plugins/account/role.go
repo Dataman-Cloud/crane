@@ -14,7 +14,6 @@ func (r *Role) Children() []*Role {
 	return roles
 }
 
-func (r *Role) Acls() []*Acl {
-	acls := make([]*Acl, 0)
-	return acls
+func (r *Role) Permissions() []string {
+	return []string{}
 }
