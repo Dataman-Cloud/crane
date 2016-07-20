@@ -6,6 +6,7 @@ import (
 	"github.com/Dataman-Cloud/rolex/api/middlewares"
 	"github.com/Dataman-Cloud/rolex/plugins/account"
 	"github.com/Dataman-Cloud/rolex/plugins/account/authenticators"
+	chians "github.com/Dataman-Cloud/rolex/plugins/account/middlewares"
 	"github.com/Dataman-Cloud/rolex/plugins/account/token_store"
 	"github.com/Dataman-Cloud/rolex/plugins/registry"
 	"github.com/Dataman-Cloud/rolex/util/log"
@@ -16,6 +17,7 @@ import (
 
 func (api *Api) ApiRouter() *gin.Engine {
 	router := gin.New()
+	Authorization := middlewares.Authorization
 
 	router.Use(log.Ginrus(logrus.StandardLogger(), time.RFC3339, true), gin.Recovery())
 	router.Use(middlewares.OptionHandler())
@@ -39,10 +41,13 @@ func (api *Api) ApiRouter() *gin.Engine {
 		if api.Config.AccountAuthenticator == "default" {
 			r.Authenticator = authenticators.NewDefaultAuthenticator()
 		}
-		r.RegisterApiForAccount(router)
+
+		// account mode, Authorization enabled
+		Authorization = chians.Authorization(r)
+		r.RegisterApiForAccount(router, Authorization)
 	}
 
-	v1 := router.Group("/api/v1", middlewares.Authorization)
+	v1 := router.Group("/api/v1", Authorization)
 	{
 		v1.GET("/nodes", api.ListNodes)
 		v1.GET("/nodes/:node_id", api.InspectNode)

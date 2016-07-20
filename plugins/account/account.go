@@ -1,13 +1,8 @@
 package account
 
 import (
-	"errors"
 	"net/url"
 	"time"
-)
-
-var (
-	ErrLoginFailed = errors.New("account login failed")
 )
 
 type Account struct {
@@ -15,9 +10,21 @@ type Account struct {
 	Title    string    `json:"Title"`
 	Email    string    `json:"Email"`
 	Phone    string    `json:"Phone"`
-	Password string    `json:"Password"`
-	Token    string    `json:"Token"`
 	LoginAt  time.Time `json:"LoginAt"`
+	Password string    `json:"Password"`
+	Token    string    `json:"-"`
 }
 
 type AccountFilter url.Values
+
+func ReferenceToValue(a *Account) Account {
+	return Account{
+		ID:       a.ID,
+		Title:    a.Title,
+		Email:    a.Email,
+		Phone:    a.Phone,
+		LoginAt:  a.LoginAt,
+		Password: a.Password,
+		Token:    a.Token,
+	}
+}

@@ -18,6 +18,11 @@ var (
 	Accounts = []*account.Account{
 		{ID: "1", Title: "Engineering", Email: "admin@admin.com", Password: "adminadmin"},
 	}
+
+	Groups = []*account.Group{
+		{ID: "1", Name: "developers"},
+		{ID: "2", Name: "operation"},
+	}
 )
 
 func (d *Default) ModificationAllowed() bool {
@@ -25,21 +30,29 @@ func (d *Default) ModificationAllowed() bool {
 }
 
 func (d *Default) Login(a *account.Account) (token string, err error) {
-	for _, account := range Accounts {
-		if a.Password == account.Password && a.Email == account.Email {
+	for _, acc := range Accounts {
+		if a.Password == acc.Password && a.Email == acc.Email {
 			a.LoginAt = time.Now()
-			return "", nil
+			a.ID = acc.ID
+			return account.GenToken(a), nil
 		}
 	}
-	return "", nil
+
+	return "", account.ErrLoginFailed
 }
 
-func (d *Default) Accounts(filter account.AccountFilter) []*account.Account {
-	return nil
+func (d *Default) Accounts(filter account.AccountFilter) (accounts []*account.Account, err error) {
+	return Accounts, nil
 }
 
-func (d *Default) Account(idOrEmail string) *account.Account {
-	return nil
+func (d *Default) Account(idOrEmail string) (*account.Account, error) {
+	for _, acc := range Accounts {
+		if idOrEmail == acc.Email || idOrEmail == acc.ID {
+			return acc, nil
+		}
+	}
+
+	return nil, account.ErrAccountNotFound
 }
 
 func (d *Default) DeleteAccount(a *account.Account) error {
@@ -54,12 +67,18 @@ func (d *Default) CreateAccount(a *account.Account) error {
 	return nil
 }
 
-func (d *Default) Groups(filter account.GroupFilter) []*account.Group {
-	return nil
+func (d *Default) Groups(filter account.GroupFilter) (accounts []*account.Group, err error) {
+	return Groups, nil
 }
 
-func (d *Default) Group(id string) *account.Group {
-	return nil
+func (d *Default) Group(id string) (*account.Group, error) {
+	for _, group := range Groups {
+		if id == group.ID {
+			return group, nil
+		}
+	}
+
+	return nil, account.ErrGroupNotFound
 }
 
 func (d *Default) CreateGroup(g *account.Group) error {

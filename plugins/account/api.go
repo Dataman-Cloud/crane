@@ -1,20 +1,84 @@
 package account
 
 import (
+	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
 
-func (a *AccountApi) GetAccount(ctx *gin.Context) {}
+func (a *AccountApi) GetAccount(ctx *gin.Context) {
+	account, err := a.Authenticator.Account(ctx.Param("account_id"))
+	if err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"code": "1", "data": "404"})
+	} else {
+		ctx.JSON(http.StatusOK, gin.H{"code": "1", "data": account})
+	}
+}
 
-func (a *AccountApi) ListAccounts(ctx *gin.Context) {}
+func (a *AccountApi) ListAccounts(ctx *gin.Context) {
+	var accountFilter AccountFilter
+	accounts, err := a.Authenticator.Accounts(accountFilter)
+	if err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"code": "1", "data": "404"})
+	} else {
+		ctx.JSON(http.StatusOK, gin.H{"code": "1", "data": accounts})
+	}
+}
 
-func (a *AccountApi) AccountLogin(ctx *gin.Context) {}
+func (a *AccountApi) AccountLogin(ctx *gin.Context) {
+	var acc Account
+	if err := ctx.BindJSON(&acc); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"code": 1, "data": err.Error()})
+		return
+	}
 
-func (a *AccountApi) AccountLogout(ctx *gin.Context) {}
+	token, err := a.Authenticator.Login(&acc)
+	if err != nil {
+		ctx.JSON(http.StatusUnauthorized, gin.H{"code": "1", "data": "403"})
+		return
+	}
+	a.TokenStore.Set(fmt.Sprintf(SESSION_KEY_FORMAT, acc.ID), token, time.Now().Add(SESSION_DURATION))
+	ctx.JSON(http.StatusOK, gin.H{"code": "1", "data": token})
+}
 
-func (a *AccountApi) AccountGroups(ctx *gin.Context) {}
+func (a *AccountApi) AccountLogout(ctx *gin.Context) {
+	iAcc, found := ctx.Get("account")
+	fmt.Println(found)
+	acc := iAcc.(Account)
+	a.TokenStore.Del(fmt.Sprintf(SESSION_KEY_FORMAT, acc.ID))
+	ctx.JSON(http.StatusOK, gin.H{"code": "1", "data": "success"})
+}
+
+func (a *AccountApi) AccountGroups(ctx *gin.Context) {
+	var groupFilter GroupFilter
+	groups, err := a.Authenticator.Groups(groupFilter)
+	if err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"code": "1", "data": "404"})
+	} else {
+		ctx.JSON(http.StatusOK, gin.H{"code": "1", "data": groups})
+	}
+}
+
+func (a *AccountApi) GetGroup(ctx *gin.Context) {
+	group, err := a.Authenticator.Group(ctx.Param("group_id"))
+	if err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"code": "1", "data": "404"})
+	} else {
+		ctx.JSON(http.StatusOK, gin.H{"code": "1", "data": group})
+	}
+}
+
+func (a *AccountApi) ListGroups(ctx *gin.Context) {
+	var groupFilter GroupFilter
+	groups, err := a.Authenticator.Groups(groupFilter)
+	if err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"code": "1", "data": "404"})
+	} else {
+		ctx.JSON(http.StatusOK, gin.H{"code": "1", "data": groups})
+	}
+}
 
 func (a *AccountApi) CreateGroup(ctx *gin.Context) {
 	if !a.Authenticator.ModificationAllowed() {
