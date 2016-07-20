@@ -27,6 +27,11 @@ func (api *Api) ApiRouter() *gin.Engine {
 		r.RegisterApiForRegistry(router)
 	}
 
+	if api.Config.FeatureEnabled("account") {
+		r := &account.AccountApi{Config: api.Config}
+		r.RegisterApiForAccount(router)
+	}
+
 	v1 := router.Group("/api/v1", middlewares.Authorization)
 	{
 		v1.GET("/nodes", api.ListNodes)

@@ -10,7 +10,6 @@ var (
 
 type Account struct {
 	ID    string `json:"Id"`
-	Name  string `json:"Name"`
 	Title string `json:"Title"`
 	Email string `json:"Email"`
 	Phone string `json:"Phone"`

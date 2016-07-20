@@ -2,21 +2,21 @@ package account
 
 type (
 	ACL struct {
-		RoleName    string        `json:"role_name,omitempty"`
-		Description string        `json:"description,omitempty"`
-		Rules       []*AccessRule `json:"rules,omitempty"`
+		Permission  string        `json:"Permission,omitempty"`
+		Description string        `json:"Description,omitempty"`
+		Rules       []*AccessRule `json:"Rules,omitempty"`
 	}
 
 	AccessRule struct {
-		Path    string   `json:"path,omitempty"`
-		Methods []string `json:"methods,omitempty"`
+		Path    string   `json:"Path,omitempty"`
+		Methods []string `json:"Methods,omitempty"`
 	}
 )
 
 func DefaultACLs() []*ACL {
 	acls := []*ACL{}
 	adminACL := &ACL{
-		RoleName:    "admin",
+		Permisson:   "admin",
 		Description: "Administrator",
 		Rules: []*AccessRule{
 			{
@@ -28,7 +28,7 @@ func DefaultACLs() []*ACL {
 	acls = append(acls, adminACL)
 
 	containersACLRO := &ACL{
-		RoleName:    "containers:ro",
+		Permisson:   "containers:ro",
 		Description: "Containers Read Only",
 		Rules: []*AccessRule{
 			{
@@ -40,7 +40,7 @@ func DefaultACLs() []*ACL {
 	acls = append(acls, containersACLRO)
 
 	containersACLRW := &ACL{
-		RoleName:    "containers:rw",
+		Permisson:   "containers:rw",
 		Description: "Containers",
 		Rules: []*AccessRule{
 			{
@@ -52,7 +52,7 @@ func DefaultACLs() []*ACL {
 	acls = append(acls, containersACLRW)
 
 	eventsACLRO := &ACL{
-		RoleName:    "events:ro",
+		Permisson:   "events:ro",
 		Description: "Events Read Only",
 		Rules: []*AccessRule{
 			{
@@ -64,7 +64,7 @@ func DefaultACLs() []*ACL {
 	acls = append(acls, eventsACLRO)
 
 	eventsACLRW := &ACL{
-		RoleName:    "events:rw",
+		Permisson:   "events:rw",
 		Description: "Events",
 		Rules: []*AccessRule{
 			{
@@ -76,7 +76,7 @@ func DefaultACLs() []*ACL {
 	acls = append(acls, eventsACLRW)
 
 	imagesACLRO := &ACL{
-		RoleName:    "images:ro",
+		Permisson:   "images:ro",
 		Description: "Images Read Only",
 		Rules: []*AccessRule{
 			{
@@ -88,7 +88,7 @@ func DefaultACLs() []*ACL {
 	acls = append(acls, imagesACLRO)
 
 	imagesACLRW := &ACL{
-		RoleName:    "images:rw",
+		Permisson:   "images:rw",
 		Description: "Images",
 		Rules: []*AccessRule{
 			{
@@ -100,7 +100,7 @@ func DefaultACLs() []*ACL {
 	acls = append(acls, imagesACLRW)
 
 	nodesACLRO := &ACL{
-		RoleName:    "nodes:ro",
+		Permisson:   "nodes:ro",
 		Description: "Nodes Read Only",
 		Rules: []*AccessRule{
 			{
@@ -112,7 +112,7 @@ func DefaultACLs() []*ACL {
 	acls = append(acls, nodesACLRO)
 
 	nodesACLRW := &ACL{
-		RoleName:    "nodes:rw",
+		Permisson:   "nodes:rw",
 		Description: "Nodes",
 		Rules: []*AccessRule{
 			{
@@ -124,7 +124,7 @@ func DefaultACLs() []*ACL {
 	acls = append(acls, nodesACLRW)
 
 	registriesACLRO := &ACL{
-		RoleName:    "registries:ro",
+		Permisson:   "registries:ro",
 		Description: "Registries Read Only",
 		Rules: []*AccessRule{
 			{
@@ -136,7 +136,7 @@ func DefaultACLs() []*ACL {
 	acls = append(acls, registriesACLRO)
 
 	registriesACLRW := &ACL{
-		RoleName:    "registries:rw",
+		Permisson:   "registries:rw",
 		Description: "Registries",
 		Rules: []*AccessRule{
 			{

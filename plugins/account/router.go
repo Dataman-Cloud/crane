@@ -1,14 +1,15 @@
 package account
 
 import (
+	"github.com/Dataman-Cloud/rolex/util/config"
 	"github.com/gin-gonic/gin"
 )
 
-type Account struct {
-	Config *config.Config
+type AccountApi struct {
+	Config config.Config
 }
 
-func (account *Account) RegisterApiForAccount(router *gin.Engine) {
+func (a *AccountApi) RegisterApiForAccount(router *gin.Engine) {
 	accountV1 := router.Group("/account/v1")
 	{
 		accountV1.GET("accounts/:account_id", account.GetAccount)
