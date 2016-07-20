@@ -4,8 +4,10 @@
         .controller('NetworkContainerCtrl', NetworkContainerCtrl);
 
     /* @ngInject */
-    function NetworkContainerCtrl() {
+    function NetworkContainerCtrl(network) {
         var self = this;
+
+        self.network = network
 
     }
 })();

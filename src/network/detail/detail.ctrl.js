@@ -4,8 +4,10 @@
         .controller('NetworkDetailCtrl', NetworkDetailCtrl);
 
     /* @ngInject */
-    function NetworkDetailCtrl() {
+    function NetworkDetailCtrl(network) {
         var self = this;
+
+        self.network = network
 
     }
 })();

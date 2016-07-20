@@ -20,6 +20,7 @@
                 {dataName: 'scale', initData: curScale}).then(function (scale) {
                 stackBackend.upServiceScale(stackName, serviceID, scale).then(function (data) {
                     Notification.success('修改任务数成功');
+                    $state.reload();
                 });
             });
         }

@@ -3,20 +3,18 @@
         <thead md-head>
         <tr md-row>
             <th md-column>容器名称</th>
-            <th md-column>服务</th>
-            <th md-column>IP/别名</th>
-            <th md-column>镜像</th>
-            <th md-column>状态</th>
+            <th md-column>IPv4 地址</th>
+            <th md-column>IPv6 地址</th>
+            <th md-column>Mac 地址</th>
             <th md-column>操作</th>
         </tr>
         </thead>
         <tbody md-body>
-        <tr md-row ng-repeat="container in [{},{}]">
-            <td md-cell>high_leavitt</td>
-            <td md-cell>-</td>
-            <td md-cell>172.17.0.2</td>
-            <td md-cell>rancher/server</td>
-            <td md-cell>Up</td>
+        <tr md-row ng-repeat="(key, value) in networkContainerCtrl.network.Containers">
+            <td md-cell>{/value.Name/}</td>
+            <td md-cell>{/value.IPv4Address || '-'/}</td>
+            <td md-cell>{/value.IPv6Address || '-'/}</td>
+            <td md-cell>{/value.MacAddress || '-'/}</td>
             <td md-cell>
                 <md-menu md-offset="0 -5">
                     <md-button aria-label="networkContainerMenu" class="md-button md-raised"
