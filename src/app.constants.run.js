@@ -72,6 +72,22 @@
             disconnected: '失联'
         };
 
+        $rootScope.TASK_STATE = {
+            new: '初始化',
+            allocated: '资源已确认',
+            pending: '排队中',
+            assigned: '任务已派发',
+            accepted: '已接受',
+            preparing: '准备中',
+            ready: '准备就绪',
+            starting: '启动中',
+            running: '运行中',
+            complete: '已完成',
+            shutdown: '已关闭',
+            failed: '失败',
+            rejected: '拒绝'
+        };
+
         $rootScope.BACKEND_URL = {
             node: {
                 nodes: 'api/v1/nodes',
