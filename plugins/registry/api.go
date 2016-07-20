@@ -25,7 +25,6 @@ func (registry *Registry) Token(ctx *gin.Context) {
 	scope := ctx.Query("scope")
 
 	if len(scope) == 0 && !authenticated {
-		fmt.Println("xxxxx")
 		ctx.JSON(http.StatusUnauthorized, gin.H{})
 		return
 	}
