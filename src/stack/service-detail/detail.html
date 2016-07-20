@@ -4,8 +4,10 @@
             <div class="info" flex>
                 <h2>{/serviceDetailCtrl.service.Spec.Name/}</h2>
                 <dl class="list-dl-row">
-                    <dt>镜像名称</dt>
-                    <dd>xxxxx</dd>
+                    <dt>创建时间</dt>
+                    <dd>{/serviceDetailCtrl.service.CreatedAt | date: 'yyyy-MM-dd HH:mm:ss'/}</dd>
+                    <dt>更新时间</dt>
+                    <dd>{/serviceDetailCtrl.service.UpdatedAt | date: 'yyyy-MM-dd HH:mm:ss'/}</dd>
                 </dl>
             </div>
         </header>

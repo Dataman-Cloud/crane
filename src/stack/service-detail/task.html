@@ -2,16 +2,20 @@
     <table md-table>
         <thead md-head>
         <tr md-row>
-            <th md-column>ID</th>
+            <th md-column>Slot</th>
             <th md-column>主机</th>
-            <th md-column>镜像</th>
+            <th md-column>容器 ID</th>
         </tr>
         </thead>
         <tbody md-body>
         <tr md-row ng-repeat="task in serviceTaskCtrl.tasks">
-            <td md-cell>{/task.ID/}</td>
-            <td md-cell><a data-ui-sref="node.detail({node_id: task.NodeID})">{/serviceTaskCtrl.nodesMapping[task.NodeID].Description.Hostname/}</a></td>
-            <td md-cell>{/task.Spec.ContainerSpec.Image/}</td>
+            <td md-cell>{/task.Slot/}</td>
+            <td md-cell>
+                <a data-ui-sref="node.detail({node_id: task.NodeID})">{/serviceTaskCtrl.nodesMapping[task.NodeID].Description.Hostname/}</a>
+            </td>
+            <td md-cell>
+                <a data-ui-sref="node.containerDetail({node_id: task.NodeID, container_id: task.Status.ContainerStatus.ContainerID})">{/task.Status.ContainerStatus.ContainerID/}</a>
+            </td>
         </tr>
         </tbody>
     </table>
