@@ -18,10 +18,24 @@
 	    <td md-cell>{/service.UpdatedAt | date: 'yyyy-MM-dd HH:mm:ss'/}</td>
 	    <td md-cell>{/service.CreatedAt | date: 'yyyy-MM-dd HH:mm:ss'/}</td>
             <td md-cell>
-                <md-button aria-label="start" class="md-button md-raised"
-                           data-ng-click="stackServiceCtrl.upServiceScale($event, stackDetailCtrl.stack.Namespace, service.Name, service.TaskTotal)">
-                    修改任务数
-                </md-button>
+                <md-menu md-offset="0 -5">
+                    <md-button aria-label="nodeListMenu" class="md-button md-raised"
+                               ng-click="$mdOpenMenu($event)">
+                        <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                    </md-button>
+                    <md-menu-content width="2">
+                        <md-menu-item>
+                            <md-button aria-label="scale"
+                                       data-ng-click="stackServiceCtrl.upServiceScale($event, stackDetailCtrl.stack.Namespace, service.Name, service.TaskTotal)">修改任务数
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button aria-label="stop"
+                                       data-ng-click="stackServiceCtrl.stopService(stackDetailCtrl.stack.Namespace, service.Name)">停止
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
             </td>
         </tr>
         </tbody>
