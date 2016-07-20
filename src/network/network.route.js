@@ -16,7 +16,7 @@
                 templateUrl: '/src/network/list/list.html',
                 controller: 'NetworkListCtrl as networkListCtrl',
                 resolve: {
-                    networks: getNetworks
+                    networks: listNetwork
                 }
             })
             .state('network.create', {
@@ -27,18 +27,31 @@
             .state('network.detail', {
                 url: '/detail/:network_id',
                 templateUrl: '/src/network/detail/detail.html',
-                controller: 'NetworkDetailCtrl as NetworkDetailCtrl',
-                targetState: 'container'
+                controller: 'NetworkDetailCtrl as networkDetailCtrl',
+                targetState: 'config',
+                resolve: {
+                    network: getNetwork
+                }
             })
             .state('network.detail.container', {
                 url: '/container',
                 templateUrl: '/src/network/detail/container.html',
                 controller: 'NetworkContainerCtrl as networkContainerCtrl'
+            })
+            .state('network.detail.config', {
+                url: '/config',
+                templateUrl: '/src/network/detail/config.html',
+                controller: 'NetworkConfigCtrl as networkConfigCtrl'
             });
 
         /* @ngInject */
-        function getNetworks(networkBackend) {
+        function listNetwork(networkBackend) {
             return networkBackend.listNetwork()
+        }
+
+        /* @ngInject */
+        function getNetwork(networkBackend, $stateParams) {
+            return networkBackend.getNetwork($stateParams.network_id)
         }
     }
 })();

@@ -11,7 +11,8 @@
             listNetwork: listNetwork,
             deleteNetwork: deleteNetwork,
             connectNetwork: connectNetwork,
-            disconnectNetwork: disconnectNetwork
+            disconnectNetwork: disconnectNetwork,
+            getNetwork: getNetwork
         };
 
         function create(data, form) {
@@ -38,6 +39,10 @@
             };
 
             return gHttp.Resource('network.container', {network_id: id}).patch(data);
+        }
+
+        function getNetwork(id) {
+            return gHttp.Resource('network.network', {network_id: id}).get();
         }
     }
 })();
