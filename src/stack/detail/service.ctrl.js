@@ -9,5 +9,6 @@
 
         self.services = services;
         self.upServiceScale = stackCurd.upServiceScale;
+        self.stopService = stackCurd.stopService;
     }
 })();
