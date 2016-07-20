@@ -41,7 +41,7 @@ func (client *RolexDockerClient) CreateService(service swarm.ServiceSpec, option
 		return response, err
 	}
 
-	content, err := client.HttpPost("services/create", nil, serviceParam, nil)
+	content, err := client.HttpPost(client.SwarmHttpEndpoint+"/services/create", nil, serviceParam, nil)
 	if err != nil {
 		return response, err
 	}
@@ -148,7 +148,7 @@ func (client *RolexDockerClient) GetServicesStatus(services []swarm.Service) ([]
 
 // ServiceRemove kills and removes a service.
 func (client *RolexDockerClient) RemoveService(serviceID string) error {
-	_, err := client.HttpDelete("services/" + serviceID)
+	_, err := client.HttpDelete(client.SwarmHttpEndpoint + "/services/" + serviceID)
 	return err
 }
 
@@ -162,7 +162,7 @@ func (client *RolexDockerClient) UpdateService(serviceID string, version swarm.V
 
 	query := url.Values{}
 	query.Set("version", strconv.FormatUint(version.Index, 10))
-	_, err = client.HttpPost("services/"+serviceID+"/update", query, serviceParam, nil)
+	_, err = client.HttpPost(client.SwarmHttpEndpoint+"/services/"+serviceID+"/update", query, serviceParam, nil)
 	if err != nil {
 		return err
 	}
