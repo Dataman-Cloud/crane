@@ -28,7 +28,7 @@ type Config struct {
 	RegistryPrivateKeyPath string
 	RegistryAddr           string
 
-	//swarm cluster
+	// swarm cluster
 	RolexSecret string
 	RolexCaHash string
 	// To be removed, temp
