@@ -13,6 +13,7 @@ import (
 	"golang.org/x/net/context"
 
 	"github.com/Dataman-Cloud/rolex/dockerclient"
+	"github.com/Dataman-Cloud/rolex/model"
 	"github.com/Dataman-Cloud/rolex/util"
 )
 
@@ -115,6 +116,33 @@ func (api *Api) LogsService(ctx *gin.Context) {
 		sse.Event{
 			Event: "service-logs",
 			Data:  <-message,
+		}.Render(ctx.Writer)
+		return true
+	})
+}
+
+func (api *Api) StatsService(ctx *gin.Context) {
+	taskFilter := filters.NewArgs()
+	taskFilter.Add("service", ctx.Param("service_id"))
+	stats := make(chan *model.Stats)
+
+	defer close(stats)
+
+	tasks, err := api.GetDockerClient().ListTasks(types.TaskListOptions{Filter: taskFilter})
+	if err != nil {
+		ctx.JSON(http.StatusServiceUnavailable, err.Error())
+		return
+	}
+
+	for _, task := range tasks {
+		logContext := context.WithValue(context.Background(), "node_id", task.NodeID)
+		go api.GetDockerClient().StatsContainer(logContext, task.Status.ContainerStatus.ContainerID, stats)
+	}
+
+	ctx.Stream(func(w io.Writer) bool {
+		sse.Event{
+			Event: "service-stats",
+			Data:  <-stats,
 		}.Render(ctx.Writer)
 		return true
 	})

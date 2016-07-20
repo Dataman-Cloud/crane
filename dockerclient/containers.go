@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"io"
 
+	"github.com/Dataman-Cloud/rolex/model"
+
 	log "github.com/Sirupsen/logrus"
 	goclient "github.com/fsouza/go-dockerclient"
 	"golang.org/x/net/context"
@@ -103,13 +105,43 @@ func logReader(input *io.PipeReader, message chan string) {
 	}
 }
 
-func (client *RolexDockerClient) StatsContainer(ctx context.Context, containerId string, stats chan *goclient.Stats, done chan bool) {
+func (client *RolexDockerClient) StatsContainer(ctx context.Context, containerId string, stats chan *model.Stats) {
+	stat := make(chan *goclient.Stats)
+	sd := make(chan bool)
 	opts := goclient.StatsOptions{
 		ID:     containerId,
-		Stats:  stats,
+		Stats:  stat,
 		Stream: true,
-		Done:   done,
+		Done:   sd,
 	}
-	err := client.DockerClient(ctx).Stats(opts)
+
+	container, err := client.DockerClient(ctx).InspectContainer(containerId)
+	if err != nil {
+		log.Errorf("stats container get container by containerId error: %v", err)
+		return
+	}
+	go func(s chan *goclient.Stats, msg chan *model.Stats, sdone chan bool) {
+		defer func() {
+			recover()
+			sdone <- true
+		}()
+
+		for {
+			select {
+			case data := <-s:
+				msg <- &model.Stats{
+					Stat:        data,
+					NodeId:      container.Config.Labels["com.docker.swarm.node.id"],
+					ServiceId:   container.Config.Labels["com.docker.swarm.service.id"],
+					ServiceName: container.Config.Labels["com.docker.swarm.service.name"],
+					TaskId:      container.Config.Labels["com.docker.swarm.task.id"],
+					TaskName:    container.Config.Labels["com.docker.swarm.task.name"],
+					ContainerId: container.ID,
+				}
+			}
+		}
+	}(stat, stats, sd)
+
+	err = client.DockerClient(ctx).Stats(opts)
 	log.Infof("stats of container error: %v", err)
 }

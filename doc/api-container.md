@@ -436,6 +436,7 @@ curl -XGET localhost:2375/api/v1/nodes/(node_id)/containers/(container_id)/stats
         "throttling_data" : {"periods":0,"throttled_periods":0,"throttled_time":0}
      }
   }
+```
 
 #### StopContainer
 **Request:**
