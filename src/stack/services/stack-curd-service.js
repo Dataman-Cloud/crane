@@ -19,7 +19,7 @@
             formModal.open('/src/stack/modals/up-scale.html', ev,
                 {dataName: 'scale', initData: curScale}).then(function (scale) {
                 stackBackend.upServiceScale(stackName, serviceID, scale).then(function (data) {
-                    Notification.success('扩缩成功');
+                    Notification.success('修改任务数成功');
                 });
             });
         }
