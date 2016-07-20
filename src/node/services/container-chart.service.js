@@ -25,25 +25,21 @@
                 this.memData = [{
                     values: [],
                     key: '内存使用率',
-                    color: '#2ca02c',
                     area: true
                 }];
                 this.cpuData = [{
                     values: [],
                     key: 'CPU使用率',
-                    color: '#2ca02c',
                     area: true
                 }];
                 this.networkData = [{
                     values: [],
                     key: '网络接收速率',
-                    color: '#2ca02c',
                     area: true
                 },
                 {
                     values: [],
                     key: '网络发送速率',
-                    color: '#2ca02c',
                     area: true
                 }];
             }
@@ -137,7 +133,19 @@
                             axisLabelDistance: -10
                         },
                         pointSize: 0.1,
-                        forceY: [0]
+                        forceY: [0],
+                        color: [
+                                  '#1f77b4',
+                                  '#ff7f0e',
+                                  '#2ca02c',
+                                  '#d62728',
+                                  '#9467bd',
+                                  '#8c564b',
+                                  '#e377c2',
+                                  '#7f7f7f',
+                                  '#bcbd22',
+                                  '#17becf'
+                                ],
                     },
                     title: {
                         enable: true
