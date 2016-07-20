@@ -7,6 +7,7 @@
     function run($state, $rootScope, $stateParams) {
         $rootScope.$state = $state;
         $rootScope.$stateParams = $stateParams;
+        Math.sum = sum;
         $rootScope.Math = Math;
 
         $rootScope.$on('$stateChangeStart',
@@ -33,5 +34,17 @@
                 }
             });
 
+    }
+    
+    function sum(iter, valueGetter) {
+        var sum = 0;
+        angular.forEach(iter, function(item){
+            var value = item;
+            if (valueGetter) {
+                value = valueGetter(item);
+            }
+            sum += value;
+        });
+        return sum;
     }
 })();
