@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/Dataman-Cloud/rolex/model"
 	"github.com/Dataman-Cloud/rolex/util"
 
 	goclient "github.com/fsouza/go-dockerclient"
@@ -173,14 +174,11 @@ func (api *Api) LogsContainer(ctx *gin.Context) {
 
 func (api *Api) StatsContainer(ctx *gin.Context) {
 	rolexContext, _ := ctx.Get("rolexContext")
-	stats := make(chan *goclient.Stats, 10)
-	done := make(chan bool)
+	stats := make(chan *model.Stats)
 
-	defer func() {
-		done <- true
-	}()
+	defer close(stats)
 
-	go api.GetDockerClient().StatsContainer(rolexContext.(context.Context), ctx.Param("container_id"), stats, done)
+	go api.GetDockerClient().StatsContainer(rolexContext.(context.Context), ctx.Param("container_id"), stats)
 
 	ctx.Stream(func(w io.Writer) bool {
 		sse.Event{
