@@ -1,20 +1,33 @@
+<md-toolbar class="md-table-toolbar md-default">
+    <div class="md-toolbar-tools">
+        <form flex name="filter">
+            <input type="text" ng-model="serviceTaskCtrl.filter" placeholder="搜索">
+        </form>
+    </div>
+</md-toolbar>
+
 <md-table-container>
     <table md-table>
         <thead md-head>
         <tr md-row>
             <th md-column>Slot</th>
             <th md-column>主机</th>
-            <th md-column>容器 ID</th>
+            <th md-column>容器</th>
+            <th md-column>任务状态</th>
         </tr>
         </thead>
         <tbody md-body>
-        <tr md-row ng-repeat="task in serviceTaskCtrl.tasks">
+        <tr md-row ng-repeat="task in serviceTaskCtrl.tasks | filter: serviceTaskCtrl.filter">
             <td md-cell>{/task.Slot/}</td>
             <td md-cell>
                 <a data-ui-sref="node.detail({node_id: task.NodeID})">{/serviceTaskCtrl.nodesMapping[task.NodeID].Description.Hostname/}</a>
             </td>
             <td md-cell>
-                <a data-ui-sref="node.containerDetail({node_id: task.NodeID, container_id: task.Status.ContainerStatus.ContainerID})">{/task.Status.ContainerStatus.ContainerID/}</a>
+                <p data-ng-if="task.Status.State !== 'running'">{/task.Status.ContainerStatus.ContainerID/}</p>
+                <a data-ng-if="task.Status.State === 'running'" data-ui-sref="node.containerDetail({node_id: task.NodeID, container_id: task.Status.ContainerStatus.ContainerID})">{/task.Status.ContainerStatus.ContainerID/}</a>
+            </td>
+            <td md-cell>
+                {/task.Status.State/}
             </td>
         </tr>
         </tbody>

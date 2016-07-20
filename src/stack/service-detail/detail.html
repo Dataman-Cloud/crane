@@ -4,6 +4,13 @@
             <div class="info" flex>
                 <h2>{/serviceDetailCtrl.service.Spec.Name/}</h2>
                 <dl class="list-dl-row">
+                    <dt>任务数</dt>
+                    <dd>{/serviceDetailCtrl.service.Spec.Mode.Replicated.Replicas/} 个</dd>
+                    <dt>镜像</dt>
+                    <dd>{/serviceDetailCtrl.service.Spec.TaskTemplate.ContainerSpec.Image/}</dd>
+                </dl>
+
+                <dl class="list-dl-row">
                     <dt>创建时间</dt>
                     <dd>{/serviceDetailCtrl.service.CreatedAt | date: 'yyyy-MM-dd HH:mm:ss'/}</dd>
                     <dt>更新时间</dt>
