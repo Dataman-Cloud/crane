@@ -1,20 +1,52 @@
 package account
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 )
 
-type AccountApi struct {
-	Config config.Config
+func (a *AccountApi) GetAccount(ctx *gin.Context) {}
+
+func (a *AccountApi) ListAccounts(ctx *gin.Context) {}
+
+func (a *AccountApi) AccountLogin(ctx *gin.Context) {}
+
+func (a *AccountApi) AccountLogout(ctx *gin.Context) {}
+
+func (a *AccountApi) AccountGroups(ctx *gin.Context) {}
+
+func (a *AccountApi) CreateGroup(ctx *gin.Context) {
+	if !a.Authenticator.ModificationAllowed() {
+		ctx.JSON(http.StatusUnauthorized, gin.H{"code": "1", "data": "403"})
+		return
+	}
 }
 
-func (a *AccountApi) GetAccount(ctx *gin.Context)    {}
-func (a *AccountApi) ListAccounts(ctx *gin.Context)  {}
-func (a *AccountApi) AccountLogin(ctx *gin.Context)  {}
-func (a *AccountApi) AccountLogout(ctx *gin.Context) {}
-func (a *AccountApi) AccountAcls(ctx *gin.Context)   {}
-func (a *AccountApi) AccountRoles(ctx *gin.Context)  {}
-func (a *AccountApi) CreateRole(ctx *gin.Context)    {}
-func (a *AccountApi) UpdateRole(ctx *gin.Context)    {}
-func (a *AccountApi) DeleteRole(ctx *gin.Context)    {}
-func (a *AccountApi) RoleAcls(ctx *gin.Context)      {}
+func (a *AccountApi) UpdateGroup(ctx *gin.Context) {
+	if !a.Authenticator.ModificationAllowed() {
+		ctx.JSON(http.StatusUnauthorized, gin.H{"code": "1", "data": "403"})
+		return
+	}
+}
+
+func (a *AccountApi) DeleteGroup(ctx *gin.Context) {
+	if !a.Authenticator.ModificationAllowed() {
+		ctx.JSON(http.StatusUnauthorized, gin.H{"code": "1", "data": "403"})
+		return
+	}
+}
+
+func (a *AccountApi) JoinGroup(ctx *gin.Context) {
+	if !a.Authenticator.ModificationAllowed() {
+		ctx.JSON(http.StatusUnauthorized, gin.H{"code": "1", "data": "403"})
+		return
+	}
+}
+
+func (a *AccountApi) LeaveGroup(ctx *gin.Context) {
+	if !a.Authenticator.ModificationAllowed() {
+		ctx.JSON(http.StatusUnauthorized, gin.H{"code": "1", "data": "403"})
+		return
+	}
+}

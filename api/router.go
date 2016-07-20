@@ -4,6 +4,9 @@ import (
 	"time"
 
 	"github.com/Dataman-Cloud/rolex/api/middlewares"
+	"github.com/Dataman-Cloud/rolex/plugins/account"
+	"github.com/Dataman-Cloud/rolex/plugins/account/authenticators"
+	"github.com/Dataman-Cloud/rolex/plugins/account/token_store"
 	"github.com/Dataman-Cloud/rolex/plugins/registry"
 	"github.com/Dataman-Cloud/rolex/util/log"
 
@@ -29,6 +32,13 @@ func (api *Api) ApiRouter() *gin.Engine {
 
 	if api.Config.FeatureEnabled("account") {
 		r := &account.AccountApi{Config: api.Config}
+		if api.Config.AccountTokenStore == "default" {
+			r.TokenStore = token_store.NewDefaultStore()
+		}
+
+		if api.Config.AccountAuthenticator == "default" {
+			r.Authenticator = authenticators.NewDefaultAuthenticator()
+		}
 		r.RegisterApiForAccount(router)
 	}
 

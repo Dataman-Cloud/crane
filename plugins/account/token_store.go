@@ -5,6 +5,6 @@ import (
 )
 
 type TokenStore interface {
-	Set(token string, expired_at time.Time) bool
-	Get(token string) bool
+	Set(key, token string, expired_at time.Time) error
+	Get(key string) (string, error)
 }

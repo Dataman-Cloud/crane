@@ -2,6 +2,8 @@ package account
 
 import (
 	"errors"
+	"net/url"
+	"time"
 )
 
 var (
@@ -9,21 +11,13 @@ var (
 )
 
 type Account struct {
-	ID    string `json:"Id"`
-	Title string `json:"Title"`
-	Email string `json:"Email"`
-	Phone string `json:"Phone"`
+	ID       string    `json:"Id"`
+	Title    string    `json:"Title"`
+	Email    string    `json:"Email"`
+	Phone    string    `json:"Phone"`
+	Password string    `json:"Password"`
+	Token    string    `json:"Token"`
+	LoginAt  time.Time `json:"LoginAt"`
 }
 
-func NewAccount() *Account {
-	a := &Account{}
-	return a
-}
-
-func (account *Account) Login() (token string, err error) {
-	return "", nil
-}
-
-func (account *Account) Logout() bool {
-	return false
-}
+type AccountFilter url.Values

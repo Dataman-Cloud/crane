@@ -6,21 +6,26 @@ import (
 )
 
 type AccountApi struct {
-	Config config.Config
+	Config        *config.Config
+	Authenticator Authenticator
+	TokenStore    TokenStore
 }
 
-func (a *AccountApi) RegisterApiForAccount(router *gin.Engine) {
+func (account *AccountApi) RegisterApiForAccount(router *gin.Engine) {
 	accountV1 := router.Group("/account/v1")
 	{
 		accountV1.GET("accounts/:account_id", account.GetAccount)
 		accountV1.GET("accounts", account.ListAccounts)
-		accountV1.GET("accounts/:account_id/roles", account.AccountRoles)
-		accountV1.GET("accounts/:account_id/acls", account.AccountAcls)
+
+		accountV1.GET("accounts/:account_id/groups", account.AccountGroups)
 		accountV1.POST("accounts/:account_id/login", account.AccountLogin)
 		accountV1.POST("accounts/:account_id/logout", account.AccountLogout)
-		accountV1.POST("roles", account.CreateRole)
-		accountV1.PATCH("roles/:role_id", account.UpdateRole)
-		accountV1.DELETE("roles/:role_id", account.DeleteRole)
-		accountV1.GET("roles/:role_id/acls", account.RoleAcls)
+
+		accountV1.POST("accounts/:account_id/groups/:group_id", account.JoinGroup)
+		accountV1.DELETE("accounts/:account_id/groups/:group_id", account.LeaveGroup)
+
+		accountV1.POST("groups", account.CreateGroup)
+		accountV1.PATCH("groups/:group_id", account.UpdateGroup)
+		accountV1.DELETE("groups/:group_id", account.DeleteGroup)
 	}
 }
