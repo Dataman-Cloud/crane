@@ -6,8 +6,8 @@ import (
 )
 
 func TestPermissionEqual(T *testing.T) {
-	p1 := dockerclient.Permission{Permission: "ro", Group: "1"}
-	p2 := dockerclient.Permission{Permission: "ro", Group: "1"}
+	p1 := dockerclient.Permission{Perm: "ro", Group: "1"}
+	p2 := dockerclient.Permission{Perm: "ro", Group: "1"}
 
 	if p1.Equal(p2) {
 		T.Log("p1 equal p2")
@@ -24,7 +24,7 @@ func TestPermissiosFromLabel(T *testing.T) {
 		T.Error("label group_id-ro should contain 1 permissions")
 	}
 
-	if permissions[0].Permission != "ro" {
+	if permissions[0].Perm != "ro" {
 		T.Error("permission should be read only")
 	}
 
@@ -32,14 +32,14 @@ func TestPermissiosFromLabel(T *testing.T) {
 		T.Error("group id should be group_id")
 	}
 
-	label = "group_id-ro,group_id1-wo"
+	label = "group_id-ro,group_id1-rw"
 	permissions = dockerclient.PermissionsFromLabel(label)
 
 	if len(permissions) != 2 {
 		T.Error("label group_id-ro should contain 2 permissions")
 	}
 
-	if permissions[1].Permission != "wo" {
+	if permissions[1].Perm != "rw" {
 		T.Error("permission should be write only")
 	}
 
@@ -47,28 +47,34 @@ func TestPermissiosFromLabel(T *testing.T) {
 		T.Error("group id should be group_id")
 	}
 
-	label = "group_id-ro,,group_id1-wo"
+	label = "group_id-ro,,group_id1-rw"
 	permissions = dockerclient.PermissionsFromLabel(label)
 	if len(permissions) != 2 {
 		T.Error("label group_id-ro should contain 2 permissions")
 	}
 
-	label = "group_id-ro,  ,group_id1-wo"
+	label = "group_id-ro,  ,group_id1-rw"
 	permissions = dockerclient.PermissionsFromLabel(label)
 	if len(permissions) != 2 {
 		T.Error("label group_id-ro should contain 2 permissions")
 	}
 
-	label = "group_id-ro, foobar ,group_id1-wo"
+	label = "group_id-ro, foobar ,group_id1-rw"
 	permissions = dockerclient.PermissionsFromLabel(label)
 	if len(permissions) != 2 {
 		T.Error("label group_id-ro should contain 2 permissions")
+	}
+
+	label = "group_id-ro, group_id1-foobar"
+	permissions = dockerclient.PermissionsFromLabel(label)
+	if len(permissions) != 1 {
+		T.Error("label group_id-ro, group_id1-foobar should contain 1 permissions")
 	}
 }
 
 func TestLabelFromPermission(T *testing.T) {
 	permissions := []dockerclient.Permission{
-		{Permission: "ro", Group: "1"},
+		{Perm: "ro", Group: "1"},
 	}
 
 	if dockerclient.PermissionsToLabel(permissions) != "1-ro" {
@@ -76,9 +82,11 @@ func TestLabelFromPermission(T *testing.T) {
 	}
 
 	permissions = []dockerclient.Permission{
-		{Permission: "ro", Group: "1"},
-		{Permission: "rw", Group: "2"},
+		{Perm: "ro", Group: "1"},
+		{Perm: "rw", Group: "2"},
 	}
+
+	T.Log(dockerclient.PermissionsToLabel(permissions))
 
 	if dockerclient.PermissionsToLabel(permissions) != "1-ro,2-rw" {
 		T.Error("permissions label should be 2-rw,1-ro")
@@ -87,10 +95,10 @@ func TestLabelFromPermission(T *testing.T) {
 
 func TestPermissionsInclude(T *testing.T) {
 	permissions := []dockerclient.Permission{
-		{Permission: "ro", Group: "1"},
+		{Perm: "ro", Group: "1"},
 	}
 
-	permission := dockerclient.Permission{Permission: "ro", Group: "1"}
+	permission := dockerclient.Permission{Perm: "ro", Group: "1"}
 
 	if !dockerclient.PermissionsInclude(permissions, permission) {
 		T.Error("permissions should include permssion")
@@ -99,11 +107,11 @@ func TestPermissionsInclude(T *testing.T) {
 
 func TestPermissionsIndex(T *testing.T) {
 	permissions := []dockerclient.Permission{
-		{Permission: "ro", Group: "0"},
-		{Permission: "ro", Group: "1"},
+		{Perm: "ro", Group: "0"},
+		{Perm: "ro", Group: "1"},
 	}
 
-	permission := dockerclient.Permission{Permission: "ro", Group: "1"}
+	permission := dockerclient.Permission{Perm: "ro", Group: "1"}
 
 	if dockerclient.PermissionsIndex(permissions, permission) != 1 {
 		T.Error("index of permission in permissions should be 1")
