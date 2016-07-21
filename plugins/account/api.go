@@ -3,6 +3,7 @@ package account
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -62,7 +63,11 @@ func (a *AccountApi) AccountGroups(ctx *gin.Context) {
 }
 
 func (a *AccountApi) GetGroup(ctx *gin.Context) {
-	group, err := a.Authenticator.Group(ctx.Param("group_id"))
+	groupid, err := strconv.ParseUint(ctx.Param("group_id"), 10, 64)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"code": "1", "data": "bad groupid"})
+	}
+	group, err := a.Authenticator.Group(groupid)
 	if err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"code": "1", "data": "404"})
 	} else {

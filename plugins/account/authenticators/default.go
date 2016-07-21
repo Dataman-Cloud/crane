@@ -15,13 +15,13 @@ func NewDefaultAuthenticator() *Default {
 }
 
 var (
-	Accounts = []*account.Account{
-		{ID: "1", Title: "Engineering", Email: "admin@admin.com", Password: "adminadmin"},
+	Accounts = []account.Account{
+		{ID: 1, Title: "Engineering", Email: "admin@admin.com", Password: "adminadmin"},
 	}
 
-	Groups = []*account.Group{
-		{ID: "1", Name: "developers"},
-		{ID: "2", Name: "operation"},
+	Groups = []account.Group{
+		{ID: 1, Name: "developers"},
+		{ID: 2, Name: "operation"},
 	}
 )
 
@@ -41,14 +41,16 @@ func (d *Default) Login(a *account.Account) (token string, err error) {
 	return "", account.ErrLoginFailed
 }
 
-func (d *Default) Accounts(filter account.AccountFilter) (accounts []*account.Account, err error) {
-	return Accounts, nil
+func (d *Default) Accounts(filter account.AccountFilter) (accounts *[]account.Account, err error) {
+	return &Accounts, nil
 }
 
-func (d *Default) Account(idOrEmail string) (*account.Account, error) {
+func (d *Default) Account(idOrEmail interface{}) (*account.Account, error) {
 	for _, acc := range Accounts {
-		if idOrEmail == acc.Email || idOrEmail == acc.ID {
-			return acc, nil
+		if id, ok := idOrEmail.(uint64); ok && acc.ID == id {
+			return &acc, nil
+		} else if email, ok := idOrEmail.(string); ok && acc.Email == email {
+			return &acc, nil
 		}
 	}
 
@@ -67,14 +69,14 @@ func (d *Default) CreateAccount(a *account.Account) error {
 	return nil
 }
 
-func (d *Default) Groups(filter account.GroupFilter) (accounts []*account.Group, err error) {
-	return Groups, nil
+func (d *Default) Groups(filter account.GroupFilter) (accounts *[]account.Group, err error) {
+	return &Groups, nil
 }
 
-func (d *Default) Group(id string) (*account.Group, error) {
+func (d *Default) Group(id uint64) (*account.Group, error) {
 	for _, group := range Groups {
 		if id == group.ID {
-			return group, nil
+			return &group, nil
 		}
 	}
 
