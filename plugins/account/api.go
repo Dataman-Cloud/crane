@@ -118,16 +118,16 @@ func (a *AccountApi) LeaveGroup(ctx *gin.Context) {
 func (a *AccountApi) GrantServicePermission(ctx *gin.Context) {
 	var permission dockerclient.Permission
 	if err := ctx.BindJSON(&permission); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": 1, "data": err.Error()})
+		ctx.JSON(http.StatusBadRequest, gin.H{"code": "1", "data": err.Error()})
 		return
 	}
 
 	err := a.RolexDockerClient.GrantServicePermission(ctx.Param("service_id"), permission)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"code": 1, "data": err.Error()})
+		ctx.JSON(http.StatusInternalServerError, gin.H{"code": "1", "data": err.Error()})
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{"code": "1", "data": "success"})
+	ctx.JSON(http.StatusOK, gin.H{"code": "0", "data": "success"})
 }
 
 func (a *AccountApi) RevokeServicePermission(ctx *gin.Context) {
@@ -142,5 +142,5 @@ func (a *AccountApi) RevokeServicePermission(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"code": 1, "data": err.Error()})
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{"code": "1", "data": "success"})
+	ctx.JSON(http.StatusOK, gin.H{"code": "0", "data": "success"})
 }
