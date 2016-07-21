@@ -6,6 +6,7 @@ type Authenticator interface {
 
 	Login(account *Account) (token string, err error)
 
+	DeleteGroup(groupId uint64) error
 	Groups(filter GroupFilter) (*[]Group, error)
 	Group(id uint64) (*Group, error)
 	CreateGroup(role *Group) error

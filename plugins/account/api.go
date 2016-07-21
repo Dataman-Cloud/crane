@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/Dataman-Cloud/rolex/dockerclient"
+	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
 )
 
@@ -91,13 +92,42 @@ func (a *AccountApi) CreateGroup(ctx *gin.Context) {
 		ctx.JSON(http.StatusUnauthorized, gin.H{"code": "1", "data": "403"})
 		return
 	}
+
+	var group Group
+	if err := ctx.BindJSON(&group); err != nil {
+		log.Errorf("create group request body parse json error: %v", err)
+		ctx.JSON(http.StatusBadRequest, gin.H{"code": 1, "data": err.Error()})
+		return
+	}
+
+	if err := a.Authenticator.CreateGroup(&group); err != nil {
+		log.Errorf("create group db operation error: %v", err)
+		ctx.JSON(http.StatusInternalServerError, gin.H{"code": 1, "data": "500"})
+		return
+	}
+	ctx.JSON(http.StatusCreated, gin.H{"code": 0, "data": "create success"})
 }
 
 func (a *AccountApi) UpdateGroup(ctx *gin.Context) {
+	var group Group
+
+	if err := ctx.BindJSON(&group); err != nil {
+		log.Errorf("update group request body parse json error: %v", err)
+		ctx.JSON(http.StatusBadRequest, gin.H{"code": 1, "data": err.Error()})
+		return
+	}
+
 	if !a.Authenticator.ModificationAllowed() {
 		ctx.JSON(http.StatusUnauthorized, gin.H{"code": "1", "data": "403"})
 		return
 	}
+
+	if err := a.Authenticator.UpdateGroup(&group); err != nil {
+		log.Errorf("update group db operation error: %v", err)
+		ctx.JSON(http.StatusInternalServerError, gin.H{"code": 1, "data": "500"})
+		return
+	}
+	ctx.JSON(http.StatusCreated, gin.H{"code": 0, "data": "update success"})
 }
 
 func (a *AccountApi) DeleteGroup(ctx *gin.Context) {
@@ -105,6 +135,20 @@ func (a *AccountApi) DeleteGroup(ctx *gin.Context) {
 		ctx.JSON(http.StatusUnauthorized, gin.H{"code": "1", "data": "403"})
 		return
 	}
+
+	groupId, err := strconv.ParseUint(ctx.Param("group_id"), 10, 64)
+	if err != nil {
+		log.Errorf("delete group invalid groupId error: %v", err)
+		ctx.JSON(http.StatusBadRequest, gin.H{"code": 1, "data": "invalid group_id"})
+	}
+
+	if err := a.Authenticator.DeleteGroup(groupId); err != nil {
+		log.Errorf("delete group db operation error: %v", err)
+		ctx.JSON(http.StatusInternalServerError, gin.H{"code": 1, "data": "500"})
+		return
+	}
+
+	ctx.JSON(http.StatusCreated, gin.H{"code": 0, "data": "delete success"})
 }
 
 func (a *AccountApi) JoinGroup(ctx *gin.Context) {

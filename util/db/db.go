@@ -2,6 +2,7 @@ package db
 
 import (
 	"github.com/Dataman-Cloud/rolex/model"
+	"github.com/Dataman-Cloud/rolex/plugins/account"
 	"github.com/Dataman-Cloud/rolex/util/config"
 
 	log "github.com/Sirupsen/logrus"
@@ -34,6 +35,7 @@ func InitDB() {
 }
 
 func MigriateTable() {
-	db.Table("stack").Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&model.Stack{})
-	//db.Table("service").Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&model.Service{})
+	db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&model.Stack{})
+	db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&account.Account{})
+	db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&account.Group{})
 }

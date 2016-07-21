@@ -40,6 +40,8 @@ func (api *Api) ApiRouter() *gin.Engine {
 
 		if api.Config.AccountAuthenticator == "default" {
 			r.Authenticator = authenticators.NewDefaultAuthenticator()
+		} else if api.Config.AccountAuthenticator == "db" {
+			r.Authenticator = authenticators.NewDBAuthenticator()
 		}
 
 		// account mode, Authorization enabled
