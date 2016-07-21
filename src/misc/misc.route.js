@@ -9,7 +9,10 @@
             .state('misc', {
                 url: '/misc',
                 template: '<ui-view/>',
-                targetState: 'config'
+                targetState: 'config',
+                ncyBreadcrumb: {
+                    label: '系统信息'
+                }
             })
             .state('misc.config', {
                 url: '/config',
@@ -17,6 +20,9 @@
                 controller: 'MiscConfigCtrl as miscConfigCtrl',
                 resolve: {
                     rolexconfig: getConfig
+                },
+                ncyBreadcrumb: {
+                    label: '配置'
                 }
             });
 
