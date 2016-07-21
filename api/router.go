@@ -31,11 +31,11 @@ func (api *Api) ApiRouter() *gin.Engine {
 		v1.GET("/nodes", api.ListNodes)
 		v1.GET("/nodes/:node_id", api.InspectNode)
 		v1.GET("/nodes/:node_id/info", api.Info)
-
 		// Going to delegate to /nodes/:id
 		// v1.GET("/nodes/leader_manager", api.LeaderNode)
 
 		// Containers
+		v1.GET("/nodes/:node_id/containers/:container_id/terminal", api.ConnectContainer)
 		v1.GET("/nodes/:node_id/containers", api.ListContainers)
 		v1.GET("/nodes/:node_id/containers/:container_id", api.InspectContainer)
 		v1.GET("/nodes/:node_id/containers/:container_id/diff", api.DiffContainer)
