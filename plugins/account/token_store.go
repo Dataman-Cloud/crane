@@ -5,7 +5,7 @@ import (
 )
 
 type TokenStore interface {
-	Set(key, token string, expired_at time.Time) error
-	Get(key string) (string, error)
-	Del(key string) error
+	Set(token, account_id string, expired_at time.Time) error
+	Get(token string) (string, error)
+	Del(token string) error
 }

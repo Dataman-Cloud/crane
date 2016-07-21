@@ -1,7 +1,6 @@
 package token_store
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/Dataman-Cloud/rolex/plugins/account"
@@ -9,8 +8,8 @@ import (
 )
 
 type tokenStore struct {
-	Token    string
-	ExpireAt time.Time
+	AccountId string
+	ExpireAt  time.Time
 }
 
 type Default struct {
@@ -25,20 +24,19 @@ func NewDefaultStore() *Default {
 	}
 }
 
-func (d *Default) Set(key, token string, expired_at time.Time) error {
-	log.Debugf("Set ", key, " ", token, " ", expired_at)
-	d.Store[key] = &tokenStore{Token: token, ExpireAt: expired_at}
+func (d *Default) Set(token, accountId string, expiredAt time.Time) error {
+	log.Debugf("Set ", token, " ", accountId, " ", expiredAt)
+	d.Store[token] = &tokenStore{AccountId: accountId, ExpireAt: expiredAt}
 	return nil
 }
 
-func (d *Default) Get(key string) (string, error) {
-	log.Debugf("Get ", key)
-	if tokenStore, ok := d.Store[key]; ok {
+func (d *Default) Get(token string) (string, error) {
+	log.Debugf("Get ", token)
+	if tokenStore, ok := d.Store[token]; ok {
 		if tokenStore.ExpireAt.After(time.Now()) {
-			log.Debugf("Get ", tokenStore.Token)
-			return tokenStore.Token, nil
+			log.Debugf("Get ", tokenStore.AccountId)
+			return tokenStore.AccountId, nil
 		} else {
-			fmt.Println("expird")
 			return "", TokenExpired
 		}
 	} else {
@@ -46,7 +44,7 @@ func (d *Default) Get(key string) (string, error) {
 	}
 }
 
-func (d *Default) Del(key string) error {
-	delete(d.Store, key)
+func (d *Default) Del(token string) error {
+	delete(d.Store, token)
 	return nil
 }

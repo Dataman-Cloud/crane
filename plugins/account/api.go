@@ -38,17 +38,18 @@ func (a *AccountApi) AccountLogin(ctx *gin.Context) {
 
 	token, err := a.Authenticator.Login(&acc)
 	if err != nil {
-		ctx.JSON(http.StatusUnauthorized, gin.H{"code": "1", "data": "403"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"code": "1", "data": "403"})
 		return
 	}
-	a.TokenStore.Set(fmt.Sprintf(SESSION_KEY_FORMAT, acc.ID), token, time.Now().Add(SESSION_DURATION))
+	a.TokenStore.Set(token, fmt.Sprintf("%d", acc.ID), time.Now().Add(SESSION_DURATION))
 	ctx.JSON(http.StatusOK, gin.H{"code": "1", "data": token})
 }
 
 func (a *AccountApi) AccountLogout(ctx *gin.Context) {
-	iAcc, _ := ctx.Get("account")
-	acc := iAcc.(Account)
-	a.TokenStore.Del(fmt.Sprintf(SESSION_KEY_FORMAT, acc.ID))
+	if err := a.TokenStore.Del(ctx.Request.Header.Get("Authorization")); err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"code": "1", "data": "fail"})
+		return
+	}
 	ctx.JSON(http.StatusOK, gin.H{"code": "1", "data": "success"})
 }
 
