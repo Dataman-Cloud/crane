@@ -53,12 +53,23 @@
                 url: '/detail/:node_id',
                 templateUrl: '/src/node/detail/detail.html',
                 controller: 'NodeDetailCtrl as nodeDetailCtrl',
-                targetState: 'container',
+                targetState: 'config',
                 resolve: {
                     node: getNode
                 },
                 ncyBreadcrumb: {
                     label: '主机详情'
+                }
+            })
+            .state('node.detail.config', {
+                url: '/config',
+                templateUrl: '/src/node/detail/config.html',
+                controller: 'NodeConfigCtrl as nodeConfigCtrl',
+                resolve: {
+                    node: getNode
+                },
+                ncyBreadcrumb: {
+                    label: '基本信息'
                 }
             })
             .state('node.detail.container', {

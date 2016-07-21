@@ -1,0 +1,48 @@
+<h4>docker 信息</h4>
+<md-table-container layout-padding>
+
+    <dl layout="row">
+        <dt flex="10" layout-margin>版本(ServerVersion)</dt>
+        <dd layout-margin>{/nodeConfigCtrl.node.ServerVersion/}</dd>
+    </dl>
+    <dl layout="row">
+        <dt flex="10" layout-margin>存储驱动(storage driver)</dt>
+        <dd layout-margin>{/nodeConfigCtrl.node.Driver/}</dd>
+    </dl>
+    <dl layout="row">
+        <dt flex="10" layout-margin>Docker 存储目录(DockerRootDir)</dt>
+        <dd layout-margin>{/nodeConfigCtrl.node.DockerRootDir/}</dd>
+    </dl>
+    <dl layout="row">
+        <dt flex="10" layout-margin>Debug 模式</dt>
+        <dd layout-margin>{/nodeConfigCtrl.node.Debug/}</dd>
+    </dl>
+    <dl layout="row">
+        <dt flex="10" layout-margin>IPv4Forwarding</dt>
+        <dd layout-margin>{/nodeConfigCtrl.node.IPv4Forwarding/}</dd>
+    </dl>
+    <dl layout="row">
+        <dt flex="10" layout-margin>Cgroup 驱动(CgroupDriver)</dt>
+        <dd layout-margin>{/nodeConfigCtrl.node.CgroupDriver/}</dd>
+    </dl>
+    <dl layout="row">
+        <dt flex="10" layout-margin>LoggingDriver</dt>
+        <dd layout-margin>{/nodeConfigCtrl.node.LoggingDriver/}</dd>
+    </dl>
+    <dl layout="row">
+        <dt flex="10" layout-margin>禁用内存溢出kill(OomKillDisable)</dt>
+        <dd layout-margin>{/nodeConfigCtrl.node.OomKillDisable/}</dd>
+    </dl>
+</md-table-container>
+
+<h4>主机信息</h4>
+<md-table-container layout-padding>
+    <dl layout="row">
+        <dt flex="10" layout-margin>内核版本</dt>
+        <dd layout-margin>{/nodeConfigCtrl.node.KernelVersion/}</dd>
+    </dl>
+    <dl layout="row">
+        <dt flex="10" layout-margin>系统时间</dt>
+        <dd layout-margin>{/nodeConfigCtrl.node.SystemTime/}</dd>
+    </dl>
+</md-table-container>
