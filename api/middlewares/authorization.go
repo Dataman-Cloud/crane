@@ -5,5 +5,5 @@ import (
 )
 
 func Authorization(ctx *gin.Context) {
-	ctx.Next()
+	ctx.Next() // do nothing with account feature
 }

@@ -31,9 +31,14 @@ type Config struct {
 	// swarm cluster
 	RolexSecret string
 	RolexCaHash string
+
 	// To be removed, temp
 	NodeIP   string
 	NodePort string
+
+	// account
+	AccountAuthenticator string
+	AccountTokenStore    string
 }
 
 func (c *Config) FeatureEnabled(feature string) bool {
@@ -63,6 +68,9 @@ type EnvEntry struct {
 	// To be removed
 	NODE_IP   string `required:"true"`
 	NODE_PORT string `required:"true"`
+
+	ROLEX_ACCOUNT_TOKEN_STORE   string `required:"false"`
+	ROLEX_ACCOUNT_AUTHENTICATOR string `required:"false"`
 }
 
 func InitConfig(envFile string) *Config {
@@ -86,6 +94,9 @@ func InitConfig(envFile string) *Config {
 
 	config.NodeIP = envEntry.NODE_IP
 	config.NodePort = envEntry.NODE_PORT
+
+	config.AccountAuthenticator = envEntry.ROLEX_ACCOUNT_AUTHENTICATOR
+	config.AccountTokenStore = envEntry.ROLEX_ACCOUNT_TOKEN_STORE
 	return &config
 }
 
