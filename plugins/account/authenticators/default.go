@@ -87,7 +87,7 @@ func (d *Default) CreateGroup(g *account.Group) error {
 	return nil
 }
 
-func (d *Default) DeleteGroup(g *account.Group) error {
+func (d *Default) DeleteGroup(groupId uint64) error {
 	return nil
 }
 

@@ -22,7 +22,7 @@ func (db *DbAuthenicator) ModificationAllowed() bool {
 
 func (db *DbAuthenicator) Login(a *account.Account) (string, error) {
 	if err := db.DbClient.
-		Where("email = ? AND password = ?").
+		Where("email = ? AND password = ?", a.Email, a.Password).
 		First(a).Error; err != nil {
 		return "", err
 	}
@@ -65,20 +65,28 @@ func (db *DbAuthenicator) CreateAccount(a *account.Account) error {
 	return db.DbClient.Save(a).Error
 }
 
-func (db *DbAuthenicator) Groups(group *account.GroupFilter) (*[]account.Group, error) {
+func (db *DbAuthenicator) Groups(group account.GroupFilter) (*[]account.Group, error) {
 	return nil, nil
+}
+
+func (db *DbAuthenicator) Group(id uint64) (*account.Group, error) {
+	var group account.Group
+	if err := db.DbClient.Where("id = ?", id).Find(&group).Error; err != nil {
+		return nil, err
+	}
+	return &group, nil
 }
 
 func (db *DbAuthenicator) CreateGroup(g *account.Group) error {
 	return db.DbClient.Save(g).Error
 }
 
-func (db *DbAuthenicator) DeleteGroup(g *account.Group) error {
-	return db.DbClient.Delete(g).Error
+func (db *DbAuthenicator) DeleteGroup(groupId uint64) error {
+	return db.DbClient.Where("id = ?", groupId).Delete(&account.Group{}).Error
 }
 
 func (db *DbAuthenicator) UpdateGroup(g *account.Group) error {
-	return db.DbClient.Save(g).Error
+	return db.DbClient.Model(g).Update(g).Error
 }
 
 func (db *DbAuthenicator) JoinGroup(g *account.Group, a *account.Account) error {
