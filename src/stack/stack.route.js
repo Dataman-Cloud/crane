@@ -60,10 +60,15 @@
                 url: '/serviceDetail/:stack_name/:service_id',
                 templateUrl: '/src/stack/service-detail/detail.html',
                 controller: 'ServiceDetailCtrl as serviceDetailCtrl',
-                targetState: 'task',
+                targetState: 'config',
                 resolve: {
                     service: getService
                 }
+            })
+            .state('stack.serviceDetail.config', {
+                url: '/config',
+                templateUrl: '/src/stack/service-detail/config.html',
+                controller: 'ServiceConfigCtrl as serviceConfigCtrl'
             })
             .state('stack.serviceDetail.task', {
                 url: '/task',
