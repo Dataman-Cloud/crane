@@ -24,9 +24,21 @@ type Config struct {
 	HOST string
 	PORT uint64
 
-	//registry
+	// registry
 	RegistryPrivateKeyPath string
 	RegistryAddr           string
+
+	// swarm cluster
+	RolexSecret string
+	RolexCaHash string
+
+	// To be removed, temp
+	NodeIP   string
+	NodePort string
+
+	// account
+	AccountAuthenticator string
+	AccountTokenStore    string
 }
 
 func (c *Config) FeatureEnabled(feature string) bool {
@@ -50,6 +62,15 @@ type EnvEntry struct {
 	ROLEX_FEATURE_FLAGS             string `required:"false"`
 	ROLEX_REGISTRY_PRIVATE_KEY_PATH string `required:"false"`
 	ROLEX_REGISTRY_ADDR             string `required:"false"`
+
+	ROLEX_SECRET  string `required:"true"`
+	ROLEX_CA_HASH string `required:"true"`
+	// To be removed
+	NODE_IP   string `required:"true"`
+	NODE_PORT string `required:"true"`
+
+	ROLEX_ACCOUNT_TOKEN_STORE   string `required:"false"`
+	ROLEX_ACCOUNT_AUTHENTICATOR string `required:"false"`
 }
 
 func InitConfig(envFile string) *Config {
@@ -65,8 +86,17 @@ func InitConfig(envFile string) *Config {
 	config.DbDSN = envEntry.ROLEX_DB_DSN
 	config.FeatureFlags = strings.SplitN(envEntry.ROLEX_FEATURE_FLAGS, ",", -1)
 
+	config.RolexSecret = envEntry.ROLEX_SECRET
+	config.RolexCaHash = envEntry.ROLEX_CA_HASH
+
 	config.RegistryPrivateKeyPath = envEntry.ROLEX_REGISTRY_PRIVATE_KEY_PATH
 	config.RegistryAddr = envEntry.ROLEX_REGISTRY_ADDR
+
+	config.NodeIP = envEntry.NODE_IP
+	config.NodePort = envEntry.NODE_PORT
+
+	config.AccountAuthenticator = envEntry.ROLEX_ACCOUNT_AUTHENTICATOR
+	config.AccountTokenStore = envEntry.ROLEX_ACCOUNT_TOKEN_STORE
 	return &config
 }
 

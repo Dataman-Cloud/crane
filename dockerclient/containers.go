@@ -2,46 +2,66 @@ package dockerclient
 
 import (
 	"bufio"
-	"encoding/json"
+	"fmt"
 	"io"
 
+	"github.com/Dataman-Cloud/rolex/model"
+
 	log "github.com/Sirupsen/logrus"
-	"github.com/docker/engine-api/types"
 	goclient "github.com/fsouza/go-dockerclient"
+	"golang.org/x/net/context"
 )
 
-func (client *RolexDockerClient) ListContainers(opts goclient.ListContainersOptions) ([]goclient.APIContainers, error) {
-	return client.DockerClient("placeholder").ListContainers(opts)
+func (client *RolexDockerClient) ListContainers(ctx context.Context, opts goclient.ListContainersOptions) ([]goclient.APIContainers, error) {
+	fmt.Println(client.DockerClient(ctx))
+	return client.DockerClient(ctx).ListContainers(opts)
 }
 
-func (client *RolexDockerClient) InspectContainer(id string) (*goclient.Container, error) {
-	return client.DockerClient("placeholder").InspectContainer(id)
+func (client *RolexDockerClient) InspectContainer(ctx context.Context, id string) (*goclient.Container, error) {
+	return client.DockerClient(ctx).InspectContainer(id)
 }
 
-func (client *RolexDockerClient) RemoveContainer(opts goclient.RemoveContainerOptions) error {
-	return client.DockerClient("placeholder").RemoveContainer(opts)
+func (client *RolexDockerClient) RemoveContainer(ctx context.Context, opts goclient.RemoveContainerOptions) error {
+	return client.DockerClient(ctx).RemoveContainer(opts)
 }
 
-func (client *RolexDockerClient) KillContainer(opts goclient.KillContainerOptions) error {
-	return client.DockerClient("placeholder").KillContainer(opts)
+func (client *RolexDockerClient) KillContainer(ctx context.Context, opts goclient.KillContainerOptions) error {
+	return client.DockerClient(ctx).KillContainer(opts)
 }
 
-func (client *RolexDockerClient) DiffContainer(containerID string) ([]types.ContainerChange, error) {
-	var changes []types.ContainerChange
-
-	content, err := client.HttpGet("/containers/"+containerID+"/changes", nil, nil)
-	if err != nil {
-		return changes, err
-	}
-
-	if err := json.Unmarshal(content, &changes); err != nil {
-		return changes, err
-	}
-
-	return changes, nil
+func (client *RolexDockerClient) RenameContainer(ctx context.Context, opts goclient.RenameContainerOptions) error {
+	return client.DockerClient(ctx).RenameContainer(opts)
 }
 
-func (client *RolexDockerClient) LogsContainer(nodeId, containerId string, message chan string) {
+func (client *RolexDockerClient) DiffContainer(ctx context.Context, containerID string) ([]goclient.Change, error) {
+	return client.DockerClient(ctx).ContainerChanges(containerID)
+}
+
+func (client *RolexDockerClient) StopContainer(ctx context.Context, containerId string, timeout uint) error {
+	return client.DockerClient(ctx).StopContainer(containerId, timeout)
+}
+
+func (client *RolexDockerClient) StartContainer(ctx context.Context, containerID string, hostconfig *goclient.HostConfig) error {
+	return client.DockerClient(ctx).StartContainer(containerID, hostconfig)
+}
+
+func (client *RolexDockerClient) RestartContainer(ctx context.Context, containerId string, timeout uint) error {
+	return client.DockerClient(ctx).RestartContainer(containerId, timeout)
+}
+
+func (client *RolexDockerClient) PauseContainer(ctx context.Context, containerID string) error {
+	return client.DockerClient(ctx).PauseContainer(containerID)
+}
+
+func (client *RolexDockerClient) UnpauseContainer(ctx context.Context, containerID string) error {
+	return client.DockerClient(ctx).UnpauseContainer(containerID)
+}
+
+func (client *RolexDockerClient) ResizeContainerTTY(ctx context.Context, containerID string, height, width int) error {
+	return client.DockerClient(ctx).ResizeContainerTTY(containerID, height, width)
+}
+
+func (client *RolexDockerClient) LogsContainer(ctx context.Context, containerId string, message chan string) {
 	outrd, outwr := io.Pipe()
 	errrd, errwr := io.Pipe()
 
@@ -57,7 +77,7 @@ func (client *RolexDockerClient) LogsContainer(nodeId, containerId string, messa
 		Follow:       true,
 		Tail:         "0",
 	}
-	err := client.DockerClient(nodeId).Logs(opts)
+	err := client.DockerClient(ctx).Logs(opts)
 	log.Infof("read container log error: %v", err)
 }
 
@@ -85,13 +105,43 @@ func logReader(input *io.PipeReader, message chan string) {
 	}
 }
 
-func (client *RolexDockerClient) StatsContainer(nodeId, containerId string, stats chan *goclient.Stats, done chan bool) {
+func (client *RolexDockerClient) StatsContainer(ctx context.Context, containerId string, stats chan *model.Stats) {
+	stat := make(chan *goclient.Stats)
+	sd := make(chan bool)
 	opts := goclient.StatsOptions{
 		ID:     containerId,
-		Stats:  stats,
+		Stats:  stat,
 		Stream: true,
-		Done:   done,
+		Done:   sd,
 	}
-	err := client.DockerClient(nodeId).Stats(opts)
+
+	container, err := client.DockerClient(ctx).InspectContainer(containerId)
+	if err != nil {
+		log.Errorf("stats container get container by containerId error: %v", err)
+		return
+	}
+	go func(s chan *goclient.Stats, msg chan *model.Stats, sdone chan bool) {
+		defer func() {
+			recover()
+			sdone <- true
+		}()
+
+		for {
+			select {
+			case data := <-s:
+				msg <- &model.Stats{
+					Stat:        data,
+					NodeId:      container.Config.Labels["com.docker.swarm.node.id"],
+					ServiceId:   container.Config.Labels["com.docker.swarm.service.id"],
+					ServiceName: container.Config.Labels["com.docker.swarm.service.name"],
+					TaskId:      container.Config.Labels["com.docker.swarm.task.id"],
+					TaskName:    container.Config.Labels["com.docker.swarm.task.name"],
+					ContainerId: container.ID,
+				}
+			}
+		}
+	}(stat, stats, sd)
+
+	err = client.DockerClient(ctx).Stats(opts)
 	log.Infof("stats of container error: %v", err)
 }

@@ -9,80 +9,80 @@
   "code": 1,
   "data": [
     {
-      "method": "GET",
-      "path": "/"
+      "Method": "GET",
+      "Path": "/"
     },
     {
-      "method": "GET",
-      "path": "/api/v1/nodes"
+      "Method": "GET",
+      "Path": "/api/v1/nodes"
     },
     {
-      "method": "GET",
-      "path": "/api/v1/nodes/:id"
+      "Method": "GET",
+      "Path": "/api/v1/nodes/:id"
     },
     {
-      "method": "GET",
-      "path": "/api/v1/networks"
+      "Method": "GET",
+      "Path": "/api/v1/networks"
     },
     {
-      "method": "GET",
-      "path": "/api/v1/networks/:id"
+      "Method": "GET",
+      "Path": "/api/v1/networks/:id"
     },
     {
-      "method": "GET",
-      "path": "/api/v1/stacks"
+      "Method": "GET",
+      "Path": "/api/v1/stacks"
     },
     {
-      "method": "GET",
-      "path": "/api/v1/stacks/:name"
+      "Method": "GET",
+      "Path": "/api/v1/stacks/:name"
     },
     {
-      "method": "GET",
-      "path": "/api/v1/stacks/:name/services"
+      "Method": "GET",
+      "Path": "/api/v1/stacks/:name/services"
     },
     {
-      "method": "GET",
-      "path": "/api/v1/services"
+      "Method": "GET",
+      "Path": "/api/v1/services"
     },
     {
-      "method": "GET",
-      "path": "/api/v1/containers"
+      "Method": "GET",
+      "Path": "/api/v1/containers"
     },
     {
-      "method": "GET",
-      "path": "/api/v1/containers/:id"
+      "Method": "GET",
+      "Path": "/api/v1/containers/:id"
     },
     {
-      "method": "GET",
-      "path": "/registry/v1/token"
+      "Method": "GET",
+      "Path": "/registry/v1/token"
     },
     {
-      "method": "POST",
-      "path": "/api/v1/services"
+      "Method": "POST",
+      "Path": "/api/v1/services"
     },
     {
-      "method": "POST",
-      "path": "/api/v1/stacks"
+      "Method": "POST",
+      "Path": "/api/v1/stacks"
     },
     {
-      "method": "POST",
-      "path": "/api/v1/networks"
+      "Method": "POST",
+      "Path": "/api/v1/networks"
     },
     {
-      "method": "POST",
-      "path": "/registry/v1/notifications"
+      "Method": "POST",
+      "Path": "/registry/v1/notifications"
     },
     {
-      "method": "DELETE",
-      "path": "/api/v1/services/:id"
+      "Method": "DELETE",
+      "Path": "/api/v1/services/:id"
     },
     {
-      "method": "DELETE",
-      "path": "/api/v1/networks/:id"
+      "Method": "DELETE",
+      "Path": "/api/v1/networks/:id"
     },
     {
-      "method": "PATCH",
-      "path": "/api/v1/networks/:id"
+      "Method": "PATCH",
+      "Path": "/api/v1/networks/:id"
     }
   ]
 }
@@ -100,9 +100,12 @@
 {
   "code": 1,
   "data": {
-    "version": "1.0.0",
-    "build": "2015-08-01 UTC",
-    "feature_flags": "registry,logging"
+    "Version": "1.0.0",
+    "Build": "2015-08-01 UTC",
+    "FeatureFlags": "registry,logging",
+    "RolexSecret": "rolex",
+    "RolexCaHash": "sha256:8db604f91547c53b63f1ac6bb1b23e4d9c4d1dae3eefc46a813a9bf6d65e2c69"
+
   }
 }
 ```

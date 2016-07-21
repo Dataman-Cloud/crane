@@ -4,6 +4,10 @@ import (
 	"time"
 
 	"github.com/Dataman-Cloud/rolex/api/middlewares"
+	"github.com/Dataman-Cloud/rolex/plugins/account"
+	"github.com/Dataman-Cloud/rolex/plugins/account/authenticators"
+	chians "github.com/Dataman-Cloud/rolex/plugins/account/middlewares"
+	"github.com/Dataman-Cloud/rolex/plugins/account/token_store"
 	"github.com/Dataman-Cloud/rolex/plugins/registry"
 	"github.com/Dataman-Cloud/rolex/util/log"
 
@@ -13,9 +17,11 @@ import (
 
 func (api *Api) ApiRouter() *gin.Engine {
 	router := gin.New()
+	Authorization := middlewares.Authorization
 
 	router.Use(log.Ginrus(logrus.StandardLogger(), time.RFC3339, true), gin.Recovery())
 	router.Use(middlewares.OptionHandler())
+	router.Use(middlewares.RolexApiContext())
 
 	router.GET("/", func(c *gin.Context) {
 		c.String(200, "pass")
@@ -26,7 +32,22 @@ func (api *Api) ApiRouter() *gin.Engine {
 		r.RegisterApiForRegistry(router)
 	}
 
-	v1 := router.Group("/api/v1", middlewares.Authorization)
+	if api.Config.FeatureEnabled("account") {
+		r := &account.AccountApi{Config: api.Config}
+		if api.Config.AccountTokenStore == "default" {
+			r.TokenStore = token_store.NewDefaultStore()
+		}
+
+		if api.Config.AccountAuthenticator == "default" {
+			r.Authenticator = authenticators.NewDefaultAuthenticator()
+		}
+
+		// account mode, Authorization enabled
+		Authorization = chians.Authorization(r)
+		r.RegisterApiForAccount(router, Authorization)
+	}
+
+	v1 := router.Group("/api/v1", Authorization)
 	{
 		v1.GET("/nodes", api.ListNodes)
 		v1.GET("/nodes/:node_id", api.InspectNode)
@@ -40,8 +61,8 @@ func (api *Api) ApiRouter() *gin.Engine {
 		v1.GET("/nodes/:node_id/containers/:container_id", api.InspectContainer)
 		v1.GET("/nodes/:node_id/containers/:container_id/diff", api.DiffContainer)
 		v1.DELETE("/nodes/:node_id/containers/:container_id", api.DeleteContainer)
-		v1.GET("/nodes/:node_id/containers/:container_id/logs", api.Logs)
-		v1.GET("/nodes/:node_id/containers/:container_id/stats", api.Stats)
+		v1.GET("/nodes/:node_id/containers/:container_id/logs", api.LogsContainer)
+		v1.GET("/nodes/:node_id/containers/:container_id/stats", api.StatsContainer)
 
 		// Images
 		v1.GET("/nodes/:node_id/images", api.ListImages)
@@ -54,11 +75,13 @@ func (api *Api) ApiRouter() *gin.Engine {
 		v1.GET("/nodes/:node_id/volumes/:volume_id", api.InspectVolume)
 		v1.POST("/nodes/:node_id/volumes", api.CreateVolume)
 		v1.DELETE("/nodes/:node_id/volumes/:volume_id", api.RemoveVolume)
+		v1.PATCH("/nodes/:node_id", api.UpdateNode)
 
 		// Networks
+		v1.POST("/nodes/:node_id/networks", api.CreateNodeNetwork)
 		v1.GET("/nodes/:node_id/networks", api.ListNodeNetworks)
 		v1.GET("/nodes/:node_id/networks/:network_id", api.InspectNodeNetwork)
-		v1.PATCH("/nodes/:node_id/Networks/:network_id", api.ConnectNodeNetwork)
+		v1.PATCH("/nodes/:node_id/networks/:network_id", api.ConnectNodeNetwork)
 
 		v1.POST("/networks", api.CreateNetwork)
 		v1.GET("/networks", api.ListNetworks)
@@ -71,7 +94,10 @@ func (api *Api) ApiRouter() *gin.Engine {
 		v1.GET("/stacks/:namespace", api.InspectStack)
 		v1.DELETE("/stacks/:namespace", api.RemoveStack)
 		v1.PATCH("/stacks/:namespace/services/:service_id", api.ScaleService)
+		v1.GET("/stacks/:namespace/services/:service_id", api.InspectService)
 		v1.GET("/stacks/:namespace/services", api.ListStackService)
+		v1.GET("/stacks/:namespace/services/:service_id/logs", api.LogsService)
+		v1.GET("/stacks/:namespace/services/:service_id/stats", api.StatsService)
 		v1.GET("/stacks/:namespace/services/:service_id/tasks", api.ListTasks)
 		v1.GET("/stacks/:namespace/services/:service_id/tasks/:task_id", api.InspectTask)
 	}

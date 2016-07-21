@@ -1,19 +1,34 @@
 package api
 
 import (
+	"io"
 	"net/http"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/docker/engine-api/types"
+	"github.com/docker/engine-api/types/filters"
 	"github.com/docker/engine-api/types/swarm"
 	"github.com/gin-gonic/gin"
+	"github.com/manucorporat/sse"
+	"golang.org/x/net/context"
 
 	"github.com/Dataman-Cloud/rolex/dockerclient"
+	"github.com/Dataman-Cloud/rolex/model"
 	"github.com/Dataman-Cloud/rolex/util"
 )
 
-func (api *Api) InspectService(ctx *gin.Context) {}
-func (api *Api) UpdateService(ctx *gin.Context)  {}
+func (api *Api) UpdateService(ctx *gin.Context) {}
+
+func (api *Api) InspectService(ctx *gin.Context) {
+	service, err := api.GetDockerClient().InspectServiceWithRaw(ctx.Param("service_id"))
+	if err != nil {
+		log.Errorf("inspect service error: %v", err)
+		ctx.JSON(http.StatusInternalServerError, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"code": util.OPERATION_SUCCESS, "data": service})
+}
 
 // ServiceCreate creates a new Service.
 func (api *Api) CreateService(ctx *gin.Context) {
@@ -78,4 +93,57 @@ func (api *Api) ScaleService(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": "success"})
 	return
+}
+
+func (api *Api) LogsService(ctx *gin.Context) {
+	taskFilter := filters.NewArgs()
+	taskFilter.Add("service", ctx.Param("service_id"))
+	message := make(chan string)
+	defer close(message)
+
+	tasks, err := api.GetDockerClient().ListTasks(types.TaskListOptions{Filter: taskFilter})
+	if err != nil {
+		ctx.JSON(http.StatusServiceUnavailable, err.Error())
+		return
+	}
+
+	for _, task := range tasks {
+		logContext := context.WithValue(context.Background(), "node_id", task.NodeID)
+		go api.GetDockerClient().LogsContainer(logContext, task.Status.ContainerStatus.ContainerID, message)
+	}
+
+	ctx.Stream(func(w io.Writer) bool {
+		sse.Event{
+			Event: "service-logs",
+			Data:  <-message,
+		}.Render(ctx.Writer)
+		return true
+	})
+}
+
+func (api *Api) StatsService(ctx *gin.Context) {
+	taskFilter := filters.NewArgs()
+	taskFilter.Add("service", ctx.Param("service_id"))
+	stats := make(chan *model.Stats)
+
+	defer close(stats)
+
+	tasks, err := api.GetDockerClient().ListTasks(types.TaskListOptions{Filter: taskFilter})
+	if err != nil {
+		ctx.JSON(http.StatusServiceUnavailable, err.Error())
+		return
+	}
+
+	for _, task := range tasks {
+		logContext := context.WithValue(context.Background(), "node_id", task.NodeID)
+		go api.GetDockerClient().StatsContainer(logContext, task.Status.ContainerStatus.ContainerID, stats)
+	}
+
+	ctx.Stream(func(w io.Writer) bool {
+		sse.Event{
+			Event: "service-stats",
+			Data:  <-stats,
+		}.Render(ctx.Writer)
+		return true
+	})
 }
