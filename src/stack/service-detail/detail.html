@@ -3,14 +3,12 @@
         <header layout="row" layout-align="end start">
             <div class="info" flex>
                 <h2>{/serviceDetailCtrl.service.Spec.Name/}</h2>
+
+                <br>
+
                 <dl class="list-dl-row">
                     <dt>任务数</dt>
                     <dd>{/serviceDetailCtrl.service.Spec.Mode.Replicated.Replicas/} 个</dd>
-                    <dt>镜像</dt>
-                    <dd>{/serviceDetailCtrl.service.Spec.TaskTemplate.ContainerSpec.Image/}</dd>
-                </dl>
-
-                <dl class="list-dl-row">
                     <dt>创建时间</dt>
                     <dd>{/serviceDetailCtrl.service.CreatedAt | date: 'yyyy-MM-dd HH:mm:ss'/}</dd>
                     <dt>更新时间</dt>
@@ -20,7 +18,8 @@
         </header>
         <md-content>
             <md-tabs md-dynamic-height md-border-bottom>
-                <md-tab label="任务列表" dm-tab-sref="node.containerDetail.config"></md-tab>
+                <md-tab label="详情" dm-tab-sref="stack.serviceDetail.config"></md-tab>
+                <md-tab label="任务列表" dm-tab-sref="stack.serviceDetail.task"></md-tab>
             </md-tabs>
             <md-content class="md-padding main-tab-content" ui-view>
             </md-content>
