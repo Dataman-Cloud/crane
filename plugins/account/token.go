@@ -13,7 +13,7 @@ const (
 
 func GenToken(a *Account) string {
 	hash := md5.New()
-	hash.Sum([]byte(fmt.Sprintf("%s-%s-%s-%s", a.Email, a.Password, a.LoginAt.Format(time.RFC3339), DEFAULT_SALT)))
+	hash.Write([]byte(fmt.Sprintf("%s-%s-%s-%s", a.Email, a.Password, a.LoginAt.Format(time.RFC3339), DEFAULT_SALT)))
 
 	return hex.EncodeToString(hash.Sum(nil))
 }
