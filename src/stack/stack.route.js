@@ -9,7 +9,10 @@
             .state('stack', {
                 url: '/stack',
                 template: '<ui-view/>',
-                targetState: 'list'
+                targetState: 'list',
+                ncyBreadcrumb: {
+                    label: '编排'
+                }
             })
             .state('stack.list', {
                 url: '/list',
@@ -17,6 +20,9 @@
                 controller: 'StackListCtrl as stackListCtrl',
                 resolve: {
                     stacks: listStacks
+                },
+                ncyBreadcrumb: {
+                    label: '编排列表'
                 }
             })
             .state('stack.create', {
@@ -27,6 +33,9 @@
                     target: function () {
                         return 'create'
                     }
+                },
+                ncyBreadcrumb: {
+                    label: '创建编排'
                 }
             })
             .state('stack.update', {
@@ -37,6 +46,9 @@
                     target: function () {
                         return 'update'
                     }
+                },
+                ncyBreadcrumb: {
+                    label: '更新编排'
                 }
             })
             .state('stack.detail', {
@@ -46,6 +58,9 @@
                 targetState: 'service',
                 resolve: {
                     stack: getStack
+                },
+                ncyBreadcrumb: {
+                    label: '编排详情'
                 }
             })
             .state('stack.detail.service', {
@@ -54,6 +69,9 @@
                 controller: 'StackServiceCtrl as stackServiceCtrl',
                 resolve: {
                     services: listStackServices 
+                },
+                ncyBreadcrumb: {
+                    label: '服务列表'
                 }
             })
             .state('stack.serviceDetail', {
@@ -63,12 +81,19 @@
                 targetState: 'config',
                 resolve: {
                     service: getService
+                },
+                ncyBreadcrumb: {
+                    label: '服务详情',
+                    parent: 'stack.detail'
                 }
             })
             .state('stack.serviceDetail.config', {
                 url: '/config',
                 templateUrl: '/src/stack/service-detail/config.html',
-                controller: 'ServiceConfigCtrl as serviceConfigCtrl'
+                controller: 'ServiceConfigCtrl as serviceConfigCtrl',
+                ncyBreadcrumb: {
+                    label: '配置'
+                }
             })
             .state('stack.serviceDetail.task', {
                 url: '/task',
@@ -76,6 +101,9 @@
                 controller: 'ServiceTaskCtrl as serviceTaskCtrl',
                 resolve: {
                     tasks: listServiceTasks
+                },
+                ncyBreadcrumb: {
+                    label: '任务列表'
                 }
             });
     }

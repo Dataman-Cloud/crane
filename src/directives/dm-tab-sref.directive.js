@@ -31,15 +31,14 @@
                 $state.go(sref, null, {reload: true});
             };
 
-//            scope.$on('$stateChangeSuccess',
-//                    function (event, toState, toParams, fromState, fromParams) {
-//                        console.log("my sref:", sref)
-//                        if ($state.includes(sref)) {
-//                            $mdUtil.nextTick(function () {
-//                                tabsCtrl.oldSelect(index);
-//                            });
-//                        }
-//                    });
+            scope.$on('$stateChangeSuccess',
+                function (event, toState, toParams, fromState, fromParams) {
+                    if ($state.includes(sref)) {
+                        $mdUtil.nextTick(function () {
+                            tabsCtrl.oldSelect(index);
+                        });
+                    }
+                });
         }
     }
 })();
