@@ -1,18 +1,18 @@
 package account
 
 type Authenticator interface {
-	AccountPermissions(account *Account) ([]*string, error)
-	AccountGroups(account *Account) ([]*Group, error)
+	AccountPermissions(account *Account) (*[]string, error)
+	AccountGroups(account *Account) (*[]Group, error)
 
 	Login(account *Account) (token string, err error)
 
-	Groups(filter GroupFilter) ([]*Group, error)
-	Group(id string) (*Group, error)
+	Groups(filter GroupFilter) (*[]Group, error)
+	Group(id uint64) (*Group, error)
 	CreateGroup(role *Group) error
 	UpdateGroup(role *Group) error
 
-	Accounts(filter AccountFilter) ([]*Account, error)
-	Account(id string) (*Account, error)
+	Accounts(filter AccountFilter) (*[]Account, error)
+	Account(id interface{}) (*Account, error)
 	CreateAccount(a *Account) error
 	UpdateAccount(a *Account) error
 
