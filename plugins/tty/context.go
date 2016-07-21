@@ -20,6 +20,10 @@ import (
 	"github.com/kr/pty"
 )
 
+const (
+	SubProtocol = "shurenyun"
+)
+
 type ClientContext struct {
 	Request       *http.Request
 	Conn          *websocket.Conn
@@ -73,7 +77,7 @@ var (
 	Upgrader = &websocket.Upgrader{
 		ReadBufferSize:  1024,
 		WriteBufferSize: 1024,
-		Subprotocols:    []string{"shurenyun"},
+		Subprotocols:    []string{SubProtocol},
 		CheckOrigin:     func(r *http.Request) bool { return true },
 	}
 
@@ -81,7 +85,7 @@ var (
 		PermitWrite:     false,
 		EnableRandomUrl: false,
 		RandomUrlLength: 8,
-		TitleFormat:     "sryunTTY - {{ .Command }} ({{ .Hostname }})",
+		TitleFormat:     SubProtocol + "TTY - {{ .Command }} ({{ .Hostname }})",
 		EnableReconnect: false,
 		ReconnectTime:   10,
 		Once:            false,
@@ -160,7 +164,7 @@ func (ctx *ClientContext) processSend() {
 
 		safeMessage := base64.StdEncoding.EncodeToString([]byte(buf[:size]))
 		if err := ctx.write(append([]byte{Output}, []byte(safeMessage)...)); err != nil {
-			log.Error("Websockt send message got error: ", err)
+			log.Error("Websocket send message got error: ", err)
 			return
 		}
 	}

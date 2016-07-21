@@ -24,8 +24,7 @@ func (api *Api) ConnectContainer(ctx *gin.Context) {
 	}
 	log.Info("Init message: ", string(stream))
 
-	//cmd := exec.Command("ping", "www.baidu.com")
-	cmd := exec.Command("ssh", "root@192.168.59.103")
+	cmd := exec.Command("docker", ctx.Param("node_id"), ctx.Param("container_id"))
 	client, err := containertty.New(cmd, conn, req, containertty.DefaultOptions)
 	if err != nil {
 		log.Error("Create tty client got error: ", err)
