@@ -2,8 +2,7 @@
     <section class="main-section">
         <header layout="row" layout-align="end start">
             <div class="info" flex>
-                <h2 data-ng-if="stackCreateCtrl.target === 'create'">创建应用编排</h2>
-                <h2 data-ng-if="stackCreateCtrl.target === 'update'">更新应用编排</h2>
+                <h2>创建应用编排</h2>
             </div>
         </header>
         <div class="main-content">
@@ -12,9 +11,8 @@
                     <label flex="15">编排名称</label>
                     <div flex="50" layout="column">
                         <div flex="none">
-                            <input type="text" class="form-input" data-ng-model="stackCreateCtrl.form.Namespace"
-                                   data-required="required" name="Namespace"
-                                   data-ng-disabled="stackCreateCtrl.target === 'update'">
+                            <input type="text" class="form-input" data-ng-model="stackCreateByJsonCtrl.form.Namespace"
+                                   data-required="required" name="Namespace">
                         </div>
                         <div ng-messages="staticForm.Namespace.$error" ng-if="staticForm.Namespace.$dirty" role="alert">
                             <p class="error-info help-info-bottom"
@@ -31,11 +29,11 @@
                     <div flex="50" layout="column">
                         <div layout="row">
                             <div class="CodeMirror-container">
-                                <textarea data-ng-model="stackCreateCtrl.stack"
+                                <textarea data-ng-model="stackCreateByJsonCtrl.stack"
                                           data-required="required" name="Stack"
-                                          ui-codemirror ui-codemirror-opts="stackCreateCtrl.editorOptions"
-                                          ui-refresh="stackCreateCtrl.refreshCodeMirror"
-                                          data-ng-change="stackCreateCtrl.stackChange()">
+                                          ui-codemirror ui-codemirror-opts="stackCreateByJsonCtrl.editorOptions"
+                                          ui-refresh="stackCreateByJsonCtrl.refreshCodeMirror"
+                                          data-ng-change="stackCreateByJsonCtrl.stackChange()">
 
                                 </textarea>
                             </div>
@@ -46,21 +44,22 @@
                                 <small>不能为空</small>
                             </p>
                         </div>
-                        <p class="help-info-bottom error-info" data-ng-show="stackCreateCtrl.errorInfo.stack">
-                            {/stackCreateCtrl.errorInfo.stack/}
+                        <p class="help-info-bottom error-info" data-ng-show="stackCreateByJsonCtrl.errorInfo.stack">
+                            {/stackCreateByJsonCtrl.errorInfo.stack/}
                         </p>
 
                         <div layout="row" layout-align="space-between center">
                             <p class="help-info-bottom">
                                 <input id="dockerFileInput" name="file" type="file" class="ng-hide"
                                        accept="text/plain, .json"
-                                       onchange="angular.element(this).scope().stackCreateCtrl.onFileSelect(this.files)">
+                                       onchange="angular.element(this).scope().stackCreateByJsonCtrl.onFileSelect(this.files)">
                                 <md-button class="md-primary" trigger-prev-click><i class="fa fa-upload"></i> 从文件中读取
                                 </md-button>
                             </p>
 
                             <p class="help-info-bottom">
-                                <md-button class="md-primary" data-ng-click="stackCreateCtrl.example()"><i class="fa fa-file-text"></i> 样例
+                                <md-button class="md-primary" data-ng-click="stackCreateByJsonCtrl.example()"><i
+                                        class="fa fa-file-text"></i> 样例
                                 </md-button>
                             </p>
                         </div>
@@ -71,14 +70,9 @@
 
                 <div layout="row" class="form-footer-button">
                     <div flex-offset="15" layout="row" layout-align="end end">
-                        <md-button class="md-raised md-primary" data-ng-if="stackCreateCtrl.target === 'create'"
-                                   data-ng-disabled="staticForm.$invalid || stackCreateCtrl.errorInfo.stack"
-                                   data-ng-click="stackCreateCtrl.create()">
-                            创建
-                        </md-button>
-                        <md-button class="md-raised md-primary" data-ng-if="stackCreateCtrl.target === 'update'"
-                                   data-ng-disabled="staticForm.$invalid || stackCreateCtrl.errorInfo.stack"
-                                   data-ng-click="stackCreateCtrl.update()">
+                        <md-button class="md-raised md-primary"
+                                   data-ng-disabled="staticForm.$invalid || stackCreateByJsonCtrl.errorInfo.stack"
+                                   data-ng-click="stackCreateByJsonCtrl.create()">
                             创建
                         </md-button>
                         <md-button class="md-primary" data-ng-click="rootCtrl.goBack()">取 消</md-button>
