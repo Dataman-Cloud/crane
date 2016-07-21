@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/Dataman-Cloud/rolex/dockerclient"
 	"github.com/gin-gonic/gin"
 )
 
@@ -45,8 +46,7 @@ func (a *AccountApi) AccountLogin(ctx *gin.Context) {
 }
 
 func (a *AccountApi) AccountLogout(ctx *gin.Context) {
-	iAcc, found := ctx.Get("account")
-	fmt.Println(found)
+	iAcc, _ := ctx.Get("account")
 	acc := iAcc.(Account)
 	a.TokenStore.Del(fmt.Sprintf(SESSION_KEY_FORMAT, acc.ID))
 	ctx.JSON(http.StatusOK, gin.H{"code": "1", "data": "success"})
@@ -118,4 +118,34 @@ func (a *AccountApi) LeaveGroup(ctx *gin.Context) {
 		ctx.JSON(http.StatusUnauthorized, gin.H{"code": "1", "data": "403"})
 		return
 	}
+}
+
+func (a *AccountApi) GrantServicePermission(ctx *gin.Context) {
+	var permission dockerclient.Permission
+	if err := ctx.BindJSON(&permission); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"code": "1", "data": err.Error()})
+		return
+	}
+
+	err := a.RolexDockerClient.GrantServicePermission(ctx.Param("service_id"), permission)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"code": "1", "data": err.Error()})
+		return
+	}
+	ctx.JSON(http.StatusOK, gin.H{"code": "0", "data": "success"})
+}
+
+func (a *AccountApi) RevokeServicePermission(ctx *gin.Context) {
+	var permission dockerclient.Permission
+	if err := ctx.BindJSON(&permission); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"code": 1, "data": err.Error()})
+		return
+	}
+
+	err := a.RolexDockerClient.RevokeServicePermission(ctx.Param("service_id"), permission)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"code": 1, "data": err.Error()})
+		return
+	}
+	ctx.JSON(http.StatusOK, gin.H{"code": "0", "data": "success"})
 }

@@ -33,7 +33,7 @@ func (api *Api) ApiRouter() *gin.Engine {
 	}
 
 	if api.Config.FeatureEnabled("account") {
-		r := &account.AccountApi{Config: api.Config}
+		r := &account.AccountApi{Config: api.Config, RolexDockerClient: api.Client}
 		if api.Config.AccountTokenStore == "default" {
 			r.TokenStore = token_store.NewDefaultStore()
 		}

@@ -2,6 +2,7 @@ package dockerclient
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/url"
 	"strconv"
@@ -11,6 +12,18 @@ import (
 	"github.com/docker/engine-api/types"
 	"github.com/docker/engine-api/types/filters"
 	"github.com/docker/engine-api/types/swarm"
+)
+
+const (
+	TaskRunningState = "running"
+)
+
+var (
+	ErrPermissionNotExists = errors.New("permission not exists")
+)
+
+const (
+	PERMISSION_LABEL = "com.dataman-inc.permissions"
 )
 
 type ServiceStatus struct {
@@ -28,10 +41,6 @@ type ServiceStatus struct {
 type ServiceScale struct {
 	Scale uint64 `json:"Scale"`
 }
-
-const (
-	TaskRunningState = "running"
-)
 
 // ServiceCreate creates a new Service.
 func (client *RolexDockerClient) CreateService(service swarm.ServiceSpec, options types.ServiceCreateOptions) (types.ServiceCreateResponse, error) {
@@ -200,4 +209,44 @@ func (client *RolexDockerClient) InspectServiceWithRaw(serviceID string) (swarm.
 	}
 
 	return service, nil
+}
+
+// grant service permissions
+func (client *RolexDockerClient) GrantServicePermission(serviceID string, p Permission) error {
+	service, err := client.InspectServiceWithRaw(serviceID)
+	if err != nil {
+		return err
+	}
+
+	permissions := PermissionsFromLabel(service.Spec.Labels[PERMISSION_LABEL])
+	if !PermissionsInclude(permissions, p) {
+		permissions = append(permissions, p)
+	}
+
+	service.Spec.Labels[PERMISSION_LABEL] = PermissionsToLabel(permissions)
+
+	return client.UpdateService(service.ID, service.Version, service.Spec, nil)
+}
+
+// revoke service permissions
+func (client *RolexDockerClient) RevokeServicePermission(serviceID string, p Permission) error {
+	service, err := client.InspectServiceWithRaw(serviceID)
+	if err != nil {
+		return err
+	}
+
+	permissions := PermissionsFromLabel(service.Spec.Labels[PERMISSION_LABEL])
+	if !PermissionsInclude(permissions, p) {
+		return ErrPermissionNotExists
+	}
+
+	index := PermissionsIndex(permissions, p)
+
+	newPermissions := make([]Permission, 0)
+	newPermissions = append(newPermissions, permissions[0:index]...)
+	newPermissions = append(newPermissions, permissions[index+1:]...)
+
+	service.Spec.Labels[PERMISSION_LABEL] = PermissionsToLabel(newPermissions)
+
+	return client.UpdateService(service.ID, service.Version, service.Spec, nil)
 }
