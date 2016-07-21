@@ -1,14 +1,16 @@
 package account
 
 import (
+	"github.com/Dataman-Cloud/rolex/dockerclient"
 	"github.com/Dataman-Cloud/rolex/util/config"
 	"github.com/gin-gonic/gin"
 )
 
 type AccountApi struct {
-	Config        *config.Config
-	Authenticator Authenticator
-	TokenStore    TokenStore
+	Config            *config.Config
+	Authenticator     Authenticator
+	TokenStore        TokenStore
+	RolexDockerClient *dockerclient.RolexDockerClient
 }
 
 func (account *AccountApi) RegisterApiForAccount(router *gin.Engine, authorization gin.HandlerFunc) {
@@ -32,4 +34,11 @@ func (account *AccountApi) RegisterApiForAccount(router *gin.Engine, authorizati
 	}
 
 	router.POST("/account/v1/login", account.AccountLogin)
+
+	serviceV1 := router.Group("/api/v1/")
+	{
+		serviceV1.Use(authorization)
+		serviceV1.POST("services/:service_id/permissions", account.GrantServicePermission)
+		serviceV1.DELETE("services/:service_id/permissions/:permission", account.RevokeServicePermission)
+	}
 }
