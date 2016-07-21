@@ -105,7 +105,7 @@
             };
             
             Options.prototype.pushData = function(data) {
-                data = angular.fromJson(data);
+                data = angular.fromJson(data).Stat;
                 var x = new Date(data.read).getTime()
                 chartUtil.pushData(this.memData[0], {x:x, y:data.memory_stats.usage/data.memory_stats.limit * 100, 
                     total: data.memory_stats.limit, use:data.memory_stats.usage}, $rootScope.CONTAINER_STATS_POINT_NUM);
