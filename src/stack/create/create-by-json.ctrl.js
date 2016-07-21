@@ -1,13 +1,12 @@
 (function () {
     'use strict';
     angular.module('app.stack')
-        .controller('StackCreateCtrl', StackCreateCtrl);
+        .controller('StackCreateByJsonCtrl', StackCreateByJsonCtrl);
 
     /* @ngInject */
-    function StackCreateCtrl($timeout, $scope, $rootScope, $state, Notification, stackBackend, target, $stateParams) {
+    function StackCreateByJsonCtrl($timeout, $scope, $rootScope, $state, stackBackend) {
         var self = this;
 
-        self.target = target;
         self.supportReadFile = false;
         self.refreshCodeMirror = false;
 
@@ -39,7 +38,6 @@
 
         self.onFileSelect = onFileSelect;
         self.create = create;
-        self.update = update;
         self.stackChange = stackChange;
         self.example = example;
 
@@ -64,10 +62,6 @@
             stackBackend.createStack(self.form, $scope.staticForm).then(function (data) {
                 $state.go('stack.list');
             });
-        }
-
-        function update() {
-            ///
         }
 
         function stackChange() {

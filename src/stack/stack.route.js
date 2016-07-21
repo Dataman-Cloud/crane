@@ -27,28 +27,25 @@
             })
             .state('stack.create', {
                 url: '/create',
-                templateUrl: '/src/stack/createupdate/create-update.html',
-                controller: 'StackCreateCtrl as stackCreateCtrl',
-                resolve: {
-                    target: function () {
-                        return 'create'
-                    }
-                },
+                templateUrl: '/src/stack/create/create-nav.html',
+                ncyBreadcrumb: {
+                    label: '选择创建方式'
+                }
+            })
+            .state('stack.createByJson', {
+                url: '/createByJson',
+                templateUrl: '/src/stack/create/create-by-Json.html',
+                controller: 'StackCreateByJsonCtrl as stackCreateByJsonCtrl',
                 ncyBreadcrumb: {
                     label: '创建编排'
                 }
             })
-            .state('stack.update', {
-                url: '/update/:stack_name',
-                templateUrl: '/src/stack/createupdate/create-update.html',
-                controller: 'StackCreateCtrl as stackCreateCtrl',
-                resolve: {
-                    target: function () {
-                        return 'update'
-                    }
-                },
+            .state('stack.createByForm', {
+                url: '/createByForm',
+                templateUrl: '/src/stack/create/create-by-form.html',
+                controller: 'StackCreateByFormCtrl as stackCreateByFormCtrl',
                 ncyBreadcrumb: {
-                    label: '更新编排'
+                    label: '创建编排'
                 }
             })
             .state('stack.detail', {
