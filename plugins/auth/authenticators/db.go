@@ -2,6 +2,8 @@ package authenticators
 
 import (
 	"errors"
+	"fmt"
+	"strconv"
 
 	"github.com/Dataman-Cloud/rolex/plugins/auth"
 	"github.com/Dataman-Cloud/rolex/util/db"
@@ -46,12 +48,20 @@ func (db *DbAuthenicator) Accounts(filter auth.AccountFilter) (*[]auth.Account, 
 func (db *DbAuthenicator) Account(idOrEmail interface{}) (*auth.Account, error) {
 	var acc auth.Account
 
-	if err = db.DbClient.
-		Where("id = ?", idOrEmail).
-		Or("email = ?", idOrEmail).
-		First(&acc).
-		Error; err != nil {
-		return nil, err
+	if id, err := strconv.ParseUint(fmt.Sprintf("%v", idOrEmail), 10, 64); err == nil {
+		if err = db.DbClient.
+			Where("id = ?", id).
+			First(&acc).
+			Error; err != nil {
+			return nil, err
+		}
+	} else {
+		if err = db.DbClient.
+			Where("email = ?", idOrEmail).
+			First(&acc).
+			Error; err != nil {
+			return nil, err
+		}
 	}
 
 	return &acc, nil
@@ -66,6 +76,16 @@ func (db *DbAuthenicator) UpdaetAccount(a *auth.Account) error {
 }
 
 func (db *DbAuthenicator) CreateAccount(a *auth.Account) error {
+	var accounts []auth.Account
+
+	if err = db.DbClient.Where("email = ?", a.Email).Find(&accounts).Error; err != nil {
+		return err
+	}
+
+	if len(accounts) > 0 {
+		return errors.New("email already exists")
+	}
+
 	return db.DbClient.Save(a).Error
 }
 

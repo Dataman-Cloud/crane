@@ -31,6 +31,8 @@ func InitDB() {
 	}
 	db.DB().SetMaxIdleConns(5)
 	db.DB().SetMaxOpenConns(50)
+	db.SetLogger(log.StandardLogger())
+	db.LogMode(true)
 	MigriateTable()
 }
 
