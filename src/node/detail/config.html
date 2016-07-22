@@ -38,6 +38,14 @@
 <h4>主机信息</h4>
 <md-table-container layout-padding>
     <dl layout="row">
+        <dt flex="10" layout-margin>CPU</dt>
+        <dd layout-margin>{/nodeConfigCtrl.node.NCPU/}</dd>
+    </dl>
+    <dl layout="row">
+        <dt flex="10" layout-margin>内存</dt>
+        <dd layout-margin>{/nodeConfigCtrl.node.MemTotal | size/}</dd>
+    </dl>
+    <dl layout="row">
         <dt flex="10" layout-margin>内核版本</dt>
         <dd layout-margin>{/nodeConfigCtrl.node.KernelVersion/}</dd>
     </dl>
