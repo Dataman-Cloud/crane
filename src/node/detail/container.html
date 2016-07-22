@@ -30,7 +30,11 @@
             </td>
             <td md-cell>{/container.Labels['com.docker.swarm.service.name']/}</td>
             <td md-cell>{/container.Labels['com.docker.swarm.task.name']/}</td>
-            <td md-cell>{/CONTAINER_STATUS_LABELS[container.State]/}</td>
+            <td md-cell>
+                <p>{/CONTAINER_STATUS_LABELS[container.State]/}
+                <br>{/container.Status/}
+                </p>
+            </td>
             <td md-cell>{/container.Created * 1000 | date: 'yyyy-MM-dd HH:mm:ss'/}</td>
             <td md-cell>
                 <md-menu md-offset="0 -5">
