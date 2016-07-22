@@ -2,7 +2,6 @@ package dockerclient
 
 import (
 	"bufio"
-	"fmt"
 	"io"
 
 	"github.com/Dataman-Cloud/rolex/model"
@@ -13,7 +12,6 @@ import (
 )
 
 func (client *RolexDockerClient) ListContainers(ctx context.Context, opts goclient.ListContainersOptions) ([]goclient.APIContainers, error) {
-	fmt.Println(client.DockerClient(ctx))
 	return client.DockerClient(ctx).ListContainers(opts)
 }
 

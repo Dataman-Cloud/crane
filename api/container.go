@@ -52,7 +52,7 @@ func (api *Api) ListContainers(ctx *gin.Context) {
 		return
 	}
 
-	size, err := strconv.ParseBool(ctx.DefaultQuery("size", "true"))
+	size, err := strconv.ParseBool(ctx.DefaultQuery("size", "false"))
 	if err != nil {
 		log.Error("Parse param size of list container got error: ", err)
 		ctx.JSON(http.StatusBadRequest, gin.H{"code": util.PARAMETER_ERROR, "data": err.Error()})
@@ -87,11 +87,13 @@ func (api *Api) ListContainers(ctx *gin.Context) {
 	rolexContext, _ := ctx.Get("rolexContext")
 	containers, err := api.GetDockerClient().ListContainers(rolexContext.(context.Context), listOpts)
 	if err != nil {
+		log.Error("List container got error: ", err)
 		ctx.JSON(http.StatusServiceUnavailable, err.Error())
 		return
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": containers})
+	return
 }
 
 func (api *Api) PatchContainer(ctx *gin.Context) {
