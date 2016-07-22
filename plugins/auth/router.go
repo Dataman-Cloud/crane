@@ -34,6 +34,7 @@ func (account *AccountApi) RegisterApiForAccount(router *gin.Engine, authorizati
 	}
 
 	router.POST("/account/v1/login", account.AccountLogin)
+	router.POST("/account/v1/accounts", account.CreateAccount)
 
 	serviceV1 := router.Group("/api/v1/")
 	{

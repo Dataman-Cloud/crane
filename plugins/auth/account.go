@@ -1,6 +1,8 @@
 package auth
 
 import (
+	"crypto/md5"
+	"fmt"
 	"net/url"
 	"time"
 )
@@ -8,10 +10,10 @@ import (
 type Account struct {
 	ID       uint64    `json:"Id"`
 	Title    string    `json:"Title"`
-	Email    string    `json:"Email"`
+	Email    string    `json:"Email" gorm:"not null"`
 	Phone    string    `json:"Phone"`
 	LoginAt  time.Time `json:"LoginAt"`
-	Password string    `json:"Password"`
+	Password string    `json:"Password" gorm:"not null"`
 	Token    string    `json:"-"`
 }
 
@@ -33,4 +35,9 @@ func ReferenceToValue(a *Account) Account {
 		Password: a.Password,
 		Token:    a.Token,
 	}
+}
+
+func EncryptPassword(password string) string {
+	pw := fmt.Sprintf("dataman-rolex%xdataman-rolex", md5.Sum([]byte(password)))
+	return fmt.Sprintf("%x", md5.Sum([]byte(pw)))
 }

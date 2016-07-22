@@ -11,6 +11,32 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func (a *AccountApi) CreateAccount(ctx *gin.Context) {
+	var acc Account
+	if err := ctx.BindJSON(&acc); err != nil {
+		log.Errorf("create account error: %v", err)
+		ctx.JSON(http.StatusBadRequest, gin.H{"code": 1, "data": err.Error()})
+		return
+	}
+
+	if acc.Password == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{"code": 1, "data": "password can not be null"})
+		return
+	}
+
+	if acc.Email == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{"code": 1, "data": "email can not be null"})
+		return
+	}
+
+	acc.LoginAt = time.Now()
+	if err := a.Authenticator.CreateAccount(&acc); err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"code": "1", "data": err.Error()})
+		return
+	}
+	ctx.JSON(http.StatusOK, gin.H{"code": "1", "data": "create success"})
+}
+
 func (a *AccountApi) GetAccount(ctx *gin.Context) {
 	account, err := a.Authenticator.Account(ctx.Param("account_id"))
 	if err != nil {
@@ -33,10 +59,12 @@ func (a *AccountApi) ListAccounts(ctx *gin.Context) {
 func (a *AccountApi) AccountLogin(ctx *gin.Context) {
 	var acc Account
 	if err := ctx.BindJSON(&acc); err != nil {
+		log.Errorf("login error: %v", err)
 		ctx.JSON(http.StatusBadRequest, gin.H{"code": 1, "data": err.Error()})
 		return
 	}
 
+	acc.Password = EncryptPassword(acc.Password)
 	token, err := a.Authenticator.Login(&acc)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"code": "1", "data": "403"})
@@ -101,6 +129,8 @@ func (a *AccountApi) CreateGroup(ctx *gin.Context) {
 		return
 	}
 
+	account, _ := ctx.Get("account")
+	group.CreaterId = account.(Account).ID
 	if err := a.Authenticator.CreateGroup(&group); err != nil {
 		log.Errorf("create group db operation error: %v", err)
 		ctx.JSON(http.StatusInternalServerError, gin.H{"code": 1, "data": err.Error()})

@@ -41,6 +41,14 @@ func GetLogger(ctx context.Context) *logrus.Entry {
 
 func Ginrus(logger *logrus.Logger, timeFormat string, utc bool) gin.HandlerFunc {
 	return func(c *gin.Context) {
+		logrus.SetFormatter(&logrus.TextFormatter{
+			ForceColors:      true,
+			DisableColors:    false,
+			DisableTimestamp: false,
+			FullTimestamp:    true,
+			DisableSorting:   false,
+		})
+
 		start := time.Now()
 		// some evil middlewares modify this values
 		path := c.Request.URL.Path
