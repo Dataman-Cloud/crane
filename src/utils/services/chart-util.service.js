@@ -10,7 +10,8 @@
     function chartUtil($filter) {
         return {
             createDefaultOptions: createDefaultOptions,
-            pushData: pushData
+            pushData: pushData,
+            updateForceY: updateForceY
         };
         
         function createDefaultOptions() {
@@ -74,6 +75,36 @@
                     dataContainer.values.unshift({x: dataContainer.values[0].x-interval, y: 0});
                 }
             }
+        }
+        
+        function updateForceY(chartOptions, valueArrays, min, maxRatio, minMax, maxMax) {
+            var newForceY = _buildNewForceY(valueArrays, min, maxRatio, minMax, maxMax);
+            var flag = false;
+            if (!angular.equals(newForceY, chartOptions.forceY)) {
+                chartOptions.forceY = newForceY;
+                flag = true;
+            }
+            return flag;
+        }
+        
+        function _buildNewForceY(valueArrays, min, maxRatio, minMax, maxMax) {
+            var valueMax = Math.maxPlus(valueArrays, function (valueArray) {
+                return Math.maxPlus(valueArray, function (value) {
+                    return value.y;
+                })
+            });
+            var curMax = valueMax * maxRatio;
+            if (maxMax !== undefined && maxMax < curMax) {
+                if (maxMax < valueMax) {
+                    curMax = valueMax;
+                } else {
+                    curMax = maxMax;
+                }
+            }
+            if (minMax !== undefined && curMax < minMax) {
+                curMax = minMax;
+            }
+            return [min, Math.ceil(curMax)];
         }
 
     }

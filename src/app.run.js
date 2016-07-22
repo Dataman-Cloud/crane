@@ -8,6 +8,7 @@
         $rootScope.$state = $state;
         $rootScope.$stateParams = $stateParams;
         Math.sum = sum;
+        Math.maxPlus = maxPlus;
         $rootScope.Math = Math;
 
         $rootScope.$on('$stateChangeStart',
@@ -46,5 +47,16 @@
             sum += value;
         });
         return sum;
+    }
+    
+    function maxPlus(iter, valueGetter) {
+        var max;
+        angular.forEach(iter, function(item){
+            var value = valueGetter(item);
+            if (max === undefined || value > max) {
+                max = value;
+            }
+        })
+        return max;
     }
 })();

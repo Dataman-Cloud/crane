@@ -104,17 +104,40 @@
                 return options;
             };
             
-            Options.prototype.pushData = function(data) {
+            Options.prototype.pushData = function(data, cpuApi, memApi, networkApi) {
                 data = angular.fromJson(data).Stat;
                 var x = new Date(data.read).getTime()
+                this._pushCpuData(x, data, cpuApi);
+                this._pushMemData(x, data, memApi);
+                this._pushNetworkData(x, data, networkApi);
+            };
+            
+            Options.prototype._pushCpuData = function(x, data, cpuApi) {
+                chartUtil.pushData(this.cpuData[0], {x:x, y:this._getCpuUsageRate(data)}, $rootScope.CONTAINER_STATS_POINT_NUM);
+                if (chartUtil.updateForceY(this.cpuOptions.chart, [this.cpuData[0].values], 0, 1.2, 1, 100)){
+                    cpuApi.refresh();
+                } else {
+                    cpuApi.update();
+                }
+            }
+            
+            Options.prototype._pushMemData = function(x, data, memApi) {
                 chartUtil.pushData(this.memData[0], {x:x, y:data.memory_stats.usage/data.memory_stats.limit * 100, 
                     total: data.memory_stats.limit, use:data.memory_stats.usage}, $rootScope.CONTAINER_STATS_POINT_NUM);
-                chartUtil.pushData(this.cpuData[0], {x:x, y:this._getCpuUsageRate(data)}, $rootScope.CONTAINER_STATS_POINT_NUM);
+                if (chartUtil.updateForceY(this.memOptions.chart, [this.memData[0].values], 0, 1.2, 1, 100)){
+                    memApi.refresh();
+                } else {
+                    memApi.update();
+                }
+            }
+            
+            Options.prototype._pushNetworkData = function(x, data, networkApi) {
                 chartUtil.pushData(this.networkData[0], {x:x, y:Math.sum(data.networks, function (network) {return network.rx_bytes})},
-                        $rootScope.CONTAINER_STATS_POINT_NUM)
+                        $rootScope.CONTAINER_STATS_POINT_NUM);
                 chartUtil.pushData(this.networkData[1], {x:x, y:Math.sum(data.networks, function (network) {return network.tx_bytes})},
-                        $rootScope.CONTAINER_STATS_POINT_NUM)
-            };
+                        $rootScope.CONTAINER_STATS_POINT_NUM);
+                networkApi.update();
+            }
             
             Options.prototype._getCpuUsageRate = function(data) {
                 var cpuPercent=0;
