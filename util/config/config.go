@@ -52,10 +52,10 @@ func GetConfig() *Config {
 }
 
 type EnvEntry struct {
-	ROLEX_ADDR        string `required:"true"`
-	DOCKER_TLS_VERIFY string `required:"true"`
-	DOCKER_HOST       string `required:"true"`
-	DOCKER_CERT_PATH  string `required:"true"`
+	ROLEX_ADDR              string `required:"true"`
+	ROLEX_DOCKER_TLS_VERIFY string `required:"true"`
+	ROLEX_DOCKER_HOST       string `required:"true"`
+	ROLEX_DOCKER_CERT_PATH  string `required:"true"`
 
 	ROLEX_DB_DRIVER                 string `required:"true"`
 	ROLEX_DB_DSN                    string `required:"true"`
@@ -66,8 +66,8 @@ type EnvEntry struct {
 	ROLEX_SECRET  string `required:"true"`
 	ROLEX_CA_HASH string `required:"true"`
 	// To be removed
-	NODE_IP   string `required:"true"`
-	NODE_PORT string `required:"true"`
+	ROLEX_NODE_IP   string `required:"true"`
+	ROLEX_NODE_PORT string `required:"true"`
 
 	ROLEX_ACCOUNT_TOKEN_STORE   string `required:"false"`
 	ROLEX_ACCOUNT_AUTHENTICATOR string `required:"false"`
@@ -78,9 +78,9 @@ func InitConfig(envFile string) *Config {
 
 	envEntry := NewEnvEntry()
 	config.RolexAddr = envEntry.ROLEX_ADDR
-	config.DockerHost = envEntry.DOCKER_HOST
-	config.DockerTlsVerify = envEntry.DOCKER_TLS_VERIFY
-	config.DockerCertPath = envEntry.DOCKER_CERT_PATH
+	config.DockerHost = envEntry.ROLEX_DOCKER_HOST
+	config.DockerTlsVerify = envEntry.ROLEX_DOCKER_TLS_VERIFY
+	config.DockerCertPath = envEntry.ROLEX_DOCKER_CERT_PATH
 
 	config.DbDriver = envEntry.ROLEX_DB_DRIVER
 	config.DbDSN = envEntry.ROLEX_DB_DSN
@@ -92,8 +92,8 @@ func InitConfig(envFile string) *Config {
 	config.RegistryPrivateKeyPath = envEntry.ROLEX_REGISTRY_PRIVATE_KEY_PATH
 	config.RegistryAddr = envEntry.ROLEX_REGISTRY_ADDR
 
-	config.NodeIP = envEntry.NODE_IP
-	config.NodePort = envEntry.NODE_PORT
+	config.NodeIP = envEntry.ROLEX_NODE_IP
+	config.NodePort = envEntry.ROLEX_NODE_PORT
 
 	config.AccountAuthenticator = envEntry.ROLEX_ACCOUNT_AUTHENTICATOR
 	config.AccountTokenStore = envEntry.ROLEX_ACCOUNT_TOKEN_STORE
