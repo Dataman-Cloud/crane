@@ -1,13 +1,16 @@
 package api
 
 import (
+	"encoding/json"
 	"io"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/Dataman-Cloud/rolex/model"
 	"github.com/Dataman-Cloud/rolex/util"
 
+	log "github.com/Sirupsen/logrus"
 	goclient "github.com/fsouza/go-dockerclient"
 	"github.com/gin-gonic/gin"
 	"github.com/manucorporat/sse"
@@ -42,8 +45,47 @@ func (api *Api) InspectContainer(ctx *gin.Context) {
 }
 
 func (api *Api) ListContainers(ctx *gin.Context) {
+	all, err := strconv.ParseBool(ctx.DefaultQuery("all", "true"))
+	if err != nil {
+		log.Error("Parse param all of list container got error: ", err)
+		ctx.JSON(http.StatusBadRequest, gin.H{"code": util.PARAMETER_ERROR, "data": err.Error()})
+		return
+	}
+
+	size, err := strconv.ParseBool(ctx.DefaultQuery("size", "true"))
+	if err != nil {
+		log.Error("Parse param size of list container got error: ", err)
+		ctx.JSON(http.StatusBadRequest, gin.H{"code": util.PARAMETER_ERROR, "data": err.Error()})
+		return
+	}
+
+	limitValue, err := strconv.ParseInt(ctx.DefaultQuery("limit", "0"), 10, 64)
+	if err != nil {
+		log.Error("Parse param all of limit container got error: ", err)
+		ctx.JSON(http.StatusBadRequest, gin.H{"code": util.PARAMETER_ERROR, "data": err.Error()})
+		return
+	}
+	limit := int(limitValue)
+
+	filters := make(map[string][]string)
+	queryFilters := ctx.DefaultQuery("filters", "{}")
+	if err := json.Unmarshal([]byte(queryFilters), &filters); err != nil {
+		log.Error("Unmarshal list container filters got error: ", err)
+		ctx.JSON(http.StatusBadRequest, gin.H{"code": util.PARAMETER_ERROR, "data": err.Error()})
+		return
+	}
+
+	listOpts := goclient.ListContainersOptions{
+		All:     all,
+		Size:    size,
+		Limit:   limit,
+		Since:   ctx.DefaultQuery("since", ""),
+		Before:  ctx.DefaultQuery("before", ""),
+		Filters: filters,
+	}
+
 	rolexContext, _ := ctx.Get("rolexContext")
-	containers, err := api.GetDockerClient().ListContainers(rolexContext.(context.Context), goclient.ListContainersOptions{})
+	containers, err := api.GetDockerClient().ListContainers(rolexContext.(context.Context), listOpts)
 	if err != nil {
 		ctx.JSON(http.StatusServiceUnavailable, err.Error())
 		return

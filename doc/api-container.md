@@ -3,6 +3,26 @@
 ```
     curl  192.168.59.106:2376/api/v1/nodes/:node_id/containers
 ```
+**Query parameters**
+```
+    all – "true"(default)/"false", Show all containers. Only running containers are shown by default (i.e., this defaults to false)
+    limit – Show limit last created containers, include non-running ones.
+    since – Show only containers created since Id, include non-running ones.
+    before – Show only containers created before Id, include non-running ones.
+    size – "true"(default)/"false", Show the containers sizes
+    filters - a JSON encoded value of the filters (a map[string][]string) to process on the containers list. Available filters:
+        exited=<int>; -- containers with exit code of <int> ;
+        status=(created|restarting|running|paused|exited|dead)
+        label=key or label="key=value" of a container label
+        isolation=(default|process|hyperv) (Windows daemon only)
+        ancestor=(<image-name>[:<tag>], <image id> or <image@digest>)
+        before=(<container id> or <container name>)
+        since=(<container id> or <container name>)
+        volume=(<volume name> or <mount point destination>)
+        network=(<network id> or <network name>)
+
+```
+
 **Response**
 ```
 {
