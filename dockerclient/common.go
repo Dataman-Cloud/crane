@@ -1,7 +1,7 @@
 package dockerclient
 
 const (
-	PERMISSION_LABEL_PREFIX = "com.permissions"
+	PERMISSION_LABEL_PREFIX = "com.rolex.permissions"
 )
 
 type Permission struct {
@@ -13,9 +13,9 @@ type Permission struct {
 var (
 	PermReadOnly  Permission = Permission{Perm: 0, Display: "r", Group: "foo"}
 	PermReadWrite Permission = Permission{Perm: 1, Display: "w", Group: "foo"}
-	PermReadAdmin Permission = Permission{Perm: 2, Display: "x", Group: "foo"}
+	PermAdmin     Permission = Permission{Perm: 2, Display: "x", Group: "foo"}
 
-	Perms []Permission = []Permission{PermReadOnly, PermReadWrite, PermReadAdmin}
+	Perms []Permission = []Permission{PermReadOnly, PermReadWrite, PermAdmin}
 )
 
 func (p Permission) Normalize() Permission {
