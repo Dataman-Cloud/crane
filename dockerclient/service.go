@@ -22,10 +22,6 @@ var (
 	ErrPermissionNotExists = errors.New("permission not exists")
 )
 
-const (
-	PERMISSION_LABEL = "com.dataman-inc.permissions"
-)
-
 type ServiceStatus struct {
 	ID          string    `json:"ID"`
 	Name        string    `json:"Name"`
@@ -218,12 +214,9 @@ func (client *RolexDockerClient) GrantServicePermission(serviceID string, p Perm
 		return err
 	}
 
-	permissions := PermissionsFromLabel(service.Spec.Labels[PERMISSION_LABEL])
-	if !PermissionsInclude(permissions, p) {
-		permissions = append(permissions, p)
+	for _, perm := range PermLessOrEqualThan(p) {
+		service.Spec.Labels[PERMISSION_LABEL_PREFIX+"."+p.Group+"."+perm.Display] = "true"
 	}
-
-	service.Spec.Labels[PERMISSION_LABEL] = PermissionsToLabel(permissions)
 
 	return client.UpdateService(service.ID, service.Version, service.Spec, nil)
 }
@@ -235,18 +228,9 @@ func (client *RolexDockerClient) RevokeServicePermission(serviceID string, p Per
 		return err
 	}
 
-	permissions := PermissionsFromLabel(service.Spec.Labels[PERMISSION_LABEL])
-	if !PermissionsInclude(permissions, p) {
-		return ErrPermissionNotExists
+	for _, perm := range PermGreaterOrEqualThan(p) {
+		delete(service.Spec.Labels, PERMISSION_LABEL_PREFIX+"."+p.Group+"."+perm.Display)
 	}
-
-	index := PermissionsIndex(permissions, p)
-
-	newPermissions := make([]Permission, 0)
-	newPermissions = append(newPermissions, permissions[0:index]...)
-	newPermissions = append(newPermissions, permissions[index+1:]...)
-
-	service.Spec.Labels[PERMISSION_LABEL] = PermissionsToLabel(newPermissions)
 
 	return client.UpdateService(service.ID, service.Version, service.Spec, nil)
 }

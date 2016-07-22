@@ -2,118 +2,53 @@ package dockerclient
 
 import (
 	"github.com/Dataman-Cloud/rolex/dockerclient"
+
 	"testing"
 )
 
-func TestPermissionEqual(T *testing.T) {
-	p1 := dockerclient.Permission{Perm: "ro", Group: "1"}
-	p2 := dockerclient.Permission{Perm: "ro", Group: "1"}
+func TestNewPerm(T *testing.T) {
+	p := dockerclient.NewPermission("x")
+	if p.Display != "x" {
+		T.Error("p.Display should be 'x'")
+	}
 
-	if p1.Equal(p2) {
-		T.Log("p1 equal p2")
-	} else {
-		T.Error("p1 should equal p2")
+	if p.Perm != 2 {
+		T.Error("p.Value should be 2")
 	}
 }
 
-func TestPermissiosFromLabel(T *testing.T) {
-	label := "group_id-ro"
-	permissions := dockerclient.PermissionsFromLabel(label)
-
-	if len(permissions) != 1 {
-		T.Error("label group_id-ro should contain 1 permissions")
-	}
-
-	if permissions[0].Perm != "ro" {
-		T.Error("permission should be read only")
-	}
-
-	if permissions[0].Group != "group_id" {
-		T.Error("group id should be group_id")
-	}
-
-	label = "group_id-ro,group_id1-rw"
-	permissions = dockerclient.PermissionsFromLabel(label)
-
-	if len(permissions) != 2 {
-		T.Error("label group_id-ro should contain 2 permissions")
-	}
-
-	if permissions[1].Perm != "rw" {
-		T.Error("permission should be write only")
-	}
-
-	if permissions[1].Group != "group_id1" {
-		T.Error("group id should be group_id")
-	}
-
-	label = "group_id-ro,,group_id1-rw"
-	permissions = dockerclient.PermissionsFromLabel(label)
-	if len(permissions) != 2 {
-		T.Error("label group_id-ro should contain 2 permissions")
-	}
-
-	label = "group_id-ro,  ,group_id1-rw"
-	permissions = dockerclient.PermissionsFromLabel(label)
-	if len(permissions) != 2 {
-		T.Error("label group_id-ro should contain 2 permissions")
-	}
-
-	label = "group_id-ro, foobar ,group_id1-rw"
-	permissions = dockerclient.PermissionsFromLabel(label)
-	if len(permissions) != 2 {
-		T.Error("label group_id-ro should contain 2 permissions")
-	}
-
-	label = "group_id-ro, group_id1-foobar"
-	permissions = dockerclient.PermissionsFromLabel(label)
-	if len(permissions) != 1 {
-		T.Error("label group_id-ro, group_id1-foobar should contain 1 permissions")
+func TestNormalize(T *testing.T) {
+	p := dockerclient.Permission{Display: "x"}
+	p = p.Normalize()
+	if p.Perm != 2 {
+		T.Error("p.Value should be 2")
 	}
 }
 
-func TestLabelFromPermission(T *testing.T) {
-	permissions := []dockerclient.Permission{
-		{Perm: "ro", Group: "1"},
+func TestPermGreaterThanPerm(T *testing.T) {
+	p := dockerclient.NewPermission("x")
+	greaterPerms := dockerclient.PermGreaterOrEqualThan(p)
+	if len(greaterPerms) != 1 {
+		T.Error("permissions greater than x should be only x itself")
 	}
 
-	if dockerclient.PermissionsToLabel(permissions) != "1-ro" {
-		T.Error("permissions label should be 1-ro")
-	}
-
-	permissions = []dockerclient.Permission{
-		{Perm: "ro", Group: "1"},
-		{Perm: "rw", Group: "2"},
-	}
-
-	T.Log(dockerclient.PermissionsToLabel(permissions))
-
-	if dockerclient.PermissionsToLabel(permissions) != "1-ro,2-rw" {
-		T.Error("permissions label should be 2-rw,1-ro")
+	p = dockerclient.NewPermission("r")
+	greaterPerms = dockerclient.PermGreaterOrEqualThan(p)
+	if len(greaterPerms) != 3 {
+		T.Error("permissions greater than r should be r, w, x")
 	}
 }
 
-func TestPermissionsInclude(T *testing.T) {
-	permissions := []dockerclient.Permission{
-		{Perm: "ro", Group: "1"},
+func TestPermLessThanPerm(T *testing.T) {
+	p := dockerclient.NewPermission("x")
+	greaterPerms := dockerclient.PermLessOrEqualThan(p)
+	if len(greaterPerms) != 3 {
+		T.Error("permissions less than x should be r, w, x")
 	}
 
-	permission := dockerclient.Permission{Perm: "ro", Group: "1"}
-
-	if !dockerclient.PermissionsInclude(permissions, permission) {
-		T.Error("permissions should include permssion")
-	}
-}
-
-func TestPermissionsIndex(T *testing.T) {
-	permissions := []dockerclient.Permission{
-		{Perm: "ro", Group: "0"},
-		{Perm: "ro", Group: "1"},
-	}
-
-	permission := dockerclient.Permission{Perm: "ro", Group: "1"}
-
-	if dockerclient.PermissionsIndex(permissions, permission) != 1 {
-		T.Error("index of permission in permissions should be 1")
+	p = dockerclient.NewPermission("r")
+	greaterPerms = dockerclient.PermLessOrEqualThan(p)
+	if len(greaterPerms) != 1 {
+		T.Error("permissions greater than r should be r itself")
 	}
 }
