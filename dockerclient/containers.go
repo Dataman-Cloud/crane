@@ -4,7 +4,7 @@ import (
 	"bufio"
 	"io"
 
-	"github.com/Dataman-Cloud/rolex/model"
+	"github.com/Dataman-Cloud/rolex/dockerclient/model"
 
 	log "github.com/Sirupsen/logrus"
 	goclient "github.com/fsouza/go-dockerclient"
@@ -103,7 +103,7 @@ func logReader(input *io.PipeReader, message chan string) {
 	}
 }
 
-func (client *RolexDockerClient) StatsContainer(ctx context.Context, containerId string, stats chan *model.Stats) {
+func (client *RolexDockerClient) StatsContainer(ctx context.Context, containerId string, stats chan *model.ContainerStat) {
 	stat := make(chan *goclient.Stats)
 	sd := make(chan bool)
 	opts := goclient.StatsOptions{
@@ -118,7 +118,7 @@ func (client *RolexDockerClient) StatsContainer(ctx context.Context, containerId
 		log.Errorf("stats container get container by containerId error: %v", err)
 		return
 	}
-	go func(s chan *goclient.Stats, msg chan *model.Stats, sdone chan bool) {
+	go func(s chan *goclient.Stats, msg chan *model.ContainerStat, sdone chan bool) {
 		defer func() {
 			recover()
 			sdone <- true
@@ -127,7 +127,7 @@ func (client *RolexDockerClient) StatsContainer(ctx context.Context, containerId
 		for {
 			select {
 			case data := <-s:
-				msg <- &model.Stats{
+				msg <- &model.ContainerStat{
 					Stat:        data,
 					NodeId:      container.Config.Labels["com.docker.swarm.node.id"],
 					ServiceId:   container.Config.Labels["com.docker.swarm.service.id"],

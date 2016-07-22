@@ -4,7 +4,7 @@ import (
 	goclient "github.com/fsouza/go-dockerclient"
 )
 
-type Stats struct {
+type ContainerStat struct {
 	NodeId      string
 	ServiceId   string
 	ServiceName string

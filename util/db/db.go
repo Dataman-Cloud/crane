@@ -1,7 +1,6 @@
 package db
 
 import (
-	"github.com/Dataman-Cloud/rolex/model"
 	"github.com/Dataman-Cloud/rolex/plugins/auth"
 	"github.com/Dataman-Cloud/rolex/util/config"
 
@@ -37,7 +36,6 @@ func InitDB() {
 }
 
 func MigriateTable() {
-	db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&model.Stack{})
 	db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&auth.Account{})
 	db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&auth.Group{})
 	db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&auth.AccountGroup{})

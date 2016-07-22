@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/Dataman-Cloud/rolex/model"
+	"github.com/Dataman-Cloud/rolex/dockerclient/model"
 	"github.com/Dataman-Cloud/rolex/util"
 
 	log "github.com/Sirupsen/logrus"
@@ -218,7 +218,7 @@ func (api *Api) LogsContainer(ctx *gin.Context) {
 
 func (api *Api) StatsContainer(ctx *gin.Context) {
 	rolexContext, _ := ctx.Get("rolexContext")
-	stats := make(chan *model.Stats)
+	stats := make(chan *model.ContainerStat)
 
 	defer close(stats)
 
