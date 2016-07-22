@@ -82,7 +82,7 @@ var (
 	}
 
 	DefaultOptions = &Options{
-		PermitWrite:     false,
+		PermitWrite:     true,
 		EnableRandomUrl: false,
 		RandomUrlLength: 8,
 		TitleFormat:     SubProtocol + "TTY - {{ .Command }} ({{ .Hostname }})",
