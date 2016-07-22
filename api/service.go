@@ -4,6 +4,10 @@ import (
 	"io"
 	"net/http"
 
+	"github.com/Dataman-Cloud/rolex/dockerclient"
+	"github.com/Dataman-Cloud/rolex/dockerclient/model"
+	"github.com/Dataman-Cloud/rolex/util"
+
 	log "github.com/Sirupsen/logrus"
 	"github.com/docker/engine-api/types"
 	"github.com/docker/engine-api/types/filters"
@@ -11,10 +15,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/manucorporat/sse"
 	"golang.org/x/net/context"
-
-	"github.com/Dataman-Cloud/rolex/dockerclient"
-	"github.com/Dataman-Cloud/rolex/model"
-	"github.com/Dataman-Cloud/rolex/util"
 )
 
 func (api *Api) UpdateService(ctx *gin.Context) {}
@@ -124,7 +124,7 @@ func (api *Api) LogsService(ctx *gin.Context) {
 func (api *Api) StatsService(ctx *gin.Context) {
 	taskFilter := filters.NewArgs()
 	taskFilter.Add("service", ctx.Param("service_id"))
-	stats := make(chan *model.Stats)
+	stats := make(chan *model.ContainerStat)
 
 	defer close(stats)
 

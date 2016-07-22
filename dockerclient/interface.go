@@ -1,7 +1,7 @@
 package dockerclient
 
 import (
-	"github.com/Dataman-Cloud/rolex/model"
+	"github.com/Dataman-Cloud/rolex/dockerclient/model"
 
 	"github.com/docker/engine-api/types"
 	"github.com/docker/engine-api/types/swarm"
@@ -20,7 +20,7 @@ type DockerClientInterface interface {
 	ListContainers(opts goclient.ListContainersOptions) ([]goclient.APIContainers, error)
 	RemoveContainer(opts goclient.RemoveContainerOptions) error
 	LogsContainer(nodeId, containerId string, message chan string)
-	StatsContainer(nodeId, containerId string, stats chan *model.Stats)
+	StatsContainer(nodeId, containerId string, stats chan *model.ContainerStat)
 
 	ConnectNetwork(id string, opts goclient.NetworkConnectionOptions) error
 	CreateNetwork(opts goclient.CreateNetworkOptions) (*goclient.Network, error)
