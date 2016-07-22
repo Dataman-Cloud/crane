@@ -1,4 +1,4 @@
-package account
+package auth
 
 import (
 	"net/url"
@@ -16,6 +16,12 @@ type Account struct {
 }
 
 type AccountFilter url.Values
+
+type AccountGroup struct {
+	ID        uint64 `json:"Id"`
+	AccountId uint64 `json:"AccountId"`
+	GroupId   uint64 `json:"GroupId"`
+}
 
 func ReferenceToValue(a *Account) Account {
 	return Account{

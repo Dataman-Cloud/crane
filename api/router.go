@@ -4,10 +4,10 @@ import (
 	"time"
 
 	"github.com/Dataman-Cloud/rolex/api/middlewares"
-	"github.com/Dataman-Cloud/rolex/plugins/account"
-	"github.com/Dataman-Cloud/rolex/plugins/account/authenticators"
-	chians "github.com/Dataman-Cloud/rolex/plugins/account/middlewares"
-	"github.com/Dataman-Cloud/rolex/plugins/account/token_store"
+	"github.com/Dataman-Cloud/rolex/plugins/auth"
+	"github.com/Dataman-Cloud/rolex/plugins/auth/authenticators"
+	chians "github.com/Dataman-Cloud/rolex/plugins/auth/middlewares"
+	"github.com/Dataman-Cloud/rolex/plugins/auth/token_store"
 	"github.com/Dataman-Cloud/rolex/plugins/registry"
 	"github.com/Dataman-Cloud/rolex/util/log"
 
@@ -33,7 +33,7 @@ func (api *Api) ApiRouter() *gin.Engine {
 	}
 
 	if api.Config.FeatureEnabled("account") {
-		r := &account.AccountApi{Config: api.Config, RolexDockerClient: api.Client}
+		r := &auth.AccountApi{Config: api.Config, RolexDockerClient: api.Client}
 		if api.Config.AccountTokenStore == "default" {
 			r.TokenStore = token_store.NewDefaultStore()
 		}

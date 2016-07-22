@@ -1,11 +1,11 @@
 package authenticators
 
 import (
-	"github.com/Dataman-Cloud/rolex/plugins/account"
+	"github.com/Dataman-Cloud/rolex/plugins/auth"
 )
 
 type Ldap struct {
-	account.Authenticator
+	auth.Authenticator
 }
 
 func (d *Ldap) ModificationAllowed() bool {

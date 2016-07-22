@@ -1,4 +1,4 @@
-package account
+package auth
 
 import (
 	"github.com/Dataman-Cloud/rolex/dockerclient"
@@ -23,8 +23,8 @@ func (account *AccountApi) RegisterApiForAccount(router *gin.Engine, authorizati
 		accountV1.POST("/logout", account.AccountLogout)
 
 		accountV1.GET("/accounts/:account_id/groups", account.AccountGroups)
-		accountV1.POST("accounts/:account_id/groups/:group_id", account.JoinGroup)
-		accountV1.DELETE("accounts/:account_id/groups/:group_id", account.LeaveGroup)
+		accountV1.POST("/accounts/:account_id/groups/:group_id", account.JoinGroup)
+		accountV1.DELETE("/accounts/:account_id/groups/:group_id", account.LeaveGroup)
 
 		accountV1.GET("/groups", account.ListGroups)
 		accountV1.GET("/groups/:group_id", account.GetGroup)
