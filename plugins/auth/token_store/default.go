@@ -3,7 +3,7 @@ package token_store
 import (
 	"time"
 
-	"github.com/Dataman-Cloud/rolex/plugins/account"
+	"github.com/Dataman-Cloud/rolex/plugins/auth"
 	log "github.com/Sirupsen/logrus"
 )
 
@@ -13,7 +13,7 @@ type tokenStore struct {
 }
 
 type Default struct {
-	account.TokenStore
+	auth.TokenStore
 
 	Store map[string]*tokenStore
 }

@@ -1,4 +1,4 @@
-package account
+package auth
 
 type Authenticator interface {
 	AccountPermissions(account *Account) (*[]string, error)
@@ -17,8 +17,8 @@ type Authenticator interface {
 	CreateAccount(a *Account) error
 	UpdateAccount(a *Account) error
 
-	JoinGroup(g *Group, a *Account) error
-	LeaveGroup(g *Group, a *Account) error
+	JoinGroup(accountId, groupId uint64) error
+	LeaveGroup(accountId, groupId uint64) error
 
 	ModificationAllowed() bool
 }

@@ -4,12 +4,12 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/Dataman-Cloud/rolex/plugins/account"
+	"github.com/Dataman-Cloud/rolex/plugins/auth"
 
 	"github.com/gin-gonic/gin"
 )
 
-func Authorization(a *account.AccountApi) gin.HandlerFunc {
+func Authorization(a *auth.AccountApi) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		if len(ctx.Request.Header.Get("Authorization")) == 0 {
 			ctx.JSON(http.StatusUnauthorized, gin.H{"code": 1, "data": "401"})
@@ -32,7 +32,7 @@ func Authorization(a *account.AccountApi) gin.HandlerFunc {
 			ctx.Abort()
 			return
 		}
-		ctx.Set("account", account.ReferenceToValue(acc))
+		ctx.Set("account", auth.ReferenceToValue(acc))
 
 		ctx.Next()
 	}

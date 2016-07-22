@@ -1,4 +1,4 @@
-package account
+package auth
 
 import (
 	"fmt"
@@ -65,11 +65,12 @@ func (a *AccountApi) AccountGroups(ctx *gin.Context) {
 }
 
 func (a *AccountApi) GetGroup(ctx *gin.Context) {
-	groupid, err := strconv.ParseUint(ctx.Param("group_id"), 10, 64)
+	groupId, err := strconv.ParseUint(ctx.Param("group_id"), 10, 64)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"code": "1", "data": "bad groupid"})
+		return
 	}
-	group, err := a.Authenticator.Group(groupid)
+	group, err := a.Authenticator.Group(groupId)
 	if err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"code": "1", "data": "404"})
 	} else {
@@ -102,7 +103,7 @@ func (a *AccountApi) CreateGroup(ctx *gin.Context) {
 
 	if err := a.Authenticator.CreateGroup(&group); err != nil {
 		log.Errorf("create group db operation error: %v", err)
-		ctx.JSON(http.StatusInternalServerError, gin.H{"code": 1, "data": "500"})
+		ctx.JSON(http.StatusInternalServerError, gin.H{"code": 1, "data": err.Error()})
 		return
 	}
 	ctx.JSON(http.StatusCreated, gin.H{"code": 0, "data": "create success"})
@@ -124,7 +125,7 @@ func (a *AccountApi) UpdateGroup(ctx *gin.Context) {
 
 	if err := a.Authenticator.UpdateGroup(&group); err != nil {
 		log.Errorf("update group db operation error: %v", err)
-		ctx.JSON(http.StatusInternalServerError, gin.H{"code": 1, "data": "500"})
+		ctx.JSON(http.StatusInternalServerError, gin.H{"code": 1, "data": err.Error()})
 		return
 	}
 	ctx.JSON(http.StatusCreated, gin.H{"code": 0, "data": "update success"})
@@ -144,7 +145,7 @@ func (a *AccountApi) DeleteGroup(ctx *gin.Context) {
 
 	if err := a.Authenticator.DeleteGroup(groupId); err != nil {
 		log.Errorf("delete group db operation error: %v", err)
-		ctx.JSON(http.StatusInternalServerError, gin.H{"code": 1, "data": "500"})
+		ctx.JSON(http.StatusInternalServerError, gin.H{"code": 1, "data": err.Error()})
 		return
 	}
 
@@ -156,6 +157,26 @@ func (a *AccountApi) JoinGroup(ctx *gin.Context) {
 		ctx.JSON(http.StatusUnauthorized, gin.H{"code": "1", "data": "403"})
 		return
 	}
+
+	accountId, err := strconv.ParseUint(ctx.Param("account_id"), 10, 64)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"code": "1", "data": "bad accountid"})
+		return
+	}
+
+	groupId, err := strconv.ParseUint(ctx.Param("group_id"), 10, 64)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"code": "1", "data": "bad accountid"})
+		return
+	}
+
+	if err := a.Authenticator.JoinGroup(accountId, groupId); err != nil {
+		log.Errorf("user join group db operation error: %v", err)
+		ctx.JSON(http.StatusInternalServerError, gin.H{"code": 1, "data": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusCreated, gin.H{"code": 0, "data": "user join group success"})
 }
 
 func (a *AccountApi) LeaveGroup(ctx *gin.Context) {
@@ -163,6 +184,27 @@ func (a *AccountApi) LeaveGroup(ctx *gin.Context) {
 		ctx.JSON(http.StatusUnauthorized, gin.H{"code": "1", "data": "403"})
 		return
 	}
+
+	accountId, err := strconv.ParseUint(ctx.Param("account_id"), 10, 64)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"code": "1", "data": "bad accountid"})
+		return
+	}
+
+	groupId, err := strconv.ParseUint(ctx.Param("group_id"), 10, 64)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"code": "1", "data": "bad groupid"})
+		return
+	}
+
+	if err := a.Authenticator.LeaveGroup(accountId, groupId); err != nil {
+		log.Errorf("user leave  group db operation error: %v", err)
+		ctx.JSON(http.StatusInternalServerError, gin.H{"code": 1, "data": err.Error()})
+		return
+
+	}
+
+	ctx.JSON(http.StatusCreated, gin.H{"code": 0, "data": "user leave group success"})
 }
 
 func (a *AccountApi) GrantServicePermission(ctx *gin.Context) {

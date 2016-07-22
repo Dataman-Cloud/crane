@@ -1,4 +1,4 @@
-package account
+package auth
 
 import (
 	"net/url"
