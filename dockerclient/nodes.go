@@ -80,12 +80,8 @@ func (client *RolexDockerClient) Info(ctx context.Context) (*goclient.DockerInfo
 func (client *RolexDockerClient) NodeDaemonEndpoint(nodeId string, protocol string) (string, error) {
 	var node swarm.Node
 
-	content, err := client.HttpGet(client.SwarmHttpEndpoint+"/"+path.Join("nodes", nodeId), nil, nil)
+	node, err := client.InspectNode(nodeId)
 	if err != nil {
-		return "", err
-	}
-
-	if err := json.Unmarshal(content, &node); err != nil {
 		return "", err
 	}
 
