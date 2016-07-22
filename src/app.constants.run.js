@@ -43,7 +43,12 @@
         };
 
         $rootScope.CONTAINER_STATUS_LABELS = {
-            running: '运行中'
+            running: '运行中',
+            paused: '暂停中',
+            dead: '已崩溃',
+            restarting: '正在重启中',
+            created: '初始化中',
+            exited: '已退出'
         };
         
         $rootScope.CONTAINER_STATS_POINT_NUM = 180;
