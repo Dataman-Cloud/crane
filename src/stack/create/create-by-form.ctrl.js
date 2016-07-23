@@ -8,7 +8,7 @@
         var self = this;
 
         self.form = {
-            Namespace: stackBackend.stack_name || '',
+            Namespace: $stateParams.stack_name || '',
             Stack: {},
             Version: ''
         };
@@ -44,10 +44,10 @@
                     "LogDriver": {}
                 },
                 "Mode": {
-                    //Replicated/GlobalService 二选一
-                    "Replicated": {
-                        "Replicas": "" //任务数
-                    },
+                    ////Replicated/GlobalService 二选一
+                    //"Replicated": {
+                    //    "Replicas": "" //任务数
+                    //},
                     "GlobalService": {}
                 },
                 "UpdateConfig": {
@@ -103,10 +103,10 @@
                     "LogDriver": {}
                 },
                 "Mode": {
-                    //Replicated/GlobalService 二选一
-                    "Replicated": {
-                        "Replicas": "" //任务数
-                    },
+                    ////Replicated/GlobalService 二选一
+                    //"Replicated": {
+                    //    "Replicas": "" //任务数
+                    //},
                     "GlobalService": {}
                 },
                 "UpdateConfig": {
@@ -137,6 +137,7 @@
         function create() {
             ///
             var serveArray = formatServeArray();
+            self.form.Stack = {};
 
             angular.forEach(serveArray, function (serve, index) {
                 self.form.Stack[serve.Name] = serve
@@ -145,9 +146,9 @@
             console.log(self.form)
         }
 
-        function addConfig(serveForm, typeName) {
+        function addConfig(configs, typeName) {
 
-            var config = {
+            var configTemplate = {
                 Env: {
                     key: '',
                     value: ''
@@ -177,48 +178,11 @@
                 }
             };
 
-            switch (typeName) {
-                case 'Labels':
-                    serveForm.TaskTemplate.ContainerSpec.Labels.push(config[typeName]);
-                    break;
-                case 'ServeLabels':
-                    serveForm.Labels.push(config[typeName]);
-                    break;
-                case 'Env':
-                    serveForm.TaskTemplate.ContainerSpec.Env.push(config[typeName]);
-                    break;
-                case 'Mounts':
-                    serveForm.TaskTemplate.ContainerSpec.Mounts.push(config[typeName]);
-                    break;
-                case 'Constraints':
-                    serveForm.TaskTemplate.Placement.Constraints.push(config[typeName]);
-                    break;
-                case 'Ports':
-                    serveForm.EndpointSpec.Ports.push(config[typeName]);
-                    break;
-
-            }
+            configs.push(configTemplate[typeName]);
         }
 
-        function deleteConfig(index, serveForm, typeName) {
-            switch (typeName) {
-                case 'Labels':
-                    serveForm.TaskTemplate.ContainerSpec.Labels.splice(index, 1);
-                    break;
-                case 'Env':
-                    serveForm.TaskTemplate.ContainerSpec.Env.splice(index, 1);
-                    break;
-                case 'Mounts':
-                    serveForm.TaskTemplate.ContainerSpec.Mounts.splice(index, 1);
-                    break;
-                case 'Constraints':
-                    serveForm.TaskTemplate.Placement.Constraints.splice(index, 1);
-                    break;
-                case 'Ports':
-                    serveForm.EndpointSpec.Ports.splice(index, 1);
-                    break;
-
-            }
+        function deleteConfig(index, configs) {
+            configs.splice(index, 1);
         }
 
         function modeChange(serveForm) {
@@ -259,8 +223,11 @@
 
                 item.Labels = serveLabels;
                 item.TaskTemplate.ContainerSpec.Labels = containerLabels;
+
                 delete item.defaultMode;
 
+                serveLabels = {};
+                containerLabels = {}
             });
 
             return serveTempArray;

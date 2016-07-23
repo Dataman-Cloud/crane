@@ -285,7 +285,7 @@
                                     <div flex>
                                         <md-button class="md-primary"
                                                    aria-label="Add Env"
-                                                   data-ng-click="stackCreateByFormCtrl.addConfig(serve, 'Env')">
+                                                   data-ng-click="stackCreateByFormCtrl.addConfig(serve.TaskTemplate.ContainerSpec.Env, 'Env')">
                                             <i class="fa fa-plus"></i>
                                             添加环境变量
                                         </md-button>
@@ -302,7 +302,7 @@
                                                    name="envValue" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/">
                                             <div flex-offset="5" flex>
                                                 <md-button class="md-icon-button md-accent" aria-label="delete"
-                                                           data-ng-click="stackCreateByFormCtrl.deleteConfig($index, serve, 'Env')">
+                                                           data-ng-click="stackCreateByFormCtrl.deleteConfig($index, serve.TaskTemplate.ContainerSpec.Env)">
                                                     <i class="fa fa-trash"></i>
                                                 </md-button>
                                             </div>
@@ -333,7 +333,7 @@
                                     <div flex>
                                         <md-button class="md-primary"
                                                    aria-label="Add serve label"
-                                                   data-ng-click="stackCreateByFormCtrl.addConfig(serve, 'ServeLabels')">
+                                                   data-ng-click="stackCreateByFormCtrl.addConfig(serve.Labels, 'ServeLabels')">
                                             <i class="fa fa-plus"></i>
                                             添加标签
                                         </md-button>
@@ -350,7 +350,7 @@
                                                    name="labelValue" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/">
                                             <div flex-offset="5" flex>
                                                 <md-button class="md-icon-button md-accent" aria-label="delete"
-                                                           data-ng-click="stackCreateByFormCtrl.deleteConfig($index, serve, 'ServeLabels')">
+                                                           data-ng-click="stackCreateByFormCtrl.deleteConfig($index, serve.Labels)">
                                                     <i class="fa fa-trash"></i>
                                                 </md-button>
                                             </div>
@@ -382,7 +382,7 @@
                                     <div flex>
                                         <md-button class="md-primary"
                                                    aria-label="Add label"
-                                                   data-ng-click="stackCreateByFormCtrl.addConfig(serve, 'Labels')">
+                                                   data-ng-click="stackCreateByFormCtrl.addConfig(serve.TaskTemplate.ContainerSpec.Labels, 'Labels')">
                                             <i class="fa fa-plus"></i>
                                             添加标签
                                         </md-button>
@@ -399,7 +399,7 @@
                                                    name="labelValue" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/">
                                             <div flex-offset="5" flex>
                                                 <md-button class="md-icon-button md-accent" aria-label="delete"
-                                                           data-ng-click="stackCreateByFormCtrl.deleteConfig($index, serve, 'Labels')">
+                                                           data-ng-click="stackCreateByFormCtrl.deleteConfig($index, serve.TaskTemplate.ContainerSpec.Labels)">
                                                     <i class="fa fa-trash"></i>
                                                 </md-button>
                                             </div>
@@ -431,7 +431,7 @@
                                     <div flex>
                                         <md-button class="md-primary"
                                                    aria-label="Add label"
-                                                   data-ng-click="stackCreateByFormCtrl.addConfig(serve, 'Ports')">
+                                                   data-ng-click="stackCreateByFormCtrl.addConfig(serve.EndpointSpec.Ports, 'Ports')">
                                             <i class="fa fa-plus"></i>
                                             添加端口映射
                                         </md-button>
@@ -460,7 +460,7 @@
                                                    name="PublishedPort" max="65535" min="1">
                                             <div flex-offset="5" flex>
                                                 <md-button class="md-icon-button md-accent" aria-label="delete"
-                                                           data-ng-click="stackCreateByFormCtrl.deleteConfig($index, serve, 'Ports')">
+                                                           data-ng-click="stackCreateByFormCtrl.deleteConfig($index, serve.EndpointSpec.Ports)">
                                                     <i class="fa fa-trash"></i>
                                                 </md-button>
                                             </div>
@@ -496,7 +496,7 @@
                                 <div flex="60" layout="column">
                                     <div flex>
                                         <md-button class="md-primary" aria-label="Add Mounts"
-                                                   data-ng-click="stackCreateByFormCtrl.addConfig(serve, 'Mounts')">
+                                                   data-ng-click="stackCreateByFormCtrl.addConfig(serve.TaskTemplate.ContainerSpec.Mounts, 'Mounts')">
                                             <i class="fa fa-plus"></i>
                                             添加挂载
                                         </md-button>
@@ -525,7 +525,7 @@
                                                    name="Target" max="65535" min="1">
                                             <div flex-offset="5" flex>
                                                 <md-button class="md-icon-button md-accent" aria-label="delete"
-                                                           data-ng-click="stackCreateByFormCtrl.deleteConfig($index, serve, 'Mounts')">
+                                                           data-ng-click="stackCreateByFormCtrl.deleteConfig($index, serve.TaskTemplate.ContainerSpec.Mounts)">
                                                     <i class="fa fa-trash"></i>
                                                 </md-button>
                                             </div>
@@ -550,7 +550,7 @@
                                     <div flex>
                                         <md-button class="md-primary"
                                                    aria-label="Add label"
-                                                   data-ng-click="stackCreateByFormCtrl.addConfig(serve, 'Constraints')">
+                                                   data-ng-click="stackCreateByFormCtrl.addConfig(serve.TaskTemplate.Placement.Constraints, 'Constraints')">
                                             <i class="fa fa-plus"></i>
                                             添加限制条件
                                         </md-button>
@@ -567,7 +567,7 @@
                                                    name="constraintValue">
                                             <div flex-offset="5" flex>
                                                 <md-button class="md-icon-button md-accent" aria-label="delete"
-                                                           data-ng-click="stackCreateByFormCtrl.deleteConfig($index, serve, 'Constraints')">
+                                                           data-ng-click="stackCreateByFormCtrl.deleteConfig($index, serve.TaskTemplate.Placement.Constraints)">
                                                     <i class="fa fa-trash"></i>
                                                 </md-button>
                                             </div>
