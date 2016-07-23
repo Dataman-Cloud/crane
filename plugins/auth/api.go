@@ -32,13 +32,13 @@ func (a *AccountApi) CreateAccount(ctx *gin.Context) {
 		return
 	}
 
-	acc.Password = EncryptPassword(acc.Password)
+	acc.Password = a.Authenticator.EncryptPassword(acc.Password)
 	acc.LoginAt = time.Now()
 	if err := a.Authenticator.CreateAccount(&acc); err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"code": "1", "data": err.Error()})
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{"code": "1", "data": "create success"})
+	ctx.JSON(http.StatusOK, gin.H{"code": "0", "data": "create success"})
 }
 
 func (a *AccountApi) GetAccount(ctx *gin.Context) {
@@ -46,7 +46,7 @@ func (a *AccountApi) GetAccount(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"code": "1", "data": "404"})
 	} else {
-		ctx.JSON(http.StatusOK, gin.H{"code": "1", "data": account})
+		ctx.JSON(http.StatusOK, gin.H{"code": "0", "data": account})
 	}
 }
 
@@ -57,7 +57,7 @@ func (a *AccountApi) ListAccounts(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"code": "1", "data": "404"})
 	} else {
-		ctx.JSON(http.StatusOK, gin.H{"code": "1", "data": accounts})
+		ctx.JSON(http.StatusOK, gin.H{"code": "0", "data": accounts})
 	}
 }
 
@@ -76,7 +76,7 @@ func (a *AccountApi) AccountLogin(ctx *gin.Context) {
 		return
 	}
 	a.TokenStore.Set(token, fmt.Sprintf("%d", acc.ID), time.Now().Add(SESSION_DURATION))
-	ctx.JSON(http.StatusOK, gin.H{"code": "1", "data": token})
+	ctx.JSON(http.StatusOK, gin.H{"code": "0", "data": token})
 }
 
 func (a *AccountApi) AccountLogout(ctx *gin.Context) {
@@ -84,7 +84,7 @@ func (a *AccountApi) AccountLogout(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"code": "1", "data": "fail"})
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{"code": "1", "data": "success"})
+	ctx.JSON(http.StatusOK, gin.H{"code": "0", "data": "success"})
 }
 
 func (a *AccountApi) AccountGroups(ctx *gin.Context) {
@@ -93,7 +93,7 @@ func (a *AccountApi) AccountGroups(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"code": "1", "data": err.Error()})
 	} else {
-		ctx.JSON(http.StatusOK, gin.H{"code": "1", "data": groups})
+		ctx.JSON(http.StatusOK, gin.H{"code": "0", "data": groups})
 	}
 }
 
@@ -107,7 +107,7 @@ func (a *AccountApi) GetGroup(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"code": "1", "data": err.Error()})
 	} else {
-		ctx.JSON(http.StatusOK, gin.H{"code": "1", "data": group})
+		ctx.JSON(http.StatusOK, gin.H{"code": "0", "data": group})
 	}
 }
 
@@ -117,7 +117,7 @@ func (a *AccountApi) ListGroups(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"code": "1", "data": err.Error()})
 	} else {
-		ctx.JSON(http.StatusOK, gin.H{"code": "1", "data": groups})
+		ctx.JSON(http.StatusOK, gin.H{"code": "0", "data": groups})
 	}
 }
 
