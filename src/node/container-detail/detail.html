@@ -4,20 +4,24 @@
             <div class="info" flex>
                 <h2>{/nodeContainerDetailCtrl.container.Name/}</h2>
                 <dl class="list-dl-row">
-                    <dt>创建时间</dt>
-                    <dd>{/nodeContainerDetailCtrl.container.Created | date: 'yyyy-MM-dd HH:mm:ss'/}</dd>
                     <dt>状态</dt>
                     <dd>{/CONTAINER_STATUS_LABELS[nodeContainerDetailCtrl.container.State.Status] || '-'/}</dd>
+                    <dt>进程ID</dt>
+                    <dd>{/nodeContainerDetailCtrl.container.State.Pid || '-'/}</dd>
                     <dt>驱动</dt>
                     <dd>{/nodeContainerDetailCtrl.container.Driver || '-'/}</dd>
-                    <dt>镜像名称</dt>
-                    <dd>{/nodeContainerDetailCtrl.container.Image/}</dd>
+                    <dt>创建时间</dt>
+                    <dd>{/nodeContainerDetailCtrl.container.Created | date: 'yyyy-MM-dd HH:mm:ss'/}</dd>
+                </dl>
+                <dl class="list-dl-row">
+                    <dt>容器ID</dt>
+                    <dd>{/nodeContainerDetailCtrl.container.Id/}</dd>
                 </dl>
             </div>
         </header>
         <md-content>
             <md-tabs md-dynamic-height md-border-bottom>
-                <md-tab label="配置" dm-tab-sref="node.containerDetail.config"></md-tab>
+                <md-tab label="详情" dm-tab-sref="node.containerDetail.config"></md-tab>
                 <md-tab label="日志" dm-tab-sref="node.containerDetail.log"></md-tab>
                 <md-tab label="统计" dm-tab-sref="node.containerDetail.stats"></md-tab>
                 <md-tab label="变更" dm-tab-sref="node.containerDetail.diff"></md-tab>
