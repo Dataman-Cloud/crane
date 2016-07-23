@@ -7,23 +7,6 @@
         </header>
         <div class="main-content">
             <form name="staticForm">
-                <div layout="row" layout-align="end start" class="form-group form-group-input">
-                    <label flex="15">编排名称</label>
-                    <div flex="50" layout="column">
-                        <div flex="none">
-                            <input type="text" class="form-input" data-ng-model="stackCreateByJsonCtrl.form.Namespace"
-                                   data-required="required" name="Namespace">
-                        </div>
-                        <div ng-messages="staticForm.Namespace.$error" ng-if="staticForm.Namespace.$dirty" role="alert">
-                            <p class="error-info help-info-bottom"
-                               ng-message="required">
-                                <small>名称不能为空</small>
-                            </p>
-                        </div>
-                    </div>
-                    <div flex></div>
-                </div>
-
                 <div layout="row" layout-align="end start" class="form-group form-group-textarea">
                     <label flex="15">Stack JSON</label>
                     <div flex="50" layout="column">

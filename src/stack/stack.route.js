@@ -26,14 +26,15 @@
                 }
             })
             .state('stack.create', {
-                url: '/create',
+                url: '/create?stack_name',
                 templateUrl: '/src/stack/create/create-nav.html',
+                controller: 'StackCreateNavCtrl as stackCreateNavCtrl',
                 ncyBreadcrumb: {
                     label: '选择创建方式'
                 }
             })
             .state('stack.createByJson', {
-                url: '/createByJson',
+                url: '/:stack_name/createByJson',
                 templateUrl: '/src/stack/create/create-by-Json.html',
                 controller: 'StackCreateByJsonCtrl as stackCreateByJsonCtrl',
                 ncyBreadcrumb: {
@@ -41,7 +42,7 @@
                 }
             })
             .state('stack.createByForm', {
-                url: '/createByForm',
+                url: '/:stack_name/createByForm',
                 templateUrl: '/src/stack/create/create-by-form.html',
                 controller: 'StackCreateByFormCtrl as stackCreateByFormCtrl',
                 ncyBreadcrumb: {

@@ -6,37 +6,58 @@
             </div>
         </header>
         <div class="main-content">
-            <div layout="row" layout-wrap>
-                <md-card flex="18" >
-                    <img class="md-card-image" alt="Washed Out">
-                    <md-card-title>
-                        <md-card-title-text>
-                            <span class="md-headline">Json</span>
-                        </md-card-title-text>
-                    </md-card-title>
-                    <md-card-content>
-                        <p>已 JSON 格式创建</p>
-                    </md-card-content>
-                    <md-card-actions layout="row" layout-align="end center">
-                        <md-button class="md-raised md-primary" data-ui-sref="stack.createByJson">确认</md-button>
-                    </md-card-actions>
-                </md-card>
+            <form name="stackform">
+                <div layout="row" layout-align="end start" class="form-group form-group-input">
+                    <label flex="15">编排名称</label>
+                    <div flex="50" layout="column">
+                        <div flex="none">
+                            <input type="text" class="form-input" data-ng-model="stackCreateNavCtrl.stackName"
+                                   data-required="required" name="Name">
+                        </div>
+                        <div ng-messages="staticForm.Namespace.$error" ng-if="staticForm.Namespace.$dirty"
+                             role="alert">
+                            <p class="error-info help-info-bottom"
+                               ng-message="required">
+                                <small>名称不能为空</small>
+                            </p>
+                        </div>
+                    </div>
+                    <div flex></div>
+                </div>
+                <div layout="row" layout-wrap>
+                    <md-card flex="18">
+                        <img class="md-card-image" alt="Washed Out">
+                        <md-card-title>
+                            <md-card-title-text>
+                                <span class="md-headline">JSON</span>
+                            </md-card-title-text>
+                        </md-card-title>
+                        <md-card-content>
+                            <p>用高级方式创建</p>
+                        </md-card-content>
+                        <md-card-actions layout="row" layout-align="end center">
+                            <md-button class="md-raised md-primary" data-ui-sref="stack.createByJson({stack_name: stackCreateNavCtrl.stackName})"
+                                       data-ng-disabled="stackform.$invalid">确认</md-button>
+                        </md-card-actions>
+                    </md-card>
 
-                <md-card flex="18" >
-                    <img class="md-card-image" alt="Washed Out">
-                    <md-card-title>
-                        <md-card-title-text>
-                            <span class="md-headline">表单</span>
-                        </md-card-title-text>
-                    </md-card-title>
-                    <md-card-content>
-                        <p>已表单格式创建</p>
-                    </md-card-content>
-                    <md-card-actions layout="row" layout-align="end center">
-                        <md-button class="md-raised md-primary" data-ui-sref="stack.createByForm">确认</md-button>
-                    </md-card-actions>
-                </md-card>
-            </div>
+                    <md-card flex="18">
+                        <img class="md-card-image" alt="Washed Out">
+                        <md-card-title>
+                            <md-card-title-text>
+                                <span class="md-headline">快速开始</span>
+                            </md-card-title-text>
+                        </md-card-title>
+                        <md-card-content>
+                            <p>通过可视化向导创建应用</p>
+                        </md-card-content>
+                        <md-card-actions layout="row" layout-align="end center">
+                            <md-button class="md-raised md-primary" data-ui-sref="stack.createByForm({stack_name: stackCreateNavCtrl.stackName})"
+                                       data-ng-disabled="stackform.$invalid">确认</md-button>
+                        </md-card-actions>
+                    </md-card>
+                </div>
+            </form>
         </div>
     </section>
 </div>

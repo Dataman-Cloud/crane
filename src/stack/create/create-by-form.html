@@ -1,1 +1,630 @@
-表单11111111
+<div class="main-content app-layout">
+    <section class="main-section">
+        <header layout="row" layout-align="end start">
+            <div class="info" flex>
+                <h2>创建应用编排--添加服务</h2>
+            </div>
+
+        </header>
+        <md-content>
+            <md-tabs md-dynamic-height md-border-bottom md-autoselect>
+                <md-tab data-ng-repeat="serve in stackCreateByFormCtrl.serveFormArray" label="{/serve.Name || '新服务'/}">
+                    <md-content class="md-padding main-tab-content">
+                        <form name="staticForm">
+                            <!-- OK -->
+                            <div layout="row" layout-align="end start" class="form-group form-group-input">
+                                <label flex="15">服务名称</label>
+                                <div flex="50" layout="column">
+                                    <div flex="none">
+                                        <input type="text" class="form-input" data-ng-model="serve.Name"
+                                               data-required="required" name="name"
+                                               dm-check-include="stackCreateByFormCtrl.serveNameList">
+                                    </div>
+                                    <div ng-messages="staticForm.name.$error" ng-if="staticForm.name.$dirty"
+                                         role="alert">
+                                        <p class="error-info help-info-bottom"
+                                           ng-message="required">
+                                            <small>名称不能为空</small>
+                                        </p>
+                                        <p class="error-info help-info-bottom"
+                                           ng-message="dmCheckInclude">
+                                            <small>服务名不能重复</small>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div flex></div>
+                            </div>
+
+                            <!-- OK -->
+                            <div layout="row" layout-align="end start" class="form-group form-group-input">
+                                <label flex="15">镜像</label>
+                                <div flex="50" layout="column">
+                                    <div flex="none">
+                                        <input type="text" class="form-input"
+                                               data-ng-model="serve.TaskTemplate.ContainerSpec.Image"
+                                               data-required="required" name="Image">
+                                    </div>
+                                    <div ng-messages="staticForm.Image.$error" ng-if="staticForm.Image.$dirty"
+                                         role="alert">
+                                        <p class="error-info help-info-bottom"
+                                           ng-message="required">
+                                            <small>名称不能为空</small>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div flex></div>
+                            </div>
+
+                            <md-divider></md-divider>
+
+                            <div layout="row" layout-align="end center" class="form-group form-group-radio">
+                                <label flex="15">服务模式</label>
+                                <div flex="30" layout="column">
+                                    <div flex>
+                                        <md-radio-group data-ng-model="serve.defaultMode" layout="row"
+                                                        aria-label="defaultMode"
+                                                        data-ng-change="stackCreateByFormCtrl.modeChange(serve)">
+                                            <md-radio-button value="GlobalService" class="md-accent" flex>
+                                                GlobalService
+                                            </md-radio-button>
+                                            <md-radio-button value="Replicated" class="md-accent" flex>Replicated
+                                            </md-radio-button>
+                                        </md-radio-group>
+                                    </div>
+                                </div>
+                                <div flex></div>
+                            </div>
+
+                            <div layout="row" layout-align="end start" class="form-group form-group-input"
+                                 data-ng-if="serve.defaultMode === 'Replicated'">
+                                <label flex="15">任务数</label>
+                                <div flex="50" layout="column">
+                                    <div flex="none">
+                                        <input type="number" class="form-input" min="0"
+                                               data-ng-required="serve.defaultMode === 'Replicated'"
+                                               data-ng-model="serve.Mode.Replicated.Replicas" name="replicas">
+                                    </div>
+                                    <div ng-messages="staticForm.replicas.$error"
+                                         ng-if="staticForm.replicas.$dirty"
+                                         role="alert">
+                                    </div>
+                                </div>
+                                <div flex></div>
+                            </div>
+
+                            <div layout="row" layout-align="end center" class="form-group form-group-radio">
+                                <label flex="15">Endpoint</label>
+                                <div flex="30" layout="column">
+                                    <div flex>
+                                        <md-radio-group data-ng-model="serve.EndpointSpec.Mode" layout="row"
+                                                        aria-label="Endpoint">
+                                            <md-radio-button value="vip" class="md-accent" flex>vip
+                                            </md-radio-button>
+                                            <md-radio-button value="dnsrr" class="md-accent" flex>dnsrr
+                                            </md-radio-button>
+                                        </md-radio-group>
+                                    </div>
+                                </div>
+                                <div flex></div>
+                            </div>
+
+                            <div layout="row" layout-align="end center" class="form-group form-group-radio">
+                                <label flex="15">重启策略</label>
+                                <div flex="30" layout="column">
+                                    <div flex>
+                                        <md-radio-group data-ng-model="serve.TaskTemplate.RestartPolicy.Condition"
+                                                        layout="row"
+                                                        aria-label="restart-condition">
+                                            <md-radio-button value="none" class="md-accent" flex>none
+                                            </md-radio-button>
+                                            <md-radio-button value="'on-failure'" class="md-accent" flex>on-failure
+                                            </md-radio-button>
+                                            <md-radio-button value="'any'" class="md-accent" flex>any
+                                            </md-radio-button>
+                                        </md-radio-group>
+                                    </div>
+                                </div>
+                                <div flex></div>
+                            </div>
+
+                            <div layout="row" layout-align="end start" class="form-group form-group-input">
+                                <label flex="15">重启延时</label>
+                                <div flex="50" layout="column">
+                                    <div flex="none">
+                                        <input type="number" class="form-input"
+                                               data-ng-model="serve.TaskTemplate.RestartPolicy.Delay"
+                                               name="restartDelay" min="0">
+                                    </div>
+                                    <div ng-messages="staticForm.restartDelay.$error"
+                                         ng-if="staticForm.restartDelay.$dirty"
+                                         role="alert">
+                                    </div>
+                                </div>
+                                <div flex></div>
+                            </div>
+
+                            <div layout="row" layout-align="end start" class="form-group form-group-input">
+                                <label flex="15">重启最大尝试次数</label>
+                                <div flex="50" layout="column">
+                                    <div flex="none">
+                                        <input type="number" class="form-input" min="0"
+                                               data-ng-model="serve.TaskTemplate.RestartPolicy.MaxAttempts"
+                                               name="restartMaxAttempts">
+                                    </div>
+                                    <div ng-messages="staticForm.restartMaxAttempts.$error"
+                                         ng-if="staticForm.restartMaxAttempts.$dirty"
+                                         role="alert">
+                                    </div>
+                                </div>
+                                <div flex></div>
+                            </div>
+
+                            <div layout="row" layout-align="end start" class="form-group form-group-input">
+                                <label flex="15">重启间隔</label>
+                                <div flex="50" layout="column">
+                                    <div flex="none">
+                                        <input type="number" class="form-input" min="0"
+                                               data-ng-model="serve.TaskTemplate.RestartPolicy.Window"
+                                               name="restartMaxAttempts">
+                                    </div>
+                                    <div ng-messages="staticForm.restartMaxAttempts.$error"
+                                         ng-if="staticForm.restartMaxAttempts.$dirty"
+                                         role="alert">
+                                    </div>
+                                </div>
+                                <div flex></div>
+                            </div>
+
+                            <div layout="row" layout-align="end start" class="form-group form-group-input">
+                                <label flex="15">更新延迟</label>
+                                <div flex="50" layout="column">
+                                    <div flex="none">
+                                        <input type="number" class="form-input" min="0"
+                                               data-ng-model="serve.UpdateConfig.Delay" name="updateDelay">
+                                    </div>
+                                    <div ng-messages="staticForm.updateDelay.$error"
+                                         ng-if="staticForm.updateDelay.$dirty"
+                                         role="alert">
+                                    </div>
+                                </div>
+                                <div flex></div>
+                            </div>
+
+                            <div layout="row" layout-align="end start" class="form-group form-group-input">
+                                <label flex="15">更新并行任务数</label>
+                                <div flex="50" layout="column">
+                                    <div flex="none">
+                                        <input type="number" class="form-input" min="0"
+                                               data-ng-model="serve.UpdateConfig.Parallelism" name="updateParallelism">
+                                    </div>
+                                    <div ng-messages="staticForm.updateParallelism.$error"
+                                         ng-if="staticForm.updateParallelism.$dirty"
+                                         role="alert">
+                                    </div>
+                                </div>
+                                <div flex></div>
+                            </div>
+
+                            <div layout="row" layout-align="end start" class="form-group form-group-input">
+                                <label flex="15">容器工作目录</label>
+                                <div flex="50" layout="column">
+                                    <div flex="none">
+                                        <input type="text" class="form-input"
+                                               data-ng-model="serve.TaskTemplate.ContainerSpec.Dir" name="workdir">
+                                    </div>
+                                    <div ng-messages="staticForm.workdir.$error"
+                                         ng-if="staticForm.workdir.$dirty"
+                                         role="alert">
+                                    </div>
+                                </div>
+                                <div flex></div>
+                            </div>
+
+                            <div layout="row" layout-align="end start" class="form-group form-group-input">
+                                <label flex="15">杀死容器前等待时间</label>
+                                <div flex="50" layout="column">
+                                    <div flex="none">
+                                        <input type="number" class="form-input"
+                                               data-ng-model="serve.TaskTemplate.ContainerSpec.StopGracePeriod"
+                                               name="stopGracePeriod">
+                                    </div>
+                                    <div ng-messages="staticForm.stopGracePeriod.$error"
+                                         ng-if="staticForm.stopGracePeriod.$dirty"
+                                         role="alert">
+                                    </div>
+                                </div>
+                                <div flex></div>
+                            </div>
+
+                            <div layout="row" layout-align="end start" class="form-group form-group-input">
+                                <label flex="15">资源限制</label>
+                                <div flex="20" layout="column">
+                                    <div flex="none">
+                                        CPU:
+                                        <input type="number" class="form-input"
+                                               data-ng-model="serve.TaskTemplate.Resources.NanoCPUs"
+                                               name="limitCpu">
+                                    </div>
+                                    <div ng-messages="staticForm.limitCpu.$error" ng-if="staticForm.limitCpu.$dirty"
+                                         role="alert">
+                                    </div>
+                                </div>
+                                <div flex="20" flex-offset="5" layout="column">
+                                    <div flex="none">
+                                        内存 (B):
+                                        <input type="number" class="form-input"
+                                               data-ng-model="serve.TaskTemplate.Resources.MemoryBytes"
+                                               name="limitMem">
+                                    </div>
+                                    <div ng-messages="staticForm.limitMem.$error" ng-if="staticForm.limitMem.$dirty"
+                                         role="alert">
+                                    </div>
+                                </div>
+                                <div flex></div>
+                            </div>
+
+                            <div layout="row" layout-align="end center" class="form-group form-group-select">
+                                <label flex="15">选择网络</label>
+                                <div flex="50" layout="column">
+                                    <md-input-container>
+                                        <md-select data-ng-model="serve.Networks" multiple
+                                                   aria-label="Networks">
+                                            <md-option value="1">网络1</md-option>
+                                            <md-option value="2">网络2</md-option>
+                                            <md-option value="3">网络3</md-option>
+                                        </md-select>
+                                    </md-input-container>
+                                </div>
+                                <div flex></div>
+                            </div>
+
+                            <div layout="row" layout-align="start start"
+                                 class="form-group form-group-input form-group-addrow">
+                                <label flex="15">环境变量</label>
+                                <div flex="60" layout="column">
+                                    <div flex>
+                                        <md-button class="md-primary"
+                                                   aria-label="Add Env"
+                                                   data-ng-click="stackCreateByFormCtrl.addConfig(serve, 'Env')">
+                                            <i class="fa fa-plus"></i>
+                                            添加环境变量
+                                        </md-button>
+                                        可添加多个环境变量
+                                    </div>
+                                    <div class="add-row-container"
+                                         data-ng-repeat="env in serve.TaskTemplate.ContainerSpec.Env track by $index">
+                                        <ng-form name="envForm" layout="row" layout-align="start center">
+                                            <input type="text" placeholder="KEY" flex="40"
+                                                   data-ng-model="env.key" data-required="required"
+                                                   name="envKey" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/">
+                                            <input type="text" placeholder="VALUE" flex-offset="5" flex="40"
+                                                   data-ng-model="env.value" data-required="required"
+                                                   name="envValue" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/">
+                                            <div flex-offset="5" flex>
+                                                <md-button class="md-icon-button md-accent" aria-label="delete"
+                                                           data-ng-click="stackCreateByFormCtrl.deleteConfig($index, serve, 'Env')">
+                                                    <i class="fa fa-trash"></i>
+                                                </md-button>
+                                            </div>
+                                        </ng-form>
+                                        <div ng-messages="envForm.envKey.$error" ng-if="envForm.envKey.$dirty"
+                                             role="alert">
+                                            <p class="error-info help-info-bottom"
+                                               ng-message="pattern">
+                                                <small>环境变量 Key 值不能包含中文</small>
+                                            </p>
+                                        </div>
+
+                                        <div ng-messages="envForm.envValue.$error" ng-if="envForm.envValue.$dirty"
+                                             role="alert">
+                                            <p class="error-info help-info-bottom"
+                                               ng-message="pattern">
+                                                <small>环境变量 Value 值不能包含中文</small>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div layout="row" layout-align="start start"
+                                 class="form-group form-group-input form-group-addrow">
+                                <label flex="15">服务标签</label>
+                                <div flex="60" layout="column">
+                                    <div flex>
+                                        <md-button class="md-primary"
+                                                   aria-label="Add serve label"
+                                                   data-ng-click="stackCreateByFormCtrl.addConfig(serve, 'ServeLabels')">
+                                            <i class="fa fa-plus"></i>
+                                            添加标签
+                                        </md-button>
+                                        可添加多个标签
+                                    </div>
+                                    <div class="add-row-container"
+                                         data-ng-repeat="label in serve.Labels track by $index">
+                                        <ng-form name="labelForm" layout="row" layout-align="start center">
+                                            <input type="text" placeholder="KEY" flex="40"
+                                                   data-ng-model="label.key" data-required="required"
+                                                   name="labelKey" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/">
+                                            <input type="text" placeholder="VALUE" flex-offset="5" flex="40"
+                                                   data-ng-model="label.value" data-required="required"
+                                                   name="labelValue" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/">
+                                            <div flex-offset="5" flex>
+                                                <md-button class="md-icon-button md-accent" aria-label="delete"
+                                                           data-ng-click="stackCreateByFormCtrl.deleteConfig($index, serve, 'ServeLabels')">
+                                                    <i class="fa fa-trash"></i>
+                                                </md-button>
+                                            </div>
+                                        </ng-form>
+                                        <div ng-messages="labelForm.labelKey.$error" ng-if="labelForm.labelKey.$dirty"
+                                             role="alert">
+                                            <p class="error-info help-info-bottom"
+                                               ng-message="pattern">
+                                                <small>标签 Key 值不能包含中文</small>
+                                            </p>
+                                        </div>
+
+                                        <div ng-messages="labelForm.labelValue.$error"
+                                             ng-if="labelForm.labelValue.$dirty"
+                                             role="alert">
+                                            <p class="error-info help-info-bottom"
+                                               ng-message="pattern">
+                                                <small>标签 Value 值不能包含中文</small>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div layout="row" layout-align="start start"
+                                 class="form-group form-group-input form-group-addrow">
+                                <label flex="15">容器标签</label>
+                                <div flex="60" layout="column">
+                                    <div flex>
+                                        <md-button class="md-primary"
+                                                   aria-label="Add label"
+                                                   data-ng-click="stackCreateByFormCtrl.addConfig(serve, 'Labels')">
+                                            <i class="fa fa-plus"></i>
+                                            添加标签
+                                        </md-button>
+                                        可添加多个标签
+                                    </div>
+                                    <div class="add-row-container"
+                                         data-ng-repeat="label in serve.TaskTemplate.ContainerSpec.Labels track by $index">
+                                        <ng-form name="labelForm" layout="row" layout-align="start center">
+                                            <input type="text" placeholder="KEY" flex="40"
+                                                   data-ng-model="label.key" data-required="required"
+                                                   name="labelKey" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/">
+                                            <input type="text" placeholder="VALUE" flex-offset="5" flex="40"
+                                                   data-ng-model="label.value" data-required="required"
+                                                   name="labelValue" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/">
+                                            <div flex-offset="5" flex>
+                                                <md-button class="md-icon-button md-accent" aria-label="delete"
+                                                           data-ng-click="stackCreateByFormCtrl.deleteConfig($index, serve, 'Labels')">
+                                                    <i class="fa fa-trash"></i>
+                                                </md-button>
+                                            </div>
+                                        </ng-form>
+                                        <div ng-messages="labelForm.labelKey.$error" ng-if="labelForm.labelKey.$dirty"
+                                             role="alert">
+                                            <p class="error-info help-info-bottom"
+                                               ng-message="pattern">
+                                                <small>标签 Key 值不能包含中文</small>
+                                            </p>
+                                        </div>
+
+                                        <div ng-messages="labelForm.labelValue.$error"
+                                             ng-if="labelForm.labelValue.$dirty"
+                                             role="alert">
+                                            <p class="error-info help-info-bottom"
+                                               ng-message="pattern">
+                                                <small>标签 Value 值不能包含中文</small>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div layout="row" layout-align="start start"
+                                 class="form-group form-group-input form-group-addrow">
+                                <label flex="15">端口映射</label>
+                                <div flex="60" layout="column">
+                                    <div flex>
+                                        <md-button class="md-primary"
+                                                   aria-label="Add label"
+                                                   data-ng-click="stackCreateByFormCtrl.addConfig(serve, 'Ports')">
+                                            <i class="fa fa-plus"></i>
+                                            添加端口映射
+                                        </md-button>
+                                        可添加多个端口映射
+                                    </div>
+                                    <div class="add-row-container"
+                                         data-ng-repeat="port in serve.EndpointSpec.Ports track by $index">
+                                        <ng-form name="portForm" layout="row" layout-align="start center">
+
+                                            <input type="number" placeholder="TargetPort" flex="40"
+                                                   data-ng-model="port.TargetPort" data-required="required"
+                                                   name="TargetPort" max="65535" min="1">
+
+                                            <div flex-offset="5" flex="15">
+                                                <md-input-container>
+                                                    <md-select ng-model="port.Protocol" data-required="required"
+                                                               aria-label="select protocol">
+                                                        <md-option value="tcp">TCP</md-option>
+                                                        <md-option value="udp">UDP</md-option>
+                                                    </md-select>
+                                                </md-input-container>
+                                            </div>
+
+                                            <input type="number" placeholder="主机端口" flex-offset="5" flex="40"
+                                                   data-ng-model="port.PublishedPort" data-required="required"
+                                                   name="PublishedPort" max="65535" min="1">
+                                            <div flex-offset="5" flex>
+                                                <md-button class="md-icon-button md-accent" aria-label="delete"
+                                                           data-ng-click="stackCreateByFormCtrl.deleteConfig($index, serve, 'Ports')">
+                                                    <i class="fa fa-trash"></i>
+                                                </md-button>
+                                            </div>
+                                        </ng-form>
+                                        <div ng-messages="portForm.TargetPort.$error"
+                                             ng-if="portForm.TargetPort.$dirty"
+                                             role="alert">
+                                            <p class="error-info help-info-bottom"
+                                               ng-message="max">
+                                                <small>服务端口最大不超过 65535</small>
+                                            </p>
+                                            <p class="error-info help-info-bottom"
+                                               ng-message="min">
+                                                <small>服务端口最小为 1</small>
+                                            </p>
+                                        </div>
+
+                                        <div ng-messages="publishForm.publishValue.$error"
+                                             ng-if="publishForm.publishValue.$dirty"
+                                             role="alert">
+                                            <p class="error-info help-info-bottom"
+                                               ng-message="max">
+                                                <small>主机端口最大不超过 65535</small>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div layout="row" layout-align="start start"
+                                 class="form-group form-group-input form-group-addrow">
+                                <label flex="15">挂载</label>
+                                <div flex="60" layout="column">
+                                    <div flex>
+                                        <md-button class="md-primary" aria-label="Add Mounts"
+                                                   data-ng-click="stackCreateByFormCtrl.addConfig(serve, 'Mounts')">
+                                            <i class="fa fa-plus"></i>
+                                            添加挂载
+                                        </md-button>
+                                        可添加多个挂载
+                                    </div>
+                                    <div class="add-row-container"
+                                         data-ng-repeat="mount in serve.TaskTemplate.ContainerSpec.Mounts track by $index">
+                                        <ng-form name="mountForm" layout="row" layout-align="start center">
+
+                                            <input type="text" placeholder="Source" flex="40"
+                                                   data-ng-model="mount.Source" data-required="required"
+                                                   name="Source" max="65535" min="1">
+
+                                            <div flex-offset="5" flex="15">
+                                                <md-input-container>
+                                                    <md-select ng-model="mount.ReadOnly" data-required="required"
+                                                               aria-label="select protocol">
+                                                        <md-option ng-value="true">只读</md-option>
+                                                        <md-option ng-value="false">读写</md-option>
+                                                    </md-select>
+                                                </md-input-container>
+                                            </div>
+
+                                            <input type="text" placeholder="Target" flex-offset="5" flex="40"
+                                                   data-ng-model="mount.Target" data-required="required"
+                                                   name="Target" max="65535" min="1">
+                                            <div flex-offset="5" flex>
+                                                <md-button class="md-icon-button md-accent" aria-label="delete"
+                                                           data-ng-click="stackCreateByFormCtrl.deleteConfig($index, serve, 'Mounts')">
+                                                    <i class="fa fa-trash"></i>
+                                                </md-button>
+                                            </div>
+                                        </ng-form>
+                                        <div ng-messages="mountForm.Source.$error"
+                                             ng-if="mountForm.Source.$dirty"
+                                             role="alert">
+                                        </div>
+
+                                        <div ng-messages="mountForm.Target.$error"
+                                             ng-if="mountForm.Target.$dirty"
+                                             role="alert">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div layout="row" layout-align="start start"
+                                 class="form-group form-group-input form-group-addrow">
+                                <label flex="15">限制条件</label>
+                                <div flex="60" layout="column">
+                                    <div flex>
+                                        <md-button class="md-primary"
+                                                   aria-label="Add label"
+                                                   data-ng-click="stackCreateByFormCtrl.addConfig(serve, 'Constraints')">
+                                            <i class="fa fa-plus"></i>
+                                            添加限制条件
+                                        </md-button>
+                                        可添加多个限制条件
+                                    </div>
+                                    <div class="add-row-container"
+                                         data-ng-repeat="constraint in serve.TaskTemplate.Placement.Constraints track by $index">
+                                        <ng-form name="constraintForm" layout="row" layout-align="start center">
+                                            <input type="text" placeholder="KEY" flex="40"
+                                                   data-ng-model="constraint.key" data-required="required"
+                                                   name="constraintKey">
+                                            <input type="text" placeholder="VALUE" flex="40" flex-offset="5"
+                                                   data-ng-model="constraint.value" data-required="required"
+                                                   name="constraintValue">
+                                            <div flex-offset="5" flex>
+                                                <md-button class="md-icon-button md-accent" aria-label="delete"
+                                                           data-ng-click="stackCreateByFormCtrl.deleteConfig($index, serve, 'Constraints')">
+                                                    <i class="fa fa-trash"></i>
+                                                </md-button>
+                                            </div>
+                                        </ng-form>
+                                        <div ng-messages="constraintForm.constraintKey.$error"
+                                             ng-if="constraintForm.constraintKey.$dirty"
+                                             role="alert">
+                                            <p class="error-info help-info-bottom"
+                                               ng-message="pattern">
+                                                <small>KEY 不能包含中文</small>
+                                            </p>
+                                        </div>
+                                        <div ng-messages="constraintForm.constraintValue.$error"
+                                             ng-if="constraintForm.constraintValue.$dirty"
+                                             role="alert">
+                                            <p class="error-info help-info-bottom"
+                                               ng-message="pattern">
+                                                <small>VALUE 不能包含中文</small>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div layout="row" layout-align="end start" class="form-group form-group-input">
+                                <label flex="15">命令行</label>
+                                <div flex="50" layout="column">
+                                    <div flex="none">
+                                        <input type="text" class="form-input" data-ng-model="serve.Command[0]"
+                                               name="cmd"
+                                               dm-check-include="stackCreateByFormCtrl.serveNameList">
+                                    </div>
+                                    <div ng-messages="staticForm.name.$error" ng-if="staticForm.name.$dirty"
+                                         role="alert">
+                                    </div>
+                                </div>
+                                <div flex></div>
+                            </div>
+
+                            <div layout="row" class="form-footer-button">
+                                <div flex-offset="15">
+                                    <md-button class="md-raised md-primary" data-ng-disabled="staticForm.$invalid"
+                                               data-ng-click="stackCreateByFormCtrl.addServe($index)">继续添加服务
+                                    </md-button>
+                                    <md-button class="md-raised md-warn"
+                                               data-ng-click="stackCreateByFormCtrl.removeServe($index)">删除服务
+                                    </md-button>
+                                    <md-button class="md-raised md-primary" data-ng-disabled="staticForm.$invalid"
+                                               data-ng-click="stackCreateByFormCtrl.create()">
+                                        部署
+                                    </md-button>
+                                </div>
+                            </div>
+                        </form>
+                    </md-content>
+                </md-tab>
+            </md-tabs>
+        </md-content>
+    </section>
+</div>

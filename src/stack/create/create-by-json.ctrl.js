@@ -4,7 +4,7 @@
         .controller('StackCreateByJsonCtrl', StackCreateByJsonCtrl);
 
     /* @ngInject */
-    function StackCreateByJsonCtrl($timeout, $scope, $rootScope, $state, stackBackend) {
+    function StackCreateByJsonCtrl($timeout, $scope, $rootScope, $state, stackBackend, $stateParams) {
         var self = this;
 
         self.supportReadFile = false;
@@ -28,7 +28,7 @@
         self.stack = angular.toJson($rootScope.STACK_SAMPLES.singleService, '\t') || "";
 
         self.form = {
-            Namespace: "",
+            Namespace: $stateParams.stack_name || '',
             Stack: ""
         };
 
