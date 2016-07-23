@@ -267,11 +267,12 @@
                                 <label flex="15">选择网络</label>
                                 <div flex="50" layout="column">
                                     <md-input-container>
-                                        <md-select data-ng-model="serve.Networks" multiple
-                                                   aria-label="Networks">
-                                            <md-option value="1">网络1</md-option>
-                                            <md-option value="2">网络2</md-option>
-                                            <md-option value="3">网络3</md-option>
+                                        <md-select data-ng-model="serve.Networks" multiple aria-label="Networks"
+                                                   md-on-open="stackCreateByFormCtrl.loadOverlayNetworks()">
+                                            <md-option
+                                                    data-ng-repeat="network in stackCreateByFormCtrl.networks | filter: {Driver: 'overlay'}"
+                                                    ng-value="network.Name">{/network.Name/}
+                                            </md-option>
                                         </md-select>
                                     </md-input-container>
                                 </div>

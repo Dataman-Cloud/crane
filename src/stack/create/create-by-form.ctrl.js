@@ -4,7 +4,7 @@
         .controller('StackCreateByFormCtrl', StackCreateByFormCtrl);
 
     /* @ngInject */
-    function StackCreateByFormCtrl($state, stackBackend, $stateParams) {
+    function StackCreateByFormCtrl($state, stackBackend, $stateParams, networkBackend) {
         var self = this;
 
         self.form = {
@@ -71,6 +71,7 @@
         self.addConfig = addConfig;
         self.deleteConfig = deleteConfig;
         self.modeChange = modeChange;
+        self.loadOverlayNetworks = loadOverlayNetworks;
 
         function addServe(preIndex) {
             var form = {
@@ -197,6 +198,13 @@
                     GlobalService: {}
                 }
             }
+        }
+
+        function loadOverlayNetworks(){
+            networkBackend.listNetwork()
+                .then(function(data){
+                    self.networks = data
+                })
         }
 
         function formatServeArray() {
