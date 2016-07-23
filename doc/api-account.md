@@ -1,7 +1,9 @@
 ### Account
 
+* `POST`   <a href="#012">/account/v1/login</a>
 * `POST`   <a href="#001">/account/v1/logout</a>
 * `GET`    <a href="#002">/account/v1/accounts</a>
+* `POST`   <a href="#013">/account/v1/accounts</a>
 * `GET`    <a href="#003">/account/v1/accounts/:account_id</a>
 * `GET`    <a href="#004">/account/v1/accounts/:account_id/groups</a>
 * `POST`   <a href="#005">/account/v1/accounts/:account_id/groups/:group_id</a>
@@ -11,6 +13,27 @@
 * `PATCH`  <a href="#009">/account/v1/groups</a>
 * `GET`    <a href="#010">/account/v1/groups/:group_id</a>
 * `DELETE` <a href="#011">/account/v1/groups/:group_id</a>
+
+
+<h4 name="012" id="012">Request:</h4>
+
+登录
+
+```
+curl -XPOST localhost:5013/account/v1/logout -d '{
+	"Email": "",
+	"Password": ""
+}'
+```
+<h4>Response:</h4>
+```
+{
+	"code": 0,
+	"data": "tocken"
+}
+```
+
+---
 
 <h4 name="001" id="001">Request:</h4>
 
@@ -234,3 +257,26 @@ curl -XDELETE localhost:5013/account/v1/groups/1
   "data": "delete success"
 }
 ```
+
+---
+
+<h4 name="013" id="013">Request:</h4>
+
+注册新用户
+
+```
+curl -XPOST localhost:5013/account/v1/accounts -d '{
+	"Title": "",
+	"Email": "",
+	"Phone": "",
+	"Password": ""
+}'
+```
+<h4>Response:</h4>
+```
+{
+	"code": 0,
+	"data": "tocken"
+}
+```
+
