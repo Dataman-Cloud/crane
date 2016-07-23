@@ -1,8 +1,6 @@
 package auth
 
 import (
-	"crypto/md5"
-	"fmt"
 	"net/url"
 	"time"
 )
@@ -35,9 +33,4 @@ func ReferenceToValue(a *Account) Account {
 		Password: a.Password,
 		Token:    a.Token,
 	}
-}
-
-func EncryptPassword(password string) string {
-	pw := fmt.Sprintf("dataman-rolex%xdataman-rolex", md5.Sum([]byte(password)))
-	return fmt.Sprintf("%x", md5.Sum([]byte(pw)))
 }

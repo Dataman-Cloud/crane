@@ -64,7 +64,7 @@ func (a *AccountApi) AccountLogin(ctx *gin.Context) {
 		return
 	}
 
-	acc.Password = EncryptPassword(acc.Password)
+	acc.Password = a.Authenticator.EncryptPassword(acc.Password)
 	token, err := a.Authenticator.Login(&acc)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"code": "1", "data": "403"})
