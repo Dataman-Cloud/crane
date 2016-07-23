@@ -7,7 +7,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Dataman-Cloud/rolex/dockerclient"
 	"github.com/Dataman-Cloud/rolex/model"
 
 	log "github.com/Sirupsen/logrus"
@@ -244,15 +243,21 @@ func (a *AccountApi) LeaveGroup(ctx *gin.Context) {
 
 func (a *AccountApi) GrantServicePermission(ctx *gin.Context) {
 	var param struct {
-		Group string `json:"Group"`
-		Perm  string `json:"Perm"`
+		GroupID int    `json:"GroupID"`
+		Perm    string `json:"Perm"`
 	}
 	if err := ctx.BindJSON(&param); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"code": "1", "data": err.Error()})
 		return
 	}
 
-	err := a.RolexDockerClient.GrantServicePermission(ctx.Param("service_id"), dockerclient.GroupPermission{Group: param.Group, Permission: dockerclient.Permission{Display: param.Perm}})
+	labels := make(map[string]string, 0)
+	gp := GroupPermission{GroupID: param.GroupID, Permission: Permission{Display: param.Perm}}
+	for _, perm := range PermLessOrEqualThan(gp.Permission) {
+		labels[fmt.Sprintf("%s.%d.%s", PERMISSION_LABEL_PREFIX, gp.GroupID, perm.Display)] = "true"
+	}
+
+	err := a.RolexDockerClient.ServiceAddLabel(ctx.Param("service_id"), labels)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"code": "1", "data": err.Error()})
 		return
@@ -262,8 +267,8 @@ func (a *AccountApi) GrantServicePermission(ctx *gin.Context) {
 
 func (a *AccountApi) RevokeServicePermission(ctx *gin.Context) {
 	var param struct {
-		Group string `json:"Group"`
-		Perm  string `json:"Perm"`
+		GroupID int    `json:"GroupID"`
+		Perm    string `json:"Perm"`
 	}
 
 	permission_id := ctx.Param("permission_id")
@@ -273,10 +278,16 @@ func (a *AccountApi) RevokeServicePermission(ctx *gin.Context) {
 		return
 	}
 
-	param.Group = strings.SplitN(permission_id, "-", 2)[0]
+	param.GroupID, _ = strconv.Atoi(strings.SplitN(permission_id, "-", 2)[0])
 	param.Perm = strings.SplitN(permission_id, "-", 2)[1]
 
-	err := a.RolexDockerClient.RevokeServicePermission(ctx.Param("service_id"), dockerclient.GroupPermission{Group: param.Group, Permission: dockerclient.Permission{Display: param.Perm}})
+	labels := make([]string, 0)
+	gp := GroupPermission{GroupID: param.GroupID, Permission: Permission{Display: param.Perm}}
+	for _, perm := range PermGreaterOrEqualThan(gp.Permission) {
+		labels = append(labels, fmt.Sprintf("%s.%d.%s", PERMISSION_LABEL_PREFIX, gp.GroupID, perm.Display))
+	}
+
+	err := a.RolexDockerClient.ServiceRemoveLabel(ctx.Param("service_id"), labels)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"code": 1, "data": err.Error()})
 		return

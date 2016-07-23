@@ -1,4 +1,4 @@
-package dockerclient
+package auth
 
 const (
 	PERMISSION_LABEL_PREFIX = "com.rolex.permissions"
@@ -11,7 +11,7 @@ type Permission struct {
 
 type GroupPermission struct {
 	Permission Permission `json:"Permission"`
-	Group      string     `json:"Group"`
+	GroupID    int        `json:"GroupID"`
 }
 
 var (
