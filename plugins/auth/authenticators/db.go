@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strconv"
 
+	"github.com/Dataman-Cloud/rolex/model"
 	"github.com/Dataman-Cloud/rolex/plugins/auth"
 	"github.com/Dataman-Cloud/rolex/util/db"
 
@@ -36,9 +37,12 @@ func (db *DbAuthenicator) Login(a *auth.Account) (string, error) {
 	return auth.GenToken(a), nil
 }
 
-func (db *DbAuthenicator) Accounts(filter auth.AccountFilter) (*[]auth.Account, error) {
+func (db *DbAuthenicator) Accounts(listOptions model.ListOptions) (*[]auth.Account, error) {
 	var auths []auth.Account
-	if err = db.DbClient.Where(&filter).Find(&auths).Error; err != nil {
+	if err = db.DbClient.
+		Offset(listOptions.Offset).
+		Limit(listOptions.Limit).
+		Find(&auths).Error; err != nil {
 		return nil, err
 	}
 
@@ -89,8 +93,15 @@ func (db *DbAuthenicator) CreateAccount(a *auth.Account) error {
 	return db.DbClient.Save(a).Error
 }
 
-func (db *DbAuthenicator) Groups(group auth.GroupFilter) (*[]auth.Group, error) {
-	return nil, nil
+func (db *DbAuthenicator) Groups(listOptions model.ListOptions) (*[]auth.Group, error) {
+	var groups []auth.Group
+	if err = db.DbClient.
+		Offset(listOptions.Offset).
+		Limit(listOptions.Limit).
+		Find(&groups).Error; err != nil {
+		return nil, err
+	}
+	return &groups, nil
 }
 
 func (db *DbAuthenicator) Group(id uint64) (*auth.Group, error) {

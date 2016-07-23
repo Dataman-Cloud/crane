@@ -3,6 +3,7 @@ package authenticators
 import (
 	"time"
 
+	"github.com/Dataman-Cloud/rolex/model"
 	"github.com/Dataman-Cloud/rolex/plugins/auth"
 )
 
@@ -41,7 +42,7 @@ func (d *Default) Login(a *auth.Account) (token string, err error) {
 	return "", auth.ErrLoginFailed
 }
 
-func (d *Default) Accounts(filter auth.AccountFilter) (auths *[]auth.Account, err error) {
+func (d *Default) Accounts(listOptions model.ListOptions) (auths *[]auth.Account, err error) {
 	return &Accounts, nil
 }
 
@@ -69,7 +70,7 @@ func (d *Default) CreateAccount(a *auth.Account) error {
 	return nil
 }
 
-func (d *Default) Groups(filter auth.GroupFilter) (auths *[]auth.Group, err error) {
+func (d *Default) Groups(listOptions model.ListOptions) (auths *[]auth.Group, err error) {
 	return &Groups, nil
 }
 
