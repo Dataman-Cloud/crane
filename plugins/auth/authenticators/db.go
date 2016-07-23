@@ -1,6 +1,7 @@
 package authenticators
 
 import (
+	"crypto/md5"
 	"errors"
 	"fmt"
 	"strconv"
@@ -163,4 +164,9 @@ func (db *DbAuthenicator) LeaveGroup(accountId, groupId uint64) error {
 	}
 
 	return nil
+}
+
+func (db *DbAuthenicator) EncryptPassword(password string) string {
+	pw := fmt.Sprintf("dataman-rolex%xdataman-rolex", md5.Sum([]byte(password)))
+	return fmt.Sprintf("%x", md5.Sum([]byte(pw)))
 }

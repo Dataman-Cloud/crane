@@ -102,3 +102,7 @@ func (d *Default) JoinGroup(accountId, groupId uint64) error {
 func (d *Default) LeaveGroup(accountId, groupId uint64) error {
 	return nil
 }
+
+func (d *Default) EncryptPassword(password string) string {
+	return password
+}
