@@ -32,7 +32,7 @@
             <td md-cell>{/container.Labels['com.docker.swarm.task.name']/}</td>
             <td md-cell>
                 <p>{/CONTAINER_STATUS_LABELS[container.State]/}
-                <br>{/container.Status/}
+                <br>{/container.Status | statusZh /}
                 </p>
             </td>
             <td md-cell>{/container.Created * 1000 | date: 'yyyy-MM-dd HH:mm:ss'/}</td>
