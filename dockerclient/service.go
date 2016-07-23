@@ -208,28 +208,28 @@ func (client *RolexDockerClient) InspectServiceWithRaw(serviceID string) (swarm.
 }
 
 // grant service permissions
-func (client *RolexDockerClient) GrantServicePermission(serviceID string, p Permission) error {
+func (client *RolexDockerClient) GrantServicePermission(serviceID string, gp GroupPermission) error {
 	service, err := client.InspectServiceWithRaw(serviceID)
 	if err != nil {
 		return err
 	}
 
-	for _, perm := range PermLessOrEqualThan(p) {
-		service.Spec.Labels[PERMISSION_LABEL_PREFIX+"."+p.Group+"."+perm.Display] = "true"
+	for _, perm := range PermLessOrEqualThan(gp.Permission) {
+		service.Spec.Labels[PERMISSION_LABEL_PREFIX+"."+gp.Group+"."+perm.Display] = "true"
 	}
 
 	return client.UpdateService(service.ID, service.Version, service.Spec, nil)
 }
 
 // revoke service permissions
-func (client *RolexDockerClient) RevokeServicePermission(serviceID string, p Permission) error {
+func (client *RolexDockerClient) RevokeServicePermission(serviceID string, gp GroupPermission) error {
 	service, err := client.InspectServiceWithRaw(serviceID)
 	if err != nil {
 		return err
 	}
 
-	for _, perm := range PermGreaterOrEqualThan(p) {
-		delete(service.Spec.Labels, PERMISSION_LABEL_PREFIX+"."+p.Group+"."+perm.Display)
+	for _, perm := range PermGreaterOrEqualThan(gp.Permission) {
+		delete(service.Spec.Labels, PERMISSION_LABEL_PREFIX+"."+gp.Group+"."+perm.Display)
 	}
 
 	return client.UpdateService(service.ID, service.Version, service.Spec, nil)

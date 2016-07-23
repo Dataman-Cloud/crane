@@ -238,13 +238,16 @@ func (a *AccountApi) LeaveGroup(ctx *gin.Context) {
 }
 
 func (a *AccountApi) GrantServicePermission(ctx *gin.Context) {
-	var permission dockerclient.Permission
-	if err := ctx.BindJSON(&permission); err != nil {
+	var param struct {
+		Group string `json:"Group"`
+		Perm  string `json:"Perm"`
+	}
+	if err := ctx.BindJSON(&param); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"code": "1", "data": err.Error()})
 		return
 	}
 
-	err := a.RolexDockerClient.GrantServicePermission(ctx.Param("service_id"), permission)
+	err := a.RolexDockerClient.GrantServicePermission(ctx.Param("service_id"), dockerclient.GroupPermission{Group: param.Group, Permission: dockerclient.Permission{Display: param.Perm}})
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"code": "1", "data": err.Error()})
 		return
@@ -253,13 +256,16 @@ func (a *AccountApi) GrantServicePermission(ctx *gin.Context) {
 }
 
 func (a *AccountApi) RevokeServicePermission(ctx *gin.Context) {
-	var permission dockerclient.Permission
-	if err := ctx.BindJSON(&permission); err != nil {
+	var param struct {
+		Group string `json:"Group"`
+		Perm  string `json:"Perm"`
+	}
+	if err := ctx.BindJSON(&param); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"code": 1, "data": err.Error()})
 		return
 	}
 
-	err := a.RolexDockerClient.RevokeServicePermission(ctx.Param("service_id"), permission)
+	err := a.RolexDockerClient.RevokeServicePermission(ctx.Param("service_id"), dockerclient.GroupPermission{Group: param.Group, Permission: dockerclient.Permission{Display: param.Perm}})
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"code": 1, "data": err.Error()})
 		return
