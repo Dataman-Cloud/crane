@@ -7,13 +7,17 @@ const (
 type Permission struct {
 	Perm    int    `json:"Perm"`
 	Display string `json:"Display"`
-	Group   string `json:"Group"`
+}
+
+type GroupPermission struct {
+	Permission Permission `json:"Permission"`
+	Group      string     `json:"Group"`
 }
 
 var (
-	PermReadOnly  Permission = Permission{Perm: 0, Display: "r", Group: "foo"}
-	PermReadWrite Permission = Permission{Perm: 1, Display: "w", Group: "foo"}
-	PermAdmin     Permission = Permission{Perm: 2, Display: "x", Group: "foo"}
+	PermReadOnly  Permission = Permission{Perm: 0, Display: "r"}
+	PermReadWrite Permission = Permission{Perm: 1, Display: "w"}
+	PermAdmin     Permission = Permission{Perm: 2, Display: "x"}
 
 	Perms []Permission = []Permission{PermReadOnly, PermReadWrite, PermAdmin}
 )
