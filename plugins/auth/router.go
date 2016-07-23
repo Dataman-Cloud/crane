@@ -40,6 +40,6 @@ func (account *AccountApi) RegisterApiForAccount(router *gin.Engine, authorizati
 	{
 		serviceV1.Use(authorization)
 		serviceV1.POST("services/:service_id/permissions", account.GrantServicePermission)
-		serviceV1.DELETE("services/:service_id/permissions", account.RevokeServicePermission)
+		serviceV1.DELETE("services/:service_id/permissions/:permission_id", account.RevokeServicePermission)
 	}
 }

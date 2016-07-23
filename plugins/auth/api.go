@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/Dataman-Cloud/rolex/dockerclient"
@@ -260,10 +261,16 @@ func (a *AccountApi) RevokeServicePermission(ctx *gin.Context) {
 		Group string `json:"Group"`
 		Perm  string `json:"Perm"`
 	}
-	if err := ctx.BindJSON(&param); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": 1, "data": err.Error()})
+
+	permission_id := ctx.Param("permission_id")
+
+	if len(strings.SplitN(permission_id, "-", 2)) != 2 {
+		ctx.JSON(http.StatusBadRequest, gin.H{"code": "1", "data": "permission id not valid"})
 		return
 	}
+
+	param.Group = strings.SplitN(permission_id, "-", 2)[0]
+	param.Perm = strings.SplitN(permission_id, "-", 2)[1]
 
 	err := a.RolexDockerClient.RevokeServicePermission(ctx.Param("service_id"), dockerclient.GroupPermission{Group: param.Group, Permission: dockerclient.Permission{Display: param.Perm}})
 	if err != nil {
