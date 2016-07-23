@@ -6,7 +6,7 @@ import (
 	"github.com/Dataman-Cloud/rolex/api/middlewares"
 	"github.com/Dataman-Cloud/rolex/plugins/auth"
 	"github.com/Dataman-Cloud/rolex/plugins/auth/authenticators"
-	chians "github.com/Dataman-Cloud/rolex/plugins/auth/middlewares"
+	chains "github.com/Dataman-Cloud/rolex/plugins/auth/middlewares"
 	"github.com/Dataman-Cloud/rolex/plugins/auth/token_store"
 	"github.com/Dataman-Cloud/rolex/plugins/registry"
 	"github.com/Dataman-Cloud/rolex/util/log"
@@ -17,7 +17,8 @@ import (
 
 func (api *Api) ApiRouter() *gin.Engine {
 	router := gin.New()
-	Middlewares := []gin.HandlerFunc{middlewares.Authorization, middlewares.ListIntercept()}
+	Authorization := middlewares.Authorization
+	AuthorizeServiceAccess := middlewares.AuthorizeServiceAccess
 
 	router.Use(log.Ginrus(logrus.StandardLogger(), time.RFC3339, true), gin.Recovery())
 	router.Use(middlewares.OptionHandler())
@@ -33,23 +34,25 @@ func (api *Api) ApiRouter() *gin.Engine {
 	}
 
 	if api.Config.FeatureEnabled("account") {
-		r := &auth.AccountApi{Config: api.Config, RolexDockerClient: api.Client}
+		a := &auth.AccountApi{Config: api.Config, RolexDockerClient: api.Client}
 		if api.Config.AccountTokenStore == "default" {
-			r.TokenStore = token_store.NewDefaultStore()
+			a.TokenStore = token_store.NewDefaultStore()
 		}
 
 		if api.Config.AccountAuthenticator == "default" {
-			r.Authenticator = authenticators.NewDefaultAuthenticator()
+			a.Authenticator = authenticators.NewDefaultAuthenticator()
 		} else if api.Config.AccountAuthenticator == "db" {
-			r.Authenticator = authenticators.NewDBAuthenticator()
+			a.Authenticator = authenticators.NewDBAuthenticator()
 		}
 
 		// account mode, Authorization enabled
-		Middlewares = []gin.HandlerFunc{chians.Authorization(r), middlewares.ListIntercept()}
-		r.RegisterApiForAccount(router, Middlewares...)
+		Authorization = chains.Authorization(a)
+		AuthorizeServiceAccess = chains.AuthorizeServiceAccess(a)
+
+		a.RegisterApiForAccount(router, Authorization, middlewares.ListIntercept())
 	}
 
-	v1 := router.Group("/api/v1", Middlewares...)
+	v1 := router.Group("/api/v1", Authorization, middlewares.ListIntercept())
 	{
 		v1.GET("/nodes", api.ListNodes)
 		v1.GET("/nodes/:node_id", api.InspectNode)
@@ -96,7 +99,7 @@ func (api *Api) ApiRouter() *gin.Engine {
 		v1.GET("/stacks/:namespace", api.InspectStack)
 		v1.DELETE("/stacks/:namespace", api.RemoveStack)
 		v1.PATCH("/stacks/:namespace/services/:service_id", api.ScaleService)
-		v1.GET("/stacks/:namespace/services/:service_id", api.InspectService)
+		v1.GET("/stacks/:namespace/services/:service_id", AuthorizeServiceAccess(auth.PermReadOnly), api.InspectService)
 		v1.GET("/stacks/:namespace/services", api.ListStackService)
 		v1.GET("/stacks/:namespace/services/:service_id/logs", api.LogsService)
 		v1.GET("/stacks/:namespace/services/:service_id/stats", api.StatsService)

@@ -70,6 +70,10 @@ func (d *Default) CreateAccount(groupId uint64, a *auth.Account) error {
 	return nil
 }
 
+func (d *Default) AccountGroups(account *auth.Account) (auths *[]auth.Group, err error) {
+	return &Groups, nil
+}
+
 func (d *Default) Groups(listOptions model.ListOptions) (auths *[]auth.Group, err error) {
 	return &Groups, nil
 }

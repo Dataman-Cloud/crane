@@ -38,7 +38,7 @@ func (account *AccountApi) RegisterApiForAccount(router *gin.Engine, middlewares
 
 	serviceV1 := router.Group("/api/v1/")
 	{
-		serviceV1.Use(authorization...)
+		serviceV1.Use(middlewares...)
 		serviceV1.POST("services/:service_id/permissions", account.GrantServicePermission)
 		serviceV1.DELETE("services/:service_id/permissions/:permission_id", account.RevokeServicePermission)
 	}
