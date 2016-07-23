@@ -17,7 +17,7 @@ import (
 
 func (api *Api) ApiRouter() *gin.Engine {
 	router := gin.New()
-	Authorization := middlewares.Authorization
+	Middlewares := []gin.HandlerFunc{middlewares.Authorization, middlewares.ListIntercept()}
 
 	router.Use(log.Ginrus(logrus.StandardLogger(), time.RFC3339, true), gin.Recovery())
 	router.Use(middlewares.OptionHandler())
@@ -45,11 +45,11 @@ func (api *Api) ApiRouter() *gin.Engine {
 		}
 
 		// account mode, Authorization enabled
-		Authorization = chians.Authorization(r)
-		r.RegisterApiForAccount(router, Authorization)
+		Middlewares = []gin.HandlerFunc{chians.Authorization(r), middlewares.ListIntercept()}
+		r.RegisterApiForAccount(router, Middlewares...)
 	}
 
-	v1 := router.Group("/api/v1", Authorization)
+	v1 := router.Group("/api/v1", Middlewares...)
 	{
 		v1.GET("/nodes", api.ListNodes)
 		v1.GET("/nodes/:node_id", api.InspectNode)

@@ -1,5 +1,9 @@
 package auth
 
+import (
+	"github.com/Dataman-Cloud/rolex/model"
+)
+
 type Authenticator interface {
 	AccountPermissions(account *Account) (*[]string, error)
 	AccountGroups(account *Account) (*[]Group, error)
@@ -8,12 +12,12 @@ type Authenticator interface {
 	EncryptPassword(password string) string
 
 	DeleteGroup(groupId uint64) error
-	Groups(filter GroupFilter) (*[]Group, error)
+	Groups(listOptions model.ListOptions) (*[]Group, error)
 	Group(id uint64) (*Group, error)
 	CreateGroup(role *Group) error
 	UpdateGroup(role *Group) error
 
-	Accounts(filter AccountFilter) (*[]Account, error)
+	Accounts(listOptions model.ListOptions) (*[]Account, error)
 	Account(id interface{}) (*Account, error)
 	CreateAccount(a *Account) error
 	UpdateAccount(a *Account) error

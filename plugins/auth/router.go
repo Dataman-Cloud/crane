@@ -13,10 +13,10 @@ type AccountApi struct {
 	RolexDockerClient *dockerclient.RolexDockerClient
 }
 
-func (account *AccountApi) RegisterApiForAccount(router *gin.Engine, authorization gin.HandlerFunc) {
+func (account *AccountApi) RegisterApiForAccount(router *gin.Engine, authorization ...gin.HandlerFunc) {
 	accountV1 := router.Group("/account/v1")
 	{
-		accountV1.Use(authorization)
+		accountV1.Use(authorization...)
 		accountV1.GET("/accounts/:account_id", account.GetAccount)
 		accountV1.GET("/accounts", account.ListAccounts)
 
@@ -38,7 +38,7 @@ func (account *AccountApi) RegisterApiForAccount(router *gin.Engine, authorizati
 
 	serviceV1 := router.Group("/api/v1/")
 	{
-		serviceV1.Use(authorization)
+		serviceV1.Use(authorization...)
 		serviceV1.POST("services/:service_id/permissions", account.GrantServicePermission)
 		serviceV1.DELETE("services/:service_id/permissions/:permission_id", account.RevokeServicePermission)
 	}

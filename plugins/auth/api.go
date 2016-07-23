@@ -8,6 +8,8 @@ import (
 	"time"
 
 	"github.com/Dataman-Cloud/rolex/dockerclient"
+	"github.com/Dataman-Cloud/rolex/model"
+
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
 )
@@ -30,6 +32,7 @@ func (a *AccountApi) CreateAccount(ctx *gin.Context) {
 		return
 	}
 
+	acc.Password = EncryptPassword(acc.Password)
 	acc.LoginAt = time.Now()
 	if err := a.Authenticator.CreateAccount(&acc); err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"code": "1", "data": err.Error()})
@@ -48,8 +51,9 @@ func (a *AccountApi) GetAccount(ctx *gin.Context) {
 }
 
 func (a *AccountApi) ListAccounts(ctx *gin.Context) {
-	var accountFilter AccountFilter
-	accounts, err := a.Authenticator.Accounts(accountFilter)
+	listOptions, _ := ctx.Get("listOptions")
+
+	accounts, err := a.Authenticator.Accounts(listOptions.(model.ListOptions))
 	if err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"code": "1", "data": "404"})
 	} else {
@@ -84,10 +88,10 @@ func (a *AccountApi) AccountLogout(ctx *gin.Context) {
 }
 
 func (a *AccountApi) AccountGroups(ctx *gin.Context) {
-	var groupFilter GroupFilter
-	groups, err := a.Authenticator.Groups(groupFilter)
+	listOptions, _ := ctx.Get("listOptions")
+	groups, err := a.Authenticator.Groups(listOptions.(model.ListOptions))
 	if err != nil {
-		ctx.JSON(http.StatusNotFound, gin.H{"code": "1", "data": "404"})
+		ctx.JSON(http.StatusNotFound, gin.H{"code": "1", "data": err.Error()})
 	} else {
 		ctx.JSON(http.StatusOK, gin.H{"code": "1", "data": groups})
 	}
@@ -101,17 +105,17 @@ func (a *AccountApi) GetGroup(ctx *gin.Context) {
 	}
 	group, err := a.Authenticator.Group(groupId)
 	if err != nil {
-		ctx.JSON(http.StatusNotFound, gin.H{"code": "1", "data": "404"})
+		ctx.JSON(http.StatusNotFound, gin.H{"code": "1", "data": err.Error()})
 	} else {
 		ctx.JSON(http.StatusOK, gin.H{"code": "1", "data": group})
 	}
 }
 
 func (a *AccountApi) ListGroups(ctx *gin.Context) {
-	var groupFilter GroupFilter
-	groups, err := a.Authenticator.Groups(groupFilter)
+	listOptions, _ := ctx.Get("listOptions")
+	groups, err := a.Authenticator.Groups(listOptions.(model.ListOptions))
 	if err != nil {
-		ctx.JSON(http.StatusNotFound, gin.H{"code": "1", "data": "404"})
+		ctx.JSON(http.StatusNotFound, gin.H{"code": "1", "data": err.Error()})
 	} else {
 		ctx.JSON(http.StatusOK, gin.H{"code": "1", "data": groups})
 	}
