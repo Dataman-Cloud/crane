@@ -1,0 +1,42 @@
+<div id="login" class="login">
+    <div class="container">
+        <header>
+            <a ui-sref="auth.login"><img src="/pics/logo-shurenyun-ico-black.svg" class="logo"></a>
+            <h1>请登录数人云账户</h1>
+        </header>
+        <form class="loginForm" name="staticForm" data-ng-submit="loginCtrl.login()">
+            <div class="form-group">
+                <input type="text" placeholder="Email" class="form-control input-first" data-required="required"
+                       name="Email"
+                       ng-model="loginCtrl.form.Email">
+                <div class="prompt-box" style="display: block;"
+                     data-ng-show="staticForm.Email.$error.required && staticForm.Email.$dirty">
+                    <div class="arrow"></div>
+                    <span>请填写用户名</span>
+                </div>
+            <span class="ico" data-ng-show="staticForm.Email.$invalid && staticForm.Email.$dirty"><i
+                    class="fa fa-exclamation-circle"></i></span>
+            </div>
+
+            <div class="form-group">
+                <input type="password" placeholder="密码" class="form-control input-last" data-required="required"
+                       name="password"
+                       ng-model="loginCtrl.form.Password">
+                <div class="prompt-box" style="display: block;"
+                     data-ng-show="staticForm.password.$error.required && staticForm.password.$dirty">
+                    <div class="arrow"></div>
+                    <span>请输入密码</span>
+                </div>
+            <span class="ico" data-ng-show="staticForm.password.$invalid && staticForm.password.$dirty"><i
+                    class="fa fa-exclamation-circle"></i></span>
+            </div>
+
+            <div class="form-group">
+                <button class="btn btn-block" type="submit" id="login-btn-login">登录</button>
+            </div>
+        </form>
+        <div class="switch">
+            <a title="注册" href="#" id="login-btn-register">注册</a>
+        </div>
+    </div>
+</div>

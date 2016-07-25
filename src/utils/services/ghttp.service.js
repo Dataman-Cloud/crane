@@ -125,10 +125,9 @@
                     data = {code: $rootScope.MESSAGE_CODE.unknow};
                 }
                 if (status == 401) {
-                    $cookies.remove('token');
                     utils.redirectLogin(true);
                 } else if (status == 404 || data.code === $rootScope.MESSAGE_CODE.noExist) {
-                    $state.go('404');
+                    //$state.go('404');
                 } else {
                     if (!this.options.ignoreCodes.includes(data.code) && $rootScope.CODE_MESSAGE[data.code]) {
                         Notification.error($rootScope.CODE_MESSAGE[data.code]);
