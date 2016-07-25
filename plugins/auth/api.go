@@ -7,7 +7,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Dataman-Cloud/rolex/dockerclient"
 	"github.com/Dataman-Cloud/rolex/model"
 
 	log "github.com/Sirupsen/logrus"
@@ -244,15 +243,16 @@ func (a *AccountApi) LeaveGroup(ctx *gin.Context) {
 
 func (a *AccountApi) GrantServicePermission(ctx *gin.Context) {
 	var param struct {
-		Group string `json:"Group"`
-		Perm  string `json:"Perm"`
+		GroupID int    `json:"GroupID"`
+		Perm    string `json:"Perm"`
 	}
+
 	if err := ctx.BindJSON(&param); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"code": "1", "data": err.Error()})
 		return
 	}
 
-	err := a.RolexDockerClient.GrantServicePermission(ctx.Param("service_id"), dockerclient.GroupPermission{Group: param.Group, Permission: dockerclient.Permission{Display: param.Perm}})
+	err := a.RolexDockerClient.ServiceAddLabel(ctx.Param("service_id"), PermissionGrantLabelsPairFromGroupIdAndPerm(param.GroupID, param.Perm))
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"code": "1", "data": err.Error()})
 		return
@@ -261,11 +261,6 @@ func (a *AccountApi) GrantServicePermission(ctx *gin.Context) {
 }
 
 func (a *AccountApi) RevokeServicePermission(ctx *gin.Context) {
-	var param struct {
-		Group string `json:"Group"`
-		Perm  string `json:"Perm"`
-	}
-
 	permission_id := ctx.Param("permission_id")
 
 	if len(strings.SplitN(permission_id, "-", 2)) != 2 {
@@ -273,10 +268,9 @@ func (a *AccountApi) RevokeServicePermission(ctx *gin.Context) {
 		return
 	}
 
-	param.Group = strings.SplitN(permission_id, "-", 2)[0]
-	param.Perm = strings.SplitN(permission_id, "-", 2)[1]
+	labels := PermissionRevokeLabelKeysFromPermissionId(permission_id)
 
-	err := a.RolexDockerClient.RevokeServicePermission(ctx.Param("service_id"), dockerclient.GroupPermission{Group: param.Group, Permission: dockerclient.Permission{Display: param.Perm}})
+	err := a.RolexDockerClient.ServiceRemoveLabel(ctx.Param("service_id"), labels)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"code": 1, "data": err.Error()})
 		return
