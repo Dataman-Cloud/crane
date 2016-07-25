@@ -4,17 +4,17 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/Dataman-Cloud/rolex/dockerclient/model"
+	"github.com/Dataman-Cloud/rolex/util"
+
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
-
-	"github.com/Dataman-Cloud/rolex/dockerclient"
-	"github.com/Dataman-Cloud/rolex/util"
 )
 
 func (api *Api) UpdateStack(ctx *gin.Context) {}
 
 func (api *Api) CreateStack(ctx *gin.Context) {
-	stackBundle := dockerclient.Bundle{}
+	stackBundle := model.Bundle{}
 
 	if err := ctx.BindJSON(&stackBundle); err != nil {
 		switch jsonErr := err.(type) {
@@ -30,8 +30,8 @@ func (api *Api) CreateStack(ctx *gin.Context) {
 	}
 
 	if err := api.GetDockerClient().DeployStack(&stackBundle); err != nil {
-		ctx.JSON(http.StatusInternalServerError, err.Error())
 		log.Error("Stack deploy got error: ", err)
+		ctx.JSON(http.StatusInternalServerError, err.Error())
 		return
 	}
 
