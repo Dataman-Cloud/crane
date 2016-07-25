@@ -4,7 +4,7 @@
         .factory('utils', utils);
 
     /* @ngInject */
-    function utils(Notification, $rootScope) {
+    function utils(Notification, $rootScope, $window, $cookies) {
         return {
             buildFullURL: buildFullURL,
             encodeQueryParams: encodeQueryParams,
@@ -45,28 +45,28 @@
                 url = convertProtocol2WS(url);
             }
             return url;
-        };
-        
-        
+        }
+
         function encodeQueryParams($stateParams) {
             var params = {
-                    page: $stateParams.page, 
-                    per_page: $stateParams.per_page,
-                    keywords: $stateParams.keywords
-                    };
+                page: $stateParams.page,
+                per_page: $stateParams.per_page,
+                keywords: $stateParams.keywords
+            };
             if ($stateParams.sort_by) {
                 params.sort_by = $stateParams.sort_by;
                 params.order = $stateParams.order;
             }
             return params;
-        };
-        
+        }
+
         function redirectLogin(isReturn) {
-            var href = $rootScope.HOME_URL + "?timestamp=" + new Date().getTime(); 
+            $cookies.remove('token');
+            var href = HOME_URL + "?timestamp=" + new Date().getTime();
             if (isReturn) {
-                href += '&return_to=' + encodeURIComponent(window.location.href);
+                href += '&return_to=' + encodeURIComponent($window.location.href);
             }
-            window.location.href = href;
+            $window.location.href = href;
             $rootScope.$destroy();
         }
 

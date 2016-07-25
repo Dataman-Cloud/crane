@@ -94,6 +94,10 @@
         };
 
         $rootScope.BACKEND_URL = {
+            auth: {
+                login: 'account/v1/login',
+                logout: 'account/v1/logout'
+            },
             node: {
                 nodes: 'api/v1/nodes',
                 nodeInfo: 'api/v1/nodes/$node_id/info',
