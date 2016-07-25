@@ -72,8 +72,8 @@ func (client *RolexDockerClient) ListStack() ([]Stack, error) {
 }
 
 // ListStackServices return list of service staus and core config in stack
-func (client *RolexDockerClient) ListStackService(namespace string) ([]ServiceStatus, error) {
-	services, err := client.FilterServiceByStack(namespace)
+func (client *RolexDockerClient) ListStackService(namespace string, opts types.ServiceListOptions) ([]ServiceStatus, error) {
+	services, err := client.FilterServiceByStack(namespace, opts)
 	if err != nil {
 		return nil, err
 	}
@@ -83,7 +83,7 @@ func (client *RolexDockerClient) ListStackService(namespace string) ([]ServiceSt
 
 // Inspect stack get stack info
 func (client *RolexDockerClient) InspectStack(namespace string) (*model.Bundle, error) {
-	services, err := client.FilterServiceByStack(namespace)
+	services, err := client.FilterServiceByStack(namespace, types.ServiceListOptions{})
 	if err != nil {
 		return nil, err
 	}
@@ -104,7 +104,7 @@ func (client *RolexDockerClient) InspectStack(namespace string) (*model.Bundle, 
 
 // RemoveStack remove all service under the stack
 func (client *RolexDockerClient) RemoveStack(namespace string) error {
-	services, err := client.FilterServiceByStack(namespace)
+	services, err := client.FilterServiceByStack(namespace, types.ServiceListOptions{})
 	if err != nil {
 		return err
 	}
@@ -119,10 +119,12 @@ func (client *RolexDockerClient) RemoveStack(namespace string) error {
 }
 
 // filter service by stack name
-func (client *RolexDockerClient) FilterServiceByStack(namespace string) ([]swarm.Service, error) {
-	filter := filters.NewArgs()
-	filter.Add("label", labelNamespace)
-	services, err := client.ListServiceSpec(types.ServiceListOptions{Filter: filter})
+func (client *RolexDockerClient) FilterServiceByStack(namespace string, opts types.ServiceListOptions) ([]swarm.Service, error) {
+	if opts.Filter.Len() == 0 {
+		opts.Filter = filters.NewArgs()
+	}
+	opts.Filter.Add("label", labelNamespace)
+	services, err := client.ListServiceSpec(opts)
 	if err != nil {
 		return nil, err
 	}

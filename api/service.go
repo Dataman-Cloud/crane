@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 	"io"
 	"net/http"
 
@@ -50,7 +51,18 @@ func (api *Api) CreateService(ctx *gin.Context) {
 
 // ServiceList returns the list of services.
 func (api *Api) ListService(ctx *gin.Context) {
-	services, err := api.GetDockerClient().ListService(types.ServiceListOptions{})
+	opts := types.ServiceListOptions{}
+	if labelFilters_, found := ctx.Get("labelFilters"); found {
+		labelFilters := labelFilters_.(map[string]string)
+		args := filters.NewArgs()
+		for k, v := range labelFilters {
+			args.Add("label", fmt.Sprintf("%s=%s", k, v))
+		}
+		fmt.Println(args)
+		opts.Filter = args
+	}
+
+	services, err := api.GetDockerClient().ListService(opts)
 	if err != nil {
 		ctx.JSON(http.StatusServiceUnavailable, err.Error())
 		return

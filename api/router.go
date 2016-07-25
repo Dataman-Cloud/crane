@@ -102,7 +102,7 @@ func (api *Api) ApiRouter() *gin.Engine {
 		v1.DELETE("/stacks/:namespace", api.RemoveStack)
 		v1.PATCH("/stacks/:namespace/services/:service_id", api.ScaleService)
 		v1.GET("/stacks/:namespace/services/:service_id", AuthorizeServiceAccess(auth.PermReadOnly), api.InspectService)
-		v1.GET("/stacks/:namespace/services", api.ListStackService)
+		v1.GET("/stacks/:namespace/services", AuthorizeServiceAccess(auth.PermReadOnly), api.ListStackService)
 		v1.GET("/stacks/:namespace/services/:service_id/logs", api.LogsService)
 		v1.GET("/stacks/:namespace/services/:service_id/stats", api.StatsService)
 		v1.GET("/stacks/:namespace/services/:service_id/tasks", api.ListTasks)

@@ -8,6 +8,8 @@ import (
 	"github.com/Dataman-Cloud/rolex/util"
 
 	log "github.com/Sirupsen/logrus"
+	"github.com/docker/engine-api/types"
+	"github.com/docker/engine-api/types/filters"
 	"github.com/gin-gonic/gin"
 )
 
@@ -68,7 +70,17 @@ func (api *Api) InspectStack(ctx *gin.Context) {
 func (api *Api) ListStackService(ctx *gin.Context) {
 	namespace := ctx.Param("namespace")
 
-	servicesStatus, err := api.GetDockerClient().ListStackService(namespace)
+	opts := types.ServiceListOptions{}
+	if labelFilters_, found := ctx.Get("labelFilters"); found {
+		labelFilters := labelFilters_.(map[string]string)
+		args := filters.NewArgs()
+		for k, _ := range labelFilters {
+			args.Add("label", k)
+		}
+		opts.Filter = args
+	}
+
+	servicesStatus, err := api.GetDockerClient().ListStackService(namespace, opts)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, err.Error())
 		log.Error("ListStackService got error: ", err)
