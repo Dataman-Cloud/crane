@@ -38,7 +38,7 @@ func AuthorizeServiceAccess(a *auth.AccountApi) func(permissionRequired auth.Per
 					return
 				}
 			} else { // for list services request
-				if !ListServiceAuthorization() {
+				if !ListServiceAuthorization(ctx, groups, permissionRequired) {
 					ctx.Abort()
 					return
 				}
@@ -59,6 +59,19 @@ func SingleServiceAuthorizationCheck(service swarm.Service, groups *[]auth.Group
 
 }
 
-func ListServiceAuthorization() bool {
+// add label filter only
+func ListServiceAuthorization(ctx *gin.Context, groups *[]auth.Group, permissionRequired auth.Permission) bool {
+	labelFilters := make(map[string]string, 0)
+	//for _, group := range *groups {
+	//labelFilters[fmt.Sprintf("%s.%d.%s", auth.PERMISSION_LABEL_PREFIX, group.ID, permissionRequired.Display)] = "true"
+	//}
+
+	// support only one group now as docker label filter doesn't support `OR` operation or `REGEXP` operation
+	if len(*groups) > 0 {
+		group := (*groups)[0]
+		labelFilters[fmt.Sprintf("%s.%d.%s", auth.PERMISSION_LABEL_PREFIX, group.ID, permissionRequired.Display)] = "true"
+	}
+
+	ctx.Set("labelFilters", labelFilters)
 	return true
 }
