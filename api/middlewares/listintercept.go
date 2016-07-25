@@ -26,6 +26,16 @@ func ListIntercept() gin.HandlerFunc {
 				listOptions.Offset = (per - 1) * listOptions.Limit
 			}
 
+			params.Del("page")
+			params.Del("per_page")
+			if len(params) > 0 {
+				filter := make(map[string]interface{})
+				for k, v := range params {
+					filter[k] = v[0]
+				}
+				listOptions.Filter = filter
+			}
+
 			ctx.Set("listOptions", listOptions)
 		}
 	}
