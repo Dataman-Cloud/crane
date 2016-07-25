@@ -949,3 +949,14 @@ md-content h4 {
 md-content h4:first-child {
     margin-top: 0;
 }
+
+.breadcrumb {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.26);
+    border-radius: 0;
+    margin-bottom: 0;
+    padding: 6px 0 6px 25px;
+    z-index: 10001;
+}
+
+
+
