@@ -6,7 +6,6 @@ import (
 
 type Authenticator interface {
 	AccountPermissions(account *Account) (*[]string, error)
-	AccountGroups(account *Account) (*[]Group, error)
 
 	Login(account *Account) (token string, err error)
 	EncryptPassword(password string) string
@@ -16,7 +15,9 @@ type Authenticator interface {
 	Group(id uint64) (*Group, error)
 	CreateGroup(role *Group) error
 	UpdateGroup(role *Group) error
+	GroupAccounts(account model.ListOptions) (*[]Account, error)
 
+	AccountGroups(account model.ListOptions) (*[]Group, error)
 	Accounts(listOptions model.ListOptions) (*[]Account, error)
 	Account(id interface{}) (*Account, error)
 	CreateAccount(groupId uint64, a *Account) error

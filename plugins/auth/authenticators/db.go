@@ -200,6 +200,48 @@ func (db *DbAuthenicator) LeaveGroup(accountId, groupId uint64) error {
 	return nil
 }
 
+func (db *DbAuthenicator) GroupAccounts(listOptions model.ListOptions) (*[]auth.Account, error) {
+	var accounts []auth.Account
+	var accountGroup []auth.AccountGroup
+	if err := db.DbClient.
+		Where(listOptions.Filter).
+		Offset(listOptions.Offset).
+		Limit(listOptions.Limit).
+		Find(&accountGroup).
+		Error; err != nil {
+		return nil, err
+	}
+
+	for _, ag := range accountGroup {
+		var account auth.Account
+		if err := db.DbClient.Where("id = ?", ag.AccountId).Find(&account).Error; err == nil {
+			accounts = append(accounts, account)
+		}
+	}
+	return &accounts, nil
+}
+
+func (db *DbAuthenicator) AccountGroups(listOptions model.ListOptions) (*[]auth.Group, error) {
+	var groups []auth.Group
+	var accountGroup []auth.AccountGroup
+	if err := db.DbClient.
+		Where(listOptions.Filter).
+		Offset(listOptions.Offset).
+		Limit(listOptions.Limit).
+		Find(&accountGroup).
+		Error; err != nil {
+		return nil, err
+	}
+
+	for _, ag := range accountGroup {
+		var group auth.Group
+		if err := db.DbClient.Where("id = ?", ag.GroupId).Find(&group).Error; err == nil {
+			groups = append(groups, group)
+		}
+	}
+	return &groups, nil
+}
+
 func (db *DbAuthenicator) EncryptPassword(password string) string {
 	pw := fmt.Sprintf("dataman-rolex%xdataman-rolex", md5.Sum([]byte(password)))
 	return fmt.Sprintf("%x", md5.Sum([]byte(pw)))

@@ -1,7 +1,7 @@
 ### Account
 
 * `POST`   <a href="#012">/account/v1/login</a>
-* `POST`   <a href="#001">/account/v1/logout</a>
+* `GET`    <a href="#001">/account/v1/logout</a>
 * `GET`    <a href="#002">/account/v1/accounts</a>
 * `POST`   <a href="#013">/account/v1/accounts/:group_id</a>
 * `GET`    <a href="#003">/account/v1/accounts/:account_id</a>
@@ -13,6 +13,7 @@
 * `PATCH`  <a href="#009">/account/v1/groups</a>
 * `GET`    <a href="#010">/account/v1/groups/:group_id</a>
 * `DELETE` <a href="#011">/account/v1/groups/:group_id</a>
+* `GET`    <a href="#014">/account/v1/groups/:group_id/accounts</a>
 
 
 <h4 name="012" id="012">Request:</h4>
@@ -20,7 +21,7 @@
 登录
 
 ```
-curl -XPOST localhost:5013/account/v1/logout -d '{
+curl -XPOST localhost:5013/account/v1/login -d '{
 	"Email": "",
 	"Password": ""
 }'
@@ -280,3 +281,28 @@ curl -XPOST localhost:5013/account/v1/accounts/(group_id) -d '{
 }
 ```
 
+---
+
+<h4 name="014" id="014">Request:</h4>
+
+获取组下所有用户
+
+```
+curl -XGET localhost:5013/account/v1/groups/1/accounts
+```
+<h4>Response:</h4>
+```
+{
+  "code": "1",
+  "data": [
+    {
+      "Id": 1,
+      "Title": "",
+      "Email": "test@test.com",
+      "Phone": "",
+      "LoginAt": "2016-07-22T16:28:37+08:00",
+      "Password": "a42c9217a0f93495d3d24123802c7c57"
+    }
+  ]
+}
+```

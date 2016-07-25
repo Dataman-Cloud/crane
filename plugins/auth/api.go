@@ -40,18 +40,18 @@ func (a *AccountApi) CreateAccount(ctx *gin.Context) {
 	acc.Password = a.Authenticator.EncryptPassword(acc.Password)
 	acc.LoginAt = time.Now()
 	if err := a.Authenticator.CreateAccount(groupId, &acc); err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"code": "1", "data": err.Error()})
+		ctx.JSON(http.StatusInternalServerError, gin.H{"code": 1, "data": err.Error()})
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{"code": "0", "data": "create success"})
+	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": "create success"})
 }
 
 func (a *AccountApi) GetAccount(ctx *gin.Context) {
 	account, err := a.Authenticator.Account(ctx.Param("account_id"))
 	if err != nil {
-		ctx.JSON(http.StatusNotFound, gin.H{"code": "1", "data": "404"})
+		ctx.JSON(http.StatusNotFound, gin.H{"code": 1, "data": "404"})
 	} else {
-		ctx.JSON(http.StatusOK, gin.H{"code": "0", "data": account})
+		ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": account})
 	}
 }
 
@@ -60,9 +60,9 @@ func (a *AccountApi) ListAccounts(ctx *gin.Context) {
 
 	accounts, err := a.Authenticator.Accounts(listOptions.(model.ListOptions))
 	if err != nil {
-		ctx.JSON(http.StatusNotFound, gin.H{"code": "1", "data": "404"})
+		ctx.JSON(http.StatusNotFound, gin.H{"code": 1, "data": "404"})
 	} else {
-		ctx.JSON(http.StatusOK, gin.H{"code": "0", "data": accounts})
+		ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": accounts})
 	}
 }
 
@@ -77,42 +77,77 @@ func (a *AccountApi) AccountLogin(ctx *gin.Context) {
 	acc.Password = a.Authenticator.EncryptPassword(acc.Password)
 	token, err := a.Authenticator.Login(&acc)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": "1", "data": "403"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"code": 1, "data": "403"})
 		return
 	}
 	a.TokenStore.Set(token, fmt.Sprintf("%d", acc.ID), time.Now().Add(SESSION_DURATION))
-	ctx.JSON(http.StatusOK, gin.H{"code": "0", "data": token})
+	acc.Password = ""
+	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": acc})
 }
 
 func (a *AccountApi) AccountLogout(ctx *gin.Context) {
 	if err := a.TokenStore.Del(ctx.Request.Header.Get("Authorization")); err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"code": "1", "data": "fail"})
+		ctx.JSON(http.StatusInternalServerError, gin.H{"code": 1, "data": "fail"})
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{"code": "0", "data": "success"})
+	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": "success"})
+}
+
+func (a *AccountApi) GroupAccounts(ctx *gin.Context) {
+	listObj, _ := ctx.Get("listOptions")
+	listOptions := listObj.(model.ListOptions)
+
+	if groupId, err := strconv.ParseUint(ctx.Param("group_id"), 10, 64); err != nil {
+		log.Errorf("invalid groupid: %v", err)
+		ctx.JSON(http.StatusBadRequest, gin.H{"code": 1, "data": err.Error()})
+		return
+	} else {
+		listOptions.Filter = map[string]interface{}{
+			"group_id": groupId,
+		}
+	}
+
+	accounts, err := a.Authenticator.GroupAccounts(listOptions)
+	if err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"code": 1, "data": err.Error()})
+	} else {
+		ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": accounts})
+	}
 }
 
 func (a *AccountApi) AccountGroups(ctx *gin.Context) {
-	listOptions, _ := ctx.Get("listOptions")
-	groups, err := a.Authenticator.Groups(listOptions.(model.ListOptions))
-	if err != nil {
-		ctx.JSON(http.StatusNotFound, gin.H{"code": "1", "data": err.Error()})
+	listObj, _ := ctx.Get("listOptions")
+	listOptions := listObj.(model.ListOptions)
+
+	if accountId, err := strconv.ParseUint(ctx.Param("account_id"), 10, 64); err != nil {
+		log.Errorf("invalid accountid: %v", err)
+		ctx.JSON(http.StatusBadRequest, gin.H{"code": 1, "data": err.Error()})
+		return
 	} else {
-		ctx.JSON(http.StatusOK, gin.H{"code": "0", "data": groups})
+		listOptions.Filter = map[string]interface{}{
+			"account_id": accountId,
+		}
+	}
+
+	groups, err := a.Authenticator.AccountGroups(listOptions)
+	if err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"code": 1, "data": err.Error()})
+	} else {
+		ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": groups})
 	}
 }
 
 func (a *AccountApi) GetGroup(ctx *gin.Context) {
 	groupId, err := strconv.ParseUint(ctx.Param("group_id"), 10, 64)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": "1", "data": "bad groupid"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"code": 1, "data": "bad groupid"})
 		return
 	}
 	group, err := a.Authenticator.Group(groupId)
 	if err != nil {
-		ctx.JSON(http.StatusNotFound, gin.H{"code": "1", "data": err.Error()})
+		ctx.JSON(http.StatusNotFound, gin.H{"code": 1, "data": err.Error()})
 	} else {
-		ctx.JSON(http.StatusOK, gin.H{"code": "0", "data": group})
+		ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": group})
 	}
 }
 
@@ -120,15 +155,15 @@ func (a *AccountApi) ListGroups(ctx *gin.Context) {
 	listOptions, _ := ctx.Get("listOptions")
 	groups, err := a.Authenticator.Groups(listOptions.(model.ListOptions))
 	if err != nil {
-		ctx.JSON(http.StatusNotFound, gin.H{"code": "1", "data": err.Error()})
+		ctx.JSON(http.StatusNotFound, gin.H{"code": 1, "data": err.Error()})
 	} else {
-		ctx.JSON(http.StatusOK, gin.H{"code": "0", "data": groups})
+		ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": groups})
 	}
 }
 
 func (a *AccountApi) CreateGroup(ctx *gin.Context) {
 	if !a.Authenticator.ModificationAllowed() {
-		ctx.JSON(http.StatusUnauthorized, gin.H{"code": "1", "data": "403"})
+		ctx.JSON(http.StatusUnauthorized, gin.H{"code": 1, "data": "403"})
 		return
 	}
 
@@ -159,7 +194,7 @@ func (a *AccountApi) UpdateGroup(ctx *gin.Context) {
 	}
 
 	if !a.Authenticator.ModificationAllowed() {
-		ctx.JSON(http.StatusUnauthorized, gin.H{"code": "1", "data": "403"})
+		ctx.JSON(http.StatusUnauthorized, gin.H{"code": 1, "data": "403"})
 		return
 	}
 
@@ -173,7 +208,7 @@ func (a *AccountApi) UpdateGroup(ctx *gin.Context) {
 
 func (a *AccountApi) DeleteGroup(ctx *gin.Context) {
 	if !a.Authenticator.ModificationAllowed() {
-		ctx.JSON(http.StatusUnauthorized, gin.H{"code": "1", "data": "403"})
+		ctx.JSON(http.StatusUnauthorized, gin.H{"code": 1, "data": "403"})
 		return
 	}
 
@@ -194,19 +229,19 @@ func (a *AccountApi) DeleteGroup(ctx *gin.Context) {
 
 func (a *AccountApi) JoinGroup(ctx *gin.Context) {
 	if !a.Authenticator.ModificationAllowed() {
-		ctx.JSON(http.StatusUnauthorized, gin.H{"code": "1", "data": "403"})
+		ctx.JSON(http.StatusUnauthorized, gin.H{"code": 1, "data": "403"})
 		return
 	}
 
 	accountId, err := strconv.ParseUint(ctx.Param("account_id"), 10, 64)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": "1", "data": "bad accountid"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"code": 1, "data": "bad accountid"})
 		return
 	}
 
 	groupId, err := strconv.ParseUint(ctx.Param("group_id"), 10, 64)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": "1", "data": "bad accountid"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"code": 1, "data": "bad accountid"})
 		return
 	}
 
@@ -221,19 +256,19 @@ func (a *AccountApi) JoinGroup(ctx *gin.Context) {
 
 func (a *AccountApi) LeaveGroup(ctx *gin.Context) {
 	if !a.Authenticator.ModificationAllowed() {
-		ctx.JSON(http.StatusUnauthorized, gin.H{"code": "1", "data": "403"})
+		ctx.JSON(http.StatusUnauthorized, gin.H{"code": 1, "data": "403"})
 		return
 	}
 
 	accountId, err := strconv.ParseUint(ctx.Param("account_id"), 10, 64)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": "1", "data": "bad accountid"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"code": 1, "data": "bad accountid"})
 		return
 	}
 
 	groupId, err := strconv.ParseUint(ctx.Param("group_id"), 10, 64)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": "1", "data": "bad groupid"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"code": 1, "data": "bad groupid"})
 		return
 	}
 
@@ -254,23 +289,23 @@ func (a *AccountApi) GrantServicePermission(ctx *gin.Context) {
 	}
 
 	if err := ctx.BindJSON(&param); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": "1", "data": err.Error()})
+		ctx.JSON(http.StatusBadRequest, gin.H{"code": 1, "data": err.Error()})
 		return
 	}
 
 	err := a.RolexDockerClient.ServiceAddLabel(ctx.Param("service_id"), PermissionGrantLabelsPairFromGroupIdAndPerm(param.GroupID, param.Perm))
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"code": "1", "data": err.Error()})
+		ctx.JSON(http.StatusInternalServerError, gin.H{"code": 1, "data": err.Error()})
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{"code": "0", "data": "success"})
+	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": "success"})
 }
 
 func (a *AccountApi) RevokeServicePermission(ctx *gin.Context) {
 	permission_id := ctx.Param("permission_id")
 
 	if len(strings.SplitN(permission_id, "-", 2)) != 2 {
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": "1", "data": "permission id not valid"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"code": 1, "data": "permission id not valid"})
 		return
 	}
 
@@ -281,5 +316,5 @@ func (a *AccountApi) RevokeServicePermission(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"code": 1, "data": err.Error()})
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{"code": "0", "data": "success"})
+	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": "success"})
 }
