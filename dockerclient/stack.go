@@ -3,8 +3,9 @@ package dockerclient
 import (
 	"fmt"
 
+	"github.com/Dataman-Cloud/rolex/dockerclient/model"
+
 	log "github.com/Sirupsen/logrus"
-	"github.com/docker/docker/api/client/bundlefile"
 	"github.com/docker/engine-api/types"
 	"github.com/docker/engine-api/types/filters"
 	"github.com/docker/engine-api/types/swarm"
@@ -15,12 +16,6 @@ const (
 	labelNamespace = "com.docker.stack.namespace"
 )
 
-// bundle stores the contents of services and stack name
-type Bundle struct {
-	Stack     bundlefile.Bundlefile `json:"Stack"`
-	Namespace string                `josn:"Namespace"`
-}
-
 type Stack struct {
 	// Name is the name of the stack
 	Namespace string `json:"Namespace"`
@@ -29,7 +24,7 @@ type Stack struct {
 }
 
 //StackDeploy deploy a new stack
-func (client *RolexDockerClient) DeployStack(bundle *Bundle) error {
+func (client *RolexDockerClient) DeployStack(bundle *model.Bundle) error {
 	networks := client.getUniqueNetworkNames(bundle.Stack.Services)
 
 	if err := client.updateNetworks(networks, bundle.Namespace); err != nil {
@@ -87,23 +82,23 @@ func (client *RolexDockerClient) ListStackService(namespace string) ([]ServiceSt
 }
 
 // Inspect stack get stack info
-func (client *RolexDockerClient) InspectStack(namespace string) (*Bundle, error) {
+func (client *RolexDockerClient) InspectStack(namespace string) (*model.Bundle, error) {
 	services, err := client.FilterServiceByStack(namespace)
 	if err != nil {
 		return nil, err
 	}
 
-	stackServices := make(map[string]bundlefile.Service)
+	stackServices := make(map[string]model.RolexService)
 	for _, swarmService := range services {
 		stackServices[swarmService.Spec.Name] = client.ConvertStackService(swarmService.Spec)
 	}
 
-	return &Bundle{
+	return &model.Bundle{
 		Namespace: namespace,
-		Stack: bundlefile.Bundlefile{
+		Stack: model.BundleService{
+			//TODO stack version is missing
 			Services: stackServices,
 		},
-		//TODO stack version is missing
 	}, nil
 }
 
@@ -152,31 +147,20 @@ func (client *RolexDockerClient) FilterServiceByStack(namespace string) ([]swarm
 }
 
 // convert swarm service to bundle service
-func (client *RolexDockerClient) ConvertStackService(swarmService swarm.ServiceSpec) bundlefile.Service {
-	containerSepc := swarmService.TaskTemplate.ContainerSpec
-	bundleService := bundlefile.Service{
-		Image:      containerSepc.Image,
-		Command:    containerSepc.Command,
-		Args:       containerSepc.Args,
-		Env:        containerSepc.Env,
-		WorkingDir: &containerSepc.Dir,
-		User:       &containerSepc.User,
-		Labels:     containerSepc.Labels,
+func (client *RolexDockerClient) ConvertStackService(swarmService swarm.ServiceSpec) model.RolexService {
+	networks := client.getServiceNetworks(swarmService.Networks)
+	return model.RolexService{
+		Name:         swarmService.Name,
+		Labels:       swarmService.Labels,
+		TaskTemplate: swarmService.TaskTemplate,
+		Mode:         swarmService.Mode,
+		UpdateConfig: swarmService.UpdateConfig,
+		Networks:     networks,
+		EndpointSpec: swarmService.EndpointSpec,
 	}
-
-	var ports []bundlefile.Port
-	for _, portSepc := range swarmService.EndpointSpec.Ports {
-		ports = append(ports, bundlefile.Port{
-			Protocol: string(portSepc.Protocol),
-			Port:     portSepc.TargetPort,
-		})
-	}
-
-	bundleService.Ports = ports
-	return bundleService
 }
 
-func (client *RolexDockerClient) getUniqueNetworkNames(services map[string]bundlefile.Service) []string {
+func (client *RolexDockerClient) getUniqueNetworkNames(services map[string]model.RolexService) []string {
 	networkSet := make(map[string]bool)
 
 	for _, service := range services {
@@ -241,7 +225,16 @@ func (client *RolexDockerClient) convertNetworks(networks []string, namespace st
 	return nets
 }
 
-func (client *RolexDockerClient) deployServices(services map[string]bundlefile.Service, namespace string) error {
+func (client *RolexDockerClient) getServiceNetworks(nets []swarm.NetworkAttachmentConfig) []string {
+	networkList := []string{}
+	for _, network := range nets {
+		networkList = append(networkList, network.Target)
+	}
+
+	return networkList
+}
+
+func (client *RolexDockerClient) deployServices(services map[string]model.RolexService, namespace string) error {
 	existingServices, err := client.filterStackServices(namespace)
 	if err != nil {
 		return err
@@ -254,42 +247,26 @@ func (client *RolexDockerClient) deployServices(services map[string]bundlefile.S
 
 	for internalName, service := range services {
 		name := fmt.Sprintf("%s_%s", namespace, internalName)
-
-		var ports []swarm.PortConfig
-		for _, portSepc := range service.Ports {
-			ports = append(ports, swarm.PortConfig{
-				Protocol:   swarm.PortConfigProtocol(portSepc.Protocol),
-				TargetPort: portSepc.Port,
-			})
-		}
-
 		serviceSpec := swarm.ServiceSpec{
 			Annotations: swarm.Annotations{
 				Name:   name,
 				Labels: client.getStackLabels(namespace, service.Labels),
 			},
-			TaskTemplate: swarm.TaskSpec{
-				ContainerSpec: swarm.ContainerSpec{
-					Image:   service.Image,
-					Command: service.Command,
-					Args:    service.Args,
-					Env:     service.Env,
-				},
-			},
-			EndpointSpec: &swarm.EndpointSpec{
-				Ports: ports,
-			},
-			Networks: client.convertNetworks(service.Networks, namespace, internalName),
+			Mode:         service.Mode,
+			TaskTemplate: service.TaskTemplate,
+			EndpointSpec: service.EndpointSpec,
+			Networks:     client.convertNetworks(service.Networks, namespace, internalName),
 		}
 
-		cspec := &serviceSpec.TaskTemplate.ContainerSpec
-		if service.WorkingDir != nil {
-			cspec.Dir = *service.WorkingDir
-		}
+		//TODO change service WorkingDir and User
+		//cspec := &serviceSpec.TaskTemplate.ContainerSpec
+		//if service.WorkingDir != nil {
+		//	cspec.Dir = *service.WorkingDir
+		//}
 
-		if service.User != nil {
-			cspec.User = *service.User
-		}
+		//if service.User != nil {
+		//	cspec.User = *service.User
+		//}
 
 		if service, exists := existingServiceMap[name]; exists {
 			log.Infof("Updating service %s (id %s)", name, service.ID)
