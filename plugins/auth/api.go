@@ -31,9 +31,15 @@ func (a *AccountApi) CreateAccount(ctx *gin.Context) {
 		return
 	}
 
+	groupId, err := strconv.ParseUint(ctx.Param("group_id"), 10, 64)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"code": 1, "data": "invalid groupid"})
+		return
+	}
+
 	acc.Password = a.Authenticator.EncryptPassword(acc.Password)
 	acc.LoginAt = time.Now()
-	if err := a.Authenticator.CreateAccount(&acc); err != nil {
+	if err := a.Authenticator.CreateAccount(groupId, &acc); err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"code": "1", "data": err.Error()})
 		return
 	}

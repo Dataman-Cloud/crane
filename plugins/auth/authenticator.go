@@ -19,7 +19,7 @@ type Authenticator interface {
 
 	Accounts(listOptions model.ListOptions) (*[]Account, error)
 	Account(id interface{}) (*Account, error)
-	CreateAccount(a *Account) error
+	CreateAccount(groupId uint64, a *Account) error
 	UpdateAccount(a *Account) error
 
 	JoinGroup(accountId, groupId uint64) error
