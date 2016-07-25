@@ -82,7 +82,7 @@ func (a *AccountApi) AccountLogin(ctx *gin.Context) {
 	}
 	a.TokenStore.Set(token, fmt.Sprintf("%d", acc.ID), time.Now().Add(SESSION_DURATION))
 	acc.Password = ""
-	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": acc})
+	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": token})
 }
 
 func (a *AccountApi) AccountLogout(ctx *gin.Context) {
