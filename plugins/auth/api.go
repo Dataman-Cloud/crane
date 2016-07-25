@@ -80,13 +80,13 @@ func (a *AccountApi) AccountLogin(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"code": 1, "data": "403"})
 		return
 	}
-	a.TokenStore.Set(token, fmt.Sprintf("%d", acc.ID), time.Now().Add(SESSION_DURATION))
+	a.TokenStore.Set(ctx, token, fmt.Sprintf("%d", acc.ID), time.Now().Add(SESSION_DURATION))
 	acc.Password = ""
 	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": token})
 }
 
 func (a *AccountApi) AccountLogout(ctx *gin.Context) {
-	if err := a.TokenStore.Del(ctx.Request.Header.Get("Authorization")); err != nil {
+	if err := a.TokenStore.Del(ctx, ctx.Request.Header.Get("Authorization")); err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"code": 1, "data": "fail"})
 		return
 	}
