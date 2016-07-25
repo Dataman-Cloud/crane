@@ -103,8 +103,15 @@
                     }
                 };
             };
+            
             TTY.prototype.sendPing = function() {
                 this.ws.send("1");
+            };
+            
+            TTY.prototype.clear = function() {
+                if (this.ws) {
+                    this.ws.close();
+                }
             };
             return TTY;
         }
