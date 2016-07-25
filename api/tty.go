@@ -25,7 +25,13 @@ func (api *Api) ConnectContainer(ctx *gin.Context) {
 	log.Info("Init message: ", string(stream))
 
 	// Add TLS config and file path
-	cmd := exec.Command("docker", ctx.Param("node_id"), ctx.Param("container_id"))
+	endpoint, err := api.GetDockerClient().NodeDaemonEndpoint(ctx.Param("node_id"), "tcp")
+	if err != nil {
+		log.Error("Get container endpoint got error: ", err)
+		return
+	}
+
+	cmd := exec.Command("docker", "-H", endpoint, "exec", "-it", ctx.Param("container_id"), "sh")
 	client, err := containertty.New(cmd, conn, req, containertty.DefaultOptions)
 	if err != nil {
 		log.Error("Create tty client got error: ", err)
