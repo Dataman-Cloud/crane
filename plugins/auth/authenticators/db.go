@@ -80,18 +80,41 @@ func (db *DbAuthenicator) UpdaetAccount(a *auth.Account) error {
 	return db.DbClient.Save(a).Error
 }
 
-func (db *DbAuthenicator) CreateAccount(a *auth.Account) error {
-	var accounts []auth.Account
-
-	if err = db.DbClient.Where("email = ?", a.Email).Find(&accounts).Error; err != nil {
+func (db *DbAuthenicator) CreateAccount(groupId uint64, a *auth.Account) error {
+	tx := db.DbClient.Begin()
+	gcount := 0
+	if err = tx.Model(&auth.Group{}).Where("id = ?", groupId).Count(&gcount).Error; err != nil {
 		return err
 	}
 
-	if len(accounts) > 0 {
+	if gcount == 0 {
+		return errors.New("not found group")
+	}
+
+	acount := 0
+	if err = tx.Model(&auth.Account{}).Where("email = ?", a.Email).Count(&acount).Error; err != nil {
+		return err
+	}
+
+	if acount > 0 {
 		return errors.New("email already exists")
 	}
 
-	return db.DbClient.Save(a).Error
+	if err = tx.Save(a).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	if err = tx.Save(&auth.AccountGroup{
+		AccountId: a.ID,
+		GroupId:   groupId,
+	}).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	tx.Commit()
+	return nil
 }
 
 func (db *DbAuthenicator) Groups(listOptions model.ListOptions) (*[]auth.Group, error) {

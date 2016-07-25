@@ -66,7 +66,7 @@ func (d *Default) UpdateAccount(a *auth.Account) error {
 	return nil
 }
 
-func (d *Default) CreateAccount(a *auth.Account) error {
+func (d *Default) CreateAccount(groupId uint64, a *auth.Account) error {
 	return nil
 }
 

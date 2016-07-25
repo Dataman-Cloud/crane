@@ -3,7 +3,7 @@
 * `POST`   <a href="#012">/account/v1/login</a>
 * `POST`   <a href="#001">/account/v1/logout</a>
 * `GET`    <a href="#002">/account/v1/accounts</a>
-* `POST`   <a href="#013">/account/v1/accounts</a>
+* `POST`   <a href="#013">/account/v1/accounts/:group_id</a>
 * `GET`    <a href="#003">/account/v1/accounts/:account_id</a>
 * `GET`    <a href="#004">/account/v1/accounts/:account_id/groups</a>
 * `POST`   <a href="#005">/account/v1/accounts/:account_id/groups/:group_id</a>
@@ -265,7 +265,7 @@ curl -XDELETE localhost:5013/account/v1/groups/1
 注册新用户
 
 ```
-curl -XPOST localhost:5013/account/v1/accounts -d '{
+curl -XPOST localhost:5013/account/v1/accounts/(group_id) -d '{
 	"Title": "",
 	"Email": "",
 	"Phone": "",
