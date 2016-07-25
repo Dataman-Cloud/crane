@@ -10,7 +10,10 @@
         activate();
         
         function activate() {
-            tty.TTY('node.containerTerminal', {node_id:$stateParams.node_id, container_id:$stateParams.container_id});
+            var containerTTY = tty.TTY('node.containerTerminal', {node_id:$stateParams.node_id, container_id:$stateParams.container_id});
+            $scope.$on('$destroy', function () {
+                containerTTY.clear();
+            });
         }
 
     }
