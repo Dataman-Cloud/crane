@@ -252,6 +252,7 @@ func (client *RolexDockerClient) deployServices(services map[string]model.RolexS
 				Name:   name,
 				Labels: client.getStackLabels(namespace, service.Labels),
 			},
+			Mode:         service.Mode,
 			TaskTemplate: service.TaskTemplate,
 			EndpointSpec: service.EndpointSpec,
 			Networks:     client.convertNetworks(service.Networks, namespace, internalName),
