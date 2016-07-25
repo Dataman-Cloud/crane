@@ -9,8 +9,10 @@
 
         self.form = {
             Namespace: $stateParams.stack_name || '',
-            Stack: {},
-            Version: ''
+            Stack: {
+                Version: '',
+                Services: {}
+            }
         };
 
         self.serveFormArray = [
@@ -72,6 +74,7 @@
         self.deleteConfig = deleteConfig;
         self.modeChange = modeChange;
         self.loadOverlayNetworks = loadOverlayNetworks;
+        self.listNames = listNames;
 
         function addServe(preIndex) {
             var form = {
@@ -123,9 +126,6 @@
             };
 
             self.serveFormArray.push(form);
-
-            //Check same name
-            self.serveNameList.push(self.serveFormArray[preIndex].Name);
         }
 
         function removeServe(index) {
@@ -138,12 +138,11 @@
         function create() {
             ///
             var serveArray = formatServeArray();
-            self.form.Stack = {};
+            self.form.Stack.Services = {};
 
             angular.forEach(serveArray, function (serve, index) {
-                self.form.Stack[serve.Name] = serve
+                self.form.Stack.Services[serve.Name] = serve
             });
-
             console.log(self.form)
         }
 
@@ -239,6 +238,18 @@
             });
 
             return serveTempArray;
+        }
+
+        /*
+         Check same name
+         */
+        function listNames() {
+            var nameList = [];
+            angular.forEach(self.serveFormArray, function(item, index){
+                nameList.push(item.Name)
+            });
+
+            return nameList
         }
     }
 })();
