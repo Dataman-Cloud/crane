@@ -18,7 +18,7 @@
                                     <div flex="none">
                                         <input type="text" class="form-input" data-ng-model="serve.Name"
                                                data-required="required" name="name"
-                                               dm-check-include="stackCreateByFormCtrl.serveNameList">
+                                               dm-check-include="stackCreateByFormCtrl.listNames()">
                                     </div>
                                     <div ng-messages="staticForm.name.$error" ng-if="staticForm.name.$dirty"
                                          role="alert">
@@ -597,7 +597,7 @@
                                 <label flex="15">命令行</label>
                                 <div flex="50" layout="column">
                                     <div flex="none">
-                                        <input type="text" class="form-input" data-ng-model="serve.Command[0]"
+                                        <input type="text" class="form-input" data-ng-model="serve.TaskTemplate.ContainerSpec.Command[0]"
                                                name="cmd"
                                                dm-check-include="stackCreateByFormCtrl.serveNameList">
                                     </div>
