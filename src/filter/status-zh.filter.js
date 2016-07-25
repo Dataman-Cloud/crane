@@ -27,9 +27,9 @@
             var regexExp = RegExp(regexPattern, 'ig');
             var duration = statusEn.match(regexExp);
             var result = "";
-            if ( duration !== "") {
+            if ( duration instanceof Array ) {
                 duration = duration.pop();
-		duration = duration.split(" ");
+                duration = duration.split(" ");
                 if ( duration.length === 3 ) {
                     one.includes(duration[1]) ? result = "1" : result = duration[1];
                 }
