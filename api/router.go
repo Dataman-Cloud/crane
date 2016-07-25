@@ -45,11 +45,13 @@ func (api *Api) ApiRouter() *gin.Engine {
 			a.Authenticator = authenticators.NewDBAuthenticator()
 		}
 
-		// account mode, Authorization enabled
 		Authorization = chains.Authorization(a)
 		AuthorizeServiceAccess = chains.AuthorizeServiceAccess(a)
 
-		a.RegisterApiForAccount(router, Authorization, middlewares.ListIntercept())
+		// account mode, Authorization enabled
+		authorizeMiddlewares := make(map[string](func(permissionRequired auth.Permission) gin.HandlerFunc), 0)
+		authorizeMiddlewares["AuthorizeServiceAccess"] = AuthorizeServiceAccess
+		a.RegisterApiForAccount(router, authorizeMiddlewares, chains.Authorization(a), middlewares.ListIntercept())
 	}
 
 	v1 := router.Group("/api/v1", Authorization, middlewares.ListIntercept())

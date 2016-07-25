@@ -13,7 +13,9 @@ type AccountApi struct {
 	RolexDockerClient *dockerclient.RolexDockerClient
 }
 
-func (account *AccountApi) RegisterApiForAccount(router *gin.Engine, middlewares ...gin.HandlerFunc) {
+func (account *AccountApi) RegisterApiForAccount(router *gin.Engine,
+	authorizeMiddlwares map[string](func(permissionRequired Permission) gin.HandlerFunc),
+	middlewares ...gin.HandlerFunc) {
 	accountV1 := router.Group("/account/v1")
 	{
 		accountV1.Use(middlewares...)
@@ -31,6 +33,7 @@ func (account *AccountApi) RegisterApiForAccount(router *gin.Engine, middlewares
 		accountV1.POST("/groups", account.CreateGroup)
 		accountV1.PATCH("/groups", account.UpdateGroup)
 		accountV1.DELETE("/groups/:group_id", account.DeleteGroup)
+		accountV1.POST("/account/v1/accounts", account.CreateAccount)
 	}
 
 	router.POST("/account/v1/login", account.AccountLogin)
@@ -39,7 +42,7 @@ func (account *AccountApi) RegisterApiForAccount(router *gin.Engine, middlewares
 	serviceV1 := router.Group("/api/v1/")
 	{
 		serviceV1.Use(middlewares...)
-		serviceV1.POST("services/:service_id/permissions", account.GrantServicePermission)
-		serviceV1.DELETE("services/:service_id/permissions/:permission_id", account.RevokeServicePermission)
+		serviceV1.POST("services/:service_id/permissions", authorizeMiddlwares["AuthorizeServiceAccess"](PermAdmin), account.GrantServicePermission)
+		serviceV1.DELETE("services/:service_id/permissions/:permission_id", authorizeMiddlwares["AuthorizeServiceAccess"](PermAdmin), account.RevokeServicePermission)
 	}
 }
