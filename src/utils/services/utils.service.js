@@ -24,15 +24,29 @@
             return base + $rootScope.BACKEND_URL[categoryKey][detailKey];
         }
 
-        function buildFullURL(name, params) {
+        function convertProtocol2WS(url) {
+            var urls = url.split(':');
+            var protocol = 'ws';
+            if (urls[0] === 'https' || urls[0] === 'wss') {
+                protocol = 'wss';
+            }
+            urls[0] = protocol;
+            return urls.join(':');
+        }
+        
+        function buildFullURL(name, params, convertWS) {
             var url = getUrlTemplate(name);
             if (params) {
                 $.each(params, function (key, val) {
                     url = url.replace("$" + key, val);
                 });
             }
+            if (convertWS) {
+                url = convertProtocol2WS(url);
+            }
             return url;
         };
+        
         
         function encodeQueryParams($stateParams) {
             var params = {

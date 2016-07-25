@@ -109,6 +109,7 @@
                 containerDiff: 'api/v1/nodes/$node_id/containers/$container_id/diff',
                 containerLog: 'api/v1/nodes/$node_id/containers/$container_id/logs',
                 containerStats: 'api/v1/nodes/$node_id/containers/$container_id/stats',
+                containerTerminal: 'api/v1/nodes/$node_id/containers/$container_id/terminal',
                 networks: 'api/v1/nodes/$node_id/networks',
                 network: 'api/v1/nodes/$node_id/networks/$network_id'
             },

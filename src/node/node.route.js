@@ -197,6 +197,14 @@
                     label: '变更'
                 }
             })
+            .state('node.containerDetail.terminal', {
+                url: '/terminal',
+                templateUrl: '/src/node/container-detail/terminal.html',
+                controller: 'NodeContainerTerminalCtrl as nodeContainerTerminalCtrl',
+                ncyBreadcrumb: {
+                    label: '终端'
+                }
+            })
             .state('node.networkDetail', {
                 url: '/networkDetail/:node_id/:network_id',
                 templateUrl: '/src/node/network-detail/detail.html',
