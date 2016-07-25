@@ -1,5 +1,11 @@
 package auth
 
+import (
+	"fmt"
+	"strconv"
+	"strings"
+)
+
 const (
 	PERMISSION_LABEL_PREFIX = "com.rolex.permissions"
 )
@@ -57,4 +63,31 @@ func PermLessOrEqualThan(p Permission) []Permission {
 	}
 
 	return perms
+}
+
+func PermissionRevokeLabelKeysFromPermissionId(permissionId string) []string {
+	var param struct {
+		GroupID int    `json:"GroupID"`
+		Perm    string `json:"Perm"`
+	}
+	param.GroupID, _ = strconv.Atoi(strings.SplitN(permissionId, "-", 2)[0])
+	param.Perm = strings.SplitN(permissionId, "-", 2)[1]
+
+	labels := make([]string, 0)
+	gp := GroupPermission{GroupID: param.GroupID, Permission: Permission{Display: param.Perm}}
+	for _, perm := range PermGreaterOrEqualThan(gp.Permission) {
+		labels = append(labels, fmt.Sprintf("%s.%d.%s", PERMISSION_LABEL_PREFIX, gp.GroupID, perm.Display))
+	}
+
+	return labels
+}
+
+func PermissionGrantLabelsPairFromGroupIdAndPerm(groupId int, perm string) map[string]string {
+	labels := make(map[string]string, 0)
+	gp := GroupPermission{GroupID: groupId, Permission: Permission{Display: perm}}
+	for _, perm := range PermLessOrEqualThan(gp.Permission) {
+		labels[fmt.Sprintf("%s.%d.%s", PERMISSION_LABEL_PREFIX, gp.GroupID, perm.Display)] = "true"
+	}
+
+	return labels
 }

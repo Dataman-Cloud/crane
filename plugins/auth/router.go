@@ -13,10 +13,10 @@ type AccountApi struct {
 	RolexDockerClient *dockerclient.RolexDockerClient
 }
 
-func (account *AccountApi) RegisterApiForAccount(router *gin.Engine, authorization ...gin.HandlerFunc) {
+func (account *AccountApi) RegisterApiForAccount(router *gin.Engine, middlewares ...gin.HandlerFunc) {
 	accountV1 := router.Group("/account/v1")
 	{
-		accountV1.Use(authorization...)
+		accountV1.Use(middlewares...)
 		accountV1.GET("/accounts/:account_id", account.GetAccount)
 		accountV1.GET("/accounts", account.ListAccounts)
 

@@ -246,18 +246,13 @@ func (a *AccountApi) GrantServicePermission(ctx *gin.Context) {
 		GroupID int    `json:"GroupID"`
 		Perm    string `json:"Perm"`
 	}
+
 	if err := ctx.BindJSON(&param); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"code": "1", "data": err.Error()})
 		return
 	}
 
-	labels := make(map[string]string, 0)
-	gp := GroupPermission{GroupID: param.GroupID, Permission: Permission{Display: param.Perm}}
-	for _, perm := range PermLessOrEqualThan(gp.Permission) {
-		labels[fmt.Sprintf("%s.%d.%s", PERMISSION_LABEL_PREFIX, gp.GroupID, perm.Display)] = "true"
-	}
-
-	err := a.RolexDockerClient.ServiceAddLabel(ctx.Param("service_id"), labels)
+	err := a.RolexDockerClient.ServiceAddLabel(ctx.Param("service_id"), PermissionGrantLabelsPairFromGroupIdAndPerm(param.GroupID, param.Perm))
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"code": "1", "data": err.Error()})
 		return
@@ -266,11 +261,6 @@ func (a *AccountApi) GrantServicePermission(ctx *gin.Context) {
 }
 
 func (a *AccountApi) RevokeServicePermission(ctx *gin.Context) {
-	var param struct {
-		GroupID int    `json:"GroupID"`
-		Perm    string `json:"Perm"`
-	}
-
 	permission_id := ctx.Param("permission_id")
 
 	if len(strings.SplitN(permission_id, "-", 2)) != 2 {
@@ -278,14 +268,7 @@ func (a *AccountApi) RevokeServicePermission(ctx *gin.Context) {
 		return
 	}
 
-	param.GroupID, _ = strconv.Atoi(strings.SplitN(permission_id, "-", 2)[0])
-	param.Perm = strings.SplitN(permission_id, "-", 2)[1]
-
-	labels := make([]string, 0)
-	gp := GroupPermission{GroupID: param.GroupID, Permission: Permission{Display: param.Perm}}
-	for _, perm := range PermGreaterOrEqualThan(gp.Permission) {
-		labels = append(labels, fmt.Sprintf("%s.%d.%s", PERMISSION_LABEL_PREFIX, gp.GroupID, perm.Display))
-	}
+	labels := PermissionRevokeLabelKeysFromPermissionId(permission_id)
 
 	err := a.RolexDockerClient.ServiceRemoveLabel(ctx.Param("service_id"), labels)
 	if err != nil {

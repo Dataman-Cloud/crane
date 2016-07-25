@@ -51,3 +51,39 @@ func TestPermLessThanPerm(T *testing.T) {
 		T.Error("permissions greater than r should be r itself")
 	}
 }
+
+func TestPermissionRevokeLabelsFromPermissionId(T *testing.T) {
+	labels := auth.PermissionRevokeLabelKeysFromPermissionId("gid-r")
+
+	if len(labels) != 3 {
+		T.Error("labels from permission gid-x should have 3 items")
+	}
+
+	if labels[0] == "com.rolex.permissions.gid.r" {
+		T.Error("labels from permission 1 item is r")
+	}
+
+	if labels[1] == "com.rolex.permissions.gid.w" {
+		T.Error("labels from permission 2 item is w")
+	}
+
+	if labels[2] == "com.rolex.permissions.gid.x" {
+		T.Error("labels from permission 3 item is x")
+	}
+}
+
+func TestPermissionGrantLablePairsFromGroupIdAndPerm(T *testing.T) {
+	labels := auth.PermissionGrantLabelsPairFromGroupIdAndPerm(1, "x")
+	if labels["com.rolex.permissions.1.x"] != "true" {
+		T.Error("group 1 should have permission x")
+	}
+
+	labels = auth.PermissionGrantLabelsPairFromGroupIdAndPerm(1, "w")
+	if labels["com.rolex.permissions.1.r"] != "true" {
+		T.Error("group 1 should have permission r")
+	}
+
+	if labels["com.rolex.permissions.1.w"] != "true" {
+		T.Error("group 1 should have permission x")
+	}
+}
