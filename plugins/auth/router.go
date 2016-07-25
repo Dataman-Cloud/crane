@@ -22,7 +22,7 @@ func (account *AccountApi) RegisterApiForAccount(router *gin.Engine,
 		accountV1.GET("/accounts/:account_id", account.GetAccount)
 		accountV1.GET("/accounts", account.ListAccounts)
 
-		accountV1.GET("/logout", account.AccountLogout)
+		accountV1.POST("/logout", account.AccountLogout)
 
 		accountV1.GET("/accounts/:account_id/groups", account.AccountGroups)
 		accountV1.POST("/accounts/:account_id/groups/:group_id", account.JoinGroup)
