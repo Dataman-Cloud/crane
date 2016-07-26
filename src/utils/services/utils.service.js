@@ -8,7 +8,8 @@
         return {
             buildFullURL: buildFullURL,
             encodeQueryParams: encodeQueryParams,
-            redirectLogin: redirectLogin
+            redirectLogin: redirectLogin,
+            isEmpty: isEmpty
         };
 
         function getUrlTemplate(name) {
@@ -68,6 +69,22 @@
             }
             $window.location.href = href;
             $rootScope.$destroy();
+        }
+        
+        function isEmpty(value) {
+            var empty = false;
+            if (!value) {
+                empty = true;
+            } else if (angular.isArray(value)) {
+                if (value.length <= 0) {
+                    empty = true;
+                }
+            } else if (angular.isObject(value)) {
+                if (Object.keys(value).length <= 0) {
+                    empty = true;
+                }
+            }
+            return empty;
         }
 
     }
