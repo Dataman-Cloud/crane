@@ -12,13 +12,18 @@
                     <div flex="50" layout="column">
                         <div flex="none">
                             <input type="text" class="form-input" data-ng-model="stackCreateNavCtrl.stackName"
-                                   data-required="required" name="Name">
+                                   data-required="required" name="Name"
+                                   data-ng-pattern="/^[A-Za-z0-9]+$/">
                         </div>
                         <div ng-messages="staticForm.Namespace.$error" ng-if="staticForm.Namespace.$dirty"
                              role="alert">
                             <p class="error-info help-info-bottom"
                                ng-message="required">
                                 <small>名称不能为空</small>
+                            </p>
+                            <p class="error-info help-info-bottom"
+                               ng-message="pattern">
+                                <small>名称必须数字或者英文</small>
                             </p>
                         </div>
                     </div>

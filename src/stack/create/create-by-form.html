@@ -18,6 +18,7 @@
                                     <div flex="none">
                                         <input type="text" class="form-input" data-ng-model="serve.Name"
                                                data-required="required" name="name"
+                                               data-ng-pattern="/^[A-Za-z0-9]+$/"
                                                dm-check-include="stackCreateByFormCtrl.listNames()">
                                     </div>
                                     <div ng-messages="staticForm.name.$error" ng-if="staticForm.name.$dirty"
@@ -25,6 +26,10 @@
                                         <p class="error-info help-info-bottom"
                                            ng-message="required">
                                             <small>名称不能为空</small>
+                                        </p>
+                                        <p class="error-info help-info-bottom"
+                                           ng-message="pattern">
+                                            <small>名称必须数字或者英文</small>
                                         </p>
                                         <p class="error-info help-info-bottom"
                                            ng-message="dmCheckInclude">
