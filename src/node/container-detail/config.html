@@ -1,3 +1,6 @@
+<h4>启动命令</h4>
+<code data-ng-repeat="cmd in nodeContainerConfigCtrl.container.Config.Cmd track by $index">{/cmd/}</code>
+
 <h4>端口映射</h4>
 <md-table-container>
     <table md-table>
@@ -34,7 +37,41 @@
     </table>
 </md-table-container>
 
-<h4>标签</h4>
+<h4>重启策略(RestartPolicy TODO)</h4>
+<md-table-container>
+    <table md-table>
+    </table>
+</md-table-container>
+
+<h4>网络配置(TODO 多个网络)</h4>
+<md-table-container>
+    <table md-table>
+        <tbody md-body>
+        <tr>
+            <td md-cell>网络ID(TODO 加跳转到网络)</td>
+            <td md-cell>{/nodeContainerConfigCtrl.container.NetworkSettings.Networks.bridge.NetworkID/}</td>
+        </tr>
+        <tr>
+            <td md-cell>容器入口ID</td>
+            <td md-cell>{/nodeContainerConfigCtrl.container.NetworkSettings.Networks.bridge.EndpointID/}</td>
+        </tr>
+        <tr>
+            <td md-cell>网关</td>
+            <td md-cell>{/nodeContainerConfigCtrl.container.NetworkSettings.Networks.bridge.Gateway/}</td>
+        </tr>
+        <tr>
+            <td md-cell>IP 地址</td>
+            <td md-cell>{/nodeContainerConfigCtrl.container.NetworkSettings.Networks.bridge.IPAddress/}</td>
+        </tr>
+        <tr>
+            <td md-cell>MAC 地址</td>
+            <td md-cell>{/nodeContainerConfigCtrl.container.NetworkSettings.Networks.bridge.MacAddress/}</td>
+        </tr>
+        </tbody>
+    </table>
+</md-table-container>
+
+<h4>容器标签</h4>
 <md-table-container>
     <table md-table>
         <thead md-head>
@@ -68,5 +105,42 @@
     </table>
 </md-table-container>
 
-<h4>命令</h4>
-<code data-ng-repeat="cmd in nodeContainerConfigCtrl.container.Config.Cmd track by $index">{/cmd/}</code>
+<h4>基础信息</h4>
+<md-table-container>
+    <table md-table>
+        <tbody md-body>
+        <tr>
+            <td md-cell>镜像</td>
+            <td md-cell>{/nodeContainerConfigCtrl.container.Config.Image/}</td>
+        </tr>
+        <tr>
+            <td md-cell>镜像 digest</td>
+            <td md-cell>{/nodeContainerConfigCtrl.container.Image/}</td>
+        </tr>
+        <tr>
+            <td md-cell>容器主机名</td>
+            <td md-cell>{/nodeContainerConfigCtrl.container.Config.Hostname/}</td>
+        </tr>
+        <tr>
+            <td md-cell>宿主机网络</td>
+            <td md-cell>{/nodeContainerConfigCtrl.container.HostConfig.NetworkMode/}</td>
+        </tr>
+        <tr>
+            <td md-cell>hostname 文件宿主机目录</td>
+            <td md-cell>{/nodeContainerConfigCtrl.container.HostnamePath/}</td>
+        </tr>
+        <tr>
+            <td md-cell>host 文件宿主机目录</td>
+            <td md-cell>{/nodeContainerConfigCtrl.container.HostsPath/}</td>
+        </tr>
+        <tr>
+            <td md-cell>log 文件宿主机目录</td>
+            <td md-cell>{/nodeContainerConfigCtrl.container.LogPath/}</td>
+        </tr>
+        <tr>
+            <td md-cell>resolv.conf 文件宿主机目录</td>
+            <td md-cell>{/nodeContainerConfigCtrl.container.ResolvConfPath/}</td>
+        </tr>
+        </tbody>
+    </table>
+</md-table-container>
