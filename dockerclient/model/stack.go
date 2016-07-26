@@ -7,7 +7,7 @@ import (
 // bundle stores the contents of services and stack name
 type Bundle struct {
 	Stack     BundleService `json:"Stack"`
-	Namespace string        `josn:"Namespace"`
+	Namespace string        `json:"Namespace"`
 }
 
 // BundleService content services spec map and stack version
@@ -20,7 +20,7 @@ type BundleService struct {
 type RolexService struct {
 	Name         string              `json:"Name"`
 	Labels       map[string]string   `json:"Labels"`
-	TaskTemplate swarm.TaskSpec      `josn:"TaskTemplate"`
+	TaskTemplate swarm.TaskSpec      `json:"TaskTemplate"`
 	Mode         swarm.ServiceMode   `json:"Mode"`
 	UpdateConfig *swarm.UpdateConfig `json:"UpdateConfig"`
 	Networks     []string            `json:"Networks"`
