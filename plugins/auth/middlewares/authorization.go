@@ -24,9 +24,9 @@ func Authorization(a *auth.AccountApi) gin.HandlerFunc {
 			return
 		}
 
-		accountId, _ := strconv.Atoi(value)
+		accountId, _ := strconv.ParseUint(value, 10, 64)
 
-		acc, err := a.Authenticator.Account(uint64(accountId))
+		acc, err := a.Authenticator.Account(accountId)
 		if err != nil {
 			ctx.JSON(http.StatusUnauthorized, gin.H{"code": 1, "data": "account not found"})
 			ctx.Abort()
