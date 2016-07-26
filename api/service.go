@@ -18,7 +18,30 @@ import (
 	"golang.org/x/net/context"
 )
 
-func (api *Api) UpdateService(ctx *gin.Context) {}
+func (api *Api) UpdateService(ctx *gin.Context) {
+	var serviceSpec swarm.ServiceSpec
+
+	if err := ctx.BindJSON(&serviceSpec); err != nil {
+		log.Errorf("invalied request body: %v", err)
+		ctx.JSON(http.StatusServiceUnavailable, err.Error())
+		return
+	}
+
+	service, err := api.GetDockerClient().InspectServiceWithRaw(ctx.Param("service_id"))
+	if err != nil {
+		log.Errorf("inspect service error: %v", err)
+		ctx.JSON(http.StatusInternalServerError, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
+		return
+	}
+
+	if err := api.GetDockerClient().UpdateService(service.ID, service.Version, serviceSpec, nil); err != nil {
+		log.Errorf("update service error: %v", err)
+		ctx.JSON(http.StatusInternalServerError, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"code": util.OPERATION_SUCCESS, "data": "update success"})
+}
 
 func (api *Api) InspectService(ctx *gin.Context) {
 	service, err := api.GetDockerClient().InspectServiceWithRaw(ctx.Param("service_id"))
