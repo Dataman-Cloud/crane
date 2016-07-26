@@ -37,8 +37,9 @@
                  this.events.addEventListener(eventType, handler);
              }.bind(this));
              
+             var self=this;
              this.events.onerror = function (event) {
-                 this.stop();
+                 self.stop();
                  console.log('user event stream closed due to error.', event);
                  if (errorCallback) {
                      this.errorCallback(event);
