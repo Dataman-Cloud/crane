@@ -287,11 +287,11 @@ md-dialog[add-item-dialog] > md-dialog-content > form > .input-row > md-input-co
 /* md-table end*/
 
 /* 内容基本布局 */
-.main-section header {
+.main-section > header {
     padding: 40px 30px 30px 30px;
 }
 
-.main-section header h2 {
+.main-section > header h2 {
     font-size: 20px;
     font-weight: 500;
     line-height: 20px;
@@ -299,27 +299,27 @@ md-dialog[add-item-dialog] > md-dialog-content > form > .input-row > md-input-co
     margin: 0;
 }
 
-.main-section header dl {
+.main-section > header dl {
     font-size: 0;
 
     margin-bottom: 10px;
 }
 
-.main-section header dl:last-child {
+.main-section > header dl:last-child {
     margin-bottom: 0;
 }
 
-.main-section header dl:first-of-type {
+.main-section > header dl:first-of-type {
     margin-top: 20px;
 }
 
-.main-section header dt,
-.main-section header dd {
+.main-section > header dt,
+.main-section > header dd {
     font-size: 14px;
     font-weight: 300;
 }
 
-.main-section header dt {
+.main-section > header dt {
     position: relative;
 
     margin-right: 16px;
@@ -327,11 +327,11 @@ md-dialog[add-item-dialog] > md-dialog-content > form > .input-row > md-input-co
     color: #AFB6BC;
 }
 
-.main-section header dd {
+.main-section > header dd {
     margin-right: 25px;
 }
 
-.main-section header dt:after {
+.main-section > header dt:after {
     position: absolute;
     top: 0;
     right: -11px;
@@ -954,8 +954,19 @@ md-content h4:first-child {
     border-radius: 0;
     margin-bottom: 0;
     padding: 6px 0 6px 25px;
-    z-index: 10001;
+    z-index: 1;
 }
 
-
+.info-view {
+    margin-bottom: 20px;
+}
+.info-view dl {
+    font-size: 14px;
+    
+    margin-bottom: 15px;
+}
+.info-view dt {
+    color: #93929D;
+    font-weight: 300;
+}
 

@@ -497,45 +497,7 @@ md-dialog[add-item-dialog] > md-dialog-content > form > .input-row > md-input-co
     min-width: 120px;
 }
 
-/* 内容基本布局 */
-.main-section header {
-    padding: 50px;
-}
 
-.main-section header h2 {
-    font-size: 20px;
-    line-height: 20px;
-    margin: 0 0 15px 0;
-}
-
-.main-section header dl {
-    margin-bottom: 5px;
-}
-
-.main-section header dl:last-child {
-    margin-bottom: 0;
-}
-
-.main-section header dt, .main-section header dd {
-    display: inline-block;
-}
-
-.main-section header dt {
-    color: #A0ABBF;
-    margin-right: 10px;
-    position: relative;
-}
-
-.main-section header dd {
-    margin-right: 25px;
-}
-
-.main-section header dt:after {
-    content: "･";
-    position: absolute;
-    right: -10px;
-    top: 0px;
-}
 
 .main-section .content {
     padding: 50px;

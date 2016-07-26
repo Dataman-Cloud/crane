@@ -1,18 +1,15 @@
 <div class="main-container app-layout">
     <section class="main-section">
-        <header layout="row" layout-align="end start">
-            <div class="info" flex>
-                <h2>{/serviceDetailCtrl.service.Spec.Name/}</h2>
-
-                <br>
-
-                <dl class="list-dl-row">
-                    <dt>任务数</dt>
-                    <dd>{/serviceDetailCtrl.service.Spec.Mode.Replicated.Replicas/} 个</dd>
-                    <dt>创建时间</dt>
-                    <dd>{/serviceDetailCtrl.service.CreatedAt | date: 'yyyy-MM-dd HH:mm:ss'/}</dd>
-                    <dt>更新时间</dt>
-                    <dd>{/serviceDetailCtrl.service.UpdatedAt | date: 'yyyy-MM-dd HH:mm:ss'/}</dd>
+        <header layout="row" layout-align="start start">
+            <div class="info" flex="95" layout="column">
+                <h2><i class="fa fa-tasks" aria-hidden="true"></i> {/serviceDetailCtrl.service.Spec.Name/}</h2>
+                <dl layout="row" layout-wrap layout-align="start end">
+                    <dt flex="none">任务数</dt>
+                    <dd flex="none">{/serviceDetailCtrl.service.Spec.Mode.Replicated.Replicas/} 个</dd>
+                    <dt flex="none">创建时间</dt>
+                    <dd flex="none">{/serviceDetailCtrl.service.CreatedAt | date: 'yyyy-MM-dd HH:mm:ss'/}</dd>
+                    <dt flex="none">更新时间</dt>
+                    <dd flex="none">{/serviceDetailCtrl.service.UpdatedAt | date: 'yyyy-MM-dd HH:mm:ss'/}</dd>
                 </dl>
             </div>
         </header>
