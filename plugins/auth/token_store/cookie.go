@@ -3,6 +3,7 @@ package token_store
 import (
 	"crypto/aes"
 	"crypto/cipher"
+	"encoding/base64"
 	"errors"
 	"fmt"
 	"net/http"
@@ -48,7 +49,7 @@ func (d *Cookie) Set(ctx *gin.Context, token, accountId string, expiredAt time.T
 	cookieValue := []byte(fmt.Sprintf("%s:%s", token, accountId))
 	http.SetCookie(ctx.Writer, &http.Cookie{
 		Name:    ROLEX_SESSION_KEY,
-		Value:   string(Encrypt(cookieValue, len(cookieValue))),
+		Value:   base64.StdEncoding.EncodeToString(Encrypt(cookieValue, len(cookieValue))),
 		Expires: time.Now().Add(auth.SESSION_DURATION),
 	})
 
@@ -62,7 +63,12 @@ func (d *Cookie) Get(ctx *gin.Context, token string) (string, error) {
 	if cookie, err = ctx.Request.Cookie(ROLEX_SESSION_KEY); err != nil {
 		return "", ErrCookieNotExist
 	}
-	decryptedValue := string(Decrypt([]byte(cookie.Value), len(cookie.Value)))
+	data, err := base64.StdEncoding.DecodeString(cookie.Value)
+	if err != nil {
+		return "", err
+	}
+
+	decryptedValue := string(Decrypt([]byte(data), len(cookie.Value)))
 	return strings.SplitN(decryptedValue, ":", 2)[1], nil
 }
 
