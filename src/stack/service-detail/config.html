@@ -1,49 +1,57 @@
-<h4>基本信息</h4>
-<md-table-container layout-padding>
+<section class="info-view" layout="row">
+    <header layout="row" flex="20">
+        <h4>基本信息</h4>
+    </header>
+    <div layout="column" flex="80">
+        <dl layout="row">
+            <dt flex="20">镜像名称</dt>
+            <dd flex-offset="5" flex="75">{/serviceDetailCtrl.service.Spec.TaskTemplate.ContainerSpec.Image/}</dd>
+        </dl>
+        <dl layout="row">
+            <dt flex="20">重启策略</dt>
+            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.Condition || '未知'/}</dd>
+        </dl>
+        <dl layout="row">
+            <dt flex="20">重启尝试次数</dt>
+            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.MaxAttempts || '未知'/}</dd>
+        </dl>
+        <dl layout="row">
+            <dt flex="20">任务数</dt>
+            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.Mode.Replicated.Replicas || '未知'/}</dd>
+        </dl>
+    <div>
+</section>
 
-    <dl layout="row">
-        <dt flex="10" layout-margin>镜像名称</dt>
-        <dd layout-margin>{/serviceDetailCtrl.service.Spec.TaskTemplate.ContainerSpec.Image/}</dd>
-    </dl>
-    <dl layout="row">
-        <dt flex="10" layout-margin>重启策略</dt>
-        <dd layout-margin>{/serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.Condition || '-'/}</dd>
-    </dl>
-    <dl layout="row">
-        <dt flex="10" layout-margin>重启尝试次数</dt>
-        <dd layout-margin>{/serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.MaxAttempts || '-'/}</dd>
-    </dl>
-    <dl layout="row">
-        <dt flex="10" layout-margin>任务数</dt>
-        <dd layout-margin>{/serviceConfigCtrl.service.Spec.Mode.Replicated.Replicas || '-'/}</dd>
-    </dl>
-</md-table-container>
+<section class="info-view" layout="row">
+    <header layout="row" flex="20">
+        <h4>资源限制</h4>
+    </header>
+    <div layout="column" flex="80">
+        <dl layout="row">
+            <dt flex="20">CPU <small>（纳秒）</small></dt>
+            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.TaskTemplate.Resources.Limits.NanoCPUs || '未知'/}</dd>
+        </dl>
+        <dl layout="row">
+            <dt flex="20">内存 <small>（MB）</small></dt>
+            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.TaskTemplate.Resources.Limits.MemoryBytes / ( 1024 * 1024) ||
+            '未知'/}</dd>
+        </dl>
+    <div>
+</section>
 
-<h4>资源限制</h4>
-<md-table-container layout-padding>
-    <dl layout="row">
-        <dt flex="10" layout-margin>CPU (纳秒)</dt>
-        <dd layout-margin>{/serviceConfigCtrl.service.Spec.TaskTemplate.Resources.Limits.NanoCPUs || '-'/}</dd>
-    </dl>
-    <dl layout="row">
-        <dt flex="10" layout-margin>内存 (MB)</dt>
-        <dd layout-margin>{/serviceConfigCtrl.service.Spec.TaskTemplate.Resources.Limits.MemoryBytes / ( 1024 * 1024) ||
-            '-'/}
-        </dd>
-    </dl>
-
-</md-table-container>
-
-<h4>资源预留</h4>
-<md-table-container layout-padding>
-    <dl layout="row">
-        <dt flex="10" layout-margin>CPU (纳秒)</dt>
-        <dd layout-margin>{/serviceConfigCtrl.service.Spec.TaskTemplate.Resources.Reservations.NanoCPUs || '-'/}</dd>
-    </dl>
-    <dl layout="row">
-        <dt flex="10" layout-margin>内存 (MB)</dt>
-        <dd layout-margin>{/serviceConfigCtrl.service.Spec.TaskTemplate.Resources.Reservations.MemoryBytes / ( 1024 *
-            1024) || '-'/}
-        </dd>
-    </dl>
-</md-table-container>
+<section class="info-view" layout="row">
+    <header layout="row" flex="20">
+        <h4>资源预留</h4>
+    </header>
+    <div layout="column" flex="80">
+        <dl layout="row">
+            <dt flex="20">CPU <small>（纳秒）</small></dt>
+            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.TaskTemplate.Resources.Reservations.NanoCPUs || '未知'/}</dd>
+        </dl>
+        <dl layout="row">
+            <dt flex="20">内存 <small>（MB）</small></dt>
+            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.TaskTemplate.Resources.Reservations.MemoryBytes / ( 1024 *
+            1024) || '未知'/}</dd>
+        </dl>
+    <div>
+</section>

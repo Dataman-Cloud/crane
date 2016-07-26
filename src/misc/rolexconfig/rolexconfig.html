@@ -1,42 +1,43 @@
 <div class="main-content app-layout">
     <section class="main-section">
-        <header layout="row" layout-align="end start">
-            <div class="info" flex>
-                <h2>Rolex 配置列表</h2>
+        <header layout="row" layout-align="start start">
+            <div class="info" flex="95" layout="column">
+                <h2><i class="fa fa-cogs" aria-hidden="true"></i> Rolex 配置列表</h2>
             </div>
         </header>
 
         <div class="main-content">
-
-            <md-table-container>
-                <table md-table>
-                    <tbody md-body>
-                    <tr md-row>
-                        <th>Version</th>
-                        <td md-cell>{/miscConfigCtrl.rolexconfig.Version/}</td>
-                    </tr>
-                    <tr md-row>
-                        <th>Build</th>
-                        <td md-cell>{/miscConfigCtrl.rolexconfig.Build/}</td>
-                    </tr>
-                    <tr md-row>
-                        <th>FeatureFlags</th>
-                        <td md-cell>{/miscConfigCtrl.rolexconfig.FeatureFlags || '未配置'/}</td>
-                    </tr>
-                    <tr md-row>
-                        <th>RolexSecret</th>
-                        <td md-cell>{/miscConfigCtrl.rolexconfig.RolexSecret/}</td>
-                    </tr>
-                    <tr md-row>
-                        <th>RolexCaHash</th>
-                        <td md-cell>{/miscConfigCtrl.rolexconfig.RolexCaHash/}</td>
-                    </tr>
-                    </tbody>
-                </table>
+    
+            <section class="info-view" layout="row">
+                <header layout="row" flex="20">
+                    <h4>基本信息</h4>
+                </header>
+                <div layout="column" flex="80">
+                    <dl layout="row">
+                        <dt flex="20">Version</dt>
+                        <dd flex-offset="5" flex="75">{/miscConfigCtrl.rolexconfig.Version/}</dd>
+                    </dl>
+                    <dl layout="row">
+                        <dt flex="20">Build</dt>
+                        <dd flex-offset="5" flex="75">{/miscConfigCtrl.rolexconfig.Build/}</dd>
+                    </dl>
+                    <dl layout="row">
+                        <dt flex="20">FeatureFlags</dt>
+                        <dd flex-offset="5" flex="75">{/miscConfigCtrl.rolexconfig.FeatureFlags || '未配置'/}</dd>
+                    </dl>
+                    <dl layout="row">
+                        <dt flex="20">RolexSecret</dt>
+                        <dd flex-offset="5" flex="75">{/miscConfigCtrl.rolexconfig.RolexSecret/}</dd>
+                    </dl>
+                    <dl layout="row">
+                        <dt flex="20">RolexCaHash</dt>
+                        <dd flex-offset="5" flex="75">{/miscConfigCtrl.rolexconfig.RolexCaHash/}</dd>
+                    </dl>
+                <div>
                 <div class="alert alert-warning text-center" data-ng-if="!miscConfigCtrl.rolexconfig">
                     未查询到信息
                 </div>
-            </md-table-container>
+            </section>
         </div>
     </section>
 </div>
