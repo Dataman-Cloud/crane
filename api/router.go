@@ -37,6 +37,8 @@ func (api *Api) ApiRouter() *gin.Engine {
 		a := &auth.AccountApi{Config: api.Config, RolexDockerClient: api.Client}
 		if api.Config.AccountTokenStore == "default" {
 			a.TokenStore = token_store.NewDefaultStore()
+		} else if api.Config.AccountTokenStore == "cookie_store" {
+			a.TokenStore = token_store.NewCookieStore()
 		}
 
 		if api.Config.AccountAuthenticator == "default" {
