@@ -46,10 +46,21 @@ func (a *AccountApi) CreateAccount(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": "create success"})
 }
 
+func (a *AccountApi) GetAccountInfo(ctx *gin.Context) {
+	account, _ := ctx.Get("account")
+
+	account, err := a.Authenticator.Account(account.(Account).ID)
+	if err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"code": 1, "data": err.Error()})
+	} else {
+		ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": account})
+	}
+}
+
 func (a *AccountApi) GetAccount(ctx *gin.Context) {
 	account, err := a.Authenticator.Account(ctx.Param("account_id"))
 	if err != nil {
-		ctx.JSON(http.StatusNotFound, gin.H{"code": 1, "data": "404"})
+		ctx.JSON(http.StatusNotFound, gin.H{"code": 1, "data": err.Error()})
 	} else {
 		ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": account})
 	}

@@ -19,6 +19,7 @@ func (account *AccountApi) RegisterApiForAccount(router *gin.Engine,
 	accountV1 := router.Group("/account/v1")
 	{
 		accountV1.Use(middlewares...)
+		accountV1.GET("/aboutme", account.GetAccountInfo)
 		accountV1.GET("/accounts/:account_id", account.GetAccount)
 		accountV1.GET("/accounts", account.ListAccounts)
 
