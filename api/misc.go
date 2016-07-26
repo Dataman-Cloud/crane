@@ -2,25 +2,24 @@ package api
 
 import (
 	"net/http"
-	"strings"
 
 	"github.com/Dataman-Cloud/rolex/version"
 	"github.com/gin-gonic/gin"
 )
 
 type RolexConfigResponse struct {
-	Version      string `json:"Version"`
-	BuildTime    string `json:"Build"`
-	FeatureFlags string `json:"FeatureFlags"`
-	RolexSecret  string `json:"RolexSecret"`
-	RolexCaHash  string `json:"RolexCaHash"`
+	Version      string   `json:"Version"`
+	BuildTime    string   `json:"Build"`
+	FeatureFlags []string `json:"FeatureFlags"`
+	RolexSecret  string   `json:"RolexSecret"`
+	RolexCaHash  string   `json:"RolexCaHash"`
 }
 
 func (api *Api) RolexConfig(ctx *gin.Context) {
 	config := &RolexConfigResponse{}
 	config.Version = version.Version
 	config.BuildTime = version.BuildTime
-	config.FeatureFlags = strings.Join(api.GetConfig().FeatureFlags, ",")
+	config.FeatureFlags = api.GetConfig().FeatureFlags
 
 	config.RolexSecret = api.GetConfig().RolexSecret
 	config.RolexCaHash = api.GetConfig().RolexCaHash
