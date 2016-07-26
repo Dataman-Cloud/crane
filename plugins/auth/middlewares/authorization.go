@@ -17,7 +17,7 @@ func Authorization(a *auth.AccountApi) gin.HandlerFunc {
 			return
 		}
 
-		value, err := a.TokenStore.Get(ctx.Request.Header.Get("Authorization"))
+		value, err := a.TokenStore.Get(ctx, ctx.Request.Header.Get("Authorization"))
 		if err != nil {
 			ctx.JSON(http.StatusUnauthorized, gin.H{"code": 1, "data": "token doesn't exists or expired"})
 			ctx.Abort()
