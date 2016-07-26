@@ -34,7 +34,7 @@
                 }
             })
             .state('stack.createByJson', {
-                url: '/:stack_name/createByJson',
+                url: '/:stack_name/:group_id/createByJson',
                 templateUrl: '/src/stack/create/create-by-Json.html',
                 controller: 'StackCreateByJsonCtrl as stackCreateByJsonCtrl',
                 ncyBreadcrumb: {
@@ -42,7 +42,7 @@
                 }
             })
             .state('stack.createByForm', {
-                url: '/:stack_name/createByForm',
+                url: '/:stack_name/:group_id/createByForm',
                 templateUrl: '/src/stack/create/create-by-form.html',
                 controller: 'StackCreateByFormCtrl as stackCreateByFormCtrl',
                 ncyBreadcrumb: {

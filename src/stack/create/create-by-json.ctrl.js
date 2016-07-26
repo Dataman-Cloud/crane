@@ -29,6 +29,7 @@
 
         self.form = {
             Namespace: $stateParams.stack_name || '',
+            GroupId: $stateParams.group_id,
             Stack: ""
         };
 
