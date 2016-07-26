@@ -2,6 +2,7 @@
 
 * `POST`   <a href="#012">/account/v1/login</a>
 * `POST`   <a href="#001">/account/v1/logout</a>
+* `GET`    <a href="#015">/account/v1/aboutme</a>
 * `GET`    <a href="#002">/account/v1/accounts</a>
 * `POST`   <a href="#013">/account/v1/accounts/:group_id</a>
 * `GET`    <a href="#003">/account/v1/accounts/:account_id</a>
@@ -304,5 +305,29 @@ curl -XGET localhost:5013/account/v1/groups/1/accounts
       "Password": "a42c9217a0f93495d3d24123802c7c57"
     }
   ]
+}
+```
+
+---
+
+<h4 name="015" id="015">Request:</h4>
+
+获取用户信息
+
+```
+curl -XGET localhost:5013/account/v1/aboutme
+```
+<h4>Response:</h4>
+```
+{
+  "code": "1",
+  "data": {
+    "Id": 1,
+    "Title": "",
+    "Email": "test@test.com",
+    "Phone": "",
+    "LoginAt": "2016-07-22T16:28:37+08:00",
+    "Password": "a42c9217a0f93495d3d24123802c7c57"
+  }
 }
 ```

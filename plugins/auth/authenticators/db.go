@@ -30,6 +30,7 @@ func (db *DbAuthenicator) ModificationAllowed() bool {
 
 func (db *DbAuthenicator) Login(a *auth.Account) (string, error) {
 	if err = db.DbClient.
+		Select("id, title, email, phone, login_at").
 		Where("email = ? AND password = ?", a.Email, a.Password).
 		First(a).Error; err != nil {
 		return "", err
@@ -41,6 +42,7 @@ func (db *DbAuthenicator) Login(a *auth.Account) (string, error) {
 func (db *DbAuthenicator) Accounts(listOptions model.ListOptions) (*[]auth.Account, error) {
 	var auths []auth.Account
 	if err = db.DbClient.
+		Select("id, title, email, phone, login_at").
 		Offset(listOptions.Offset).
 		Limit(listOptions.Limit).
 		Find(&auths).Error; err != nil {
@@ -55,6 +57,7 @@ func (db *DbAuthenicator) Account(idOrEmail interface{}) (*auth.Account, error) 
 
 	if id, err := strconv.ParseUint(fmt.Sprintf("%v", idOrEmail), 10, 64); err == nil {
 		if err = db.DbClient.
+			Select("id, title, email, phone, login_at").
 			Where("id = ?", id).
 			First(&acc).
 			Error; err != nil {
@@ -62,6 +65,7 @@ func (db *DbAuthenicator) Account(idOrEmail interface{}) (*auth.Account, error) 
 		}
 	} else {
 		if err = db.DbClient.
+			Select("id, title, email, phone, login_at").
 			Where("email = ?", idOrEmail).
 			First(&acc).
 			Error; err != nil {
@@ -214,7 +218,11 @@ func (db *DbAuthenicator) GroupAccounts(listOptions model.ListOptions) (*[]auth.
 
 	for _, ag := range accountGroup {
 		var account auth.Account
-		if err := db.DbClient.Where("id = ?", ag.AccountId).Find(&account).Error; err == nil {
+		if err := db.DbClient.
+			Select("id, title, email, phone, login_at").
+			Where("id = ?", ag.AccountId).
+			Find(&account).
+			Error; err == nil {
 			accounts = append(accounts, account)
 		}
 	}
