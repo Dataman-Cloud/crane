@@ -12,13 +12,18 @@
                     <div flex="50" layout="column">
                         <div flex="none">
                             <input type="text" class="form-input" data-ng-model="networkCreateCtrl.form.Name"
-                                   data-required="required" name="name">
+                                   data-required="required" name="name"
+                                   data-ng-pattern="/^[A-Za-z0-9]+$/">
                         </div>
 
                         <div ng-messages="createNetwork.name.$error" ng-if="createNetwork.name.$dirty" role="alert">
                             <p class="error-info help-info-bottom"
                                ng-message="required">
                                 <small>名称不能为空</small>
+                            </p>
+                            <p class="error-info help-info-bottom"
+                               ng-message="pattern">
+                                <small>名称必须数字或者英文</small>
                             </p>
                         </div>
                     </div>
@@ -106,8 +111,7 @@
                     <label flex="15">标签</label>
                     <div flex="60" layout="column">
                         <div flex>
-                            <md-button class="md-primary"
-                                       aria-label="Add label"
+                            <md-button class="md-primary" aria-label="Add label"
                                        data-ng-click="networkCreateCtrl.addLabel()">
                                 <i class="fa fa-plus"></i>
                                 添加标签
@@ -119,7 +123,8 @@
                             <ng-form name="labelForm" layout="row" layout-align="start center">
                                 <input type="text" placeholder="KEY" flex="40"
                                        data-ng-model="label.key" data-required="required"
-                                       name="labelKey" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/">
+                                       name="labelKey" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/"
+                                       dm-check-include="networkCreateCtrl.listLabel()">
                                 <input type="text" placeholder="VALUE" flex-offset="5" flex="40"
                                        data-ng-model="label.value" data-required="required"
                                        name="labelValue" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/">
@@ -134,6 +139,10 @@
                                 <p class="error-info help-info-bottom"
                                    ng-message="pattern">
                                     <small>标签 Key 不能包含中文</small>
+                                </p>
+                                <p class="error-info help-info-bottom"
+                                   ng-message="dmCheckInclude">
+                                    <small>标签 Key 不能重复</small>
                                 </p>
                             </div>
 
