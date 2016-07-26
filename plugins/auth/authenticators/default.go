@@ -18,7 +18,7 @@ func NewDefaultAuthenticator() *Default {
 
 var (
 	Accounts = []auth.Account{
-		{ID: 1, Title: "Engineering", Email: config.GetConfig().AccountEmailDefault, Password: config.GetConfig().AccountPasswordDefault},
+		{ID: 1, Title: "Engineering", Email: "admin@admin.com", Password: "adminadmin"},
 	}
 
 	Groups = []auth.Group{
@@ -27,12 +27,27 @@ var (
 	}
 )
 
+func (d *Default) GetDefaultAccounts() []auth.Account {
+	if config.GetConfig().AccountEmailDefault != "" &&
+		config.GetConfig().AccountPasswordDefault != "" {
+		Accounts = []auth.Account{
+			{
+				ID:       1,
+				Title:    "Engineering",
+				Email:    config.GetConfig().AccountEmailDefault,
+				Password: config.GetConfig().AccountPasswordDefault,
+			},
+		}
+	}
+	return Accounts
+}
+
 func (d *Default) ModificationAllowed() bool {
 	return false
 }
 
 func (d *Default) Login(a *auth.Account) (token string, err error) {
-	for _, acc := range Accounts {
+	for _, acc := range d.GetDefaultAccounts() {
 		if a.Password == acc.Password && a.Email == acc.Email {
 			a.LoginAt = time.Now()
 			a.ID = acc.ID

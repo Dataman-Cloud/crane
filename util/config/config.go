@@ -75,8 +75,8 @@ type EnvEntry struct {
 	ROLEX_ACCOUNT_TOKEN_STORE   string `required:"false"`
 	ROLEX_ACCOUNT_AUTHENTICATOR string `required:"false"`
 
-	ROLEX_ACCOUNT_EMAIL_DEFAULT    string `required:"true"`
-	ROLEX_ACCOUNT_PASSWORD_DEFAULT string `required:"true"`
+	ROLEX_ACCOUNT_EMAIL_DEFAULT    string `required:"false"`
+	ROLEX_ACCOUNT_PASSWORD_DEFAULT string `required:"false"`
 }
 
 func InitConfig(envFile string) *Config {
