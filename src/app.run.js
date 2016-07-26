@@ -10,7 +10,6 @@
         Math.sum = sum;
         Math.maxPlus = maxPlus;
         $rootScope.Math = Math;
-        $rootScope.okeys = Object.keys;
 
         $rootScope.$on('$stateChangeStart',
             function (event, toState, toParams, fromState, fromParams) {
