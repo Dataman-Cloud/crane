@@ -1,15 +1,15 @@
 (function () {
     'use strict';
     angular.module('app')
-        .directive('dmEmptyShow', dmEmptyShow);
+        .directive('dmEmptyDisplay', dmEmptyDisplay);
 
     /* @ngInject */
-    function dmEmptyShow(utils) {
+    function dmEmptyDisplay(utils) {
         return {
             restrict: 'A',
             link: link,
             scope: {
-                value: '=dmEmptyShow'
+                value: '=dmEmptyDisplay'
             }
         };
 
