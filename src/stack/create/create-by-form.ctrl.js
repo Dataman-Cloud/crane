@@ -75,6 +75,10 @@
         self.modeChange = modeChange;
         self.loadOverlayNetworks = loadOverlayNetworks;
         self.listNames = listNames;
+        self.listEnv = listEnv;
+        self.listServeLabel = listServeLabel;
+        self.listContainerLabel = listContainerLabel;
+        self.listConstraints = listConstraints;
 
         function addServe() {
             var form = {
@@ -251,6 +255,46 @@
             });
 
             return nameList
+        }
+
+        function listEnv(serve) {
+            var env = serve.TaskTemplate.ContainerSpec.Env.map(function (item, index) {
+                if (item.key) {
+                    return item.key
+                }
+            });
+
+            return env
+        }
+
+        function listServeLabel(serve) {
+            var serveLabel = serve.Labels.map(function (item, index) {
+                if (item.key) {
+                    return item.key
+                }
+            });
+
+            return serveLabel
+        }
+
+        function listContainerLabel(serve) {
+            var containerLabel = serve.TaskTemplate.ContainerSpec.Labels.map(function (item, index) {
+                if (item.key) {
+                    return item.key
+                }
+            });
+
+            return containerLabel
+        }
+
+        function listConstraints(serve) {
+            var constraints = serve.TaskTemplate.Placement.Constraints.map(function (item, index) {
+                if (item.key) {
+                    return item.key
+                }
+            });
+
+            return constraints
         }
     }
 })();
