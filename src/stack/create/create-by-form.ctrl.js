@@ -4,7 +4,7 @@
         .controller('StackCreateByFormCtrl', StackCreateByFormCtrl);
 
     /* @ngInject */
-    function StackCreateByFormCtrl($state, stackBackend, $stateParams, networkBackend) {
+    function StackCreateByFormCtrl($state, stackCurd, $stateParams, networkBackend, $scope) {
         var self = this;
 
         self.form = {
@@ -28,17 +28,17 @@
                         "Dir": "",//目录
                         "User": "",
                         "Mounts": [],//挂载
-                        "StopGracePeriod": "" //杀死容器前等待时间
+                        "StopGracePeriod": null //杀死容器前等待时间
                     },
                     "Resources": {
-                        "NanoCPUs": "", //CPU 限制
-                        "MemoryBytes": "" //内存限制
+                        "NanoCPUs": null, //CPU 限制
+                        "MemoryBytes": null //内存限制
                     },
                     "RestartPolicy": {
                         "Condition": "none", //重启模式
-                        "Delay": "", //重启延迟
-                        "MaxAttempts": "",//重启最大尝试次数
-                        "Window": ""
+                        "Delay": null, //重启延迟
+                        "MaxAttempts": null,//重启最大尝试次数
+                        "Window": null
                     },
                     "Placement": {
                         "Constraints": [] //限制条件
@@ -48,13 +48,13 @@
                 "Mode": {
                     ////Replicated/GlobalService 二选一
                     //"Replicated": {
-                    //    "Replicas": "" //任务数
+                    //    "Replicas": null //任务数
                     //},
                     "GlobalService": {}
                 },
                 "UpdateConfig": {
-                    "Parallelism": "",//更新并行任务数
-                    "Delay": "" //更新延迟
+                    "Parallelism": null,//更新并行任务数
+                    "Delay": null //更新延迟
                 },
                 "Networks": [], //网络
                 "EndpointSpec": {
@@ -76,7 +76,7 @@
         self.loadOverlayNetworks = loadOverlayNetworks;
         self.listNames = listNames;
 
-        function addServe(preIndex) {
+        function addServe() {
             var form = {
                 "Name": "",
                 "Labels": [],
@@ -89,17 +89,17 @@
                         "Dir": "",//目录
                         "User": "",
                         "Mounts": [],//挂载
-                        "StopGracePeriod": "" //杀死容器前等待时间
+                        "StopGracePeriod": null //杀死容器前等待时间
                     },
                     "Resources": {
-                        "NanoCPUs": "", //CPU 限制
-                        "MemoryBytes": "" //内存限制
+                        "NanoCPUs": null, //CPU 限制
+                        "MemoryBytes": null //内存限制
                     },
                     "RestartPolicy": {
                         "Condition": "none", //重启模式
-                        "Delay": "", //重启延迟
-                        "MaxAttempts": "",//重启最大尝试次数
-                        "Window": "" //重启间隔
+                        "Delay": null, //重启延迟
+                        "MaxAttempts": null,//重启最大尝试次数
+                        "Window": null //重启间隔
                     },
                     "Placement": {
                         "Constraints": [] //限制条件
@@ -109,13 +109,13 @@
                 "Mode": {
                     ////Replicated/GlobalService 二选一
                     //"Replicated": {
-                    //    "Replicas": "" //任务数
+                    //    "Replicas": null //任务数
                     //},
                     "GlobalService": {}
                 },
                 "UpdateConfig": {
-                    "Parallelism": "",//更新并行任务数
-                    "Delay": "" //更新延迟
+                    "Parallelism": null,//更新并行任务数
+                    "Delay": null //更新延迟
                 },
                 "Networks": [], //网络
                 "EndpointSpec": {
@@ -143,7 +143,8 @@
             angular.forEach(serveArray, function (serve, index) {
                 self.form.Stack.Services[serve.Name] = serve
             });
-            console.log(self.form)
+
+            stackCurd.createStack(self.form, $scope.staticForm);
         }
 
         function addConfig(configs, typeName) {
@@ -199,9 +200,9 @@
             }
         }
 
-        function loadOverlayNetworks(){
+        function loadOverlayNetworks() {
             networkBackend.listNetwork()
-                .then(function(data){
+                .then(function (data) {
                     self.networks = data
                 })
         }
@@ -245,7 +246,7 @@
          */
         function listNames() {
             var nameList = [];
-            angular.forEach(self.serveFormArray, function(item, index){
+            angular.forEach(self.serveFormArray, function (item, index) {
                 nameList.push(item.Name)
             });
 
