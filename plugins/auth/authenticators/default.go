@@ -5,6 +5,7 @@ import (
 
 	"github.com/Dataman-Cloud/rolex/model"
 	"github.com/Dataman-Cloud/rolex/plugins/auth"
+	"github.com/Dataman-Cloud/rolex/util/config"
 )
 
 type Default struct {
@@ -17,7 +18,7 @@ func NewDefaultAuthenticator() *Default {
 
 var (
 	Accounts = []auth.Account{
-		{ID: 1, Title: "Engineering", Email: "admin@admin.com", Password: "adminadmin"},
+		{ID: 1, Title: "Engineering", Email: config.GetConfig().AccountEmailDefault, Password: config.GetConfig().AccountPasswordDefault},
 	}
 
 	Groups = []auth.Group{
