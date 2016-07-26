@@ -39,6 +39,9 @@ type Config struct {
 	// account
 	AccountAuthenticator string
 	AccountTokenStore    string
+
+	AccountEmailDefault    string
+	AccountPasswordDefault string
 }
 
 func (c *Config) FeatureEnabled(feature string) bool {
@@ -71,6 +74,9 @@ type EnvEntry struct {
 
 	ROLEX_ACCOUNT_TOKEN_STORE   string `required:"false"`
 	ROLEX_ACCOUNT_AUTHENTICATOR string `required:"false"`
+
+	ROLEX_ACCOUNT_EMAIL_DEFAULT    string `required:"true"`
+	ROLEX_ACCOUNT_PASSWORD_DEFAULT string `required:"true"`
 }
 
 func InitConfig(envFile string) *Config {
@@ -97,6 +103,10 @@ func InitConfig(envFile string) *Config {
 
 	config.AccountAuthenticator = envEntry.ROLEX_ACCOUNT_AUTHENTICATOR
 	config.AccountTokenStore = envEntry.ROLEX_ACCOUNT_TOKEN_STORE
+
+	config.AccountEmailDefault = envEntry.ROLEX_ACCOUNT_EMAIL_DEFAULT
+	config.AccountPasswordDefault = envEntry.ROLEX_ACCOUNT_PASSWORD_DEFAULT
+
 	return &config
 }
 
