@@ -297,7 +297,8 @@
                                         <ng-form name="envForm" layout="row" layout-align="start center">
                                             <input type="text" placeholder="KEY" flex="40"
                                                    data-ng-model="env.key" data-required="required"
-                                                   name="envKey" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/">
+                                                   name="envKey" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/"
+                                                   dm-check-include="stackCreateByFormCtrl.listEnv(serve)">
                                             <input type="text" placeholder="VALUE" flex-offset="5" flex="40"
                                                    data-ng-model="env.value" data-required="required"
                                                    name="envValue" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/">
@@ -313,6 +314,10 @@
                                             <p class="error-info help-info-bottom"
                                                ng-message="pattern">
                                                 <small>环境变量 Key 值不能包含中文</small>
+                                            </p>
+                                            <p class="error-info help-info-bottom"
+                                               ng-message="dmCheckInclude">
+                                                <small>环境变量 Key 值不能重复</small>
                                             </p>
                                         </div>
 
@@ -345,7 +350,8 @@
                                         <ng-form name="labelForm" layout="row" layout-align="start center">
                                             <input type="text" placeholder="KEY" flex="40"
                                                    data-ng-model="label.key" data-required="required"
-                                                   name="labelKey" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/">
+                                                   name="labelKey" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/"
+                                                   dm-check-include="stackCreateByFormCtrl.listServeLabel(serve)">
                                             <input type="text" placeholder="VALUE" flex-offset="5" flex="40"
                                                    data-ng-model="label.value" data-required="required"
                                                    name="labelValue" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/">
@@ -361,6 +367,10 @@
                                             <p class="error-info help-info-bottom"
                                                ng-message="pattern">
                                                 <small>标签 Key 值不能包含中文</small>
+                                            </p>
+                                            <p class="error-info help-info-bottom"
+                                               ng-message="dmCheckInclude">
+                                                <small>标签 Key 值不能重复</small>
                                             </p>
                                         </div>
 
@@ -394,7 +404,8 @@
                                         <ng-form name="labelForm" layout="row" layout-align="start center">
                                             <input type="text" placeholder="KEY" flex="40"
                                                    data-ng-model="label.key" data-required="required"
-                                                   name="labelKey" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/">
+                                                   name="labelKey" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/"
+                                                   dm-check-include="stackCreateByFormCtrl.listContainerLabel(serve)">
                                             <input type="text" placeholder="VALUE" flex-offset="5" flex="40"
                                                    data-ng-model="label.value" data-required="required"
                                                    name="labelValue" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/">
@@ -410,6 +421,10 @@
                                             <p class="error-info help-info-bottom"
                                                ng-message="pattern">
                                                 <small>标签 Key 值不能包含中文</small>
+                                            </p>
+                                            <p class="error-info help-info-bottom"
+                                               ng-message="dmCheckInclude">
+                                                <small>标签 Key 值不能重复</small>
                                             </p>
                                         </div>
 
@@ -562,7 +577,8 @@
                                         <ng-form name="constraintForm" layout="row" layout-align="start center">
                                             <input type="text" placeholder="KEY" flex="40"
                                                    data-ng-model="constraint.key" data-required="required"
-                                                   name="constraintKey">
+                                                   name="constraintKey"
+                                                   dm-check-include="stackCreateByFormCtrl.listConstraints(serve)">
                                             <input type="text" placeholder="VALUE" flex="40" flex-offset="5"
                                                    data-ng-model="constraint.value" data-required="required"
                                                    name="constraintValue">
@@ -579,6 +595,10 @@
                                             <p class="error-info help-info-bottom"
                                                ng-message="pattern">
                                                 <small>KEY 不能包含中文</small>
+                                            </p>
+                                            <p class="error-info help-info-bottom"
+                                               ng-message="dmCheckInclude">
+                                                <small>KEY 不能重复</small>
                                             </p>
                                         </div>
                                         <div ng-messages="constraintForm.constraintValue.$error"
