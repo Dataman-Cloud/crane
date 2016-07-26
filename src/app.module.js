@@ -6,6 +6,7 @@
             'app.stack',
             'app.node',
             'app.network',
-            'app.misc'
+            'app.misc',
+            'app.user'
         ]);
 })();

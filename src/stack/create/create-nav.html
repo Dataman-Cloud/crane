@@ -24,6 +24,23 @@
                     </div>
                     <div flex></div>
                 </div>
+
+                <div layout="row" layout-align="end center" class="form-group form-group-select">
+                    <label flex="15">选择用户组</label>
+                    <div flex="50" layout="column">
+                        <md-input-container>
+                            <md-select data-ng-model="stackCreateNavCtrl.selectGroupId" aria-label="selectGroupId"
+                                       md-on-open="stackCreateNavCtrl.loadGroups()" data-required="required">
+                                <md-option
+                                        data-ng-repeat="group in stackCreateNavCtrl.groups"
+                                        ng-value="group.Id">{/group.Name/}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                    </div>
+                    <div flex></div>
+                </div>
+
                 <div layout="row" layout-wrap>
                     <md-card flex="18">
                         <img class="md-card-image" alt="Washed Out">
@@ -36,8 +53,10 @@
                             <p>用高级方式创建</p>
                         </md-card-content>
                         <md-card-actions layout="row" layout-align="end center">
-                            <md-button class="md-raised md-primary" data-ui-sref="stack.createByJson({stack_name: stackCreateNavCtrl.stackName})"
-                                       data-ng-disabled="stackform.$invalid">确认</md-button>
+                            <md-button class="md-raised md-primary"
+                                       data-ui-sref="stack.createByJson({stack_name: stackCreateNavCtrl.stackName, group_id: stackCreateNavCtrl.selectGroupId})"
+                                       data-ng-disabled="stackform.$invalid">确认
+                            </md-button>
                         </md-card-actions>
                     </md-card>
 
@@ -52,8 +71,10 @@
                             <p>通过可视化向导创建应用</p>
                         </md-card-content>
                         <md-card-actions layout="row" layout-align="end center">
-                            <md-button class="md-raised md-primary" data-ui-sref="stack.createByForm({stack_name: stackCreateNavCtrl.stackName})"
-                                       data-ng-disabled="stackform.$invalid">确认</md-button>
+                            <md-button class="md-raised md-primary"
+                                       data-ui-sref="stack.createByForm({stack_name: stackCreateNavCtrl.stackName, group_id: stackCreateNavCtrl.selectGroupId})"
+                                       data-ng-disabled="stackform.$invalid">确认
+                            </md-button>
                         </md-card-actions>
                     </md-card>
                 </div>
