@@ -16,8 +16,7 @@ import (
 )
 
 const (
-	ROLEX_SESSION_KEY     = "ROLEX_SESSION_KEY"
-	COOKIE_EXPIRE_TIMEOUT = 10 * time.Minute
+	ROLEX_SESSION_KEY = "ROLEX_SESSION_KEY"
 )
 
 var (
@@ -50,7 +49,7 @@ func (d *Cookie) Set(ctx *gin.Context, token, accountId string, expiredAt time.T
 	http.SetCookie(ctx.Writer, &http.Cookie{
 		Name:    ROLEX_SESSION_KEY,
 		Value:   string(Encrypt(cookieValue, len(cookieValue))),
-		Expires: time.Now().Add(COOKIE_EXPIRE_TIMEOUT),
+		Expires: time.Now().Add(auth.SESSION_DURATION),
 	})
 
 	return nil
@@ -71,7 +70,7 @@ func (d *Cookie) Del(ctx *gin.Context, token string) error {
 	http.SetCookie(ctx.Writer, &http.Cookie{
 		Name:    ROLEX_SESSION_KEY,
 		Value:   "",
-		Expires: time.Now().Add(COOKIE_EXPIRE_TIMEOUT),
+		Expires: time.Now().Add(auth.SESSION_DURATION),
 	})
 	return nil
 }
