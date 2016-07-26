@@ -5,7 +5,7 @@ body {
     font-weight: 300;
     height: 100%;
 
-    color: #354052;
+    color: #0C1C1B;
     background-color: #fff;
 
     -moz-osx-font-smoothing: grayscale;
@@ -288,11 +288,12 @@ md-dialog[add-item-dialog] > md-dialog-content > form > .input-row > md-input-co
 
 /* 内容基本布局 */
 .main-section header {
-    padding: 30px 50px;
+    padding: 40px 30px 30px 30px;
 }
 
 .main-section header h2 {
     font-size: 20px;
+    font-weight: 500;
     line-height: 20px;
 
     margin: 0;
@@ -301,7 +302,7 @@ md-dialog[add-item-dialog] > md-dialog-content > form > .input-row > md-input-co
 .main-section header dl {
     font-size: 0;
 
-    margin-bottom: 5px;
+    margin-bottom: 10px;
 }
 
 .main-section header dl:last-child {
@@ -309,15 +310,13 @@ md-dialog[add-item-dialog] > md-dialog-content > form > .input-row > md-input-co
 }
 
 .main-section header dl:first-of-type {
-    margin-top: 10px;
+    margin-top: 20px;
 }
 
 .main-section header dt,
 .main-section header dd {
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 300;
-
-    display: inline-block;
 }
 
 .main-section header dt {
@@ -325,7 +324,7 @@ md-dialog[add-item-dialog] > md-dialog-content > form > .input-row > md-input-co
 
     margin-right: 16px;
 
-    color: #a0abbf;
+    color: #AFB6BC;
 }
 
 .main-section header dd {
@@ -367,7 +366,7 @@ md-dialog[add-item-dialog] > md-dialog-content > form > .input-row > md-input-co
 
 /* tab 样式 */
 md-content.main-tab-content {
-    padding: 50px;
+    padding: 30px;
 
     background-color: #ecf2f6;
 }
@@ -378,7 +377,7 @@ md-tabs-canvas {
 
 md-pagination-wrapper {
     height: 32px;
-    margin-left: 50px;
+    margin-left: 30px;
 }
 
 md-tabs .md-tab {
