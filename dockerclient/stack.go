@@ -24,14 +24,14 @@ type Stack struct {
 }
 
 //StackDeploy deploy a new stack
-func (client *RolexDockerClient) DeployStack(bundle *model.Bundle) error {
+func (client *RolexDockerClient) DeployStack(bundle *model.Bundle, perms map[string]string) error {
 	networks := client.getUniqueNetworkNames(bundle.Stack.Services)
 
 	if err := client.updateNetworks(networks, bundle.Namespace); err != nil {
 		return err
 	}
 
-	return client.deployServices(bundle.Stack.Services, bundle.Namespace)
+	return client.deployServices(bundle.Stack.Services, bundle.Namespace, perms)
 }
 
 // StackList list all stack
@@ -236,7 +236,7 @@ func (client *RolexDockerClient) getServiceNetworks(nets []swarm.NetworkAttachme
 	return networkList
 }
 
-func (client *RolexDockerClient) deployServices(services map[string]model.RolexService, namespace string) error {
+func (client *RolexDockerClient) deployServices(services map[string]model.RolexService, namespace string, perms map[string]string) error {
 	existingServices, err := client.filterStackServices(namespace)
 	if err != nil {
 		return err
@@ -259,6 +259,10 @@ func (client *RolexDockerClient) deployServices(services map[string]model.RolexS
 			TaskTemplate: service.TaskTemplate,
 			EndpointSpec: service.EndpointSpec,
 			Networks:     client.convertNetworks(service.Networks, namespace, internalName),
+		}
+
+		for k, v := range perms {
+			serviceSpec.Annotations.Labels[k] = v
 		}
 
 		//TODO change service WorkingDir and User

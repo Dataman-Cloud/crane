@@ -295,7 +295,7 @@ func (a *AccountApi) LeaveGroup(ctx *gin.Context) {
 
 func (a *AccountApi) GrantServicePermission(ctx *gin.Context) {
 	var param struct {
-		GroupID int    `json:"GroupID"`
+		GroupID uint64 `json:"GroupID"`
 		Perm    string `json:"Perm"`
 	}
 

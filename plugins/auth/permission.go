@@ -17,7 +17,7 @@ type Permission struct {
 
 type GroupPermission struct {
 	Permission Permission `json:"Permission"`
-	GroupID    int        `json:"GroupID"`
+	GroupID    uint64     `json:"GroupID"`
 }
 
 var (
@@ -67,10 +67,10 @@ func PermLessOrEqualThan(p Permission) []Permission {
 
 func PermissionRevokeLabelKeysFromPermissionId(permissionId string) []string {
 	var param struct {
-		GroupID int    `json:"GroupID"`
+		GroupID uint64 `json:"GroupID"`
 		Perm    string `json:"Perm"`
 	}
-	param.GroupID, _ = strconv.Atoi(strings.SplitN(permissionId, "-", 2)[0])
+	param.GroupID, _ = strconv.ParseUint(strings.SplitN(permissionId, "-", 2)[0], 10, 64)
 	param.Perm = strings.SplitN(permissionId, "-", 2)[1]
 
 	labels := make([]string, 0)
@@ -82,7 +82,7 @@ func PermissionRevokeLabelKeysFromPermissionId(permissionId string) []string {
 	return labels
 }
 
-func PermissionGrantLabelsPairFromGroupIdAndPerm(groupId int, perm string) map[string]string {
+func PermissionGrantLabelsPairFromGroupIdAndPerm(groupId uint64, perm string) map[string]string {
 	labels := make(map[string]string, 0)
 	gp := GroupPermission{GroupID: groupId, Permission: Permission{Display: perm}}
 	for _, perm := range PermLessOrEqualThan(gp.Permission) {
