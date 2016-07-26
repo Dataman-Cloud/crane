@@ -41,7 +41,7 @@
                             <a data-ui-sref="network.detail({network_id: network.Id})">{/network.Name/}</a>
                         </td>
                         <td md-cell>{/network.Driver/}</td>
-                        <td md-cell>{/network.Internal/}</td>
+                        <td md-cell>{/network.Internal ? '是':'否'/}</td>
                         <td md-cell>{/network.IPAM.Config[0].Subnet || '未配置'/}</td>
                         <td md-cell>{/network.IPAM.Config[0].Gateway || '未配置'/}</td>
                         <td md-cell>{/network.IPAM.Config[0].IPRange || '未配置'/}</td>

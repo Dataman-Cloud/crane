@@ -966,7 +966,14 @@ md-content h4:first-child {
     margin-bottom: 15px;
 }
 .info-view dt {
-    color: #93929D;
+    color: #5A616E;
     font-weight: 300;
+}
+.info-view dd {
+    color: #0C1C1B;
+    }
+.info-view .alert-noinfo {
+    color:#C7CACF;
+    font-size: 14px; 
 }
 

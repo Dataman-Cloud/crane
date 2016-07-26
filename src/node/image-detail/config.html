@@ -19,8 +19,8 @@
                 </tbody>
             </table>
         </md-table-container>
-        <div data-ng-if="nodeImageConfigCtrl.image.Config.ExposedPorts | isEmpty">
-        空的
+        <div data-ng-if="nodeImageConfigCtrl.image.Config.ExposedPorts | isEmpty" class="alert-noinfo">
+            暂无信息
         </div>
     </div>
 </section>
@@ -30,7 +30,7 @@
         <h4>环境变量</h4>
     </header>
     <div layout="column" flex="80">
-        <md-table-container>
+        <md-table-container data-ng-if="!(nodeImageConfigCtrl.image.Config.Env | isEmpty)">
             <table md-table>
                 <thead md-head>
                 <tr md-row>
@@ -46,6 +46,9 @@
                 </tbody>
             </table>
         </md-table-container>
+        <div data-ng-if="nodeImageConfigCtrl.image.Config.Env | isEmpty" class="alert-noinfo">
+            暂无信息
+        </div>
     </div>
 </section>
 
@@ -55,5 +58,8 @@
     </header>
     <div layout="column" flex="80">
         <code data-ng-repeat="cmd in nodeImageConfigCtrl.image.Config.Cmd track by $index">{/cmd/}</code>
+        <div data-ng-if="nodeImageConfigCtrl.image.Config.Cmd | isEmpty" class="alert-noinfo">
+            暂无信息
+        </div>
     </div>
 </section>
