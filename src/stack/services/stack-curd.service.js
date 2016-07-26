@@ -13,7 +13,8 @@
         return {
             upServiceScale: upServiceScale,
             deleteStack: deleteStack,
-            stopService: stopService
+            stopService: stopService,
+            createStack: createStack
         };
         
         function upServiceScale(ev, stackName, serviceID, curScale) {
@@ -40,6 +41,14 @@
                 Notification.success('停止成功');
                 $state.reload();
             });
+        }
+
+        function createStack(formData, form){
+            stackBackend.createStack(formData, form)
+                .then(function (data) {
+                    Notification.success('创建成功');
+                    $state.go('stack.detail.service', {stack_name: formData.Namespace})
+                })
         }
     }
 })();

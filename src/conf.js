@@ -11,4 +11,4 @@ BACKEND_URL_BASE = {
     misc: null
 };
 
-HOME_URL = '/auth-index.html';
+HOME_URL = '/auth';
