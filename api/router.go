@@ -28,11 +28,6 @@ func (api *Api) ApiRouter() *gin.Engine {
 		c.String(200, "pass")
 	})
 
-	if api.Config.FeatureEnabled("registry") {
-		r := &registry.Registry{Config: api.Config}
-		r.RegisterApiForRegistry(router)
-	}
-
 	if api.Config.FeatureEnabled("account") {
 		a := &auth.AccountApi{Config: api.Config, RolexDockerClient: api.Client}
 		if api.Config.AccountTokenStore == "default" {
@@ -54,6 +49,11 @@ func (api *Api) ApiRouter() *gin.Engine {
 		authorizeMiddlewares := make(map[string](func(permissionRequired auth.Permission) gin.HandlerFunc), 0)
 		authorizeMiddlewares["AuthorizeServiceAccess"] = AuthorizeServiceAccess
 		a.RegisterApiForAccount(router, authorizeMiddlewares, chains.Authorization(a), middlewares.ListIntercept())
+	}
+
+	if api.Config.FeatureEnabled("registry") {
+		r := &registry.Registry{Config: api.Config}
+		r.RegisterApiForRegistry(router, Authorization)
 	}
 
 	v1 := router.Group("/api/v1", Authorization, middlewares.ListIntercept())
