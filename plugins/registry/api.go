@@ -7,6 +7,8 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/Dataman-Cloud/rolex/plugins/auth"
+	"github.com/Dataman-Cloud/rolex/plugins/auth/authenticators"
 	"github.com/Dataman-Cloud/rolex/util/config"
 	"github.com/gin-gonic/gin"
 )
@@ -19,7 +21,7 @@ type Registry struct {
 
 func (registry *Registry) Token(ctx *gin.Context) {
 	username, password, _ := ctx.Request.BasicAuth()
-	authenticated := authenticate(username, password)
+	authenticated := registry.Authenticate(username, password)
 
 	service := ctx.Query("service")
 	scope := ctx.Query("scope")
@@ -37,7 +39,6 @@ func (registry *Registry) Token(ctx *gin.Context) {
 	//create token
 	rawToken, err := MakeToken(registry.Config, username, service, accesses)
 	if err != nil {
-		fmt.Println(err)
 		ctx.JSON(http.StatusInternalServerError, gin.H{})
 		return
 	}
@@ -45,8 +46,18 @@ func (registry *Registry) Token(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"token": rawToken})
 }
 
-// TODO check if account valid here
-func authenticate(principal, password string) bool {
+func (registry *Registry) Authenticate(principal, password string) bool {
+	var authenticator auth.Authenticator
+	if registry.Config.AccountAuthenticator == "db" {
+	} else if registry.Config.AccountAuthenticator == "ldap" {
+	} else {
+		authenticator = authenticators.NewDefaultAuthenticator()
+	}
+
+	_, err := authenticator.Login(&auth.Account{Email: principal, Password: password})
+	if err != nil {
+		return false
+	}
 	return true
 }
 
