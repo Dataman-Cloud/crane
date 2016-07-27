@@ -4,7 +4,7 @@
         .controller('RootCtrl', RootCtrl);
 
     /* @ngInject */
-    function RootCtrl($state, $window, mdSideNav, gHttp, $cookies, utils, userBackend, $rootScope) {
+    function RootCtrl($state, $window, mdSideNav, gHttp, $cookies, utils, userBackend, $rootScope, tty, stream) {
         var self = this;
 
         $rootScope.accountId = null;
@@ -26,7 +26,10 @@
         function initUser() {
             var token = $cookies.get('token');
             if (token) {
-                gHttp.setToken(token)
+                gHttp.setToken(token);
+                tty.setToken(token);
+                stream.setToken(token);
+                
             } else {
                 utils.redirectLogin(true)
             }

@@ -6,9 +6,15 @@
     /* @ngInject */
     function tty(utils) {
         var ttyCls = createTTYCls();
+        var token;
         return {
-            TTY: createTTY
+            TTY: createTTY,
+            setToken: setToken
         };
+        
+        function setToken(tokenVal) {
+            token = tokenVal;
+        }
 
         function createTTY(urlName, params) {
             return new ttyCls(urlName, params);
@@ -22,7 +28,7 @@
             }
             
             TTY.prototype._openWS = function () {
-                this.ws = new WebSocket(this.url);
+                this.ws = new WebSocket(this.url+"?Authorization="+token);
                 var self = this;
                 var autoReconnect = -1;
 
@@ -105,7 +111,9 @@
             };
             
             TTY.prototype.sendPing = function() {
-                this.ws.send("1");
+                if (this.ws) {
+                    this.ws.send("1");
+                }
             };
             
             TTY.prototype.clear = function() {
