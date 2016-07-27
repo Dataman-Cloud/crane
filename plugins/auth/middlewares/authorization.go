@@ -3,6 +3,7 @@ package middlewares
 import (
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/Dataman-Cloud/rolex/plugins/auth"
 
@@ -24,7 +25,7 @@ func Authorization(a *auth.AccountApi) gin.HandlerFunc {
 			return
 		}
 
-		accountId, _ := strconv.ParseUint(value, 10, 64)
+		accountId, _ := strconv.ParseUint(strings.Trim(value, " "), 10, 64)
 
 		acc, err := a.Authenticator.Account(accountId)
 		if err != nil {
