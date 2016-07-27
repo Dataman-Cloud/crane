@@ -69,7 +69,7 @@ func (d *Cookie) Get(ctx *gin.Context, token string) (string, error) {
 	}
 
 	decryptedValue := string(Decrypt([]byte(data), len(cookie.Value)))
-	return strings.SplitN(decryptedValue, ":", 2)[1], nil
+	return strings.Trim(strings.SplitN(decryptedValue, ":", 2)[1], " "), nil
 }
 
 func (d *Cookie) Del(ctx *gin.Context, token string) error {
