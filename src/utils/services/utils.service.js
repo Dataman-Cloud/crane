@@ -9,7 +9,8 @@
             buildFullURL: buildFullURL,
             encodeQueryParams: encodeQueryParams,
             redirectLogin: redirectLogin,
-            isEmpty: isEmpty
+            isEmpty: isEmpty,
+            convert2Mapping: convert2Mapping
         };
 
         function getUrlTemplate(name) {
@@ -85,6 +86,17 @@
                 }
             }
             return empty;
+        }
+        
+        function convert2Mapping(values, key) {
+            if (!key) {
+                key = 'ID';
+            }
+            var mapping = {};
+            angular.forEach(values, function (value) {
+                mapping[value[key]] = value;
+            });
+            return mapping;
         }
 
     }

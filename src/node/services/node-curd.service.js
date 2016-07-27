@@ -8,7 +8,7 @@
 
 
     /* @ngInject */
-    function nodeCurd(nodeBackend, $state, confirmModal, Notification) {
+    function nodeCurd(nodeBackend, $state, confirmModal, Notification, utils) {
         //////
         return {
             deleteVolume: deleteVolume,
@@ -53,11 +53,7 @@
 
         function getNodesMapping() {
             return nodeBackend.listNodes().then(function (nodes) {
-                var mapping = {};
-                angular.forEach(nodes, function (node) {
-                    mapping[node.ID] = node;
-                });
-                return mapping;
+                return utils.convert2Mapping(nodes);
             })
         }
 
