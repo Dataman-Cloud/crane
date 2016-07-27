@@ -3,8 +3,10 @@ package api
 import (
 	"encoding/json"
 	"net/http"
+	"strconv"
 
 	"github.com/Dataman-Cloud/rolex/dockerclient/model"
+	"github.com/Dataman-Cloud/rolex/plugins/auth"
 	"github.com/Dataman-Cloud/rolex/util"
 
 	log "github.com/Sirupsen/logrus"
@@ -31,7 +33,18 @@ func (api *Api) CreateStack(ctx *gin.Context) {
 		return
 	}
 
-	if err := api.GetDockerClient().DeployStack(&stackBundle); err != nil {
+	var perms map[string]string
+	if ctx.Query("group_id") != "" {
+		groupId, err := strconv.ParseUint(ctx.Query("group_id"), 10, 64)
+		if err != nil {
+			log.Error("invalid group_id")
+			ctx.JSON(http.StatusBadRequest, err.Error())
+			return
+		}
+		perms = auth.PermissionGrantLabelsPairFromGroupIdAndPerm(groupId, auth.PermAdmin.Display)
+	}
+
+	if err := api.GetDockerClient().DeployStack(&stackBundle, perms); err != nil {
 		log.Error("Stack deploy got error: ", err)
 		ctx.JSON(http.StatusInternalServerError, err.Error())
 		return

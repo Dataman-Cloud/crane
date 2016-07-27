@@ -307,3 +307,49 @@ curl -XGET http://192.168.1.160:5013/api/v1/stacks/test/services/6uct15rgqrbrliu
   }
 ```
 
+### UpdateService
+
+**Request:**
+```
+curl -v -X PUT http://localhost:5013/api/v1/stacks/:namespace/services/:service_id -H Content-Type:application/json -d '
+{
+  "Name": "redis",
+  "TaskTemplate": {
+    "ContainerSpec": {
+      "Image": "redis"
+    },
+    "Resources": {
+      "Limits": {},
+      "Reservations": {}
+    },
+    "RestartPolicy": {},
+    "Placement": {}
+  },
+  "Mode": {
+    "Replicated": {
+      "Replicas": 1
+    }
+  },
+  "UpdateConfig": {
+    "Parallelism": 1
+  },
+  "EndpointSpec": {
+    "ExposedPorts": [
+      {
+        "Protocol": "tcp",
+        "Port": 6379
+      }
+    ]
+  }
+}
+'
+```
+
+**Response:**
+
+```
+{
+  "code": 0,
+  "data": "update success"
+}
+```
