@@ -7,18 +7,24 @@
  function stream(utils) {
      
      var StreamCls = buildStreamCls();
+     var token;
      
      return {
-         Stream: createStream
+         Stream: createStream,
+         setToken: setToken
      };
      
      function createStream(urlName, params) {
          return new StreamCls(urlName, params);
      }
+     
+     function setToken(tokenVal) {
+         return token = tokenVal;
+     }
 
      function buildStreamCls() {
          function Stream(urlName, params) {
-             this.url = utils.buildFullURL(urlName, params);
+             this.url = utils.buildFullURL(urlName, params)+"?Authorization="+token;
              this.handlers = {};
              this.errorCallback;
          }
