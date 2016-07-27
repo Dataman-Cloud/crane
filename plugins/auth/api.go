@@ -48,7 +48,6 @@ func (a *AccountApi) CreateAccount(ctx *gin.Context) {
 
 func (a *AccountApi) GetAccountInfo(ctx *gin.Context) {
 	account, _ := ctx.Get("account")
-
 	account, err := a.Authenticator.Account(account.(Account).ID)
 	if err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"code": 1, "data": err.Error()})
