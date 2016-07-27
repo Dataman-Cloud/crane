@@ -7,6 +7,8 @@
     function ServiceUpdateCtrl($state, stackCurd, $stateParams, networkBackend, $scope, service) {
         var self = this;
 
+        self.serviceLabelLength = 0;
+
         self.modeChange = modeChange;
         self.addConfig = addConfig;
         self.deleteConfig = deleteConfig;
@@ -33,7 +35,6 @@
             form.formConstraints = [];
             form.formEnv = [];
             form.formCmd = [];
-            form.formNetworks = [];
             form.defaultMode = 'GlobalService';
 
             angular.forEach(form.Labels, function (value, key) {
@@ -53,12 +54,6 @@
 
                 form.formContainerLabels.push(obj)
             });
-
-            if (form.Networks) {
-                angular.forEach(form.Networks, function (item, index) {
-                    form.formNetworks.push(item.Target)
-                });
-            }
 
             if (form.EndpointSpec.Ports) {
                 form.formPorts = form.EndpointSpec.Ports
@@ -101,6 +96,7 @@
             }
 
             form.defaultMode = Object.keys(form.Mode)[0];
+            self.serviceLabelLength = form.formLabels.length;
 
             return form
         }

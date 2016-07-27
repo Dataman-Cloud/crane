@@ -275,7 +275,7 @@
                                         <md-select data-ng-model="serve.Networks" multiple aria-label="Networks"
                                                    md-on-open="stackCreateByFormCtrl.loadNetworks()">
                                             <md-option
-                                                    data-ng-repeat="network in stackCreateByFormCtrl.networks | filter: {Driver: 'overlay'}"
+                                                    data-ng-repeat="network in stackCreateByFormCtrl.networks | filter: {Driver: '!bridge'}"
                                                     ng-value="network.Id">{/network.Name/}
                                             </md-option>
                                         </md-select>

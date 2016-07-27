@@ -9,7 +9,6 @@
 
         self.form = {
             Namespace: $stateParams.stack_name || '',
-            GroupId: $stateParams.group_id,
             Stack: {
                 Version: '',
                 Services: {}
@@ -149,7 +148,7 @@
                 self.form.Stack.Services[serve.Name] = serve
             });
 
-            stackCurd.createStack(self.form, $scope.staticForm);
+            stackCurd.createStack(self.form, $scope.staticForm, $stateParams.group_id);
         }
 
         function addConfig(configs, typeName) {
