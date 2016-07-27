@@ -51,8 +51,6 @@
         <h4>启动命令</h4>
     </header>
     <div layout="column" flex="80">
-        <div dm-empty-display="nodeImageConfigCtrl.image.Config.Cmd">
-            <code data-ng-repeat="cmd in nodeImageConfigCtrl.image.Config.Cmd track by $index">{/cmd/}</code>
-        </div>
+        <code data-ng-repeat="cmd in nodeImageConfigCtrl.image.Config.Cmd track by $index" dm-empty-display="nodeImageConfigCtrl.image.Config.Cmd">{/cmd/}</code>
     </div>
 </section>

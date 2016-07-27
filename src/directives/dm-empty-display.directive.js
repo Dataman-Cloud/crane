@@ -8,6 +8,7 @@
         return {
             restrict: 'A',
             link: link,
+            priority: 1001,
             scope: {
                 value: '=dmEmptyDisplay'
             }
