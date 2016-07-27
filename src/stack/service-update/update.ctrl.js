@@ -17,6 +17,7 @@
         self.listConstraints = listConstraints;
         self.listEnv = listEnv;
         self.initSelectNetworks = initSelectNetworks;
+        self.create = create;
 
         activate();
 
@@ -101,6 +102,10 @@
             return form
         }
 
+        function formatFormToJson() {
+            console.log(self.form)
+        }
+
         function loadNetworks() {
             networkBackend.listNetwork()
                 .then(function (data) {
@@ -175,9 +180,9 @@
             configs.splice(index, 1);
         }
 
-        function listServeLabel() {
+        function listServeLabel(curIndex) {
             var serveLabel = self.form.formLabels.map(function (item, index) {
-                if (item.key) {
+                if (item.key && index != curIndex) {
                     return item.key
                 }
             });
@@ -185,9 +190,9 @@
             return serveLabel
         }
 
-        function listContainerLabel() {
+        function listContainerLabel(curIndex) {
             var containerLabel = self.form.formContainerLabels.map(function (item, index) {
-                if (item.key) {
+                if (item.key && index != curIndex) {
                     return item.key
                 }
             });
@@ -195,9 +200,9 @@
             return containerLabel
         }
 
-        function listConstraints() {
+        function listConstraints(curIndex) {
             var constraints = self.form.formConstraints.map(function (item, index) {
-                if (item.key) {
+                if (item.key && index != curIndex) {
                     return item.key
                 }
             });
@@ -205,14 +210,20 @@
             return constraints
         }
 
-        function listEnv() {
+        function listEnv(curIndex) {
             var env = self.form.formEnv.map(function (item, index) {
-                if (item.key) {
+                if (item.key && index != curIndex) {
                     return item.key
                 }
             });
 
             return env
         }
+
+        function create() {
+            var json = formatFormToJson()
+        }
+
+
     }
 })();

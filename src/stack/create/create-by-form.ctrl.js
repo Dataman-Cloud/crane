@@ -264,9 +264,9 @@
             return nameList
         }
 
-        function listEnv(serve) {
+        function listEnv(serve, curIndex) {
             var env = serve.TaskTemplate.ContainerSpec.Env.map(function (item, index) {
-                if (item.key) {
+                if (item.key && index != curIndex) {
                     return item.key
                 }
             });
@@ -274,9 +274,9 @@
             return env
         }
 
-        function listServeLabel(serve) {
+        function listServeLabel(serve, curIndex) {
             var serveLabel = serve.Labels.map(function (item, index) {
-                if (item.key) {
+                if (item.key && index != curIndex) {
                     return item.key
                 }
             });
@@ -284,9 +284,9 @@
             return serveLabel
         }
 
-        function listContainerLabel(serve) {
+        function listContainerLabel(serve, curIndex) {
             var containerLabel = serve.TaskTemplate.ContainerSpec.Labels.map(function (item, index) {
-                if (item.key) {
+                if (item.key && index != curIndex) {
                     return item.key
                 }
             });
@@ -294,9 +294,9 @@
             return containerLabel
         }
 
-        function listConstraints(serve) {
+        function listConstraints(serve, curIndex) {
             var constraints = serve.TaskTemplate.Placement.Constraints.map(function (item, index) {
-                if (item.key) {
+                if (item.key && index != curIndex) {
                     return item.key
                 }
             });

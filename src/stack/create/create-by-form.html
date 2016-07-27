@@ -303,7 +303,7 @@
                                             <input type="text" placeholder="KEY" flex="40"
                                                    data-ng-model="env.key" data-required="required"
                                                    name="envKey" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/"
-                                                   dm-check-include="stackCreateByFormCtrl.listEnv(serve)">
+                                                   dm-check-include="stackCreateByFormCtrl.listEnv(serve, $index)">
                                             <input type="text" placeholder="VALUE" flex-offset="5" flex="40"
                                                    data-ng-model="env.value" data-required="required"
                                                    name="envValue" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/">
@@ -356,7 +356,7 @@
                                             <input type="text" placeholder="KEY" flex="40"
                                                    data-ng-model="label.key" data-required="required"
                                                    name="labelKey" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/"
-                                                   dm-check-include="stackCreateByFormCtrl.listServeLabel(serve)">
+                                                   dm-check-include="stackCreateByFormCtrl.listServeLabel(serve, $index)">
                                             <input type="text" placeholder="VALUE" flex-offset="5" flex="40"
                                                    data-ng-model="label.value" data-required="required"
                                                    name="labelValue" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/">
@@ -410,7 +410,7 @@
                                             <input type="text" placeholder="KEY" flex="40"
                                                    data-ng-model="label.key" data-required="required"
                                                    name="labelKey" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/"
-                                                   dm-check-include="stackCreateByFormCtrl.listContainerLabel(serve)">
+                                                   dm-check-include="stackCreateByFormCtrl.listContainerLabel(serve, $index)">
                                             <input type="text" placeholder="VALUE" flex-offset="5" flex="40"
                                                    data-ng-model="label.value" data-required="required"
                                                    name="labelValue" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/">
@@ -583,7 +583,7 @@
                                             <input type="text" placeholder="KEY" flex="40"
                                                    data-ng-model="constraint.key" data-required="required"
                                                    name="constraintKey"
-                                                   dm-check-include="stackCreateByFormCtrl.listConstraints(serve)">
+                                                   dm-check-include="stackCreateByFormCtrl.listConstraints(serve, $index)">
                                             <input type="text" placeholder="VALUE" flex="40" flex-offset="5"
                                                    data-ng-model="constraint.value" data-required="required"
                                                    name="constraintValue">
