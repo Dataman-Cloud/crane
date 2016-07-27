@@ -11,6 +11,14 @@ import (
 
 func Authorization(a *auth.AccountApi) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+		if len(ctx.Query("Authorization")) != 0 {
+			ctx.Request.Header.Set("Authorization", ctx.Query("Authorization"))
+		}
+
+		if len(ctx.Query("Cookie")) != 0 {
+			ctx.Request.Header.Set("Cookie", ctx.Query("Cookie"))
+		}
+
 		if len(ctx.Request.Header.Get("Authorization")) == 0 {
 			ctx.JSON(http.StatusUnauthorized, gin.H{"code": 1, "data": "401"})
 			ctx.Abort()
