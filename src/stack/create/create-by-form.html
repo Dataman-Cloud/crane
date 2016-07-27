@@ -273,10 +273,10 @@
                                 <div flex="50" layout="column">
                                     <md-input-container>
                                         <md-select data-ng-model="serve.Networks" multiple aria-label="Networks"
-                                                   md-on-open="stackCreateByFormCtrl.loadOverlayNetworks()">
+                                                   md-on-open="stackCreateByFormCtrl.loadNetworks()">
                                             <md-option
                                                     data-ng-repeat="network in stackCreateByFormCtrl.networks | filter: {Driver: 'overlay'}"
-                                                    ng-value="network.Name">{/network.Name/}
+                                                    ng-value="network.Id">{/network.Name/}
                                             </md-option>
                                         </md-select>
                                     </md-input-container>
@@ -618,19 +618,42 @@
                                 </div>
                             </div>
 
-                            <div layout="row" layout-align="end start" class="form-group form-group-input">
+                            <div layout="row" layout-align="start start"
+                                 class="form-group form-group-input form-group-addrow">
                                 <label flex="15">命令行</label>
-                                <div flex="50" layout="column">
-                                    <div flex="none">
-                                        <input type="text" class="form-input" data-ng-model="serve.TaskTemplate.ContainerSpec.Command[0]"
-                                               name="cmd"
-                                               dm-check-include="stackCreateByFormCtrl.serveNameList">
+                                <div flex="60" layout="column">
+                                    <div flex>
+                                        <md-button class="md-primary"
+                                                   aria-label="Add cmd"
+                                                   data-ng-click="stackCreateByFormCtrl.addConfig(serve.TaskTemplate.ContainerSpec.Command, 'Cmd')">
+                                            <i class="fa fa-plus"></i>
+                                            添加 CMD
+                                        </md-button>
+                                        可添加多个 CMD
                                     </div>
-                                    <div ng-messages="staticForm.name.$error" ng-if="staticForm.name.$dirty"
-                                         role="alert">
+                                    <div class="add-row-container"
+                                         data-ng-repeat="cmd in serve.TaskTemplate.ContainerSpec.Command track by $index">
+                                        <ng-form name="cmdForm" layout="row" layout-align="start center">
+                                            <input type="text" placeholder="CMD" flex="40"
+                                                   data-ng-model="cmd.command" data-required="required"
+                                                   name="cmdInput">
+                                            <div flex-offset="5" flex>
+                                                <md-button class="md-icon-button md-accent" aria-label="delete"
+                                                           data-ng-click="stackCreateByFormCtrl.deleteConfig($index, serve.TaskTemplate.ContainerSpec.Command)">
+                                                    <i class="fa fa-trash"></i>
+                                                </md-button>
+                                            </div>
+                                        </ng-form>
+                                        <div ng-messages="cmdForm.cmdInput.$error"
+                                             ng-if="cmdForm.cmdInput.$dirty"
+                                             role="alert">
+                                            <p class="error-info help-info-bottom"
+                                               ng-message="pattern">
+                                                <small>CMD 不能包含中文</small>
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
-                                <div flex></div>
                             </div>
 
                             <div layout="row" class="form-footer-button">

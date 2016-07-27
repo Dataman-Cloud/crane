@@ -74,7 +74,7 @@
         self.addConfig = addConfig;
         self.deleteConfig = deleteConfig;
         self.modeChange = modeChange;
-        self.loadOverlayNetworks = loadOverlayNetworks;
+        self.loadNetworks = loadNetworks;
         self.listNames = listNames;
         self.listEnv = listEnv;
         self.listServeLabel = listServeLabel;
@@ -181,6 +181,9 @@
                     Source: '',
                     Target: '',
                     ReadOnly: true
+                },
+                Cmd: {
+                    command: ''
                 }
             };
 
@@ -205,7 +208,7 @@
             }
         }
 
-        function loadOverlayNetworks() {
+        function loadNetworks() {
             networkBackend.listNetwork()
                 .then(function (data) {
                     self.networks = data
@@ -222,16 +225,20 @@
                     array[index] = env.key + '=' + env.value
                 });
 
-                angular.forEach(item.TaskTemplate.Placement.Constraints, function (env, index, array) {
-                    array[index] = env.key + '=' + env.value
+                angular.forEach(item.TaskTemplate.Placement.Constraints, function (constraint, index, array) {
+                    array[index] = constraint.key + '=' + constraint.value
                 });
 
-                angular.forEach(item.Labels, function (env, index, array) {
-                    serveLabels[env.key] = env.value
+                angular.forEach(item.Labels, function (label, index, array) {
+                    serveLabels[label.key] = label.value
                 });
 
-                angular.forEach(item.TaskTemplate.ContainerSpec.Labels, function (env, index, array) {
-                    containerLabels[env.key] = env.value
+                angular.forEach(item.TaskTemplate.ContainerSpec.Labels, function (label, index, array) {
+                    containerLabels[label.key] = label.value
+                });
+
+                angular.forEach(item.TaskTemplate.ContainerSpec.Command, function (cmd, index, array) {
+                    array[index] = cmd.command
                 });
 
                 item.Labels = serveLabels;

@@ -34,6 +34,11 @@
                                        data-ng-click="stackServiceCtrl.stopService(stackDetailCtrl.stack.Namespace, service.Name)">停止
                             </md-button>
                         </md-menu-item>
+                        <md-menu-item>
+                            <md-button aria-label="update"
+                                       data-ui-sref="stack.serviceUpdate({stack_name: $stateParams.stack_name, service_id: service.ID})">更新
+                            </md-button>
+                        </md-menu-item>
                     </md-menu-content>
                 </md-menu>
             </td>

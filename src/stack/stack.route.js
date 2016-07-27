@@ -49,6 +49,17 @@
                     label: '创建编排'
                 }
             })
+            .state('stack.serviceUpdate', {
+                url: '/:stack_name/:service_id/serviceUpdate',
+                templateUrl: '/src/stack/service-update/update.html',
+                controller: 'ServiceUpdateCtrl as serviceUpdateCtrl',
+                ncyBreadcrumb: {
+                    label: '服务更新'
+                },
+                resolve: {
+                    service: getService
+                }
+            })
             .state('stack.detail', {
                 url: '/detail/:stack_name',
                 templateUrl: '/src/stack/detail/detail.html',
