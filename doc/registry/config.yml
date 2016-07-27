@@ -19,7 +19,7 @@ http:
 auth:
   token:
     issuer: dataman-inc
-    realm: http://192.168.1.133:5013/registry/v1/token
+    realm: http://192.168.1.59:5013/registry/v1/token
     rootcertbundle: /etc/registry/root.crt
     service: token-service
 
@@ -27,7 +27,7 @@ notifications:
   endpoints:
       - name: harbor
         disabled: false
-        url: http://192.168.1.133:5013/registry/v1/notifications
+        url: http://192.168.1.59:5013/registry/v1/notifications
         timeout: 500
         threshold: 5
         backoff: 1000

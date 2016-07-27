@@ -11,8 +11,20 @@ import (
 
 // the following code borrowed from vmvare/Harbor project
 func (registry *Registry) RegistryAPIGet(path, username string) ([]byte, error) {
+	return registry.RegistryAPI("GET", path, username)
+}
+
+// the following code borrowed from vmvare/Harbor project
+func (registry *Registry) RegistryAPIDelete(path, username string) ([]byte, error) {
+	return registry.RegistryAPI("DELETE", path, username)
+}
+
+// the following code borrowed from vmvare/Harbor project
+func (registry *Registry) RegistryAPI(method, path, username string) ([]byte, error) {
 	url := fmt.Sprintf("%s/v2/%s", registry.Config.RegistryAddr, path)
-	response, err := http.Get(url)
+	request, err := http.NewRequest(method, url, nil)
+	client := &http.Client{}
+	response, err := client.Do(request)
 	if err != nil {
 		return nil, err
 	}
@@ -28,6 +40,7 @@ func (registry *Registry) RegistryAPIGet(path, username string) ([]byte, error) 
 		if len(strings.Split(authenticate, " ")) < 2 {
 			return nil, errors.New("malformat WWW-Authenticate header")
 		}
+		fmt.Println("Header WWW-Authenticate", authenticate)
 		str := strings.Split(authenticate, " ")[1]
 		var service string
 		var scope string
@@ -48,11 +61,13 @@ func (registry *Registry) RegistryAPIGet(path, username string) ([]byte, error) 
 		}
 		service = strings.Split(service, "\"")[1]
 		scope = strings.Split(scope, "\"")[1]
+		fmt.Println("service", service)
+		fmt.Println("scope", scope)
 		token, err := GenTokenForUI(registry.Config, username, service, scope)
 		if err != nil {
 			return nil, err
 		}
-		request, err := http.NewRequest("GET", url, nil)
+		request, err := http.NewRequest(method, url, nil)
 		if err != nil {
 			return nil, err
 		}
