@@ -119,4 +119,46 @@ then
   fail "inspect nodes failed"
 fi
 
-http --check-status --ignore-stdin --timeout=4.5 get $SERVER_PATH/api/v1/nodes/$first_node Authorization:$token
+# list networks
+msg "list networks"
+http --check-status --ignore-stdin --timeout=4.5 get $SERVER_PATH/api/v1/networks Authorization:$token &>/dev/null
+if [ "$?" != "0" ]
+then
+  fail "list networks failed"
+fi
+
+first_network=`http --check-status --ignore-stdin --timeout=4.5 get $SERVER_PATH/api/v1/networks Authorization:$token | jq ".data[0].Id" | tr -d '"'`
+msg "got first $first_network"
+
+
+# inspect node
+msg "inspect network"
+http --check-status --ignore-stdin --timeout=4.5 get $SERVER_PATH/api/v1/networks/$first_network Authorization:$token &>/dev/null
+if [ "$?" != "0" ]
+then
+  fail "inspect networks failed"
+fi
+
+
+# list containers
+#msg "list containers"
+#http --check-status --ignore-stdin --timeout=4.5 get $SERVER_PATH/api/v1/nodes/$first_node/containers Authorization:$token &>/dev/null
+#if [ "$?" != "0" ]
+#then
+  #fail "list containers failed"
+#fi
+
+#http --check-status --ignore-stdin --timeout=4.5 get $SERVER_PATH/api/v1/nodes/$first_node/containers Authorization:$token
+
+#first_container=`http --check-status --ignore-stdin --timeout=4.5 get $SERVER_PATH/api/v1/nodes/$first_node/containers Authorization:$token | jq ".data[0].Id" | tr -d '"'`
+#msg "got first $first_container"
+
+
+## inspect container
+#msg "inspect container"
+#http --check-status --ignore-stdin --timeout=4.5 get $SERVER_PATH/api/v1/nodes/$first_node/containers/$first_container Authorization:$token &>/dev/null
+#if [ "$?" != "0" ]
+#then
+  #fail "inspect container failed"
+#fi
+
