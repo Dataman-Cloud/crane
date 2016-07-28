@@ -81,10 +81,7 @@
         self.modeChange = modeChange;
         self.loadNetworks = loadNetworks;
         self.listNames = listNames;
-        self.listEnv = listEnv;
-        self.listServeLabel = listServeLabel;
-        self.listContainerLabel = listContainerLabel;
-        self.listConstraints = listConstraints;
+        self.listConfigByKey = listConfigByKey;
 
         function addServe() {
             var form = {
@@ -282,44 +279,17 @@
             return nameList
         }
 
-        function listEnv(serve, curIndex) {
-            var env = serve.TaskTemplate.ContainerSpec.Env.map(function (item, index) {
-                if (item.key && index != curIndex) {
-                    return item.key
-                }
-            });
+        function listConfigByKey(config, curIndex) {
+            var configs = [];
+            if (angular.isArray(config)) {
+                configs = config.map(function (item, index) {
+                    if (item.key && index != curIndex) {
+                        return item.key
+                    }
+                });
+            }
 
-            return env
-        }
-
-        function listServeLabel(serve, curIndex) {
-            var serveLabel = serve.Labels.map(function (item, index) {
-                if (item.key && index != curIndex) {
-                    return item.key
-                }
-            });
-
-            return serveLabel
-        }
-
-        function listContainerLabel(serve, curIndex) {
-            var containerLabel = serve.TaskTemplate.ContainerSpec.Labels.map(function (item, index) {
-                if (item.key && index != curIndex) {
-                    return item.key
-                }
-            });
-
-            return containerLabel
-        }
-
-        function listConstraints(serve, curIndex) {
-            var constraints = serve.TaskTemplate.Placement.Constraints.map(function (item, index) {
-                if (item.key && index != curIndex) {
-                    return item.key
-                }
-            });
-
-            return constraints
+            return configs
         }
     }
 })();

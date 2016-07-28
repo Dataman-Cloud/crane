@@ -12,11 +12,8 @@
         self.modeChange = modeChange;
         self.addConfig = addConfig;
         self.deleteConfig = deleteConfig;
-        self.listServeLabel = listServeLabel;
-        self.listContainerLabel = listContainerLabel;
-        self.listConstraints = listConstraints;
-        self.listEnv = listEnv;
         self.initSelectNetworks = initSelectNetworks;
+        self.listConfigByKey = listConfigByKey;
         self.create = create;
 
         activate();
@@ -110,6 +107,11 @@
 
         function formatFormToJson() {
             var form = angular.copy(self.form);
+
+            form.TaskTemplate.Resources.Limits.NanoCPUs = form.TaskTemplate.Resources.Limits.NanoCPUs ? form.TaskTemplate.Resources.Limits.NanoCPUs * Math.pow(10, 9) : null;
+            form.TaskTemplate.Resources.Limits.MemoryBytes = form.TaskTemplate.Resources.Limits.MemoryBytes ? form.TaskTemplate.Resources.Limits.MemoryBytes * 1024 * 1024 : null;
+            form.TaskTemplate.Resources.Reservations.NanoCPUs = form.TaskTemplate.Resources.Reservations.NanoCPUs ? form.TaskTemplate.Resources.Reservations.NanoCPUs * Math.pow(10, 9) : null;
+            form.TaskTemplate.Resources.Reservations.MemoryBytes = form.TaskTemplate.Resources.Reservations.MemoryBytes ? form.TaskTemplate.Resources.Reservations.MemoryBytes * 1024 * 1024 : null;
 
             form.TaskTemplate.ContainerSpec.Env = [];
             form.TaskTemplate.Placement.Constraints = [];
@@ -240,44 +242,17 @@
             configs.splice(index, 1);
         }
 
-        function listServeLabel(curIndex) {
-            var serveLabel = self.form.formLabels.map(function (item, index) {
-                if (item.key && index != curIndex) {
-                    return item.key
-                }
-            });
+        function listConfigByKey(config, curIndex) {
+            var configs = [];
+            if (angular.isArray(config)) {
+                configs = config.map(function (item, index) {
+                    if (item.key && index != curIndex) {
+                        return item.key
+                    }
+                });
+            }
 
-            return serveLabel
-        }
-
-        function listContainerLabel(curIndex) {
-            var containerLabel = self.form.formContainerLabels.map(function (item, index) {
-                if (item.key && index != curIndex) {
-                    return item.key
-                }
-            });
-
-            return containerLabel
-        }
-
-        function listConstraints(curIndex) {
-            var constraints = self.form.formConstraints.map(function (item, index) {
-                if (item.key && index != curIndex) {
-                    return item.key
-                }
-            });
-
-            return constraints
-        }
-
-        function listEnv(curIndex) {
-            var env = self.form.formEnv.map(function (item, index) {
-                if (item.key && index != curIndex) {
-                    return item.key
-                }
-            });
-
-            return env
+            return configs
         }
 
         function create() {

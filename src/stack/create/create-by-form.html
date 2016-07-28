@@ -348,7 +348,7 @@
                                             <input type="text" placeholder="KEY" flex="40"
                                                    data-ng-model="env.key" data-required="required"
                                                    name="envKey" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/"
-                                                   dm-check-include="stackCreateByFormCtrl.listEnv(serve, $index)">
+                                                   dm-check-include="stackCreateByFormCtrl.listConfigByKey(serve.TaskTemplate.ContainerSpec.Env, $index)">
                                             <input type="text" placeholder="VALUE" flex-offset="5" flex="40"
                                                    data-ng-model="env.value" data-required="required"
                                                    name="envValue" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/">
@@ -401,7 +401,7 @@
                                             <input type="text" placeholder="KEY" flex="40"
                                                    data-ng-model="label.key" data-required="required"
                                                    name="labelKey" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/"
-                                                   dm-check-include="stackCreateByFormCtrl.listServeLabel(serve, $index)">
+                                                   dm-check-include="stackCreateByFormCtrl.listConfigByKey(serve.Labels, $index)">
                                             <input type="text" placeholder="VALUE" flex-offset="5" flex="40"
                                                    data-ng-model="label.value" data-required="required"
                                                    name="labelValue" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/">
@@ -455,7 +455,7 @@
                                             <input type="text" placeholder="KEY" flex="40"
                                                    data-ng-model="label.key" data-required="required"
                                                    name="labelKey" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/"
-                                                   dm-check-include="stackCreateByFormCtrl.listContainerLabel(serve, $index)">
+                                                   dm-check-include="stackCreateByFormCtrl.listConfigByKey(serve.TaskTemplate.ContainerSpec.Labels, $index)">
                                             <input type="text" placeholder="VALUE" flex-offset="5" flex="40"
                                                    data-ng-model="label.value" data-required="required"
                                                    name="labelValue" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/">
@@ -544,8 +544,8 @@
                                             </p>
                                         </div>
 
-                                        <div ng-messages="publishForm.publishValue.$error"
-                                             ng-if="publishForm.publishValue.$dirty"
+                                        <div ng-messages="portForm.PublishedPort.$error"
+                                             ng-if="portForm.PublishedPort.$dirty"
                                              role="alert">
                                             <p class="error-info help-info-bottom"
                                                ng-message="max">
@@ -628,7 +628,7 @@
                                             <input type="text" placeholder="KEY" flex="40"
                                                    data-ng-model="constraint.key" data-required="required"
                                                    name="constraintKey"
-                                                   dm-check-include="stackCreateByFormCtrl.listConstraints(serve, $index)">
+                                                   dm-check-include="stackCreateByFormCtrl.listConfigByKey(serve.TaskTemplate.Placement.Constraints, $index)">
                                             <input type="text" placeholder="VALUE" flex="40" flex-offset="5"
                                                    data-ng-model="constraint.value" data-required="required"
                                                    name="constraintValue">
