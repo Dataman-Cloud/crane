@@ -121,7 +121,7 @@
             };
 
             Resource.prototype._handleErrors = function (status, data, deferred) {
-                if (status == 500 || !data || !angular.isObject(data)) {
+                if (status >= 500 || !data || !angular.isObject(data)) {
                     data = {code: $rootScope.MESSAGE_CODE.unknow};
                 }
                 if (status == 401) {
