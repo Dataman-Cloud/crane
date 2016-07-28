@@ -78,19 +78,20 @@ func (client *RolexDockerClient) Info(ctx context.Context) (*goclient.DockerInfo
 }
 
 func (client *RolexDockerClient) NodeDaemonEndpoint(nodeId string, protocol string) (string, error) {
-	//node, err := client.InspectNode(nodeId)
-	//if err != nil {
-	//	return "", err
-	//}
+	node, err := client.InspectNode(nodeId)
+	if err != nil {
+		return "", err
+	}
+	nodeIp := strings.Split(node.ManagerStatus.Addr, ":")[0]
 
 	switch strings.ToLower(protocol) {
 	case "http":
-		return "http://" + client.Config.NodeIP + ":" + client.Config.NodePort, nil
+		return "http://" + nodeIp + ":" + client.Config.NodePort, nil
 	case "https":
-		return "https://" + client.Config.NodeIP + ":" + client.Config.NodePort, nil
+		return "https://" + nodeIp + ":" + client.Config.NodePort, nil
 	case "tcp":
-		return "tcp://" + client.Config.NodeIP + ":" + client.Config.NodePort, nil
+		return "tcp://" + nodeIp + ":" + client.Config.NodePort, nil
 	default:
-		return "tcp://" + client.Config.NodeIP + ":" + client.Config.NodePort, nil
+		return "tcp://" + nodeIp + ":" + client.Config.NodePort, nil
 	}
 }
