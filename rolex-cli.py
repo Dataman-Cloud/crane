@@ -110,6 +110,19 @@ def create_stack(args):
         sys.exit(1)
     connection.close()
 
+def list_stack_services(args):
+    headers = _get_access_header()
+    connection = httplib.HTTPConnection(ROLEX_API_URL)
+    connection.request('GET','/api/v1/stacks/' + args.stack_name + '/services', '', headers)
+    response = connection.getresponse()
+    try:
+        resp_body = json.loads(response.read().decode())
+        print(json.dumps(resp_body, indent=4, sort_keys=True))
+    except IOError:
+        print('Failed to list stacks')
+        sys.exit(1)
+    connection.close()
+
 def get_group_info(args):
     pass
 
@@ -120,6 +133,9 @@ def update_stack():
     pass
 
 def scale_stack():
+    pass
+
+def list_networks(args):
     pass
 
 
@@ -153,6 +169,10 @@ if __name__ == "__main__":
     parser_create_stack.add_argument("-n", "--stack_name", help="Stack Name", type=str, required=True)
     parser_create_stack.add_argument("-f", "--file", help="bundle json containing stack info", type=argparse.FileType('r'), required=True)
     parser_create_stack.set_defaults(func=create_stack)
+
+    parser_list_stack_s = subparsers.add_parser('list_stack_services', help="List stack services")
+    parser_list_stack_s.add_argument("-n", "--stack_name", help="Stack Name", type=str, required=True)
+    parser_list_stack_s.set_defaults(func=list_stack_services)
 
     args = parser.parse_args()
     args.func(args)
