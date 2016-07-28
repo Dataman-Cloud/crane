@@ -259,6 +259,7 @@ func (client *RolexDockerClient) deployServices(services map[string]model.RolexS
 			TaskTemplate: service.TaskTemplate,
 			EndpointSpec: service.EndpointSpec,
 			Networks:     client.convertNetworks(service.Networks, namespace, internalName),
+			UpdateConfig: service.UpdateConfig,
 		}
 
 		//TODO change service WorkingDir and User
