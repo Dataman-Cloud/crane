@@ -16,16 +16,17 @@ func (client *RolexDockerClient) HttpGet(requestUrl string, query url.Values, he
 		return nil, err
 	}
 
-	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("http response status code is %d", resp.StatusCode)
-	}
-
-	if resp.Body == nil {
-		return nil, nil
-	}
+	result, err := ioutil.ReadAll(resp.Body)
 	defer resp.Body.Close()
+	if err != nil {
+		return nil, err
+	}
 
-	return ioutil.ReadAll(resp.Body)
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("http response status code is %d error: %s", resp.StatusCode, string(result))
+	}
+
+	return result, nil
 }
 
 // execute http delete request use default timeout
@@ -40,16 +41,17 @@ func (client *RolexDockerClient) HttpDelete(requestUrl string) ([]byte, error) {
 		return nil, err
 	}
 
-	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusNoContent {
-		return nil, fmt.Errorf("http response status code is %d", resp.StatusCode)
-	}
-
-	if resp.Body == nil {
-		return nil, nil
-	}
+	result, err := ioutil.ReadAll(resp.Body)
 	defer resp.Body.Close()
+	if err != nil {
+		return nil, err
+	}
 
-	return ioutil.ReadAll(resp.Body)
+	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusNoContent {
+		return nil, fmt.Errorf("http response status code is %d error: %s", resp.StatusCode, string(result))
+	}
+
+	return result, nil
 }
 
 func (client *RolexDockerClient) HttpPost(requestUrl string, query url.Values, body []byte, headers map[string][]string) ([]byte, error) {
@@ -73,16 +75,17 @@ func (client *RolexDockerClient) HttpPost(requestUrl string, query url.Values, b
 		return nil, err
 	}
 
-	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusCreated {
-		return nil, fmt.Errorf("http response status code is %d", resp.StatusCode)
-	}
-
-	if resp.Body == nil {
-		return nil, nil
-	}
+	result, err := ioutil.ReadAll(resp.Body)
 	defer resp.Body.Close()
+	if err != nil {
+		return nil, err
+	}
 
-	return ioutil.ReadAll(resp.Body)
+	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusCreated {
+		return nil, fmt.Errorf("http response status code is %d error: %s", resp.StatusCode, string(result))
+	}
+
+	return result, nil
 }
 
 func (client *RolexDockerClient) HttpPut(requestUrl string, query url.Values, body []byte, headers map[string][]string) ([]byte, error) {
@@ -104,16 +107,17 @@ func (client *RolexDockerClient) HttpPut(requestUrl string, query url.Values, bo
 		return nil, err
 	}
 
-	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("http response status code is %d", resp.StatusCode)
-	}
-
-	if resp.Body == nil {
-		return nil, nil
-	}
+	result, err := ioutil.ReadAll(resp.Body)
 	defer resp.Body.Close()
+	if err != nil {
+		return nil, err
+	}
 
-	return ioutil.ReadAll(resp.Body)
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("http response status code is %d error: %s", resp.StatusCode, string(result))
+	}
+
+	return result, nil
 }
 
 // getAPIPath returns the versioned request path to call the api.
