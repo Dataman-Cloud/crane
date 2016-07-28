@@ -133,6 +133,10 @@
             },
             misc: {
                 config: 'misc/v1/config'
+            },
+            registry: {
+                repositories: 'registry/v1/catalog',
+                listTags: 'registry/v1/tag/list/$repository'
             }
         };
     }

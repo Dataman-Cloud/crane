@@ -10,7 +10,8 @@
             encodeQueryParams: encodeQueryParams,
             redirectLogin: redirectLogin,
             isEmpty: isEmpty,
-            convert2Mapping: convert2Mapping
+            convert2Mapping: convert2Mapping,
+            startWith: startWith
         };
 
         function getUrlTemplate(name, isWS) {
@@ -107,6 +108,10 @@
                 mapping[value[key]] = value;
             });
             return mapping;
+        }
+        
+        function startWith(str, prefix) {
+            return str.substr(0, prefix.length) === prefix;
         }
 
     }

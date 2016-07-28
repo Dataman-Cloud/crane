@@ -7,6 +7,7 @@
             'app.node',
             'app.network',
             'app.misc',
-            'app.user'
+            'app.user',
+            'app.registry'
         ]);
 })();
