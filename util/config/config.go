@@ -33,7 +33,6 @@ type Config struct {
 	RolexCaHash string
 
 	// To be removed, temp
-	NodeIP   string
 	NodePort string
 
 	// account
@@ -69,7 +68,6 @@ type EnvEntry struct {
 	ROLEX_SECRET  string `required:"true"`
 	ROLEX_CA_HASH string `required:"true"`
 	// To be removed
-	ROLEX_NODE_IP   string `required:"true"`
 	ROLEX_NODE_PORT string `required:"true"`
 
 	ROLEX_ACCOUNT_TOKEN_STORE   string `required:"false"`
@@ -98,7 +96,6 @@ func InitConfig(envFile string) *Config {
 	config.RegistryPrivateKeyPath = envEntry.ROLEX_REGISTRY_PRIVATE_KEY_PATH
 	config.RegistryAddr = envEntry.ROLEX_REGISTRY_ADDR
 
-	config.NodeIP = envEntry.ROLEX_NODE_IP
 	config.NodePort = envEntry.ROLEX_NODE_PORT
 
 	config.AccountAuthenticator = envEntry.ROLEX_ACCOUNT_AUTHENTICATOR
