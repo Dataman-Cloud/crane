@@ -1,0 +1,24 @@
+<div class="main-content app-layout">
+    <section class="main-section">
+        <header layout="row" layout-align="end start">
+            <div class="info" flex>
+                <h2>仓库列表</h2>
+            </div>
+            <div layout-align="end center" class="operation">
+                <md-button class="md-fab md-mini" aria-label="创建镜像">
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                    <md-tooltip md-direction="top">
+                        创建镜像
+                    </md-tooltip>
+                </md-button>
+            </div>
+        </header>
+        <md-content>
+            <md-tabs md-dynamic-height md-border-bottom>
+                <md-tab label="我的仓库" dm-tab-sref="registry.list.my"></md-tab>
+                <md-tab label="公有仓库" dm-tab-sref="registry.list.public"></md-tab>
+            </md-tabs>
+            <md-content class="md-padding main-tab-content" data-ui-view></md-content>
+        </md-content>
+    </section>
+</div>
