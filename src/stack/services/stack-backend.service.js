@@ -56,7 +56,7 @@
             return gHttp.Resource('stack.tasks', {stack_name: stackName, service_id: serviceID}).get();
         }
 
-        function updateService(stackName, serviceID, data, form) {
+        function updateService(data, form, stackName, serviceID) {
             return gHttp.Resource('stack.service', {
                 stack_name: stackName,
                 service_id: serviceID

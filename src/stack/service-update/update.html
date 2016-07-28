@@ -265,7 +265,7 @@
                 <label flex="15">选择网络</label>
                 <div flex="50" layout="column">
                     <md-input-container>
-                        <md-select data-ng-model="serviceUpdateCtrl.form.formNetworks" multiple aria-label="Networks">
+                        <md-select data-ng-model="serviceUpdateCtrl.form.formNetworks" multiple aria-label="Networks" data-ng-disabled="true">
                             <md-option
                                     data-ng-repeat="network in serviceUpdateCtrl.networks | filter: {Driver: '!bridge'}"
                                     ng-value="network.Id"

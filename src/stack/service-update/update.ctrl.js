@@ -103,7 +103,61 @@
         }
 
         function formatFormToJson() {
-            console.log(self.form)
+            var form = angular.copy(self.form);
+
+            form.TaskTemplate.ContainerSpec.Env = [];
+            form.TaskTemplate.Placement.Constraints = [];
+            form.Labels = {};
+            form.TaskTemplate.ContainerSpec.Labels = {};
+            form.TaskTemplate.ContainerSpec.Command = [];
+            form.TaskTemplate.ContainerSpec.Mounts = [];
+            form.EndpointSpec.Ports = [];
+
+            if (form.formEnv.length) {
+                angular.forEach(self.form.formEnv, function (env, index, array) {
+                    form.TaskTemplate.ContainerSpec.Env[index] = env.key + '=' + env.value
+                });
+            }
+
+            if (form.formConstraints.length) {
+                angular.forEach(form.formConstraints, function (constraint, index, array) {
+                    form.TaskTemplate.Placement.Constraints[index] = constraint.key + '=' + constraint.value
+                });
+            }
+
+            if (form.formLabels.length) {
+                angular.forEach(form.formLabels, function (label, index, array) {
+                    form.Labels[label.key] = label.value
+                });
+            }
+
+            if (form.formContainerLabels.length) {
+                angular.forEach(form.formContainerLabels, function (label, index, array) {
+                    form.TaskTemplate.ContainerSpec.Labels[label.key] = label.value
+                });
+            }
+
+            if (form.formCmd.length) {
+                angular.forEach(form.formCmd, function (cmd, index, array) {
+                    form.TaskTemplate.ContainerSpec.Command[index] = cmd.command
+                });
+            }
+
+            form.TaskTemplate.ContainerSpec.Mounts = form.formMounts;
+            form.Networks = service.Spec.Networks;
+            form.EndpointSpec.Ports = form.formPorts;
+
+            delete form.formEnv;
+            delete form.formConstraints;
+            delete form.formLabels;
+            delete form.formContainerLabels;
+            delete form.formCmd;
+            delete form.formPorts;
+            delete form.formNetworks;
+            delete form.formMounts;
+            delete form.defaultMode;
+
+            return form
         }
 
         function loadNetworks() {
@@ -221,7 +275,8 @@
         }
 
         function create() {
-            var json = formatFormToJson()
+            var json = formatFormToJson();
+            stackCurd.updateService(json, $scope.staticForm, $stateParams.stack_name, $stateParams.service_id)
         }
 
 
