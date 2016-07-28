@@ -15,7 +15,7 @@
                 }
             })
             .state('registry.list', {
-                url: '/list',
+                url: '/list?open',
                 templateUrl: '/src/registry/list/list.html',
                 targetState: 'my',
                 ncyBreadcrumb: {

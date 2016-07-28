@@ -11,7 +11,8 @@
             listRepositoryTags: listRepositoryTags,
             getImage: getImage,
             listCatalogs: listCatalogs,
-            getCatalog: getCatalog
+            getCatalog: getCatalog,
+            deleteImage: deleteImage
         };
 
         function listRepositories() {
@@ -32,6 +33,10 @@
 
         function getCatalog(catalogName) {
             return gHttp.Resource('registry.catalog', {catalog_name: catalogName}).get();
+        }
+        
+        function deleteImage(repository, tag) {
+            return gHttp.Resource('registry.image', {repository: repository, tag: tag}).delete();
         }
     }
 })();

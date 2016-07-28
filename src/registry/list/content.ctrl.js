@@ -5,24 +5,29 @@
 
 
     /* @ngInject */
-    function RepositorieListContentCtrl(repositories, type, registryBackend, utils, $rootScope) {
+    function RepositorieListContentCtrl(repositories, type, registryBackend, registryCurd, utils, $rootScope, $stateParams) {
         var self = this;
         
         self.repositories = [];
-        self.tags = {};
         
         self.openRepository = openRepository;
         self.closeRepository = closeRepository;
+        self.deleteImage = deleteImage;
         
         activate()
         
         function activate() {
             angular.forEach(repositories.repositories, function (repository) {
-                if ((type === 'my' && utils.startWith(repository, $rootScope.accountId+'/'))||
-                    (type !== 'my' && utils.startWith(repository, 'library/'))) {
-                    self.repositories.push({name: repository, tags: [], show: false})
+                if ((type === 'my' && registryCurd.isMyRepository(repository))||
+                    (type !== 'my' && registryCurd.isPublicRepository(repository))) {
+                    self.repositories.push({name: repository, tags: [], show: false});
                 }
             });
+            angular.forEach(self.repositories, function (repository, index) {
+                if ($stateParams.open === repository.name) {
+                    openRepository(index);
+                }
+            })
         }
         
         function openRepository(index) {
@@ -34,6 +39,10 @@
         
         function closeRepository(index) {
             self.repositories[index].show = false;
+        }
+        
+        function deleteImage(repository, tag, ev) {
+            registryCurd.deleteImage(repository, tag, ev);
         }
     }
 })();
