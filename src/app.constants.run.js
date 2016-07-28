@@ -13,6 +13,7 @@
         };
 
         $rootScope.CODE_MESSAGE = {
+            10000: '服务器忙，请稍后再试',
             10001: '参数错误',
             10002: '操作失败'
         };
@@ -136,7 +137,8 @@
             },
             registry: {
                 repositories: 'registry/v1/catalog',
-                listTags: 'registry/v1/tag/list/$repository'
+                listTags: 'registry/v1/tag/list/$repository',
+                image: 'registry/v1/manifests/$tag/$repository'
             }
         };
     }

@@ -43,7 +43,7 @@
                     <tbody md-body>
                     <tr md-row ng-repeat="tag in repository.tags">
                         <td md-cell>
-                            <a>{/tag/}</a>
+                            <a data-ui-sref='registry.imageDetail({repository: repository.name, tag:tag})'>{/tag/}</a>
                         </td>
                         <td md-cell>
                             <md-menu md-offset="0 -5">

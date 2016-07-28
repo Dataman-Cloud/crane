@@ -1,0 +1,21 @@
+<div class="main-container app-layout">
+    <section class="main-section">
+        <header layout="row" layout-align="start start">
+            <div class="info" flex="95" layout="column">
+                <h2>{/registryImageCtrl.image.name/}:{/registryImageCtrl.image.tag/}</h2>
+                <dl layout="row" layout-wrap layout-align="start end">
+                    <dt flex="none">架构</dt>
+                    <dd flex="none">{/registryImageCtrl.image.architecture/}</dd>
+                    <dt flex="none">Schema版本</dt>
+                    <dd flex="none">{/registryImageCtrl.image.schemaVersion/}</dd>
+                </dl>
+            </div>
+        </header>
+        <md-content>
+            <md-tabs md-dynamic-height md-border-bottom>
+                <md-tab label="历史" dm-tab-sref="node.containerDetail.config"></md-tab>
+            </md-tabs>
+            <md-content class="md-padding main-tab-content" ui-view>
+            </md-content>
+    </section>
+</div>
