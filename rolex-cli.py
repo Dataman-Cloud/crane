@@ -84,11 +84,33 @@ def list_stack(args):
         resp_body = json.loads(response.read().decode())
         print(json.dumps(resp_body, indent=4, sort_keys=True))
     except IOError:
-        print('Failed to stacks')
+        print('Failed to list stacks')
         sys.exit(1)
     connection.close()
 
-def create_stack():
+def create_stack(args):
+    headers = _get_access_header()
+    connection = httplib.HTTPConnection(ROLEX_API_URL)
+    try:
+        request_body = {
+            "Stack": json.loads(args.file.read()),
+            "Namespace": args.stack_name
+        }
+        connection.request('POST','/api/v1/stacks?group_id='+args.group, json.dumps(request_body), headers)
+    except ValueError:
+        print('JSON type error')
+        sys.exit(1)
+
+    response = connection.getresponse()
+    try:
+        resp_body = json.loads(response.read().decode())
+        print(json.dumps(resp_body, indent=4, sort_keys=True))
+    except IOError:
+        print('Failed to create stack')
+        sys.exit(1)
+    connection.close()
+
+def get_group_info(args):
     pass
 
 def restart_stack():
@@ -125,6 +147,12 @@ if __name__ == "__main__":
 
     parser_list_stacks = subparsers.add_parser('list_stack', help="List my stacks")
     parser_list_stacks.set_defaults(func=list_stack)
+
+    parser_create_stack = subparsers.add_parser('create_stack', help="Create stack")
+    parser_create_stack.add_argument("-G", "--group", help="The group_id stack will belong to", type=str, required=True)
+    parser_create_stack.add_argument("-n", "--stack_name", help="Stack Name", type=str, required=True)
+    parser_create_stack.add_argument("-f", "--file", help="bundle json containing stack info", type=argparse.FileType('r'), required=True)
+    parser_create_stack.set_defaults(func=create_stack)
 
     args = parser.parse_args()
     args.func(args)
