@@ -46,12 +46,37 @@
                     type: function () {return 'public';}
                 }
             })
+            .state('registry.imageDetail', {
+                url: '/imageDetail/:repository/:tag',
+                templateUrl: '/src/registry/image-detail/detail.html',
+                controller: 'RegistryImageCtrl as registryImageCtrl',
+                targetState: 'history',
+                ncyBreadcrumb: {
+                    label: '镜像详情'
+                },
+                resolve: {
+                    image: getImage
+                }
+            })
+            .state('registry.imageDetail.history', {
+                url: '/history',
+                templateUrl: '/src/registry/image-detail/history.html',
+                controller: 'RegistryImageHistoryCtrl as registryImageHistoryCtrl',
+                ncyBreadcrumb: {
+                    label: '镜像历史'
+                }
+            })
             
         /* @ngInject */
         function listRepositories(registryBackend) {
             return registryBackend.listRepositories();
         }
+        
             
+        /* @ngInject */
+        function getImage(registryBackend, $stateParams) {
+            return registryBackend.getImage($stateParams.repository, $stateParams.tag);
+        }
     }
     
 })();

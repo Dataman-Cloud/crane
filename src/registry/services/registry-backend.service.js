@@ -8,7 +8,8 @@
     function registryBackend(gHttp) {
         return {
             listRepositories: listRepositories,
-            listRepositoryTags: listRepositoryTags
+            listRepositoryTags: listRepositoryTags,
+            getImage: getImage
         };
         
         function listRepositories() {
@@ -17,6 +18,10 @@
         
         function listRepositoryTags(repository) {
             return gHttp.Resource('registry.listTags', {repository: repository}).get();
+        }
+        
+        function getImage(repository, tag) {
+            return gHttp.Resource('registry.image', {repository: repository, tag: tag}).get();
         }
     }
 })();
