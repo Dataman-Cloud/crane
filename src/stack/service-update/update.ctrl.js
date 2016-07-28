@@ -7,6 +7,8 @@
     function ServiceUpdateCtrl($state, stackCurd, $stateParams, networkBackend, $scope, service) {
         var self = this;
 
+        self.serviceLabelLength = 0;
+
         self.modeChange = modeChange;
         self.addConfig = addConfig;
         self.deleteConfig = deleteConfig;
@@ -15,6 +17,7 @@
         self.listConstraints = listConstraints;
         self.listEnv = listEnv;
         self.initSelectNetworks = initSelectNetworks;
+        self.create = create;
 
         activate();
 
@@ -33,8 +36,13 @@
             form.formConstraints = [];
             form.formEnv = [];
             form.formCmd = [];
-            form.formNetworks = [];
-            form.defaultMode = 'GlobalService';
+            form.defaultMode = 'Global';
+
+            form.TaskTemplate.Resources.Limits.NanoCPUs = form.TaskTemplate.Resources.Limits.NanoCPUs ? form.TaskTemplate.Resources.Limits.NanoCPUs / Math.pow(10, 9) : null;
+            form.TaskTemplate.Resources.Limits.MemoryBytes = form.TaskTemplate.Resources.Limits.MemoryBytes ? form.TaskTemplate.Resources.Limits.MemoryBytes / (1024 * 1024) : null;
+            form.TaskTemplate.Resources.Reservations.NanoCPUs = form.TaskTemplate.Resources.Reservations.NanoCPUs ? form.TaskTemplate.Resources.Reservations.NanoCPUs / Math.pow(10, 9) : null;
+            form.TaskTemplate.Resources.Reservations.MemoryBytes = form.TaskTemplate.Resources.Reservations.MemoryBytes ? form.TaskTemplate.Resources.Reservations.MemoryBytes / (1024 * 1024) : null;
+
 
             angular.forEach(form.Labels, function (value, key) {
                 var obj = {
@@ -53,12 +61,6 @@
 
                 form.formContainerLabels.push(obj)
             });
-
-            if (form.Networks) {
-                angular.forEach(form.Networks, function (item, index) {
-                    form.formNetworks.push(item.Target)
-                });
-            }
 
             if (form.EndpointSpec.Ports) {
                 form.formPorts = form.EndpointSpec.Ports
@@ -81,8 +83,8 @@
             if (form.TaskTemplate.Placement.Constraints) {
                 angular.forEach(form.TaskTemplate.Placement.Constraints, function (item, index) {
                     var obj = {
-                        key: item.split('=')[0],
-                        value: item.split('=')[1]
+                        key: item.split('==')[0],
+                        value: item.split('==')[1]
                     };
 
                     form.formConstraints.push(obj)
@@ -101,6 +103,65 @@
             }
 
             form.defaultMode = Object.keys(form.Mode)[0];
+            self.serviceLabelLength = form.formLabels.length;
+
+            return form
+        }
+
+        function formatFormToJson() {
+            var form = angular.copy(self.form);
+
+            form.TaskTemplate.ContainerSpec.Env = [];
+            form.TaskTemplate.Placement.Constraints = [];
+            form.Labels = {};
+            form.TaskTemplate.ContainerSpec.Labels = {};
+            form.TaskTemplate.ContainerSpec.Command = [];
+            form.TaskTemplate.ContainerSpec.Mounts = [];
+            form.EndpointSpec.Ports = [];
+
+            if (form.formEnv.length) {
+                angular.forEach(self.form.formEnv, function (env, index, array) {
+                    form.TaskTemplate.ContainerSpec.Env[index] = env.key + '=' + env.value
+                });
+            }
+
+            if (form.formConstraints.length) {
+                angular.forEach(form.formConstraints, function (constraint, index, array) {
+                    form.TaskTemplate.Placement.Constraints[index] = constraint.key + '==' + constraint.value
+                });
+            }
+
+            if (form.formLabels.length) {
+                angular.forEach(form.formLabels, function (label, index, array) {
+                    form.Labels[label.key] = label.value
+                });
+            }
+
+            if (form.formContainerLabels.length) {
+                angular.forEach(form.formContainerLabels, function (label, index, array) {
+                    form.TaskTemplate.ContainerSpec.Labels[label.key] = label.value
+                });
+            }
+
+            if (form.formCmd.length) {
+                angular.forEach(form.formCmd, function (cmd, index, array) {
+                    form.TaskTemplate.ContainerSpec.Command[index] = cmd.command
+                });
+            }
+
+            form.TaskTemplate.ContainerSpec.Mounts = form.formMounts;
+            form.Networks = service.Spec.Networks;
+            form.EndpointSpec.Ports = form.formPorts;
+
+            delete form.formEnv;
+            delete form.formConstraints;
+            delete form.formLabels;
+            delete form.formContainerLabels;
+            delete form.formCmd;
+            delete form.formPorts;
+            delete form.formNetworks;
+            delete form.formMounts;
+            delete form.defaultMode;
 
             return form
         }
@@ -124,7 +185,7 @@
         }
 
         function modeChange() {
-            if (self.form.Mode === 'Replicated') {
+            if (self.form.defaultMode === 'Replicated') {
                 self.form.Mode = {
                     Replicated: {
                         Replicas: ""
@@ -132,7 +193,7 @@
                 }
             } else {
                 self.form.Mode = {
-                    GlobalService: {}
+                    Global: {}
                 }
             }
         }
@@ -179,9 +240,9 @@
             configs.splice(index, 1);
         }
 
-        function listServeLabel() {
+        function listServeLabel(curIndex) {
             var serveLabel = self.form.formLabels.map(function (item, index) {
-                if (item.key) {
+                if (item.key && index != curIndex) {
                     return item.key
                 }
             });
@@ -189,9 +250,9 @@
             return serveLabel
         }
 
-        function listContainerLabel() {
+        function listContainerLabel(curIndex) {
             var containerLabel = self.form.formContainerLabels.map(function (item, index) {
-                if (item.key) {
+                if (item.key && index != curIndex) {
                     return item.key
                 }
             });
@@ -199,9 +260,9 @@
             return containerLabel
         }
 
-        function listConstraints() {
+        function listConstraints(curIndex) {
             var constraints = self.form.formConstraints.map(function (item, index) {
-                if (item.key) {
+                if (item.key && index != curIndex) {
                     return item.key
                 }
             });
@@ -209,14 +270,21 @@
             return constraints
         }
 
-        function listEnv() {
+        function listEnv(curIndex) {
             var env = self.form.formEnv.map(function (item, index) {
-                if (item.key) {
+                if (item.key && index != curIndex) {
                     return item.key
                 }
             });
 
             return env
         }
+
+        function create() {
+            var json = formatFormToJson();
+            stackCurd.updateService(json, $scope.staticForm, $stateParams.stack_name, $stateParams.service_id)
+        }
+
+
     }
 })();

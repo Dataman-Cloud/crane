@@ -35,7 +35,7 @@
                     <div flex="50" layout="column">
                         <md-input-container>
                             <md-select data-ng-model="stackCreateNavCtrl.selectGroupId" aria-label="selectGroupId"
-                                       md-on-open="stackCreateNavCtrl.loadGroups()" data-required="required">
+                                       md-on-open="stackCreateNavCtrl.loadGroups()">
                                 <md-option
                                         data-ng-repeat="group in stackCreateNavCtrl.groups"
                                         ng-value="group.Id">{/group.Name/}

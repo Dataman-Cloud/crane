@@ -69,8 +69,8 @@
                                         <md-radio-group data-ng-model="serve.defaultMode" layout="row"
                                                         aria-label="defaultMode"
                                                         data-ng-change="stackCreateByFormCtrl.modeChange(serve)">
-                                            <md-radio-button value="GlobalService" class="md-accent" flex>
-                                                GlobalService
+                                            <md-radio-button value="Global" class="md-accent" flex>
+                                                Global
                                             </md-radio-button>
                                             <md-radio-button value="Replicated" class="md-accent" flex>Replicated
                                             </md-radio-button>
@@ -122,9 +122,9 @@
                                                         aria-label="restart-condition">
                                             <md-radio-button value="none" class="md-accent" flex>none
                                             </md-radio-button>
-                                            <md-radio-button value="'on-failure'" class="md-accent" flex>on-failure
+                                            <md-radio-button value="on-failure" class="md-accent" flex>on-failure
                                             </md-radio-button>
-                                            <md-radio-button value="'any'" class="md-accent" flex>any
+                                            <md-radio-button value="any" class="md-accent" flex>any
                                             </md-radio-button>
                                         </md-radio-group>
                                     </div>
@@ -245,24 +245,69 @@
                                 <label flex="15">资源限制</label>
                                 <div flex="20" layout="column">
                                     <div flex="none">
-                                        CPU:
+                                        CPU (核):
                                         <input type="number" class="form-input"
-                                               data-ng-model="serve.TaskTemplate.Resources.NanoCPUs"
-                                               name="limitCpu">
+                                               data-ng-model="serve.TaskTemplate.Resources.Limits.NanoCPUs"
+                                               name="limitCpu" min="0.01">
                                     </div>
                                     <div ng-messages="staticForm.limitCpu.$error" ng-if="staticForm.limitCpu.$dirty"
                                          role="alert">
+                                        <p class="error-info help-info-bottom"
+                                           ng-message="min">
+                                            <small>CPU 最小为 0.01</small>
+                                        </p>
                                     </div>
                                 </div>
                                 <div flex="20" flex-offset="5" layout="column">
                                     <div flex="none">
-                                        内存 (B):
+                                        内存 (MB):
                                         <input type="number" class="form-input"
-                                               data-ng-model="serve.TaskTemplate.Resources.MemoryBytes"
-                                               name="limitMem">
+                                               data-ng-model="serve.TaskTemplate.Resources.Limits.MemoryBytes"
+                                               name="limitMem" min="4">
                                     </div>
                                     <div ng-messages="staticForm.limitMem.$error" ng-if="staticForm.limitMem.$dirty"
                                          role="alert">
+                                        <p class="error-info help-info-bottom"
+                                           ng-message="min">
+                                            <small>内存最小为 4 MB</small>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div flex></div>
+                            </div>
+
+                            <div layout="row" layout-align="end start" class="form-group form-group-input">
+                                <label flex="15">资源预留</label>
+                                <div flex="20" layout="column">
+                                    <div flex="none">
+                                        CPU (核):
+                                        <input type="number" class="form-input"
+                                               data-ng-model="serve.TaskTemplate.Resources.Reservations.NanoCPUs"
+                                               name="ReservationsCpu" min="0.01">
+                                    </div>
+                                    <div ng-messages="staticForm.ReservationsCpu.$error"
+                                         ng-if="staticForm.ReservationsCpu.$dirty"
+                                         role="alert">
+                                        <p class="error-info help-info-bottom"
+                                           ng-message="min">
+                                            <small>CPU 最小为 0.01</small>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div flex="20" flex-offset="5" layout="column">
+                                    <div flex="none">
+                                        内存 (MB):
+                                        <input type="number" class="form-input"
+                                               data-ng-model="serve.TaskTemplate.Resources.Reservations.MemoryBytes"
+                                               name="ReservationsMem" min=4>
+                                    </div>
+                                    <div ng-messages="staticForm.ReservationsMem.$error"
+                                         ng-if="staticForm.ReservationsMem.$dirty"
+                                         role="alert">
+                                        <p class="error-info help-info-bottom"
+                                           ng-message="min">
+                                            <small>内存最小为 4 MB</small>
+                                        </p>
                                     </div>
                                 </div>
                                 <div flex></div>
@@ -275,7 +320,7 @@
                                         <md-select data-ng-model="serve.Networks" multiple aria-label="Networks"
                                                    md-on-open="stackCreateByFormCtrl.loadNetworks()">
                                             <md-option
-                                                    data-ng-repeat="network in stackCreateByFormCtrl.networks | filter: {Driver: 'overlay'}"
+                                                    data-ng-repeat="network in stackCreateByFormCtrl.networks | filter: {Driver: '!bridge'}"
                                                     ng-value="network.Id">{/network.Name/}
                                             </md-option>
                                         </md-select>
@@ -303,7 +348,7 @@
                                             <input type="text" placeholder="KEY" flex="40"
                                                    data-ng-model="env.key" data-required="required"
                                                    name="envKey" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/"
-                                                   dm-check-include="stackCreateByFormCtrl.listEnv(serve)">
+                                                   dm-check-include="stackCreateByFormCtrl.listEnv(serve, $index)">
                                             <input type="text" placeholder="VALUE" flex-offset="5" flex="40"
                                                    data-ng-model="env.value" data-required="required"
                                                    name="envValue" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/">
@@ -356,7 +401,7 @@
                                             <input type="text" placeholder="KEY" flex="40"
                                                    data-ng-model="label.key" data-required="required"
                                                    name="labelKey" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/"
-                                                   dm-check-include="stackCreateByFormCtrl.listServeLabel(serve)">
+                                                   dm-check-include="stackCreateByFormCtrl.listServeLabel(serve, $index)">
                                             <input type="text" placeholder="VALUE" flex-offset="5" flex="40"
                                                    data-ng-model="label.value" data-required="required"
                                                    name="labelValue" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/">
@@ -410,7 +455,7 @@
                                             <input type="text" placeholder="KEY" flex="40"
                                                    data-ng-model="label.key" data-required="required"
                                                    name="labelKey" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/"
-                                                   dm-check-include="stackCreateByFormCtrl.listContainerLabel(serve)">
+                                                   dm-check-include="stackCreateByFormCtrl.listContainerLabel(serve, $index)">
                                             <input type="text" placeholder="VALUE" flex-offset="5" flex="40"
                                                    data-ng-model="label.value" data-required="required"
                                                    name="labelValue" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/">
@@ -583,7 +628,7 @@
                                             <input type="text" placeholder="KEY" flex="40"
                                                    data-ng-model="constraint.key" data-required="required"
                                                    name="constraintKey"
-                                                   dm-check-include="stackCreateByFormCtrl.listConstraints(serve)">
+                                                   dm-check-include="stackCreateByFormCtrl.listConstraints(serve, $index)">
                                             <input type="text" placeholder="VALUE" flex="40" flex-offset="5"
                                                    data-ng-model="constraint.value" data-required="required"
                                                    name="constraintValue">

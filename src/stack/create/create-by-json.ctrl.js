@@ -4,7 +4,7 @@
         .controller('StackCreateByJsonCtrl', StackCreateByJsonCtrl);
 
     /* @ngInject */
-    function StackCreateByJsonCtrl($timeout, $scope, $rootScope, $state, stackBackend, $stateParams) {
+    function StackCreateByJsonCtrl($timeout, $scope, $rootScope, $state, stackCurd, $stateParams) {
         var self = this;
 
         self.supportReadFile = false;
@@ -29,7 +29,6 @@
 
         self.form = {
             Namespace: $stateParams.stack_name || '',
-            GroupId: $stateParams.group_id,
             Stack: ""
         };
 
@@ -60,9 +59,7 @@
 
         function create() {
             self.form.Stack = angular.fromJson(self.stack);
-            stackBackend.createStack(self.form, $scope.staticForm).then(function (data) {
-                $state.go('stack.list');
-            });
+            stackCurd.createStack(self.form, $scope.staticForm, $stateParams.group_id)
         }
 
         function stackChange() {

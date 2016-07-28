@@ -18,8 +18,11 @@
             updateService: updateService
         };
 
-        function createStack(data, form) {
-            return gHttp.Resource('stack.stacks').post(data, {form: form});
+        function createStack(data, form, groupId) {
+            var params = {
+                group_id: groupId
+            };
+            return gHttp.Resource('stack.stacks').post(data, {form: form, params: params});
         }
 
         function listStacks() {
@@ -53,7 +56,7 @@
             return gHttp.Resource('stack.tasks', {stack_name: stackName, service_id: serviceID}).get();
         }
 
-        function updateService(stackName, serviceID, data, form) {
+        function updateService(data, form, stackName, serviceID) {
             return gHttp.Resource('stack.service', {
                 stack_name: stackName,
                 service_id: serviceID

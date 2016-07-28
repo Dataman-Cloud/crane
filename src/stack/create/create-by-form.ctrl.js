@@ -9,7 +9,6 @@
 
         self.form = {
             Namespace: $stateParams.stack_name || '',
-            GroupId: $stateParams.group_id,
             Stack: {
                 Version: '',
                 Services: {}
@@ -32,8 +31,14 @@
                         "StopGracePeriod": null //杀死容器前等待时间
                     },
                     "Resources": {
-                        "NanoCPUs": null, //CPU 限制
-                        "MemoryBytes": null //内存限制
+                        "Limits": {
+                            "NanoCPUs": null, //CPU 限制
+                            "MemoryBytes": null //内存限制
+                        },
+                        "Reservations": {
+                            "NanoCPUs": null, //CPU 预留
+                            "MemoryBytes": null //内存预留
+                        }
                     },
                     "RestartPolicy": {
                         "Condition": "none", //重启模式
@@ -47,11 +52,11 @@
                     "LogDriver": {}
                 },
                 "Mode": {
-                    ////Replicated/GlobalService 二选一
+                    ////Replicated/Global 二选一
                     //"Replicated": {
                     //    "Replicas": null //任务数
                     //},
-                    "GlobalService": {}
+                    "Global": {}
                 },
                 "UpdateConfig": {
                     "Parallelism": null,//更新并行任务数
@@ -62,7 +67,7 @@
                     "Mode": "vip", //vip/dnsrr
                     "Ports": [] //端口
                 },
-                "defaultMode": 'GlobalService'
+                "defaultMode": 'Global'
             }
         ];
 
@@ -97,8 +102,14 @@
                         "StopGracePeriod": null //杀死容器前等待时间
                     },
                     "Resources": {
-                        "NanoCPUs": null, //CPU 限制
-                        "MemoryBytes": null //内存限制
+                        "Limits": {
+                            "NanoCPUs": null, //CPU 限制
+                            "MemoryBytes": null //内存限制
+                        },
+                        "Reservations": {
+                            "NanoCPUs": null, //CPU 预留
+                            "MemoryBytes": null //内存预留
+                        }
                     },
                     "RestartPolicy": {
                         "Condition": "none", //重启模式
@@ -112,11 +123,11 @@
                     "LogDriver": {}
                 },
                 "Mode": {
-                    ////Replicated/GlobalService 二选一
+                    ////Replicated/Global 二选一
                     //"Replicated": {
                     //    "Replicas": null //任务数
                     //},
-                    "GlobalService": {}
+                    "Global": {}
                 },
                 "UpdateConfig": {
                     "Parallelism": null,//更新并行任务数
@@ -127,7 +138,7 @@
                     "Mode": "vip", //vip/dnsrr
                     "Ports": [] //端口
                 },
-                "defaultMode": 'GlobalService'
+                "defaultMode": 'Global'
             };
 
             self.serveFormArray.push(form);
@@ -149,7 +160,7 @@
                 self.form.Stack.Services[serve.Name] = serve
             });
 
-            stackCurd.createStack(self.form, $scope.staticForm);
+            stackCurd.createStack(self.form, $scope.staticForm, $stateParams.group_id);
         }
 
         function addConfig(configs, typeName) {
@@ -203,7 +214,7 @@
                 }
             } else {
                 serveForm.Mode = {
-                    GlobalService: {}
+                    Global: {}
                 }
             }
         }
@@ -221,12 +232,18 @@
             var containerLabels = {};
 
             angular.forEach(serveTempArray, function (item, index, array) {
+
+                item.TaskTemplate.Resources.Limits.NanoCPUs = item.TaskTemplate.Resources.Limits.NanoCPUs ? item.TaskTemplate.Resources.Limits.NanoCPUs * Math.pow(10, 9) : null;
+                item.TaskTemplate.Resources.Limits.MemoryBytes = item.TaskTemplate.Resources.Limits.MemoryBytes ? item.TaskTemplate.Resources.Limits.MemoryBytes * 1024 * 1024 : null;
+                item.TaskTemplate.Resources.Reservations.NanoCPUs = item.TaskTemplate.Resources.Reservations.NanoCPUs ? item.TaskTemplate.Resources.Reservations.NanoCPUs * Math.pow(10, 9) : null;
+                item.TaskTemplate.Resources.Reservations.MemoryBytes = item.TaskTemplate.Resources.Reservations.MemoryBytes ? item.TaskTemplate.Resources.Reservations.MemoryBytes * 1024 * 1024 : null;
+
                 angular.forEach(item.TaskTemplate.ContainerSpec.Env, function (env, index, array) {
                     array[index] = env.key + '=' + env.value
                 });
 
                 angular.forEach(item.TaskTemplate.Placement.Constraints, function (constraint, index, array) {
-                    array[index] = constraint.key + '=' + constraint.value
+                    array[index] = constraint.key + '==' + constraint.value
                 });
 
                 angular.forEach(item.Labels, function (label, index, array) {
@@ -265,9 +282,9 @@
             return nameList
         }
 
-        function listEnv(serve) {
+        function listEnv(serve, curIndex) {
             var env = serve.TaskTemplate.ContainerSpec.Env.map(function (item, index) {
-                if (item.key) {
+                if (item.key && index != curIndex) {
                     return item.key
                 }
             });
@@ -275,9 +292,9 @@
             return env
         }
 
-        function listServeLabel(serve) {
+        function listServeLabel(serve, curIndex) {
             var serveLabel = serve.Labels.map(function (item, index) {
-                if (item.key) {
+                if (item.key && index != curIndex) {
                     return item.key
                 }
             });
@@ -285,9 +302,9 @@
             return serveLabel
         }
 
-        function listContainerLabel(serve) {
+        function listContainerLabel(serve, curIndex) {
             var containerLabel = serve.TaskTemplate.ContainerSpec.Labels.map(function (item, index) {
-                if (item.key) {
+                if (item.key && index != curIndex) {
                     return item.key
                 }
             });
@@ -295,9 +312,9 @@
             return containerLabel
         }
 
-        function listConstraints(serve) {
+        function listConstraints(serve, curIndex) {
             var constraints = serve.TaskTemplate.Placement.Constraints.map(function (item, index) {
-                if (item.key) {
+                if (item.key && index != curIndex) {
                     return item.key
                 }
             });

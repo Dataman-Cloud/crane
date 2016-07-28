@@ -60,10 +60,10 @@
                 <div flex="30" layout="column">
                     <div flex>
                         <md-radio-group data-ng-model="serviceUpdateCtrl.form.defaultMode" layout="row"
-                                        aria-label="defaultMode"
+                                        aria-label="defaultMode" data-ng-disabled="true"
                                         data-ng-change="serviceUpdateCtrl.modeChange()">
-                            <md-radio-button value="GlobalService" class="md-accent" flex>
-                                GlobalService
+                            <md-radio-button value="Global" class="md-accent" flex>
+                                Global
                             </md-radio-button>
                             <md-radio-button value="Replicated" class="md-accent" flex>Replicated
                             </md-radio-button>
@@ -115,9 +115,9 @@
                                         aria-label="restart-condition">
                             <md-radio-button value="none" class="md-accent" flex>none
                             </md-radio-button>
-                            <md-radio-button value="'on-failure'" class="md-accent" flex>on-failure
+                            <md-radio-button value="on-failure" class="md-accent" flex>on-failure
                             </md-radio-button>
-                            <md-radio-button value="'any'" class="md-accent" flex>any
+                            <md-radio-button value="any" class="md-accent" flex>any
                             </md-radio-button>
                         </md-radio-group>
                     </div>
@@ -238,24 +238,67 @@
                 <label flex="15">资源限制</label>
                 <div flex="20" layout="column">
                     <div flex="none">
-                        CPU:
+                        CPU (核):
                         <input type="number" class="form-input"
-                               data-ng-model="serviceUpdateCtrl.form.TaskTemplate.Resources.NanoCPUs"
-                               name="limitCpu">
+                               data-ng-model="serviceUpdateCtrl.form.TaskTemplate.Resources.Limits.NanoCPUs"
+                               name="limitCpu" min="0.01">
                     </div>
                     <div ng-messages="staticForm.limitCpu.$error" ng-if="staticForm.limitCpu.$dirty"
                          role="alert">
+                        <p class="error-info help-info-bottom"
+                           ng-message="min">
+                            <small>CPU 最小为 0.01</small>
+                        </p>
                     </div>
                 </div>
                 <div flex="20" flex-offset="5" layout="column">
                     <div flex="none">
-                        内存 (B):
+                        内存 (MB):
                         <input type="number" class="form-input"
-                               data-ng-model="serviceUpdateCtrl.form.TaskTemplate.Resources.MemoryBytes"
-                               name="limitMem">
+                               data-ng-model="serviceUpdateCtrl.form.TaskTemplate.Resources.Limits.MemoryBytes"
+                               name="limitMem" min="4">
                     </div>
                     <div ng-messages="staticForm.limitMem.$error" ng-if="staticForm.limitMem.$dirty"
                          role="alert">
+                        <p class="error-info help-info-bottom"
+                           ng-message="min">
+                            <small>内存最小为 4 MB</small>
+                        </p>
+                    </div>
+                </div>
+                <div flex></div>
+            </div>
+
+            <div layout="row" layout-align="end start" class="form-group form-group-input">
+                <label flex="15">资源预留</label>
+                <div flex="20" layout="column">
+                    <div flex="none">
+                        CPU (核):
+                        <input type="number" class="form-input"
+                               data-ng-model="serviceUpdateCtrl.form.TaskTemplate.Resources.Reservations.NanoCPUs"
+                               name="ReservationsCpu" min="0.01">
+                    </div>
+                    <div ng-messages="staticForm.ReservationsCpu.$error" ng-if="staticForm.ReservationsCpu.$dirty"
+                         role="alert">
+                        <p class="error-info help-info-bottom"
+                           ng-message="min">
+                            <small>CPU 最小为 0.01</small>
+                        </p>
+                    </div>
+                </div>
+                <div flex="20" flex-offset="5" layout="column">
+                    <div flex="none">
+                        内存 (MB):
+                        <input type="number" class="form-input"
+                               data-ng-model="serviceUpdateCtrl.form.TaskTemplate.Resources.Reservations.MemoryBytes"
+                               name="ReservationsMem" min="4">
+                    </div>
+                    <div ng-messages="staticForm.ReservationsMem.$error" ng-if="staticForm.ReservationsMem.$dirty"
+                         role="alert">
+                        <p class="error-info help-info-bottom"
+                           ng-message="min">
+                            <small>内存最小为 4 MB</small>
+                        </p>
                     </div>
                 </div>
                 <div flex></div>
@@ -265,10 +308,12 @@
                 <label flex="15">选择网络</label>
                 <div flex="50" layout="column">
                     <md-input-container>
-                        <md-select data-ng-model="serviceUpdateCtrl.form.formNetworks" multiple aria-label="Networks">
+                        <md-select data-ng-model="serviceUpdateCtrl.form.formNetworks" multiple aria-label="Networks"
+                                   data-ng-disabled="true">
                             <md-option
-                                    data-ng-repeat="network in serviceUpdateCtrl.networks | filter: {Driver: 'overlay'}"
-                                    ng-value="network.Id" ng-selected="serviceUpdateCtrl.initSelectNetworks(network.Id)">{/network.Name/}
+                                    data-ng-repeat="network in serviceUpdateCtrl.networks | filter: {Driver: '!bridge'}"
+                                    ng-value="network.Id"
+                                    ng-selected="serviceUpdateCtrl.initSelectNetworks(network.Id)">{/network.Name/}
                             </md-option>
                         </md-select>
                     </md-input-container>
@@ -295,7 +340,7 @@
                             <input type="text" placeholder="KEY" flex="40"
                                    data-ng-model="env.key" data-required="required"
                                    name="envKey" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/"
-                                   dm-check-include="serviceUpdateCtrl.listEnv()">
+                                   dm-check-include="serviceUpdateCtrl.listEnv($index)">
                             <input type="text" placeholder="VALUE" flex-offset="5" flex="40"
                                    data-ng-model="env.value" data-required="required"
                                    name="envValue" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/">
@@ -348,12 +393,15 @@
                             <input type="text" placeholder="KEY" flex="40"
                                    data-ng-model="label.key" data-required="required"
                                    name="labelKey" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/"
-                                   dm-check-include="serviceUpdateCtrl.listServeLabel()">
+                                   data-ng-disabled="$index < serviceUpdateCtrl.serviceLabelLength"
+                                   dm-check-include="serviceUpdateCtrl.listServeLabel($index)">
                             <input type="text" placeholder="VALUE" flex-offset="5" flex="40"
                                    data-ng-model="label.value" data-required="required"
-                                   name="labelValue" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/">
+                                   name="labelValue" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/"
+                                   data-ng-disabled="$index < serviceUpdateCtrl.serviceLabelLength">
                             <div flex-offset="5" flex>
                                 <md-button class="md-icon-button md-accent" aria-label="delete"
+                                           data-ng-disabled="$index < serviceUpdateCtrl.serviceLabelLength"
                                            data-ng-click="serviceUpdateCtrl.deleteConfig($index, serviceUpdateCtrl.form.formLabels)">
                                     <i class="fa fa-trash"></i>
                                 </md-button>
@@ -402,7 +450,7 @@
                             <input type="text" placeholder="KEY" flex="40"
                                    data-ng-model="label.key" data-required="required"
                                    name="labelKey" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/"
-                                   dm-check-include="serviceUpdateCtrl.listContainerLabel()">
+                                   dm-check-include="serviceUpdateCtrl.listContainerLabel($index)">
                             <input type="text" placeholder="VALUE" flex-offset="5" flex="40"
                                    data-ng-model="label.value" data-required="required"
                                    name="labelValue" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/">
@@ -575,7 +623,7 @@
                             <input type="text" placeholder="KEY" flex="40"
                                    data-ng-model="constraint.key" data-required="required"
                                    name="constraintKey"
-                                   dm-check-include="serviceUpdateCtrl.listConstraints()">
+                                   dm-check-include="serviceUpdateCtrl.listConstraints($index)">
                             <input type="text" placeholder="VALUE" flex="40" flex-offset="5"
                                    data-ng-model="constraint.value" data-required="required"
                                    name="constraintValue">
@@ -650,12 +698,6 @@
 
             <div layout="row" class="form-footer-button">
                 <div flex-offset="15">
-                    <md-button class="md-raised md-primary" data-ng-disabled="staticForm.$invalid"
-                               data-ng-click="serviceUpdateCtrl.addServe()">继续添加服务
-                    </md-button>
-                    <md-button class="md-raised md-warn"
-                               data-ng-click="serviceUpdateCtrl.removeServe($index)">删除服务
-                    </md-button>
                     <md-button class="md-raised md-primary" data-ng-disabled="staticForm.$invalid"
                                data-ng-click="serviceUpdateCtrl.create()">
                         部署
