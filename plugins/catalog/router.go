@@ -6,9 +6,9 @@ import (
 
 func (catalogApi *CatalogApi) RegisterApiForCatalog(router *gin.Engine, middlewares ...gin.HandlerFunc) {
 
-	catalogV1Protected := router.Group("/catalog/v1", middlewares...)
+	catalogV1 := router.Group("/catalog/v1", middlewares...)
 	{
-		catalogV1Protected.GET("/catalogs", catalogApi.ListCatalog)
-		catalogV1Protected.GET("/catalogs/:name", catalogApi.GetCatalog)
+		catalogV1.GET("/catalogs", catalogApi.ListCatalog)
+		catalogV1.GET("/catalogs/:name", catalogApi.GetCatalog)
 	}
 }
