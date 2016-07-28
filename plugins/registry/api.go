@@ -110,7 +110,7 @@ func (registry *Registry) TagList(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"code": "0", "data": respBody})
+	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": respBody})
 }
 
 func (registry *Registry) GetManifests(ctx *gin.Context) {
@@ -134,7 +134,7 @@ func (registry *Registry) GetManifests(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"code": "0", "data": manifest})
+	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": manifest})
 }
 
 func (registry *Registry) UpdateManifests(ctx *gin.Context) {
@@ -155,7 +155,7 @@ func (registry *Registry) DeleteManifests(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"code": "0", "data": "success"})
+	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": "success"})
 }
 
 func (registry *Registry) Catalog(ctx *gin.Context) {
@@ -182,5 +182,5 @@ func (registry *Registry) Catalog(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"code": "0", "data": respBody})
+	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": respBody})
 }
