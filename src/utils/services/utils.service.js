@@ -4,7 +4,7 @@
         .factory('utils', utils);
 
     /* @ngInject */
-    function utils(Notification, $rootScope, $window, $cookies) {
+    function utils(Notification, $rootScope, $window, $cookies, $location) {
         return {
             buildFullURL: buildFullURL,
             encodeQueryParams: encodeQueryParams,
@@ -13,7 +13,7 @@
             convert2Mapping: convert2Mapping
         };
 
-        function getUrlTemplate(name) {
+        function getUrlTemplate(name, isWS) {
             var confs = name.split('.');
             var categoryKey = confs[0];
             var detailKey = confs[1];
@@ -23,28 +23,38 @@
             } else {
                 base = BACKEND_URL_BASE.defaultBase;
             }
-            return base + $rootScope.BACKEND_URL[categoryKey][detailKey];
-        }
-
-        function convertProtocol2WS(url) {
-            var urls = url.split(':');
-            var protocol = 'ws';
-            if (urls[0] === 'https' || urls[0] === 'wss') {
-                protocol = 'wss';
-            }
-            urls[0] = protocol;
-            return urls.join(':');
+            base = buildBase(base, isWS);
+            return urlJoin(base, $rootScope.BACKEND_URL[categoryKey][detailKey]);
         }
         
-        function buildFullURL(name, params, convertWS) {
-            var url = getUrlTemplate(name);
+        function urlJoin(domain, uri) {
+            domain = domain.replace(/(\/*$)/g,"");
+            uri = uri.replace(/(^\/*)/g,"");
+            return domain + "/" + uri;
+        }
+
+        function buildBase(base, isWS) {
+            if (!base || base === '/') {
+                base = $location.protocol() + "://" + $location.host() + ":" + $location.port();
+            }
+            if (isWS) {
+                var bases = base.split(':');
+                var protocol = 'ws';
+                if (bases[0] === 'https' || bases[0] === 'wss') {
+                    protocol = 'wss';
+                }
+                bases[0] = protocol;
+                base = bases.join(':');
+            }
+            return base;
+        }
+        
+        function buildFullURL(name, params, isWS) {
+            var url = getUrlTemplate(name, isWS);
             if (params) {
                 $.each(params, function (key, val) {
                     url = url.replace("$" + key, val);
                 });
-            }
-            if (convertWS) {
-                url = convertProtocol2WS(url);
             }
             return url;
         }
