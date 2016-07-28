@@ -30,7 +30,7 @@ curl -XGET localhost:2375/registry/v1/tag/list/library/registry
 **Request:**
 
 ```
-curl -XGET localhost:2375/registry/v1/latest/library/registry
+curl -XGET localhost:2375/registry/v1/manifests/latest/library/registry
 ```
 
 **Response:**
@@ -131,5 +131,24 @@ curl -XGET localhost:2375/registry/v1/catalog
             "library/registry"
         ]
     }
+}
+```
+
+
+
+#### DELETE `/manifests/:reference/:namespace/:image`
+
+**Request:**
+
+```
+curl -XDELETE localhost:2375/registry/v1/manifests/latest/library/registry
+```
+
+**Response:**
+
+```
+{
+    "code": "0",
+    "data": "success"
 }
 ```
