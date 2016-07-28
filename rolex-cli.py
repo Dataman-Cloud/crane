@@ -6,12 +6,13 @@
 import httplib
 import urllib
 import json
-from optparse import OptionParser
+import argparse
 import sys
 
 ROLEX_API_URL = '192.168.59.104'
 CONFIG_FILE = '.rolex.json'
 
+__author__ = "weitao zhou"
 
 def _get_access_header():
     try:
@@ -26,11 +27,11 @@ def _set_access_header(headers):
         f.write(json.dumps(headers))
 
 
-def login(email, password):
+def login(args):
     headers = {'Content-type': 'application/json'}
     user_info = {
-        "Email": email,
-        "Password": password
+        "Email": args.email,
+        "Password": args.password
     }
     json_user_info = json.dumps(user_info)
     connection = httplib.HTTPConnection(ROLEX_API_URL)
@@ -55,7 +56,7 @@ def login(email, password):
 
     _set_access_header(headers)
 
-def about_me():
+def about_me(args):
     headers = _get_access_header()
     connection = httplib.HTTPConnection(ROLEX_API_URL)
     # test for transfer session over url query
@@ -65,18 +66,19 @@ def about_me():
     print(response.read().decode())
     connection.close()
 
-def logout():
+def logout(args):
     headers = _get_access_header()
     connection = httplib.HTTPConnection(ROLEX_API_URL)
     connection.request('POST','/account/v1/logout', '', headers)
     connection.close()
 
     _set_access_header({})
+    print("Logout successfully")
 
 def list_stack():
     pass
 
-def start_stack():
+def create_stack():
     pass
 
 def restart_stack():
@@ -91,16 +93,25 @@ def scale_stack():
 
 if __name__ == "__main__":
 
-    parser = OptionParser()
-    parser.add_option("-e", "--email", dest="email", help="User email to login",
-                      action="store", type="string")
-    parser.add_option("-p", "--password", dest="password", help="User password to login",
-                      action="store", type="string")
-    parser.add_option("-q", "--quiet",
-                      action="store_false", dest="verbose", default=True,
-                      help="don't print status messages to stdout")
-    (options, args) = parser.parse_args()
+    class MyParser(argparse.ArgumentParser):
+        def error(self, message):
+            sys.stderr.write('error: %s\n' % message)
+            self.print_help()
+            sys.exit(2)
 
-    login(options.email, options.password)
-    about_me()
-    #logout()
+    parser = MyParser(prog='Rolex-Cli')
+    subparsers = parser.add_subparsers()
+
+    parser_login = subparsers.add_parser('login', help="User login")
+    parser_login.add_argument("-e", "--email", help="User email to login", type=str, required=True)
+    parser_login.add_argument("-p", "--password", help="User password to login", type=str, required=True)
+    parser_login.set_defaults(func=login)
+
+    parser_logout = subparsers.add_parser('logout', help="User logout")
+    parser_logout.set_defaults(func=logout)
+
+    parser_aboutme = subparsers.add_parser('aboutme', help="About Me")
+    parser_aboutme.set_defaults(func=about_me)
+
+    args = parser.parse_args()
+    args.func(args)
