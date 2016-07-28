@@ -340,7 +340,7 @@
                             <input type="text" placeholder="KEY" flex="40"
                                    data-ng-model="env.key" data-required="required"
                                    name="envKey" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/"
-                                   dm-check-include="serviceUpdateCtrl.listEnv($index)">
+                                   dm-check-include="serviceUpdateCtrl.listConfigByKey(serviceUpdateCtrl.form.formEnv, $index)">
                             <input type="text" placeholder="VALUE" flex-offset="5" flex="40"
                                    data-ng-model="env.value" data-required="required"
                                    name="envValue" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/">
@@ -394,7 +394,7 @@
                                    data-ng-model="label.key" data-required="required"
                                    name="labelKey" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/"
                                    data-ng-disabled="$index < serviceUpdateCtrl.serviceLabelLength"
-                                   dm-check-include="serviceUpdateCtrl.listServeLabel($index)">
+                                   dm-check-include="serviceUpdateCtrl.listConfigByKey(serviceUpdateCtrl.form.formLabels, $index)">
                             <input type="text" placeholder="VALUE" flex-offset="5" flex="40"
                                    data-ng-model="label.value" data-required="required"
                                    name="labelValue" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/"
@@ -450,7 +450,7 @@
                             <input type="text" placeholder="KEY" flex="40"
                                    data-ng-model="label.key" data-required="required"
                                    name="labelKey" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/"
-                                   dm-check-include="serviceUpdateCtrl.listContainerLabel($index)">
+                                   dm-check-include="serviceUpdateCtrl.listConfigByKey(serviceUpdateCtrl.form.formContainerLabels, $index)">
                             <input type="text" placeholder="VALUE" flex-offset="5" flex="40"
                                    data-ng-model="label.value" data-required="required"
                                    name="labelValue" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/">
@@ -539,8 +539,8 @@
                             </p>
                         </div>
 
-                        <div ng-messages="publishForm.publishValue.$error"
-                             ng-if="publishForm.publishValue.$dirty"
+                        <div ng-messages="portForm.PublishedPort.$error"
+                             ng-if="portForm.PublishedPort.$dirty"
                              role="alert">
                             <p class="error-info help-info-bottom"
                                ng-message="max">
@@ -623,7 +623,7 @@
                             <input type="text" placeholder="KEY" flex="40"
                                    data-ng-model="constraint.key" data-required="required"
                                    name="constraintKey"
-                                   dm-check-include="serviceUpdateCtrl.listConstraints($index)">
+                                   dm-check-include="serviceUpdateCtrl.listConfigByKey(serviceUpdateCtrl.form.formConstraints, $index)">
                             <input type="text" placeholder="VALUE" flex="40" flex-offset="5"
                                    data-ng-model="constraint.value" data-required="required"
                                    name="constraintValue">
