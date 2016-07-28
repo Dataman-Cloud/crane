@@ -4,7 +4,7 @@
         .factory('utils', utils);
 
     /* @ngInject */
-    function utils(Notification, $rootScope, $window, $cookies, $location) {
+    function utils(Notification, $rootScope, $window, $location) {
         return {
             buildFullURL: buildFullURL,
             encodeQueryParams: encodeQueryParams,
@@ -73,7 +73,7 @@
         }
 
         function redirectLogin(isReturn) {
-            $cookies.remove('token');
+            $window.sessionStorage.clear();
             var href = HOME_URL + "?timestamp=" + new Date().getTime();
             if (isReturn) {
                 href += '&return_to=' + encodeURIComponent($window.location.href);
