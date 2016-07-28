@@ -41,6 +41,8 @@ type Config struct {
 
 	AccountEmailDefault    string
 	AccountPasswordDefault string
+
+	CatalogPath string
 }
 
 func (c *Config) FeatureEnabled(feature string) bool {
@@ -75,6 +77,8 @@ type EnvEntry struct {
 
 	ROLEX_ACCOUNT_EMAIL_DEFAULT    string `required:"false"`
 	ROLEX_ACCOUNT_PASSWORD_DEFAULT string `required:"false"`
+
+	ROLEX_CATALOG_PATH string `required:"false"`
 }
 
 func InitConfig(envFile string) *Config {
@@ -103,6 +107,8 @@ func InitConfig(envFile string) *Config {
 
 	config.AccountEmailDefault = envEntry.ROLEX_ACCOUNT_EMAIL_DEFAULT
 	config.AccountPasswordDefault = envEntry.ROLEX_ACCOUNT_PASSWORD_DEFAULT
+
+	config.CatalogPath = envEntry.ROLEX_CATALOG_PATH
 
 	return &config
 }
