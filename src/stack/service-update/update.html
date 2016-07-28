@@ -238,24 +238,67 @@
                 <label flex="15">资源限制</label>
                 <div flex="20" layout="column">
                     <div flex="none">
-                        CPU:
+                        CPU (核):
                         <input type="number" class="form-input"
-                               data-ng-model="serviceUpdateCtrl.form.TaskTemplate.Resources.NanoCPUs"
-                               name="limitCpu">
+                               data-ng-model="serviceUpdateCtrl.form.TaskTemplate.Resources.Limits.NanoCPUs"
+                               name="limitCpu" min="0.01">
                     </div>
                     <div ng-messages="staticForm.limitCpu.$error" ng-if="staticForm.limitCpu.$dirty"
                          role="alert">
+                        <p class="error-info help-info-bottom"
+                           ng-message="min">
+                            <small>CPU 最小为 0.01</small>
+                        </p>
                     </div>
                 </div>
                 <div flex="20" flex-offset="5" layout="column">
                     <div flex="none">
-                        内存 (B):
+                        内存 (MB):
                         <input type="number" class="form-input"
-                               data-ng-model="serviceUpdateCtrl.form.TaskTemplate.Resources.MemoryBytes"
-                               name="limitMem">
+                               data-ng-model="serviceUpdateCtrl.form.TaskTemplate.Resources.Limits.MemoryBytes"
+                               name="limitMem" min="4">
                     </div>
                     <div ng-messages="staticForm.limitMem.$error" ng-if="staticForm.limitMem.$dirty"
                          role="alert">
+                        <p class="error-info help-info-bottom"
+                           ng-message="min">
+                            <small>内存最小为 4 MB</small>
+                        </p>
+                    </div>
+                </div>
+                <div flex></div>
+            </div>
+
+            <div layout="row" layout-align="end start" class="form-group form-group-input">
+                <label flex="15">资源预留</label>
+                <div flex="20" layout="column">
+                    <div flex="none">
+                        CPU (核):
+                        <input type="number" class="form-input"
+                               data-ng-model="serviceUpdateCtrl.form.TaskTemplate.Resources.Reservations.NanoCPUs"
+                               name="ReservationsCpu" min="0.01">
+                    </div>
+                    <div ng-messages="staticForm.ReservationsCpu.$error" ng-if="staticForm.ReservationsCpu.$dirty"
+                         role="alert">
+                        <p class="error-info help-info-bottom"
+                           ng-message="min">
+                            <small>CPU 最小为 0.01</small>
+                        </p>
+                    </div>
+                </div>
+                <div flex="20" flex-offset="5" layout="column">
+                    <div flex="none">
+                        内存 (MB):
+                        <input type="number" class="form-input"
+                               data-ng-model="serviceUpdateCtrl.form.TaskTemplate.Resources.Reservations.MemoryBytes"
+                               name="ReservationsMem" min="4">
+                    </div>
+                    <div ng-messages="staticForm.ReservationsMem.$error" ng-if="staticForm.ReservationsMem.$dirty"
+                         role="alert">
+                        <p class="error-info help-info-bottom"
+                           ng-message="min">
+                            <small>内存最小为 4 MB</small>
+                        </p>
                     </div>
                 </div>
                 <div flex></div>
@@ -265,7 +308,8 @@
                 <label flex="15">选择网络</label>
                 <div flex="50" layout="column">
                     <md-input-container>
-                        <md-select data-ng-model="serviceUpdateCtrl.form.formNetworks" multiple aria-label="Networks" data-ng-disabled="true">
+                        <md-select data-ng-model="serviceUpdateCtrl.form.formNetworks" multiple aria-label="Networks"
+                                   data-ng-disabled="true">
                             <md-option
                                     data-ng-repeat="network in serviceUpdateCtrl.networks | filter: {Driver: '!bridge'}"
                                     ng-value="network.Id"

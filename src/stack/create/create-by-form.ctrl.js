@@ -31,8 +31,14 @@
                         "StopGracePeriod": null //杀死容器前等待时间
                     },
                     "Resources": {
-                        "NanoCPUs": null, //CPU 限制
-                        "MemoryBytes": null //内存限制
+                        "Limits": {
+                            "NanoCPUs": null, //CPU 限制
+                            "MemoryBytes": null //内存限制
+                        },
+                        "Reservations": {
+                            "NanoCPUs": null, //CPU 预留
+                            "MemoryBytes": null //内存预留
+                        }
                     },
                     "RestartPolicy": {
                         "Condition": "none", //重启模式
@@ -96,8 +102,14 @@
                         "StopGracePeriod": null //杀死容器前等待时间
                     },
                     "Resources": {
-                        "NanoCPUs": null, //CPU 限制
-                        "MemoryBytes": null //内存限制
+                        "Limits": {
+                            "NanoCPUs": null, //CPU 限制
+                            "MemoryBytes": null //内存限制
+                        },
+                        "Reservations": {
+                            "NanoCPUs": null, //CPU 预留
+                            "MemoryBytes": null //内存预留
+                        }
                     },
                     "RestartPolicy": {
                         "Condition": "none", //重启模式
@@ -220,12 +232,18 @@
             var containerLabels = {};
 
             angular.forEach(serveTempArray, function (item, index, array) {
+
+                item.TaskTemplate.Resources.Limits.NanoCPUs = item.TaskTemplate.Resources.Limits.NanoCPUs ? item.TaskTemplate.Resources.Limits.NanoCPUs * Math.pow(10, 9) : null;
+                item.TaskTemplate.Resources.Limits.MemoryBytes = item.TaskTemplate.Resources.Limits.MemoryBytes ? item.TaskTemplate.Resources.Limits.MemoryBytes * 1024 * 1024 : null;
+                item.TaskTemplate.Resources.Reservations.NanoCPUs = item.TaskTemplate.Resources.Reservations.NanoCPUs ? item.TaskTemplate.Resources.Reservations.NanoCPUs * Math.pow(10, 9) : null;
+                item.TaskTemplate.Resources.Reservations.MemoryBytes = item.TaskTemplate.Resources.Reservations.MemoryBytes ? item.TaskTemplate.Resources.Reservations.MemoryBytes * 1024 * 1024 : null;
+
                 angular.forEach(item.TaskTemplate.ContainerSpec.Env, function (env, index, array) {
                     array[index] = env.key + '=' + env.value
                 });
 
                 angular.forEach(item.TaskTemplate.Placement.Constraints, function (constraint, index, array) {
-                    array[index] = constraint.key + '=' + constraint.value
+                    array[index] = constraint.key + '==' + constraint.value
                 });
 
                 angular.forEach(item.Labels, function (label, index, array) {

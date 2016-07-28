@@ -38,6 +38,12 @@
             form.formCmd = [];
             form.defaultMode = 'Global';
 
+            form.TaskTemplate.Resources.Limits.NanoCPUs = form.TaskTemplate.Resources.Limits.NanoCPUs ? form.TaskTemplate.Resources.Limits.NanoCPUs / Math.pow(10, 9) : null;
+            form.TaskTemplate.Resources.Limits.MemoryBytes = form.TaskTemplate.Resources.Limits.MemoryBytes ? form.TaskTemplate.Resources.Limits.MemoryBytes / (1024 * 1024) : null;
+            form.TaskTemplate.Resources.Reservations.NanoCPUs = form.TaskTemplate.Resources.Reservations.NanoCPUs ? form.TaskTemplate.Resources.Reservations.NanoCPUs / Math.pow(10, 9) : null;
+            form.TaskTemplate.Resources.Reservations.MemoryBytes = form.TaskTemplate.Resources.Reservations.MemoryBytes ? form.TaskTemplate.Resources.Reservations.MemoryBytes / (1024 * 1024) : null;
+
+
             angular.forEach(form.Labels, function (value, key) {
                 var obj = {
                     key: key,
@@ -77,8 +83,8 @@
             if (form.TaskTemplate.Placement.Constraints) {
                 angular.forEach(form.TaskTemplate.Placement.Constraints, function (item, index) {
                     var obj = {
-                        key: item.split('=')[0],
-                        value: item.split('=')[1]
+                        key: item.split('==')[0],
+                        value: item.split('==')[1]
                     };
 
                     form.formConstraints.push(obj)
@@ -121,7 +127,7 @@
 
             if (form.formConstraints.length) {
                 angular.forEach(form.formConstraints, function (constraint, index, array) {
-                    form.TaskTemplate.Placement.Constraints[index] = constraint.key + '=' + constraint.value
+                    form.TaskTemplate.Placement.Constraints[index] = constraint.key + '==' + constraint.value
                 });
             }
 
