@@ -46,11 +46,11 @@
                     "LogDriver": {}
                 },
                 "Mode": {
-                    ////Replicated/GlobalService 二选一
+                    ////Replicated/Global 二选一
                     //"Replicated": {
                     //    "Replicas": null //任务数
                     //},
-                    "GlobalService": {}
+                    "Global": {}
                 },
                 "UpdateConfig": {
                     "Parallelism": null,//更新并行任务数
@@ -61,7 +61,7 @@
                     "Mode": "vip", //vip/dnsrr
                     "Ports": [] //端口
                 },
-                "defaultMode": 'GlobalService'
+                "defaultMode": 'Global'
             }
         ];
 
@@ -111,11 +111,11 @@
                     "LogDriver": {}
                 },
                 "Mode": {
-                    ////Replicated/GlobalService 二选一
+                    ////Replicated/Global 二选一
                     //"Replicated": {
                     //    "Replicas": null //任务数
                     //},
-                    "GlobalService": {}
+                    "Global": {}
                 },
                 "UpdateConfig": {
                     "Parallelism": null,//更新并行任务数
@@ -126,7 +126,7 @@
                     "Mode": "vip", //vip/dnsrr
                     "Ports": [] //端口
                 },
-                "defaultMode": 'GlobalService'
+                "defaultMode": 'Global'
             };
 
             self.serveFormArray.push(form);
@@ -202,7 +202,7 @@
                 }
             } else {
                 serveForm.Mode = {
-                    GlobalService: {}
+                    Global: {}
                 }
             }
         }

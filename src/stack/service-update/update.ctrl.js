@@ -36,7 +36,7 @@
             form.formConstraints = [];
             form.formEnv = [];
             form.formCmd = [];
-            form.defaultMode = 'GlobalService';
+            form.defaultMode = 'Global';
 
             angular.forEach(form.Labels, function (value, key) {
                 var obj = {
@@ -179,7 +179,7 @@
         }
 
         function modeChange() {
-            if (self.form.Mode === 'Replicated') {
+            if (self.form.defaultMode === 'Replicated') {
                 self.form.Mode = {
                     Replicated: {
                         Replicas: ""
@@ -187,7 +187,7 @@
                 }
             } else {
                 self.form.Mode = {
-                    GlobalService: {}
+                    Global: {}
                 }
             }
         }
