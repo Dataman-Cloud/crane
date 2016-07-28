@@ -75,8 +75,18 @@ def logout(args):
     _set_access_header({})
     print("Logout successfully")
 
-def list_stack():
-    pass
+def list_stack(args):
+    headers = _get_access_header()
+    connection = httplib.HTTPConnection(ROLEX_API_URL)
+    connection.request('GET','/api/v1/stacks', '', headers)
+    response = connection.getresponse()
+    try:
+        resp_body = json.loads(response.read().decode())
+        print(json.dumps(resp_body, indent=4, sort_keys=True))
+    except IOError:
+        print('Failed to stacks')
+        sys.exit(1)
+    connection.close()
 
 def create_stack():
     pass
@@ -112,6 +122,9 @@ if __name__ == "__main__":
 
     parser_aboutme = subparsers.add_parser('aboutme', help="About Me")
     parser_aboutme.set_defaults(func=about_me)
+
+    parser_list_stacks = subparsers.add_parser('list_stack', help="List my stacks")
+    parser_list_stacks.set_defaults(func=list_stack)
 
     args = parser.parse_args()
     args.func(args)
