@@ -4,7 +4,7 @@
     angular.module('app.auth').factory('authCurd', authCurd);
 
     /* ngInject */
-    function authCurd(authBackend, $cookies, $window) {
+    function authCurd(authBackend, $window) {
 
         return {
             login: login
@@ -15,7 +15,7 @@
                 returnTo = "/index.html?timestamp="+new Date().getTime();
             }
             return authBackend.login(data, form).then(function (data) {
-                $cookies.put('token', data);
+                $window.sessionStorage.setItem('token', data);
                 $window.location.href = returnTo;
             });
         }

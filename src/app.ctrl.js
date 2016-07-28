@@ -4,7 +4,7 @@
         .controller('RootCtrl', RootCtrl);
 
     /* @ngInject */
-    function RootCtrl($state, $window, mdSideNav, gHttp, $cookies, utils, userBackend, $rootScope, tty, stream) {
+    function RootCtrl($state, $window, mdSideNav, gHttp, utils, userBackend, $rootScope, tty, stream) {
         var self = this;
 
         $rootScope.accountId = null;
@@ -24,7 +24,7 @@
         }
 
         function initUser() {
-            var token = $cookies.get('token');
+            var token = $window.sessionStorage.getItem('token');
             if (token) {
                 gHttp.setToken(token);
                 tty.setToken(token);

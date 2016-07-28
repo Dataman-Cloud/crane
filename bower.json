@@ -22,7 +22,6 @@
     "angular": "~1.5.*",
     "angular-sanitize": "~1.5.*",
     "angular-mocks": "~1.5.*",
-    "angular-cookies": "~1.5.*",
     "angular-animate": "~1.5.*",
     "angular-material": "~1.*",
     "angular-ui-router": "ui-router#~0.2.15",
