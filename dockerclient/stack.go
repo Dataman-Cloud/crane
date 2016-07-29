@@ -249,7 +249,6 @@ func (client *RolexDockerClient) deployServices(services map[string]model.RolexS
 
 	for internalName, service := range services {
 		name := fmt.Sprintf("%s_%s", namespace, internalName)
-		service.TaskTemplate.ContainerSpec.Image = internalName
 		serviceSpec := swarm.ServiceSpec{
 			Annotations: swarm.Annotations{
 				Name:   name,
