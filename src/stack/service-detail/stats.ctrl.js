@@ -1,14 +1,14 @@
 (function () {
     'use strict';
-    angular.module('app.node')
-        .controller('NodeContainerStatsCtrl', NodeContainerStatsCtrl);
+    angular.module('app.stack')
+        .controller('ServiceStatsCtrl', ServiceStatsCtrl);
 
     /* @ngInject */
-    function NodeContainerStatsCtrl(stream, $stateParams, $scope, statsChart) {
+    function ServiceStatsCtrl(stream, $stateParams, $scope, statsChart) {
         var self = this;
         
         self.stats = []
-        self.chartOptions = statsChart.Options();
+        self.chartOptions = statsChart.Options('TaskName');
         activate();
         
         function activate() {
@@ -16,8 +16,8 @@
         }
         
         function listenStats() {
-            stream = stream.Stream('node.containerStats', {node_id:$stateParams.node_id, container_id:$stateParams.container_id});
-            stream.addHandler('container-stats', function (event) {
+            stream = stream.Stream('stack.serviceStats', {stack_name:$stateParams.stack_name, service_id:$stateParams.service_id});
+            stream.addHandler('service-stats', function (event) {
                 self.chartOptions.pushData(event.data, self.cpuChartApi, self.memChartApi, self.networkChartApi);
             });
             stream.start();

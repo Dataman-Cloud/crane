@@ -52,7 +52,7 @@
             exited: '已退出'
         };
         
-        $rootScope.CONTAINER_STATS_POINT_NUM = 180;
+        $rootScope.STATS_POINT_NUM = 180;
         
         $rootScope.DIFF_KIND = {
             0: '修改',
@@ -126,7 +126,8 @@
                 services: 'api/v1/stacks/$stack_name/services',
                 service: 'api/v1/stacks/$stack_name/services/$service_id',
                 tasks: 'api/v1/stacks/$stack_name/services/$service_id/tasks',
-                serviceLog: 'api/v1/stacks/$stack_name/services/$service_id/logs'
+                serviceLog: 'api/v1/stacks/$stack_name/services/$service_id/logs',
+                serviceStats: 'api/v1/stacks/$stack_name/services/$service_id/stats'
             },
             network: {
                 network: 'api/v1/networks/$network_id',
