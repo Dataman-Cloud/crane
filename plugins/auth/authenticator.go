@@ -27,4 +27,5 @@ type Authenticator interface {
 	LeaveGroup(accountId, groupId uint64) error
 
 	ModificationAllowed() bool
+	GroupOperationAllowed(accountId, groupId uint64) bool
 }

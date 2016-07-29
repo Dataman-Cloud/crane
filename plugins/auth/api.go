@@ -255,6 +255,12 @@ func (a *AccountApi) JoinGroup(ctx *gin.Context) {
 		return
 	}
 
+	account, _ := ctx.Get("account")
+	if !a.Authenticator.GroupOperationAllowed(account.(Account).ID, groupId) {
+		ctx.JSON(http.StatusUnauthorized, gin.H{"code": "1", "data": "403"})
+		return
+	}
+
 	if err := a.Authenticator.JoinGroup(accountId, groupId); err != nil {
 		log.Errorf("user join group db operation error: %v", err)
 		ctx.JSON(http.StatusInternalServerError, gin.H{"code": 1, "data": err.Error()})
@@ -279,6 +285,12 @@ func (a *AccountApi) LeaveGroup(ctx *gin.Context) {
 	groupId, err := strconv.ParseUint(ctx.Param("group_id"), 10, 64)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"code": 1, "data": "bad groupid"})
+		return
+	}
+
+	account, _ := ctx.Get("account")
+	if !a.Authenticator.GroupOperationAllowed(account.(Account).ID, groupId) {
+		ctx.JSON(http.StatusUnauthorized, gin.H{"code": "1", "data": "403"})
 		return
 	}
 

@@ -28,6 +28,18 @@ func (db *DbAuthenicator) ModificationAllowed() bool {
 	return true
 }
 
+func (db *DbAuthenicator) GroupOperationAllowed(accountId, groupId uint64) bool {
+	var accounts []auth.AccountGroup
+	if err = db.DbClient.
+		Where("account_id = ? AND group_id", accountId, groupId).
+		Find(&accounts).
+		Error; err == nil && len(accounts) > 0 {
+		return true
+	}
+
+	return false
+}
+
 func (db *DbAuthenicator) Login(a *auth.Account) (string, error) {
 	if err = db.DbClient.
 		Select("id, title, email, phone, login_at").
