@@ -31,7 +31,7 @@ func CatalogFromPath(path string) (*Catalog, error) {
 		return nil, err
 	}
 
-	description, err := ioutil.ReadFile(filepath.Join(path, "description.md"))
+	description, err := ioutil.ReadFile(filepath.Join(path, "description"))
 	if err != nil {
 		return nil, err
 	}
