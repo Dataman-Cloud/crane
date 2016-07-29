@@ -33,6 +33,13 @@ Rolex Client
 ./rolex-cli.py create_stack -G1 -ncli2_created -f samples/double_services.json
 ```
 
+
+#### sample 3
+
+```
+./rolex-cli.py create_stack -G1 -ncli -f samples/wordpress.json
+```
+
 ### list stack
 
 ```bash
