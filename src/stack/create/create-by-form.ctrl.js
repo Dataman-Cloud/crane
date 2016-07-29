@@ -152,9 +152,6 @@
 
         function removeServe(index) {
             self.serveFormArray.splice(index, 1);
-            if (!self.serveFormArray.length) {
-                $state.go('stack.create', {stack_name: $stateParams.stack_name})
-            }
         }
 
         function create() {
