@@ -165,7 +165,13 @@ def update_stack():
 #                networks                     #
 ###############################################
 def list_networks(args):
-    pass
+    headers = _get_access_header()
+    connection = httplib.HTTPConnection(ROLEX_API_URL)
+    connection.request('GET','/api/v1/networks?filters={"type":{"custom":true}}', '', headers)
+    response = connection.getresponse()
+    resp_body = json.loads(response.read().decode())
+    print(json.dumps(resp_body, indent=4, sort_keys=True))
+    connection.close()
 
 
 if __name__ == "__main__":
@@ -212,6 +218,9 @@ if __name__ == "__main__":
     parser_scale_service.add_argument("-s", "--service_id", help="Service ID (find it by cmd list_stack_services)", type=str, required=True)
     parser_scale_service.add_argument("-a", "--amount", help="Desired task amount", type=int, required=True)
     parser_scale_service.set_defaults(func=scale_service)
+
+    parser_list_networks = subparsers.add_parser('list_networks', help="List Networks")
+    parser_list_networks.set_defaults(func=list_networks)
 
     args = parser.parse_args()
     args.func(args)
