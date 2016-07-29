@@ -4,6 +4,7 @@
 *.config
 *.idea
 .DS_Store
+.rolex.json
 
 Debug/
 node_modules/
