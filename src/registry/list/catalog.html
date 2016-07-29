@@ -1,1 +1,20 @@
-应用目录
+<section class="main-section">
+    <div class="main-content">
+        <div layout="row" layout-wrap>
+            <md-card flex="18" data-ng-repeat="catalog in repositorieListCatalogCtrl.catalogs">
+                <img  ng-src="" class="md-card-image" alt="Washed Out">
+                <md-card-title>
+                    <md-card-title-text>
+                        <span class="md-headline">{/catalog.Name/}</span>
+                    </md-card-title-text>
+                </md-card-title>
+                <md-card-content>
+                    <p>{/catalog.Readme/}</p>
+                </md-card-content>
+                <md-card-actions layout="row" layout-align="end center">
+                    <md-button class="md-raised md-primary" data-ui-sref="registry.catalogDetail({catalog_name: catalog.Name})">部署</md-button>
+                </md-card-actions>
+            </md-card>
+        </div>
+    </div>
+</section>
