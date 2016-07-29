@@ -13,6 +13,12 @@ Rolex Client
 ./rolex-cli.py aboutme
 ```
 
+### my groups
+
+```
+./rolex-cli.py mygroups -u1
+```
+
 ### create stack
 
 #### sample 1

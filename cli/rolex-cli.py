@@ -27,6 +27,9 @@ def _set_access_header(headers):
         f.write(json.dumps(headers))
 
 
+###############################################
+#                accounts                     #
+###############################################
 def login(args):
     headers = {'Content-type': 'application/json'}
     user_info = {
@@ -75,6 +78,18 @@ def logout(args):
     _set_access_header({})
     print("Logout successfully")
 
+def get_mygroups(args):
+    headers = _get_access_header()
+    connection = httplib.HTTPConnection(ROLEX_API_URL)
+    connection.request('GET','/account/v1/accounts/' + args.uid + '/groups', '', headers)
+    response = connection.getresponse()
+    print(response.read().decode())
+    connection.close()
+
+
+###############################################
+#                Stacks                       #
+###############################################
 def list_stack(args):
     headers = _get_access_header()
     connection = httplib.HTTPConnection(ROLEX_API_URL)
@@ -123,9 +138,6 @@ def list_stack_services(args):
         sys.exit(1)
     connection.close()
 
-def get_group_info(args):
-    pass
-
 def restart_stack():
     pass
 
@@ -135,6 +147,10 @@ def update_stack():
 def scale_stack():
     pass
 
+
+###############################################
+#                networks                     #
+###############################################
 def list_networks(args):
     pass
 
@@ -173,6 +189,10 @@ if __name__ == "__main__":
     parser_list_stack_s = subparsers.add_parser('list_stack_services', help="List stack services")
     parser_list_stack_s.add_argument("-n", "--stack_name", help="Stack Name", type=str, required=True)
     parser_list_stack_s.set_defaults(func=list_stack_services)
+
+    parser_get_mygroups = subparsers.add_parser('mygroups', help="Return my groups info")
+    parser_get_mygroups.add_argument("-u", "--uid", help="My user id (find it by ./rolex-cli.py aboutme)", type=str, required=True)
+    parser_get_mygroups.set_defaults(func=get_mygroups)
 
     args = parser.parse_args()
     args.func(args)
