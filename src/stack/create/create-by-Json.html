@@ -36,6 +36,7 @@
                         <md-input-container>
                             <md-select data-ng-model="stackCreateByJsonCtrl.selectGroupId" aria-label="selectGroupId"
                                        md-on-open="stackCreateByJsonCtrl.loadGroups()">
+                                <md-option ng-value="" ng-selected="true">空</md-option>
                                 <md-option
                                         data-ng-repeat="group in stackCreateByJsonCtrl.groups"
                                         ng-value="group.Id">{/group.Name/}
