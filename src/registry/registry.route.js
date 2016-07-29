@@ -46,6 +46,17 @@
                     type: function () {return 'public';}
                 }
             })
+            .state('registry.list.catalogs', {
+                url: '/catalogs',
+                templateUrl: '/src/registry/list/catalog.html',
+                controller: 'RepositorieListCatalogCtrl as repositorieListCatalogCtrl',
+                ncyBreadcrumb: {
+                    label: '服务目录'
+                },
+                resolve: {
+                    catalogs: listCatalogs
+                }
+            })
             .state('registry.imageDetail', {
                 url: '/imageDetail/:repository/:tag',
                 templateUrl: '/src/registry/image-detail/detail.html',
@@ -65,7 +76,7 @@
                 ncyBreadcrumb: {
                     label: '镜像历史'
                 }
-            })
+            });
             
         /* @ngInject */
         function listRepositories(registryBackend) {
@@ -76,6 +87,11 @@
         /* @ngInject */
         function getImage(registryBackend, $stateParams) {
             return registryBackend.getImage($stateParams.repository, $stateParams.tag);
+        }
+
+        /* @ngInject */
+        function listCatalogs(registryBackend) {
+            return registryBackend.listCatalogs();
         }
     }
     

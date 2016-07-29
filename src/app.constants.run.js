@@ -138,7 +138,9 @@
             registry: {
                 repositories: 'registry/v1/catalog',
                 listTags: 'registry/v1/tag/list/$repository',
-                image: 'registry/v1/manifests/$tag/$repository'
+                image: 'registry/v1/manifests/$tag/$repository',
+                catalogs: 'catalog/v1/catalogs',
+                catalog: 'catalog/v1/catalogs/$catalog_name'
             }
         };
     }
