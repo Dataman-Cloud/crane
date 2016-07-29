@@ -12,6 +12,6 @@ var (
 )
 
 const (
-	SESSION_DURATION   = time.Second * 60 * 10 * 10000000
+	SESSION_DURATION   = time.Second * 60 * 10 * 1000
 	SESSION_KEY_FORMAT = "account_id:%v:token"
 )
