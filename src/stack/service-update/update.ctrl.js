@@ -25,7 +25,62 @@
         }
 
         function formatServeToForm(service) {
-            var form = service.Spec;
+            var tempForm = {
+                "Name": "",
+                "Labels": {},
+                "TaskTemplate": {
+                    "ContainerSpec": {
+                        "Image": "", //镜像地址
+                        "Labels": {},
+                        "Command": [], //命令行
+                        "Env": [],//环境变量
+                        "Dir": "",//目录
+                        "User": "",
+                        "Mounts": [],//挂载
+                        "StopGracePeriod": null //杀死容器前等待时间
+                    },
+                    "Resources": {
+                        "Limits": {
+                            "NanoCPUs": null, //CPU 限制
+                            "MemoryBytes": null //内存限制
+                        },
+                        "Reservations": {
+                            "NanoCPUs": null, //CPU 预留
+                            "MemoryBytes": null //内存预留
+                        }
+                    },
+                    "RestartPolicy": {
+                        "Condition": "none", //重启模式
+                        "Delay": null, //重启延迟
+                        "MaxAttempts": null,//重启最大尝试次数
+                        "Window": null //重启间隔
+                    },
+                    "Placement": {
+                        "Constraints": [] //限制条件
+                    },
+                    "LogDriver": {}
+                },
+                "Mode": {
+                    ////Replicated/Global 二选一
+                    //"Replicated": {
+                    //    "Replicas": null //任务数
+                    //},
+                    //"Global": {}
+                },
+                "UpdateConfig": {
+                    "Parallelism": null,//更新并行任务数
+                    "Delay": null //更新延迟
+                },
+                "Networks": [], //网络
+                "EndpointSpec": {
+                    "Mode": "vip", //vip/dnsrr
+                    "Ports": [] //端口
+                },
+                "defaultMode": 'Global'
+            };
+
+            var form = angular.merge(tempForm, service.Spec);
+
             form.formLabels = [];
             form.formContainerLabels = [];
             form.formPorts = [];
