@@ -63,22 +63,38 @@
             }
         }
         
-        function pushData(dataContainer, value, pointNum, interval) {
+        function pushData(data, serialKey, value, pointNum, interval, area) {
             if (!interval) {
                 interval = 1000;
             }
-            dataContainer.values.push(value);
-            while (dataContainer.values.length !== pointNum) {
-                if (dataContainer.values.length > pointNum) {
-                    dataContainer.values.shift();
+            if (area === undefined) {
+                area = true;
+            }
+            var i;
+            for (i=0; i<data.length; i++) {
+                if (data[i].key === serialKey) {
+                    break;
+                }
+            }
+            if (i == data.length) {
+                data.push({
+                    values: [],
+                    key: serialKey,
+                    area: area
+                });
+            }
+            data[i].values.push(value);
+            while (data[i].values.length !== pointNum) {
+                if (data[i].values.length > pointNum) {
+                    data[i].values.shift();
                 } else {
-                    dataContainer.values.unshift({x: dataContainer.values[0].x-interval, y: 0});
+                    data[i].values.unshift({x: data[i].values[0].x-interval, y: 0});
                 }
             }
         }
         
-        function updateForceY(chartOptions, valueArrays, min, maxRatio, minMax, maxMax) {
-            var newForceY = _buildNewForceY(valueArrays, min, maxRatio, minMax, maxMax);
+        function updateForceY(chartOptions, data, min, maxRatio, minMax, maxMax) {
+            var newForceY = _buildNewForceY(data, min, maxRatio, minMax, maxMax);
             var flag = false;
             if (!angular.equals(newForceY, chartOptions.forceY)) {
                 chartOptions.forceY = newForceY;
@@ -87,9 +103,9 @@
             return flag;
         }
         
-        function _buildNewForceY(valueArrays, min, maxRatio, minMax, maxMax) {
-            var valueMax = Math.maxPlus(valueArrays, function (valueArray) {
-                return Math.maxPlus(valueArray, function (value) {
+        function _buildNewForceY(data, min, maxRatio, minMax, maxMax) {
+            var valueMax = Math.maxPlus(data, function (serialData) {
+                return Math.maxPlus(serialData.values, function (value) {
                     return value.y;
                 })
             });

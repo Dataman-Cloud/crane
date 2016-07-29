@@ -183,7 +183,7 @@
                 templateUrl: '/src/node/container-detail/stats.html',
                 controller: 'NodeContainerStatsCtrl as nodeContainerStatsCtrl',
                 ncyBreadcrumb: {
-                    label: '监控'
+                    label: '统计'
                 }
             })
             .state('node.containerDetail.diff', {

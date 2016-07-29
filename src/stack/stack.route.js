@@ -119,7 +119,15 @@
                 templateUrl: '/src/stack/service-detail/log.html',
                 controller: 'ServiceLogCtrl as serviceLogCtrl',
                 ncyBreadcrumb: {
-                    label: '服务日志'
+                    label: '日志'
+                }
+            })
+            .state('stack.serviceDetail.stats', {
+                url: '/stats',
+                templateUrl: '/src/stack/service-detail/stats.html',
+                controller: 'ServiceStatsCtrl as serviceStatsCtrl',
+                ncyBreadcrumb: {
+                    label: '统计'
                 }
             });
     }
