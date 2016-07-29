@@ -51,7 +51,7 @@
                 templateUrl: '/src/registry/list/catalog.html',
                 controller: 'RepositorieListCatalogCtrl as repositorieListCatalogCtrl',
                 ncyBreadcrumb: {
-                    label: '服务目录'
+                    label: '应用目录'
                 },
                 resolve: {
                     catalogs: listCatalogs
@@ -76,6 +76,17 @@
                 ncyBreadcrumb: {
                     label: '镜像历史'
                 }
+            })
+            .state('registry.catalogDetail', {
+                url: '/catalogDetail/:catalog_name',
+                templateUrl: '/src/registry/catalog-detail/detail.html',
+                controller: 'CatalogDetailCtrl as catalogDetailCtrl',
+                ncyBreadcrumb: {
+                    label: '应用部署'
+                },
+                resolve: {
+                    catalog: getCatalog
+                }
             });
             
         /* @ngInject */
@@ -92,6 +103,11 @@
         /* @ngInject */
         function listCatalogs(registryBackend) {
             return registryBackend.listCatalogs();
+        }
+
+        /* @ngInject */
+        function getCatalog(registryBackend, $stateParams) {
+            return registryBackend.getCatalog($stateParams.catalog_name);
         }
     }
     

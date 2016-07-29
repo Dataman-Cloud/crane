@@ -14,7 +14,7 @@
                 // Function returns the correct template for each field.
                 scope.getTemplateUrl = function () {
                     var type = scope.fieldData.type || 'string';
-                    return '/app/directives/dm-dynamic-fields/dynamic-field-' + type + '.html';
+                    return '/src/directives/dm-dynamic-fields/dynamic-field-' + type + '.html';
                 }
             },
             template: '<div ng-include="getTemplateUrl()"></div>'

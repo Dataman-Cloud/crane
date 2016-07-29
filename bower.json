@@ -33,6 +33,7 @@
     "font-awesome": "4.5.0",
     "ngclipboard": "~1.1.1",
     "angular-nvd3": "^1.0.8",
-    "angular-breadcrumb": "^0.4.1"
+    "angular-breadcrumb": "^0.4.1",
+    "angular-marked": "^1.2.2"
   }
 }
