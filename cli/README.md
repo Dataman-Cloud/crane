@@ -40,6 +40,12 @@ Rolex Client
 ./rolex-cli.py create_stack -G1 -ncli -f samples/wordpress.json
 ```
 
+#### sample 4
+
+```
+./rolex-cli.py create_stack -G1 -ncli_mysql_web -f samples/mysql_display.json
+```
+
 ### list stack
 
 ```bash
