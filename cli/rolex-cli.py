@@ -66,7 +66,8 @@ def about_me(args):
     #connection.request('GET','/account/v1/aboutme?Authorization='+headers.get('Authorization')+'&Cookie='+urllib.quote(headers.get("Cookie", "")), '', {'Content-type': 'application/json'})
     connection.request('GET','/account/v1/aboutme', '', headers)
     response = connection.getresponse()
-    print(response.read().decode())
+    resp_body = json.loads(response.read().decode())
+    print(json.dumps(resp_body, indent=4, sort_keys=True))
     connection.close()
 
 def logout(args):
@@ -83,7 +84,8 @@ def get_mygroups(args):
     connection = httplib.HTTPConnection(ROLEX_API_URL)
     connection.request('GET','/account/v1/accounts/' + args.uid + '/groups', '', headers)
     response = connection.getresponse()
-    print(response.read().decode())
+    resp_body = json.loads(response.read().decode())
+    print(json.dumps(resp_body, indent=4, sort_keys=True))
     connection.close()
 
 
