@@ -8,6 +8,7 @@ import (
 	"github.com/Dataman-Cloud/rolex/plugins/auth/authenticators"
 	chains "github.com/Dataman-Cloud/rolex/plugins/auth/middlewares"
 	"github.com/Dataman-Cloud/rolex/plugins/auth/token_store"
+	"github.com/Dataman-Cloud/rolex/plugins/catalog"
 	"github.com/Dataman-Cloud/rolex/plugins/registry"
 	"github.com/Dataman-Cloud/rolex/util/log"
 
@@ -54,6 +55,11 @@ func (api *Api) ApiRouter() *gin.Engine {
 	if api.Config.FeatureEnabled("registry") {
 		r := &registry.Registry{Config: api.Config}
 		r.RegisterApiForRegistry(router, Authorization)
+	}
+
+	if api.Config.FeatureEnabled("catalog") {
+		c := &catalog.CatalogApi{Config: api.Config}
+		c.RegisterApiForCatalog(router, Authorization)
 	}
 
 	v1 := router.Group("/api/v1", Authorization, middlewares.ListIntercept())
