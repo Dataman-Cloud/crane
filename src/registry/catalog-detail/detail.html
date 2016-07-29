@@ -20,12 +20,23 @@
                                 </div>
                                 <div flex></div>
                             </div>
+
+                            <div layout="row" layout-align="end start" class="form-group form-group-input"
+                                 data-ng-show="catalogDetailCtrl.questions.length">
+                                <label flex="15">配置</label>
+                                <div flex="50" layout="column">
+                                    <dynamic-field field-data="fieldData"
+                                                   ng-repeat="fieldData in catalogDetailCtrl.questions">
+                                    </dynamic-field>
+                                </div>
+                                <div flex></div>
+                            </div>
                         </form>
                     </md-content>
                 </md-tab>
                 <md-tab label="详情">
                     <md-content class="main-tab-content">
-                        <div class="alert alert-warning text-center" data-ng-if="!catalogDetailCtrl.markdown">
+                        <div class="alert alert-warning text-center" data-ng-if="false">
                             暂无详情
                         </div>
                         <marked>

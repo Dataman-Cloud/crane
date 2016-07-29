@@ -8,5 +8,9 @@
         var self = this;
 
         self.catalog = catalog;
+        console.log(catalog)
+
+
+        self.questions = angular.fromJson(catalog.Questions).questions;
     }
 })();
