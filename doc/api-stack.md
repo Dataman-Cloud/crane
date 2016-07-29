@@ -307,6 +307,19 @@ curl -XGET http://192.168.1.160:5013/api/v1/stacks/test/services/6uct15rgqrbrliu
   }
 ```
 
+### Scale servie tasks
+
+**Request:**
+
+```bash
+curl -vXPATCH http://localhost:5013/api/v1/stacks/:namespace/services/:service_id -H Content-Type:application/json -d '
+{
+  "Scale": 2
+}
+'
+```
+
+
 ### UpdateService
 
 **Request:**
