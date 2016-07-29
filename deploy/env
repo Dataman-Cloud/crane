@@ -23,4 +23,4 @@ ROLEX_ACCOUNT_AUTHENTICATOR=default
 ROLEX_ACCOUNT_EMAIL_DEFAULT=admin@admin.com
 ROLEX_ACCOUNT_PASSWORD_DEFAULT=adminadmin
 
-ROLEX_CATALOG_PATH=/Users/cmingxu/Code/GO/packages/src/github.com/Dataman-Cloud/rolex/bin/catalog/
+ROLEX_CATALOG_PATH=catalog
