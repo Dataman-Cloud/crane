@@ -33,8 +33,9 @@
                 options.chart.yAxis.axisLabel = '速率';
                 options.title.text = '网络监控';
                 options.chart.yAxis.tickFormat = function(d){
-                        return d+'b/s';
+                        return $filter('netRate')(d);
                     };
+                options.chart.margin.left=80;
                 return options
             }
             
