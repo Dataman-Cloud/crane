@@ -6,7 +6,59 @@
             </div>
 
         </header>
-        <md-content>
+        <div class="main-content" data-ng-show="stackCreateByFormCtrl.step == 1">
+            <form name="stepOneForm">
+                <div layout="row" layout-align="end start" class="form-group form-group-input">
+                    <label flex="15">编排名称</label>
+                    <div flex="50" layout="column">
+                        <div flex="none">
+                            <input type="text" class="form-input" data-ng-model="stackCreateByFormCtrl.form.Namespace"
+                                   data-required="required" name="Name"
+                                   data-ng-pattern="/^[A-Za-z0-9]+$/">
+                        </div>
+                        <div ng-messages="stepOneForm.Name.$error" ng-if="stepOneForm.Name.$dirty"
+                             role="alert">
+                            <p class="error-info help-info-bottom"
+                               ng-message="required">
+                                <small>名称不能为空</small>
+                            </p>
+                            <p class="error-info help-info-bottom"
+                               ng-message="pattern">
+                                <small>名称必须数字或者英文</small>
+                            </p>
+                        </div>
+                    </div>
+                    <div flex></div>
+                </div>
+
+                <div layout="row" layout-align="end center" class="form-group form-group-select">
+                    <label flex="15">选择用户组</label>
+                    <div flex="50" layout="column">
+                        <md-input-container>
+                            <md-select data-ng-model="stackCreateByFormCtrl.selectGroupId" aria-label="selectGroupId"
+                                       md-on-open="stackCreateByFormCtrl.loadGroups()">
+                                <md-option
+                                        data-ng-repeat="group in stackCreateByFormCtrl.groups"
+                                        ng-value="group.Id">{/group.Name/}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                    </div>
+                    <div flex></div>
+                </div>
+
+                <div layout="row" class="form-footer-button">
+                    <div flex-offset="55">
+                        <md-button class="md-raised md-primary" data-ng-disabled="stepOneForm.$invalid"
+                                   data-ng-click="stackCreateByFormCtrl.step = 2">下一步
+                        </md-button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+
+        <md-content data-ng-show="stackCreateByFormCtrl.step == 2">
             <md-tabs md-dynamic-height md-border-bottom md-autoselect>
                 <md-tab data-ng-repeat="serve in stackCreateByFormCtrl.serveFormArray" label="{/serve.Name || '新服务'/}">
                     <md-content class="md-padding main-tab-content">
@@ -703,6 +755,9 @@
 
                             <div layout="row" class="form-footer-button">
                                 <div flex-offset="15">
+                                    <md-button class="md-raised md-primary"
+                                               data-ng-click="stackCreateByFormCtrl.step = 1">上一步
+                                    </md-button>
                                     <md-button class="md-raised md-primary" data-ng-disabled="staticForm.$invalid"
                                                data-ng-click="stackCreateByFormCtrl.addServe()">继续添加服务
                                     </md-button>

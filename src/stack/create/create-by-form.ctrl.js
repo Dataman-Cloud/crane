@@ -4,11 +4,14 @@
         .controller('StackCreateByFormCtrl', StackCreateByFormCtrl);
 
     /* @ngInject */
-    function StackCreateByFormCtrl($state, stackCurd, $stateParams, networkBackend, $scope) {
+    function StackCreateByFormCtrl($state, stackCurd, $stateParams, networkBackend, $scope, userBackend, $rootScope) {
         var self = this;
 
+        self.step = 1;
+        self.serveNameList = [];
+        self.groups = [];
         self.form = {
-            Namespace: $stateParams.stack_name || '',
+            Namespace: '',
             Stack: {
                 Version: '',
                 Services: {}
@@ -71,8 +74,7 @@
             }
         ];
 
-        self.serveNameList = [];
-
+        self.loadGroups = loadGroups;
         self.addServe = addServe;
         self.removeServe = removeServe;
         self.create = create;
@@ -82,6 +84,13 @@
         self.loadNetworks = loadNetworks;
         self.listNames = listNames;
         self.listConfigByKey = listConfigByKey;
+
+        function loadGroups(){
+            userBackend.listGroup($rootScope.accountId)
+                .then(function(data){
+                    self.groups = data
+                })
+        }
 
         function addServe() {
             var form = {
@@ -157,7 +166,7 @@
                 self.form.Stack.Services[serve.Name] = serve
             });
 
-            stackCurd.createStack(self.form, $scope.staticForm, $stateParams.group_id);
+            stackCurd.createStack(self.form, $scope.staticForm, self.selectGroupId);
         }
 
         function addConfig(configs, typeName) {
