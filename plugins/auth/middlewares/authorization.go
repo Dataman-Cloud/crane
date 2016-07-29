@@ -1,8 +1,10 @@
 package middlewares
 
 import (
+	//"fmt"
 	"net/http"
 	"strconv"
+	//"time"
 
 	"github.com/Dataman-Cloud/rolex/plugins/auth"
 
@@ -40,6 +42,8 @@ func Authorization(a *auth.AccountApi) gin.HandlerFunc {
 			ctx.Abort()
 			return
 		}
+
+		//a.TokenStore.Set(ctx, ctx.Request.Header.Get("Authorization"), fmt.Sprintf("%d", acc.ID), time.Now().Add(auth.SESSION_DURATION))
 		ctx.Set("account", auth.ReferenceToValue(acc))
 
 		ctx.Next()
