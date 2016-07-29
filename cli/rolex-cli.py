@@ -167,7 +167,7 @@ def update_stack():
 def list_networks(args):
     headers = _get_access_header()
     connection = httplib.HTTPConnection(ROLEX_API_URL)
-    connection.request('GET','/api/v1/networks?filters={"type":{"custom":true}}', '', headers)
+    connection.request('GET','/api/v1/networks', '', headers)
     response = connection.getresponse()
     resp_body = json.loads(response.read().decode())
     print(json.dumps(resp_body, indent=4, sort_keys=True))
