@@ -1,7 +1,6 @@
 package catalog
 
 import (
-	"fmt"
 	"io/ioutil"
 	"path/filepath"
 )
@@ -9,7 +8,6 @@ import (
 type Catalog struct {
 	Name        string `json:"Name"`
 	Bundle      string `json:"Bundle"`
-	Questions   string `json:"Questions"`
 	Icon        string `json:"Icon"`
 	Readme      string `json:"Readme"`
 	Description string `json:"Description"`
@@ -17,11 +15,6 @@ type Catalog struct {
 
 func CatalogFromPath(path string) (*Catalog, error) {
 	bundle, err := ioutil.ReadFile(filepath.Join(path, "bundle.json"))
-	if err != nil {
-		return nil, err
-	}
-
-	questions, err := ioutil.ReadFile(filepath.Join(path, "questions.json"))
 	if err != nil {
 		return nil, err
 	}
@@ -39,7 +32,6 @@ func CatalogFromPath(path string) (*Catalog, error) {
 	catalog := &Catalog{
 		Name:        filepath.Base(path),
 		Bundle:      string(bundle),
-		Questions:   string(questions),
 		Readme:      string(readme),
 		Description: string(description),
 		Icon:        filepath.Join(path, filepath.Base(path)) + ".png",
@@ -55,7 +47,6 @@ func AllCatalogFromPath(path string) ([]*Catalog, error) {
 	}
 
 	for _, file := range files {
-		fmt.Println(file.Name())
 		if file.IsDir() {
 			catalog, err := CatalogFromPath(filepath.Join(path, file.Name()))
 			if err != nil {
