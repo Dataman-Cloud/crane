@@ -1,11 +1,11 @@
 ### Network
 
-#### `/networks/(id)`
+#### `/api/v1/networks/(id)`
 
 **Request:**
 
 ```
-curl -XPATCH -H "Content-Type: application/json" localhost:2375/networks/(id) -d '{
+curl -XPATCH -H "Content-Type: application/json" localhost:2375/api/v1/networks/(id) -d '{
  "Method": "connect",
  "NetworkOptions": {
     "Container":"3613f73ba0e4",
@@ -27,11 +27,11 @@ curl -XPATCH -H "Content-Type: application/json" localhost:2375/networks/(id) -d
 }
 ```
 
-#### `/networks`
+#### `/api/v1/networks`
 **Request:**
 
 ```
-curl -XPOST -H "Content-Type: application/json" localhost:2375/networks -d '{
+curl -XPOST -H "Content-Type: application/json" localhost:2375/api/v1/networks -d '{
   "Name":"isolated_nw",
   "CheckDuplicate":false,
   "Driver":"bridge",
@@ -119,12 +119,12 @@ curl -XPOST -H "Content-Type: application/json" localhost:2375/networks -d '{
 ```
 
 
-#### `/networks/(id)`
+#### `/api/v1/networks/(id)`
 
 **Request:**
 
 ```
-curl -XGET localhost:2375/networks/(id)
+curl -XGET localhost:2375/api/v1/networks/(id)
 ```
 
 **Response:**
@@ -176,12 +176,12 @@ curl -XGET localhost:2375/networks/(id)
 }
 ```
 
-#### `/networks?filters={"type":{"custom":true}}`
+#### `/api/v1/networks?filters={"type":{"custom":true}}`
 
 **Request:**
 
 ```
-curl -XGET localhost:2375/networks?filters={"type":{"custom":true}}
+curl -XGET localhost:2375/api/v1/networks?filters={"type":{"custom":true}}
 ```
 
 **Response:**
@@ -251,12 +251,12 @@ curl -XGET localhost:2375/networks?filters={"type":{"custom":true}}
 ]
 ```
 
-#### `/networks/(id)`
+#### `/api/v1/networks/(id)`
 
 **Request:**
 
 ```
-curl -XDELETE localhost:2375/networks/(id)
+curl -XDELETE localhost:2375/api/v1/networks/(id)
 ```
 
 **Response:**
@@ -268,7 +268,7 @@ curl -XDELETE localhost:2375/networks/(id)
 }
 ```
 
-#### `/nodes/(node_id)/networks`
+#### `/api/v1/nodes/(node_id)/networks`
 
 **Request:**
 ```
@@ -343,7 +343,7 @@ curl -XGET localhost:2377/api/v1/nodes/(node_id)/networks
 ```
 
 
-#### `/nodes/(node_id)/networks`
+#### `/api/v1/nodes/(node_id)/networks`
 
 ```
 curl -XPOST localhost:2377/api/v1/nodes/(node_id)/networks -d '{
@@ -433,7 +433,7 @@ curl -XPOST localhost:2377/api/v1/nodes/(node_id)/networks -d '{
 }
 ```
 
-#### `/nodes/(node_id)/networks/(network_id)`
+#### `/api/v1/nodes/(node_id)/networks/(network_id)`
 
 **Request:**
 
@@ -490,7 +490,7 @@ curl -XGET localhost:2375/api/v1/nodes/(node_id)/networks/(network_id)
 }
 ```
 
-#### `/nodes/(node_id)/networks/(network_id)`
+#### `/api/v1/nodes/(node_id)/networks/(network_id)`
 
 **Request:**
 
