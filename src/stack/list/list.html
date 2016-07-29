@@ -33,7 +33,8 @@
                     </tr>
                     </thead>
                     <tbody md-body>
-                    <tr md-row ng-repeat="stack in stackListCtrl.stacks | filter: stackListCtrl.filter">
+                    <tr md-row
+                        ng-repeat="stack in stackListCtrl.stacks | filter: stackListCtrl.filter | orderBy: $index">
                         <td md-cell>
                             <a data-ui-sref="stack.detail({stack_name: stack.Namespace})">{/stack.Namespace/}</a>
                         </td>
@@ -41,17 +42,15 @@
                             {/stack.ServiceCount/}
                         </td>
                         <td md-cell>
-                            <md-button aria-label="delete" class="md-button md-raised" data-ng-click="stackListCtrl.deleteStack($event, stack.Namespace)">
+                            <md-button aria-label="delete" class="md-button md-raised"
+                                       data-ng-click="stackListCtrl.deleteStack($event, stack.Namespace)">
                                 删除
-                            </md-button>
-                            <md-button aria-label="delete" class="md-button md-raised">
-                                编辑
                             </md-button>
                         </td>
                     </tr>
                     </tbody>
                 </table>
-                
+
                 <div class="alert alert-warning text-center" data-ng-if="stackListCtrl.stacks.length <= 0">
                     未查询到编排信息
                 </div>

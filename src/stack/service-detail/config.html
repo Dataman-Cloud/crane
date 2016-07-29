@@ -8,18 +8,47 @@
             <dd flex-offset="5" flex="75">{/serviceDetailCtrl.service.Spec.TaskTemplate.ContainerSpec.Image/}</dd>
         </dl>
         <dl layout="row">
-            <dt flex="20">重启策略</dt>
-            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.Condition || '未知'/}</dd>
+            <dt flex="20">模式</dt>
+            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.Mode.Replicated ? 'Replicated' : 'Global'/}</dd>
         </dl>
-        <dl layout="row">
-            <dt flex="20">重启尝试次数</dt>
-            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.MaxAttempts || '未知'/}</dd>
-        </dl>
-        <dl layout="row">
+        <dl layout="row" data-ng-if="serviceConfigCtrl.service.Spec.Mode.Replicated">
             <dt flex="20">任务数</dt>
-            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.Mode.Replicated.Replicas || '未知'/}</dd>
+            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.Mode.Replicated.Replicas || '未指定'/}</dd>
         </dl>
-    <div>
+        <dl layout="row">
+            <dt flex="20">重启策略</dt>
+            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.Condition || '未指定'/}</dd>
+        </dl>
+        <dl layout="row">
+            <dt flex="20">重启延迟</dt>
+            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.Delay || '未指定'/}</dd>
+        </dl>
+        <dl layout="row">
+            <dt flex="20">重启最大尝试次数</dt>
+            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.MaxAttempts || '未指定'/}</dd>
+        </dl>
+        <dl layout="row">
+            <dt flex="20">重启间隔</dt>
+            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.Window || '未指定'/}</dd>
+        </dl>
+        <dl layout="row">
+            <dt flex="20">更新延迟</dt>
+            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.UpdateConfig.Delay || '未指定'/}</dd>
+        </dl>
+        <dl layout="row">
+            <dt flex="20">更新并行任务数</dt>
+            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.UpdateConfig.Parallelism || '未指定'/}</dd>
+        </dl>
+        <dl layout="row">
+            <dt flex="20">容器目录</dt>
+            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Dir || '未指定'/}</dd>
+        </dl>
+        <dl layout="row">
+            <dt flex="20">杀死容器前等待时间</dt>
+            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.StopGracePeriod || '未指定'/}</dd>
+        </dl>
+
+    </div>
 </section>
 
 <section class="info-view" layout="row">
@@ -28,15 +57,15 @@
     </header>
     <div layout="column" flex="80">
         <dl layout="row">
-            <dt flex="20">CPU <small>（纳秒）</small></dt>
-            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.TaskTemplate.Resources.Limits.NanoCPUs || '未知'/}</dd>
+            <dt flex="20">CPU <small>（核）</small></dt>
+            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.TaskTemplate.Resources.Limits.NanoCPUs / Math.pow(10, 9) || '未指定'/}</dd>
         </dl>
         <dl layout="row">
             <dt flex="20">内存 <small>（MB）</small></dt>
             <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.TaskTemplate.Resources.Limits.MemoryBytes / ( 1024 * 1024) ||
-            '未知'/}</dd>
+            '未指定'/}</dd>
         </dl>
-    <div>
+    </div>
 </section>
 
 <section class="info-view" layout="row">
@@ -45,13 +74,13 @@
     </header>
     <div layout="column" flex="80">
         <dl layout="row">
-            <dt flex="20">CPU <small>（纳秒）</small></dt>
-            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.TaskTemplate.Resources.Reservations.NanoCPUs || '未知'/}</dd>
+            <dt flex="20">CPU <small>（核）</small></dt>
+            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.TaskTemplate.Resources.Reservations.NanoCPUs / Math.pow(10, 9) || '未指定'/}</dd>
         </dl>
         <dl layout="row">
             <dt flex="20">内存 <small>（MB）</small></dt>
             <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.TaskTemplate.Resources.Reservations.MemoryBytes / ( 1024 *
-            1024) || '未知'/}</dd>
+            1024) || '未指定'/}</dd>
         </dl>
-    <div>
+    </div>
 </section>
