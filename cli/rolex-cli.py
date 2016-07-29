@@ -134,7 +134,23 @@ def list_stack_services(args):
         resp_body = json.loads(response.read().decode())
         print(json.dumps(resp_body, indent=4, sort_keys=True))
     except IOError:
-        print('Failed to list stacks')
+        print('Failed to list stacks services')
+        sys.exit(1)
+    connection.close()
+
+def scale_service(args):
+    headers = _get_access_header()
+    connection = httplib.HTTPConnection(ROLEX_API_URL)
+    request_body = {
+        "Scale": args.amount
+    }
+    connection.request('PATCH','/api/v1/stacks/' + args.stack_name + '/services/' + args.service_id, json.dumps(request_body), headers)
+    response = connection.getresponse()
+    try:
+        resp_body = json.loads(response.read().decode())
+        print(json.dumps(resp_body, indent=4, sort_keys=True))
+    except IOError:
+        print('Failed to scale service task')
         sys.exit(1)
     connection.close()
 
@@ -142,9 +158,6 @@ def restart_stack():
     pass
 
 def update_stack():
-    pass
-
-def scale_stack():
     pass
 
 
@@ -177,6 +190,10 @@ if __name__ == "__main__":
     parser_aboutme = subparsers.add_parser('aboutme', help="About Me")
     parser_aboutme.set_defaults(func=about_me)
 
+    parser_get_mygroups = subparsers.add_parser('mygroups', help="Return my groups info")
+    parser_get_mygroups.add_argument("-u", "--uid", help="My user id (find it by cmd aboutme)", type=str, required=True)
+    parser_get_mygroups.set_defaults(func=get_mygroups)
+
     parser_list_stacks = subparsers.add_parser('list_stack', help="List my stacks")
     parser_list_stacks.set_defaults(func=list_stack)
 
@@ -190,9 +207,11 @@ if __name__ == "__main__":
     parser_list_stack_s.add_argument("-n", "--stack_name", help="Stack Name", type=str, required=True)
     parser_list_stack_s.set_defaults(func=list_stack_services)
 
-    parser_get_mygroups = subparsers.add_parser('mygroups', help="Return my groups info")
-    parser_get_mygroups.add_argument("-u", "--uid", help="My user id (find it by ./rolex-cli.py aboutme)", type=str, required=True)
-    parser_get_mygroups.set_defaults(func=get_mygroups)
+    parser_scale_service = subparsers.add_parser('scale_service', help="Scale service tasks")
+    parser_scale_service.add_argument("-n", "--stack_name", help="Stack Name", type=str, required=True)
+    parser_scale_service.add_argument("-s", "--service_id", help="Service ID (find it by cmd list_stack_services)", type=str, required=True)
+    parser_scale_service.add_argument("-a", "--amount", help="Desired task amount", type=int, required=True)
+    parser_scale_service.set_defaults(func=scale_service)
 
     args = parser.parse_args()
     args.func(args)

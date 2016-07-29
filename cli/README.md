@@ -45,3 +45,8 @@ Rolex Client
 ./rolex-cli.py list_stack_services -n cli_created
 ```
 
+### scale given service amounts
+
+```bash
+./rolex-cli.py scale_service -n cli_created -s 6prqzc47jiohi6e4iwst9fwdw -a 2
+```
