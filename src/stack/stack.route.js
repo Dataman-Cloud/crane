@@ -114,6 +114,14 @@
                 ncyBreadcrumb: {
                     label: '任务列表'
                 }
+            })
+            .state('stack.serviceDetail.log', {
+                url: '/log',
+                templateUrl: '/src/stack/service-detail/log.html',
+                controller: 'ServiceLogCtrl as serviceLogCtrl',
+                ncyBreadcrumb: {
+                    label: '服务日志'
+                }
             });
     }
     

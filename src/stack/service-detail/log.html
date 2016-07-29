@@ -1,0 +1,8 @@
+<div class="log-screen" id="log">
+    <ul class="list-unstyled">
+        <li data-ng-repeat='log in serviceLogCtrl.logs' >
+            {/log/}
+        </li>
+    </ul>
+    <code data-ng-if='serviceLogCtrl.logs.length <= 0'>暂无日志</code>
+</div>
