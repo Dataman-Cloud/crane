@@ -7,45 +7,6 @@
         </header>
         <div class="main-content">
             <form name="stackform">
-                <div layout="row" layout-align="end start" class="form-group form-group-input">
-                    <label flex="15">编排名称</label>
-                    <div flex="50" layout="column">
-                        <div flex="none">
-                            <input type="text" class="form-input" data-ng-model="stackCreateNavCtrl.stackName"
-                                   data-required="required" name="Name"
-                                   data-ng-pattern="/^[A-Za-z0-9]+$/">
-                        </div>
-                        <div ng-messages="staticForm.Namespace.$error" ng-if="staticForm.Namespace.$dirty"
-                             role="alert">
-                            <p class="error-info help-info-bottom"
-                               ng-message="required">
-                                <small>名称不能为空</small>
-                            </p>
-                            <p class="error-info help-info-bottom"
-                               ng-message="pattern">
-                                <small>名称必须数字或者英文</small>
-                            </p>
-                        </div>
-                    </div>
-                    <div flex></div>
-                </div>
-
-                <div layout="row" layout-align="end center" class="form-group form-group-select">
-                    <label flex="15">选择用户组</label>
-                    <div flex="50" layout="column">
-                        <md-input-container>
-                            <md-select data-ng-model="stackCreateNavCtrl.selectGroupId" aria-label="selectGroupId"
-                                       md-on-open="stackCreateNavCtrl.loadGroups()">
-                                <md-option
-                                        data-ng-repeat="group in stackCreateNavCtrl.groups"
-                                        ng-value="group.Id">{/group.Name/}
-                                </md-option>
-                            </md-select>
-                        </md-input-container>
-                    </div>
-                    <div flex></div>
-                </div>
-
                 <div layout="row" layout-wrap>
                     <md-card flex="18">
                         <img class="md-card-image" alt="Washed Out">
@@ -59,8 +20,7 @@
                         </md-card-content>
                         <md-card-actions layout="row" layout-align="end center">
                             <md-button class="md-raised md-primary"
-                                       data-ui-sref="stack.createByJson({stack_name: stackCreateNavCtrl.stackName, group_id: stackCreateNavCtrl.selectGroupId})"
-                                       data-ng-disabled="stackform.$invalid">确认
+                                       data-ui-sref="stack.createByJson">确认
                             </md-button>
                         </md-card-actions>
                     </md-card>
@@ -77,8 +37,24 @@
                         </md-card-content>
                         <md-card-actions layout="row" layout-align="end center">
                             <md-button class="md-raised md-primary"
-                                       data-ui-sref="stack.createByForm({stack_name: stackCreateNavCtrl.stackName, group_id: stackCreateNavCtrl.selectGroupId})"
-                                       data-ng-disabled="stackform.$invalid">确认
+                                       data-ui-sref="stack.createByForm">确认
+                            </md-button>
+                        </md-card-actions>
+                    </md-card>
+
+                    <md-card flex="18">
+                        <img class="md-card-image" alt="Washed Out">
+                        <md-card-title>
+                            <md-card-title-text>
+                                <span class="md-headline">应用目录</span>
+                            </md-card-title-text>
+                        </md-card-title>
+                        <md-card-content>
+                            <p>通过应用目录创建应用</p>
+                        </md-card-content>
+                        <md-card-actions layout="row" layout-align="end center">
+                            <md-button class="md-raised md-primary"
+                                       data-ui-sref="registry.list.catalogs">确认
                             </md-button>
                         </md-card-actions>
                     </md-card>

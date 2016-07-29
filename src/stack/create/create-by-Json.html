@@ -7,6 +7,45 @@
         </header>
         <div class="main-content">
             <form name="staticForm">
+                <div layout="row" layout-align="end start" class="form-group form-group-input">
+                    <label flex="15">编排名称</label>
+                    <div flex="50" layout="column">
+                        <div flex="none">
+                            <input type="text" class="form-input" data-ng-model="stackCreateByJsonCtrl.form.Namespace"
+                                   data-required="required" name="Name"
+                                   data-ng-pattern="/^[A-Za-z0-9]+$/">
+                        </div>
+                        <div ng-messages="staticForm.Name.$error" ng-if="staticForm.Name.$dirty"
+                             role="alert">
+                            <p class="error-info help-info-bottom"
+                               ng-message="required">
+                                <small>名称不能为空</small>
+                            </p>
+                            <p class="error-info help-info-bottom"
+                               ng-message="pattern">
+                                <small>名称必须数字或者英文</small>
+                            </p>
+                        </div>
+                    </div>
+                    <div flex></div>
+                </div>
+
+                <div layout="row" layout-align="end center" class="form-group form-group-select">
+                    <label flex="15">选择用户组</label>
+                    <div flex="50" layout="column">
+                        <md-input-container>
+                            <md-select data-ng-model="stackCreateByJsonCtrl.selectGroupId" aria-label="selectGroupId"
+                                       md-on-open="stackCreateByJsonCtrl.loadGroups()">
+                                <md-option
+                                        data-ng-repeat="group in stackCreateByJsonCtrl.groups"
+                                        ng-value="group.Id">{/group.Name/}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                    </div>
+                    <div flex></div>
+                </div>
+                
                 <div layout="row" layout-align="end start" class="form-group form-group-textarea">
                     <label flex="15">Stack JSON</label>
                     <div flex="50" layout="column">
