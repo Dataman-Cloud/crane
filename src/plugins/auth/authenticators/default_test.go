@@ -2,12 +2,10 @@ package authenticators
 
 import (
 	"testing"
-
-	"github.com/Dataman-Cloud/rolex/src/plugins/account/authenticators"
 )
 
 func TestAccountGet(t *testing.T) {
-	d := &authenticators.Default{}
+	d := &Default{}
 	a, _ := d.Account(uint64(1))
 	if a == nil {
 		t.Error("find account with 1 failed")
