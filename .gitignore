@@ -25,3 +25,5 @@ _testmain.go
 /bin/rolex
 env_file
 deploy/env
+coverage-all.out
+coverage.out
