@@ -9,7 +9,7 @@ import json
 import argparse
 import sys
 
-ROLEX_API_URL = '192.168.59.104'
+ROLEX_API_URL = '192.168.59.105'
 CONFIG_FILE = '.rolex.json'
 
 __author__ = "weitao zhou"
