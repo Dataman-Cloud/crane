@@ -28,3 +28,4 @@ deploy/env
 node_addr_file
 coverage-all.out
 coverage.out
+coverage.html
