@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# maintainer wtzhou <wtzhou@dataman-inc.com>
+# maintainer weitao zhou <wtzhou@dataman-inc.com>
 
 docker run -i --rm -w /go/src/github.com/Dataman-Cloud/rolex -v $(pwd):/go/src/github.com/Dataman-Cloud/rolex golang:1.5.4 make
 docker run -i --rm -w /go/src/github.com/Dataman-Cloud/rolex -v $(pwd):/go/src/github.com/Dataman-Cloud/rolex golang:1.5.4 make collect-cover-data
