@@ -70,7 +70,8 @@
                     "Mode": "vip", //vip/dnsrr
                     "Ports": [] //端口
                 },
-                "defaultMode": 'Global'
+                "defaultMode": 'Global',
+                "showAdvanceContent": false
             }
         ];
 
@@ -144,7 +145,8 @@
                     "Mode": "vip", //vip/dnsrr
                     "Ports": [] //端口
                 },
-                "defaultMode": 'Global'
+                "defaultMode": 'Global',
+                "showAdvanceContent": false
             };
 
             self.serveFormArray.push(form);
@@ -270,6 +272,7 @@
                 item.TaskTemplate.ContainerSpec.Labels = containerLabels;
 
                 delete item.defaultMode;
+                delete item.showAdvanceContent;
 
                 serveLabels = {};
                 containerLabels = {}
@@ -281,10 +284,12 @@
         /*
          Check same name
          */
-        function listNames() {
+        function listNames(curIndex) {
             var nameList = [];
             angular.forEach(self.serveFormArray, function (item, index) {
-                nameList.push(item.Name)
+                if (curIndex != index) {
+                    nameList.push(item.Name)
+                }
             });
 
             return nameList

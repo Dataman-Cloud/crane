@@ -4,10 +4,11 @@
         .controller('ServiceUpdateCtrl', ServiceUpdateCtrl);
 
     /* @ngInject */
-    function ServiceUpdateCtrl($state, stackCurd, $stateParams, networkBackend, $scope, service) {
+    function ServiceUpdateCtrl(stackCurd, $stateParams, networkBackend, $scope, service) {
         var self = this;
 
         self.serviceLabelLength = 0;
+        self.showAdvanceContent =  true;
 
         self.modeChange = modeChange;
         self.addConfig = addConfig;
