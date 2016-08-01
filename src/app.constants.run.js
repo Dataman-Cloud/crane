@@ -18,48 +18,6 @@
             10002: '操作失败'
         };
 
-        $rootScope.STACK_SAMPLES = {
-            singleService: {
-              "Services": {
-                "redis": {
-                    "Name": "redis",
-                    "TaskTemplate": {
-                        "ContainerSpec": {
-                            "Image": "redis@sha256:b50f15d427aea5b579f9bf972ab82ff8c1c47bffc0481b225c6a714095a9ec34",
-                            "network": [
-                                "bridge"
-                            ]
-                        }
-                    }
-                }
-              },
-              "Version": "0.1"
-            },
-            doubleServices: {
-              "Services": {
-                "redis": {
-                    "Name": "redis",
-                    "TaskTemplate": {
-                        "ContainerSpec": {
-                            "Image": "redis@sha256:b50f15d427aea5b579f9bf972ab82ff8c1c47bffc0481b225c6a714095a9ec34",
-                            "network": ["ingress", "bridge"]
-                        }
-                    }
-                },
-                "nginx": {
-                    "Name": "nginx",
-                    "TaskTemplate": {
-                        "ContainerSpec": {
-                            "Image": "nginx:stable-alpine",
-                            "network": ["ingress", "bridge"]
-                        }
-                    }
-                }
-              },
-              "Version": "0.1"
-            }
-        };
-
         $rootScope.CONTAINER_STATUS_LABELS = {
             running: '运行中',
             paused: '暂停中',
@@ -68,9 +26,9 @@
             created: '初始化中',
             exited: '已退出'
         };
-        
+
         $rootScope.STATS_POINT_NUM = 180;
-        
+
         $rootScope.DIFF_KIND = {
             0: '修改',
             1: '添加',

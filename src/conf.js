@@ -12,3 +12,4 @@ BACKEND_URL_BASE = {
 };
 
 HOME_URL = '/auth';
+SAMPLES_URL = '/cli/samples/';
