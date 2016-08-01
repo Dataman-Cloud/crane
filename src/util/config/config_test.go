@@ -2,12 +2,10 @@ package config
 
 import (
 	"testing"
-
-	"github.com/Dataman-Cloud/rolex/src/util/config"
 )
 
 func TestConfigFeatureEnabled(t *testing.T) {
-	config := &config.Config{
+	config := &Config{
 		FeatureFlags: []string{"foo", "bar"},
 	}
 
