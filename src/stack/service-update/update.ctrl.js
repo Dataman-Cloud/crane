@@ -90,10 +90,15 @@
             form.formCmd = [];
             form.defaultMode = 'Global';
 
+            //Unit conversion
             form.TaskTemplate.Resources.Limits.NanoCPUs = form.TaskTemplate.Resources.Limits.NanoCPUs ? form.TaskTemplate.Resources.Limits.NanoCPUs / Math.pow(10, 9) : null;
             form.TaskTemplate.Resources.Limits.MemoryBytes = form.TaskTemplate.Resources.Limits.MemoryBytes ? form.TaskTemplate.Resources.Limits.MemoryBytes / (1024 * 1024) : null;
             form.TaskTemplate.Resources.Reservations.NanoCPUs = form.TaskTemplate.Resources.Reservations.NanoCPUs ? form.TaskTemplate.Resources.Reservations.NanoCPUs / Math.pow(10, 9) : null;
             form.TaskTemplate.Resources.Reservations.MemoryBytes = form.TaskTemplate.Resources.Reservations.MemoryBytes ? form.TaskTemplate.Resources.Reservations.MemoryBytes / (1024 * 1024) : null;
+            form.TaskTemplate.RestartPolicy.Delay = form.TaskTemplate.RestartPolicy.Delay ? form.TaskTemplate.RestartPolicy.Delay / Math.pow(10, 9) : null;
+            form.TaskTemplate.RestartPolicy.Window = form.TaskTemplate.RestartPolicy.Window ? form.TaskTemplate.RestartPolicy.Window / Math.pow(10, 9) : null;
+            form.TaskTemplate.ContainerSpec.StopGracePeriod = form.TaskTemplate.ContainerSpec.StopGracePeriod ? form.TaskTemplate.ContainerSpec.StopGracePeriod / Math.pow(10, 9) : null;
+            form.UpdateConfig.Delay = form.UpdateConfig.Delay ? form.UpdateConfig.Delay / Math.pow(10, 9) : null;
 
 
             angular.forEach(form.Labels, function (value, key) {
@@ -163,10 +168,15 @@
         function formatFormToJson() {
             var form = angular.copy(self.form);
 
+            //Unit conversion
             form.TaskTemplate.Resources.Limits.NanoCPUs = form.TaskTemplate.Resources.Limits.NanoCPUs ? form.TaskTemplate.Resources.Limits.NanoCPUs * Math.pow(10, 9) : null;
             form.TaskTemplate.Resources.Limits.MemoryBytes = form.TaskTemplate.Resources.Limits.MemoryBytes ? form.TaskTemplate.Resources.Limits.MemoryBytes * 1024 * 1024 : null;
             form.TaskTemplate.Resources.Reservations.NanoCPUs = form.TaskTemplate.Resources.Reservations.NanoCPUs ? form.TaskTemplate.Resources.Reservations.NanoCPUs * Math.pow(10, 9) : null;
             form.TaskTemplate.Resources.Reservations.MemoryBytes = form.TaskTemplate.Resources.Reservations.MemoryBytes ? form.TaskTemplate.Resources.Reservations.MemoryBytes * 1024 * 1024 : null;
+            form.TaskTemplate.RestartPolicy.Delay = form.TaskTemplate.RestartPolicy.Delay ? form.TaskTemplate.RestartPolicy.Delay * Math.pow(10, 9) : null;
+            form.TaskTemplate.RestartPolicy.Window = form.TaskTemplate.RestartPolicy.Window ? form.TaskTemplate.RestartPolicy.Window * Math.pow(10, 9) : null;
+            form.TaskTemplate.ContainerSpec.StopGracePeriod = form.TaskTemplate.ContainerSpec.StopGracePeriod ? form.TaskTemplate.ContainerSpec.StopGracePeriod * Math.pow(10, 9) : null;
+            form.UpdateConfig.Delay = form.UpdateConfig.Delay ? form.UpdateConfig.Delay * Math.pow(10, 9) : null;
 
             form.TaskTemplate.ContainerSpec.Env = [];
             form.TaskTemplate.Placement.Constraints = [];

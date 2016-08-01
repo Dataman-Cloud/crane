@@ -85,9 +85,9 @@
         self.listNames = listNames;
         self.listConfigByKey = listConfigByKey;
 
-        function loadGroups(){
+        function loadGroups() {
             userBackend.listGroup($rootScope.accountId)
-                .then(function(data){
+                .then(function (data) {
                     self.groups = data
                 })
         }
@@ -236,10 +236,15 @@
 
             angular.forEach(serveTempArray, function (item, index, array) {
 
+                //Unit conversion
                 item.TaskTemplate.Resources.Limits.NanoCPUs = item.TaskTemplate.Resources.Limits.NanoCPUs ? item.TaskTemplate.Resources.Limits.NanoCPUs * Math.pow(10, 9) : null;
                 item.TaskTemplate.Resources.Limits.MemoryBytes = item.TaskTemplate.Resources.Limits.MemoryBytes ? item.TaskTemplate.Resources.Limits.MemoryBytes * 1024 * 1024 : null;
                 item.TaskTemplate.Resources.Reservations.NanoCPUs = item.TaskTemplate.Resources.Reservations.NanoCPUs ? item.TaskTemplate.Resources.Reservations.NanoCPUs * Math.pow(10, 9) : null;
                 item.TaskTemplate.Resources.Reservations.MemoryBytes = item.TaskTemplate.Resources.Reservations.MemoryBytes ? item.TaskTemplate.Resources.Reservations.MemoryBytes * 1024 * 1024 : null;
+                item.TaskTemplate.RestartPolicy.Delay = item.TaskTemplate.RestartPolicy.Delay ? item.TaskTemplate.RestartPolicy.Delay * Math.pow(10, 9) : null;
+                item.TaskTemplate.RestartPolicy.Window = item.TaskTemplate.RestartPolicy.Window ? item.TaskTemplate.RestartPolicy.Window * Math.pow(10, 9) : null;
+                item.TaskTemplate.ContainerSpec.StopGracePeriod = item.TaskTemplate.ContainerSpec.StopGracePeriod ? item.TaskTemplate.ContainerSpec.StopGracePeriod * Math.pow(10, 9) : null;
+                item.UpdateConfig.Delay = item.UpdateConfig.Delay ? item.UpdateConfig.Delay * Math.pow(10, 9) : null;
 
                 angular.forEach(item.TaskTemplate.ContainerSpec.Env, function (env, index, array) {
                     array[index] = env.key + '=' + env.value
