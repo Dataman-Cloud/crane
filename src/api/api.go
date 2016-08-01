@@ -78,6 +78,12 @@ func (api *Api) HttpErrorResponse(ctx *gin.Context, err error) {
 	switch rerror.Code {
 	case rolexerror.CodeNetworkPredefined:
 		httpCode = http.StatusForbidden
+	case rolexerror.CodeListContainerParamError,
+		rolexerror.CodePatchContainerParamError,
+		rolexerror.CodePatchContainerMethodUndefined,
+		rolexerror.CodeDeleteContainerParamError,
+		rolexerror.CodeDeleteContainerMethodUndefined:
+		httpCode = http.StatusBadRequest
 	default:
 		httpCode = http.StatusServiceUnavailable
 	}
