@@ -46,7 +46,7 @@
                     </div>
                     <div flex></div>
                 </div>
-                
+
                 <div layout="row" layout-align="end start" class="form-group form-group-textarea">
                     <label flex="15">Stack JSON</label>
                     <div flex="50" layout="column">
@@ -81,8 +81,20 @@
                             </p>
 
                             <p class="help-info-bottom">
-                                <md-button class="md-primary" data-ng-click="stackCreateByJsonCtrl.example()"><i
-                                        class="fa fa-file-text"></i> 样例
+                                <md-button class="md-primary"
+                                           data-ng-click="stackCreateByJsonCtrl.getStackExample('double_services')"><i
+                                        class="fa fa-file-text"></i> 多服务
+                                </md-button>
+                                <md-button class="md-primary" data-ng-click="stackCreateByJsonCtrl.getStackExample('2048')"><i
+                                        class="fa fa-file-text"></i> 2048
+                                </md-button>
+                                <md-button class="md-primary"
+                                           data-ng-click="stackCreateByJsonCtrl.getStackExample('mysql_display')"><i
+                                        class="fa fa-file-text"></i> Mysql
+                                </md-button>
+                                <md-button class="md-primary"
+                                           data-ng-click="stackCreateByJsonCtrl.getStackExample('wordpress')"><i
+                                        class="fa fa-file-text"></i> wordpress
                                 </md-button>
                             </p>
                         </div>

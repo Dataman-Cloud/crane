@@ -4,7 +4,7 @@
         .controller('StackCreateByJsonCtrl', StackCreateByJsonCtrl);
 
     /* @ngInject */
-    function StackCreateByJsonCtrl($timeout, $scope, $rootScope, stackCurd, $stateParams, userBackend) {
+    function StackCreateByJsonCtrl($timeout, $scope, $rootScope, stackCurd, userBackend, $http) {
         var self = this;
 
         self.supportReadFile = false;
@@ -25,8 +25,6 @@
             }
         };
 
-        self.stack = angular.toJson($rootScope.STACK_SAMPLES.singleService, '\t') || "";
-
         self.form = {
             Namespace: "",
             Stack: ""
@@ -42,13 +40,15 @@
         self.onFileSelect = onFileSelect;
         self.create = create;
         self.stackChange = stackChange;
-        self.example = example;
+        self.getStackExample = getStackExample;
 
         activate();
 
         function activate() {
             self.supportReadFile = !!(window.File && window.FileReader && window.FileList && window.Blob);
 
+            getStackExample('test');
+            
             // cload timeout is 10, set long for it;
             var timeoutPromise = $timeout(function () {
                 self.refreshCodeMirror = true;
@@ -60,9 +60,9 @@
 
         }
 
-        function loadGroups(){
+        function loadGroups() {
             userBackend.listGroup($rootScope.accountId)
-                .then(function(data){
+                .then(function (data) {
                     self.groups = data
                 })
         }
@@ -103,9 +103,12 @@
             }
         }
 
-        function example() {
-            self.stack = angular.toJson($rootScope.STACK_SAMPLES.doubleServices, '\t') || "";
-            stackChange();
+        function getStackExample(type) {
+            $http.get(SAMPLES_URL + type + '.json')
+                .then(function (res) {
+                    self.stack = angular.toJson(res.data, '\t') || "";
+                    stackChange();
+                });
         }
     }
 })();
