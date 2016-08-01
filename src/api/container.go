@@ -9,6 +9,7 @@ import (
 
 	"github.com/Dataman-Cloud/rolex/src/dockerclient/model"
 	"github.com/Dataman-Cloud/rolex/src/util"
+	"github.com/Dataman-Cloud/rolex/util/src/rolexerror"
 
 	log "github.com/Sirupsen/logrus"
 	goclient "github.com/fsouza/go-dockerclient"
@@ -36,33 +37,32 @@ const (
 func (api *Api) InspectContainer(ctx *gin.Context) {
 	rolexContext, _ := ctx.Get("rolexContext")
 	container, err := api.GetDockerClient().InspectContainer(rolexContext.(context.Context), ctx.Param("container_id"))
-	if err != nil {
-		ctx.JSON(http.StatusServiceUnavailable, err.Error())
-		return
+	api.HttpResponse(ctx, err, container)
+	return
 	}
-
-	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": container})
-}
 
 func (api *Api) ListContainers(ctx *gin.Context) {
 	all, err := strconv.ParseBool(ctx.DefaultQuery("all", "true"))
 	if err != nil {
 		log.Error("Parse param all of list container got error: ", err)
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": util.PARAMETER_ERROR, "data": err.Error()})
+		rerror := rolexerror.NewRolexError(rolexerror.CodeListParamError, err.Error())
+		api.HttpErrorResponse(ctx, rerror)
 		return
 	}
 
 	size, err := strconv.ParseBool(ctx.DefaultQuery("size", "false"))
 	if err != nil {
 		log.Error("Parse param size of list container got error: ", err)
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": util.PARAMETER_ERROR, "data": err.Error()})
+		rerror := rolexerror.NewRolexError(rolexerror.CodeListParamError, err.Error())
+		api.HttpErrorResponse(ctx, rerror)
 		return
 	}
 
 	limitValue, err := strconv.ParseInt(ctx.DefaultQuery("limit", "0"), 10, 64)
 	if err != nil {
 		log.Error("Parse param all of limit container got error: ", err)
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": util.PARAMETER_ERROR, "data": err.Error()})
+		rerror := rolexerror.NewRolexError(rolexerror.CodeListParamError, err.Error())
+		api.HttpErrorResponse(ctx, rerror)
 		return
 	}
 	limit := int(limitValue)
