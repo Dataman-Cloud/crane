@@ -3,12 +3,11 @@ package api
 import (
 	"encoding/json"
 	"io"
-	"net/http"
 	"strconv"
 	"strings"
 
 	"github.com/Dataman-Cloud/rolex/src/dockerclient/model"
-	"github.com/Dataman-Cloud/rolex/src/util"
+	"github.com/Dataman-Cloud/rolex/src/util/rolexerror"
 
 	log "github.com/Sirupsen/logrus"
 	goclient "github.com/fsouza/go-dockerclient"
@@ -26,7 +25,7 @@ type ContainerRequest struct {
 
 const (
 	CONTAINER_KILL = "kill"
-	CONTAINER_RMF  = "rm"
+	CONTAINER_RM   = "rm"
 )
 
 const (
@@ -36,33 +35,32 @@ const (
 func (api *Api) InspectContainer(ctx *gin.Context) {
 	rolexContext, _ := ctx.Get("rolexContext")
 	container, err := api.GetDockerClient().InspectContainer(rolexContext.(context.Context), ctx.Param("container_id"))
-	if err != nil {
-		ctx.JSON(http.StatusServiceUnavailable, err.Error())
-		return
-	}
-
-	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": container})
+	api.HttpResponse(ctx, err, container)
+	return
 }
 
 func (api *Api) ListContainers(ctx *gin.Context) {
 	all, err := strconv.ParseBool(ctx.DefaultQuery("all", "true"))
 	if err != nil {
 		log.Error("Parse param all of list container got error: ", err)
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": util.PARAMETER_ERROR, "data": err.Error()})
+		rerror := rolexerror.NewRolexError(rolexerror.CodeListContainerParamError, err.Error())
+		api.HttpErrorResponse(ctx, rerror)
 		return
 	}
 
 	size, err := strconv.ParseBool(ctx.DefaultQuery("size", "false"))
 	if err != nil {
 		log.Error("Parse param size of list container got error: ", err)
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": util.PARAMETER_ERROR, "data": err.Error()})
+		rerror := rolexerror.NewRolexError(rolexerror.CodeListContainerParamError, err.Error())
+		api.HttpErrorResponse(ctx, rerror)
 		return
 	}
 
 	limitValue, err := strconv.ParseInt(ctx.DefaultQuery("limit", "0"), 10, 64)
 	if err != nil {
 		log.Error("Parse param all of limit container got error: ", err)
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": util.PARAMETER_ERROR, "data": err.Error()})
+		rerror := rolexerror.NewRolexError(rolexerror.CodeListContainerParamError, err.Error())
+		api.HttpErrorResponse(ctx, rerror)
 		return
 	}
 	limit := int(limitValue)
@@ -71,7 +69,8 @@ func (api *Api) ListContainers(ctx *gin.Context) {
 	queryFilters := ctx.DefaultQuery("filters", "{}")
 	if err := json.Unmarshal([]byte(queryFilters), &filters); err != nil {
 		log.Error("Unmarshal list container filters got error: ", err)
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": util.PARAMETER_ERROR, "data": err.Error()})
+		rerror := rolexerror.NewRolexError(rolexerror.CodeListContainerParamError, err.Error())
+		api.HttpErrorResponse(ctx, rerror)
 		return
 	}
 
@@ -86,13 +85,7 @@ func (api *Api) ListContainers(ctx *gin.Context) {
 
 	rolexContext, _ := ctx.Get("rolexContext")
 	containers, err := api.GetDockerClient().ListContainers(rolexContext.(context.Context), listOpts)
-	if err != nil {
-		log.Error("List container got error: ", err)
-		ctx.JSON(http.StatusServiceUnavailable, err.Error())
-		return
-	}
-
-	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": containers})
+	api.HttpResponse(ctx, err, containers)
 	return
 }
 
@@ -100,103 +93,67 @@ func (api *Api) PatchContainer(ctx *gin.Context) {
 	rolexContext, _ := ctx.Get("rolexContext")
 	containerRequest := &ContainerRequest{}
 	if err := ctx.BindJSON(&containerRequest); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": util.PARAMETER_ERROR, "data": err.Error()})
+		rerror := rolexerror.NewRolexError(rolexerror.CodePatchContainerParamError, err.Error())
+		api.HttpErrorResponse(ctx, rerror)
 		return
 	}
 
+	var err error
 	switch strings.ToLower(containerRequest.Method) {
 	case "rename":
 		opts := goclient.RenameContainerOptions{
 			Name: containerRequest.Name,
 			ID:   ctx.Param("container_id"),
 		}
-		err := api.GetDockerClient().RenameContainer(rolexContext.(context.Context), opts)
-		if err != nil {
-			ctx.JSON(http.StatusServiceUnavailable, err.Error())
-			return
-		}
+		err = api.GetDockerClient().RenameContainer(rolexContext.(context.Context), opts)
 	case "stop":
-		err := api.GetDockerClient().StopContainer(rolexContext.(context.Context), ctx.Param("container_id"), CONTAINER_STOP_TIMEOUT)
-		if err != nil {
-			ctx.JSON(http.StatusServiceUnavailable, err.Error())
-			return
-		}
+		err = api.GetDockerClient().StopContainer(rolexContext.(context.Context), ctx.Param("container_id"), CONTAINER_STOP_TIMEOUT)
 	case "start":
-		err := api.GetDockerClient().StartContainer(rolexContext.(context.Context), ctx.Param("container_id"), nil)
-		if err != nil {
-			ctx.JSON(http.StatusServiceUnavailable, err.Error())
-			return
-		}
+		err = api.GetDockerClient().StartContainer(rolexContext.(context.Context), ctx.Param("container_id"), nil)
 	case "restart":
-		err := api.GetDockerClient().RestartContainer(rolexContext.(context.Context), ctx.Param("container_id"), CONTAINER_STOP_TIMEOUT)
-		if err != nil {
-			ctx.JSON(http.StatusServiceUnavailable, err.Error())
-			return
-		}
+		err = api.GetDockerClient().RestartContainer(rolexContext.(context.Context), ctx.Param("container_id"), CONTAINER_STOP_TIMEOUT)
 	case "pause":
-		err := api.GetDockerClient().PauseContainer(rolexContext.(context.Context), ctx.Param("container_id"))
-		if err != nil {
-			ctx.JSON(http.StatusServiceUnavailable, err.Error())
-			return
-		}
+		err = api.GetDockerClient().PauseContainer(rolexContext.(context.Context), ctx.Param("container_id"))
 	case "unpause":
-		err := api.GetDockerClient().UnpauseContainer(rolexContext.(context.Context), ctx.Param("container_id"))
-		if err != nil {
-			ctx.JSON(http.StatusServiceUnavailable, err.Error())
-			return
-		}
+		err = api.GetDockerClient().UnpauseContainer(rolexContext.(context.Context), ctx.Param("container_id"))
 	case "resizetty":
-		err := api.GetDockerClient().ResizeContainerTTY(rolexContext.(context.Context), ctx.Param("container_id"), containerRequest.Height, containerRequest.Width)
-		if err != nil {
-			ctx.JSON(http.StatusServiceUnavailable, err.Error())
-			return
-		}
+		err = api.GetDockerClient().ResizeContainerTTY(rolexContext.(context.Context), ctx.Param("container_id"), containerRequest.Height, containerRequest.Width)
 	default:
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": util.PARAMETER_ERROR, "data": ""})
-		return
+		err = rolexerror.NewRolexError(rolexerror.CodePatchContainerMethodUndefined, containerRequest.Method)
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": "success"})
+	api.HttpResponse(ctx, err, "success")
+	return
 }
 
 func (api *Api) DeleteContainer(ctx *gin.Context) {
 	rolexContext, _ := ctx.Get("rolexContext")
 	containerRequest := &ContainerRequest{}
 	if err := ctx.BindJSON(&containerRequest); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": util.PARAMETER_ERROR, "data": err.Error()})
+		rerror := rolexerror.NewRolexError(rolexerror.CodeDeleteContainerParamError, err.Error())
+		api.HttpErrorResponse(ctx, rerror)
 		return
 	}
 
-	if containerRequest.Method == CONTAINER_RMF {
+	var err error
+	if containerRequest.Method == CONTAINER_RM {
 		opts := goclient.RemoveContainerOptions{ID: ctx.Param("container_id"), Force: true}
-		err := api.GetDockerClient().RemoveContainer(rolexContext.(context.Context), opts)
-		if err != nil {
-			ctx.JSON(http.StatusServiceUnavailable, err.Error())
-			return
-		}
-		ctx.JSON(http.StatusOK, gin.H{"code": 0})
+		err = api.GetDockerClient().RemoveContainer(rolexContext.(context.Context), opts)
 	} else if containerRequest.Method == CONTAINER_KILL {
 		opts := goclient.KillContainerOptions{ID: ctx.Param("container_id")}
-		err := api.GetDockerClient().KillContainer(rolexContext.(context.Context), opts)
-		if err != nil {
-			ctx.JSON(http.StatusServiceUnavailable, err.Error())
-			return
-		}
-		ctx.JSON(http.StatusOK, gin.H{"code": 0})
+		err = api.GetDockerClient().KillContainer(rolexContext.(context.Context), opts)
 	} else {
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": 1})
+		err = rolexerror.NewRolexError(rolexerror.CodeDeleteContainerMethodUndefined, containerRequest.Method)
 	}
+	api.HttpResponse(ctx, err, "success")
+	return
 }
 
 func (api *Api) DiffContainer(ctx *gin.Context) {
 	rolexContext, _ := ctx.Get("rolexContext")
 	changes, err := api.GetDockerClient().DiffContainer(rolexContext.(context.Context), ctx.Param("container_id"))
-	if err != nil {
-		ctx.JSON(http.StatusServiceUnavailable, err.Error())
-		return
-	}
-
-	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": changes})
+	api.HttpResponse(ctx, err, changes)
+	return
 }
 
 func (api *Api) LogsContainer(ctx *gin.Context) {
