@@ -24,46 +24,26 @@ func (api *Api) GetConfig() *config.Config {
 }
 
 // RHttprespnse retrun none error code 200
-func (api *Api) HttpResponse(ctx *gin.Context, err error, data interface{}) {
-	if err == nil {
-		ctx.JSON(http.StatusOK, gin.H{"code": rolexerror.CodeOk, "data": data})
-		return
-	}
-
-	api.HttpErrorResponse(ctx, err)
+func (api *Api) HttpOkResponse(ctx *gin.Context, data interface{}) {
+	ctx.JSON(http.StatusOK, gin.H{"code": rolexerror.CodeOk, "data": data})
 	return
 }
 
 // RHttprespnse retrun none error code 201
-func (api *Api) HttpCreateResponse(ctx *gin.Context, err error, data interface{}) {
-	if err == nil {
-		ctx.JSON(http.StatusCreated, gin.H{"code": rolexerror.CodeOk, "data": data})
-		return
-	}
-
-	api.HttpErrorResponse(ctx, err)
+func (api *Api) HttpCreateResponse(ctx *gin.Context, data interface{}) {
+	ctx.JSON(http.StatusCreated, gin.H{"code": rolexerror.CodeOk, "data": data})
 	return
 }
 
 // RHttprespnse retrun none error code 204
-func (api *Api) HttpDeleteResponse(ctx *gin.Context, err error, data interface{}) {
-	if err == nil {
-		ctx.JSON(http.StatusNoContent, gin.H{"code": rolexerror.CodeOk, "data": data})
-		return
-	}
-
-	api.HttpErrorResponse(ctx, err)
+func (api *Api) HttpDeleteResponse(ctx *gin.Context, data interface{}) {
+	ctx.JSON(http.StatusNoContent, gin.H{"code": rolexerror.CodeOk, "data": data})
 	return
 }
 
 // RHttprespnse retrun none error code 202
 func (api *Api) HttpUpdateResponse(ctx *gin.Context, err error, data interface{}) {
-	if err == nil {
-		ctx.JSON(http.StatusAccepted, gin.H{"code": rolexerror.CodeOk, "data": data})
-		return
-	}
-
-	api.HttpErrorResponse(ctx, err)
+	ctx.JSON(http.StatusAccepted, gin.H{"code": rolexerror.CodeOk, "data": data})
 	return
 }
 
@@ -82,7 +62,21 @@ func (api *Api) HttpErrorResponse(ctx *gin.Context, err error) {
 		rolexerror.CodePatchContainerParamError,
 		rolexerror.CodePatchContainerMethodUndefined,
 		rolexerror.CodeDeleteContainerParamError,
-		rolexerror.CodeDeleteContainerMethodUndefined:
+		rolexerror.CodeDeleteContainerMethodUndefined,
+		rolexerror.CodeListImageParamError,
+		rolexerror.CodeConnectNetworkParamError,
+		rolexerror.CodeConnectNetworkMethodError,
+		rolexerror.CodeCreateNetworkParamError,
+		rolexerror.CodeInspectNetworkParamError,
+		rolexerror.CodeListNetworkParamError,
+		rolexerror.CodeUpdateNodeParamError,
+		rolexerror.CodeUpdateServiceParamError,
+		rolexerror.CodeCreateServiceParamError,
+		rolexerror.CodeScaleServiceParamError,
+		rolexerror.CodeListTaskParamError,
+		rolexerror.CodeCreateStackParamError,
+		rolexerror.CodeInvalidGroupId,
+		rolexerror.CodeCreateVolumeParamError:
 		httpCode = http.StatusBadRequest
 	default:
 		httpCode = http.StatusServiceUnavailable

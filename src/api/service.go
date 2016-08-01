@@ -3,11 +3,10 @@ package api
 import (
 	"fmt"
 	"io"
-	"net/http"
 
 	"github.com/Dataman-Cloud/rolex/src/dockerclient"
 	"github.com/Dataman-Cloud/rolex/src/dockerclient/model"
-	"github.com/Dataman-Cloud/rolex/src/util"
+	"github.com/Dataman-Cloud/rolex/src/util/rolexerror"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/docker/engine-api/types"
@@ -22,53 +21,59 @@ func (api *Api) UpdateService(ctx *gin.Context) {
 	var serviceSpec swarm.ServiceSpec
 
 	if err := ctx.BindJSON(&serviceSpec); err != nil {
-		log.Errorf("invalied request body: %v", err)
-		ctx.JSON(http.StatusServiceUnavailable, err.Error())
+		log.Error("UpdateService invalied request body: ", err)
+		rerror := rolexerror.NewRolexError(rolexerror.CodeUpdateServiceParamError, err.Error())
+		api.HttpErrorResponse(ctx, rerror)
 		return
 	}
 
 	service, err := api.GetDockerClient().InspectServiceWithRaw(ctx.Param("service_id"))
 	if err != nil {
 		log.Errorf("inspect service error: %v", err)
-		ctx.JSON(http.StatusInternalServerError, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
+		api.HttpErrorResponse(ctx, err)
 		return
 	}
 
 	if err := api.GetDockerClient().UpdateService(service.ID, service.Version, serviceSpec, nil); err != nil {
 		log.Errorf("update service error: %v", err)
-		ctx.JSON(http.StatusInternalServerError, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
+		api.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"code": util.OPERATION_SUCCESS, "data": "update success"})
+	api.HttpOkResponse(ctx, "success")
+	return
 }
 
 func (api *Api) InspectService(ctx *gin.Context) {
 	service, err := api.GetDockerClient().InspectServiceWithRaw(ctx.Param("service_id"))
 	if err != nil {
 		log.Errorf("inspect service error: %v", err)
-		ctx.JSON(http.StatusInternalServerError, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
+		api.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"code": util.OPERATION_SUCCESS, "data": service})
+	api.HttpOkResponse(ctx, service)
+	return
 }
 
 // ServiceCreate creates a new Service.
 func (api *Api) CreateService(ctx *gin.Context) {
 	var service swarm.ServiceSpec
 	if err := ctx.BindJSON(&service); err != nil {
-		ctx.JSON(http.StatusServiceUnavailable, err.Error())
+		log.Error("CreateService invalied request body: ", err)
+		rerror := rolexerror.NewRolexError(rolexerror.CodeCreateServiceParamError, err.Error())
+		api.HttpErrorResponse(ctx, rerror)
 		return
 	}
 
 	response, err := api.GetDockerClient().CreateService(service, types.ServiceCreateOptions{})
 	if err != nil {
-		ctx.JSON(http.StatusServiceUnavailable, err.Error())
+		log.Error("CreateService got error: ", err)
+		api.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": response})
+	api.HttpOkResponse(ctx, response)
 	return
 }
 
@@ -87,58 +92,59 @@ func (api *Api) ListService(ctx *gin.Context) {
 
 	services, err := api.GetDockerClient().ListService(opts)
 	if err != nil {
-		ctx.JSON(http.StatusServiceUnavailable, err.Error())
+		log.Error("ListService got error: ", err)
+		api.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": services})
+	api.HttpOkResponse(ctx, services)
 	return
 }
 
 func (api *Api) RemoveService(ctx *gin.Context) {
-	serviceID := ctx.Param("id")
-	if serviceID == "" {
-		ctx.JSON(http.StatusBadRequest, "service id is nil")
+	serviceId := ctx.Param("id")
+	if err := api.GetDockerClient().RemoveService(serviceId); err != nil {
+		log.Errorf("Remove service %s got error: %s", serviceId, err.Error())
+		api.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	if err := api.GetDockerClient().RemoveService(serviceID); err != nil {
-		ctx.JSON(http.StatusServiceUnavailable, err.Error())
-		return
-	}
-
-	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": "success"})
+	api.HttpOkResponse(ctx, "success")
 	return
 }
 
 func (api *Api) ScaleService(ctx *gin.Context) {
-	serviceID := ctx.Param("service_id")
+	serviceId := ctx.Param("service_id")
 	var serviceScale dockerclient.ServiceScale
 	if err := ctx.BindJSON(&serviceScale); err != nil {
-		log.Error("Scale service got error: ", err)
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": util.PARAMETER_ERROR, "data": err.Error()})
+		log.Errorf("Scale service %s got error: %s", serviceId, err.Error())
+		rerror := rolexerror.NewRolexError(rolexerror.CodeScaleServiceParamError, err.Error())
+		api.HttpErrorResponse(ctx, rerror)
 		return
 	}
 
-	if err := api.GetDockerClient().ScaleService(serviceID, serviceScale); err != nil {
-		log.Error("Scale service got error: ", err)
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": util.PARAMETER_ERROR, "data": err.Error()})
+	if err := api.GetDockerClient().ScaleService(serviceId, serviceScale); err != nil {
+		log.Errorf("Scale service %s got error: %s", serviceId, err.Error())
+		api.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": "success"})
+	api.HttpOkResponse(ctx, "success")
 	return
 }
 
 func (api *Api) LogsService(ctx *gin.Context) {
+	serviceId := ctx.Param("service_id")
 	taskFilter := filters.NewArgs()
-	taskFilter.Add("service", ctx.Param("service_id"))
+	taskFilter.Add("service", serviceId)
 	message := make(chan string)
 	defer close(message)
 
 	tasks, err := api.GetDockerClient().ListTasks(types.TaskListOptions{Filter: taskFilter})
 	if err != nil {
-		ctx.JSON(http.StatusServiceUnavailable, err.Error())
+		log.Errorf("ListTasks of service %s got error: %s", serviceId, err.Error())
+		rerror := rolexerror.NewRolexError(rolexerror.CodeListTaskParamError, err.Error())
+		api.HttpErrorResponse(ctx, rerror)
 		return
 	}
 
@@ -157,15 +163,18 @@ func (api *Api) LogsService(ctx *gin.Context) {
 }
 
 func (api *Api) StatsService(ctx *gin.Context) {
+	serviceId := ctx.Param("service_id")
 	taskFilter := filters.NewArgs()
-	taskFilter.Add("service", ctx.Param("service_id"))
+	taskFilter.Add("service", serviceId)
 	stats := make(chan *model.ContainerStat)
 
 	defer close(stats)
 
 	tasks, err := api.GetDockerClient().ListTasks(types.TaskListOptions{Filter: taskFilter})
 	if err != nil {
-		ctx.JSON(http.StatusServiceUnavailable, err.Error())
+		log.Errorf("ListTasks of service %s got error: %s", serviceId, err.Error())
+		rerror := rolexerror.NewRolexError(rolexerror.CodeListTaskParamError, err.Error())
+		api.HttpErrorResponse(ctx, rerror)
 		return
 	}
 

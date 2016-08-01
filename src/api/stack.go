@@ -2,12 +2,11 @@ package api
 
 import (
 	"encoding/json"
-	"net/http"
 	"strconv"
 
 	"github.com/Dataman-Cloud/rolex/src/dockerclient/model"
 	"github.com/Dataman-Cloud/rolex/src/plugins/auth"
-	"github.com/Dataman-Cloud/rolex/src/util"
+	"github.com/Dataman-Cloud/rolex/src/util/rolexerror"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/docker/engine-api/types"
@@ -29,25 +28,22 @@ func (api *Api) CreateStack(ctx *gin.Context) {
 				jsonErr.Offset, jsonErr.Type, jsonErr.Value)
 		}
 
-		ctx.JSON(http.StatusBadRequest, err.Error())
+		rerror := rolexerror.NewRolexError(rolexerror.CodeCreateStackParamError, err.Error())
+		api.HttpErrorResponse(ctx, rerror)
 		return
 	}
 
 	if api.Config.FeatureEnabled("account") {
-		if ctx.Query("group_id") == "" {
-			log.Error("invalid group_id")
-			ctx.JSON(http.StatusBadRequest, gin.H{"code": 0, "data": "invalid group_id"})
+		groupId := ctx.DefaultQuery("group_id", "-1")
+		gId, err := strconv.ParseUint(groupId, 10, 64)
+		if err != nil || gId < 0 {
+			log.Error("CreateStack invalid group_id")
+			rerror := rolexerror.NewRolexError(rolexerror.CodeInvalidGroupId, "invalid group id")
+			api.HttpErrorResponse(ctx, rerror)
 			return
 		}
 
-		groupId, err := strconv.ParseUint(ctx.Query("group_id"), 10, 64)
-		if err != nil {
-			log.Error("invalid group_id")
-			ctx.JSON(http.StatusBadRequest, gin.H{"code": 0, "data": "invalid group_id"})
-			return
-		}
-
-		perms := auth.PermissionGrantLabelsPairFromGroupIdAndPerm(groupId, auth.PermAdmin.Display)
+		perms := auth.PermissionGrantLabelsPairFromGroupIdAndPerm(gId, auth.PermAdmin.Display)
 		for sk, sv := range stackBundle.Stack.Services {
 			if sv.Labels == nil {
 				sv.Labels = perms
@@ -62,23 +58,23 @@ func (api *Api) CreateStack(ctx *gin.Context) {
 
 	if err := api.GetDockerClient().DeployStack(&stackBundle); err != nil {
 		log.Error("Stack deploy got error: ", err)
-		ctx.JSON(http.StatusInternalServerError, err.Error())
+		api.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": "success"})
+	api.HttpOkResponse(ctx, "success")
 	return
 }
 
 func (api *Api) ListStack(ctx *gin.Context) {
 	stacks, err := api.GetDockerClient().ListStack()
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, err.Error())
 		log.Error("Stack deploy got error: ", err)
+		api.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": stacks})
+	api.HttpOkResponse(ctx, stacks)
 	return
 }
 
@@ -87,12 +83,12 @@ func (api *Api) InspectStack(ctx *gin.Context) {
 
 	bundle, err := api.GetDockerClient().InspectStack(namespace)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, err.Error())
 		log.Error("InspectStack got error: ", err)
+		api.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": bundle})
+	api.HttpOkResponse(ctx, bundle)
 	return
 }
 
@@ -111,12 +107,12 @@ func (api *Api) ListStackService(ctx *gin.Context) {
 
 	servicesStatus, err := api.GetDockerClient().ListStackService(namespace, opts)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, err.Error())
 		log.Error("ListStackService got error: ", err)
+		api.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": servicesStatus})
+	api.HttpOkResponse(ctx, servicesStatus)
 	return
 }
 
@@ -124,10 +120,10 @@ func (api *Api) RemoveStack(ctx *gin.Context) {
 	namespace := ctx.Param("namespace")
 	if err := api.GetDockerClient().RemoveStack(namespace); err != nil {
 		log.Error("Remove stack got error: ", err)
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": util.PARAMETER_ERROR, "data": err.Error()})
+		api.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": "removed" + namespace + "success"})
+	api.HttpOkResponse(ctx, "success")
 	return
 }

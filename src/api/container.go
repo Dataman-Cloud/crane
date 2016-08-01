@@ -34,8 +34,15 @@ const (
 
 func (api *Api) InspectContainer(ctx *gin.Context) {
 	rolexContext, _ := ctx.Get("rolexContext")
-	container, err := api.GetDockerClient().InspectContainer(rolexContext.(context.Context), ctx.Param("container_id"))
-	api.HttpResponse(ctx, err, container)
+	cId := ctx.Param("container_id")
+	container, err := api.GetDockerClient().InspectContainer(rolexContext.(context.Context), cId)
+	if err != nil {
+		log.Errorf("InspectContainer of containerId %s got error: %s", cId, err.Error())
+		api.HttpErrorResponse(ctx, err)
+		return
+	}
+
+	api.HttpOkResponse(ctx, container)
 	return
 }
 
@@ -85,7 +92,13 @@ func (api *Api) ListContainers(ctx *gin.Context) {
 
 	rolexContext, _ := ctx.Get("rolexContext")
 	containers, err := api.GetDockerClient().ListContainers(rolexContext.(context.Context), listOpts)
-	api.HttpResponse(ctx, err, containers)
+	if err != nil {
+		log.Error("ListContainers got error: ", err)
+		api.HttpErrorResponse(ctx, err)
+		return
+	}
+
+	api.HttpOkResponse(ctx, containers)
 	return
 }
 
@@ -99,30 +112,38 @@ func (api *Api) PatchContainer(ctx *gin.Context) {
 	}
 
 	var err error
-	switch strings.ToLower(containerRequest.Method) {
+	method := strings.ToLower(containerRequest.Method)
+	cId := ctx.Param("container_id")
+	switch method {
 	case "rename":
 		opts := goclient.RenameContainerOptions{
 			Name: containerRequest.Name,
-			ID:   ctx.Param("container_id"),
+			ID:   cId,
 		}
 		err = api.GetDockerClient().RenameContainer(rolexContext.(context.Context), opts)
 	case "stop":
-		err = api.GetDockerClient().StopContainer(rolexContext.(context.Context), ctx.Param("container_id"), CONTAINER_STOP_TIMEOUT)
+		err = api.GetDockerClient().StopContainer(rolexContext.(context.Context), cId, CONTAINER_STOP_TIMEOUT)
 	case "start":
-		err = api.GetDockerClient().StartContainer(rolexContext.(context.Context), ctx.Param("container_id"), nil)
+		err = api.GetDockerClient().StartContainer(rolexContext.(context.Context), cId, nil)
 	case "restart":
-		err = api.GetDockerClient().RestartContainer(rolexContext.(context.Context), ctx.Param("container_id"), CONTAINER_STOP_TIMEOUT)
+		err = api.GetDockerClient().RestartContainer(rolexContext.(context.Context), cId, CONTAINER_STOP_TIMEOUT)
 	case "pause":
-		err = api.GetDockerClient().PauseContainer(rolexContext.(context.Context), ctx.Param("container_id"))
+		err = api.GetDockerClient().PauseContainer(rolexContext.(context.Context), cId)
 	case "unpause":
-		err = api.GetDockerClient().UnpauseContainer(rolexContext.(context.Context), ctx.Param("container_id"))
+		err = api.GetDockerClient().UnpauseContainer(rolexContext.(context.Context), cId)
 	case "resizetty":
-		err = api.GetDockerClient().ResizeContainerTTY(rolexContext.(context.Context), ctx.Param("container_id"), containerRequest.Height, containerRequest.Width)
+		err = api.GetDockerClient().ResizeContainerTTY(rolexContext.(context.Context), cId, containerRequest.Height, containerRequest.Width)
 	default:
 		err = rolexerror.NewRolexError(rolexerror.CodePatchContainerMethodUndefined, containerRequest.Method)
 	}
 
-	api.HttpResponse(ctx, err, "success")
+	if err != nil {
+		log.Errorf("%s container of %s got error: %s", method, cId, err.Error())
+		api.HttpErrorResponse(ctx, err)
+		return
+	}
+
+	api.HttpOkResponse(ctx, "success")
 	return
 }
 
@@ -136,23 +157,39 @@ func (api *Api) DeleteContainer(ctx *gin.Context) {
 	}
 
 	var err error
-	if containerRequest.Method == CONTAINER_RM {
-		opts := goclient.RemoveContainerOptions{ID: ctx.Param("container_id"), Force: true}
+	method := containerRequest.Method
+	cId := ctx.Param("container_id")
+	if method == CONTAINER_RM {
+		opts := goclient.RemoveContainerOptions{ID: cId, Force: true}
 		err = api.GetDockerClient().RemoveContainer(rolexContext.(context.Context), opts)
-	} else if containerRequest.Method == CONTAINER_KILL {
-		opts := goclient.KillContainerOptions{ID: ctx.Param("container_id")}
+	} else if method == CONTAINER_KILL {
+		opts := goclient.KillContainerOptions{ID: cId}
 		err = api.GetDockerClient().KillContainer(rolexContext.(context.Context), opts)
 	} else {
 		err = rolexerror.NewRolexError(rolexerror.CodeDeleteContainerMethodUndefined, containerRequest.Method)
 	}
-	api.HttpResponse(ctx, err, "success")
+
+	if err != nil {
+		log.Errorf("%s container of %s got error %s", method, cId, err.Error())
+		api.HttpErrorResponse(ctx, err)
+		return
+	}
+
+	api.HttpOkResponse(ctx, "success")
 	return
 }
 
 func (api *Api) DiffContainer(ctx *gin.Context) {
 	rolexContext, _ := ctx.Get("rolexContext")
-	changes, err := api.GetDockerClient().DiffContainer(rolexContext.(context.Context), ctx.Param("container_id"))
-	api.HttpResponse(ctx, err, changes)
+	cId := ctx.Param("container_id")
+	changes, err := api.GetDockerClient().DiffContainer(rolexContext.(context.Context), cId)
+	if err != nil {
+		log.Errorf("Diff container of %s got error: %s", cId, err.Error())
+		api.HttpErrorResponse(ctx, err)
+		return
+	}
+
+	api.HttpOkResponse(ctx, changes)
 	return
 }
 
