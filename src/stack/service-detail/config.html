@@ -20,20 +20,20 @@
             <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.Condition || '未指定'/}</dd>
         </dl>
         <dl layout="row">
-            <dt flex="20">重启延迟</dt>
-            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.Delay || '未指定'/}</dd>
+            <dt flex="20">重启延迟 (秒)</dt>
+            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.Delay / Math.pow(10, 9) || '未指定'/}</dd>
         </dl>
         <dl layout="row">
             <dt flex="20">重启最大尝试次数</dt>
             <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.MaxAttempts || '未指定'/}</dd>
         </dl>
         <dl layout="row">
-            <dt flex="20">重启间隔</dt>
-            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.Window || '未指定'/}</dd>
+            <dt flex="20">重启间隔 (秒)</dt>
+            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.Window / Math.pow(10, 9) || '未指定'/}</dd>
         </dl>
         <dl layout="row">
-            <dt flex="20">更新延迟</dt>
-            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.UpdateConfig.Delay || '未指定'/}</dd>
+            <dt flex="20">更新延迟 (秒)</dt>
+            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.UpdateConfig.Delay / Math.pow(10, 9) || '未指定'/}</dd>
         </dl>
         <dl layout="row">
             <dt flex="20">更新并行任务数</dt>
@@ -44,8 +44,8 @@
             <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Dir || '未指定'/}</dd>
         </dl>
         <dl layout="row">
-            <dt flex="20">杀死容器前等待时间</dt>
-            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.StopGracePeriod || '未指定'/}</dd>
+            <dt flex="20">杀死容器前等待时间 (秒)</dt>
+            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.StopGracePeriod / Math.pow(10, 9)|| '未指定'/}</dd>
         </dl>
 
     </div>
