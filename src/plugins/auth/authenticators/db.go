@@ -11,6 +11,8 @@ import (
 	"github.com/Dataman-Cloud/rolex/src/util/db"
 
 	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
+	_ "github.com/mattes/migrate/driver/mysql"
 )
 
 var err error
@@ -21,7 +23,15 @@ type DbAuthenicator struct {
 }
 
 func NewDBAuthenticator() *DbAuthenicator {
-	return &DbAuthenicator{DbClient: db.DB()}
+	authenticator := &DbAuthenicator{DbClient: db.DB()}
+	authenticator.MigriateTable()
+	return authenticator
+}
+
+func (authenticator *DbAuthenicator) MigriateTable() {
+	authenticator.DbClient.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&auth.Account{})
+	authenticator.DbClient.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&auth.Group{})
+	authenticator.DbClient.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&auth.AccountGroup{})
 }
 
 func (db *DbAuthenicator) ModificationAllowed() bool {
