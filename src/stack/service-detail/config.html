@@ -9,7 +9,8 @@
         </dl>
         <dl layout="row">
             <dt flex="20">模式</dt>
-            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.Mode.Replicated ? 'Replicated' : 'Global'/}</dd>
+            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.Mode.Replicated ? 'Replicated' : 'Global'/}
+            </dd>
         </dl>
         <dl layout="row" data-ng-if="serviceConfigCtrl.service.Spec.Mode.Replicated">
             <dt flex="20">任务数</dt>
@@ -17,23 +18,33 @@
         </dl>
         <dl layout="row">
             <dt flex="20">重启策略</dt>
-            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.Condition || '未指定'/}</dd>
+            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.Condition ||
+                '未指定'/}
+            </dd>
         </dl>
         <dl layout="row">
             <dt flex="20">重启延迟 (秒)</dt>
-            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.Delay / Math.pow(10, 9) || '未指定'/}</dd>
+            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.Delay /
+                Math.pow(10, 9) || '未指定'/}
+            </dd>
         </dl>
         <dl layout="row">
             <dt flex="20">重启最大尝试次数</dt>
-            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.MaxAttempts || '未指定'/}</dd>
+            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.MaxAttempts ||
+                '未指定'/}
+            </dd>
         </dl>
         <dl layout="row">
             <dt flex="20">重启间隔 (秒)</dt>
-            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.Window / Math.pow(10, 9) || '未指定'/}</dd>
+            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.Window /
+                Math.pow(10, 9) || '未指定'/}
+            </dd>
         </dl>
         <dl layout="row">
             <dt flex="20">更新延迟 (秒)</dt>
-            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.UpdateConfig.Delay / Math.pow(10, 9) || '未指定'/}</dd>
+            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.UpdateConfig.Delay / Math.pow(10, 9) ||
+                '未指定'/}
+            </dd>
         </dl>
         <dl layout="row">
             <dt flex="20">更新并行任务数</dt>
@@ -41,11 +52,14 @@
         </dl>
         <dl layout="row">
             <dt flex="20">容器目录</dt>
-            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Dir || '未指定'/}</dd>
+            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Dir || '未指定'/}
+            </dd>
         </dl>
         <dl layout="row">
             <dt flex="20">杀死容器前等待时间 (秒)</dt>
-            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.StopGracePeriod / Math.pow(10, 9)|| '未指定'/}</dd>
+            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.StopGracePeriod /
+                Math.pow(10, 9)|| '未指定'/}
+            </dd>
         </dl>
 
     </div>
@@ -57,13 +71,21 @@
     </header>
     <div layout="column" flex="80">
         <dl layout="row">
-            <dt flex="20">CPU <small>（核）</small></dt>
-            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.TaskTemplate.Resources.Limits.NanoCPUs / Math.pow(10, 9) || '未指定'/}</dd>
+            <dt flex="20">CPU
+                <small>（核）</small>
+            </dt>
+            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.TaskTemplate.Resources.Limits.NanoCPUs /
+                Math.pow(10, 9) || '未指定'/}
+            </dd>
         </dl>
         <dl layout="row">
-            <dt flex="20">内存 <small>（MB）</small></dt>
-            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.TaskTemplate.Resources.Limits.MemoryBytes / ( 1024 * 1024) ||
-            '未指定'/}</dd>
+            <dt flex="20">内存
+                <small>（MB）</small>
+            </dt>
+            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.TaskTemplate.Resources.Limits.MemoryBytes / (
+                1024 * 1024) ||
+                '未指定'/}
+            </dd>
         </dl>
     </div>
 </section>
@@ -74,13 +96,139 @@
     </header>
     <div layout="column" flex="80">
         <dl layout="row">
-            <dt flex="20">CPU <small>（核）</small></dt>
-            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.TaskTemplate.Resources.Reservations.NanoCPUs / Math.pow(10, 9) || '未指定'/}</dd>
+            <dt flex="20">CPU
+                <small>（核）</small>
+            </dt>
+            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.TaskTemplate.Resources.Reservations.NanoCPUs
+                / Math.pow(10, 9) || '未指定'/}
+            </dd>
         </dl>
         <dl layout="row">
-            <dt flex="20">内存 <small>（MB）</small></dt>
-            <dd flex-offset="5" flex="75">{/serviceConfigCtrl.service.Spec.TaskTemplate.Resources.Reservations.MemoryBytes / ( 1024 *
-            1024) || '未指定'/}</dd>
+            <dt flex="20">内存
+                <small>（MB）</small>
+            </dt>
+            <dd flex-offset="5" flex="75">
+                {/serviceConfigCtrl.service.Spec.TaskTemplate.Resources.Reservations.MemoryBytes / ( 1024 *
+                1024) || '未指定'/}
+            </dd>
         </dl>
     </div>
 </section>
+
+<h4>环境变量</h4>
+<md-table-container dm-empty-display="serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Env">
+    <table md-table>
+        <thead md-head>
+        <tr md-row>
+            <th md-column><span>KEY</span></th>
+            <th md-column><span>VALUE</span></th>
+        </tr>
+        </thead>
+        <tbody md-body>
+        <tr md-row ng-repeat="env in serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Env">
+            <td md-cell>{/env.split('=')[0]/}</td>
+            <td md-cell>{/env.split('=')[1]/}</td>
+        </tr>
+        </tbody>
+    </table>
+</md-table-container>
+
+<h4>服务标签</h4>
+<md-table-container dm-empty-display="serviceConfigCtrl.service.Spec.Labels">
+    <table md-table>
+        <thead md-head>
+        <tr md-row>
+            <th md-column><span>KEY</span></th>
+            <th md-column><span>VALUE</span></th>
+        </tr>
+        </thead>
+        <tbody md-body>
+        <tr md-row ng-repeat="(key, value) in serviceConfigCtrl.service.Spec.Labels">
+            <td md-cell>{/key/}</td>
+            <td md-cell>{/value/}</td>
+        </tr>
+        </tbody>
+    </table>
+</md-table-container>
+
+<h4>容器标签</h4>
+<md-table-container dm-empty-display="serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Labels">
+    <table md-table>
+        <thead md-head>
+        <tr md-row>
+            <th md-column><span>KEY</span></th>
+            <th md-column><span>VALUE</span></th>
+        </tr>
+        </thead>
+        <tbody md-body>
+        <tr md-row ng-repeat="(key, value) in serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Labels">
+            <td md-cell>{/key/}</td>
+            <td md-cell>{/value/}</td>
+        </tr>
+        </tbody>
+    </table>
+</md-table-container>
+
+<h4>端口映射</h4>
+<md-table-container dm-empty-display="serviceConfigCtrl.service.Spec.EndpointSpec.Ports">
+    <table md-table>
+        <thead md-head>
+        <tr md-row>
+            <th md-column><span>主机端口</span></th>
+            <th md-column><span>协议</span></th>
+            <th md-column><span>映射端口</span></th>
+        </tr>
+        </thead>
+        <tbody md-body>
+        <tr md-row ng-repeat="port in serviceConfigCtrl.service.Spec.EndpointSpec.Ports">
+            <td md-cell>{/port.TargetPort/}</td>
+            <td md-cell>{/port.Protocol/}</td>
+            <td md-cell>{/port.PublishedPort/}</td>
+        </tr>
+        </tbody>
+    </table>
+</md-table-container>
+
+<h4>挂载</h4>
+<md-table-container dm-empty-display="serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Mounts">
+    <table md-table>
+        <thead md-head>
+        <tr md-row>
+            <th md-column><span>主机路径</span></th>
+            <th md-column><span>权限</span></th>
+            <th md-column><span>容器</span></th>
+        </tr>
+        </thead>
+        <tbody md-body>
+        <tr md-row ng-repeat="mount in serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Mounts">
+            <td md-cell>{/mount.Source/}</td>
+            <td md-cell>{/mount.ReadOnly ? '只读' : '读写'/}</td>
+            <td md-cell>{/mount.Target/}</td>
+        </tr>
+        </tbody>
+    </table>
+</md-table-container>
+
+<h4>限制条件</h4>
+<md-table-container dm-empty-display="serviceConfigCtrl.service.Spec.TaskTemplate.Placement.Constraints">
+    <table md-table>
+        <thead md-head>
+        <tr md-row>
+            <th md-column><span>KEY</span></th>
+            <th md-column><span>VALUE</span></th>
+        </tr>
+        </thead>
+        <tbody md-body>
+        <tr md-row ng-repeat="constraint in serviceConfigCtrl.service.Spec.TaskTemplate.Placement.Constraints">
+            <td md-cell>{/constraint.split('==')[0]/}</td>
+            <td md-cell>{/constraint.split('==')[1]/}</td>
+        </tr>
+        </tbody>
+    </table>
+</md-table-container>
+
+<h4>启动命令</h4>
+<dl data-ng-repeat="cmd in serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Command"
+    dm-empty-display="serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Command">
+    <code>{/cmd/}</code>
+</dl>
