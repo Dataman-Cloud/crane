@@ -1,7 +1,6 @@
 package db
 
 import (
-	"github.com/Dataman-Cloud/rolex/src/plugins/auth"
 	"github.com/Dataman-Cloud/rolex/src/util/config"
 
 	log "github.com/Sirupsen/logrus"
@@ -32,11 +31,4 @@ func InitDB() {
 	db.DB().SetMaxOpenConns(50)
 	db.SetLogger(log.StandardLogger())
 	db.LogMode(true)
-	MigriateTable()
-}
-
-func MigriateTable() {
-	db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&auth.Account{})
-	db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&auth.Group{})
-	db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&auth.AccountGroup{})
 }
