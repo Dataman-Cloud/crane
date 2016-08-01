@@ -1,43 +1,43 @@
 {
     "Services": {
         "mysql": {
-            "Name": "mysql",
-                "Labels": {
-                    "name": "mysql"
-                },
-                "TaskTemplate": {
-                    "ContainerSpec": {
-                        "Image": "mysql",
-                        "Labels": {
-                            "name": "mysql"
-                        },
-                        "Env": [
-                            "MYSQL_ROOT_PASSWORD=111111"
-                            ],
-                        "User": "root"
+        "Name": "mysql",
+            "Labels": {
+                "name": "mysql"
+            },
+            "TaskTemplate": {
+                "ContainerSpec": {
+                    "Image": "mysql",
+                    "Labels": {
+                        "name": "mysql"
                     },
-                    "RestartPolicy": {
-                        "Condition": "none",
-                        "Delay": 3000000000,
-                        "MaxAttempts": 1,
-                        "Window": 3000000000
-                    },
-                    "LogDriver": {
-                        "Name": "json-file"
-                    }
+                    "Env": [
+                        "MYSQL_ROOT_PASSWORD=111111"
+                        ],
+                    "User": "root"
                 },
-                "Mode": {
-                    "Replicated": {
-                        "Replicas": 1
-                    }
+                "RestartPolicy": {
+                    "Condition": "none",
+                    "Delay": 3000000000,
+                    "MaxAttempts": 1,
+                    "Window": 3000000000
                 },
-                "UpdateConfig": null,
-                "Networks": [
-                    "ingress"
-                    ],
-                "EndpointSpec": {
-                    "Mode": "vip"
+                "LogDriver": {
+                    "Name": "json-file"
                 }
+            },
+            "Mode": {
+                "Replicated": {
+                    "Replicas": 1
+                }
+            },
+            "UpdateConfig": null,
+            "Networks": [
+                "ingress"
+                ],
+            "EndpointSpec": {
+                "Mode": "vip"
+            }
         },
         "mywebsql": {
             "Name": "mywebsql",

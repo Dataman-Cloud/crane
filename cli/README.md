@@ -46,6 +46,12 @@ Rolex Client
 ./rolex-cli.py create_stack -G1 -ncli_mysql_web -f samples/mysql_display.json
 ```
 
+#### sample 5
+
+```
+./rolex-cli.py create_stack -G1 -ncli_2048 -f samples/2048.json
+```
+
 ### list stack
 
 ```bash

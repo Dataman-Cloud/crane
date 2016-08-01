@@ -1,0 +1,49 @@
+{
+    "Services": {
+        "2048": {
+            "Name": "2048",
+            "Labels": {
+                "name": "2048"
+            },
+            "TaskTemplate": {
+                "ContainerSpec": {
+                    "Image": "blackicebird/2048",
+                    "Labels": {
+                        "name": "2048"
+                    },
+                    "User": "root"
+                },
+                "RestartPolicy": {
+                    "Condition": "none",
+                    "Delay": 3000000000,
+                    "MaxAttempts": 1,
+                    "Window": 3000000000
+                },
+                "LogDriver": {
+                    "Name": "json-file"
+                }
+            },
+            "Mode": {
+                "Replicated": {
+                    "Replicas": 1
+                }
+            },
+            "UpdateConfig": null,
+            "Networks": [
+                "ingress"
+                ],
+            "EndpointSpec": {
+                "Mode": "vip",
+                "Ports": [
+                {
+                    "Name": "testport",
+                    "Protocol": "tcp",
+                    "TargetPort": 80,
+                    "PublishedPort": 8005
+                }
+                ]
+            }
+        }
+    },
+    "Version": "1"
+}
