@@ -9,8 +9,8 @@ ROLEX_DB_DRIVER=mysql
 
 ROLEX_FEATURE_FLAGS=registry,logging,account,catalog
 
-ROLEX_REGISTRY_PRIVATE_KEY_PATH="/Users/cmingxu/Code/GO/packages/src/github.com/Dataman-Cloud/rolex/doc/registry/private_key.pem"
-ROLEX_REGISTRY_ADDR=http://192.168.99.100:5000
+ROLEX_REGISTRY_PRIVATE_KEY_PATH="../doc/registry/private_key.pem"
+ROLEX_REGISTRY_ADDR=http://localhost:5000
 
 ROLEX_SECRET="rolex"
 ROLEX_CA_HASH="sha256:8db604f91547c53b63f1ac6bb1b23e4d9c4d1dae3eefc46a813a9bf6d65e2c69"

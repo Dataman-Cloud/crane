@@ -176,12 +176,12 @@ curl -XGET localhost:2375/api/v1/networks/(id)
 }
 ```
 
-#### `/api/v1/networks?filters={"type":{"custom":true}}`
+#### `/api/v1/networks
 
 **Request:**
 
 ```
-curl -XGET localhost:2375/api/v1/networks?filters={"type":{"custom":true}}
+curl -XGET localhost:2375/api/v1/networks
 ```
 
 **Response:**
