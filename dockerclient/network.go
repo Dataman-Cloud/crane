@@ -1,6 +1,10 @@
 package dockerclient
 
 import (
+	"strings"
+
+	"github.com/Dataman-Cloud/rolex/util/rolexerror"
+
 	goclient "github.com/fsouza/go-dockerclient"
 	"golang.org/x/net/context"
 )
@@ -30,7 +34,16 @@ func (client *RolexDockerClient) ListNetworks(opts goclient.NetworkFilterOpts) (
 }
 
 func (client *RolexDockerClient) RemoveNetwork(id string) error {
-	return client.SwarmClient().RemoveNetwork(id)
+	err := client.SwarmClient().RemoveNetwork(id)
+	if err != nil {
+		if strings.Contains(err.Error(), "API error (403)") {
+			return rolexerror.NewRolexError(rolexerror.CodeNetworkPreDefined, err.Error())
+		} else {
+			return err
+		}
+	}
+
+	return nil
 }
 
 func (client *RolexDockerClient) ConnectNodeNetwork(ctx context.Context, networkID string, opts goclient.NetworkConnectionOptions) error {
