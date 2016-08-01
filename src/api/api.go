@@ -35,7 +35,7 @@ func (api *Api) HttpResponse(ctx *gin.Context, err error, data interface{}) {
 }
 
 // RHttprespnse retrun none error code 201
-func (api *Api) HttpPostResponse(ctx *gin.Context, err error, data interface{}) {
+func (api *Api) HttpCreateResponse(ctx *gin.Context, err error, data interface{}) {
 	if err == nil {
 		ctx.JSON(http.StatusCreated, gin.H{"code": rolexerror.CodeOk, "data": data})
 		return
@@ -56,6 +56,17 @@ func (api *Api) HttpDeleteResponse(ctx *gin.Context, err error, data interface{}
 	return
 }
 
+// RHttprespnse retrun none error code 202
+func (api *Api) HttpUpdateResponse(ctx *gin.Context, err error, data interface{}) {
+	if err == nil {
+		ctx.JSON(http.StatusAccepted, gin.H{"code": rolexerror.CodeOk, "data": data})
+		return
+	}
+
+	api.HttpErrorResponse(ctx, err)
+	return
+}
+
 func (api *Api) HttpErrorResponse(ctx *gin.Context, err error) {
 	rerror, ok := err.(rolexerror.RolexError)
 	if !ok {
@@ -65,7 +76,7 @@ func (api *Api) HttpErrorResponse(ctx *gin.Context, err error) {
 
 	var httpCode int
 	switch rerror.Code {
-	case rolexerror.CodeNetworkPreDefined:
+	case rolexerror.CodeNetworkPredefined:
 		httpCode = http.StatusForbidden
 	default:
 		httpCode = http.StatusServiceUnavailable

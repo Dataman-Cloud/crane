@@ -37,7 +37,7 @@ func (client *RolexDockerClient) RemoveNetwork(id string) error {
 	err := client.SwarmClient().RemoveNetwork(id)
 	if err != nil {
 		if strings.Contains(err.Error(), "API error (403)") {
-			return rolexerror.NewRolexError(rolexerror.CodeNetworkPreDefined, err.Error())
+			return rolexerror.NewRolexError(rolexerror.CodeNetworkPredefined, err.Error())
 		} else {
 			return err
 		}

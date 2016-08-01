@@ -7,5 +7,5 @@ const (
 	//Default error code
 	CodeUndefined = 10001
 
-	CodeNetworkPreDefined = 13002
+	CodeNetworkPredefined = 13002
 )
