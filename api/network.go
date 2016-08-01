@@ -106,13 +106,16 @@ func (api *Api) ListNetworks(ctx *gin.Context) {
 }
 
 func (api *Api) RemoveNetwork(ctx *gin.Context) {
-	if err := api.GetDockerClient().RemoveNetwork(ctx.Param("network_id")); err != nil {
-		log.Errorf("remove network error: %v", err)
-		ctx.JSON(http.StatusForbidden, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
-		return
-	}
+	//if err := api.GetDockerClient().RemoveNetwork(ctx.Param("network_id")); err != nil {
+	//	log.Errorf("remove network error: %v", err)
+	//	ctx.JSON(http.StatusForbidden, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
+	//	return
+	//}
 
-	ctx.JSON(http.StatusOK, gin.H{"code": util.OPERATION_SUCCESS, "data": "remove success"})
+	//ctx.JSON(http.StatusOK, gin.H{"code": util.OPERATION_SUCCESS, "data": "remove success"})
+	err := api.GetDockerClient().RemoveNetwork(ctx.Param("network_id"))
+	api.HttpResponse(ctx, err, "remove succsee")
+	return
 }
 
 func (api *Api) ConnectNodeNetwork(ctx *gin.Context) {
