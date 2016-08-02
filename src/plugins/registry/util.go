@@ -57,12 +57,14 @@ func FilterAccess(username string, authenticated bool, a *token.ResourceActions)
 					permission = GetPermission(username, projectName)
 				}
 			}
-			if strings.Contains(permission, "W") {
-				a.Actions = append(a.Actions, "push")
-			}
-			if strings.Contains(permission, "R") {
-				a.Actions = append(a.Actions, "pull")
-			}
+			fmt.Println(permission)
+			a.Actions = []string{"*"}
+			//if strings.Contains(permission, "W") {
+			//a.Actions = append(a.Actions, "push")
+			//}
+			//if strings.Contains(permission, "R") {
+			//a.Actions = append(a.Actions, "pull")
+			//}
 		}
 	}
 	fmt.Printf("current access, type: %s, name:%s, actions:%v \n", a.Type, a.Name, a.Actions)

@@ -4,41 +4,62 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"strings"
+
+	"github.com/docker/distribution/manifest/schema1"
+	"github.com/docker/distribution/manifest/schema2"
 )
 
-// the following code borrowed from vmvare/Harbor project
-func (registry *Registry) RegistryAPIGet(path, username string) ([]byte, error) {
-	return registry.RegistryAPI("GET", path, username)
+func (registry *Registry) RegistryAPIGet(path, username string) ([]byte, string, error) {
+	return registry.RegistryAPI("GET", path, username, "")
+}
+
+func (registry *Registry) RegistryAPIGetSchemaV1(path, username string) ([]byte, string, error) {
+	return registry.RegistryAPI("GET", path, username, schema1.MediaTypeManifest)
+}
+
+func (registry *Registry) RegistryAPIGetSchemaV2(path, username string) ([]byte, string, error) {
+	return registry.RegistryAPI("GET", path, username, schema2.MediaTypeManifest)
+}
+
+func (registry *Registry) RegistryAPIHeadSchemaV2(path, username string) ([]byte, string, error) {
+	return registry.RegistryAPI("HEAD", path, username, schema2.MediaTypeManifest)
+}
+
+func (registry *Registry) RegistryAPIDelete(path, username string) ([]byte, string, error) {
+	return registry.RegistryAPI("DELETE", path, username, "")
+}
+
+func (registry *Registry) RegistryAPIDeleteSchemaV2(path, username string) ([]byte, string, error) {
+	return registry.RegistryAPI("DELETE", path, username, schema2.MediaTypeManifest)
 }
 
 // the following code borrowed from vmvare/Harbor project
-func (registry *Registry) RegistryAPIDelete(path, username string) ([]byte, error) {
-	return registry.RegistryAPI("DELETE", path, username)
-}
-
-// the following code borrowed from vmvare/Harbor project
-func (registry *Registry) RegistryAPI(method, path, username string) ([]byte, error) {
+func (registry *Registry) RegistryAPI(method, path, username, acceptHeader string) ([]byte, string, error) {
 	url := fmt.Sprintf("%s/v2/%s", registry.Config.RegistryAddr, path)
 	request, err := http.NewRequest(method, url, nil)
+	if err != nil {
+		fmt.Println(err)
+		return nil, "", err
+	}
+
 	client := &http.Client{}
 	response, err := client.Do(request)
 	if err != nil {
-		return nil, err
+		return nil, "", err
 	}
 	result, err := ioutil.ReadAll(response.Body)
 	if err != nil {
-		return nil, err
+		return nil, "", err
 	}
 	defer response.Body.Close()
 	if response.StatusCode == http.StatusOK {
-		return result, nil
+		return result, "", nil
 	} else if response.StatusCode == http.StatusUnauthorized {
 		authenticate := response.Header.Get("WWW-Authenticate")
 		if len(strings.Split(authenticate, " ")) < 2 {
-			return nil, errors.New("malformat WWW-Authenticate header")
+			return nil, "", errors.New("malformat WWW-Authenticate header")
 		}
 		fmt.Println("Header WWW-Authenticate", authenticate)
 		str := strings.Split(authenticate, " ")[1]
@@ -54,10 +75,10 @@ func (registry *Registry) RegistryAPI(method, path, username string) ([]byte, er
 		}
 
 		if len(strings.Split(service, "\"")) < 2 {
-			return nil, errors.New("malformat service")
+			return nil, "", errors.New("malformat service")
 		}
 		if len(strings.Split(scope, "\"")) < 2 {
-			return nil, errors.New("malformat scope")
+			return nil, "", errors.New("malformat scope")
 		}
 		service = strings.Split(service, "\"")[1]
 		scope = strings.Split(scope, "\"")[1]
@@ -65,11 +86,11 @@ func (registry *Registry) RegistryAPI(method, path, username string) ([]byte, er
 		fmt.Println("scope", scope)
 		token, err := GenTokenForUI(registry.Config, username, service, scope)
 		if err != nil {
-			return nil, err
+			return nil, "", err
 		}
 		request, err := http.NewRequest(method, url, nil)
 		if err != nil {
-			return nil, err
+			return nil, "", err
 		}
 		request.Header.Add("Authorization", "Bearer "+token)
 		client := &http.Client{}
@@ -84,23 +105,24 @@ func (registry *Registry) RegistryAPI(method, path, username string) ([]byte, er
 			}
 			return nil
 		}
+		if len(acceptHeader) > 0 {
+			request.Header.Add(http.CanonicalHeaderKey("Accept"), acceptHeader)
+		}
 		response, err = client.Do(request)
 		if err != nil {
-			return nil, err
+			return nil, "", err
 		}
 
 		if response.StatusCode != http.StatusOK {
-			errMsg := fmt.Sprintf("Unexpected return code from registry: %d", response.StatusCode)
-			log.Printf(errMsg)
-			return nil, fmt.Errorf(errMsg)
+			return nil, "", fmt.Errorf(fmt.Sprintf("Unexpected return code from registry: %d", response.StatusCode))
 		}
 		result, err = ioutil.ReadAll(response.Body)
 		if err != nil {
-			return nil, err
+			return nil, "", err
 		}
 		defer response.Body.Close()
-		return result, nil
+		return result, response.Header.Get(http.CanonicalHeaderKey("Docker-Content-Digest")), nil
 	} else {
-		return nil, errors.New(string(result))
+		return nil, "", errors.New(string(result))
 	}
 }
