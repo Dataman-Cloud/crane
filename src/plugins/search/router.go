@@ -9,7 +9,9 @@ import (
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/docker/engine-api/types"
+	goclient "github.com/fsouza/go-dockerclient"
 	"github.com/gin-gonic/gin"
+	"golang.org/x/net/context"
 )
 
 const (
@@ -18,6 +20,7 @@ const (
 	STACK_INFO   = "/stack/detail/%s/service"
 	SERVICE_INFO = "/stack/serviceDetail/%s/%s/config"
 	TASK_INFO    = "/node/containerDetail/%s/%s/config"
+	VOLUME_INFO  = "/node/detail/%s/volume"
 )
 
 const (
@@ -29,6 +32,8 @@ const (
 	DOCUMENT_STACK   = "stack"
 	DOCUMENT_SERVICE = "service"
 	DOCUMENT_TASK    = "task"
+	DOCUMENT_NETWORK = "network"
+	DOCUMENT_VOLUME  = "volume"
 )
 
 type SearchApi struct {
@@ -75,6 +80,46 @@ func (searchApi *SearchApi) loadData() {
 				ID:   node.ID,
 				Url:  fmt.Sprintf(NODE_INFO, node.ID),
 				Type: DOCUMENT_NODE,
+			}
+
+			backContext := context.WithValue(context.Background(), "node_id", node.ID)
+			if networks, err := searchApi.
+				RolexDockerClient.
+				ListNodeNetworks(backContext, goclient.NetworkFilterOpts{}); err == nil {
+				for _, network := range networks {
+					searchApi.Index = append(searchApi.Index, network.ID)
+					searchApi.Store[network.ID] = Document{
+						Name: network.Name,
+						ID:   network.ID,
+						Url:  fmt.Sprintf(NETWORK_INFO, node.ID, network.ID),
+						Type: DOCUMENT_NETWORK,
+					}
+
+					searchApi.Index = append(searchApi.Index, network.Name)
+					searchApi.Store[network.Name] = Document{
+						Name: network.Name,
+						ID:   network.ID,
+						Url:  fmt.Sprintf(NETWORK_INFO, node.ID, network.ID),
+						Type: DOCUMENT_NETWORK,
+					}
+				}
+			} else {
+				log.Errorf("get network error: %v", err)
+			}
+
+			if volumes, err := searchApi.
+				RolexDockerClient.
+				ListVolumes(backContext, goclient.ListVolumesOptions{}); err == nil {
+				for _, volume := range volumes {
+					searchApi.Index = append(searchApi.Index, volume.Name)
+					searchApi.Store[volume.Name] = Document{
+						Name: volume.Name,
+						Url:  fmt.Sprintf(VOLUME_INFO, node.ID),
+						Type: DOCUMENT_VOLUME,
+					}
+				}
+			} else {
+				log.Errorf("get volume error: %v", err)
 			}
 		}
 	} else {
