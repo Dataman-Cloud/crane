@@ -11,7 +11,7 @@ func TestConfigFeatureEnabled(t *testing.T) {
 		FeatureFlags: []string{"foo", "bar"},
 	}
 
-	if config.FeatureEnabled("foo") {
+	if config.FeatureEnabled("afoo") {
 		t.Log("feature foo enabled")
 	} else {
 		t.Error("feature foo should enabled")
