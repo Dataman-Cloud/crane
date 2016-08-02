@@ -24,6 +24,8 @@ curl -XGET localhost:2375/registry/v1/tag/list/library/registry
             "Publicity": 1,
             "Size": 55229862,
             "Tag": "latest",
+						"PullCount": 1,
+						"PushCount": 1,
             "UpdatedAt": "2016-08-02T08:59:41Z"
         }
     ]
@@ -143,6 +145,8 @@ curl -XGET localhost:2375/registry/v1/catalogs/mine
             "Publicity": 1,
             "Size": 55229862,
             "Tag": "latest",
+						"PullCount": 1,
+						"PushCount": 1,
             "UpdatedAt": "2016-08-02T08:59:41Z"
         },
         {
@@ -155,6 +159,8 @@ curl -XGET localhost:2375/registry/v1/catalogs/mine
             "Publicity": 1,
             "Size": 64378850,
             "Tag": "v1",
+						"PullCount": 1,
+						"PushCount": 1,
             "UpdatedAt": "2016-08-02T06:19:47Z"
         }
     ]
@@ -186,6 +192,8 @@ curl -XGET localhost:2375/registry/v1/catalogs/public
             "Publicity": 1,
             "Size": 55229862,
             "Tag": "latest",
+						"PullCount": 1,
+						"PushCount": 1,
             "UpdatedAt": "2016-08-02T08:59:41Z"
         },
         {
@@ -198,6 +206,8 @@ curl -XGET localhost:2375/registry/v1/catalogs/public
             "Publicity": 1,
             "Size": 64378850,
             "Tag": "v1",
+						"PullCount": 1,
+						"PushCount": 1,
             "UpdatedAt": "2016-08-02T06:19:47Z"
         }
     ]
