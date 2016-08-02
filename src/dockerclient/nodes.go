@@ -7,6 +7,8 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/Dataman-Cloud/rolex/src/util/config"
+
 	"github.com/docker/engine-api/types"
 	"github.com/docker/engine-api/types/swarm"
 	goclient "github.com/fsouza/go-dockerclient"
@@ -78,12 +80,19 @@ func (client *RolexDockerClient) Info(ctx context.Context) (*goclient.DockerInfo
 }
 
 func (client *RolexDockerClient) NodeDaemonEndpoint(nodeId string, protocol string) (string, error) {
-	node, err := client.InspectNode(nodeId)
-	if err != nil {
-		return "", err
+	//node, err := client.InspectNode(nodeId)
+	//if err != nil {
+	//	return "", err
+	//}
+	//nodeIp := strings.Split(node.ManagerStatus.Addr, ":")[0]
+	//TODO Temporary solution
+	var nodeIp string
+	for key, val := range config.NodeAddrMap {
+		if nodeId == key {
+			nodeIp = val
+			break
+		}
 	}
-	nodeIp := strings.Split(node.ManagerStatus.Addr, ":")[0]
-
 	switch strings.ToLower(protocol) {
 	case "http":
 		return "http://" + nodeIp + ":" + client.Config.NodePort, nil

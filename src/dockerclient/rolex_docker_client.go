@@ -107,19 +107,19 @@ func (client *RolexDockerClient) DockerClient(ctx context.Context) *goclient.Cli
 	}
 
 	if err != nil {
-		log.Error("failed to init client ", host)
+		log.Errorf("failed to init client %s error: %s", host, err.Error())
 		return nil
 	}
 
 	err = dockerClient.Ping()
 	if err != nil {
-		log.Error("ping errror")
+		log.Error("DockerClient ping error: ", err)
 		return nil
 	}
 
 	client.DockerClientMutex.Lock()
-	client.dockerClients[node_id] = dockerClient
 	defer client.DockerClientMutex.Unlock()
+	client.dockerClients[node_id] = dockerClient
 
 	return dockerClient
 }
