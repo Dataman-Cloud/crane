@@ -31,7 +31,8 @@
     "gulp-util": "3.0.6",
     "gulp-load-plugins": "~0.10.0",
     "gulp-jshint": "~2.0.1",
-    "main-bower-files": "~2.9.0"
+    "main-bower-files": "~2.9.0",
+    "del": "~2.0.2"
   },
   "devDependencies": {
     "gulp": "^3.9.0",
@@ -57,7 +58,8 @@
     "karma-chrome-launcher": "^0.2.2",
     "karma-jasmine": "^0.3.6",
     "main-bower-files": "~2.9.0",
-    "protractor": "^3.0.0"
+    "protractor": "^3.0.0",
+    "del": "~2.0.2"
   },
   "scripts": {
     "test": "karma start karma.conf.js",
