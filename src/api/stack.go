@@ -17,7 +17,7 @@ import (
 func (api *Api) UpdateStack(ctx *gin.Context) {}
 
 func (api *Api) CreateStack(ctx *gin.Context) {
-	stackBundle := model.Bundle{}
+	var stackBundle model.Bundle
 
 	if err := ctx.BindJSON(&stackBundle); err != nil {
 		switch jsonErr := err.(type) {
