@@ -104,7 +104,7 @@ func (api *Api) ListContainers(ctx *gin.Context) {
 
 func (api *Api) PatchContainer(ctx *gin.Context) {
 	rolexContext, _ := ctx.Get("rolexContext")
-	containerRequest := &ContainerRequest{}
+	var containerRequest ContainerRequest
 	if err := ctx.BindJSON(&containerRequest); err != nil {
 		rerror := rolexerror.NewRolexError(rolexerror.CodePatchContainerParamError, err.Error())
 		api.HttpErrorResponse(ctx, rerror)
@@ -149,7 +149,7 @@ func (api *Api) PatchContainer(ctx *gin.Context) {
 
 func (api *Api) DeleteContainer(ctx *gin.Context) {
 	rolexContext, _ := ctx.Get("rolexContext")
-	containerRequest := &ContainerRequest{}
+	var containerRequest ContainerRequest
 	if err := ctx.BindJSON(&containerRequest); err != nil {
 		rerror := rolexerror.NewRolexError(rolexerror.CodeDeleteContainerParamError, err.Error())
 		api.HttpErrorResponse(ctx, rerror)
