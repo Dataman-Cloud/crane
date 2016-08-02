@@ -12,54 +12,107 @@ import (
 )
 
 func (client *RolexDockerClient) ListContainers(ctx context.Context, opts goclient.ListContainersOptions) ([]goclient.APIContainers, error) {
-	return client.DockerClient(ctx).ListContainers(opts)
+	dockerClient, err := client.DockerClient(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return dockerClient.ListContainers(opts)
 }
 
 func (client *RolexDockerClient) InspectContainer(ctx context.Context, id string) (*goclient.Container, error) {
-	return client.DockerClient(ctx).InspectContainer(id)
+	dockerClient, err := client.DockerClient(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return dockerClient.InspectContainer(id)
 }
 
 func (client *RolexDockerClient) RemoveContainer(ctx context.Context, opts goclient.RemoveContainerOptions) error {
-	return client.DockerClient(ctx).RemoveContainer(opts)
+	dockerClient, err := client.DockerClient(ctx)
+	if err != nil {
+		return err
+	}
+	return dockerClient.RemoveContainer(opts)
 }
 
 func (client *RolexDockerClient) KillContainer(ctx context.Context, opts goclient.KillContainerOptions) error {
-	return client.DockerClient(ctx).KillContainer(opts)
+	dockerClient, err := client.DockerClient(ctx)
+	if err != nil {
+		return err
+	}
+	return dockerClient.KillContainer(opts)
 }
 
 func (client *RolexDockerClient) RenameContainer(ctx context.Context, opts goclient.RenameContainerOptions) error {
-	return client.DockerClient(ctx).RenameContainer(opts)
+	dockerClient, err := client.DockerClient(ctx)
+	if err != nil {
+		return err
+	}
+	return dockerClient.RenameContainer(opts)
 }
 
 func (client *RolexDockerClient) DiffContainer(ctx context.Context, containerID string) ([]goclient.Change, error) {
-	return client.DockerClient(ctx).ContainerChanges(containerID)
+	dockerClient, err := client.DockerClient(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return dockerClient.ContainerChanges(containerID)
 }
 
 func (client *RolexDockerClient) StopContainer(ctx context.Context, containerId string, timeout uint) error {
-	return client.DockerClient(ctx).StopContainer(containerId, timeout)
+	dockerClient, err := client.DockerClient(ctx)
+	if err != nil {
+		return err
+	}
+	return dockerClient.StopContainer(containerId, timeout)
 }
 
 func (client *RolexDockerClient) StartContainer(ctx context.Context, containerID string, hostconfig *goclient.HostConfig) error {
-	return client.DockerClient(ctx).StartContainer(containerID, hostconfig)
+	dockerClient, err := client.DockerClient(ctx)
+	if err != nil {
+		return err
+	}
+	return dockerClient.StartContainer(containerID, hostconfig)
 }
 
 func (client *RolexDockerClient) RestartContainer(ctx context.Context, containerId string, timeout uint) error {
-	return client.DockerClient(ctx).RestartContainer(containerId, timeout)
+	dockerClient, err := client.DockerClient(ctx)
+	if err != nil {
+		return err
+	}
+	return dockerClient.RestartContainer(containerId, timeout)
 }
 
 func (client *RolexDockerClient) PauseContainer(ctx context.Context, containerID string) error {
-	return client.DockerClient(ctx).PauseContainer(containerID)
+	dockerClient, err := client.DockerClient(ctx)
+	if err != nil {
+		return err
+	}
+	return dockerClient.PauseContainer(containerID)
 }
 
 func (client *RolexDockerClient) UnpauseContainer(ctx context.Context, containerID string) error {
-	return client.DockerClient(ctx).UnpauseContainer(containerID)
+	dockerClient, err := client.DockerClient(ctx)
+	if err != nil {
+		return err
+	}
+	return dockerClient.UnpauseContainer(containerID)
 }
 
 func (client *RolexDockerClient) ResizeContainerTTY(ctx context.Context, containerID string, height, width int) error {
-	return client.DockerClient(ctx).ResizeContainerTTY(containerID, height, width)
+	dockerClient, err := client.DockerClient(ctx)
+	if err != nil {
+		return err
+	}
+	return dockerClient.ResizeContainerTTY(containerID, height, width)
 }
 
 func (client *RolexDockerClient) LogsContainer(ctx context.Context, containerId string, message chan string) {
+	dockerClient, err := client.DockerClient(ctx)
+	if err != nil {
+		log.Error("read container log error: ", err)
+		return
+	}
 	outrd, outwr := io.Pipe()
 	errrd, errwr := io.Pipe()
 
@@ -75,7 +128,7 @@ func (client *RolexDockerClient) LogsContainer(ctx context.Context, containerId 
 		Follow:       true,
 		Tail:         "0",
 	}
-	err := client.DockerClient(ctx).Logs(opts)
+	err = dockerClient.Logs(opts)
 	log.Infof("read container log error: %v", err)
 }
 
@@ -104,6 +157,11 @@ func logReader(input *io.PipeReader, message chan string) {
 }
 
 func (client *RolexDockerClient) StatsContainer(ctx context.Context, containerId string, stats chan *model.ContainerStat) {
+	dockerClient, err := client.DockerClient(ctx)
+	if err != nil {
+		log.Error("read container log error: ", err)
+		return
+	}
 	stat := make(chan *goclient.Stats)
 	sd := make(chan bool)
 	opts := goclient.StatsOptions{
@@ -113,7 +171,7 @@ func (client *RolexDockerClient) StatsContainer(ctx context.Context, containerId
 		Done:   sd,
 	}
 
-	container, err := client.DockerClient(ctx).InspectContainer(containerId)
+	container, err := dockerClient.InspectContainer(containerId)
 	if err != nil {
 		log.Errorf("stats container get container by containerId error: %v", err)
 		return
@@ -140,6 +198,6 @@ func (client *RolexDockerClient) StatsContainer(ctx context.Context, containerId
 		}
 	}(stat, stats, sd)
 
-	err = client.DockerClient(ctx).Stats(opts)
+	err = dockerClient.Stats(opts)
 	log.Infof("stats of container error: %v", err)
 }
