@@ -25,3 +25,4 @@ _testmain.go
 /bin/rolex
 env_file
 deploy/env
+node_addr_file
