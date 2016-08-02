@@ -42,6 +42,9 @@ const (
 	//Volume error code
 	CodeCreateVolumeParamError = 11601
 
+	//Go docker client error code
+	CodeGetDockerClientError = 1
+
 	//Group error code
 	CodeInvalidGroupId = 12001
 )

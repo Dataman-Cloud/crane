@@ -78,6 +78,8 @@ func (api *Api) HttpErrorResponse(ctx *gin.Context, err error) {
 		rolexerror.CodeInvalidGroupId,
 		rolexerror.CodeCreateVolumeParamError:
 		httpCode = http.StatusBadRequest
+	case rolexerror.CodeGetDockerClientError:
+		httpCode = http.StatusServiceUnavailable
 	default:
 		httpCode = http.StatusServiceUnavailable
 	}

@@ -3,6 +3,7 @@ package dockerclient
 import (
 	"crypto/tls"
 	"crypto/x509"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"path/filepath"
@@ -11,6 +12,7 @@ import (
 	"time"
 
 	"github.com/Dataman-Cloud/rolex/src/util/config"
+	"github.com/Dataman-Cloud/rolex/src/util/rolexerror"
 
 	log "github.com/Sirupsen/logrus"
 	goclient "github.com/fsouza/go-dockerclient"
@@ -81,23 +83,24 @@ func (client *RolexDockerClient) SwarmClient() *goclient.Client {
 }
 
 // return or cache daemon docker client base on host id stored in ctx
-func (client *RolexDockerClient) DockerClient(ctx context.Context) *goclient.Client {
-	dockerClient := &goclient.Client{}
+func (client *RolexDockerClient) DockerClient(ctx context.Context) (*goclient.Client, error) {
+	var dockerClient *goclient.Client
 
+	var err error
 	node_id, ok := ctx.Value("node_id").(string)
 	if !ok {
-		log.Error("node_id not found")
-		return nil
+		err = rolexerror.NewRolexError(rolexerror.CodeGetDockerClientError, "node_id not found")
+		return nil, err
 	}
 
 	if dockerClient, found := client.dockerClients[node_id]; found {
-		return dockerClient
+		return dockerClient, nil
 	}
 
 	host, err := client.NodeDaemonEndpoint(node_id, "tcp")
 	if err != nil {
-		log.Error("unable to parse node ip for ", host)
-		return nil
+		err = rolexerror.NewRolexError(rolexerror.CodeGetDockerClientError, "unable to parse node ip for "+host)
+		return nil, err
 	}
 
 	if client.Config.DockerTlsVerify == "1" {
@@ -107,21 +110,23 @@ func (client *RolexDockerClient) DockerClient(ctx context.Context) *goclient.Cli
 	}
 
 	if err != nil {
-		log.Errorf("failed to init client %s error: %s", host, err.Error())
-		return nil
+		message := fmt.Sprintf("failed to init client %s error: %s", host, err.Error())
+		err = rolexerror.NewRolexError(rolexerror.CodeGetDockerClientError, message)
+		return nil, err
 	}
 
 	err = dockerClient.Ping()
 	if err != nil {
-		log.Error("DockerClient ping error: ", err)
-		return nil
+		message := fmt.Sprintf("DockerClient ping error: %s", err.Error())
+		err = rolexerror.NewRolexError(rolexerror.CodeGetDockerClientError, message)
+		return nil, err
 	}
 
 	client.DockerClientMutex.Lock()
 	defer client.DockerClientMutex.Unlock()
 	client.dockerClients[node_id] = dockerClient
 
-	return dockerClient
+	return dockerClient, nil
 }
 
 // ping to test swarmClient connection

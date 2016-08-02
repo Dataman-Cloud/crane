@@ -47,21 +47,41 @@ func (client *RolexDockerClient) RemoveNetwork(id string) error {
 }
 
 func (client *RolexDockerClient) ConnectNodeNetwork(ctx context.Context, networkID string, opts goclient.NetworkConnectionOptions) error {
-	return client.DockerClient(ctx).ConnectNetwork(networkID, opts)
+	dockerClient, err := client.DockerClient(ctx)
+	if err != nil {
+		return err
+	}
+	return dockerClient.ConnectNetwork(networkID, opts)
 }
 
 func (client *RolexDockerClient) DisconnectNodeNetwork(ctx context.Context, networkID string, opts goclient.NetworkConnectionOptions) error {
-	return client.DockerClient(ctx).DisconnectNetwork(networkID, opts)
+	dockerClient, err := client.DockerClient(ctx)
+	if err != nil {
+		return err
+	}
+	return dockerClient.DisconnectNetwork(networkID, opts)
 }
 
 func (client *RolexDockerClient) InspectNodeNetwork(ctx context.Context, networkID string) (*goclient.Network, error) {
-	return client.DockerClient(ctx).NetworkInfo(networkID)
+	dockerClient, err := client.DockerClient(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return dockerClient.NetworkInfo(networkID)
 }
 
 func (client *RolexDockerClient) ListNodeNetworks(ctx context.Context, opts goclient.NetworkFilterOpts) ([]goclient.Network, error) {
-	return client.DockerClient(ctx).FilteredListNetworks(opts)
+	dockerClient, err := client.DockerClient(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return dockerClient.FilteredListNetworks(opts)
 }
 
 func (client *RolexDockerClient) CreateNodeNetwork(ctx context.Context, opts goclient.CreateNetworkOptions) (*goclient.Network, error) {
-	return client.DockerClient(ctx).CreateNetwork(opts)
+	dockerClient, err := client.DockerClient(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return dockerClient.CreateNetwork(opts)
 }

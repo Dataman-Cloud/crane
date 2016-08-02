@@ -6,18 +6,34 @@ import (
 )
 
 func (client *RolexDockerClient) ListImages(ctx context.Context, opts goclient.ListImagesOptions) ([]goclient.APIImages, error) {
-	return client.DockerClient(ctx).ListImages(opts)
+	dockerClient, err := client.DockerClient(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return dockerClient.ListImages(opts)
 }
 
 func (client *RolexDockerClient) InspectImage(ctx context.Context, imageID string) (*goclient.Image, error) {
-	return client.DockerClient(ctx).InspectImage(imageID)
+	dockerClient, err := client.DockerClient(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return dockerClient.InspectImage(imageID)
 }
 
 func (client *RolexDockerClient) ImageHistory(ctx context.Context, imageID string) ([]goclient.ImageHistory, error) {
-	return client.DockerClient(ctx).ImageHistory(imageID)
+	dockerClient, err := client.DockerClient(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return dockerClient.ImageHistory(imageID)
 }
 
-// TODO add remoce image  option
+// TODO add remove image  option
 func (client *RolexDockerClient) RemoveImage(ctx context.Context, imageID string) error {
-	return client.DockerClient(ctx).RemoveImage(imageID)
+	dockerClient, err := client.DockerClient(ctx)
+	if err != nil {
+		return err
+	}
+	return dockerClient.RemoveImage(imageID)
 }
