@@ -1,94 +1,83 @@
 <!DOCTYPE html>
 <html lang="zh-CN" data-ng-app="app">
-    <head data-update-meta>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <base href="/">
+<head data-update-meta>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <base href="/">
 
-        <link rel="shortcut icon" type="image/x-icon" href="pics/favicon.ico" />
-        <!--build:css css/auth-style.css-->
-        <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="bower_components/font-awesome/css/font-awesome.min.css">
-        <link rel="stylesheet" type="text/css" href="bower_components/angular-ui-notification/dist/angular-ui-notification.min.css">
-        <link rel="stylesheet" type="text/css" href="css/auth.css">
-        <!--endbuild-->
-    </head>
-    <body>
-        <div data-ui-view style="height: 100%;"></div>
+    <link rel="shortcut icon" type="image/x-icon" href="pics/favicon.ico"/>
+    <!--build:css css/auth-style.css-->
+    <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="bower_components/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css"
+          href="bower_components/angular-ui-notification/dist/angular-ui-notification.min.css">
+    <link rel="stylesheet" type="text/css" href="css/auth.css">
+    <!--endbuild-->
+</head>
+<body>
+<div data-ui-view style="height: 100%;"></div>
 
-        <!--build:js js/script.js-->
-        <script src="bower_components/jquery/dist/jquery.js" type="text/javascript"></script>
-        <script src="bower_components/bootstrap/dist/js/bootstrap.js" type="text/javascript"></script>
-        <!--endbuild-->
+<!--build:js js/auth-script.js-->
+<script src="bower_components/jquery/dist/jquery.js" type="text/javascript"></script>
+<script src="bower_components/bootstrap/dist/js/bootstrap.js" type="text/javascript"></script>
+<!--endbuild-->
 
-        <!--build:js js/angular.js-->
-        <script src="bower_components/angular/angular.js" type="text/javascript"></script>
-        <script src="bower_components/angular-messages/angular-messages.js" type="text/javascript"></script>
-        <script src="bower_components/angular-ui-router/release/angular-ui-router.js" type="text/javascript"></script>
-        <script src="bower_components/angular-sanitize/angular-sanitize.js" type="text/javascript"></script>
-        <script src="bower_components/angular-aria/angular-aria.js" type="text/javascript"></script>
-        <script src="bower_components/angular-material/angular-material.js" type="text/javascript"></script>
-        <script src="bower_components/angular-animate/angular-animate.min.js" type="text/javascript"></script>
-        <script src="bower_components/angular-ui-notification/dist/angular-ui-notification.min.js" type="text/javascript"></script>
-        <script src="bower_components/angular-loading-bar/build/loading-bar.js" type="text/javascript"></script>
-        <!--endbuild-->
+<!--build:js js/auth-angular.js-->
+<script src="bower_components/angular/angular.js" type="text/javascript"></script>
+<script src="bower_components/angular-messages/angular-messages.js" type="text/javascript"></script>
+<script src="bower_components/angular-ui-router/release/angular-ui-router.js" type="text/javascript"></script>
+<script src="bower_components/angular-sanitize/angular-sanitize.js" type="text/javascript"></script>
+<script src="bower_components/angular-aria/angular-aria.js" type="text/javascript"></script>
+<script src="bower_components/angular-material/angular-material.js" type="text/javascript"></script>
+<script src="bower_components/angular-animate/angular-animate.min.js" type="text/javascript"></script>
+<script src="bower_components/angular-ui-notification/dist/angular-ui-notification.min.js"
+        type="text/javascript"></script>
+<script src="bower_components/angular-loading-bar/build/loading-bar.js" type="text/javascript"></script>
+<!--endbuild-->
 
-        <!--build:js(build) js/main.js-->
-        <script src="src/conf.js" type="text/javascript"></script>
+<!-- rev-hash -->
+<script src="conf.js" type="text/javascript"></script>
+<!-- end -->
 
-        <script src="src/app4auth.module.js" type="text/javascript"></script>
-        <script src="src/app.run.js" type="text/javascript"></script>
-        <script src="src/app.constants.run.js" type="text/javascript"></script>
+<!--build:js(dist) js/auth-main.js-->
+<script src="src/app4auth.module.js" type="text/javascript"></script>
+<script src="src/app.run.js" type="text/javascript"></script>
+<script src="src/app.constants.run.js" type="text/javascript"></script>
 
-        <script src="src/utils/utils.module.js" type="text/javascript"></script>
-        <script src="src/utils/utils.config.js" type="text/javascript"></script>
-        <script src="src/utils/services/utils.service.js" type="text/javascript"></script>
-        <script src="src/utils/services/ghttp.service.js" type="text/javascript"></script>
-        <script src="src/utils/services/mdTable.service.js" type="text/javascript"></script>
-        <script src="src/utils/services/mdSideNav.service.js" type="text/javascript"></script>
-        <script src="src/utils/services/timing.service.js" type="text/javascript"></script>
-        <script src="src/utils/services/stream.service.js" type="text/javascript"></script>
-        <script src="src/utils/services/chart-util.service.js" type="text/javascript"></script>
-        <script src="src/filter/slice-string.filter.js" type="text/javascript"></script>
-        <script src="src/filter/size.filter.js" type="text/javascript"></script>
-        <script src="src/filter/status-zh.filter.js" type="text/javascript"></script>
-        <script src="src/filter/keylength.filter.js" type="text/javascript"></script>
-        <script src="src/utils/modals/confirm.service.js" type="text/javascript"></script>
-        <script src="src/utils/modals/alert.service.js" type="text/javascript"></script>
-        <script src="src/utils/modals/form.service.js" type="text/javascript"></script>
+<script src="src/utils/utils.module.js" type="text/javascript"></script>
+<script src="src/utils/utils.config.js" type="text/javascript"></script>
+<script src="src/utils/services/utils.service.js" type="text/javascript"></script>
+<script src="src/utils/services/ghttp.service.js" type="text/javascript"></script>
+<script src="src/utils/services/mdTable.service.js" type="text/javascript"></script>
+<script src="src/utils/services/mdSideNav.service.js" type="text/javascript"></script>
+<script src="src/utils/services/timing.service.js" type="text/javascript"></script>
+<script src="src/utils/services/stream.service.js" type="text/javascript"></script>
+<script src="src/utils/services/chart-util.service.js" type="text/javascript"></script>
+<script src="src/filter/slice-string.filter.js" type="text/javascript"></script>
+<script src="src/filter/size.filter.js" type="text/javascript"></script>
+<script src="src/filter/status-zh.filter.js" type="text/javascript"></script>
+<script src="src/filter/keylength.filter.js" type="text/javascript"></script>
+<script src="src/utils/modals/confirm.service.js" type="text/javascript"></script>
+<script src="src/utils/modals/alert.service.js" type="text/javascript"></script>
+<script src="src/utils/modals/form.service.js" type="text/javascript"></script>
 
-        <script src="src/auth/auth.module.js" type="text/javascript"></script>
-        <script src="src/auth/auth.config.js" type="text/javascript"></script>
-        <script src="src/auth/auth.router.js" type="text/javascript"></script>
-        <script src="src/auth/services/auth-backend.service.js" type="text/javascript"></script>
-        <script src="src/auth/services/auth-curd.service.js" type="text/javascript"></script>
-        <script src="src/auth/login/login.js" type="text/javascript"></script>
-
-        <!--endbuild-->
-
-        <!--build:js(build) js/directive.js-->
-        <script src="src/directives/dm-password.directive.js" type="text/javascript"></script>
-        <!--endbuild-->
+<script src="src/auth/auth.module.js" type="text/javascript"></script>
+<script src="src/auth/auth.config.js" type="text/javascript"></script>
+<script src="src/auth/auth.router.js" type="text/javascript"></script>
+<script src="src/auth/services/auth-backend.service.js" type="text/javascript"></script>
+<script src="src/auth/services/auth-curd.service.js" type="text/javascript"></script>
+<script src="src/auth/login/login.js" type="text/javascript"></script>
 
 
-        <!--build:js js/template.js-->
-        <!-- inject:template.js -->
-        <!-- angular templates will be automatically converted in js and inserted here -->
-        <!-- endinject -->
-        <!--endbuild-->
+<script src="src/directives/dm-password.directive.js" type="text/javascript"></script>
+<!--endbuild-->
 
-        <!-- baidu -->
-        <!--<script>-->
-        <!--if (RUNNING_ENV === "prod") {-->
-        <!--var _hmt = _hmt || [];-->
-        <!--(function () {-->
-        <!--var hm = document.createElement("script");-->
-        <!--hm.src = "//hm.baidu.com/hm.js?cd74c0fcc0c51aecc3bb276315e35e6a";-->
-        <!--var s = document.getElementsByTagName("script")[0];-->
-        <!--s.parentNode.insertBefore(hm, s);-->
-        <!--})();-->
-        <!--}-->
-        <!--</script>-->
-    </body>
+
+<!--build:js js/auth-template.js-->
+<!-- inject:template.js -->
+<!-- angular templates will be automatically converted in js and inserted here -->
+<!-- endinject -->
+<!--endbuild-->
+</body>
 </html>
