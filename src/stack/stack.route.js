@@ -4,7 +4,9 @@
         .config(route);
 
     /* @ngInject */
-    function route($stateProvider, $locationProvider, $interpolateProvider) {
+    function route($stateProvider, $locationProvider, $interpolateProvider, $urlRouterProvider) {
+        $urlRouterProvider.otherwise('/stack');
+
         $stateProvider
             .state('stack', {
                 url: '/stack',
