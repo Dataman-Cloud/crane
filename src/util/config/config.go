@@ -43,6 +43,8 @@ type Config struct {
 	AccountPasswordDefault string
 
 	CatalogPath string
+
+	LoadDataInterval uint16
 }
 
 func (c *Config) FeatureEnabled(feature string) bool {
@@ -79,6 +81,8 @@ type EnvEntry struct {
 	ROLEX_ACCOUNT_PASSWORD_DEFAULT string `required:"false"`
 
 	ROLEX_CATALOG_PATH string `required:"false"`
+
+	ROLEX_LOADDATA_INTERVAL uint16
 }
 
 func InitConfig(envFile string) *Config {
@@ -109,6 +113,8 @@ func InitConfig(envFile string) *Config {
 	config.AccountPasswordDefault = envEntry.ROLEX_ACCOUNT_PASSWORD_DEFAULT
 
 	config.CatalogPath = envEntry.ROLEX_CATALOG_PATH
+
+	config.LoadDataInterval = envEntry.ROLEX_LOADDATA_INTERVAL
 
 	return &config
 }

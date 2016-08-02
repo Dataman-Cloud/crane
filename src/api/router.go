@@ -10,6 +10,7 @@ import (
 	"github.com/Dataman-Cloud/rolex/src/plugins/auth/token_store"
 	"github.com/Dataman-Cloud/rolex/src/plugins/catalog"
 	"github.com/Dataman-Cloud/rolex/src/plugins/registry"
+	"github.com/Dataman-Cloud/rolex/src/plugins/search"
 	"github.com/Dataman-Cloud/rolex/src/util/log"
 
 	"github.com/Sirupsen/logrus"
@@ -60,6 +61,15 @@ func (api *Api) ApiRouter() *gin.Engine {
 	if api.Config.FeatureEnabled("catalog") {
 		c := &catalog.CatalogApi{Config: api.Config}
 		c.RegisterApiForCatalog(router, Authorization)
+	}
+
+	if api.Config.FeatureEnabled("search") {
+		s := &search.SearchApi{
+			RolexDockerClient: api.Client,
+			Config:            api.Config,
+		}
+		s.RegisterApiForSearch(router, Authorization)
+		go s.IndexData()
 	}
 
 	v1 := router.Group("/api/v1", Authorization, middlewares.ListIntercept())
