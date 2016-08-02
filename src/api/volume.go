@@ -1,9 +1,7 @@
 package api
 
 import (
-	"net/http"
-
-	"github.com/Dataman-Cloud/rolex/src/util"
+	"github.com/Dataman-Cloud/rolex/src/util/rolexerror"
 
 	log "github.com/Sirupsen/logrus"
 	goclient "github.com/fsouza/go-dockerclient"
@@ -16,11 +14,12 @@ func (api *Api) InspectVolume(ctx *gin.Context) {
 	volume, err := api.GetDockerClient().InspectVolume(rolexContext.(context.Context), ctx.Param("volume_id"))
 	if err != nil {
 		log.Errorf("inspect volume error: %v", err)
-		ctx.JSON(http.StatusInternalServerError, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
+		api.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"code": util.OPERATION_SUCCESS, "data": volume})
+	api.HttpOkResponse(ctx, volume)
+	return
 }
 
 func (api *Api) ListVolume(ctx *gin.Context) {
@@ -35,11 +34,12 @@ func (api *Api) ListVolume(ctx *gin.Context) {
 	volumes, err := api.GetDockerClient().ListVolumes(rolexContext.(context.Context), opts)
 	if err != nil {
 		log.Errorf("get volume list error: %v", err)
-		ctx.JSON(http.StatusInternalServerError, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
+		api.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"code": util.OPERATION_SUCCESS, "data": volumes})
+	api.HttpOkResponse(ctx, volumes)
+	return
 }
 
 func (api *Api) CreateVolume(ctx *gin.Context) {
@@ -48,27 +48,30 @@ func (api *Api) CreateVolume(ctx *gin.Context) {
 
 	if err := ctx.BindJSON(&opts); err != nil {
 		log.Errorf("create volume request body parse json error: %v", err)
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": util.PARAMETER_ERROR, "data": err.Error()})
+		rerror := rolexerror.NewRolexError(rolexerror.CodeCreateVolumeParamError, err.Error())
+		api.HttpErrorResponse(ctx, rerror)
 		return
 	}
 
 	volume, err := api.GetDockerClient().CreateVolume(rolexContext.(context.Context), opts)
 	if err != nil {
 		log.Errorf("create volume error: %v", err)
-		ctx.JSON(http.StatusInternalServerError, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
+		api.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	ctx.JSON(http.StatusCreated, gin.H{"code": util.OPERATION_SUCCESS, "data": volume})
+	api.HttpOkResponse(ctx, volume)
+	return
 }
 
 func (api *Api) RemoveVolume(ctx *gin.Context) {
 	rolexContext, _ := ctx.Get("rolexContext")
 	if err := api.GetDockerClient().RemoveVolume(rolexContext.(context.Context), ctx.Param("volume_id")); err != nil {
 		log.Errorf("remove volume error: %v", err)
-		ctx.JSON(http.StatusForbidden, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
+		api.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"code": util.OPERATION_SUCCESS, "data": "remove success"})
+	api.HttpOkResponse(ctx, "success")
+	return
 }

@@ -2,10 +2,9 @@ package api
 
 import (
 	"encoding/json"
-	"net/http"
 	"strconv"
 
-	"github.com/Dataman-Cloud/rolex/src/util"
+	"github.com/Dataman-Cloud/rolex/src/util/rolexerror"
 
 	log "github.com/Sirupsen/logrus"
 	goclient "github.com/fsouza/go-dockerclient"
@@ -18,14 +17,16 @@ func (api *Api) ListImages(ctx *gin.Context) {
 	all, err := strconv.ParseBool(ctx.DefaultQuery("all", "false"))
 	if err != nil {
 		log.Error("Parse param all of list images got error: ", err)
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": util.PARAMETER_ERROR, "data": err.Error()})
+		rerror := rolexerror.NewRolexError(rolexerror.CodeListImageParamError, err.Error())
+		api.HttpErrorResponse(ctx, rerror)
 		return
 	}
 
 	digests, err := strconv.ParseBool(ctx.DefaultQuery("digests", "true"))
 	if err != nil {
 		log.Error("Parse param digests of list images got error: ", err)
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": util.PARAMETER_ERROR, "data": err.Error()})
+		rerror := rolexerror.NewRolexError(rolexerror.CodeListImageParamError, err.Error())
+		api.HttpErrorResponse(ctx, rerror)
 		return
 	}
 
@@ -33,7 +34,8 @@ func (api *Api) ListImages(ctx *gin.Context) {
 	queryFilters := ctx.DefaultQuery("filters", "{}")
 	if err := json.Unmarshal([]byte(queryFilters), &filters); err != nil {
 		log.Error("Unmarshal list images filters got error: ", err)
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": util.PARAMETER_ERROR, "data": err.Error()})
+		rerror := rolexerror.NewRolexError(rolexerror.CodeListImageParamError, err.Error())
+		api.HttpErrorResponse(ctx, rerror)
 		return
 	}
 
@@ -46,36 +48,39 @@ func (api *Api) ListImages(ctx *gin.Context) {
 
 	images, err := api.GetDockerClient().ListImages(rolexContext.(context.Context), opts)
 	if err != nil {
-		log.Error("get images list error: ", err)
-		ctx.JSON(http.StatusInternalServerError, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
+		log.Error("List images got error: ", err)
+		api.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"code": util.OPERATION_SUCCESS, "data": images})
+	api.HttpOkResponse(ctx, images)
+	return
 }
 
 func (api *Api) InspectImage(ctx *gin.Context) {
 	rolexContext, _ := ctx.Get("rolexContext")
 	image, err := api.GetDockerClient().InspectImage(rolexContext.(context.Context), ctx.Param("image_id"))
 	if err != nil {
-		log.Error("inspect image error: ", err)
-		ctx.JSON(http.StatusInternalServerError, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
+		log.Error("InspectNetwork got error: ", err)
+		api.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"code": util.OPERATION_SUCCESS, "data": image})
+	api.HttpOkResponse(ctx, image)
+	return
 }
 
 func (api *Api) ImageHistory(ctx *gin.Context) {
 	rolexContext, _ := ctx.Get("rolexContext")
 	historys, err := api.GetDockerClient().ImageHistory(rolexContext.(context.Context), ctx.Param("image_id"))
 	if err != nil {
-		log.Error("get image history error: ", err)
-		ctx.JSON(http.StatusInternalServerError, gin.H{"code": util.ENGINE_OPERATION_ERROR, "data": err.Error()})
+		log.Error("Get ImageHistory got error: ", err)
+		api.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"code": util.OPERATION_SUCCESS, "data": historys})
+	api.HttpOkResponse(ctx, historys)
+	return
 }
 
 // RemoveImage remove image in assign host by image id/name
@@ -83,9 +88,11 @@ func (api *Api) RemoveImage(ctx *gin.Context) {
 	rolexContext, _ := ctx.Get("rolexContext")
 	imageID := ctx.Param("image_id")
 	if err := api.GetDockerClient().RemoveImage(rolexContext.(context.Context), imageID); err != nil {
-		log.Error("Remove images in  image %s got error", imageID, err)
+		log.Error("RemoveImage got error: ", err)
+		api.HttpErrorResponse(ctx, err)
+		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"code": util.OPERATION_SUCCESS, "data": "remove image " + imageID + " success"})
+	api.HttpOkResponse(ctx, "success")
 	return
 }
