@@ -50,6 +50,9 @@ type Tag struct {
 	Image     string `json:"Image" gorm:"not null"`
 	Size      uint64 `json:"Size"`
 	Publicity uint8  `json:"Publicity" gorm:"not null default 0"`
+
+	PushCount int64 `json:"PushCount" gorm:"-"`
+	PullCount int64 `json:"PullCount" gorm:"-"`
 }
 
 type ImageAccess struct {
