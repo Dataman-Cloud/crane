@@ -46,9 +46,13 @@ PACKAGES = $(shell find ./src/ -type d -not -path '*/\.*')
 collect-cover-data:
 	echo "mode: count" > coverage-all.out
 	@$(foreach pkg,$(PACKAGES),\
-		go test -v -coverprofile=coverage.out -covermode=count $(pkg);\
-		if [ -f coverage.out ]; then\
-			tail -n +2 coverage.out >> coverage-all.out;\
+		if grep -Fxq "$(pkg)" dirs_to_igore_test.txt; then\
+			echo "Skipping parent dir $(pkg)";\
+                else\
+		       go test -v -coverprofile=coverage.out -covermode=count $(pkg) || exit $$?;\
+		       if [ -f coverage.out ]; then\
+		           tail -n +2 coverage.out >> coverage-all.out;\
+                       fi\
 		fi;)
 
 test-cover-html:
