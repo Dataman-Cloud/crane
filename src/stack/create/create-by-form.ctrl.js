@@ -55,11 +55,11 @@
                     "LogDriver": {}
                 },
                 "Mode": {
-                    ////Replicated/Global 二选一
-                    //"Replicated": {
-                    //    "Replicas": null //任务数
-                    //},
-                    "Global": {}
+                    //Replicated/Global 二选一
+                    "Replicated": {
+                        "Replicas": 1 //任务数
+                    }
+                    //"Global": {}
                 },
                 "UpdateConfig": {
                     "Parallelism": null,//更新并行任务数
@@ -130,11 +130,11 @@
                     "LogDriver": {}
                 },
                 "Mode": {
-                    ////Replicated/Global 二选一
-                    //"Replicated": {
-                    //    "Replicas": null //任务数
-                    //},
-                    "Global": {}
+                    //Replicated/Global 二选一
+                    "Replicated": {
+                        "Replicas": 1 //任务数
+                    }
+                    //"Global": {}
                 },
                 "UpdateConfig": {
                     "Parallelism": null,//更新并行任务数
@@ -214,7 +214,7 @@
             if (serveForm.defaultMode === 'Replicated') {
                 serveForm.Mode = {
                     Replicated: {
-                        Replicas: ""
+                        Replicas: 1
                     }
                 }
             } else {

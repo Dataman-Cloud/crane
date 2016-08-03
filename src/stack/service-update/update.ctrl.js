@@ -51,7 +51,7 @@
                         }
                     },
                     "RestartPolicy": {
-                        "Condition": "none", //重启模式
+                        "Condition": "any", //重启模式
                         "Delay": null, //重启延迟
                         "MaxAttempts": null,//重启最大尝试次数
                         "Window": null //重启间隔
@@ -62,10 +62,10 @@
                     "LogDriver": {}
                 },
                 "Mode": {
-                    ////Replicated/Global 二选一
+                    //Replicated/Global 二选一
                     //"Replicated": {
-                    //    "Replicas": null //任务数
-                    //},
+                    //    "Replicas": 1 //任务数
+                    //}
                     //"Global": {}
                 },
                 "UpdateConfig": {
@@ -77,7 +77,7 @@
                     "Mode": "vip", //vip/dnsrr
                     "Ports": [] //端口
                 },
-                "defaultMode": 'Global'
+                "defaultMode": 'Replicated'
             };
 
             var form = angular.merge(tempForm, service.Spec);
@@ -89,7 +89,7 @@
             form.formConstraints = [];
             form.formEnv = [];
             form.formCmd = [];
-            form.defaultMode = 'Global';
+            form.defaultMode = 'Replicated';
 
             //Unit conversion
             form.TaskTemplate.Resources.Limits.NanoCPUs = form.TaskTemplate.Resources.Limits.NanoCPUs ? form.TaskTemplate.Resources.Limits.NanoCPUs / Math.pow(10, 9) : null;
@@ -256,7 +256,7 @@
             if (self.form.defaultMode === 'Replicated') {
                 self.form.Mode = {
                     Replicated: {
-                        Replicas: ""
+                        Replicas: 1
                     }
                 }
             } else {

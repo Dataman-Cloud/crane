@@ -68,13 +68,10 @@
                     <div flex="30" layout="column">
                         <div flex>
                             <md-radio-group data-ng-model="serviceUpdateCtrl.form.defaultMode" layout="row"
-                                            aria-label="defaultMode" data-ng-disabled="true"
+                                            aria-label="defaultMode"
                                             data-ng-change="serviceUpdateCtrl.modeChange()">
-                                <md-radio-button value="Global" class="md-accent" flex>
-                                    Global
-                                </md-radio-button>
-                                <md-radio-button value="Replicated" class="md-accent" flex>Replicated
-                                </md-radio-button>
+                                <md-radio-button value="Replicated" class="md-accent" data-ng-disabled="true" flex>Replicated</md-radio-button>
+                                <md-radio-button value="Global" class="md-accent" data-ng-disabled="true" flex>Global</md-radio-button>
                             </md-radio-group>
                         </div>
                     </div>
@@ -104,10 +101,8 @@
                         <div flex>
                             <md-radio-group data-ng-model="serviceUpdateCtrl.form.EndpointSpec.Mode" layout="row"
                                             aria-label="Endpoint">
-                                <md-radio-button value="vip" class="md-accent" flex>vip
-                                </md-radio-button>
-                                <md-radio-button value="dnsrr" class="md-accent" flex>dnsrr
-                                </md-radio-button>
+                                <md-radio-button value="vip" class="md-accent" flex>vip</md-radio-button>
+                                <md-radio-button value="dnsrr" class="md-accent" flex>dnsrr</md-radio-button>
                             </md-radio-group>
                         </div>
                     </div>
@@ -121,12 +116,9 @@
                             <md-radio-group data-ng-model="serviceUpdateCtrl.form.TaskTemplate.RestartPolicy.Condition"
                                             layout="row"
                                             aria-label="restart-condition">
-                                <md-radio-button value="none" class="md-accent" flex>none
-                                </md-radio-button>
-                                <md-radio-button value="on-failure" class="md-accent" flex>on-failure
-                                </md-radio-button>
-                                <md-radio-button value="any" class="md-accent" flex>any
-                                </md-radio-button>
+                                <md-radio-button value="any" class="md-accent" flex>any</md-radio-button>
+                                <md-radio-button value="none" class="md-accent" flex>none</md-radio-button>
+                                <md-radio-button value="on-failure" class="md-accent" flex>on-failure</md-radio-button>
                             </md-radio-group>
                         </div>
                     </div>
