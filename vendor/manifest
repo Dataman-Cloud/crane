@@ -113,8 +113,8 @@
 		{
 			"importpath": "github.com/docker/engine-api/types",
 			"repository": "https://github.com/docker/engine-api",
-			"vcs": "",
-			"revision": "98348ad6f9c89bb10f31ac32cd1b12cbadd292b6",
+			"vcs": "git",
+			"revision": "16c66e864c3c2f2dc8c35276232aafe9828c88bc",
 			"branch": "master",
 			"path": "/types"
 		},
