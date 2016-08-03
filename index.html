@@ -67,6 +67,34 @@
                     <md-button class="md-icon-button" aria-label="Settings" data-ng-click="rootCtrl.togShortMenu()">
                         <i class="fa fa-bars"></i>
                     </md-button>
+                    <md-autocomplete
+                            md-no-cache="false"
+                            md-search-text="rootCtrl.searchText"
+                            md-items="item in rootCtrl.querySearch(rootCtrl.searchText)"
+                            md-item-text="item.Name"
+                            md-min-length="1"
+                            placeholder="输入关键字查询"
+                            md-selected-item-change="rootCtrl.searchJump(item)"
+                            md-menu-class="autocomplete-custom-template">
+                        <md-item-template>
+                            <div>
+                                <span class="item-title">
+                                    <md-icon md-svg-icon="pics/dataman-logo-icon.svg"></md-icon>
+                                    <span md-highlight-text="rootCtrl.searchText" md-highlight-flags="^i">
+                                        Name: {/item.Name/}
+                                    </span>
+                                </span>
+                                <span class="item-metadata">
+                                    <span class="item-metastat">
+                                      ID: {/item.ID/}
+                                    </span>
+                                </span>
+                            </div>
+                        </md-item-template>
+                        <md-not-found>
+                            未查询到相关信息...
+                        </md-not-found>
+                    </md-autocomplete>
                     <span flex></span>
 
                     <md-menu>
