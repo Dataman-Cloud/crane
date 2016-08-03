@@ -86,7 +86,8 @@ func (api *Api) HttpErrorResponse(ctx *gin.Context, err error) {
 		rolexerror.CodeNetworkOrContainerNotFound:
 		httpCode = http.StatusNotFound
 
-	case rolexerror.CodeGetDockerClientError:
+	case rolexerror.CodeGetDockerClientError,
+		rolexerror.CodeGetConfigError:
 		httpCode = http.StatusServiceUnavailable
 	default:
 		httpCode = http.StatusServiceUnavailable

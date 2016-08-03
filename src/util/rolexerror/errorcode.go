@@ -50,6 +50,9 @@ const (
 	//Go docker client error code
 	CodeGetDockerClientError = 1
 
+	//Get config error code
+	CodeGetConfigError = 11901
+
 	//Group error code
 	CodeInvalidGroupId = 12001
 )

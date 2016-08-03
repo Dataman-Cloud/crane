@@ -3,16 +3,19 @@ package api
 import (
 	"net/http"
 
+	"github.com/Dataman-Cloud/rolex/src/util/rolexerror"
 	"github.com/Dataman-Cloud/rolex/src/version"
+
+	log "github.com/Sirupsen/logrus"
+	"github.com/docker/engine-api/types/swarm"
 	"github.com/gin-gonic/gin"
 )
 
 type RolexConfigResponse struct {
-	Version      string   `json:"Version"`
-	BuildTime    string   `json:"Build"`
-	FeatureFlags []string `json:"FeatureFlags"`
-	RolexSecret  string   `json:"RolexSecret"`
-	RolexCaHash  string   `json:"RolexCaHash"`
+	Version      string      `json:"Version"`
+	BuildTime    string      `json:"Build"`
+	FeatureFlags []string    `json:"FeatureFlags"`
+	SwarmInfo    swarm.Swarm `json:"SwarmInfo"`
 }
 
 func (api *Api) RolexConfig(ctx *gin.Context) {
@@ -21,9 +24,18 @@ func (api *Api) RolexConfig(ctx *gin.Context) {
 	config.BuildTime = version.BuildTime
 	config.FeatureFlags = api.GetConfig().FeatureFlags
 
-	config.RolexSecret = api.GetConfig().RolexSecret
-	config.RolexCaHash = api.GetConfig().RolexCaHash
-	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": config})
+	var err error
+	config.SwarmInfo, err = api.GetDockerClient().InspectSwarm()
+
+	if err != nil {
+		log.Errorf("InspectSwarm got error: %s", err.Error())
+		rerror := rolexerror.NewRolexError(rolexerror.CodeGetConfigError, err.Error())
+		api.HttpErrorResponse(ctx, rerror)
+		return
+	}
+
+	api.HttpOkResponse(ctx, config)
+	return
 }
 
 func (api *Api) HealthCheck(ctx *gin.Context) {
