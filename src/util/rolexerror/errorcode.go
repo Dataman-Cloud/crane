@@ -13,17 +13,22 @@ const (
 	CodePatchContainerMethodUndefined  = 11003
 	CodeDeleteContainerParamError      = 11004
 	CodeDeleteContainerMethodUndefined = 11005
+	CodeContainerNotFound              = 11006
+	CodeContainerAlreadyRunning        = 11007
+	CodeContainerNotRunning            = 11008
 
 	//Image error code
 	CodeListImageParamError = 11101
 
 	//Network error code
-	CodeConnectNetworkParamError  = 11201
-	CodeConnectNetworkMethodError = 11202
-	CodeCreateNetworkParamError   = 11203
-	CodeInspectNetworkParamError  = 11204
-	CodeListNetworkParamError     = 11205
-	CodeNetworkPredefined         = 11206
+	CodeConnectNetworkParamError   = 11201
+	CodeConnectNetworkMethodError  = 11202
+	CodeCreateNetworkParamError    = 11203
+	CodeInspectNetworkParamError   = 11204
+	CodeListNetworkParamError      = 11205
+	CodeNetworkPredefined          = 11206
+	CodeNetworkNotFound            = 11207
+	CodeNetworkOrContainerNotFound = 11208
 
 	//Node error code
 	CodeUpdateNodeParamError = 11301

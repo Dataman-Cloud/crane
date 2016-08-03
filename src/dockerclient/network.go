@@ -51,7 +51,13 @@ func (client *RolexDockerClient) ConnectNodeNetwork(ctx context.Context, network
 	if err != nil {
 		return err
 	}
-	return dockerClient.ConnectNetwork(networkID, opts)
+
+	err = dockerClient.ConnectNetwork(networkID, opts)
+	if err != nil {
+		err = SortingError(err)
+	}
+
+	return err
 }
 
 func (client *RolexDockerClient) DisconnectNodeNetwork(ctx context.Context, networkID string, opts goclient.NetworkConnectionOptions) error {
@@ -59,7 +65,13 @@ func (client *RolexDockerClient) DisconnectNodeNetwork(ctx context.Context, netw
 	if err != nil {
 		return err
 	}
-	return dockerClient.DisconnectNetwork(networkID, opts)
+
+	err = dockerClient.DisconnectNetwork(networkID, opts)
+	if err != nil {
+		err = SortingError(err)
+	}
+
+	return err
 }
 
 func (client *RolexDockerClient) InspectNodeNetwork(ctx context.Context, networkID string) (*goclient.Network, error) {
@@ -67,7 +79,13 @@ func (client *RolexDockerClient) InspectNodeNetwork(ctx context.Context, network
 	if err != nil {
 		return nil, err
 	}
-	return dockerClient.NetworkInfo(networkID)
+
+	network, err := dockerClient.NetworkInfo(networkID)
+	if err != nil {
+		err = SortingError(err)
+	}
+
+	return network, err
 }
 
 func (client *RolexDockerClient) ListNodeNetworks(ctx context.Context, opts goclient.NetworkFilterOpts) ([]goclient.Network, error) {
