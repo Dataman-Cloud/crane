@@ -979,3 +979,12 @@ md-content h4:first-child {
 md-autocomplete input:not(.md-input) {
     color: #333;
 }
+.md-whiteframe-1dp, .md-whiteframe-z1 {
+    box-shadow: none;
+}
+.search-header {
+    width: 100%;
+    background-color: #FFF;
+    border: none;
+    box-shadow: none;
+}
