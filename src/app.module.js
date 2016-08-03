@@ -8,6 +8,7 @@
             'app.network',
             'app.misc',
             'app.user',
-            'app.registry'
+            'app.registry',
+            'app.layout'
         ]);
 })();

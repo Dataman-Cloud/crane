@@ -976,4 +976,6 @@ md-content h4:first-child {
     color:#C7CACF;
     font-size: 14px; 
 }
-
+md-autocomplete input:not(.md-input) {
+    color: #333;
+}

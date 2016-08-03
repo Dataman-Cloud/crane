@@ -118,6 +118,9 @@
                 image: 'registry/v1/manifests/$tag/$repository',
                 catalogs: 'catalog/v1/catalogs',
                 catalog: 'catalog/v1/catalogs/$catalog_name'
+            },
+            layout: {
+                search: 'search/v1/luckysearch'
             }
         };
     }
