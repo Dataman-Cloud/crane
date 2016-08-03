@@ -2,6 +2,7 @@ package search
 
 import (
 	"fmt"
+	"sync"
 	"time"
 
 	"github.com/Dataman-Cloud/rolex/src/dockerclient"
@@ -41,6 +42,7 @@ type SearchApi struct {
 	RolexDockerClient *dockerclient.RolexDockerClient
 	Index             []string
 	Store             map[string]Document
+	LoadLock          sync.Mutex
 }
 
 type Document struct {
@@ -70,6 +72,9 @@ func (searchApi *SearchApi) IndexData() {
 }
 
 func (searchApi *SearchApi) loadData() {
+	searchApi.LoadLock.Lock()
+	defer searchApi.LoadLock.Unlock()
+
 	searchApi.Index = []string{}
 	searchApi.Store = map[string]Document{}
 
