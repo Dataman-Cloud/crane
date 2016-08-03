@@ -136,35 +136,32 @@ curl -XGET localhost:2375/registry/v1/catalogs/mine
     "code": 0,
     "data": [
         {
-            "CreatedAt": "2016-08-02T08:51:35Z",
+            "CreatedAt": "2016-08-03T08:55:01Z",
             "DeletedAt": null,
-            "Digest": "sha256:2a093bfc361b342c728ff212700ce1f71f5422055b036ca342d9c4cf5c4fd2f8",
-            "ID": 16,
+            "ID": 3,
             "Image": "nginx",
-            "Namespace": "1",
+            "LatestTag": "latest",
+            "Namespace": "admin",
             "Publicity": 1,
-            "Size": 55229862,
-            "Tag": "latest",
-						"PullCount": 1,
-						"PushCount": 1,
-            "UpdatedAt": "2016-08-02T08:59:41Z"
+            "PullCount": 1,
+            "PushCount": 1,
+            "UpdatedAt": "2016-08-03T08:55:01Z"
         },
         {
-            "CreatedAt": "2016-08-02T03:51:13Z",
+            "CreatedAt": "2016-08-03T07:58:53Z",
             "DeletedAt": null,
-            "Digest": "sha256:e0b4c58b94d35d03c5406e2f95df41c025a7569b803ffacbf7a4f0e6505529ef",
             "ID": 1,
             "Image": "registry",
+            "LatestTag": "v3",
             "Namespace": "library",
             "Publicity": 1,
-            "Size": 64378850,
-            "Tag": "v1",
-						"PullCount": 1,
-						"PushCount": 1,
-            "UpdatedAt": "2016-08-02T06:19:47Z"
+            "PullCount": 28,
+            "PushCount": 6,
+            "UpdatedAt": "2016-08-03T08:23:40Z"
         }
     ]
 }
+
 ```
 
 
@@ -183,35 +180,32 @@ curl -XGET localhost:2375/registry/v1/catalogs/public
     "code": 0,
     "data": [
         {
-            "CreatedAt": "2016-08-02T08:51:35Z",
+            "CreatedAt": "2016-08-03T08:55:01Z",
             "DeletedAt": null,
-            "Digest": "sha256:2a093bfc361b342c728ff212700ce1f71f5422055b036ca342d9c4cf5c4fd2f8",
-            "ID": 16,
+            "ID": 3,
             "Image": "nginx",
-            "Namespace": "1",
+            "LatestTag": "latest",
+            "Namespace": "admin",
             "Publicity": 1,
-            "Size": 55229862,
-            "Tag": "latest",
-						"PullCount": 1,
-						"PushCount": 1,
-            "UpdatedAt": "2016-08-02T08:59:41Z"
+            "PullCount": 1,
+            "PushCount": 1,
+            "UpdatedAt": "2016-08-03T08:55:01Z"
         },
         {
-            "CreatedAt": "2016-08-02T03:51:13Z",
+            "CreatedAt": "2016-08-03T07:58:53Z",
             "DeletedAt": null,
-            "Digest": "sha256:e0b4c58b94d35d03c5406e2f95df41c025a7569b803ffacbf7a4f0e6505529ef",
             "ID": 1,
             "Image": "registry",
+            "LatestTag": "v3",
             "Namespace": "library",
             "Publicity": 1,
-            "Size": 64378850,
-            "Tag": "v1",
-						"PullCount": 1,
-						"PushCount": 1,
-            "UpdatedAt": "2016-08-02T06:19:47Z"
+            "PullCount": 28,
+            "PushCount": 6,
+            "UpdatedAt": "2016-08-03T08:23:40Z"
         }
     ]
 }
+
 ```
 
 
@@ -235,12 +229,12 @@ curl -XDELETE localhost:2375/registry/v1/manifests/latest/library/registry
 ```
 
 
-#### PATCH `/:namespace/:image/:tag/publicity`
+#### PATCH `/:namespace/:image/publicity`
 
 **Request:**
 
 ```
-curl -XPATCH localhost:2375/registry/v1/library/nginx/latest/publicity
+curl -XPATCH localhost:2375/registry/v1/library/nginx/publicity
 -d '{"Publicity": 1}'
 ```
 

@@ -9,6 +9,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/Dataman-Cloud/rolex/src/plugins/auth"
 	"github.com/Dataman-Cloud/rolex/src/util/config"
 
 	"github.com/docker/distribution/registry/auth/token"
@@ -21,7 +22,7 @@ const (
 )
 
 // GetResourceActions ...
-func ParseResourceActions(scope string) []*token.ResourceActions {
+func (registry *Registry) ParseResourceActions(scope string) []*token.ResourceActions {
 	var res []*token.ResourceActions
 	if scope == "" {
 		return res
@@ -37,7 +38,7 @@ func ParseResourceActions(scope string) []*token.ResourceActions {
 
 // FilterAccess modify the action list in access based on permission
 // determine if the request needs to be authenticated.
-func FilterAccess(username string, authenticated bool, a *token.ResourceActions) {
+func (registry *Registry) FilterAccess(username string, authenticated bool, a *token.ResourceActions) {
 
 	if a.Type == "registry" && a.Name == "catalog" {
 		return
@@ -48,29 +49,22 @@ func FilterAccess(username string, authenticated bool, a *token.ResourceActions)
 	if a.Type == "repository" {
 		if strings.Contains(a.Name, "/") { //Only check the permission when the requested image has a namespace, i.e. project
 			// TODO check if account has read/write permission
-			projectName := a.Name[0:strings.LastIndex(a.Name, "/")]
-			var permission string
-			if authenticated {
-				if username == "admin" {
-					permission = "RW"
-				} else {
-					permission = GetPermission(username, projectName)
-				}
+			namespace := strings.Split(a.Name, "/")[0]
+			image := strings.Split(a.Name, "/")[1]
+
+			permission := registry.GetPermission(username, namespace, image)
+			if strings.Contains(permission, "W") {
+				a.Actions = append(a.Actions, "push")
 			}
-			fmt.Println(permission)
-			a.Actions = []string{"*"}
-			//if strings.Contains(permission, "W") {
-			//a.Actions = append(a.Actions, "push")
-			//}
-			//if strings.Contains(permission, "R") {
-			//a.Actions = append(a.Actions, "pull")
-			//}
+			if strings.Contains(permission, "R") {
+				a.Actions = append(a.Actions, "pull")
+			}
 		}
 	}
 	fmt.Printf("current access, type: %s, name:%s, actions:%v \n", a.Type, a.Name, a.Actions)
 }
 
-func MakeToken(config *config.Config, username, service string, access []*token.ResourceActions) (string, error) {
+func (registry *Registry) MakeToken(config *config.Config, username, service string, access []*token.ResourceActions) (string, error) {
 	pk, err := libtrust.LoadKeyFile(config.RegistryPrivateKeyPath)
 	if err != nil {
 		return "", err
@@ -154,14 +148,40 @@ func base64UrlEncode(b []byte) string {
 	return strings.TrimRight(base64.URLEncoding.EncodeToString(b), "=")
 }
 
-func GetPermission(username, project string) string {
-	return "RW"
+func (registry *Registry) GetPermission(username, namespace, image string) string {
+	if namespace == "library" {
+		return "R"
+	}
+
+	if RegistryNamespaceForEmail(username) == namespace { // for user access himself's repository
+		return "RW"
+	}
+
+	var modelImage Image
+	err := registry.DbClient.Where("namespace = ? AND image = ?", namespace, image).Find(&modelImage)
+	if err != nil {
+		return ""
+	}
+
+	if modelImage.Publicity == 1 { // for public repository
+		return "R"
+	}
+
+	return ""
 }
 
-func GenTokenForUI(config *config.Config, username, service, scope string) (string, error) {
-	access := ParseResourceActions(scope)
+func (registry *Registry) GenTokenForUI(config *config.Config, username, service, scope string) (string, error) {
+	access := registry.ParseResourceActions(scope)
 	for _, a := range access {
-		FilterAccess(username, true, a)
+		registry.FilterAccess(username, true, a)
 	}
-	return MakeToken(config, username, service, access)
+	return registry.MakeToken(config, username, service, access)
+}
+
+func RegistryNamespaceForAccount(a auth.Account) string {
+	return a.Email[0:strings.Index(a.Email, "@")]
+}
+
+func RegistryNamespaceForEmail(email string) string {
+	return email[0:strings.Index(email, "@")]
 }

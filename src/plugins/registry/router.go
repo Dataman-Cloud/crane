@@ -17,7 +17,7 @@ func (registry *Registry) RegisterApiForRegistry(router *gin.Engine, middlewares
 		registryV1Protected.GET("/catalogs/public", registry.PublicCatalog) // under library or tag marked as public
 		registryV1Protected.GET("/tag/list/:namespace/:image", registry.TagList)
 		registryV1Protected.GET("/manifests/:reference/:namespace/:image", registry.GetManifests)
-		registryV1Protected.PATCH("/:namespace/:image/:reference/publicity", registry.TagPublicity)
+		registryV1Protected.PATCH("/:namespace/:image/publicity", registry.ImagePublicity)
 		registryV1Protected.DELETE("/manifests/:reference/:namespace/:image", registry.DeleteManifests)
 	}
 }

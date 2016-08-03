@@ -40,7 +40,6 @@ func (registry *Registry) RegistryAPI(method, path, username, acceptHeader strin
 	url := fmt.Sprintf("%s/v2/%s", registry.Config.RegistryAddr, path)
 	request, err := http.NewRequest(method, url, nil)
 	if err != nil {
-		fmt.Println(err)
 		return nil, "", err
 	}
 
@@ -61,7 +60,6 @@ func (registry *Registry) RegistryAPI(method, path, username, acceptHeader strin
 		if len(strings.Split(authenticate, " ")) < 2 {
 			return nil, "", errors.New("malformat WWW-Authenticate header")
 		}
-		fmt.Println("Header WWW-Authenticate", authenticate)
 		str := strings.Split(authenticate, " ")[1]
 		var service string
 		var scope string
@@ -82,9 +80,7 @@ func (registry *Registry) RegistryAPI(method, path, username, acceptHeader strin
 		}
 		service = strings.Split(service, "\"")[1]
 		scope = strings.Split(scope, "\"")[1]
-		fmt.Println("service", service)
-		fmt.Println("scope", scope)
-		token, err := GenTokenForUI(registry.Config, username, service, scope)
+		token, err := registry.GenTokenForUI(registry.Config, username, service, scope)
 		if err != nil {
 			return nil, "", err
 		}
