@@ -10,7 +10,7 @@ export GO15VENDOREXPERIMENT=1
 default: build
 
 build: fmt
-	go build -ldflags "-X version.BuildTime `date -u +.%Y%m%d.%H%M%S` -X version.Version 0.1-`git rev-parse --short HEAD`" -v -o ../bin/rolex ./src/
+	go build -ldflags "-X version.BuildTime `date -u +.%Y%m%d.%H%M%S` -X version.Version 0.1-`git rev-parse --short HEAD`" -v -o ./bin/rolex ./src/
 
 rel: fmt
 	GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -v -o ../rel/rolex ./src/

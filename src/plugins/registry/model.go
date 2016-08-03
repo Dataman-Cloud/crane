@@ -2,6 +2,8 @@ package registry
 
 import (
 	"time"
+
+	"github.com/jinzhu/gorm"
 )
 
 // Notification holds all events.
@@ -37,4 +39,49 @@ type Request struct {
 	ID        string `json:"Id"`
 	Method    string
 	UserAgent string
+}
+
+type Tag struct {
+	gorm.Model
+
+	Digest    string `json:"Digest"`
+	Tag       string `json:"Tag"`
+	Namespace string `json:"Namespace" gorm:"not null"`
+	Image     string `json:"Image" gorm:"not null"`
+	Size      uint64 `json:"Size"`
+	Publicity uint8  `json:"Publicity" gorm:"not null default 0"`
+
+	PushCount int64 `json:"PushCount" gorm:"-"`
+	PullCount int64 `json:"PullCount" gorm:"-"`
+}
+
+type ImageAccess struct {
+	gorm.Model
+
+	Namespace    string `json:"Namespace" gorm:"not null"`
+	Image        string `json:"Image" gorm:"not null"`
+	Digest       string `json:"Digest"`
+	AccountEmail string `json:"AccountEmail"`
+	Action       string `json:"Action"`
+}
+
+type V2RegistryResponse struct {
+	SchemaVersion int                      `json:"schemaVersion"`
+	MediaType     string                   `json:"mediaType"`
+	Config        V2RegistryResponseConfig `json:"config"`
+	Layers        V2RegistryResponseLayers `json:"layers"`
+}
+
+type V2RegistryResponseConfig struct {
+	MediaType string `json:"mediaType"`
+	Size      uint64 `json:"size"`
+	Digest    string `json:"digest"`
+}
+
+type V2RegistryResponseLayers []V2RegistryResponseLayer
+
+type V2RegistryResponseLayer struct {
+	MediaType string `json:"mediaType"`
+	Size      uint64 `json:"size"`
+	Digest    string `json:"digest"`
 }

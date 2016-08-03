@@ -54,7 +54,8 @@ func (api *Api) ApiRouter() *gin.Engine {
 	}
 
 	if api.Config.FeatureEnabled("registry") {
-		r := &registry.Registry{Config: api.Config}
+		r := registry.NewRegistry(api.Config)
+		r.MigriateTable()
 		r.RegisterApiForRegistry(router, Authorization)
 	}
 
