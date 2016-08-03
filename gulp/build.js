@@ -67,7 +67,21 @@ gulp.task('template-min-auth', ['template-min-utils'], function () {
         .pipe(gulp.dest('dist/src/'));
 });
 
-gulp.task('template-min-user', ['template-min-auth'], function () {
+gulp.task('template-min-layout', ['template-min-auth'], function () {
+    return gulp.src('src/layout/**/*.html')
+        .pipe($.minifyHtml({
+            empty: true,
+            spare: true,
+            quotes: true
+        }))
+        .pipe($.angularTemplatecache('templateCacheHtmlLayout.js', {
+            module: 'app.layout',
+            root: '/src/layout'
+        }))
+        .pipe(gulp.dest('dist/src/'));
+});
+
+gulp.task('template-min-user', ['template-min-layout'], function () {
     return gulp.src('src/user/**/*.html')
         .pipe($.minifyHtml({
             empty: true,
@@ -164,15 +178,12 @@ gulp.task('html-replace', ['ng-annotate'], function () {
         addRootSlash: false
     };
 
-    var assets = $.useref.assets();
     var revAll = new $.revAll();
     return gulp.src('index.html')
         .pipe($.inject(templateInjectFile, templateInjectOptions))
-        .pipe(assets)
+        .pipe($.useref()).on('error', $.util.log)
         .pipe($.if('*.js', $.uglify()))
         .pipe($.if('*.css', $.minifyCss()))
-        .pipe(assets.restore())
-        .pipe($.useref().on('error', $.util.log))
         .pipe(revAll.revision().on('error', $.util.log))
         .pipe($.revHash())
         .pipe(gulp.dest('dist/'))
@@ -194,15 +205,12 @@ gulp.task('auth-html-replace', ['html-rename'], function () {
         addRootSlash: false
     };
 
-    var assets = $.useref.assets();
     var revAll = new $.revAll();
     return gulp.src('auth-index.html')
         .pipe($.inject(templateInjectFile, templateInjectOptions))
-        .pipe(assets)
+        .pipe($.useref()).on('error', $.util.log)
         .pipe($.if('*.js', $.uglify()))
         .pipe($.if('*.css', $.minifyCss()))
-        .pipe(assets.restore())
-        .pipe($.useref().on('error', $.util.log))
         .pipe(revAll.revision().on('error', $.util.log))
         .pipe($.revHash())
         .pipe(gulp.dest('dist/'))
