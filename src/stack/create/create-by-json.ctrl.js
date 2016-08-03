@@ -4,7 +4,7 @@
         .controller('StackCreateByJsonCtrl', StackCreateByJsonCtrl);
 
     /* @ngInject */
-    function StackCreateByJsonCtrl($timeout, $scope, $rootScope, stackCurd, userBackend, $http) {
+    function StackCreateByJsonCtrl($timeout, $scope, $rootScope, stackCurd, userBackend, $http, FileSaver, Blob) {
         var self = this;
 
         self.supportReadFile = false;
@@ -39,6 +39,7 @@
         self.loadGroups = loadGroups;
         self.onFileSelect = onFileSelect;
         self.create = create;
+        self.download = download;
         self.stackChange = stackChange;
         self.getStackExample = getStackExample;
 
@@ -110,5 +111,10 @@
                     stackChange();
                 });
         }
+
+	function download() {
+	    var data = new Blob([self.stack], { type: 'text/plain;charset=utf-8' });
+	    FileSaver.saveAs(data, self.form.Namespace + '.json');
+	}
     }
 })();
