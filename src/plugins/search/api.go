@@ -19,7 +19,7 @@ func (searchApi *SearchApi) Search(ctx *gin.Context) {
 		return
 	}
 
-	var results []Document
+	results := []Document{}
 	indexs := fuzzy.RankFind(query, searchApi.Index)
 	sort.Sort(indexs)
 	if len(indexs) > 0 {
