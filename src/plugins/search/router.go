@@ -1,7 +1,6 @@
 package search
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/Dataman-Cloud/rolex/src/dockerclient"
@@ -12,19 +11,6 @@ import (
 	goclient "github.com/fsouza/go-dockerclient"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/net/context"
-)
-
-const (
-	NODE_INFO    = "/node/detail/%s/config"
-	NETWORK_INFO = "/network/%s/%s/config"
-	STACK_INFO   = "/stack/detail/%s/service"
-	SERVICE_INFO = "/stack/serviceDetail/%s/%s/config"
-	TASK_INFO    = "/node/containerDetail/%s/%s/config"
-	VOLUME_INFO  = "/node/detail/%s/volume"
-)
-
-const (
-	METHOD_GET = "get"
 )
 
 const (
@@ -44,10 +30,10 @@ type SearchApi struct {
 }
 
 type Document struct {
-	ID   string
-	Name string
-	Url  string
-	Type string
+	ID    string
+	Name  string
+	Type  string
+	Param map[string]string
 }
 
 func (searchApi *SearchApi) RegisterApiForSearch(router *gin.Engine, middlewares ...gin.HandlerFunc) {
@@ -78,8 +64,10 @@ func (searchApi *SearchApi) loadData() {
 			searchApi.Index = append(searchApi.Index, node.ID)
 			searchApi.Store[node.ID] = Document{
 				ID:   node.ID,
-				Url:  fmt.Sprintf(NODE_INFO, node.ID),
 				Type: DOCUMENT_NODE,
+				Param: map[string]string{
+					"NodeId": node.ID,
+				},
 			}
 
 			backContext := context.WithValue(context.Background(), "node_id", node.ID)
@@ -91,16 +79,22 @@ func (searchApi *SearchApi) loadData() {
 					searchApi.Store[network.ID] = Document{
 						Name: network.Name,
 						ID:   network.ID,
-						Url:  fmt.Sprintf(NETWORK_INFO, node.ID, network.ID),
 						Type: DOCUMENT_NETWORK,
+						Param: map[string]string{
+							"NodeId":    node.ID,
+							"NetworkID": network.ID,
+						},
 					}
 
 					searchApi.Index = append(searchApi.Index, network.Name)
 					searchApi.Store[network.Name] = Document{
 						Name: network.Name,
 						ID:   network.ID,
-						Url:  fmt.Sprintf(NETWORK_INFO, node.ID, network.ID),
 						Type: DOCUMENT_NETWORK,
+						Param: map[string]string{
+							"NodeId":    node.ID,
+							"NetworkID": network.ID,
+						},
 					}
 				}
 			} else {
@@ -114,8 +108,10 @@ func (searchApi *SearchApi) loadData() {
 					searchApi.Index = append(searchApi.Index, volume.Name)
 					searchApi.Store[volume.Name] = Document{
 						Name: volume.Name,
-						Url:  fmt.Sprintf(VOLUME_INFO, node.ID),
 						Type: DOCUMENT_VOLUME,
+						Param: map[string]string{
+							"NodeId": node.ID,
+						},
 					}
 				}
 			} else {
@@ -131,8 +127,10 @@ func (searchApi *SearchApi) loadData() {
 			searchApi.Index = append(searchApi.Index, stack.Namespace)
 			searchApi.Store[stack.Namespace] = Document{
 				ID:   stack.Namespace,
-				Url:  fmt.Sprintf(STACK_INFO, stack.Namespace),
 				Type: DOCUMENT_STACK,
+				Param: map[string]string{
+					"NameSpace": stack.Namespace,
+				},
 			}
 
 			if services, err := searchApi.
@@ -145,8 +143,11 @@ func (searchApi *SearchApi) loadData() {
 						Document{
 							ID:   service.ID,
 							Name: stack.Namespace,
-							Url:  fmt.Sprintf(SERVICE_INFO, stack.Namespace, service.ID),
 							Type: DOCUMENT_SERVICE,
+							Param: map[string]string{
+								"NameSpace": stack.Namespace,
+								"ServiceId": service.ID,
+							},
 						}
 
 					searchApi.Index =
@@ -155,8 +156,11 @@ func (searchApi *SearchApi) loadData() {
 						Document{
 							ID:   service.ID,
 							Name: stack.Namespace,
-							Url:  fmt.Sprintf(SERVICE_INFO, stack.Namespace, service.ID),
 							Type: DOCUMENT_SERVICE,
+							Param: map[string]string{
+								"NameSpace": stack.Namespace,
+								"ServiceId": service.ID,
+							},
 						}
 
 					if tasks, err := searchApi.
@@ -168,8 +172,11 @@ func (searchApi *SearchApi) loadData() {
 							searchApi.Store[task.ID] =
 								Document{
 									ID:   task.ID,
-									Url:  fmt.Sprintf(TASK_INFO, task.NodeID, task.Status.ContainerStatus.ContainerID),
 									Type: DOCUMENT_TASK,
+									Param: map[string]string{
+										"NodeId":      task.NodeID,
+										"ContainerId": task.Status.ContainerStatus.ContainerID,
+									},
 								}
 						}
 					} else {
