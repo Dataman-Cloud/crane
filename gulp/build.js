@@ -178,15 +178,12 @@ gulp.task('html-replace', ['ng-annotate'], function () {
         addRootSlash: false
     };
 
-    var assets = $.useref.assets();
     var revAll = new $.revAll();
     return gulp.src('index.html')
         .pipe($.inject(templateInjectFile, templateInjectOptions))
-        .pipe(assets)
+        .pipe($.useref()).on('error', $.util.log)
         .pipe($.if('*.js', $.uglify()))
         .pipe($.if('*.css', $.minifyCss()))
-        .pipe(assets.restore())
-        .pipe($.useref().on('error', $.util.log))
         .pipe(revAll.revision().on('error', $.util.log))
         .pipe($.revHash())
         .pipe(gulp.dest('dist/'))
@@ -208,15 +205,12 @@ gulp.task('auth-html-replace', ['html-rename'], function () {
         addRootSlash: false
     };
 
-    var assets = $.useref.assets();
     var revAll = new $.revAll();
     return gulp.src('auth-index.html')
         .pipe($.inject(templateInjectFile, templateInjectOptions))
-        .pipe(assets)
+        .pipe($.useref()).on('error', $.util.log)
         .pipe($.if('*.js', $.uglify()))
         .pipe($.if('*.css', $.minifyCss()))
-        .pipe(assets.restore())
-        .pipe($.useref().on('error', $.util.log))
         .pipe(revAll.revision().on('error', $.util.log))
         .pipe($.revHash())
         .pipe(gulp.dest('dist/'))
