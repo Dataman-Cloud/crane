@@ -4,7 +4,7 @@
  * ws是指websocket.
  */
 BACKEND_URL_BASE = {
-    defaultBase: "http://192.168.59.104/",
+    defaultBase: "http://192.168.59.105/",
     node: null,
     stack: null,
     network: null,
@@ -12,4 +12,4 @@ BACKEND_URL_BASE = {
 };
 
 HOME_URL = '/auth';
-SAMPLES_URL = '/cli/samples/';
+SAMPLES_URL = '/stack/samples/';

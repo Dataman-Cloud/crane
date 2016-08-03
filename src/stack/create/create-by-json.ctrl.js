@@ -47,7 +47,7 @@
         function activate() {
             self.supportReadFile = !!(window.File && window.FileReader && window.FileList && window.Blob);
 
-            getStackExample('test');
+            getStackExample('2048');
             
             // cload timeout is 10, set long for it;
             var timeoutPromise = $timeout(function () {
