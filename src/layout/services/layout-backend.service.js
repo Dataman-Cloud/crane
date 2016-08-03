@@ -14,7 +14,7 @@
             var params = {
                 keyword: data
             };
-            return gHttp.Resource('layout.search').get({params: params});
+            return gHttp.Resource('layout.search').get({params: params, loading: ''});
         }
     }
 })();
