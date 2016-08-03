@@ -64,6 +64,17 @@ func (searchApi *SearchApi) loadData() {
 			searchApi.Index = append(searchApi.Index, node.ID)
 			searchApi.Store[node.ID] = Document{
 				ID:   node.ID,
+				Name: node.Description.Hostname,
+				Type: DOCUMENT_NODE,
+				Param: map[string]string{
+					"NodeId": node.ID,
+				},
+			}
+
+			searchApi.Index = append(searchApi.Index, node.Description.Hostname)
+			searchApi.Store[node.ID] = Document{
+				ID:   node.ID,
+				Name: node.Description.Hostname,
 				Type: DOCUMENT_NODE,
 				Param: map[string]string{
 					"NodeId": node.ID,
