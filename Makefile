@@ -28,7 +28,7 @@ lint:
 	golint ./src/
 
 run: build
-	../bin/rolex
+	./bin/rolex
 
 test:
 	go test ./src/...
