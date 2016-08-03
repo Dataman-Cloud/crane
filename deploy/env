@@ -7,7 +7,7 @@ ROLEX_DOCKER_MACHINE_NAME="manager"
 ROLEX_DB_DSN=root:111111@tcp(localhost:3306)/rolex?charset=utf8&parseTime=true&loc=Local
 ROLEX_DB_DRIVER=mysql
 
-ROLEX_FEATURE_FLAGS=registry,logging,account,catalog
+ROLEX_FEATURE_FLAGS=registry,logging,account,catalog,search
 
 ROLEX_REGISTRY_PRIVATE_KEY_PATH="../doc/registry/private_key.pem"
 ROLEX_REGISTRY_ADDR=http://localhost:5000
