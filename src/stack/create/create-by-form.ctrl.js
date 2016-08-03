@@ -44,7 +44,7 @@
                         }
                     },
                     "RestartPolicy": {
-                        "Condition": "none", //重启模式
+                        "Condition": "any", //重启模式
                         "Delay": null, //重启延迟
                         "MaxAttempts": null,//重启最大尝试次数
                         "Window": null
@@ -70,7 +70,7 @@
                     "Mode": "vip", //vip/dnsrr
                     "Ports": [] //端口
                 },
-                "defaultMode": 'Global',
+                "defaultMode": 'Replicated',
                 "showAdvanceContent": false
             }
         ];
@@ -119,7 +119,7 @@
                         }
                     },
                     "RestartPolicy": {
-                        "Condition": "none", //重启模式
+                        "Condition": "any", //重启模式
                         "Delay": null, //重启延迟
                         "MaxAttempts": null,//重启最大尝试次数
                         "Window": null //重启间隔
@@ -145,7 +145,7 @@
                     "Mode": "vip", //vip/dnsrr
                     "Ports": [] //端口
                 },
-                "defaultMode": 'Global',
+                "defaultMode": 'Replicated',
                 "showAdvanceContent": false
             };
 
