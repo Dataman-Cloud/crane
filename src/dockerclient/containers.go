@@ -24,7 +24,13 @@ func (client *RolexDockerClient) InspectContainer(ctx context.Context, id string
 	if err != nil {
 		return nil, err
 	}
-	return dockerClient.InspectContainer(id)
+
+	container, err := dockerClient.InspectContainer(id)
+	if err != nil {
+		err = SortingError(err)
+	}
+
+	return container, err
 }
 
 func (client *RolexDockerClient) RemoveContainer(ctx context.Context, opts goclient.RemoveContainerOptions) error {
@@ -32,7 +38,13 @@ func (client *RolexDockerClient) RemoveContainer(ctx context.Context, opts gocli
 	if err != nil {
 		return err
 	}
-	return dockerClient.RemoveContainer(opts)
+
+	err = dockerClient.RemoveContainer(opts)
+	if err != nil {
+		err = SortingError(err)
+	}
+
+	return err
 }
 
 func (client *RolexDockerClient) KillContainer(ctx context.Context, opts goclient.KillContainerOptions) error {
@@ -40,7 +52,13 @@ func (client *RolexDockerClient) KillContainer(ctx context.Context, opts goclien
 	if err != nil {
 		return err
 	}
-	return dockerClient.KillContainer(opts)
+
+	err = dockerClient.KillContainer(opts)
+	if err != nil {
+		err = SortingError(err)
+	}
+
+	return err
 }
 
 func (client *RolexDockerClient) RenameContainer(ctx context.Context, opts goclient.RenameContainerOptions) error {
@@ -48,7 +66,13 @@ func (client *RolexDockerClient) RenameContainer(ctx context.Context, opts gocli
 	if err != nil {
 		return err
 	}
-	return dockerClient.RenameContainer(opts)
+
+	err = dockerClient.RenameContainer(opts)
+	if err != nil {
+		err = SortingError(err)
+	}
+
+	return err
 }
 
 func (client *RolexDockerClient) DiffContainer(ctx context.Context, containerID string) ([]goclient.Change, error) {
@@ -56,7 +80,13 @@ func (client *RolexDockerClient) DiffContainer(ctx context.Context, containerID 
 	if err != nil {
 		return nil, err
 	}
-	return dockerClient.ContainerChanges(containerID)
+
+	changes, err := dockerClient.ContainerChanges(containerID)
+	if err != nil {
+		err = SortingError(err)
+	}
+
+	return changes, err
 }
 
 func (client *RolexDockerClient) StopContainer(ctx context.Context, containerId string, timeout uint) error {
@@ -64,7 +94,13 @@ func (client *RolexDockerClient) StopContainer(ctx context.Context, containerId 
 	if err != nil {
 		return err
 	}
-	return dockerClient.StopContainer(containerId, timeout)
+
+	err = dockerClient.StopContainer(containerId, timeout)
+	if err != nil {
+		err = SortingError(err)
+	}
+
+	return err
 }
 
 func (client *RolexDockerClient) StartContainer(ctx context.Context, containerID string, hostconfig *goclient.HostConfig) error {
@@ -72,7 +108,13 @@ func (client *RolexDockerClient) StartContainer(ctx context.Context, containerID
 	if err != nil {
 		return err
 	}
-	return dockerClient.StartContainer(containerID, hostconfig)
+
+	err = dockerClient.StartContainer(containerID, hostconfig)
+	if err != nil {
+		err = SortingError(err)
+	}
+
+	return err
 }
 
 func (client *RolexDockerClient) RestartContainer(ctx context.Context, containerId string, timeout uint) error {
@@ -80,7 +122,13 @@ func (client *RolexDockerClient) RestartContainer(ctx context.Context, container
 	if err != nil {
 		return err
 	}
-	return dockerClient.RestartContainer(containerId, timeout)
+
+	err = dockerClient.RestartContainer(containerId, timeout)
+	if err != nil {
+		err = SortingError(err)
+	}
+
+	return err
 }
 
 func (client *RolexDockerClient) PauseContainer(ctx context.Context, containerID string) error {
@@ -88,7 +136,13 @@ func (client *RolexDockerClient) PauseContainer(ctx context.Context, containerID
 	if err != nil {
 		return err
 	}
-	return dockerClient.PauseContainer(containerID)
+
+	err = dockerClient.PauseContainer(containerID)
+	if err != nil {
+		err = SortingError(err)
+	}
+
+	return err
 }
 
 func (client *RolexDockerClient) UnpauseContainer(ctx context.Context, containerID string) error {
@@ -96,7 +150,13 @@ func (client *RolexDockerClient) UnpauseContainer(ctx context.Context, container
 	if err != nil {
 		return err
 	}
-	return dockerClient.UnpauseContainer(containerID)
+
+	err = dockerClient.UnpauseContainer(containerID)
+	if err != nil {
+		err = SortingError(err)
+	}
+
+	return err
 }
 
 func (client *RolexDockerClient) ResizeContainerTTY(ctx context.Context, containerID string, height, width int) error {

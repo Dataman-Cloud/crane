@@ -175,3 +175,23 @@ func SharedClientCertFiles(config *config.Config) (string, string, string) {
 
 	return tlsCaCert, tlsCert, tlsKey
 }
+
+func SortingError(err error) error {
+	var detailError error
+	switch err.(type) {
+	case *goclient.NoSuchContainer:
+		detailError = rolexerror.NewRolexError(rolexerror.CodeContainerNotFound, err.Error())
+	case *goclient.NoSuchNetwork:
+		detailError = rolexerror.NewRolexError(rolexerror.CodeNetworkNotFound, err.Error())
+	case *goclient.NoSuchNetworkOrContainer:
+		detailError = rolexerror.NewRolexError(rolexerror.CodeNetworkOrContainerNotFound, err.Error())
+	case *goclient.ContainerAlreadyRunning:
+		detailError = rolexerror.NewRolexError(rolexerror.CodeContainerAlreadyRunning, err.Error())
+	case *goclient.ContainerNotRunning:
+		detailError = rolexerror.NewRolexError(rolexerror.CodeContainerNotRunning, err.Error())
+	default:
+		detailError = err
+	}
+
+	return detailError
+}

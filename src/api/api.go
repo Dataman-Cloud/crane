@@ -48,9 +48,9 @@ func (api *Api) HttpUpdateResponse(ctx *gin.Context, err error, data interface{}
 }
 
 func (api *Api) HttpErrorResponse(ctx *gin.Context, err error) {
-	rerror, ok := err.(rolexerror.RolexError)
+	rerror, ok := err.(*rolexerror.RolexError)
 	if !ok {
-		ctx.JSON(http.StatusServiceUnavailable, gin.H{"code": rolexerror.CodeUndefined, "data": err})
+		ctx.JSON(http.StatusServiceUnavailable, gin.H{"code": rolexerror.CodeUndefined, "data": err.Error()})
 		return
 	}
 
@@ -76,14 +76,22 @@ func (api *Api) HttpErrorResponse(ctx *gin.Context, err error) {
 		rolexerror.CodeListTaskParamError,
 		rolexerror.CodeCreateStackParamError,
 		rolexerror.CodeInvalidGroupId,
-		rolexerror.CodeCreateVolumeParamError:
+		rolexerror.CodeCreateVolumeParamError,
+		rolexerror.CodeContainerNotRunning,
+		rolexerror.CodeContainerAlreadyRunning:
 		httpCode = http.StatusBadRequest
+
+	case rolexerror.CodeContainerNotFound,
+		rolexerror.CodeNetworkNotFound,
+		rolexerror.CodeNetworkOrContainerNotFound:
+		httpCode = http.StatusNotFound
+
 	case rolexerror.CodeGetDockerClientError:
 		httpCode = http.StatusServiceUnavailable
 	default:
 		httpCode = http.StatusServiceUnavailable
 	}
 
-	ctx.JSON(httpCode, gin.H{"code": rerror.Code, "data": err})
+	ctx.JSON(httpCode, gin.H{"code": rerror.Code, "data": err.Error()})
 	return
 }

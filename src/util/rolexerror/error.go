@@ -12,6 +12,6 @@ func NewRolexError(code int, message string) error {
 	}
 }
 
-func (e RolexError) Error() string {
+func (e *RolexError) Error() string {
 	return e.Message
 }
