@@ -67,7 +67,21 @@ gulp.task('template-min-auth', ['template-min-utils'], function () {
         .pipe(gulp.dest('dist/src/'));
 });
 
-gulp.task('template-min-user', ['template-min-auth'], function () {
+gulp.task('template-min-layout', ['template-min-auth'], function () {
+    return gulp.src('src/layout/**/*.html')
+        .pipe($.minifyHtml({
+            empty: true,
+            spare: true,
+            quotes: true
+        }))
+        .pipe($.angularTemplatecache('templateCacheHtmlLayout.js', {
+            module: 'app.layout',
+            root: '/src/layout'
+        }))
+        .pipe(gulp.dest('dist/src/'));
+});
+
+gulp.task('template-min-user', ['template-min-layout'], function () {
     return gulp.src('src/user/**/*.html')
         .pipe($.minifyHtml({
             empty: true,
