@@ -104,14 +104,14 @@ func (registry *Registry) Notifications(ctx *gin.Context) {
 func (registry *Registry) TagList(ctx *gin.Context) {
 	var tags []*Tag
 	err := registry.DbClient.Where("namespace = ? AND image = ?", ctx.Param("namespace"), ctx.Param("image")).Find(&tags).Error
+	if err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"code": 1, "data": err.Error()})
+		return
+	}
+
 	for _, tag := range tags {
 		registry.DbClient.Model(&ImageAccess{}).Where("namespace = ? AND image = ? AND digest = ? AND action='pull'", tag.Namespace, tag.Image, tag.Digest).Count(&tag.PullCount)
 		registry.DbClient.Model(&ImageAccess{}).Where("namespace = ? AND image = ? AND digest = ? AND action='push'", tag.Namespace, tag.Image, tag.Digest).Count(&tag.PushCount)
-	}
-
-	if err != nil {
-		ctx.JSON(http.StatusNotFound, gin.H{"code": 1, "data": "fail"})
-		return
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": tags})
@@ -170,7 +170,7 @@ func (registry *Registry) MineCatalog(ctx *gin.Context) {
 	registry.DbClient.Exec("set sql_mode=''")
 	err := registry.DbClient.Where("namespace = ?", account.ID).Order("created_at DESC").Group("image").Find(&tags).Error
 	if err != nil {
-		ctx.JSON(http.StatusServiceUnavailable, gin.H{"code": 1, "data": "fail"})
+		ctx.JSON(http.StatusServiceUnavailable, gin.H{"code": 1, "data": err.Error()})
 		return
 	}
 
@@ -187,7 +187,7 @@ func (registry *Registry) PublicCatalog(ctx *gin.Context) {
 	registry.DbClient.Exec("set sql_mode=''")
 	err := registry.DbClient.Where("Publicity = 1").Order("created_at DESC").Group("namespace,image").Find(&tags).Error
 	if err != nil {
-		ctx.JSON(http.StatusServiceUnavailable, gin.H{"code": 1, "data": "fail"})
+		ctx.JSON(http.StatusServiceUnavailable, gin.H{"code": 1, "data": err.Error()})
 		return
 	}
 
