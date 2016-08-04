@@ -15,6 +15,18 @@
         };
         
         function createDefaultOptions() {
+            var colors = [
+                        '#1f77b4',
+                        '#ff7f0e',
+                        '#2ca02c',
+                        '#d62728',
+                        '#9467bd',
+                        '#8c564b',
+                        '#e377c2',
+                        '#7f7f7f',
+                        '#bcbd22',
+                        '#17becf'
+                      ];
             return {
                 chart: {
                     type: 'lineChart',
@@ -44,18 +56,25 @@
                     },
                     pointSize: 0.1,
                     forceY: [0],
-                    color: [
-                              '#1f77b4',
-                              '#ff7f0e',
-                              '#2ca02c',
-                              '#d62728',
-                              '#9467bd',
-                              '#8c564b',
-                              '#e377c2',
-                              '#7f7f7f',
-                              '#bcbd22',
-                              '#17becf'
-                            ],
+                    color: function (d, i) {
+                        if (!colors[i]) {
+                            while (true) {
+                                var color = '#'+('00000'+(Math.random()*0x1000000<<0).toString(16)).slice(-6);
+                                var duplicate = false;
+                                for (var j=0; j<colors.length; j++) {
+                                    if (colors[j] == color) {
+                                        duplicate = true;
+                                        break;
+                                    }
+                                }
+                                if (!duplicate) {
+                                    colors[i] = color;
+                                    break;
+                                }
+                            }
+                        }
+                        return colors[i];
+                    },
                 },
                 title: {
                     enable: true
