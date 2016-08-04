@@ -25,9 +25,9 @@ var (
 type ServiceStatus struct {
 	ID          string    `json:"ID"`
 	Name        string    `json:"Name"`
-	TaskRunning int       `json:"TaskRunning"`
-	TaskTotal   int       `json:"TaskTotal"`
-	Image       string    `json:"Images"`
+	TaskRunning int       `json:"TaskRunning"`  // 'NumTasksRunning'
+	TaskTotal   int       `json:"TaskTotal"`    // 'NumTasksTotal'
+	Image       string    `json:"Images"`       // 'Images' or 'Image'?
 	Command     string    `json:"Command"`
 	CreatedAt   time.Time `json:"CreatedAt"`
 	UpdatedAt   time.Time `json:"UpdatedAt"`
@@ -35,9 +35,11 @@ type ServiceStatus struct {
 
 // Service scale instance
 type ServiceScale struct {
-	Scale uint64 `json:"Scale"`
+	Scale uint64 `json:"Scale"`  // Maybe call it 'NumInstances'?
 }
 
+// Usually method comment shouldn't repeat the method name, such that you don't have to update both places when you 
+// rename the method, like here. Same for all method comments below.
 // ServiceCreate creates a new Service.
 func (client *RolexDockerClient) CreateService(service swarm.ServiceSpec, options types.ServiceCreateOptions) (types.ServiceCreateResponse, error) {
 	var response types.ServiceCreateResponse
