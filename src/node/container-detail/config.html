@@ -40,8 +40,8 @@
             <table md-table>
                 <thead md-head>
                 <tr md-row>
-                    <th md-column><span>KEY</span></th>
-                    <th md-column><span>VALUE</span></th>
+                    <th md-column><span>键</span></th>
+                    <th md-column><span>值</span></th>
                 </tr>
                 </thead>
                 <tbody md-body>
@@ -104,8 +104,8 @@
             <table md-table>
                 <thead md-head>
                 <tr md-row>
-                    <th md-column><span>KEY</span></th>
-                    <th md-column><span>VALUE</span></th>
+                    <th md-column><span>键</span></th>
+                    <th md-column><span>值</span></th>
                 </tr>
                 </thead>
                 <tbody md-body>
@@ -147,35 +147,35 @@
     </header>
     <div layout="column" flex="80">
         <dl layout="row">
-            <dt flex="20" title="Server Version">镜像</dt>
+            <dt flex="20" title="Image">镜像</dt>
             <dd flex-offset="5" flex="75">{/nodeContainerConfigCtrl.container.Config.Image/}</dd>
         </dl>
         <dl layout="row">
-            <dt flex="20" title="Storage Driver">镜像 digest</dt>
+            <dt flex="20" title="Image Digest">摘要</dt>
             <dd flex-offset="5" flex="75">{/nodeContainerConfigCtrl.container.Image/}</dd>
         </dl>
         <dl layout="row">
-            <dt flex="20" title="Docker Root Dir">容器主机名</dt>
+            <dt flex="20" title="Container Hostname">容器主机名</dt>
             <dd flex-offset="5" flex="75">{/nodeContainerConfigCtrl.container.Config.Hostname/}</dd>
         </dl>
         <dl layout="row">
-            <dt flex="20">宿主机网络</dt>
+            <dt flex="20" title="NetworkMode">网络模式</dt>
             <dd flex-offset="5" flex="75">{/nodeContainerConfigCtrl.container.HostConfig.NetworkMode/}</dd>
         </dl>
         <dl layout="row">
-            <dt flex="20">hostname 文件宿主机目录</dt>
+            <dt flex="20" title="HostnamePath">hostname 文件</dt>
             <dd flex-offset="5" flex="75">{/nodeContainerConfigCtrl.container.HostnamePath/}</dd>
         </dl>
         <dl layout="row">
-            <dt flex="20">host 文件宿主机目录</dt>
+            <dt flex="20" title="HostsPath">host 文件</dt>
             <dd flex-offset="5" flex="75">{/nodeContainerConfigCtrl.container.HostsPath/}</dd>
         </dl>
         <dl layout="row">
-            <dt flex="20">log 文件宿主机目录</dt>
+            <dt flex="20" title="LogPath">log 文件</dt>
             <dd flex-offset="5" flex="75">{/nodeContainerConfigCtrl.container.LogPath/}</dd>
         </dl>
         <dl layout="row">
-            <dt flex="20">resolv.conf 文件宿主机目录</dt>
+            <dt flex="20" title="ResolvConfPath">resolv.conf 文件</dt>
             <dd flex-offset="5" flex="75">{/nodeContainerConfigCtrl.container.ResolvConfPath/}</dd>
         </dl>
     <div>

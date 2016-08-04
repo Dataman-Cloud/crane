@@ -4,10 +4,10 @@
             <div class="info" flex="95" layout="column">
                 <h2><i class="fa fa-cube" aria-hidden="true"></i> {/nodeContainerDetailCtrl.container.Name.substring(1)/}</h2>
                 <dl layout="row" layout-wrap layout-align="start end">
-                    <dt flex="none">创建时间</dt>
-                    <dd flex="none">{/nodeContainerDetailCtrl.container.Created | date: 'yyyy-MM-dd HH:mm:ss'/}</dd>
                     <dt flex="none">状态</dt>
                     <dd flex="none">{/CONTAINER_STATUS_LABELS[nodeContainerDetailCtrl.container.State.Status] || '未知'/}</dd>
+                    <dt flex="none">创建时间</dt>
+                    <dd flex="none">{/nodeContainerDetailCtrl.container.Created | date: 'yyyy-MM-dd HH:mm:ss'/}</dd>
                     <dt flex="none">驱动</dt>
                     <dd flex="none">{/nodeContainerDetailCtrl.container.Driver || '未知'/}</dd>
                 </dl>
