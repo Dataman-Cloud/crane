@@ -23,33 +23,20 @@ Rolex Client
 
 #### sample 1
 
-```bash
-./rolex-cli.py create_stack -G1 -ncli_created -f samples/test.json
+```
+./rolex-cli.py create_stack -G1 -ncli -f ../stack_samples/wordpress.json
 ```
 
 #### sample 2
 
-```bash
-./rolex-cli.py create_stack -G1 -ncli2_created -f samples/double_services.json
 ```
-
+./rolex-cli.py create_stack -G1 -ncli_mysql_web -f ../stack_samples/mysql_display.json
+```
 
 #### sample 3
 
 ```
-./rolex-cli.py create_stack -G1 -ncli -f samples/wordpress.json
-```
-
-#### sample 4
-
-```
-./rolex-cli.py create_stack -G1 -ncli_mysql_web -f samples/mysql_display.json
-```
-
-#### sample 5
-
-```
-./rolex-cli.py create_stack -G1 -ncli_2048 -f samples/2048.json
+./rolex-cli.py create_stack -G1 -ncli_2048 -f ../stack_samples/2048.json
 ```
 
 ### list stack
