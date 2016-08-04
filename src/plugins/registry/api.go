@@ -22,16 +22,26 @@ import (
 const manifestPattern = `^application/vnd.docker.distribution.manifest.v\d`
 
 type Registry struct {
-	Config   *config.Config
-	DbClient *gorm.DB
+	Config        *config.Config
+	DbClient      *gorm.DB
+	Authenticator auth.Authenticator
 }
 
 func NewRegistry(Config *config.Config) *Registry {
 	registry := &Registry{Config: Config, DbClient: db.DB()}
+
+	if registry.Config.AccountAuthenticator == "db" {
+		registry.Authenticator = authenticators.NewDBAuthenticator()
+	} else if registry.Config.AccountAuthenticator == "ldap" {
+	} else {
+		registry.Authenticator = authenticators.NewDefaultAuthenticator()
+	}
+
 	return registry
 }
 
 func (registry *Registry) MigriateTable() {
+	registry.DbClient.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&Image{})
 	registry.DbClient.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&Tag{})
 	registry.DbClient.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&ImageAccess{})
 }
@@ -48,13 +58,13 @@ func (registry *Registry) Token(ctx *gin.Context) {
 		return
 	}
 
-	accesses := ParseResourceActions(scope)
+	accesses := registry.ParseResourceActions(scope)
 	for _, access := range accesses {
-		FilterAccess(username, authenticated, access)
+		registry.FilterAccess(username, authenticated, access)
 	}
 
 	//create token
-	rawToken, err := MakeToken(registry.Config, username, service, accesses)
+	rawToken, err := registry.MakeToken(registry.Config, username, service, accesses)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{})
 		return
@@ -64,15 +74,7 @@ func (registry *Registry) Token(ctx *gin.Context) {
 }
 
 func (registry *Registry) Authenticate(principal, password string) bool {
-	var authenticator auth.Authenticator
-	if registry.Config.AccountAuthenticator == "db" {
-		authenticator = authenticators.NewDBAuthenticator()
-	} else if registry.Config.AccountAuthenticator == "ldap" {
-	} else {
-		authenticator = authenticators.NewDefaultAuthenticator()
-	}
-
-	_, err := authenticator.Login(&auth.Account{Email: principal, Password: password})
+	_, err := registry.Authenticator.Login(&auth.Account{Email: principal, Password: password})
 	if err != nil {
 		return false
 	}
@@ -166,40 +168,38 @@ func (registry *Registry) MineCatalog(ctx *gin.Context) {
 	}
 	account := account_.(auth.Account)
 
-	var tags []*Tag
-	registry.DbClient.Exec("set sql_mode=''")
-	err := registry.DbClient.Where("namespace = ?", account.ID).Order("created_at DESC").Group("image").Find(&tags).Error
+	var images []*Image
+	err := registry.DbClient.Where("namespace = ?", RegistryNamespaceForAccount(account)).Order("created_at DESC").Find(&images).Error
 	if err != nil {
 		ctx.JSON(http.StatusServiceUnavailable, gin.H{"code": 1, "data": err.Error()})
 		return
 	}
 
-	for _, tag := range tags {
-		registry.DbClient.Model(&ImageAccess{}).Where("namespace = ? AND image = ? AND action='pull'", tag.Namespace, tag.Image).Count(&tag.PullCount)
-		registry.DbClient.Model(&ImageAccess{}).Where("namespace = ? AND image = ? AND action='push'", tag.Namespace, tag.Image).Count(&tag.PushCount)
+	for _, image := range images {
+		registry.DbClient.Model(&ImageAccess{}).Where("namespace = ? AND image = ? AND action='pull'", image.Namespace, image.Image).Count(&image.PullCount)
+		registry.DbClient.Model(&ImageAccess{}).Where("namespace = ? AND image = ? AND action='push'", image.Namespace, image.Image).Count(&image.PushCount)
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": tags})
+	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": images})
 }
 
 func (registry *Registry) PublicCatalog(ctx *gin.Context) {
-	var tags []*Tag
-	registry.DbClient.Exec("set sql_mode=''")
-	err := registry.DbClient.Where("Publicity = 1").Order("created_at DESC").Group("namespace,image").Find(&tags).Error
+	var images []*Image
+	err := registry.DbClient.Where("Publicity = 1").Order("created_at DESC").Find(&images).Error
 	if err != nil {
 		ctx.JSON(http.StatusServiceUnavailable, gin.H{"code": 1, "data": err.Error()})
 		return
 	}
 
-	for _, tag := range tags {
-		registry.DbClient.Model(&ImageAccess{}).Where("namespace = ? AND image = ? AND action='pull'", tag.Namespace, tag.Image).Count(&tag.PullCount)
-		registry.DbClient.Model(&ImageAccess{}).Where("namespace = ? AND image = ? AND action='push'", tag.Namespace, tag.Image).Count(&tag.PushCount)
+	for _, image := range images {
+		registry.DbClient.Model(&ImageAccess{}).Where("namespace = ? AND image = ? AND action='pull'", image.Namespace, image.Image).Count(&image.PullCount)
+		registry.DbClient.Model(&ImageAccess{}).Where("namespace = ? AND image = ? AND action='push'", image.Namespace, image.Image).Count(&image.PushCount)
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": tags})
+	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": images})
 }
 
-func (registry *Registry) TagPublicity(ctx *gin.Context) {
+func (registry *Registry) ImagePublicity(ctx *gin.Context) {
 	var param struct {
 		Publicity uint8 `json:"Publicity"`
 	}
@@ -216,11 +216,11 @@ func (registry *Registry) TagPublicity(ctx *gin.Context) {
 		return
 	}
 
-	tag := Tag{}
-	registry.DbClient.Where("namespace = ? AND image = ? AND tag = ?", ctx.Param("namespace"), ctx.Param("image"), ctx.Param("reference")).Find(&tag)
-	err := registry.DbClient.Model(&tag).UpdateColumn("Publicity", param.Publicity).Error
+	var image Image
+	registry.DbClient.Where("namespace = ? AND image = ? ", ctx.Param("namespace"), ctx.Param("image")).Find(&image)
+	err := registry.DbClient.Model(&image).UpdateColumn("Publicity", param.Publicity).Error
 	if err != nil {
-		ctx.JSON(http.StatusServiceUnavailable, gin.H{"code": 1, "data": "fail"})
+		ctx.JSON(http.StatusServiceUnavailable, gin.H{"code": 1, "data": err.Error()})
 		return
 	}
 
@@ -235,6 +235,17 @@ func (registry *Registry) HandleNotification(n Event) {
 		namespace := strings.Split(n.Target.Repository, "/")[0]
 		image := strings.Split(n.Target.Repository, "/")[1]
 
+		// create or update an image
+		var modelImage Image
+		err := registry.DbClient.Where("namespace = ? AND image = ?", namespace, image).Find(&modelImage).Error
+		if err != nil && strings.Contains(err.Error(), "not found") {
+			modelImage.Namespace = namespace
+			modelImage.Image = image
+			if namespace == "library" {
+				modelImage.Publicity = 1
+			}
+		}
+
 		resp, _, err := registry.RegistryAPIGet(fmt.Sprintf("%s/%s/tags/list", namespace, image), n.Actor.Name)
 		if err != nil {
 			return
@@ -248,6 +259,14 @@ func (registry *Registry) HandleNotification(n Event) {
 			return
 		}
 
+		modelImage.LatestTag = respBody.Tags[0]
+		if modelImage.ID != 0 {
+			registry.DbClient.Model(&modelImage).Updates(Image{LatestTag: modelImage.LatestTag})
+		} else {
+			registry.DbClient.Save(&modelImage)
+		}
+
+		// create or update tag
 		for _, t := range respBody.Tags {
 			tag := &Tag{}
 			err = registry.DbClient.Where("namespace = ? AND image = ? AND tag = ? ", namespace, image, t).Find(tag).Error
@@ -255,10 +274,6 @@ func (registry *Registry) HandleNotification(n Event) {
 				tag.Namespace = namespace
 				tag.Image = image
 				tag.Tag = t
-				tag.Publicity = 0
-				if namespace == "library" {
-					tag.Publicity = 1
-				}
 				registry.DbClient.Save(tag)
 			}
 

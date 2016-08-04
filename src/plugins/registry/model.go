@@ -41,6 +41,18 @@ type Request struct {
 	UserAgent string
 }
 
+type Image struct {
+	gorm.Model
+
+	LatestTag string `json:"LatestTag"`
+	Namespace string `json:"Namespace" gorm:"not null"`
+	Image     string `json:"Image" gorm:"not null"`
+	Publicity uint8  `json:"Publicity" gorm:"not null default 0"`
+
+	PushCount int64 `json:"PushCount" gorm:"-"`
+	PullCount int64 `json:"PullCount" gorm:"-"`
+}
+
 type Tag struct {
 	gorm.Model
 
@@ -49,7 +61,6 @@ type Tag struct {
 	Namespace string `json:"Namespace" gorm:"not null"`
 	Image     string `json:"Image" gorm:"not null"`
 	Size      uint64 `json:"Size"`
-	Publicity uint8  `json:"Publicity" gorm:"not null default 0"`
 
 	PushCount int64 `json:"PushCount" gorm:"-"`
 	PullCount int64 `json:"PullCount" gorm:"-"`
