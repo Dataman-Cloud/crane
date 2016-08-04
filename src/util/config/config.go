@@ -28,10 +28,6 @@ type Config struct {
 	RegistryPrivateKeyPath string
 	RegistryAddr           string
 
-	// swarm cluster
-	RolexSecret string
-	RolexCaHash string
-
 	// To be removed, temp
 	NodePort string
 
@@ -69,8 +65,6 @@ type EnvEntry struct {
 	ROLEX_REGISTRY_PRIVATE_KEY_PATH string `required:"false"`
 	ROLEX_REGISTRY_ADDR             string `required:"false"`
 
-	ROLEX_SECRET  string `required:"true"`
-	ROLEX_CA_HASH string `required:"true"`
 	// To be removed
 	ROLEX_NODE_PORT string `required:"true"`
 
@@ -97,9 +91,6 @@ func InitConfig(envFile string) *Config {
 	config.DbDriver = envEntry.ROLEX_DB_DRIVER
 	config.DbDSN = envEntry.ROLEX_DB_DSN
 	config.FeatureFlags = strings.SplitN(envEntry.ROLEX_FEATURE_FLAGS, ",", -1)
-
-	config.RolexSecret = envEntry.ROLEX_SECRET
-	config.RolexCaHash = envEntry.ROLEX_CA_HASH
 
 	config.RegistryPrivateKeyPath = envEntry.ROLEX_REGISTRY_PRIVATE_KEY_PATH
 	config.RegistryAddr = envEntry.ROLEX_REGISTRY_ADDR
