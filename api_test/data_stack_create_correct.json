@@ -1,0 +1,1 @@
+{"Namespace":"foobar","Stack":{"Services":{"redis":{"Name":"redis","TaskTemplate":{"ContainerSpec":{"Image":"redis@sha256:b50f15d427aea5b579f9bf972ab82ff8c1c47bffc0481b225c6a714095a9ec34","network":["bridge"]}}}},"Version":"0.1"}}

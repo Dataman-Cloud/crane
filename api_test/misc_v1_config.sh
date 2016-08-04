@@ -7,17 +7,17 @@ assert_200 "get" "misc/v1/config"
 http --check-status --ignore-stdin --timeout=4.5 get $SERVER_PATH/misc/v1/config | jq .data.FeatureFlags | grep account &>/dev/null
 if [  "$?" == "0" ] 
 then
-  msg "account enabled"
+  ok "feature account enabled"
 fi
 
 http --check-status --ignore-stdin --timeout=4.5 get $SERVER_PATH/misc/v1/config | jq .data.FeatureFlags | grep registry &>/dev/null
 if [  "$?" == "0" ] 
 then
-  msg "registry enabled"
+  ok "feature registry enabled"
 fi
 
 http --check-status --ignore-stdin --timeout=4.5 get $SERVER_PATH/misc/v1/config | jq .data.FeatureFlags | grep logging &>/dev/null
 if [  "$?" == "0" ] 
 then
-  msg "logging enabled"
+  ok "feature logging enabled"
 fi

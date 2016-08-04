@@ -7,4 +7,6 @@ http --check-status --ignore-stdin --timeout=4.5 get $SERVER_PATH/api/v1/network
 if [ "$?" != "0" ]
 then
   fail "list networks failed"
+else
+  ok "list networks success"
 fi

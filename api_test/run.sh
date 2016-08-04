@@ -12,3 +12,8 @@
 . ./api_v1_nodes_get.sh
 . ./api_v1_networks.sh
 . ./api_v1_networks_get.sh
+
+. ./api_v1_stacks_create.sh
+. ./api_v1_stack_get.sh
+. ./api_v1_stacks_list.sh
+. ./api_v1_stack_delete.sh
