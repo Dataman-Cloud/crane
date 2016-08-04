@@ -2,7 +2,12 @@
 
 
 first_network=`http --check-status --ignore-stdin --timeout=4.5 get $SERVER_PATH/api/v1/networks Authorization:$token | jq ".data[0].Id" | tr -d '"'`
-msg "got first $first_network"
+if [ -z "$first_network" ]
+then
+  fail "got the first network fail"
+else
+  ok "got the first network $first_network"
+fi
 
 
 # inspect network
@@ -11,4 +16,6 @@ http --check-status --ignore-stdin --timeout=4.5 get $SERVER_PATH/api/v1/network
 if [ "$?" != "0" ]
 then
   fail "inspect networks failed"
+else
+  ok "inspect network success"
 fi
