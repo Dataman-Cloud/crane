@@ -126,32 +126,27 @@
 
                             <div data-ng-show="serve.showAdvanceContent" class="check-element animate-show">
                                 <div layout="row" layout-align="end center" class="form-group form-group-radio">
-                                    <label flex="15">服务模式</label>
+                                    <label flex="15">任务数</label>
                                     <div flex="30" layout="column">
                                         <div flex>
                                             <md-radio-group data-ng-model="serve.defaultMode" layout="row"
                                                             aria-label="defaultMode"
                                                             data-ng-change="stackCreateByFormCtrl.modeChange(serve)">
-                                                <md-radio-button value="Replicated" class="md-accent" flex>Replicated</md-radio-button>
-                                                <md-radio-button value="Global" class="md-accent" flex>Global</md-radio-button>
-                                            </md-radio-group>
-                                        </div>
-                                    </div>
-                                    <div flex></div>
-                                </div>
+                                                <md-radio-button value="Replicated" class="md-accent" flex>固定数</md-radio-button>
+                                                <div flex="50" layout="column" data-ng-if="serve.defaultMode === 'Replicated'">
+                                                    <div flex="none">
+                                                        <input type="number" class="form-input" min="0"
+                                                               data-ng-required="serve.defaultMode === 'Replicated'"
+                                                               data-ng-model="serve.Mode.Replicated.Replicas" name="replicas">
+                                                    </div>
+                                                    <div ng-messages="staticForm.replicas.$error"
+                                                         ng-if="staticForm.replicas.$dirty"
+                                                         role="alert">
+                                                    </div>
+                                                </div>
 
-                                <div layout="row" layout-align="end start" class="form-group form-group-input"
-                                     data-ng-if="serve.defaultMode === 'Replicated'">
-                                    <label flex="15">任务数</label>
-                                    <div flex="50" layout="column">
-                                        <div flex="none">
-                                            <input type="number" class="form-input" min="0"
-                                                   data-ng-required="serve.defaultMode === 'Replicated'"
-                                                   data-ng-model="serve.Mode.Replicated.Replicas" name="replicas">
-                                        </div>
-                                        <div ng-messages="staticForm.replicas.$error"
-                                             ng-if="staticForm.replicas.$dirty"
-                                             role="alert">
+                                                <md-radio-button value="Global" class="md-accent" flex>一主机一任务</md-radio-button>
+                                            </md-radio-group>
                                         </div>
                                     </div>
                                     <div flex></div>
