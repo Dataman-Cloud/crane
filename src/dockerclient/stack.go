@@ -141,6 +141,7 @@ func (client *RolexDockerClient) FilterServiceByStack(namespace string, opts typ
 		if name != namespace {
 			continue
 		}
+		log.Infof("*****%+v", service)
 
 		stackServices = append(stackServices, service)
 	}

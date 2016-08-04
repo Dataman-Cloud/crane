@@ -2,9 +2,11 @@ package dockerclient
 
 import (
 	"bufio"
+	"fmt"
 	"io"
 
 	"github.com/Dataman-Cloud/rolex/src/dockerclient/model"
+	"github.com/Dataman-Cloud/rolex/src/util/rolexerror"
 
 	log "github.com/Sirupsen/logrus"
 	goclient "github.com/fsouza/go-dockerclient"
@@ -216,48 +218,49 @@ func logReader(input *io.PipeReader, message chan string) {
 	}
 }
 
-func (client *RolexDockerClient) StatsContainer(ctx context.Context, containerId string, stats chan *model.ContainerStat) {
+func (client *RolexDockerClient) StatsContainer(ctx context.Context, opts model.ContainerStatOptions) error {
 	dockerClient, err := client.DockerClient(ctx)
 	if err != nil {
-		log.Error("read container log error: ", err)
-		return
-	}
-	stat := make(chan *goclient.Stats)
-	sd := make(chan bool)
-	opts := goclient.StatsOptions{
-		ID:     containerId,
-		Stats:  stat,
-		Stream: true,
-		Done:   sd,
+		return err
 	}
 
-	container, err := dockerClient.InspectContainer(containerId)
+	cId := opts.ID
+	container, err := dockerClient.InspectContainer(cId)
 	if err != nil {
-		log.Errorf("stats container get container by containerId error: %v", err)
-		return
+		return err
 	}
-	go func(s chan *goclient.Stats, msg chan *model.ContainerStat, sdone chan bool) {
-		defer func() {
-			recover()
-			sdone <- true
-		}()
 
-		for {
-			select {
-			case data := <-s:
-				msg <- &model.ContainerStat{
-					Stat:        data,
-					NodeId:      container.Config.Labels["com.docker.swarm.node.id"],
-					ServiceId:   container.Config.Labels["com.docker.swarm.service.id"],
-					ServiceName: container.Config.Labels["com.docker.swarm.service.name"],
-					TaskId:      container.Config.Labels["com.docker.swarm.task.id"],
-					TaskName:    container.Config.Labels["com.docker.swarm.task.name"],
-					ContainerId: container.ID,
-				}
-			}
+	chnError := make(chan error, 1)
+	defer close(chnError)
+
+	statOpts := goclient.StatsOptions{
+		ID:     cId,
+		Stats:  opts.Stats,
+		Stream: opts.Stream,
+		Done:   opts.Done,
+	}
+	go func() {
+		chnError <- dockerClient.Stats(statOpts)
+	}()
+
+	containerSt := &model.ContainerStat{
+		NodeId:      container.Config.Labels["com.docker.swarm.node.id"],
+		ServiceId:   container.Config.Labels["com.docker.swarm.service.id"],
+		ServiceName: container.Config.Labels["com.docker.swarm.service.name"],
+		TaskId:      container.Config.Labels["com.docker.swarm.task.id"],
+		TaskName:    container.Config.Labels["com.docker.swarm.task.name"],
+		ContainerId: container.ID,
+	}
+
+	defer close(opts.RolexContainerStats)
+	for {
+		select {
+		case streamErr := <-chnError:
+			errMsg := fmt.Sprintf("stats of container %s stream close with error: %s", cId, streamErr.Error())
+			return rolexerror.NewRolexError(rolexerror.CodeContainerNotFound, errMsg)
+		case data := <-opts.Stats:
+			containerSt.Stat = data
+			opts.RolexContainerStats <- containerSt
 		}
-	}(stat, stats, sd)
-
-	err = dockerClient.Stats(opts)
-	log.Infof("stats of container error: %v", err)
+	}
 }
