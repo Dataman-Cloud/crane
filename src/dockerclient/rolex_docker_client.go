@@ -15,6 +15,8 @@ import (
 	"github.com/Dataman-Cloud/rolex/src/util/rolexerror"
 
 	log "github.com/Sirupsen/logrus"
+	// 'goclient' as a name doesn't tell it is a docker client. Maybe just call it docker, such that you can say
+	// 'docker.Client' below.
 	goclient "github.com/fsouza/go-dockerclient"
 	"golang.org/x/net/context"
 )
@@ -31,14 +33,16 @@ type RolexDockerClient struct {
 	DockerClientInterface
 
 	// client connect to swarm cluster
-	swarmClient *goclient.Client
+	swarmClient *goclient.Client  // It seems better to name this as swarmManager 
 	// map clients connect to individual node
-	dockerClients map[string]*goclient.Client
+	dockerClients map[string]*goclient.Client  // It seems better to name this as swarmWorkers
 	// mutex control writing to dockerClients
-	DockerClientMutex *sync.Mutex
+	DockerClientMutex *sync.Mutex  // Does this need to be exported?
 
+	// It seems to me the following three fields also deserve to be unexported and have Getters, like 'swarmClient'. 
 	// http client shared both for cluster connection & client connection
 	SharedHttpClient  *http.Client
+	// Add some comments here about the difference between this and 'swarmClient' above.
 	SwarmHttpEndpoint string
 
 	Config *config.Config
@@ -55,9 +59,20 @@ func NewRolexDockerClient(config *config.Config) (*RolexDockerClient, error) {
 		DockerClientMutex: &sync.Mutex{},
 	}
 
+// It seems to me that the following arrangement would be better:
+//	client.swarmClient, err = CreateSwarmClientBasedOnDockerTlsVerify(config, API_VERSION)
+//	if err != nil { 
+//		// handle error
+//	}
+//
+// 	client.SharedHttpClient, err = CreateSharedHttpClientBasedOnDockerTlsVerify(config)
+//	if err != nil { 
+//		// handle error
+//	}
+// This way the 'err' value won't be overwritten, and the layering is more clear.
 	if config.DockerTlsVerify == "1" {
 		client.swarmClient, err = client.NewGoDockerClientTls(config.DockerHost, API_VERSION)
-		client.SharedHttpClient, err = client.NewHttpClientTls()
+		client.SharedHttpClient, err = client.NewHttpClientTls()  // The last 'err' is overwritten.
 	} else {
 		client.swarmClient, err = goclient.NewVersionedClient(config.DockerHost, API_VERSION)
 		client.SharedHttpClient = &http.Client{Timeout: defaultHttpRequestTimeout}
@@ -122,6 +137,8 @@ func (client *RolexDockerClient) DockerClient(ctx context.Context) (*goclient.Cl
 		return nil, err
 	}
 
+	// The following lock is too late. After the test on line 111, multiple threads can create multiple new
+	// 'dockerClient' objects, although only one object will be saved in the map.
 	client.DockerClientMutex.Lock()
 	defer client.DockerClientMutex.Unlock()
 	client.dockerClients[node_id] = dockerClient
@@ -176,6 +193,7 @@ func SharedClientCertFiles(config *config.Config) (string, string, string) {
 	return tlsCaCert, tlsCert, tlsKey
 }
 
+// Should this be moved to 'util' package? Should it be renamed as 'ToRolexError'?
 func SortingError(err error) error {
 	var detailError error
 	switch err.(type) {
