@@ -7,7 +7,6 @@
         </header>
 
         <div class="main-content">
-    
             <section class="info-view" layout="row">
                 <header layout="row" flex="20">
                     <h4>基本信息</h4>
@@ -25,13 +24,35 @@
                         <dt flex="20">FeatureFlags</dt>
                         <dd flex-offset="5" flex="75">{/miscConfigCtrl.rolexconfig.FeatureFlags || '未配置'/}</dd>
                     </dl>
+                <div>
+                <div class="alert alert-warning text-center" data-ng-if="!miscConfigCtrl.rolexconfig">
+                    未查询到信息
+                </div>
+            </section>
+            <section class="info-view" layout="row">
+                <header layout="row" flex="20">
+                    <h4>集群信息</h4>
+                </header>
+                <div layout="column" flex="80">
                     <dl layout="row">
-                        <dt flex="20">RolexSecret</dt>
-                        <dd flex-offset="5" flex="75">{/miscConfigCtrl.rolexconfig.RolexSecret/}</dd>
+                        <dt flex="20">集群名称</dt>
+                        <dd flex-offset="5" flex="75">{/miscConfigCtrl.rolexconfig.SwarmInfo.Spec.Name/}</dd>
                     </dl>
                     <dl layout="row">
-                        <dt flex="20">RolexCaHash</dt>
-                        <dd flex-offset="5" flex="75">{/miscConfigCtrl.rolexconfig.RolexCaHash/}</dd>
+                        <dt flex="20">管理节点 Token</dt>
+                        <dd flex-offset="5" flex="75">{/miscConfigCtrl.rolexconfig.SwarmInfo.JoinTokens.Manager/}</dd>
+                    </dl>
+                    <dl layout="row">
+                        <dt flex="20">工作节点 Token</dt>
+                        <dd flex-offset="5" flex="75">{/miscConfigCtrl.rolexconfig.SwarmInfo.JoinTokens.Worker/}</dd>
+                    </dl>
+                    <dl layout="row">
+                        <dt flex="20">更新时间</dt>
+                        <dd flex-offset="5" flex="75">{/miscConfigCtrl.rolexconfig.SwarmInfo.UpdatedAt | date: 'yyyy-MM-dd HH:mm:ss'/}</dd>
+                    </dl>
+                    <dl layout="row">
+                        <dt flex="20">创建时间</dt>
+                        <dd flex-offset="5" flex="75">{/miscConfigCtrl.rolexconfig.SwarmInfo.CreatedAt | date: 'yyyy-MM-dd HH:mm:ss'/}</dd>
                     </dl>
                 <div>
                 <div class="alert alert-warning text-center" data-ng-if="!miscConfigCtrl.rolexconfig">
