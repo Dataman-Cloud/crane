@@ -32,9 +32,9 @@ fi
 stack_name=`cat data_stack_create_correct.json | jq .Namespace | tr -d '"'`
 
 #msg "create a stack from wrong data"
-#http --check-status --ignore-stdin --timeout=4.5 post $SERVER_PATH/api/v1/stacks?group_id=$group_id @data_stack_create_wrong.json Authorization:$token
+#http --check-status --ignore-stdin --timeout=4.5 post $SERVER_PATH/api/v1/stacks?group_id=$group_id @data_stack_create_incorrect.json Authorization:$token
 
-#http --check-status --ignore-stdin --timeout=4.5 post $SERVER_PATH/api/v1/stacks?group_id=$group_id @data_stack_create_wrong.json Authorization:$token | jq .data | grep "success" 1>/dev/null 2>&1
+#http --check-status --ignore-stdin --timeout=4.5 post $SERVER_PATH/api/v1/stacks?group_id=$group_id @data_stack_create_incorrect.json Authorization:$token | jq .data | grep "success" 1>/dev/null 2>&1
 #if [ "$?" != "4" ]
 #then
   #fail "create stack error"
