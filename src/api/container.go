@@ -217,7 +217,7 @@ func (api *Api) StatsContainer(ctx *gin.Context) {
 	defer close(chnMsg)
 	chnDone := make(chan bool)
 	defer close(chnDone)
-	chnSt := make(chan *goclient.Stats) // closed by go-dockerclient
+	chnContainerStats := make(chan *goclient.Stats) // closed by go-dockerclient
 
 	chnErr := make(chan error, 1)
 	defer close(chnErr)
@@ -225,7 +225,7 @@ func (api *Api) StatsContainer(ctx *gin.Context) {
 	cId := ctx.Param("container_id")
 	opts := model.ContainerStatOptions{
 		ID:                  cId,
-		Stats:               chnSt,
+		Stats:               chnContainerStats,
 		Stream:              true,
 		Done:                chnDone,
 		RolexContainerStats: chnMsg,
@@ -242,7 +242,7 @@ func (api *Api) StatsContainer(ctx *gin.Context) {
 		select {
 		case <-clientGone:
 			opts.ClientClosed = true
-			log.Infof("Status stream of container %s closed by client", cId)
+			log.Infof("Stats stream of container %s closed by client", cId)
 			chnDone <- true
 		case data := <-chnMsg:
 			if !opts.ClientClosed {
@@ -250,7 +250,7 @@ func (api *Api) StatsContainer(ctx *gin.Context) {
 				ssEvent.Render(w)
 			}
 		case err := <-chnErr:
-			log.Errorf("Status container of %s stop with error: %s", cId, err)
+			log.Errorf("Stats container of %s stop with error: %s", cId, err)
 			return
 		}
 	}

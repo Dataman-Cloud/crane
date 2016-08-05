@@ -179,8 +179,8 @@ func (api *Api) StatsService(ctx *gin.Context) {
 	}
 
 	for _, task := range tasks {
-		logContext := context.WithValue(context.Background(), "node_id", task.NodeID)
-		go api.GetDockerClient().StatsContainer(logContext, model.ContainerStatOptions{})
+		statsContext := context.WithValue(context.Background(), "node_id", task.NodeID)
+		go api.GetDockerClient().StatsContainer(statsContext, model.ContainerStatOptions{})
 	}
 
 	ctx.Stream(func(w io.Writer) bool {
