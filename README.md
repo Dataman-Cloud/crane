@@ -7,9 +7,9 @@
 执行命令
 
   ```bash
-  MANAGER_HTTP_ENTRYPOINT=http://192.168.59.105:2375 ./build-and-start.sh
+  ROLEX_DOCKER_HOST=http://192.168.59.105:2375 ./build-and-start.sh
   ```
-其中 MANAGER_HTTP_ENTRYPOINT 是 `swarm manager` 节点的 docker http socket 入口，譬如 http://192.168.59.105:2375
+其中 ROLEX_DOCKER_HOST 是 `swarm manager` 节点的 docker http socket 入口，譬如 http://192.168.59.105:2375
 
 ## Open ports between the hosts
 
