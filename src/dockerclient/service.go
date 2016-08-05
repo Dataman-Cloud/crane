@@ -27,7 +27,7 @@ type ServiceStatus struct {
 	Name        string    `json:"Name"`
 	TaskRunning int       `json:"TaskRunning"`  // 'NumTasksRunning'
 	TaskTotal   int       `json:"TaskTotal"`    // 'NumTasksTotal'
-	Image       string    `json:"Images"`       // 'Images' or 'Image'?
+	Image       string    `json:"Images"`       // `json:"Image"`
 	Command     string    `json:"Command"`
 	CreatedAt   time.Time `json:"CreatedAt"`
 	UpdatedAt   time.Time `json:"UpdatedAt"`
