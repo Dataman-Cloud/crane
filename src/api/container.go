@@ -212,17 +212,46 @@ func (api *Api) LogsContainer(ctx *gin.Context) {
 
 func (api *Api) StatsContainer(ctx *gin.Context) {
 	rolexContext, _ := ctx.Get("rolexContext")
-	stats := make(chan *model.ContainerStat)
 
-	defer close(stats)
+	chnMsg := make(chan *model.ContainerStat)
+	defer close(chnMsg)
+	chnDone := make(chan bool)
+	defer close(chnDone)
+	chnContainerStats := make(chan *goclient.Stats) // closed by go-dockerclient
 
-	go api.GetDockerClient().StatsContainer(rolexContext.(context.Context), ctx.Param("container_id"), stats)
+	chnErr := make(chan error, 1)
+	defer close(chnErr)
 
-	ctx.Stream(func(w io.Writer) bool {
-		sse.Event{
-			Event: "container-stats",
-			Data:  <-stats,
-		}.Render(ctx.Writer)
-		return true
-	})
+	cId := ctx.Param("container_id")
+	opts := model.ContainerStatOptions{
+		ID:                  cId,
+		Stats:               chnContainerStats,
+		Stream:              true,
+		Done:                chnDone,
+		RolexContainerStats: chnMsg,
+	}
+
+	go func() {
+		chnErr <- api.GetDockerClient().StatsContainer(rolexContext.(context.Context), opts)
+	}()
+
+	ssEvent := sse.Event{Event: "container-stats"}
+	w := ctx.Writer
+	clientGone := w.CloseNotify()
+	for {
+		select {
+		case <-clientGone:
+			opts.ClientClosed = true
+			log.Infof("Stats stream of container %s closed by client", cId)
+			chnDone <- true
+		case data := <-chnMsg:
+			if !opts.ClientClosed {
+				ssEvent.Data = data
+				ssEvent.Render(w)
+			}
+		case err := <-chnErr:
+			log.Errorf("Stats container of %s stop with error: %s", cId, err)
+			return
+		}
+	}
 }
