@@ -196,7 +196,7 @@ func logReader(input *io.PipeReader, message chan string) {
 	buf := bufio.NewReader(input)
 
 	defer func() {
-		if err := recover(); err != nil {
+		if err := recover(); err != nil {  // Check for specific error types?
 			log.Errorf("send container log to channel error: %v", err)
 		}
 		input.Close()
@@ -204,10 +204,11 @@ func logReader(input *io.PipeReader, message chan string) {
 	}()
 
 	for {
-		select {
+		select {  // Why use a select with default case only?
 		default:
 			if line, err := buf.ReadBytes('\n'); err != nil {
 				log.Errorf("container log read buffer error: %v", err)
+				// maybe it's a good idea to also send the err through 'message' channel.
 				return
 			} else {
 				message <- string(line)
