@@ -12,6 +12,7 @@ import (
 	"github.com/docker/engine-api/types"
 	"github.com/docker/engine-api/types/filters"
 	"github.com/docker/engine-api/types/swarm"
+	goclient "github.com/fsouza/go-dockerclient"
 	"github.com/gin-gonic/gin"
 	"github.com/manucorporat/sse"
 	"golang.org/x/net/context"
@@ -166,9 +167,6 @@ func (api *Api) StatsService(ctx *gin.Context) {
 	serviceId := ctx.Param("service_id")
 	taskFilter := filters.NewArgs()
 	taskFilter.Add("service", serviceId)
-	stats := make(chan *model.ContainerStat)
-
-	defer close(stats)
 
 	tasks, err := api.GetDockerClient().ListTasks(types.TaskListOptions{Filter: taskFilter})
 	if err != nil {
@@ -178,16 +176,73 @@ func (api *Api) StatsService(ctx *gin.Context) {
 		return
 	}
 
+	chnMsg := make(chan *model.ContainerStat, 1)
+	defer close(chnMsg)
+	chnErr := make(chan error, 1)
+	defer close(chnErr)
+
+	statsOptionsMap := make(map[string]model.ContainerStatOptions)
 	for _, task := range tasks {
+		if task.Status.State != swarm.TaskStateRunning {
+			continue
+		}
+
 		statsContext := context.WithValue(context.Background(), "node_id", task.NodeID)
-		go api.GetDockerClient().StatsContainer(statsContext, model.ContainerStatOptions{})
+		opts := createStatOption()
+		opts.ID = task.Status.ContainerStatus.ContainerID
+		opts.RolexContainerStats = chnMsg
+
+		statsOptionsMap[opts.ID] = *opts
+
+		go func(ctx context.Context, opts model.ContainerStatOptions) {
+			chnErr <- api.GetDockerClient().StatsContainer(ctx, opts)
+		}(statsContext, *opts)
 	}
 
-	ctx.Stream(func(w io.Writer) bool {
-		sse.Event{
-			Event: "service-stats",
-			Data:  <-stats,
-		}.Render(ctx.Writer)
-		return true
-	})
+	ssEvent := &sse.Event{Event: "service-stats"}
+	w := ctx.Writer
+	clientGone := w.CloseNotify()
+	clientClosed := false
+
+	for {
+		select {
+		case <-clientGone:
+			clientClosed = true
+			log.Infof("Stats stream of service %s closed by client", serviceId)
+			for _, statOpts := range statsOptionsMap {
+				statOpts.Done <- true
+			}
+		case data := <-chnMsg:
+			if !clientClosed {
+				ssEvent.Data = data
+				ssEvent.Render(w)
+			}
+		case err := <-chnErr:
+			if statsStopErr, ok := err.(*rolexerror.ContainerStatsStopError); ok {
+				containerId := statsStopErr.ID
+				log.Infof("Stats stream of container %s stop with error: %s", containerId, statsStopErr.Error())
+				if statOpts, ok := statsOptionsMap[containerId]; ok {
+					close(statOpts.Done)
+					delete(statsOptionsMap, containerId)
+					if len(statsOptionsMap) == 0 {
+						log.Infof("Stats stream of service %s stop", serviceId)
+						return
+					}
+				}
+			} else {
+				log.Error("Received unknown error: ", err)
+			}
+		}
+	}
+}
+
+func createStatOption() *model.ContainerStatOptions {
+	chnDone := make(chan bool, 1)                      //chosed by func StatsService
+	chnContainerStats := make(chan *goclient.Stats, 1) // closed by go-dockerclient
+	return &model.ContainerStatOptions{
+		Stats:  chnContainerStats,
+		Stream: true,
+		Done:   chnDone,
+	}
+
 }
