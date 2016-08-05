@@ -98,6 +98,10 @@ func (client *RolexDockerClient) SwarmClient() *goclient.Client {
 }
 
 // return or cache daemon docker client base on host id stored in ctx
+// "Returns and cached or newly created ..."
+
+// I think it's debatable to use 'ctx' to contain a parameter, because it makes the parameter not explicit and hard to
+// track. unexplicit parameters force readers to remember what's inside ctx to understand the code correctly.
 func (client *RolexDockerClient) DockerClient(ctx context.Context) (*goclient.Client, error) {
 	var dockerClient *goclient.Client
 
