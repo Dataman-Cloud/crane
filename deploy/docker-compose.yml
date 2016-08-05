@@ -23,7 +23,7 @@ services:
     env_file:
       - ./env
     extra_hosts:
-      - "manager_http_entrypoint:MANAGER_HTTP_ENTRYPOINT"
+      - "manager_http_entrypoint:${MANAGER_HTTP_ENTRYPOINT}"
     restart: always
   rolex_db:
     image: mysql:5.7
