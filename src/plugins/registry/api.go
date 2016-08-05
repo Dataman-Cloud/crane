@@ -161,6 +161,7 @@ func (registry *Registry) DeleteManifests(ctx *gin.Context) {
 }
 
 func (registry *Registry) MineCatalog(ctx *gin.Context) {
+	keywords := ctx.Query("keywords")
 	account_, found := ctx.Get("account")
 	if !found {
 		ctx.JSON(http.StatusUnauthorized, gin.H{})
@@ -169,7 +170,13 @@ func (registry *Registry) MineCatalog(ctx *gin.Context) {
 	account := account_.(auth.Account)
 
 	var images []*Image
-	err := registry.DbClient.Where("namespace = ?", RegistryNamespaceForAccount(account)).Order("created_at DESC").Find(&images).Error
+	var err error
+	if len(keywords) > 0 {
+		err = registry.DbClient.Where("namespace = ? AND (namespace like ? OR image like ?)", RegistryNamespaceForAccount(account),
+			LikeParam(keywords), LikeParam(keywords)).Order("created_at DESC").Find(&images).Error
+	} else {
+		err = registry.DbClient.Where("namespace = ?", RegistryNamespaceForAccount(account)).Order("created_at DESC").Find(&images).Error
+	}
 	if err != nil {
 		ctx.JSON(http.StatusServiceUnavailable, gin.H{"code": 1, "data": err.Error()})
 		return
@@ -184,8 +191,14 @@ func (registry *Registry) MineCatalog(ctx *gin.Context) {
 }
 
 func (registry *Registry) PublicCatalog(ctx *gin.Context) {
+	keywords := ctx.Query("keywords")
 	var images []*Image
-	err := registry.DbClient.Where("Publicity = 1").Order("created_at DESC").Find(&images).Error
+	var err error
+	if len(keywords) > 0 {
+		err = registry.DbClient.Where("Publicity = 1 AND (namespace like ? OR image like ?)", LikeParam(keywords), LikeParam(keywords)).Order("created_at DESC").Find(&images).Error
+	} else {
+		err = registry.DbClient.Where("Publicity = 1").Order("created_at DESC").Find(&images).Error
+	}
 	if err != nil {
 		ctx.JSON(http.StatusServiceUnavailable, gin.H{"code": 1, "data": err.Error()})
 		return
@@ -319,4 +332,8 @@ func (registry *Registry) SizeAndReferenceForTag(url string, account string) (ui
 	}
 
 	return size, digest, nil
+}
+
+func LikeParam(like string) string {
+	return "%" + like + "%"
 }
