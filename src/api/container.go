@@ -238,6 +238,7 @@ func (api *Api) StatsContainer(ctx *gin.Context) {
 	ssEvent := sse.Event{Event: "container-stats"}
 	w := ctx.Writer
 	clientGone := w.CloseNotify()
+	var clientClosed bool = false
 	for {
 		select {
 		case <-clientGone:
@@ -245,7 +246,7 @@ func (api *Api) StatsContainer(ctx *gin.Context) {
 			log.Infof("Stats stream of container %s closed by client", cId)
 			chnDone <- true
 		case data := <-chnMsg:
-			if !opts.ClientClosed {
+			if !clientClosed {
 				ssEvent.Data = data
 				ssEvent.Render(w)
 			}
