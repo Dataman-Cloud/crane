@@ -243,7 +243,7 @@ func (client *RolexDockerClient) StatsContainer(ctx context.Context, opts model.
 		chnError <- dockerClient.Stats(statOpts)
 	}()
 
-	containerSt := &model.ContainerStat{
+	containerStat := &model.ContainerStat{
 		NodeId:      container.Config.Labels["com.docker.swarm.node.id"],
 		ServiceId:   container.Config.Labels["com.docker.swarm.service.id"],
 		ServiceName: container.Config.Labels["com.docker.swarm.service.name"],
@@ -255,11 +255,12 @@ func (client *RolexDockerClient) StatsContainer(ctx context.Context, opts model.
 	for {
 		select {
 		case streamErr := <-chnError:
-			errMsg := fmt.Sprintf("stats of container %s stream close with error: %s", cId, streamErr.Error())
+			var errMsg string
+			errMsg = fmt.Sprintf("stats of container %s stream close with error: %s", cId, streamErr.Error())
 			return rolexerror.NewRolexError(rolexerror.CodeContainerNotFound, errMsg)
-		case data := <-opts.Stats:
-			containerSt.Stat = data
-			opts.RolexContainerStats <- containerSt
+		case stat := <-opts.Stats:
+			containerStat.Stat = stat
+			opts.RolexContainerStats <- containerStat
 		}
 	}
 }
