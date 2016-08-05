@@ -7,9 +7,9 @@
 执行命令
 
   ```bash
-  ROLEX_DOCKER_HOST=http://192.168.59.105:2375 ./build-and-start.sh
+  ROLEX_IP=192.168.59.105 ./build-and-start.sh
   ```
-其中 ROLEX_DOCKER_HOST 是 `swarm manager` 节点的 docker http socket 入口，譬如 http://192.168.59.105:2375
+其中 ROLEX_IP 是运行该程序的主机IP，另外，该主机将作为 swarm manager
 
 ## Open ports between the hosts
 
