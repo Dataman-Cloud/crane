@@ -224,7 +224,7 @@ func parseln(line string) (key string, val string, err error) {
 }
 
 // helper function to trim comments and whitespace from a string.
-func removeComments(s string) (_ string) {
+func removeComments(s string) (_ string) {  // Is '_' needed?
 	if len(s) == 0 || string(s[0]) == "#" {
 		return
 	} else {
