@@ -8,7 +8,7 @@ import (
 	"net/url"
 )
 
-// execute http get request use default timeout
+// Executes an http GET request with default timeout.
 func (client *RolexDockerClient) HttpGet(requestUrl string, query url.Values, headers map[string][]string) ([]byte, error) {
 	apiPath := client.getAPIPath(requestUrl, query)
 	resp, err := client.SharedHttpClient.Get(apiPath)
@@ -120,6 +120,7 @@ func (client *RolexDockerClient) HttpPut(requestUrl string, query url.Values, bo
 	return result, nil
 }
 
+// It looks like this function doesn't need a receiver.
 // getAPIPath returns the versioned request path to call the api.
 // It appends the query parameters to the path if they are not empty.
 func (client *RolexDockerClient) getAPIPath(apiPath string, query url.Values) string {
