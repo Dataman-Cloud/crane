@@ -36,12 +36,13 @@ func (client *RolexDockerClient) ListTasks(options types.TaskListOptions) ([]swa
 }
 
 // TaskInspect returns the list of tasks.
+// using named return values could avoid the problems like that on line 45.
 func (client *RolexDockerClient) InspectTask(taskID string) (*swarm.Task, error) {
 	task := &swarm.Task{}
 
 	content, err := client.HttpGet(client.SwarmHttpEndpoint+"/tasks/"+taskID, nil, nil)
 	if err != nil {
-		return task, nil
+		return task, nil  // nil => err?
 	}
 
 	if err := json.Unmarshal(content, task); err != nil {
