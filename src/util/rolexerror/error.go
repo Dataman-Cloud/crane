@@ -17,14 +17,14 @@ func (e *RolexError) Error() string {
 }
 
 type ContainerStatsStopError struct {
-	ID    string
-	Error error
+	ID  string
+	Err error
 }
 
 func (e *ContainerStatsStopError) Error() string {
-	if e.Error != nil {
-		return e.Error.Error()
+	if e.Err != nil {
+		return e.Err.Error()
 	}
 
-	return "normal stop" + ID
+	return "normal stop" + e.ID
 }

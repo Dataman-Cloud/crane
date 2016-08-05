@@ -254,7 +254,7 @@ func (client *RolexDockerClient) StatsContainer(ctx context.Context, opts model.
 	for {
 		select {
 		case streamErr := <-chnError:
-			return rolexerror.ContainerStatsStopError{ID: cId, Error: streamErr}
+			return &rolexerror.ContainerStatsStopError{ID: cId, Err: streamErr}
 		case stat := <-opts.Stats:
 			containerStat.Stat = stat
 			opts.RolexContainerStats <- containerStat
