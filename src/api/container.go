@@ -235,14 +235,14 @@ func (api *Api) StatsContainer(ctx *gin.Context) {
 		chnErr <- api.GetDockerClient().StatsContainer(rolexContext.(context.Context), opts)
 	}()
 
-	ssEvent := sse.Event{Event: "container-stats"}
+	ssEvent := &sse.Event{Event: "container-stats"}
 	w := ctx.Writer
 	clientGone := w.CloseNotify()
 	var clientClosed bool = false
 	for {
 		select {
 		case <-clientGone:
-			opts.ClientClosed = true
+			clientClosed = true
 			log.Infof("Stats stream of container %s closed by client", cId)
 			chnDone <- true
 		case data := <-chnMsg:

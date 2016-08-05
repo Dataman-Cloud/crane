@@ -24,5 +24,4 @@ type ContainerStatOptions struct {
 	Done                chan bool
 	InactivityTimeout   time.Duration
 	RolexContainerStats chan *ContainerStat
-	ClientClosed        bool
 }
