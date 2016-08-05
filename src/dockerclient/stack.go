@@ -17,6 +17,7 @@ const (
 )
 
 type Stack struct {
+	// Don't repeat the field name in comments.
 	// Name is the name of the stack
 	Namespace string `json:"Namespace"`
 	// Services is the number of the services
