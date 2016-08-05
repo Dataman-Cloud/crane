@@ -213,7 +213,8 @@ func (api *Api) LogsContainer(ctx *gin.Context) {
 func (api *Api) StatsContainer(ctx *gin.Context) {
 	rolexContext, _ := ctx.Get("rolexContext")
 
-	chnMsg := make(chan *model.ContainerStat) //close bu rolex docker client
+	chnMsg := make(chan *model.ContainerStat)
+	defer close(chnMsg)
 	chnDone := make(chan bool)
 	defer close(chnDone)
 	chnSt := make(chan *goclient.Stats) // closed by go-dockerclient

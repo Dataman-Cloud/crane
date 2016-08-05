@@ -252,7 +252,6 @@ func (client *RolexDockerClient) StatsContainer(ctx context.Context, opts model.
 		ContainerId: container.ID,
 	}
 
-	defer close(opts.RolexContainerStats)
 	for {
 		select {
 		case streamErr := <-chnError:
