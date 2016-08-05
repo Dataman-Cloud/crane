@@ -2,7 +2,6 @@ package dockerclient
 
 import (
 	"bufio"
-	"fmt"
 	"io"
 
 	"github.com/Dataman-Cloud/rolex/src/dockerclient/model"
@@ -255,9 +254,7 @@ func (client *RolexDockerClient) StatsContainer(ctx context.Context, opts model.
 	for {
 		select {
 		case streamErr := <-chnError:
-			var errMsg string
-			errMsg = fmt.Sprintf("stats of container %s stream close with error: %s", cId, streamErr.Error())
-			return rolexerror.NewRolexError(rolexerror.CodeContainerNotFound, errMsg)
+			return &rolexerror.ContainerStatsStopError{ID: cId, Err: streamErr}
 		case stat := <-opts.Stats:
 			containerStat.Stat = stat
 			opts.RolexContainerStats <- containerStat

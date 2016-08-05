@@ -15,3 +15,16 @@ func NewRolexError(code int, message string) error {
 func (e *RolexError) Error() string {
 	return e.Message
 }
+
+type ContainerStatsStopError struct {
+	ID  string
+	Err error
+}
+
+func (e *ContainerStatsStopError) Error() string {
+	if e.Err != nil {
+		return e.Err.Error()
+	}
+
+	return "normal stop" + e.ID
+}
