@@ -14,13 +14,14 @@ import (
 
 type Config struct {
 	RolexAddr       string
-	DockerHost      string
-	DockerTlsVerify string
+	DockerHost      string  // 'SwarmEndpoint'
+	DockerTlsVerify string  // 'UseTlsVerification'. Can this be a bool?
 	DockerCertPath  string
 	DbDriver        string
 	DbDSN           string
 	FeatureFlags    []string
 
+	// Are these two field used? What do they mean?
 	HOST string
 	PORT uint64
 
@@ -40,7 +41,7 @@ type Config struct {
 
 	CatalogPath string
 
-	LoadDataInterval uint16
+	LoadDataInterval uint16  // SearchLoadDataInterval? 
 }
 
 func (c *Config) FeatureEnabled(feature string) bool {
