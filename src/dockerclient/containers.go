@@ -239,7 +239,7 @@ func (client *RolexDockerClient) StatsContainer(ctx context.Context, containerId
 	}
 	go func(s chan *goclient.Stats, msg chan *model.ContainerStat, sdone chan bool) {
 		defer func() {
-			recover()
+			recover()  // print out the error if any.
 			sdone <- true
 		}()
 
@@ -260,5 +260,5 @@ func (client *RolexDockerClient) StatsContainer(ctx context.Context, containerId
 	}(stat, stats, sd)
 
 	err = dockerClient.Stats(opts)
-	log.Infof("stats of container error: %v", err)
+	log.Infof("stats of container error: %v", err)  // Check for nil error.
 }
