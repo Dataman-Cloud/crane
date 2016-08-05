@@ -70,7 +70,7 @@ func NewRolexDockerClient(config *config.Config) (*RolexDockerClient, error) {
 //		// handle error
 //	}
 // This way the 'err' value won't be overwritten, and the layering is more clear.
-	if config.DockerTlsVerify == "1" {
+	if config.DockerTlsVerify == "1" {  // It looks to me DockerTlsVerify has to always be "1" given SwarmHttpEndpoint is hardcoded to use https.
 		client.swarmClient, err = client.NewGoDockerClientTls(config.DockerHost, API_VERSION)
 		client.SharedHttpClient, err = client.NewHttpClientTls()  // The last 'err' is overwritten.
 	} else {
