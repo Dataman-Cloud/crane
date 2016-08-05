@@ -10,3 +10,5 @@ Debug/
 node_modules/
 bower_components/
 dist/
+mysql_storage
+registry_storage
