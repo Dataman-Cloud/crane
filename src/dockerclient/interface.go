@@ -12,6 +12,8 @@ import (
 
 type DockerClientInterface interface {
 	Ping() error
+	InspectSwarm() (swarm.Swarm, error)
+	ManagerInfo() (types.Info, error)
 
 	NodeList(opts types.NodeListOptions) ([]swarm.Node, error)
 	NodeInspect(nodeId string) (swarm.Node, error)

@@ -15,6 +15,32 @@ import (
 
 func (api *Api) InspectNode(ctx *gin.Context) {
 	nodeId := ctx.Param("node_id")
+
+	if nodeId == "manager_info" { // ugly will remove later
+		api.ManagerInfo(ctx)
+		return
+	}
+
+	node, err := api.GetDockerClient().InspectNode(nodeId)
+	if err != nil {
+		log.Errorf("InspectNode of %s got error: %s", nodeId, err.Error())
+		rolexgin.HttpErrorResponse(ctx, err)
+		return
+	}
+
+	rolexgin.HttpOkResponse(ctx, node)
+	return
+}
+
+func (api *Api) ManagerInfo(ctx *gin.Context) {
+	systemInfo, err := api.GetDockerClient().ManagerInfo()
+	if err != nil {
+		log.Error("LeaderNode got error: ", err)
+		rolexgin.HttpErrorResponse(ctx, err)
+		return
+	}
+
+	nodeId := systemInfo.Swarm.NodeID
 	node, err := api.GetDockerClient().InspectNode(nodeId)
 	if err != nil {
 		log.Errorf("InspectNode of %s got error: %s", nodeId, err.Error())
