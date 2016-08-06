@@ -18,8 +18,8 @@ const (
 
 type Config struct {
 	RolexAddr         string
+	SwarmManagerIP    string
 	DockerEntryScheme string
-	DockerEntryIP     string
 	DockerEntryPort   string
 	DockerTlsVerify   bool
 	DockerCertPath    string
@@ -56,7 +56,7 @@ func GetConfig() *Config {
 type EnvEntry struct {
 	ROLEX_ADDR              string `required:"true"`
 	ROLEX_DOCKER_TLS_VERIFY bool   `required:"true"`
-	ROLEX_DOCKER_ENTRY_IP   string `required:"true"`
+	ROLEX_SWARM_MANAGER_IP  string `required:"true"`
 	ROLEX_DOCKER_ENTRY_PORT string `required:"false"`
 	ROLEX_DOCKER_CERT_PATH  string `required:"true"`
 
@@ -82,7 +82,7 @@ func InitConfig(envFile string) *Config {
 
 	envEntry := NewEnvEntry()
 	config.RolexAddr = envEntry.ROLEX_ADDR
-	config.DockerEntryIP = envEntry.ROLEX_DOCKER_ENTRY_IP
+	config.SwarmManagerIP = envEntry.ROLEX_SWARM_MANAGER_IP
 	config.DockerEntryPort = envEntry.ROLEX_DOCKER_ENTRY_PORT
 	if config.DockerEntryPort == "" {
 		config.DockerEntryPort = defaultDockerEntryPort

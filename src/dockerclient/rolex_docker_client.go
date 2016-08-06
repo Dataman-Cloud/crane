@@ -50,32 +50,32 @@ type RolexDockerClient struct {
 func NewRolexDockerClient(config *config.Config) (*RolexDockerClient, error) {
 	var err error
 
-	dockerEntry := config.DockerEntryScheme + "://" + config.DockerEntryIP + ":" + config.DockerEntryPort
+	swarmManagerEntry := config.DockerEntryScheme + "://" + config.SwarmManagerIP + ":" + config.DockerEntryPort
 	client := &RolexDockerClient{
 		config: config,
 
 		swarmNodes:      make(map[string](*docker.Client), 0),
 		swarmNodesMutex: &sync.Mutex{},
 
-		swarmManagerHttpEndpoint: dockerEntry,
+		swarmManagerHttpEndpoint: swarmManagerEntry,
 	}
 
 	if config.DockerTlsVerify {
-		client.swarmManager, err = client.NewGoDockerClientTls(dockerEntry, API_VERSION)
+		client.swarmManager, err = client.NewGoDockerClientTls(swarmManagerEntry, API_VERSION)
 		client.sharedHttpClient, err = client.NewHttpClientTls()
 	} else {
-		client.swarmManager, err = docker.NewVersionedClient(dockerEntry, API_VERSION)
+		client.swarmManager, err = docker.NewVersionedClient(swarmManagerEntry, API_VERSION)
 		client.sharedHttpClient = &http.Client{Timeout: defaultHttpRequestTimeout}
 	}
 
 	if err != nil {
-		log.Error("Unable to connect to docker daemon . Ensure docker is running endpoint ", dockerEntry, "err: ", err)
+		log.Error("Unable to connect to docker daemon . Ensure docker is running endpoint ", swarmManagerEntry, "err: ", err)
 		return nil, err
 	}
 
 	err = client.swarmManager.Ping()
 	if err != nil {
-		log.Error("Unable to ping docker daemon. Ensure docker is running endpoint ", dockerEntry, "err: ", err)
+		log.Error("Unable to ping docker daemon. Ensure docker is running endpoint ", swarmManagerEntry, "err: ", err)
 		return nil, err
 	}
 
