@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/Dataman-Cloud/rolex/src/model"
+	"github.com/Dataman-Cloud/rolex/src/util/config"
 	"github.com/Dataman-Cloud/rolex/src/util/rolexerror"
 
 	"github.com/docker/engine-api/types"
@@ -25,9 +26,7 @@ const (
 )
 
 const (
-	labelNodeEndpoint         = "dm.swarm.node.endpoint"
-	defaultNodeEndpointScheme = "tcp"
-	defaultNodeEndpointPort   = "2376"
+	labelNodeEndpoint = "dm.swarm.node.endpoint"
 )
 
 // NodeList returns the list of nodes.
@@ -200,8 +199,9 @@ func (client *RolexDockerClient) NodeDaemonUrl(nodeId string) (*url.URL, error) 
 		return nil, rolexerror.NewRolexError(rolexerror.CodeGetNodeEndpointError, errMsg)
 	}
 
+	conf := config.GetConfig()
 	if !strings.Contains(endpoint, "://") {
-		endpoint = defaultNodeEndpointScheme + "://" + endpoint
+		endpoint = conf.DockerEntryScheme + "://" + endpoint
 	}
 	u, err := url.Parse(endpoint)
 	if err != nil {
@@ -209,11 +209,11 @@ func (client *RolexDockerClient) NodeDaemonUrl(nodeId string) (*url.URL, error) 
 	}
 
 	if u.Scheme == "" {
-		u.Scheme = defaultNodeEndpointScheme
+		u.Scheme = conf.DockerEntryScheme
 	}
 
 	if !strings.Contains(u.Host, ":") {
-		u.Host = u.Host + ":" + defaultNodeEndpointPort
+		u.Host = u.Host + ":" + conf.DockerEntryPort
 	}
 
 	return u, nil

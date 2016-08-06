@@ -12,14 +12,20 @@ import (
 	log "github.com/Sirupsen/logrus"
 )
 
+const (
+	defaultDockerEntryPort = "2375"
+)
+
 type Config struct {
-	RolexAddr       string
-	DockerHost      string
-	DockerTlsVerify string
-	DockerCertPath  string
-	DbDriver        string
-	DbDSN           string
-	FeatureFlags    []string
+	RolexAddr         string
+	DockerEntryScheme string
+	DockerEntryIP     string
+	DockerEntryPort   string
+	DockerTlsVerify   bool
+	DockerCertPath    string
+	DbDriver          string
+	DbDSN             string
+	FeatureFlags      []string
 
 	// registry
 	RegistryPrivateKeyPath string
@@ -49,8 +55,9 @@ func GetConfig() *Config {
 
 type EnvEntry struct {
 	ROLEX_ADDR              string `required:"true"`
-	ROLEX_DOCKER_TLS_VERIFY string `required:"true"`
-	ROLEX_DOCKER_HOST       string `required:"true"`
+	ROLEX_DOCKER_TLS_VERIFY bool   `required:"true"`
+	ROLEX_DOCKER_ENTRY_IP   string `required:"true"`
+	ROLEX_DOCKER_ENTRY_PORT string `required:"false"`
 	ROLEX_DOCKER_CERT_PATH  string `required:"true"`
 
 	ROLEX_DB_DRIVER                 string `required:"true"`
@@ -75,8 +82,17 @@ func InitConfig(envFile string) *Config {
 
 	envEntry := NewEnvEntry()
 	config.RolexAddr = envEntry.ROLEX_ADDR
-	config.DockerHost = envEntry.ROLEX_DOCKER_HOST
+	config.DockerEntryIP = envEntry.ROLEX_DOCKER_ENTRY_IP
+	config.DockerEntryPort = envEntry.ROLEX_DOCKER_ENTRY_PORT
+	if config.DockerEntryPort == "" {
+		config.DockerEntryPort = defaultDockerEntryPort
+	}
 	config.DockerTlsVerify = envEntry.ROLEX_DOCKER_TLS_VERIFY
+	if config.DockerTlsVerify {
+		config.DockerEntryScheme = "https"
+	} else {
+		config.DockerEntryScheme = "http"
+	}
 	config.DockerCertPath = envEntry.ROLEX_DOCKER_CERT_PATH
 
 	config.DbDriver = envEntry.ROLEX_DB_DRIVER
