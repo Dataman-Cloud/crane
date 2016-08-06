@@ -31,6 +31,7 @@ func (api *Api) ConnectContainer(ctx *gin.Context) {
 		return
 	}
 
+	nodeUrl.Scheme = "tcp"
 	cmd := exec.Command("docker", "-H", nodeUrl.String(), "exec", "-it", ctx.Param("container_id"), "sh")
 	client, err := containertty.New(cmd, conn, req, containertty.DefaultOptions)
 	if err != nil {
