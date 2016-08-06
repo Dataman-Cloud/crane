@@ -125,6 +125,18 @@
                     label: '统计'
                 }
             })
+            .state('stack.serviceDetail.discovery', {
+                url: '/discovery',
+                templateUrl: '/src/stack/service-detail/discovery.html',
+                controller: 'ServiceDiscoveryCtrl as serviceDiscoveryCtrl',
+                resolve: {
+                    service: getService,
+                    nodes: listNodes
+                },
+                ncyBreadcrumb: {
+                    label: '入口列表'
+                }
+            })
             .state('stack.serviceDetail.cd', {
                 url: '/cd',
                 templateUrl: '/src/stack/service-detail/cd.html',
@@ -151,6 +163,11 @@
     /*@ngInject*/
     function listStackServices(stackBackend, $stateParams) {
         return stackBackend.listStackServices($stateParams.stack_name);
+    }
+
+    /* @ngInject */
+    function listNodes(nodeBackend) {
+        return nodeBackend.listNodes()
     }
 
     /*@ngInject*/
