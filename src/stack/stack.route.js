@@ -88,7 +88,7 @@
                 url: '/serviceDetail/:stack_name/:service_id',
                 templateUrl: '/src/stack/service-detail/detail.html',
                 controller: 'ServiceDetailCtrl as serviceDetailCtrl',
-                targetState: 'config',
+                targetState: 'task',
                 resolve: {
                     service: getService
                 },

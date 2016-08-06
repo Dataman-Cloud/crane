@@ -1,27 +1,8 @@
-<div class="main-container app-layout">
-    <section class="main-section">
-        <header layout="row" layout-align="start start">
-            <div class="info" flex="95" layout="column">
-                <h2><i class="fa fa-tasks" aria-hidden="true"></i> {/serviceDetailCtrl.service.Spec.Name/}</h2>
-                <dl layout="row" layout-wrap layout-align="start end">
-                    <dt flex="none">任务数</dt>
-                    <dd flex="none">{/serviceDetailCtrl.service.Spec.Mode.Replicated.Replicas/} 个</dd>
-                    <dt flex="none">创建时间</dt>
-                    <dd flex="none">{/serviceDetailCtrl.service.CreatedAt | date: 'yyyy-MM-dd HH:mm:ss'/}</dd>
-                    <dt flex="none">更新时间</dt>
-                    <dd flex="none">{/serviceDetailCtrl.service.UpdatedAt | date: 'yyyy-MM-dd HH:mm:ss'/}</dd>
-                </dl>
-            </div>
-        </header>
-        <md-content>
-            <md-tabs md-dynamic-height md-border-bottom>
-                <md-tab label="详情" dm-tab-sref="stack.serviceDetail.config"></md-tab>
-                <md-tab label="任务列表" dm-tab-sref="stack.serviceDetail.task"></md-tab>
-                <md-tab label="统计" dm-tab-sref="stack.serviceDetail.stats"></md-tab>
-                <md-tab label="日志" dm-tab-sref="stack.serviceDetail.log"></md-tab>
-                <md-tab label="持续部署" dm-tab-sref="stack.serviceDetail.cd"></md-tab>
-            </md-tabs>
-            <md-content class="md-padding main-tab-content" ui-view>
-            </md-content>
-    </section>
-</div>
+<md-tabs md-dynamic-height md-border-bottom>
+    <md-tab label="任务列表" dm-tab-sref="stack.serviceDetail.task"></md-tab>
+    <md-tab label="统计" dm-tab-sref="stack.serviceDetail.stats"></md-tab>
+    <md-tab label="日志" dm-tab-sref="stack.serviceDetail.log"></md-tab>
+    <md-tab label="详情" dm-tab-sref="stack.serviceDetail.config"></md-tab>
+    <md-tab label="持续部署" dm-tab-sref="stack.serviceDetail.cd"></md-tab>
+</md-tabs>
+<md-content ui-view></md-content>
