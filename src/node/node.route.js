@@ -232,6 +232,8 @@
 
         /* @ngInject */
         function getNode(nodeCurd, $stateParams, nodeBackend, $q) {
+            //TODO: which is a workaround. The desired solution is abstract all of the exception as a layer,
+            //per error_code_XXX can trigger the special error_XXX_handle_func
             return nodeBackend.getNode($stateParams.node_id).catch(function (res) {
                 var deferred = $q.defer();
                 if (res.data && angular.isObject(res.data) && res.code && NODE_CONN_ERROR_CODE.indexOf(res.code) > 0) {
