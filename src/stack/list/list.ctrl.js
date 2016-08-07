@@ -9,7 +9,5 @@
         var self = this;
         
         self.stacks = stacks
-        
-        self.deleteStack = stackCurd.deleteStack;
     }
 })();
