@@ -12,8 +12,8 @@
         self.stopService = stackCurd.stopService;
         self.updateService = updateService;
 
-        function updateService(stack_name, service_id) {
-            $state.go('stack.serviceUpdate', {'stack_name': stack_name, 'service_id': service_id});
+        function updateService(stackName, serviceId) {
+            $state.go('stack.serviceUpdate', {'stack_name': stackName, 'service_id': serviceId});
         }
     }
 })();
