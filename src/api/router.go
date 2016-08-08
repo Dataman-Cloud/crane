@@ -9,6 +9,7 @@ import (
 	chains "github.com/Dataman-Cloud/rolex/src/plugins/auth/middlewares"
 	"github.com/Dataman-Cloud/rolex/src/plugins/auth/token_store"
 	"github.com/Dataman-Cloud/rolex/src/plugins/catalog"
+	"github.com/Dataman-Cloud/rolex/src/plugins/license"
 	"github.com/Dataman-Cloud/rolex/src/plugins/registry"
 	"github.com/Dataman-Cloud/rolex/src/plugins/search"
 	"github.com/Dataman-Cloud/rolex/src/util/log"
@@ -71,6 +72,11 @@ func (api *Api) ApiRouter() *gin.Engine {
 		}
 		s.RegisterApiForSearch(router, Authorization)
 		go s.IndexData()
+	}
+
+	if api.Config.FeatureEnabled("license") {
+		l := &license.LicenseApi{}
+		l.RegisterApiForLicense(router, Authorization)
 	}
 
 	v1 := router.Group("/api/v1", Authorization, middlewares.ListIntercept())

@@ -104,4 +104,8 @@ const (
 	//Catalog
 	CodeCatalogGetCatalogError  = 15001
 	CodeCatalogListCatalogError = 15002
+
+	//license
+	CodeLicenseGetLicenseError    = 16001
+	CodeLicenseCreateLicenseError = 16002
 )
