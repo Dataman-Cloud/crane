@@ -11,7 +11,7 @@ import (
 // execute http get request use default timeout
 func (client *RolexDockerClient) HttpGet(requestUrl string, query url.Values, headers map[string][]string) ([]byte, error) {
 	apiPath := client.getAPIPath(requestUrl, query)
-	resp, err := client.SharedHttpClient.Get(apiPath)
+	resp, err := client.sharedHttpClient.Get(apiPath)
 	if err != nil {
 		return nil, err
 	}
@@ -36,7 +36,7 @@ func (client *RolexDockerClient) HttpDelete(requestUrl string) ([]byte, error) {
 		return nil, err
 	}
 
-	resp, err := client.SharedHttpClient.Do(req)
+	resp, err := client.sharedHttpClient.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -70,7 +70,7 @@ func (client *RolexDockerClient) HttpPost(requestUrl string, query url.Values, b
 		}
 	}
 
-	resp, err := client.SharedHttpClient.Do(req)
+	resp, err := client.sharedHttpClient.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -102,7 +102,7 @@ func (client *RolexDockerClient) HttpPut(requestUrl string, query url.Values, bo
 		}
 	}
 
-	resp, err := client.SharedHttpClient.Do(req)
+	resp, err := client.sharedHttpClient.Do(req)
 	if err != nil {
 		return nil, err
 	}

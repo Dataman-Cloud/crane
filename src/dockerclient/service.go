@@ -46,7 +46,7 @@ func (client *RolexDockerClient) CreateService(service swarm.ServiceSpec, option
 		return response, err
 	}
 
-	content, err := client.HttpPost(client.SwarmHttpEndpoint+"/services/create", nil, serviceParam, nil)
+	content, err := client.HttpPost(client.swarmHttpEndpoint+"/services/create", nil, serviceParam, nil)
 	if err != nil {
 		return response, err
 	}
@@ -71,7 +71,7 @@ func (client *RolexDockerClient) ListServiceSpec(options types.ServiceListOption
 		query.Set("filters", filterJSON)
 	}
 
-	content, err := client.HttpGet(client.SwarmHttpEndpoint+"/services", query, nil)
+	content, err := client.HttpGet(client.swarmHttpEndpoint+"/services", query, nil)
 	if err != nil {
 		return services, err
 	}
@@ -153,7 +153,7 @@ func (client *RolexDockerClient) GetServicesStatus(services []swarm.Service) ([]
 
 // ServiceRemove kills and removes a service.
 func (client *RolexDockerClient) RemoveService(serviceID string) error {
-	_, err := client.HttpDelete(client.SwarmHttpEndpoint + "/services/" + serviceID)
+	_, err := client.HttpDelete(client.swarmHttpEndpoint + "/services/" + serviceID)
 	return err
 }
 
@@ -167,7 +167,7 @@ func (client *RolexDockerClient) UpdateService(serviceID string, version swarm.V
 
 	query := url.Values{}
 	query.Set("version", strconv.FormatUint(version.Index, 10))
-	_, err = client.HttpPost(client.SwarmHttpEndpoint+"/services/"+serviceID+"/update", query, serviceParam, nil)
+	_, err = client.HttpPost(client.swarmHttpEndpoint+"/services/"+serviceID+"/update", query, serviceParam, nil)
 	if err != nil {
 		return err
 	}
@@ -195,7 +195,7 @@ func (client *RolexDockerClient) ScaleService(serviceID string, serviceScale Ser
 func (client *RolexDockerClient) InspectServiceWithRaw(serviceID string) (swarm.Service, error) {
 	var service swarm.Service
 
-	content, err := client.HttpGet(client.SwarmHttpEndpoint+"/services/"+serviceID, nil, nil)
+	content, err := client.HttpGet(client.swarmHttpEndpoint+"/services/"+serviceID, nil, nil)
 	if err != nil {
 		return service, err
 	}

@@ -19,7 +19,7 @@ import (
 func (client *RolexDockerClient) ListNode(opts types.NodeListOptions) ([]swarm.Node, error) {
 	var nodes []swarm.Node
 
-	content, err := client.HttpGet(client.SwarmHttpEndpoint+"/nodes", nil, nil)
+	content, err := client.HttpGet(client.swarmHttpEndpoint+"/nodes", nil, nil)
 	if err != nil {
 		return nodes, err
 	}
@@ -35,7 +35,7 @@ func (client *RolexDockerClient) ListNode(opts types.NodeListOptions) ([]swarm.N
 func (client *RolexDockerClient) InspectNode(nodeId string) (swarm.Node, error) {
 	var node swarm.Node
 
-	content, err := client.HttpGet(client.SwarmHttpEndpoint+"/"+path.Join("nodes", nodeId), nil, nil)
+	content, err := client.HttpGet(client.swarmHttpEndpoint+"/"+path.Join("nodes", nodeId), nil, nil)
 	if err != nil {
 		return node, err
 	}
@@ -49,7 +49,7 @@ func (client *RolexDockerClient) InspectNode(nodeId string) (swarm.Node, error) 
 
 // Remove a single node
 func (client *RolexDockerClient) RemoveNode(nodeId string) error {
-	_, err := client.HttpDelete(client.SwarmHttpEndpoint + "/" + path.Join("nodes", nodeId))
+	_, err := client.HttpDelete(client.swarmHttpEndpoint + "/" + path.Join("nodes", nodeId))
 	if err != nil {
 		return err
 	}
@@ -66,7 +66,7 @@ func (client *RolexDockerClient) UpdateNode(nodeId string, version swarm.Version
 
 	query := url.Values{}
 	query.Set("version", strconv.FormatUint(version.Index, 10))
-	_, err = client.HttpPost(client.SwarmHttpEndpoint+"/"+path.Join("nodes", nodeId, "update"), query, nodeSpecJSON, nil)
+	_, err = client.HttpPost(client.swarmHttpEndpoint+"/"+path.Join("nodes", nodeId, "update"), query, nodeSpecJSON, nil)
 	if err != nil {
 		return err
 	}
@@ -99,12 +99,12 @@ func (client *RolexDockerClient) NodeDaemonEndpoint(nodeId string, protocol stri
 	}
 	switch strings.ToLower(protocol) {
 	case "http":
-		return "http://" + nodeIp + ":" + client.Config.NodePort, nil
+		return "http://" + nodeIp + ":" + client.config.NodePort, nil
 	case "https":
-		return "https://" + nodeIp + ":" + client.Config.NodePort, nil
+		return "https://" + nodeIp + ":" + client.config.NodePort, nil
 	case "tcp":
-		return "tcp://" + nodeIp + ":" + client.Config.NodePort, nil
+		return "tcp://" + nodeIp + ":" + client.config.NodePort, nil
 	default:
-		return "tcp://" + nodeIp + ":" + client.Config.NodePort, nil
+		return "tcp://" + nodeIp + ":" + client.config.NodePort, nil
 	}
 }

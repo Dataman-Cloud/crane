@@ -35,13 +35,13 @@ type RolexDockerClient struct {
 	// map clients connect to individual node
 	dockerClients map[string]*goclient.Client
 	// mutex control writing to dockerClients
-	DockerClientMutex *sync.Mutex
+	dockerClientMutex *sync.Mutex
 
 	// http client shared both for cluster connection & client connection
-	SharedHttpClient  *http.Client
-	SwarmHttpEndpoint string
+	sharedHttpClient  *http.Client
+	swarmHttpEndpoint string
 
-	Config *config.Config
+	config *config.Config
 }
 
 // initialize rolex docker client
@@ -49,18 +49,18 @@ func NewRolexDockerClient(config *config.Config) (*RolexDockerClient, error) {
 	var err error
 
 	client := &RolexDockerClient{
-		Config:            config,
+		config:            config,
 		dockerClients:     make(map[string](*goclient.Client), 0),
-		SwarmHttpEndpoint: strings.Replace(config.DockerHost, "tcp", "https", -1),
-		DockerClientMutex: &sync.Mutex{},
+		swarmHttpEndpoint: strings.Replace(config.DockerHost, "tcp", "https", -1),
+		dockerClientMutex: &sync.Mutex{},
 	}
 
 	if config.DockerTlsVerify == "1" {
 		client.swarmClient, err = client.NewGoDockerClientTls(config.DockerHost, API_VERSION)
-		client.SharedHttpClient, err = client.NewHttpClientTls()
+		client.sharedHttpClient, err = client.NewHttpClientTls()
 	} else {
 		client.swarmClient, err = goclient.NewVersionedClient(config.DockerHost, API_VERSION)
-		client.SharedHttpClient = &http.Client{Timeout: defaultHttpRequestTimeout}
+		client.sharedHttpClient = &http.Client{Timeout: defaultHttpRequestTimeout}
 	}
 
 	if err != nil {
@@ -103,7 +103,7 @@ func (client *RolexDockerClient) DockerClient(ctx context.Context) (*goclient.Cl
 		return nil, err
 	}
 
-	if client.Config.DockerTlsVerify == "1" {
+	if client.config.DockerTlsVerify == "1" {
 		dockerClient, err = client.NewGoDockerClientTls(host, API_VERSION)
 	} else {
 		dockerClient, err = goclient.NewVersionedClient(host, API_VERSION)
@@ -122,8 +122,8 @@ func (client *RolexDockerClient) DockerClient(ctx context.Context) (*goclient.Cl
 		return nil, err
 	}
 
-	client.DockerClientMutex.Lock()
-	defer client.DockerClientMutex.Unlock()
+	client.dockerClientMutex.Lock()
+	defer client.dockerClientMutex.Unlock()
 	client.dockerClients[node_id] = dockerClient
 
 	return dockerClient, nil
@@ -135,12 +135,12 @@ func (client *RolexDockerClient) Ping() error {
 }
 
 func (client *RolexDockerClient) NewGoDockerClientTls(endpoint string, apiVersion string) (*goclient.Client, error) {
-	tlsCaCert, tlsCert, tlsKey := SharedClientCertFiles(client.Config)
+	tlsCaCert, tlsCert, tlsKey := SharedClientCertFiles(client.config)
 	return goclient.NewVersionedTLSClient(endpoint, tlsCert, tlsKey, tlsCaCert, apiVersion)
 }
 
 func (client *RolexDockerClient) NewHttpClientTls() (*http.Client, error) {
-	tlsCaCert, tlsCert, tlsKey := SharedClientCertFiles(client.Config)
+	tlsCaCert, tlsCert, tlsKey := SharedClientCertFiles(client.config)
 
 	caCert, err := ioutil.ReadFile(tlsCaCert)
 	if err != nil {

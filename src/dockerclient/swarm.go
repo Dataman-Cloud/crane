@@ -10,7 +10,7 @@ import (
 func (client *RolexDockerClient) InspectSwarm() (swarm.Swarm, error) {
 	var swarmInfo swarm.Swarm
 
-	content, err := client.HttpGet(client.SwarmHttpEndpoint+"/swarm", nil, nil)
+	content, err := client.HttpGet(client.swarmHttpEndpoint+"/swarm", nil, nil)
 	if err != nil {
 		return swarmInfo, err
 	}
