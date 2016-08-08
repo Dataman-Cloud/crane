@@ -366,3 +366,37 @@ curl -v -X PUT http://localhost:5013/api/v1/stacks/:namespace/services/:service_
   "data": "update success"
 }
 ```
+
+
+### UpdateServiceImage
+#### Step1 获取加密后的service_id
+**Request**
+
+```
+curl -XGET localhost:2375/api/v1/stacks/(namespace)/services/(service_id)/cd_url
+```
+
+**Response**
+
+```
+{
+    "==AN4Nza5Z2N2BjN2dDNyUXYolDZsd3Z2UHM"
+}
+```
+
+#### Step2 将上一步获取到加密后的ID拼接到新的请求中
+**Request**
+
+```
+curl -XGET localhost:2375/api/v1/stacks/(namespace)/services/(service_id)/rolling_update
+```
+
+**Response**
+```
+{
+    "code": 0,
+    "data": "success"
+
+}
+```
+

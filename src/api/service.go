@@ -27,13 +27,13 @@ func reverseString(s string) string {
 	return string(runes)
 }
 
-func decryptServiceId(encryptServiceId string) string {
+func decryptServiceId(encryptServiceId string) (string, error) {
 	serviceId, err := base64.StdEncoding.DecodeString(reverseString(encryptServiceId))
 	if err != nil {
-		return ""
+		return "", err
 	}
 
-	return string(serviceId)
+	return string(serviceId), nil
 }
 
 func encryptServiceId(serviceId string) string {
@@ -46,7 +46,14 @@ func (api *Api) ServiceCDAddr(ctx *gin.Context) {
 
 func (api *Api) UpdateServiceImage(ctx *gin.Context) {
 	encryptedServicId := ctx.Param("service_id")
-	service, err := api.GetDockerClient().InspectServiceWithRaw(decryptServiceId(encryptedServicId))
+	serviceId, err := decryptServiceId(encryptedServicId)
+	if err != nil {
+		log.Error("parse serviceId got error: ", err)
+		api.HttpErrorResponse(ctx, err)
+		return
+	}
+
+	service, err := api.GetDockerClient().InspectServiceWithRaw(serviceId)
 	if err != nil {
 		log.Errorf("inspect service error: %v", err)
 		api.HttpErrorResponse(ctx, err)
