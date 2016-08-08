@@ -11,8 +11,6 @@
 
         self.noticeNav = mdSideNav.createSideNav('noticeNav');
         self.goBack = goBack;
-        self.togShortMenu = togShortMenu;
-        self.isShortMenu = false;
         self.simulateQuery = true;
 
         self.querySearch = querySearch;
@@ -64,10 +62,6 @@
             } else {
                 $window.history.length > 2 ? $window.history.back() : $state.go('dashboard.home');
             }
-        }
-
-        function togShortMenu() {
-            self.isShortMenu = !self.isShortMenu;
         }
 
         function querySearch(query) {

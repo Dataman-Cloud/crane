@@ -19,85 +19,63 @@
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="stylesheet" type="text/css" href="css/shurenyun.css">
     <link rel="stylesheet" type="text/css" href="css/material.css">
+    <link rel="stylesheet" type="text/css" href="css/swarm.css">
     <!--endbuild-->
     <link rel="shortcut icon" type="image/x-icon" href="pics/favicon.ico"/>
 </head>
 
 <body>
-<div layout="row" class="main" ng-cloak>
-    <aside class="sidebar-main" data-ng-class="{'sidebar-main_two' : rootCtrl.isShortMenu}" layout="column">
-        <div class="logo">
-            <a href="#"><img src="pics/logo-white-full.svg" data-ng-show="!rootCtrl.isShortMenu"></a>
-            <a href="#"><img src="pics/logo-white-small.jpg" data-ng-show="rootCtrl.isShortMenu"></a>
-        </div>
-        <div class="menu-sidebar" flex layout-align="space-between stretch" layout="column">
-            <ul>
-                <li title="应用编排" data-ui-sref-active="active">
-                    <md-button data-ui-sref="stack" data-ui-sref-opts="{reload: true, inherit: false}"><i
-                            class="fa fa-cubes"></i>应用编排
-                    </md-button>
-                </li>
-                <li title="主机管理" data-ui-sref-active="active">
-                    <md-button data-ui-sref="node" data-ui-sref-opts="{inherit: false}"><i
-                            class="fa fa-server"></i>主机管理
-                    </md-button>
-                </li>
-                <li title="网络管理" data-ui-sref-active="active">
-                    <md-button data-ui-sref="network" data-ui-sref-opts="{inherit: false}"><i
-                            class="fa fa-edge"></i>网络管理
-                    </md-button>
-                </li>
-                <li title="镜像仓库" data-ui-sref-active="active">
-                    <md-button data-ui-sref="registry" data-ui-sref-opts="{inherit: false}"><i
-                            class="fa fa-university"></i>镜像仓库
-                    </md-button>
-                </li>
-                <li title="系统信息" data-ui-sref-active="active">
-                    <md-button data-ui-sref="misc" data-ui-sref-opts="{inherit: false}"><i
-                            class="fa fa-cog"></i>系统信息
-                    </md-button>
-                </li>
-            </ul>
-        </div>
-    </aside>
-    <div layout="column" flex>
-        <nav class="nav-main">
-            <md-toolbar>
-                <div class="md-toolbar-tools">
-                    <md-button class="md-icon-button" aria-label="Settings" data-ng-click="rootCtrl.togShortMenu()">
-                        <i class="fa fa-bars"></i>
-                    </md-button>
-                    <md-autocomplete
-                            dm-display-components="search"
-                            md-no-cache="false"
-                            md-search-text="rootCtrl.searchText"
-                            md-items="item in rootCtrl.querySearch(rootCtrl.searchText)"
-                            md-item-text="item.Name ? item.Name : item.ID"
-                            md-min-length="1"
-                            placeholder="输入关键字查询"
-                            md-delay="500"
-                            md-selected-item-change="rootCtrl.searchJump(item)" class="search-header">
-                        <md-item-template>
-                            <div>
-                                <span class="item-title">
-                                    <md-icon md-svg-icon="pics/dataman-logo-icon.svg"></md-icon>
-                                    <span md-highlight-text="rootCtrl.searchText" md-highlight-flags="^i">
-                                        Name: {/item.Name/}
-                                    </span>
-                                </span>
-                                <span class="item-metadata">
-                                    <span class="item-metastat">
-                                      ID: {/item.ID/}
-                                    </span>
-                                </span>
-                            </div>
-                        </md-item-template>
-                        <md-not-found>
-                            未查询到相关信息...
-                        </md-not-found>
-                    </md-autocomplete>
-                    <span flex></span>
+<div layout="row" id="main">
 
+    <aside id="sidebar-main" flex="none" layout="column" ng-class="{'min-aside': isShortMenu}">
+        <a href="#" class="logo" flex="none">
+            <img src="pics/logo-white-full.svg" ng-if="!isShortMenu">
+            <img src="pics/logo-white-ico.svg" ng-if="isShortMenu">
+        </a>
+        <ul>
+            <li title="应用编排" data-ui-sref-active="active">
+                <md-button data-ui-sref="stack" data-ui-sref-opts="{reload: true, inherit: false}">
+                    <i class="fa fa-stack-overflow"></i>应用编排
+                </md-button>
+            </li>
+
+            <li title="主机管理" data-ui-sref-active="active">
+                <md-button data-ui-sref="node" data-ui-sref-opts="{inherit: false}">
+                    <i class="fa fa-server"></i>主机管理
+                </md-button>
+            </li>
+
+            <li title="网络管理" data-ui-sref-active="active">
+                <md-button data-ui-sref="network" data-ui-sref-opts="{inherit: false}">
+                    <i class="fa fa-internet-explorer"></i>网络管理
+                </md-button>
+            </li>
+
+            <li title="镜像仓库" data-ui-sref-active="active">
+                <md-button data-ui-sref="registry" data-ui-sref-opts="{inherit: false}">
+                    <i class="fa fa-shopping-cart"></i>镜像仓库
+                </md-button>
+            </li>
+
+            <li title="系统信息" data-ui-sref-active="active">
+                <md-button data-ui-sref="misc" data-ui-sref-opts="{inherit: false}"><i class="fa fa-cogs"></i>系统信息
+                </md-button>
+            </li>
+        </ul>
+    </aside>
+
+    <div flex layout="column">
+        <nav id="nav-main" layout="row" layout-align="space-between center">
+            <div flex="auto" layout="row" layout-align="start center">
+                <md-button class="md-icon-button" aria-label="Settings" flex="none" ng-click="isShortMenu = !isShortMenu">
+                    <i class="fa fa-angle-double-left" ng-if="!isShortMenu"></i>
+                    <i class="fa fa-angle-double-right" ng-if="isShortMenu"></i>
+                </md-button>
+                <div ncy-breadcrumb></div>
+            </div>
+
+            <md-toolbar flex="none">
+                <div class="md-toolbar-tools">
                     <md-menu>
                         <md-button class="md-icon-button" aria-label="More" ng-click="$mdOpenMenu($event)">
                             <i class="fa fa-th"></i>
@@ -105,16 +83,19 @@
                         <md-menu-content>
                             <md-menu-item>
                                 <md-button>
-                                    新建主机
-                                </md-button>
-                            </md-menu-item>
-                            <md-menu-item>
-                                <md-button>
+                                    <i class="fa fa-stack-overflow"></i>
                                     新建编排
                                 </md-button>
                             </md-menu-item>
                             <md-menu-item>
                                 <md-button>
+                                    <i class="fa fa-server"></i>
+                                    添加主机
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-item>
+                                <md-button>
+                                    <i class="fa fa-internet-explorer"></i>
                                     新建网络
                                 </md-button>
                             </md-menu-item>
@@ -133,7 +114,7 @@
                         <md-menu-content>
                             <md-menu-item>
                                 <md-button>
-                                    <md-icon md-svg-src="pics/ic_people.svg" aria-label="ic_people "></md-icon>
+                                    <i class="fa fa-users"></i>
                                     用户中心
                                 </md-button>
                             </md-menu-item>
@@ -146,28 +127,176 @@
                             </md-menu-item>
                         </md-menu-content>
                     </md-menu>
-
                 </div>
             </md-toolbar>
         </nav>
-        <div ncy-breadcrumb></div>
 
         <div class="main-container" flex data-ui-view></div>
-    </div>
 
-    <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="noticeNav">
-        <md-toolbar class="md-theme-light">
-            <h1 class="md-toolbar-tools">公告栏</h1>
-        </md-toolbar>
-        <md-content layout-padding>
-            <div>
-                <md-content>
-                    <div>暂无公告</div>
-                </md-content>
-            </div>
-        </md-content>
-    </md-sidenav>
+        <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="noticeNav">
+            <md-toolbar class="md-theme-light">
+                <h1 class="md-toolbar-tools">公告栏</h1>
+            </md-toolbar>
+            <md-content layout-padding>
+                <div>
+                    <md-content>
+                        <div>暂无公告</div>
+                    </md-content>
+                </div>
+            </md-content>
+        </md-sidenav>
+    </div>
 </div>
+
+
+
+
+
+
+<!--<div layout="row" class="main" ng-cloak>-->
+    <!--<aside class="sidebar-main" data-ng-class="{'sidebar-main_two' : rootCtrl.isShortMenu}" layout="column">-->
+        <!--<div class="logo">-->
+            <!--<a href="#"><img src="pics/logo-white-full.svg" data-ng-show="!rootCtrl.isShortMenu"></a>-->
+            <!--<a href="#"><img src="pics/logo-white-small.jpg" data-ng-show="rootCtrl.isShortMenu"></a>-->
+        <!--</div>-->
+        <!--<div class="menu-sidebar" flex layout-align="space-between stretch" layout="column">-->
+            <!--<ul>-->
+                <!--<li title="应用编排" data-ui-sref-active="active">-->
+                    <!--<md-button data-ui-sref="stack" data-ui-sref-opts="{reload: true, inherit: false}"><i-->
+                            <!--class="fa fa-cubes"></i>应用编排-->
+                    <!--</md-button>-->
+                <!--</li>-->
+                <!--<li title="主机管理" data-ui-sref-active="active">-->
+                    <!--<md-button data-ui-sref="node" data-ui-sref-opts="{inherit: false}"><i-->
+                            <!--class="fa fa-server"></i>主机管理-->
+                    <!--</md-button>-->
+                <!--</li>-->
+                <!--<li title="网络管理" data-ui-sref-active="active">-->
+                    <!--<md-button data-ui-sref="network" data-ui-sref-opts="{inherit: false}"><i-->
+                            <!--class="fa fa-edge"></i>网络管理-->
+                    <!--</md-button>-->
+                <!--</li>-->
+                <!--<li title="镜像仓库" data-ui-sref-active="active">-->
+                    <!--<md-button data-ui-sref="registry" data-ui-sref-opts="{inherit: false}"><i-->
+                            <!--class="fa fa-university"></i>镜像仓库-->
+                    <!--</md-button>-->
+                <!--</li>-->
+                <!--<li title="系统信息" data-ui-sref-active="active">-->
+                    <!--<md-button data-ui-sref="misc" data-ui-sref-opts="{inherit: false}"><i-->
+                            <!--class="fa fa-cog"></i>系统信息-->
+                    <!--</md-button>-->
+                <!--</li>-->
+            <!--</ul>-->
+        <!--</div>-->
+    <!--</aside>-->
+    <!--<div layout="column" flex>-->
+        <!--<nav class="nav-main">-->
+            <!--<md-toolbar>-->
+                <!--<div class="md-toolbar-tools">-->
+                    <!--<md-button class="md-icon-button" aria-label="Settings" data-ng-click="rootCtrl.togShortMenu()">-->
+                        <!--<i class="fa fa-bars"></i>-->
+                    <!--</md-button>-->
+                    <!--<md-autocomplete-->
+                            <!--dm-display-components="search"-->
+                            <!--md-no-cache="false"-->
+                            <!--md-search-text="rootCtrl.searchText"-->
+                            <!--md-items="item in rootCtrl.querySearch(rootCtrl.searchText)"-->
+                            <!--md-item-text="item.Name ? item.Name : item.ID"-->
+                            <!--md-min-length="1"-->
+                            <!--placeholder="输入关键字查询"-->
+                            <!--md-delay="500"-->
+                            <!--md-selected-item-change="rootCtrl.searchJump(item)" class="search-header">-->
+                        <!--<md-item-template>-->
+                            <!--<div>-->
+                                <!--<span class="item-title">-->
+                                    <!--<md-icon md-svg-icon="pics/dataman-logo-icon.svg"></md-icon>-->
+                                    <!--<span md-highlight-text="rootCtrl.searchText" md-highlight-flags="^i">-->
+                                        <!--Name: {/item.Name/}-->
+                                    <!--</span>-->
+                                <!--</span>-->
+                                <!--<span class="item-metadata">-->
+                                    <!--<span class="item-metastat">-->
+                                      <!--ID: {/item.ID/}-->
+                                    <!--</span>-->
+                                <!--</span>-->
+                            <!--</div>-->
+                        <!--</md-item-template>-->
+                        <!--<md-not-found>-->
+                            <!--未查询到相关信息...-->
+                        <!--</md-not-found>-->
+                    <!--</md-autocomplete>-->
+                    <!--<span flex></span>-->
+
+                    <!--<md-menu>-->
+                        <!--<md-button class="md-icon-button" aria-label="More" ng-click="$mdOpenMenu($event)">-->
+                            <!--<i class="fa fa-th"></i>-->
+                        <!--</md-button>-->
+                        <!--<md-menu-content>-->
+                            <!--<md-menu-item>-->
+                                <!--<md-button>-->
+                                    <!--新建主机-->
+                                <!--</md-button>-->
+                            <!--</md-menu-item>-->
+                            <!--<md-menu-item>-->
+                                <!--<md-button>-->
+                                    <!--新建编排-->
+                                <!--</md-button>-->
+                            <!--</md-menu-item>-->
+                            <!--<md-menu-item>-->
+                                <!--<md-button>-->
+                                    <!--新建网络-->
+                                <!--</md-button>-->
+                            <!--</md-menu-item>-->
+                        <!--</md-menu-content>-->
+                    <!--</md-menu>-->
+
+                    <!--<md-button class="md-icon-button" aria-label="More" ng-click="rootCtrl.noticeNav.buildToggler()"-->
+                               <!--ng-hide="rootCtrl.noticeNav.isOpenNav()">-->
+                        <!--<i class="fa fa-bell"></i>-->
+                    <!--</md-button>-->
+
+                    <!--<md-menu>-->
+                        <!--<md-button class="md-icon-button" aria-label="More" ng-click="$mdOpenMenu($event)">-->
+                            <!--<i class="fa fa-user"></i>-->
+                        <!--</md-button>-->
+                        <!--<md-menu-content>-->
+                            <!--<md-menu-item>-->
+                                <!--<md-button>-->
+                                    <!--<md-icon md-svg-src="pics/ic_people.svg" aria-label="ic_people "></md-icon>-->
+                                    <!--用户中心-->
+                                <!--</md-button>-->
+                            <!--</md-menu-item>-->
+                            <!--<md-menu-item>-->
+                                <!--<md-button data-ng-click="rootCtrl.logout()">-->
+                                    <!--<md-icon md-svg-src="pics/ic_power_settings.svg"-->
+                                             <!--aria-label="ic_power_settings"></md-icon>-->
+                                    <!--{/'LOGOUT' | translate /}-->
+                                <!--</md-button>-->
+                            <!--</md-menu-item>-->
+                        <!--</md-menu-content>-->
+                    <!--</md-menu>-->
+
+                <!--</div>-->
+            <!--</md-toolbar>-->
+        <!--</nav>-->
+        <!--<div ncy-breadcrumb></div>-->
+
+        <!--<div class="main-container" flex data-ui-view></div>-->
+    <!--</div>-->
+
+    <!--<md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="noticeNav">-->
+        <!--<md-toolbar class="md-theme-light">-->
+            <!--<h1 class="md-toolbar-tools">公告栏</h1>-->
+        <!--</md-toolbar>-->
+        <!--<md-content layout-padding>-->
+            <!--<div>-->
+                <!--<md-content>-->
+                    <!--<div>暂无公告</div>-->
+                <!--</md-content>-->
+            <!--</div>-->
+        <!--</md-content>-->
+    <!--</md-sidenav>-->
+<!--</div>-->
 
 <!--build:js js/script.js-->
 <script src="bower_components/jquery/dist/jquery.js" type="text/javascript"></script>
