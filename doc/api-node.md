@@ -241,23 +241,50 @@
 
 ###UpdateNode
 
-**Request**
+**Request update role**
 
 ```
    curl -v -X PATCH http://localhost:5013/api/v1/nodes/$NODE_ID -H Content-Type:application/json -d \
    '
    {
-     "Spec": {
-         "Role": "worker",
-         "Membership": "accepted",
-         "Availability": "drain"
-     },
-     "Version": {
-         "Index": 1081
-     }
+        "Method":"label-add",
+        "Options": {"aaaaaaaaaaaaaa":"bbbbbbbbbbbb"}
    }
    '
 ```
+**Request update role**
+
+```
+   curl -v -X PATCH http://localhost:5013/api/v1/nodes/$NODE_ID -H Content-Type:application/json -d \
+   '
+   {
+        "Method":"label-rm",
+        "Options": ["label1", "label2"]
+   }
+   '
+```
+
+```
+   curl -v -X PATCH http://localhost:5013/api/v1/nodes/$NODE_ID -H Content-Type:application/json -d \
+   '
+   {
+        "Method":"role",
+        "Options": "manager"
+   }
+   '
+```
+
+```
+   curl -v -X PATCH http://localhost:5013/api/v1/nodes/$NODE_ID -H Content-Type:application/json -d \
+   '
+   {
+        "Method":"availability",
+        "Options": "active"
+   }
+   '
+```
+
+
 
 Membership: pending/accepted
 Availability: drain/active/pause
