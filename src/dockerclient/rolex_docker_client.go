@@ -15,7 +15,7 @@ import (
 	"github.com/Dataman-Cloud/rolex/src/util/rolexerror"
 
 	log "github.com/Sirupsen/logrus"
-	goclient "github.com/fsouza/go-dockerclient"
+	docker "github.com/fsouza/go-dockerclient"
 	"golang.org/x/net/context"
 )
 
@@ -30,12 +30,13 @@ const (
 type RolexDockerClient struct {
 	DockerClientInterface
 
-	// client connect to swarm cluster
-	swarmClient *goclient.Client
+	// client connect to swarm cluster manager
+	// TODO make swarmManager connect to next if first failed
+	swarmManager *docker.Client
 	// map clients connect to individual node
-	dockerClients map[string]*goclient.Client
-	// mutex control writing to dockerClients
-	dockerClientMutex *sync.Mutex
+	swarmNodes map[string]*docker.Client
+	// mutex control writing to swarmNodes
+	swarmNodeMutex *sync.Mutex
 
 	// http client shared both for cluster connection & client connection
 	sharedHttpClient  *http.Client
@@ -50,16 +51,16 @@ func NewRolexDockerClient(config *config.Config) (*RolexDockerClient, error) {
 
 	client := &RolexDockerClient{
 		config:            config,
-		dockerClients:     make(map[string](*goclient.Client), 0),
+		swarmNodes:        make(map[string](*docker.Client), 0),
 		swarmHttpEndpoint: strings.Replace(config.DockerHost, "tcp", "https", -1),
-		dockerClientMutex: &sync.Mutex{},
+		swarmNodeMutex:    &sync.Mutex{},
 	}
 
 	if config.DockerTlsVerify == "1" {
-		client.swarmClient, err = client.NewGoDockerClientTls(config.DockerHost, API_VERSION)
+		client.swarmManager, err = client.NewGoDockerClientTls(config.DockerHost, API_VERSION)
 		client.sharedHttpClient, err = client.NewHttpClientTls()
 	} else {
-		client.swarmClient, err = goclient.NewVersionedClient(config.DockerHost, API_VERSION)
+		client.swarmManager, err = docker.NewVersionedClient(config.DockerHost, API_VERSION)
 		client.sharedHttpClient = &http.Client{Timeout: defaultHttpRequestTimeout}
 	}
 
@@ -68,7 +69,7 @@ func NewRolexDockerClient(config *config.Config) (*RolexDockerClient, error) {
 		return nil, err
 	}
 
-	err = client.swarmClient.Ping()
+	err = client.swarmManager.Ping()
 	if err != nil {
 		log.Error("Unable to ping docker daemon. Ensure docker is running endpoint ", config.DockerHost, "err: ", err)
 		return nil, err
@@ -78,13 +79,16 @@ func NewRolexDockerClient(config *config.Config) (*RolexDockerClient, error) {
 }
 
 // return swarm docker client
-func (client *RolexDockerClient) SwarmClient() *goclient.Client {
-	return client.swarmClient
+func (client *RolexDockerClient) SwarmClient() *docker.Client {
+	return client.swarmManager
 }
 
 // return or cache daemon docker client base on host id stored in ctx
-func (client *RolexDockerClient) DockerClient(ctx context.Context) (*goclient.Client, error) {
-	var dockerClient *goclient.Client
+func (client *RolexDockerClient) DockerClient(ctx context.Context) (*docker.Client, error) {
+	var dockerClient *docker.Client
+
+	client.swarmNodeMutex.Lock()
+	defer client.swarmNodeMutex.Unlock()
 
 	var err error
 	node_id, ok := ctx.Value("node_id").(string)
@@ -93,7 +97,7 @@ func (client *RolexDockerClient) DockerClient(ctx context.Context) (*goclient.Cl
 		return nil, err
 	}
 
-	if dockerClient, found := client.dockerClients[node_id]; found {
+	if dockerClient, found := client.swarmNodes[node_id]; found {
 		return dockerClient, nil
 	}
 
@@ -106,7 +110,7 @@ func (client *RolexDockerClient) DockerClient(ctx context.Context) (*goclient.Cl
 	if client.config.DockerTlsVerify == "1" {
 		dockerClient, err = client.NewGoDockerClientTls(host, API_VERSION)
 	} else {
-		dockerClient, err = goclient.NewVersionedClient(host, API_VERSION)
+		dockerClient, err = docker.NewVersionedClient(host, API_VERSION)
 	}
 
 	if err != nil {
@@ -122,21 +126,19 @@ func (client *RolexDockerClient) DockerClient(ctx context.Context) (*goclient.Cl
 		return nil, err
 	}
 
-	client.dockerClientMutex.Lock()
-	defer client.dockerClientMutex.Unlock()
-	client.dockerClients[node_id] = dockerClient
+	client.swarmNodes[node_id] = dockerClient
 
 	return dockerClient, nil
 }
 
-// ping to test swarmClient connection
+// ping to test swarmManager connection
 func (client *RolexDockerClient) Ping() error {
-	return client.swarmClient.Ping()
+	return client.swarmManager.Ping()
 }
 
-func (client *RolexDockerClient) NewGoDockerClientTls(endpoint string, apiVersion string) (*goclient.Client, error) {
+func (client *RolexDockerClient) NewGoDockerClientTls(endpoint string, apiVersion string) (*docker.Client, error) {
 	tlsCaCert, tlsCert, tlsKey := SharedClientCertFiles(client.config)
-	return goclient.NewVersionedTLSClient(endpoint, tlsCert, tlsKey, tlsCaCert, apiVersion)
+	return docker.NewVersionedTLSClient(endpoint, tlsCert, tlsKey, tlsCaCert, apiVersion)
 }
 
 func (client *RolexDockerClient) NewHttpClientTls() (*http.Client, error) {
@@ -179,15 +181,15 @@ func SharedClientCertFiles(config *config.Config) (string, string, string) {
 func SortingError(err error) error {
 	var detailError error
 	switch err.(type) {
-	case *goclient.NoSuchContainer:
+	case *docker.NoSuchContainer:
 		detailError = rolexerror.NewRolexError(rolexerror.CodeContainerNotFound, err.Error())
-	case *goclient.NoSuchNetwork:
+	case *docker.NoSuchNetwork:
 		detailError = rolexerror.NewRolexError(rolexerror.CodeNetworkNotFound, err.Error())
-	case *goclient.NoSuchNetworkOrContainer:
+	case *docker.NoSuchNetworkOrContainer:
 		detailError = rolexerror.NewRolexError(rolexerror.CodeNetworkOrContainerNotFound, err.Error())
-	case *goclient.ContainerAlreadyRunning:
+	case *docker.ContainerAlreadyRunning:
 		detailError = rolexerror.NewRolexError(rolexerror.CodeContainerAlreadyRunning, err.Error())
-	case *goclient.ContainerNotRunning:
+	case *docker.ContainerNotRunning:
 		detailError = rolexerror.NewRolexError(rolexerror.CodeContainerNotRunning, err.Error())
 	default:
 		detailError = err
