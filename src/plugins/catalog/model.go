@@ -34,7 +34,7 @@ func CatalogFromPath(path string) (*Catalog, error) {
 		Bundle:      string(bundle),
 		Readme:      string(readme),
 		Description: string(description),
-		Icon:        filepath.Join(path, filepath.Base(path)) + ".png",
+		Icon:        "/catalog/v1/icons" + "/" + filepath.Base(path) + "/" + filepath.Base(path) + ".png",
 	}
 	return catalog, nil
 }
