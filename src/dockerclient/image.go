@@ -6,34 +6,34 @@ import (
 )
 
 func (client *RolexDockerClient) ListImages(ctx context.Context, opts goclient.ListImagesOptions) ([]goclient.APIImages, error) {
-	dockerClient, err := client.DockerClient(ctx)
+	swarmNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return nil, err
 	}
-	return dockerClient.ListImages(opts)
+	return swarmNode.ListImages(opts)
 }
 
 func (client *RolexDockerClient) InspectImage(ctx context.Context, imageID string) (*goclient.Image, error) {
-	dockerClient, err := client.DockerClient(ctx)
+	swarmNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return nil, err
 	}
-	return dockerClient.InspectImage(imageID)
+	return swarmNode.InspectImage(imageID)
 }
 
 func (client *RolexDockerClient) ImageHistory(ctx context.Context, imageID string) ([]goclient.ImageHistory, error) {
-	dockerClient, err := client.DockerClient(ctx)
+	swarmNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return nil, err
 	}
-	return dockerClient.ImageHistory(imageID)
+	return swarmNode.ImageHistory(imageID)
 }
 
 // TODO add remove image  option
 func (client *RolexDockerClient) RemoveImage(ctx context.Context, imageID string) error {
-	dockerClient, err := client.DockerClient(ctx)
+	swarmNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return err
 	}
-	return dockerClient.RemoveImage(imageID)
+	return swarmNode.RemoveImage(imageID)
 }

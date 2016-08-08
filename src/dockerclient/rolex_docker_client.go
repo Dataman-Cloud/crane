@@ -31,12 +31,13 @@ type RolexDockerClient struct {
 	DockerClientInterface
 
 	// client connect to swarm cluster manager
-	// TODO make swarmManager connect to next if first failed
+	// TODO as a swarm cluster has multiple manager and can be changed at run time
+	// make swarmManager connect to next if first failed
 	swarmManager *docker.Client
 	// map clients connect to individual node
 	swarmNodes map[string]*docker.Client
 	// mutex control writing to swarmNodes
-	swarmNodeMutex *sync.Mutex
+	swarmNodesMutex *sync.Mutex
 
 	// http client shared both for cluster connection & client connection
 	sharedHttpClient  *http.Client
@@ -53,7 +54,7 @@ func NewRolexDockerClient(config *config.Config) (*RolexDockerClient, error) {
 		config:            config,
 		swarmNodes:        make(map[string](*docker.Client), 0),
 		swarmHttpEndpoint: strings.Replace(config.DockerHost, "tcp", "https", -1),
-		swarmNodeMutex:    &sync.Mutex{},
+		swarmNodesMutex:   &sync.Mutex{},
 	}
 
 	if config.DockerTlsVerify == "1" {
@@ -79,16 +80,16 @@ func NewRolexDockerClient(config *config.Config) (*RolexDockerClient, error) {
 }
 
 // return swarm docker client
-func (client *RolexDockerClient) SwarmClient() *docker.Client {
+func (client *RolexDockerClient) SwarmManager() *docker.Client {
 	return client.swarmManager
 }
 
 // return or cache daemon docker client base on host id stored in ctx
-func (client *RolexDockerClient) DockerClient(ctx context.Context) (*docker.Client, error) {
-	var dockerClient *docker.Client
+func (client *RolexDockerClient) SwarmNode(ctx context.Context) (*docker.Client, error) {
+	var swarmNode *docker.Client
 
-	client.swarmNodeMutex.Lock()
-	defer client.swarmNodeMutex.Unlock()
+	client.swarmNodesMutex.Lock()
+	defer client.swarmNodesMutex.Unlock()
 
 	var err error
 	node_id, ok := ctx.Value("node_id").(string)
@@ -97,8 +98,8 @@ func (client *RolexDockerClient) DockerClient(ctx context.Context) (*docker.Clie
 		return nil, err
 	}
 
-	if dockerClient, found := client.swarmNodes[node_id]; found {
-		return dockerClient, nil
+	if swarmNode, found := client.swarmNodes[node_id]; found {
+		return swarmNode, nil
 	}
 
 	host, err := client.NodeDaemonEndpoint(node_id, "tcp")
@@ -108,9 +109,9 @@ func (client *RolexDockerClient) DockerClient(ctx context.Context) (*docker.Clie
 	}
 
 	if client.config.DockerTlsVerify == "1" {
-		dockerClient, err = client.NewGoDockerClientTls(host, API_VERSION)
+		swarmNode, err = client.NewGoDockerClientTls(host, API_VERSION)
 	} else {
-		dockerClient, err = docker.NewVersionedClient(host, API_VERSION)
+		swarmNode, err = docker.NewVersionedClient(host, API_VERSION)
 	}
 
 	if err != nil {
@@ -119,16 +120,16 @@ func (client *RolexDockerClient) DockerClient(ctx context.Context) (*docker.Clie
 		return nil, err
 	}
 
-	err = dockerClient.Ping()
+	err = swarmNode.Ping()
 	if err != nil {
 		message := fmt.Sprintf("DockerClient ping error: %s", err.Error())
 		err = rolexerror.NewRolexError(rolexerror.CodeGetDockerClientError, message)
 		return nil, err
 	}
 
-	client.swarmNodes[node_id] = dockerClient
+	client.swarmNodes[node_id] = swarmNode
 
-	return dockerClient, nil
+	return swarmNode, nil
 }
 
 // ping to test swarmManager connection

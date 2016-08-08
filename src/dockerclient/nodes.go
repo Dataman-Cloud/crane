@@ -76,11 +76,11 @@ func (client *RolexDockerClient) UpdateNode(nodeId string, version swarm.Version
 
 // docker info
 func (client *RolexDockerClient) Info(ctx context.Context) (*goclient.DockerInfo, error) {
-	dockerClient, err := client.DockerClient(ctx)
+	swarmNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return nil, err
 	}
-	return dockerClient.Info()
+	return swarmNode.Info()
 }
 
 func (client *RolexDockerClient) NodeDaemonEndpoint(nodeId string, protocol string) (string, error) {
