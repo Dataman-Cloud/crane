@@ -53,11 +53,9 @@ func (api *Api) UpdateServiceImage(ctx *gin.Context) {
 		return
 	}
 
-	fmt.Println(service)
+	service.Spec.TaskTemplate.ContainerSpec.Image = ctx.Query("image")
 
-	service.TaskTemplate.ContainerSpec.Image = ctx.Query("image")
-
-	if err := api.GetDockerClient().UpdateService(service.ID, service.Version, serviceSpec, nil); err != nil {
+	if err := api.GetDockerClient().UpdateService(service.ID, service.Version, service.Spec, nil); err != nil {
 		log.Errorf("update service error: %v", err)
 		api.HttpErrorResponse(ctx, err)
 		return
