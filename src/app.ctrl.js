@@ -23,7 +23,8 @@
 
         function activate() {
             ///
-            initUser()
+            initUser();
+            listComponent()
         }
 
         function initUser() {
@@ -41,6 +42,13 @@
                 .then(function (data) {
                     $rootScope.accountId = data.Id
                 })
+        }
+
+        function listComponent() {
+            gHttp.Resource('misc.config').get()
+                .then(function (data) {
+                    $rootScope.componentList = data.FeatureFlags;
+                });
         }
 
         function logout() {
