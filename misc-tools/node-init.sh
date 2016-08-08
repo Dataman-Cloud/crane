@@ -71,7 +71,7 @@ docker_required() {
       exit 1
   fi
 
-  if [[ $docker_version -lt $DOCKER_MINOR_VERSION_REQUIRED ]]; then
+  if [ $docker_version -lt $DOCKER_MINOR_VERSION_REQUIRED ]; then
       echo "********************************************************"
       printf "\033[41mERROR:\033[0m docker-engine>=1.$DOCKER_MINOR_VERSION_REQUIRED is required, current version: 1.$docker_version\n"
       echo "********************************************************"
@@ -90,10 +90,12 @@ docker_tcp_open_required()
             printf "How to configure it?\n"
             printf "\n"
             printf "For CentOS/RHEL(systemd)\n"
-            printf "Edit file /usr/lib/systemd/system/docker.service, let ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:2376 -H unix:///var/run/docker.sock\n"
+            printf "Edit file /usr/lib/systemd/system/docker.service, let ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:$DOCKER_TCP_SOCKET -H unix:///var/run/docker.sock\n"
+            printf "Then, systemctl daemon-reload && service docker restart\n"
             printf "\n"
             printf "For Ubuntu(upstart)\n"
-            printf "Touch or edit file /etc/default/docker, let DOCKER_OPTS=\"-H tcp://0.0.0.0:2376 -H unix:///var/run/docker.sock\"\n"
+            printf "Touch or edit file /etc/default/docker, let DOCKER_OPTS=\"-H tcp://0.0.0.0:$DOCKER_TCP_SOCKET -H unix:///var/run/docker.sock\"\n"
+            printf "Then, service docker restart\n"
             printf "\n"
             printf "Refer: https://docs.docker.com/engine/reference/commandline/dockerd/#/daemon-socket-option\n"
             echo "********************************************************"
@@ -147,11 +149,28 @@ selinux_is_disabled() {
     fi
 }
 
-ntp_is_enabled()
+ntp_is_enabled_on_centos_or_rhel()
 {
     if _command_exists ntpstat; then
         echo "-> Checking NTP service status..."
         ntpstat ||
+            {
+                printf "\033[41mERROR:\033[0m NTP is unsynchronised, Please confirm your ntp status before continue.\n"
+                exit 1
+            }
+        echo "NTP service status seems good."
+    else
+        printf "\033[41mERROR:\033[0m Cannot find the command ntpstat, Please enable the NTP service on your node.\n"
+        exit 1
+    fi
+}
+
+ntp_is_enabled_on_ubuntu()
+{
+    if _command_exists ntpq; then
+        echo "-> Checking NTP service status..."
+        # TODO: wierd method to check the ntp status
+        ntpq -p | grep -Fq offset ||
             {
                 printf "\033[41mERROR:\033[0m NTP is unsynchronised, Please confirm your ntp status before continue.\n"
                 exit 1
@@ -199,7 +218,6 @@ have_a_init()
     host_arch_supported
     docker_required
     docker_tcp_open_required
-    ntp_is_enabled
     case "$(get_distribution_type)" in
         gentoo|boot2docker|amzn|linuxmint)
             (
@@ -229,6 +247,7 @@ have_a_init()
                 exit 1
             fi
             selinux_is_disabled
+            ntp_is_enabled_on_centos_or_rhel
             )
             exit 0
             ;;
@@ -240,7 +259,7 @@ have_a_init()
             ;;
         ubuntu|debian)
             (
-            echo ""
+            ntp_is_enabled_on_ubuntu
             )
             exit 0
             ;;
