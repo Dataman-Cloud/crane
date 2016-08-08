@@ -78,6 +78,7 @@ func (api *Api) ApiRouter() *gin.Engine {
 		v1.GET("/nodes", api.ListNodes)
 		v1.GET("/nodes/:node_id", api.InspectNode)
 		v1.GET("/nodes/:node_id/info", api.Info)
+		v1.PUT("/nodes/:node_id", api.UpdateNode)
 		// Going to delegate to /nodes/:id
 		// v1.GET("/nodes/leader_manager", api.LeaderNode)
 
@@ -101,7 +102,6 @@ func (api *Api) ApiRouter() *gin.Engine {
 		v1.GET("/nodes/:node_id/volumes/:volume_id", api.InspectVolume)
 		v1.POST("/nodes/:node_id/volumes", api.CreateVolume)
 		v1.DELETE("/nodes/:node_id/volumes/:volume_id", api.RemoveVolume)
-		v1.PATCH("/nodes/:node_id", api.UpdateNode)
 
 		// Networks
 		v1.POST("/nodes/:node_id/networks", api.CreateNodeNetwork)

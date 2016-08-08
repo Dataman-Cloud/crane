@@ -31,7 +31,10 @@ const (
 	CodeNetworkOrContainerNotFound = 11208
 
 	//Node error code
-	CodeUpdateNodeParamError = 11301
+	CodeUpdateNodeParamError  = 11301
+	CodeErrorUpdateNodeMethod = 11302
+	CodeErrorNodeRole         = 11303
+	CodeErrorNodeAvailability = 11304
 
 	//Service error code
 	CodeUpdateServiceParamError = 11401

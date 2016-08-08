@@ -3,20 +3,14 @@ package api
 import (
 	"encoding/json"
 
+	"github.com/Dataman-Cloud/rolex/src/model"
 	"github.com/Dataman-Cloud/rolex/src/util/rolexerror"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/docker/engine-api/types"
-	"github.com/docker/engine-api/types/swarm"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/net/context"
 )
-
-// Node2Update represents a node spec to update.
-type Node2Update struct {
-	Spec    swarm.NodeSpec
-	Version swarm.Version
-}
 
 func (api *Api) InspectNode(ctx *gin.Context) {
 	nodeId := ctx.Param("node_id")
@@ -50,9 +44,9 @@ func (api *Api) ListNodes(ctx *gin.Context) {
 func (api *Api) CreateNode(ctx *gin.Context) {}
 
 func (api *Api) UpdateNode(ctx *gin.Context) {
-	var node2Update Node2Update
+	var nodeUpdate model.UpdateOptions
 
-	if err := ctx.BindJSON(&node2Update); err != nil {
+	if err := ctx.BindJSON(&nodeUpdate); err != nil {
 		switch jsonErr := err.(type) {
 		case *json.SyntaxError:
 			log.Errorf("Node JSON syntax error at byte %v: %s", jsonErr.Offset, jsonErr.Error())
@@ -66,7 +60,7 @@ func (api *Api) UpdateNode(ctx *gin.Context) {
 	}
 
 	nodeId := ctx.Param("node_id")
-	if err := api.GetDockerClient().UpdateNode(nodeId, node2Update.Version, node2Update.Spec); err != nil {
+	if err := api.GetDockerClient().UpdateNode(nodeId, nodeUpdate); err != nil {
 		log.Errorf("Update node %s got error: %s", nodeId, err.Error())
 		api.HttpErrorResponse(ctx, err)
 		return
