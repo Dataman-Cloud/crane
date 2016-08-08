@@ -8,9 +8,9 @@ import (
 	"net/url"
 )
 
-// execute http get request use default timeout
+// Executes http GET request with default timeout.
 func (client *RolexDockerClient) HttpGet(requestUrl string, query url.Values, headers map[string][]string) ([]byte, error) {
-	apiPath := client.getAPIPath(requestUrl, query)
+	apiPath := getAPIPath(requestUrl, query)
 	resp, err := client.sharedHttpClient.Get(apiPath)
 	if err != nil {
 		return nil, err
@@ -29,7 +29,7 @@ func (client *RolexDockerClient) HttpGet(requestUrl string, query url.Values, he
 	return result, nil
 }
 
-// execute http delete request use default timeout
+// Executes http DELETE request with default timeout.
 func (client *RolexDockerClient) HttpDelete(requestUrl string) ([]byte, error) {
 	req, err := http.NewRequest("DELETE", requestUrl, nil)
 	if err != nil {
@@ -54,8 +54,9 @@ func (client *RolexDockerClient) HttpDelete(requestUrl string) ([]byte, error) {
 	return result, nil
 }
 
+// Executes http POST request with default timeout.
 func (client *RolexDockerClient) HttpPost(requestUrl string, query url.Values, body []byte, headers map[string][]string) ([]byte, error) {
-	apiPath := client.getAPIPath(requestUrl, query)
+	apiPath := getAPIPath(requestUrl, query)
 	req, err := http.NewRequest("POST", apiPath, bytes.NewBuffer(body))
 
 	if err != nil {
@@ -88,8 +89,9 @@ func (client *RolexDockerClient) HttpPost(requestUrl string, query url.Values, b
 	return result, nil
 }
 
+// Executes http PUT request with default timeout.
 func (client *RolexDockerClient) HttpPut(requestUrl string, query url.Values, body []byte, headers map[string][]string) ([]byte, error) {
-	apiPath := client.getAPIPath(requestUrl, query)
+	apiPath := getAPIPath(requestUrl, query)
 	req, err := http.NewRequest("PUT", apiPath, bytes.NewBuffer(body))
 	if err != nil {
 		return nil, err
@@ -122,7 +124,7 @@ func (client *RolexDockerClient) HttpPut(requestUrl string, query url.Values, bo
 
 // getAPIPath returns the versioned request path to call the api.
 // It appends the query parameters to the path if they are not empty.
-func (client *RolexDockerClient) getAPIPath(apiPath string, query url.Values) string {
+func getAPIPath(apiPath string, query url.Values) string {
 	u := &url.URL{
 		Path: apiPath,
 	}
