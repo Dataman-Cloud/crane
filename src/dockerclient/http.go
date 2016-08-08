@@ -13,11 +13,7 @@ import (
 // Executes http GET request with default timeout.
 func (client *RolexDockerClient) HttpGet(requestUrl string, query url.Values, headers map[string][]string) ([]byte, error) {
 	apiPath := getAPIPath(requestUrl, query)
-<<<<<<< 836ea9ed459d34674903e41ce50e5bfb7d265ba6
 	resp, err := client.sharedHttpClient.Get(apiPath)
-=======
-	resp, err := client.SharedHttpClient.Get(apiPath)
->>>>>>> add update node api
 	if err != nil {
 		return nil, err
 	}

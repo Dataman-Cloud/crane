@@ -21,8 +21,8 @@ import (
 const (
 	flagUpdateRole         = "role"
 	flagUpdateAvailability = "availability"
-	flagUpdateLabelAdd     = "label-add"
-	flagUpdateLabelRemove  = "label-rm"
+	flagLabelAdd           = "label-add"
+	flagLabelRemove        = "label-rm"
 )
 
 // NodeList returns the list of nodes.
@@ -88,11 +88,11 @@ func (client *RolexDockerClient) UpdateNode(nodeId string, opts model.UpdateOpti
 			return err
 		}
 		spec.Availability = availability
-	case flagUpdateLabelAdd:
+	case flagLabelAdd:
 		if err := nodeAddLabels(spec, opts.Options); err != nil {
 			return err
 		}
-	case flagUpdateLabelRemove:
+	case flagLabelRemove:
 		if err := nodeRemoveLabels(spec, opts.Options); err != nil {
 			return err
 		}
@@ -111,22 +111,27 @@ func (client *RolexDockerClient) UpdateNode(nodeId string, opts model.UpdateOpti
 	return nil
 }
 
-func nodeRole(rawMessage []byte) (role swarm.NodeRole, err error) {
+func nodeRole(rawMessage []byte) (swarm.NodeRole, error) {
+	var err error
+	var role swarm.NodeRole
 	if err = json.Unmarshal(rawMessage, &role); err != nil {
-		return
+		return role, err
 	}
+
 	if role != swarm.NodeRoleWorker && role != swarm.NodeRoleManager {
 		errMsg := fmt.Sprintf("node role only support %s/%s but got %s",
 			swarm.NodeRoleWorker, swarm.NodeRoleManager, role)
 		err = rolexerror.NewRolexError(rolexerror.CodeErrorNodeRole, errMsg)
 	}
 
-	return
+	return role, err
 }
 
-func nodeAvailability(rawMessage []byte) (availability swarm.NodeAvailability, err error) {
+func nodeAvailability(rawMessage []byte) (swarm.NodeAvailability, error) {
+	var err error
+	var availability swarm.NodeAvailability
 	if err = json.Unmarshal(rawMessage, &availability); err != nil {
-		return
+		return availability, err
 	}
 
 	if availability != swarm.NodeAvailabilityActive && availability != swarm.NodeAvailabilityPause && availability != swarm.NodeAvailabilityDrain {
@@ -135,13 +140,13 @@ func nodeAvailability(rawMessage []byte) (availability swarm.NodeAvailability, e
 		err = rolexerror.NewRolexError(rolexerror.CodeErrorNodeAvailability, errMsg)
 	}
 
-	return
+	return availability, err
 }
 
-func nodeAddLabels(spec *swarm.NodeSpec, rawMessage []byte) (err error) {
+func nodeAddLabels(spec *swarm.NodeSpec, rawMessage []byte) error {
 	var labelsAdd map[string]string
-	if err = json.Unmarshal(rawMessage, &labelsAdd); err != nil {
-		return
+	if err := json.Unmarshal(rawMessage, &labelsAdd); err != nil {
+		return err
 	}
 
 	if spec.Annotations.Labels == nil {
@@ -152,20 +157,20 @@ func nodeAddLabels(spec *swarm.NodeSpec, rawMessage []byte) (err error) {
 		spec.Annotations.Labels[k] = v
 	}
 
-	return
+	return nil
 }
 
-func nodeRemoveLabels(spec *swarm.NodeSpec, rawMessage []byte) (err error) {
-	var rmLists []string
-	if err = json.Unmarshal(rawMessage, &rmLists); err != nil {
-		return
+func nodeRemoveLabels(spec *swarm.NodeSpec, rawMessage []byte) error {
+	var labelsRemove []string
+	if err := json.Unmarshal(rawMessage, &labelsRemove); err != nil {
+		return err
 	}
 
-	for _, k := range rmLists {
+	for _, k := range labelsRemove {
 		delete(spec.Annotations.Labels, k)
 	}
 
-	return
+	return nil
 }
 
 // docker info
