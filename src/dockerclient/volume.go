@@ -6,33 +6,33 @@ import (
 )
 
 func (client *RolexDockerClient) InspectVolume(ctx context.Context, name string) (*goclient.Volume, error) {
-	dockerClient, err := client.DockerClient(ctx)
+	swarmNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return nil, err
 	}
-	return dockerClient.InspectVolume(name)
+	return swarmNode.InspectVolume(name)
 }
 
 func (client *RolexDockerClient) ListVolumes(ctx context.Context, opts goclient.ListVolumesOptions) ([]goclient.Volume, error) {
-	dockerClient, err := client.DockerClient(ctx)
+	swarmNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return nil, err
 	}
-	return dockerClient.ListVolumes(opts)
+	return swarmNode.ListVolumes(opts)
 }
 
 func (client *RolexDockerClient) CreateVolume(ctx context.Context, opts goclient.CreateVolumeOptions) (*goclient.Volume, error) {
-	dockerClient, err := client.DockerClient(ctx)
+	swarmNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return nil, err
 	}
-	return dockerClient.CreateVolume(opts)
+	return swarmNode.CreateVolume(opts)
 }
 
 func (client *RolexDockerClient) RemoveVolume(ctx context.Context, name string) error {
-	dockerClient, err := client.DockerClient(ctx)
+	swarmNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return err
 	}
-	return dockerClient.RemoveVolume(name)
+	return swarmNode.RemoveVolume(name)
 }

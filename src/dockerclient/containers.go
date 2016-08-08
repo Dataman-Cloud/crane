@@ -13,163 +13,163 @@ import (
 )
 
 func (client *RolexDockerClient) ListContainers(ctx context.Context, opts goclient.ListContainersOptions) ([]goclient.APIContainers, error) {
-	dockerClient, err := client.DockerClient(ctx)
+	swarmNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return nil, err
 	}
-	return dockerClient.ListContainers(opts)
+	return swarmNode.ListContainers(opts)
 }
 
 func (client *RolexDockerClient) InspectContainer(ctx context.Context, id string) (*goclient.Container, error) {
-	dockerClient, err := client.DockerClient(ctx)
+	swarmNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	container, err := dockerClient.InspectContainer(id)
+	container, err := swarmNode.InspectContainer(id)
 	if err != nil {
-		err = SortingError(err)
+		err = ToRolexError(err)
 	}
 
 	return container, err
 }
 
 func (client *RolexDockerClient) RemoveContainer(ctx context.Context, opts goclient.RemoveContainerOptions) error {
-	dockerClient, err := client.DockerClient(ctx)
+	swarmNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return err
 	}
 
-	err = dockerClient.RemoveContainer(opts)
+	err = swarmNode.RemoveContainer(opts)
 	if err != nil {
-		err = SortingError(err)
+		err = ToRolexError(err)
 	}
 
 	return err
 }
 
 func (client *RolexDockerClient) KillContainer(ctx context.Context, opts goclient.KillContainerOptions) error {
-	dockerClient, err := client.DockerClient(ctx)
+	swarmNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return err
 	}
 
-	err = dockerClient.KillContainer(opts)
+	err = swarmNode.KillContainer(opts)
 	if err != nil {
-		err = SortingError(err)
+		err = ToRolexError(err)
 	}
 
 	return err
 }
 
 func (client *RolexDockerClient) RenameContainer(ctx context.Context, opts goclient.RenameContainerOptions) error {
-	dockerClient, err := client.DockerClient(ctx)
+	swarmNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return err
 	}
 
-	err = dockerClient.RenameContainer(opts)
+	err = swarmNode.RenameContainer(opts)
 	if err != nil {
-		err = SortingError(err)
+		err = ToRolexError(err)
 	}
 
 	return err
 }
 
 func (client *RolexDockerClient) DiffContainer(ctx context.Context, containerID string) ([]goclient.Change, error) {
-	dockerClient, err := client.DockerClient(ctx)
+	swarmNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	changes, err := dockerClient.ContainerChanges(containerID)
+	changes, err := swarmNode.ContainerChanges(containerID)
 	if err != nil {
-		err = SortingError(err)
+		err = ToRolexError(err)
 	}
 
 	return changes, err
 }
 
 func (client *RolexDockerClient) StopContainer(ctx context.Context, containerId string, timeout uint) error {
-	dockerClient, err := client.DockerClient(ctx)
+	swarmNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return err
 	}
 
-	err = dockerClient.StopContainer(containerId, timeout)
+	err = swarmNode.StopContainer(containerId, timeout)
 	if err != nil {
-		err = SortingError(err)
+		err = ToRolexError(err)
 	}
 
 	return err
 }
 
 func (client *RolexDockerClient) StartContainer(ctx context.Context, containerID string, hostconfig *goclient.HostConfig) error {
-	dockerClient, err := client.DockerClient(ctx)
+	swarmNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return err
 	}
 
-	err = dockerClient.StartContainer(containerID, hostconfig)
+	err = swarmNode.StartContainer(containerID, hostconfig)
 	if err != nil {
-		err = SortingError(err)
+		err = ToRolexError(err)
 	}
 
 	return err
 }
 
 func (client *RolexDockerClient) RestartContainer(ctx context.Context, containerId string, timeout uint) error {
-	dockerClient, err := client.DockerClient(ctx)
+	swarmNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return err
 	}
 
-	err = dockerClient.RestartContainer(containerId, timeout)
+	err = swarmNode.RestartContainer(containerId, timeout)
 	if err != nil {
-		err = SortingError(err)
+		err = ToRolexError(err)
 	}
 
 	return err
 }
 
 func (client *RolexDockerClient) PauseContainer(ctx context.Context, containerID string) error {
-	dockerClient, err := client.DockerClient(ctx)
+	swarmNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return err
 	}
 
-	err = dockerClient.PauseContainer(containerID)
+	err = swarmNode.PauseContainer(containerID)
 	if err != nil {
-		err = SortingError(err)
+		err = ToRolexError(err)
 	}
 
 	return err
 }
 
 func (client *RolexDockerClient) UnpauseContainer(ctx context.Context, containerID string) error {
-	dockerClient, err := client.DockerClient(ctx)
+	swarNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return err
 	}
 
-	err = dockerClient.UnpauseContainer(containerID)
+	err = swarNode.UnpauseContainer(containerID)
 	if err != nil {
-		err = SortingError(err)
+		err = ToRolexError(err)
 	}
 
 	return err
 }
 
 func (client *RolexDockerClient) ResizeContainerTTY(ctx context.Context, containerID string, height, width int) error {
-	dockerClient, err := client.DockerClient(ctx)
+	swarNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return err
 	}
-	return dockerClient.ResizeContainerTTY(containerID, height, width)
+	return swarNode.ResizeContainerTTY(containerID, height, width)
 }
 
 func (client *RolexDockerClient) LogsContainer(ctx context.Context, containerId string, message chan string) {
-	dockerClient, err := client.DockerClient(ctx)
+	swarNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		log.Error("read container log error: ", err)
 		return
@@ -189,7 +189,7 @@ func (client *RolexDockerClient) LogsContainer(ctx context.Context, containerId 
 		Follow:       true,
 		Tail:         "0",
 	}
-	err = dockerClient.Logs(opts)
+	err = swarNode.Logs(opts)
 	log.Infof("read container log error: %v", err)
 }
 
@@ -216,13 +216,13 @@ func logReader(input *io.PipeReader, message chan string) {
 }
 
 func (client *RolexDockerClient) StatsContainer(ctx context.Context, opts model.ContainerStatOptions) error {
-	dockerClient, err := client.DockerClient(ctx)
+	swarNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return err
 	}
 
 	cId := opts.ID
-	container, err := dockerClient.InspectContainer(cId)
+	container, err := swarNode.InspectContainer(cId)
 	if err != nil {
 		return err
 	}
@@ -237,7 +237,7 @@ func (client *RolexDockerClient) StatsContainer(ctx context.Context, opts model.
 		Done:   opts.Done,
 	}
 	go func() {
-		chnError <- dockerClient.Stats(statOpts)
+		chnError <- swarNode.Stats(statOpts)
 	}()
 
 	containerStat := &model.ContainerStat{
