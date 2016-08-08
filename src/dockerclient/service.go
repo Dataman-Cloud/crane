@@ -160,15 +160,9 @@ func (client *RolexDockerClient) RemoveService(serviceID string) error {
 // ServiceUpdate updates a Service.o
 // TODO attention docker update
 func (client *RolexDockerClient) UpdateService(serviceID string, version swarm.Version, service swarm.ServiceSpec, header map[string][]string) error {
-	serviceParam, err := json.Marshal(service)
-	if err != nil {
-		return err
-	}
-
 	query := url.Values{}
 	query.Set("version", strconv.FormatUint(version.Index, 10))
-	_, err = client.HttpPost(client.swarmManagerHttpEndpoint+"/services/"+serviceID+"/update", query, serviceParam, nil)
-	if err != nil {
+	if _, err := client.HttpPost(client.swarmManagerHttpEndpoint+"/services/"+serviceID+"/update", query, service, nil); err != nil {
 		return err
 	}
 

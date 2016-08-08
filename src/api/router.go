@@ -127,7 +127,9 @@ func (api *Api) ApiRouter() *gin.Engine {
 		v1.GET("/stacks/:namespace/services/:service_id/stats", api.StatsService)
 		v1.GET("/stacks/:namespace/services/:service_id/tasks", api.ListTasks)
 		v1.GET("/stacks/:namespace/services/:service_id/tasks/:task_id", api.InspectTask)
+		v1.GET("/stacks/:namespace/services/:service_id/cd_url", api.ServiceCDAddr)
 	}
+	router.PUT("/api/v1/stacks/:namespace/services/:service_id/rolling_update", api.UpdateServiceImage) // skip authorization, public access
 
 	misc := router.Group("/misc/v1")
 	{

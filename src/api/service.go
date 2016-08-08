@@ -1,6 +1,7 @@
 package api
 
 import (
+	"encoding/base64"
 	"fmt"
 	"io"
 
@@ -17,6 +18,59 @@ import (
 	"github.com/manucorporat/sse"
 	"golang.org/x/net/context"
 )
+
+func reverseString(s string) string {
+	runes := []rune(s)
+	for from, to := 0, len(runes)-1; from < to; from, to = from+1, to-1 {
+		runes[from], runes[to] = runes[to], runes[from]
+	}
+	return string(runes)
+}
+
+func decryptServiceId(encryptServiceId string) (string, error) {
+	serviceId, err := base64.StdEncoding.DecodeString(reverseString(encryptServiceId))
+	if err != nil {
+		return "", err
+	}
+
+	return string(serviceId), nil
+}
+
+func encryptServiceId(serviceId string) string {
+	return reverseString(base64.StdEncoding.EncodeToString([]byte(serviceId)))
+}
+
+func (api *Api) ServiceCDAddr(ctx *gin.Context) {
+	api.HttpOkResponse(ctx, encryptServiceId(ctx.Param("service_id")))
+}
+
+func (api *Api) UpdateServiceImage(ctx *gin.Context) {
+	encryptedServicId := ctx.Param("service_id")
+	serviceId, err := decryptServiceId(encryptedServicId)
+	if err != nil {
+		log.Error("parse serviceId got error: ", err)
+		api.HttpErrorResponse(ctx, err)
+		return
+	}
+
+	service, err := api.GetDockerClient().InspectServiceWithRaw(serviceId)
+	if err != nil {
+		log.Errorf("inspect service error: %v", err)
+		api.HttpErrorResponse(ctx, err)
+		return
+	}
+
+	service.Spec.TaskTemplate.ContainerSpec.Image = ctx.Query("image")
+
+	if err := api.GetDockerClient().UpdateService(service.ID, service.Version, service.Spec, nil); err != nil {
+		log.Errorf("update service error: %v", err)
+		api.HttpErrorResponse(ctx, err)
+		return
+	}
+
+	api.HttpOkResponse(ctx, "success")
+	return
+}
 
 func (api *Api) UpdateService(ctx *gin.Context) {
 	var serviceSpec swarm.ServiceSpec
