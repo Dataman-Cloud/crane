@@ -41,7 +41,7 @@ func (client *RolexDockerClient) InspectTask(taskID string) (*swarm.Task, error)
 
 	content, err := client.HttpGet(client.swarmHttpEndpoint+"/tasks/"+taskID, nil, nil)
 	if err != nil {
-		return task, nil
+		return task, err
 	}
 
 	if err := json.Unmarshal(content, task); err != nil {
