@@ -2,7 +2,9 @@ package dockerclient
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -55,15 +57,28 @@ func (client *RolexDockerClient) HttpDelete(requestUrl string) ([]byte, error) {
 }
 
 // Executes http POST request with default timeout.
-func (client *RolexDockerClient) HttpPost(requestUrl string, query url.Values, body []byte, headers map[string][]string) ([]byte, error) {
+func (client *RolexDockerClient) HttpPost(requestUrl string, query url.Values, obj interface{}, headers map[string][]string) ([]byte, error) {
 	apiPath := getAPIPath(requestUrl, query)
-	req, err := http.NewRequest("POST", apiPath, bytes.NewBuffer(body))
+
+	var body io.Reader
+
+	if obj != nil {
+		var err error
+		body, err = encodeData(obj)
+		if err != nil {
+			return nil, err
+		}
+		if headers == nil {
+			headers = make(map[string][]string)
+		}
+		headers["Content-Type"] = []string{"application/json"}
+	}
+
+	req, err := http.NewRequest("POST", apiPath, body)
 
 	if err != nil {
 		return nil, err
 	}
-
-	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 
 	if headers != nil {
 		for k, v := range headers {
@@ -132,4 +147,14 @@ func getAPIPath(apiPath string, query url.Values) string {
 		u.RawQuery = query.Encode()
 	}
 	return u.String()
+}
+
+func encodeData(data interface{}) (*bytes.Buffer, error) {
+	params := bytes.NewBuffer(nil)
+	if data != nil {
+		if err := json.NewEncoder(params).Encode(data); err != nil {
+			return nil, err
+		}
+	}
+	return params, nil
 }
