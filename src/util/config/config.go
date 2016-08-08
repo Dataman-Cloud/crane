@@ -40,7 +40,7 @@ type Config struct {
 
 	CatalogPath string
 
-	LoadDataInterval uint16
+	SearchLoadDataInterval uint16
 }
 
 func (c *Config) FeatureEnabled(feature string) bool {
@@ -76,7 +76,7 @@ type EnvEntry struct {
 
 	ROLEX_CATALOG_PATH string `required:"false"`
 
-	ROLEX_LOADDATA_INTERVAL uint16
+	ROLEX_SEARCH_LOAD_DATA_INTERVAL uint16
 }
 
 func InitConfig(envFile string) *Config {
@@ -105,7 +105,7 @@ func InitConfig(envFile string) *Config {
 
 	config.CatalogPath = envEntry.ROLEX_CATALOG_PATH
 
-	config.LoadDataInterval = envEntry.ROLEX_LOADDATA_INTERVAL
+	config.SearchLoadDataInterval = envEntry.ROLEX_SEARCH_LOAD_DATA_INTERVAL
 
 	return &config
 }
@@ -223,9 +223,9 @@ func parseln(line string) (key string, val string, err error) {
 }
 
 // helper function to trim comments and whitespace from a string.
-func removeComments(s string) (_ string) {
+func removeComments(s string) string {
 	if len(s) == 0 || string(s[0]) == "#" {
-		return
+		return ""
 	} else {
 		index := strings.Index(s, " #")
 		if index > -1 {

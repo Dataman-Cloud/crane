@@ -51,7 +51,7 @@ func (searchApi *SearchApi) IndexData() {
 	}()
 	for {
 		searchApi.loadData()
-		time.Sleep(time.Minute * time.Duration(searchApi.Config.LoadDataInterval))
+		time.Sleep(time.Minute * time.Duration(searchApi.Config.SearchLoadDataInterval))
 	}
 }
 
