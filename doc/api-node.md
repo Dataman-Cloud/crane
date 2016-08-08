@@ -241,7 +241,7 @@
 
 ###UpdateNode
 
-**Request update role**
+**Request update labels**
 
 ```
    curl -v -X PATCH http://localhost:5013/api/v1/nodes/$NODE_ID -H Content-Type:application/json -d \
@@ -252,7 +252,7 @@
    }
    '
 ```
-**Request update role**
+**Request remove labels**
 
 ```
    curl -v -X PATCH http://localhost:5013/api/v1/nodes/$NODE_ID -H Content-Type:application/json -d \
@@ -264,6 +264,7 @@
    '
 ```
 
+**Request update role**
 ```
    curl -v -X PATCH http://localhost:5013/api/v1/nodes/$NODE_ID -H Content-Type:application/json -d \
    '
@@ -274,6 +275,7 @@
    '
 ```
 
+**Request update availability**
 ```
    curl -v -X PATCH http://localhost:5013/api/v1/nodes/$NODE_ID -H Content-Type:application/json -d \
    '
