@@ -17,8 +17,8 @@
     <link rel="stylesheet" type="text/css" href="bower_components/codemirror/theme/midnight.css">
     <link rel="stylesheet" type="text/css" href="bower_components/nvd3/build/nv.d3.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
-    <link rel="stylesheet" type="text/css" href="css/shurenyun.css">
-    <link rel="stylesheet" type="text/css" href="css/material.css">
+    <!--<link rel="stylesheet" type="text/css" href="css/shurenyun.css">-->
+    <!--<link rel="stylesheet" type="text/css" href="css/material.css">-->
     <link rel="stylesheet" type="text/css" href="css/swarm.css">
     <!--endbuild-->
     <link rel="shortcut icon" type="image/x-icon" href="pics/favicon.ico"/>
@@ -27,10 +27,10 @@
 <body>
 <div layout="row" id="main">
 
-    <aside id="sidebar-main" flex="none" layout="column" ng-class="{'min-aside': isShortMenu}">
+    <aside id="sidebar-main" flex="none" layout="column" ng-class="{'min-aside': rootCtrl.isShortMenu}">
         <a href="#" class="logo" flex="none">
-            <img src="pics/logo-white-full.svg" ng-if="!isShortMenu">
-            <img src="pics/logo-white-ico.svg" ng-if="isShortMenu">
+            <img src="pics/logo-white-full.svg" ng-if="!rootCtrl.isShortMenu">
+            <img src="pics/logo-white-ico.svg" ng-if="rootCtrl.isShortMenu">
         </a>
         <ul>
             <li title="应用编排" data-ui-sref-active="active">
@@ -67,15 +67,18 @@
     <div flex layout="column">
         <nav id="nav-main" layout="row" layout-align="space-between center">
             <div flex="auto" layout="row" layout-align="start center">
-                <md-button class="md-icon-button" aria-label="Settings" flex="none" ng-click="isShortMenu = !isShortMenu">
-                    <i class="fa fa-angle-double-left" ng-if="!isShortMenu"></i>
-                    <i class="fa fa-angle-double-right" ng-if="isShortMenu"></i>
+                <md-button class="md-icon-button" aria-label="Settings" flex="none" ng-click="rootCtrl.isShortMenu = !rootCtrl.isShortMenu">
+                    <i class="fa fa-angle-double-left" ng-if="!rootCtrl.isShortMenu"></i>
+                    <i class="fa fa-angle-double-right" ng-if="rootCtrl.isShortMenu"></i>
                 </md-button>
                 <div ncy-breadcrumb></div>
             </div>
 
             <md-toolbar flex="none">
                 <div class="md-toolbar-tools">
+                    <md-button class="md-icon-button" aria-label="Search"  ng-click="rootCtrl.openSearch()">
+                        <i class="fa fa-search"></i>
+                    </md-button>
                     <md-menu>
                         <md-button class="md-icon-button" aria-label="More" ng-click="$mdOpenMenu($event)">
                             <i class="fa fa-th"></i>
@@ -132,6 +135,43 @@
         </nav>
 
         <div class="main-container" flex data-ui-view></div>
+
+        <div id="search-main" ng-show="rootCtrl.isSearch">
+            <form style="">
+                <md-autocomplete
+                        md-input-id="autoCompleteSearch"
+                        dm-display-components="search"
+                        md-no-cache="false"
+                        md-selected-item="rootCtrl.selectedItem"
+                        md-search-text="rootCtrl.searchText"
+                        md-items="item in rootCtrl.querySearch(rootCtrl.searchText)"
+                        md-item-text="item.Name ? item.Name : item.ID"
+                        md-min-length="1"
+                        placeholder="输入关键字查询"
+                        md-delay="500"
+                        md-selected-item-change="rootCtrl.searchJump(item)" class="search-header">
+                    <md-item-template>
+                        <div>
+                                <span class="item-title">
+                                    <md-icon md-svg-icon="pics/dataman-logo-icon.svg"></md-icon>
+                                    <span md-highlight-text="rootCtrl.searchText" md-highlight-flags="^i">
+                                        Name: {/item.Name/}
+                                    </span>
+                                </span>
+                                <span class="item-metadata">
+                                    <span class="item-metastat">
+                                      ID: {/item.ID/}
+                                    </span>
+                                </span>
+                        </div>
+                    </md-item-template>
+                    <md-not-found>
+                        未查询到相关信息...
+                    </md-not-found>
+                </md-autocomplete>
+            </form>
+            <div ng-click="rootCtrl.isSearch = false" class="blank-hidden"></div>
+        </div>
 
         <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="noticeNav">
             <md-toolbar class="md-theme-light">

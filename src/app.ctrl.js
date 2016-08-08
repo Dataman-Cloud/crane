@@ -16,6 +16,7 @@
         self.querySearch = querySearch;
         self.logout = logout;
         self.searchJump = searchJump;
+        self.openSearch = openSearch;
 
         activate();
 
@@ -70,6 +71,9 @@
 
         function searchJump(item) {
             if (item) {
+                //hide search ui
+                self.isSearch = false;
+
                 switch (item.Type) {
                     case 'node':
                         //go to node detail
@@ -101,10 +105,16 @@
                         //go to volume list
                         $state.go('node.detail.volume', {node_id: item.Param.NodeId});
                         break;
-
                 }
             }
         }
 
+        function openSearch(){
+            self.isSearch = !self.isSearch;
+            self.searchText = '';
+            setTimeout(function(){
+                document.querySelector('#autoCompleteSearch').focus();
+            },0);
+        }
     }
 })();
