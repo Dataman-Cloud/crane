@@ -5,6 +5,5 @@
 
     /* @ngInject */
     function configure() {
-        ////
     }
 })();

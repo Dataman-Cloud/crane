@@ -140,7 +140,7 @@
                                 <md-button data-ng-click="rootCtrl.logout()">
                                     <md-icon md-svg-src="pics/ic_power_settings.svg"
                                              aria-label="ic_power_settings"></md-icon>
-                                    退出
+                                    {/'LOGOUT' | translate /}
                                 </md-button>
                             </md-menu-item>
                         </md-menu-content>
@@ -201,6 +201,7 @@
 <script src="bower_components/file-saver.js/FileSaver.js"></script>
 <script src="bower_components/blob-polyfill/Blob.js"></script>
 <script src="bower_components/angular-file-saver/dist/angular-file-saver.min.js"></script>
+<script src="bower_components/angular-translate/angular-translate.js"></script>
 <!--endbuild-->
 
 <!-- rev-hash -->
@@ -216,6 +217,8 @@
 
 <script src="src/utils/utils.module.js" type="text/javascript"></script>
 <script src="src/utils/utils.config.js" type="text/javascript"></script>
+<script src="src/utils/i18n/zh-cn.config.js" type="text/javascript"></script>
+<script src="src/utils/i18n/en-us.config.js" type="text/javascript"></script>
 <script src="src/utils/services/utils.service.js" type="text/javascript"></script>
 <script src="src/utils/services/ghttp.service.js" type="text/javascript"></script>
 <script src="src/utils/services/mdTable.service.js" type="text/javascript"></script>

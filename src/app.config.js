@@ -7,10 +7,8 @@
         .config(configure);
 
     /* @ngInject */
-    function configure($locationProvider, $interpolateProvider, $urlRouterProvider, NotificationProvider) {
+    function configure($locationProvider, $interpolateProvider, $translateProvider, NotificationProvider) {
         ////
-        //$urlRouterProvider.otherwise('/layout');
-
         $locationProvider.html5Mode(true);
 
         $interpolateProvider.startSymbol('{/');
@@ -24,5 +22,8 @@
             startTop: 20,
             startRight: 260
         });
+
+        $translateProvider.preferredLanguage('zh-cn');
+        $translateProvider.useSanitizeValueStrategy(null);
     }
 })();
