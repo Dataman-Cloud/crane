@@ -97,8 +97,7 @@ func (client *RolexDockerClient) UpdateNode(nodeId string, opts model.UpdateOpti
 			return err
 		}
 	default:
-		errMsg := fmt.Sprintf("Invalid update node method %s", opts.Method)
-		return rolexerror.NewRolexError(rolexerror.CodeErrorUpdateNodeMethod, errMsg)
+		return rolexerror.NewRolexError(rolexerror.CodeErrorUpdateNodeMethod, fmt.Sprintf("Invalid update node method %s", opts.Method))
 	}
 
 	query := url.Values{}
