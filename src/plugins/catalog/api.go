@@ -1,7 +1,6 @@
 package catalog
 
 import (
-	"fmt"
 	"net/http"
 	"path/filepath"
 
@@ -17,7 +16,6 @@ type CatalogApi struct {
 func (catalogApi *CatalogApi) GetCatalog(ctx *gin.Context) {
 	catalog, err := CatalogFromPath(filepath.Join(catalogApi.Config.CatalogPath, ctx.Param("name")))
 	if err != nil {
-		fmt.Println(err)
 		ctx.JSON(http.StatusServiceUnavailable, gin.H{})
 		return
 	}
@@ -28,7 +26,6 @@ func (catalogApi *CatalogApi) GetCatalog(ctx *gin.Context) {
 func (catalogApi *CatalogApi) ListCatalog(ctx *gin.Context) {
 	catalogs, err := AllCatalogFromPath(catalogApi.Config.CatalogPath)
 	if err != nil {
-		fmt.Println(err)
 		ctx.JSON(http.StatusServiceUnavailable, gin.H{})
 		return
 	}

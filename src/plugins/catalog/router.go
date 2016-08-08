@@ -10,5 +10,6 @@ func (catalogApi *CatalogApi) RegisterApiForCatalog(router *gin.Engine, middlewa
 	{
 		catalogV1.GET("/catalogs", catalogApi.ListCatalog)
 		catalogV1.GET("/catalogs/:name", catalogApi.GetCatalog)
+		catalogV1.Static("/icons", catalogApi.Config.CatalogPath)
 	}
 }
