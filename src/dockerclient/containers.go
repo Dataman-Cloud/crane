@@ -197,6 +197,7 @@ func logReader(input *io.PipeReader, message chan string) {
 	buf := bufio.NewReader(input)
 
 	defer func() {
+		//TODO use panic to achieve functional should be changed
 		if err := recover(); err != nil {
 			log.Errorf("send container log to channel error: %v", err)
 		}
@@ -205,14 +206,11 @@ func logReader(input *io.PipeReader, message chan string) {
 	}()
 
 	for {
-		select {
-		default:
-			if line, err := buf.ReadBytes('\n'); err != nil {
-				log.Errorf("container log read buffer error: %v", err)
-				return
-			} else {
-				message <- string(line)
-			}
+		if line, err := buf.ReadBytes('\n'); err != nil {
+			log.Errorf("container log read buffer error: %v", err)
+			return
+		} else {
+			message <- string(line)
 		}
 	}
 }
