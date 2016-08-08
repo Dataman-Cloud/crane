@@ -179,7 +179,7 @@ func SharedClientCertFiles(config *config.Config) (string, string, string) {
 	return tlsCaCert, tlsCert, tlsKey
 }
 
-func SortingError(err error) error {
+func ToRolexError(err error) error {
 	var detailError error
 	switch err.(type) {
 	case *docker.NoSuchContainer:

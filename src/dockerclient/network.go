@@ -54,7 +54,7 @@ func (client *RolexDockerClient) ConnectNodeNetwork(ctx context.Context, network
 
 	err = swarmNode.ConnectNetwork(networkID, opts)
 	if err != nil {
-		err = SortingError(err)
+		err = ToRolexError(err)
 	}
 
 	return err
@@ -68,7 +68,7 @@ func (client *RolexDockerClient) DisconnectNodeNetwork(ctx context.Context, netw
 
 	err = swarmNode.DisconnectNetwork(networkID, opts)
 	if err != nil {
-		err = SortingError(err)
+		err = ToRolexError(err)
 	}
 
 	return err
@@ -82,7 +82,7 @@ func (client *RolexDockerClient) InspectNodeNetwork(ctx context.Context, network
 
 	network, err := swarmNode.NetworkInfo(networkID)
 	if err != nil {
-		err = SortingError(err)
+		err = ToRolexError(err)
 	}
 
 	return network, err

@@ -28,7 +28,7 @@ func (client *RolexDockerClient) InspectContainer(ctx context.Context, id string
 
 	container, err := swarmNode.InspectContainer(id)
 	if err != nil {
-		err = SortingError(err)
+		err = ToRolexError(err)
 	}
 
 	return container, err
@@ -42,7 +42,7 @@ func (client *RolexDockerClient) RemoveContainer(ctx context.Context, opts gocli
 
 	err = swarmNode.RemoveContainer(opts)
 	if err != nil {
-		err = SortingError(err)
+		err = ToRolexError(err)
 	}
 
 	return err
@@ -56,7 +56,7 @@ func (client *RolexDockerClient) KillContainer(ctx context.Context, opts goclien
 
 	err = swarmNode.KillContainer(opts)
 	if err != nil {
-		err = SortingError(err)
+		err = ToRolexError(err)
 	}
 
 	return err
@@ -70,7 +70,7 @@ func (client *RolexDockerClient) RenameContainer(ctx context.Context, opts gocli
 
 	err = swarmNode.RenameContainer(opts)
 	if err != nil {
-		err = SortingError(err)
+		err = ToRolexError(err)
 	}
 
 	return err
@@ -84,7 +84,7 @@ func (client *RolexDockerClient) DiffContainer(ctx context.Context, containerID 
 
 	changes, err := swarmNode.ContainerChanges(containerID)
 	if err != nil {
-		err = SortingError(err)
+		err = ToRolexError(err)
 	}
 
 	return changes, err
@@ -98,7 +98,7 @@ func (client *RolexDockerClient) StopContainer(ctx context.Context, containerId 
 
 	err = swarmNode.StopContainer(containerId, timeout)
 	if err != nil {
-		err = SortingError(err)
+		err = ToRolexError(err)
 	}
 
 	return err
@@ -112,7 +112,7 @@ func (client *RolexDockerClient) StartContainer(ctx context.Context, containerID
 
 	err = swarmNode.StartContainer(containerID, hostconfig)
 	if err != nil {
-		err = SortingError(err)
+		err = ToRolexError(err)
 	}
 
 	return err
@@ -126,7 +126,7 @@ func (client *RolexDockerClient) RestartContainer(ctx context.Context, container
 
 	err = swarmNode.RestartContainer(containerId, timeout)
 	if err != nil {
-		err = SortingError(err)
+		err = ToRolexError(err)
 	}
 
 	return err
@@ -140,7 +140,7 @@ func (client *RolexDockerClient) PauseContainer(ctx context.Context, containerID
 
 	err = swarmNode.PauseContainer(containerID)
 	if err != nil {
-		err = SortingError(err)
+		err = ToRolexError(err)
 	}
 
 	return err
@@ -154,7 +154,7 @@ func (client *RolexDockerClient) UnpauseContainer(ctx context.Context, container
 
 	err = swarNode.UnpauseContainer(containerID)
 	if err != nil {
-		err = SortingError(err)
+		err = ToRolexError(err)
 	}
 
 	return err
