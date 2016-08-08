@@ -13,7 +13,7 @@ func TestHttpGet(T *testing.T) {
 	}))
 	defer server.Close()
 	rolexDockerClient := &RolexDockerClient{
-		SharedHttpClient: &http.Client{},
+		sharedHttpClient: &http.Client{},
 	}
 	if _, err := rolexDockerClient.HttpGet(server.URL, url.Values{}, nil); err != nil {
 		T.Error("httpget error")
@@ -26,7 +26,7 @@ func TestHttpDelete(T *testing.T) {
 	}))
 	defer server.Close()
 	rolexDockerClient := &RolexDockerClient{
-		SharedHttpClient: &http.Client{},
+		sharedHttpClient: &http.Client{},
 	}
 	if _, err := rolexDockerClient.HttpDelete(server.URL); err != nil {
 		T.Error("httpdelete error")
@@ -39,7 +39,7 @@ func TestHttpPost(T *testing.T) {
 	}))
 	defer server.Close()
 	rolexDockerClient := &RolexDockerClient{
-		SharedHttpClient: &http.Client{},
+		sharedHttpClient: &http.Client{},
 	}
 	if _, err := rolexDockerClient.HttpPost(server.URL, url.Values{}, nil, nil); err != nil {
 		T.Error("httppost error")
@@ -52,7 +52,7 @@ func TestHttpPut(T *testing.T) {
 	}))
 	defer server.Close()
 	rolexDockerClient := &RolexDockerClient{
-		SharedHttpClient: &http.Client{},
+		sharedHttpClient: &http.Client{},
 	}
 	if _, err := rolexDockerClient.HttpPut(server.URL, url.Values{}, nil, nil); err != nil {
 		T.Error("httpput error")
