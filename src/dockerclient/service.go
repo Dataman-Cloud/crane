@@ -23,19 +23,19 @@ var (
 )
 
 type ServiceStatus struct {
-	ID          string    `json:"ID"`
-	Name        string    `json:"Name"`
-	TaskRunning int       `json:"TaskRunning"`
-	TaskTotal   int       `json:"TaskTotal"`
-	Image       string    `json:"Images"`
-	Command     string    `json:"Command"`
-	CreatedAt   time.Time `json:"CreatedAt"`
-	UpdatedAt   time.Time `json:"UpdatedAt"`
+	ID              string    `json:"ID"`
+	Name            string    `json:"Name"`
+	NumTasksRunning int       `json:"NumTasksRunning"`
+	NumTasksTotal   int       `json:"NumTasksTotal"`
+	Image           string    `json:"Image"`
+	Command         string    `json:"Command"`
+	CreatedAt       time.Time `json:"CreatedAt"`
+	UpdatedAt       time.Time `json:"UpdatedAt"`
 }
 
-// Service scale instance
+// scale a service request
 type ServiceScale struct {
-	Scale uint64 `json:"Scale"`
+	NumTasks uint64 `json:"NumTasks"`
 }
 
 // ServiceCreate creates a new Service.
@@ -119,10 +119,10 @@ func (client *RolexDockerClient) GetServicesStatus(services []swarm.Service) ([]
 		}
 	}
 
-	running := map[string]int{}
+	runningTasks := map[string]int{}
 	for _, task := range tasks {
 		if _, nodeActive := activeNodes[task.NodeID]; nodeActive && task.Status.State == TaskRunningState {
-			running[task.ServiceID]++
+			runningTasks[task.ServiceID]++
 		}
 	}
 
@@ -135,14 +135,14 @@ func (client *RolexDockerClient) GetServicesStatus(services []swarm.Service) ([]
 		}
 
 		serviceSt := ServiceStatus{
-			ID:          service.ID,
-			Name:        service.Spec.Name,
-			TaskRunning: running[service.ID],
-			TaskTotal:   taskTotal,
-			Image:       service.Spec.TaskTemplate.ContainerSpec.Image,
-			Command:     strings.Join(service.Spec.TaskTemplate.ContainerSpec.Args, " "),
-			CreatedAt:   service.CreatedAt,
-			UpdatedAt:   service.UpdatedAt,
+			ID:              service.ID,
+			Name:            service.Spec.Name,
+			NumTasksRunning: runningTasks[service.ID],
+			NumTasksTotal:   taskTotal,
+			Image:           service.Spec.TaskTemplate.ContainerSpec.Image,
+			Command:         strings.Join(service.Spec.TaskTemplate.ContainerSpec.Args, " "),
+			CreatedAt:       service.CreatedAt,
+			UpdatedAt:       service.UpdatedAt,
 		}
 
 		servicesSt = append(servicesSt, serviceSt)
@@ -186,7 +186,7 @@ func (client *RolexDockerClient) ScaleService(serviceID string, serviceScale Ser
 	if serviceMode.Replicated == nil {
 		return fmt.Errorf("scale can only be used with replicated mode")
 	}
-	serviceMode.Replicated.Replicas = &serviceScale.Scale
+	serviceMode.Replicated.Replicas = &serviceScale.NumTasks
 
 	return client.UpdateService(service.ID, service.Version, service.Spec, nil)
 }
