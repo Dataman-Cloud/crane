@@ -1,5 +1,10 @@
 <div layout="row">
-  <div flex="35"><code>{/serviceCdCtrl.serviceCdCommand/}</code></div>
+  <div flex="35">
+    <code id="serviceCd">{/serviceCdCtrl.serviceCdCommand/}</code>
+    <md-button class="md-button md-primary copy" ngclipboard data-clipboard-target="#serviceCd">
+      <i class="fa fa-clone"></i> 点击复制文本
+    </md-button>
+  </div>
   <div flex="60" flex-offset="5">
     <article>
       <ol>

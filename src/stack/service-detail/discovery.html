@@ -7,14 +7,20 @@
         <tr md-row ng-repeat="port in serviceDiscoveryCtrl.service.Spec.EndpointSpec.Ports">
             <td data-ng-if="port.PublishedPort" md-cell>
                 <p ng-repeat="node in serviceDiscoveryCtrl.nodes">
-                    <a data-ng-if='node.Spec.Labels["dm.swarm.node.endpoint"]' href="http://{/node.Spec.Labels['dm.swarm.node.endpoint'] | ip/}:{/port.PublishedPort/}" > {/node.Spec.Labels['dm.swarm.node.endpoint'] | ip/}:{/port.PublishedPort/} </a>
+                    <a data-ng-if='node.Spec.Labels["dm.swarm.node.endpoint"]' data-href="http://{/node.Spec.Labels['dm.swarm.node.endpoint'] | ip/}:{/port.PublishedPort/}" > {/node.Spec.Labels['dm.swarm.node.endpoint'] | ip/}:{/port.PublishedPort/} </a>
                 </p>
             </td>
         </tr>
         </tbody>
     </table>
     <h2 flex="20">nginx conf 配置参考</h2>
-    <pre><code>{/serviceDiscoveryCtrl.nginx/}</code></pre>
+    <pre><code id="nginx" class="text-info">{/serviceDiscoveryCtrl.nginx/}</code></pre>
+    <md-button class="md-button md-primary copy" ngclipboard data-clipboard-target="#nginx">
+      <i class="fa fa-clone"></i> 点击复制文本
+    </md-button>
     <h2 flex="20">haproxy cfg 配置参考</h2>
-    <pre><code>{/serviceDiscoveryCtrl.haproxy/}</code></pre>
+    <pre><code id="haproxy" class="text-info">{/serviceDiscoveryCtrl.haproxy/}</code></pre>
+    <md-button class="md-button md-primary copy" ngclipboard data-clipboard-target="#haproxy">
+      <i class="fa fa-clone"></i> 点击复制文本
+    </md-button>
 </md-table-container>
