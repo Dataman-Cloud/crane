@@ -78,7 +78,7 @@ func (api *Api) ApiRouter() *gin.Engine {
 		v1.GET("/nodes", api.ListNodes)
 		v1.GET("/nodes/:node_id", api.InspectNode)
 		v1.GET("/nodes/:node_id/info", api.Info)
-		v1.PUT("/nodes/:node_id", api.UpdateNode)
+		v1.PATCH("/nodes/:node_id", api.UpdateNode)
 		// Going to delegate to /nodes/:id
 		// v1.GET("/nodes/leader_manager", api.LeaderNode)
 
