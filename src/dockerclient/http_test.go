@@ -59,7 +59,6 @@ func TestHttpPut(T *testing.T) {
 	}
 }
 func TestgetAPIPath(T *testing.T) {
-	client := &RolexDockerClient{}
 	values := url.Values{}
 	values.Add("test", "value")
 	u := &url.URL{
@@ -68,7 +67,7 @@ func TestgetAPIPath(T *testing.T) {
 	if len(values) > 0 {
 		u.RawQuery = values.Encode()
 	}
-	if tu := client.getAPIPath("localhost", values); u.String() != tu {
+	if tu := getAPIPath("localhost", values); u.String() != tu {
 		T.Error("get api path error")
 	}
 }

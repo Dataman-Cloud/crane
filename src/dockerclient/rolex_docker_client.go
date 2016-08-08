@@ -31,8 +31,8 @@ type RolexDockerClient struct {
 	DockerClientInterface
 
 	// client connect to swarm cluster manager
-	// TODO as a swarm cluster has multiple manager and can be changed at run time
-	// make swarmManager connect to next if first failed
+	// TODO swarm cluster has multiple manager and can be changed at runtime
+	// make sure swarmManager could connect to next if first one failed
 	swarmManager *docker.Client
 	// map clients connect to individual node
 	swarmNodes map[string]*docker.Client
@@ -40,8 +40,9 @@ type RolexDockerClient struct {
 	swarmNodesMutex *sync.Mutex
 
 	// http client shared both for cluster connection & client connection
-	sharedHttpClient  *http.Client
-	swarmHttpEndpoint string
+	sharedHttpClient         *http.Client
+	swarmManagerHttpEndpoint string
+	swarmNodeHttpEndpoints   []string
 
 	config *config.Config
 }
@@ -51,10 +52,12 @@ func NewRolexDockerClient(config *config.Config) (*RolexDockerClient, error) {
 	var err error
 
 	client := &RolexDockerClient{
-		config:            config,
-		swarmNodes:        make(map[string](*docker.Client), 0),
-		swarmHttpEndpoint: strings.Replace(config.DockerHost, "tcp", "https", -1),
-		swarmNodesMutex:   &sync.Mutex{},
+		config: config,
+
+		swarmNodes:      make(map[string](*docker.Client), 0),
+		swarmNodesMutex: &sync.Mutex{},
+
+		swarmManagerHttpEndpoint: strings.Replace(config.DockerHost, "tcp", "https", -1),
 	}
 
 	if config.DockerTlsVerify == "1" {
