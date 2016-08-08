@@ -1,8 +1,10 @@
 package search
 
 import (
-	"net/http"
 	"sort"
+
+	"github.com/Dataman-Cloud/rolex/src/util/rolexerror"
+	"github.com/Dataman-Cloud/rolex/src/util/rolexgin"
 
 	"github.com/gin-gonic/gin"
 	"github.com/renstrom/fuzzysearch/fuzzy"
@@ -15,7 +17,8 @@ const (
 func (searchApi *SearchApi) Search(ctx *gin.Context) {
 	query := ctx.Query("keyword")
 	if query == "" {
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": 1, "data": "invalid search keyword"})
+		rerror := rolexerror.NewRolexError(rolexerror.CodeInvalidSearchKeywords, "invalid search keywords")
+		rolexgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
 
@@ -32,5 +35,5 @@ func (searchApi *SearchApi) Search(ctx *gin.Context) {
 			}
 		}
 	}
-	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": results})
+	rolexgin.HttpOkResponse(ctx, results)
 }

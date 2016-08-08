@@ -2,12 +2,13 @@ package auth
 
 import (
 	"fmt"
-	"net/http"
 	"strconv"
 	"strings"
 	"time"
 
 	"github.com/Dataman-Cloud/rolex/src/model"
+	"github.com/Dataman-Cloud/rolex/src/util/rolexerror"
+	"github.com/Dataman-Cloud/rolex/src/util/rolexgin"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
@@ -16,52 +17,58 @@ import (
 func (a *AccountApi) CreateAccount(ctx *gin.Context) {
 	var acc Account
 	if err := ctx.BindJSON(&acc); err != nil {
-		log.Errorf("create account error: %v", err)
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": 1, "data": err.Error()})
+		rolexerr := rolexerror.NewRolexError(rolexerror.CodeAccountCreateParamError, err.Error())
+		rolexgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	}
 
 	if acc.Password == "" {
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": 1, "data": "password can not be null"})
+		rolexerr := rolexerror.NewRolexError(rolexerror.CodeAccountCreateParamError, "password can not be null")
+		rolexgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	}
 
 	if acc.Email == "" {
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": 1, "data": "email can not be null"})
+		rolexerr := rolexerror.NewRolexError(rolexerror.CodeAccountCreateParamError, "email can not be null")
+		rolexgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	}
 
 	groupId, err := strconv.ParseUint(ctx.Param("group_id"), 10, 64)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": 1, "data": "invalid groupid"})
+		rolexerr := rolexerror.NewRolexError(rolexerror.CodeAccountCreateParamError, "invalid groupid")
+		rolexgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	}
 
 	acc.Password = a.Authenticator.EncryptPassword(acc.Password)
 	acc.LoginAt = time.Now()
 	if err := a.Authenticator.CreateAccount(groupId, &acc); err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"code": 1, "data": err.Error()})
+		rolexerr := rolexerror.NewRolexError(rolexerror.CodeAccountCreateAuthenticatorError, err.Error())
+		rolexgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": "create success"})
+	rolexgin.HttpOkResponse(ctx, "success")
 }
 
 func (a *AccountApi) GetAccountInfo(ctx *gin.Context) {
 	account, _ := ctx.Get("account")
 	account, err := a.Authenticator.Account(account.(Account).ID)
 	if err != nil {
-		ctx.JSON(http.StatusNotFound, gin.H{"code": 1, "data": err.Error()})
+		rolexerr := rolexerror.NewRolexError(rolexerror.CodeAccountGetAccountNotFoundError, err.Error())
+		rolexgin.HttpErrorResponse(ctx, rolexerr)
 	} else {
-		ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": account})
+		rolexgin.HttpOkResponse(ctx, account)
 	}
 }
 
 func (a *AccountApi) GetAccount(ctx *gin.Context) {
 	account, err := a.Authenticator.Account(ctx.Param("account_id"))
 	if err != nil {
-		ctx.JSON(http.StatusNotFound, gin.H{"code": 1, "data": err.Error()})
+		rolexerr := rolexerror.NewRolexError(rolexerror.CodeAccountGetAccountNotFoundError, err.Error())
+		rolexgin.HttpErrorResponse(ctx, rolexerr)
 	} else {
-		ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": account})
+		rolexgin.HttpOkResponse(ctx, account)
 	}
 }
 
@@ -70,37 +77,40 @@ func (a *AccountApi) ListAccounts(ctx *gin.Context) {
 
 	accounts, err := a.Authenticator.Accounts(listOptions.(model.ListOptions))
 	if err != nil {
-		ctx.JSON(http.StatusNotFound, gin.H{"code": 1, "data": "404"})
+		rolexerr := rolexerror.NewRolexError(rolexerror.CodeAccountGetAccountNotFoundError, err.Error())
+		rolexgin.HttpErrorResponse(ctx, rolexerr)
 	} else {
-		ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": accounts})
+		rolexgin.HttpOkResponse(ctx, accounts)
 	}
 }
 
 func (a *AccountApi) AccountLogin(ctx *gin.Context) {
 	var acc Account
 	if err := ctx.BindJSON(&acc); err != nil {
-		log.Errorf("login error: %v", err)
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": 1, "data": err.Error()})
+		rolexerr := rolexerror.NewRolexError(rolexerror.CodeAccountLoginParamError, err.Error())
+		rolexgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	}
 
 	acc.Password = a.Authenticator.EncryptPassword(acc.Password)
 	token, err := a.Authenticator.Login(&acc)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": 1, "data": "403"})
+		rolexerr := rolexerror.NewRolexError(rolexerror.CodeAccountLoginFailedError, err.Error())
+		rolexgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	}
 	a.TokenStore.Set(ctx, token, fmt.Sprintf("%d", acc.ID), time.Now().Add(SESSION_DURATION))
 	acc.Password = ""
-	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": token})
+	rolexgin.HttpOkResponse(ctx, token)
 }
 
 func (a *AccountApi) AccountLogout(ctx *gin.Context) {
 	if err := a.TokenStore.Del(ctx, ctx.Request.Header.Get("Authorization")); err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"code": 1, "data": "fail"})
+		rolexerr := rolexerror.NewRolexError(rolexerror.CodeAccountLogoutError, err.Error())
+		rolexgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": "success"})
+	rolexgin.HttpOkResponse(ctx, "success")
 }
 
 func (a *AccountApi) GroupAccounts(ctx *gin.Context) {
@@ -109,7 +119,8 @@ func (a *AccountApi) GroupAccounts(ctx *gin.Context) {
 
 	if groupId, err := strconv.ParseUint(ctx.Param("group_id"), 10, 64); err != nil {
 		log.Errorf("invalid groupid: %v", err)
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": 1, "data": err.Error()})
+		rolexerr := rolexerror.NewRolexError(rolexerror.CodeAccountGroupAccountsGroupIdNotValidError, err.Error())
+		rolexgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	} else {
 		listOptions.Filter = map[string]interface{}{
@@ -119,9 +130,10 @@ func (a *AccountApi) GroupAccounts(ctx *gin.Context) {
 
 	accounts, err := a.Authenticator.GroupAccounts(listOptions)
 	if err != nil {
-		ctx.JSON(http.StatusNotFound, gin.H{"code": 1, "data": err.Error()})
+		rolexerr := rolexerror.NewRolexError(rolexerror.CodeAccountGroupAccountsNotFoundError, err.Error())
+		rolexgin.HttpErrorResponse(ctx, rolexerr)
 	} else {
-		ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": accounts})
+		rolexgin.HttpOkResponse(ctx, accounts)
 	}
 }
 
@@ -130,8 +142,8 @@ func (a *AccountApi) AccountGroups(ctx *gin.Context) {
 	listOptions := listObj.(model.ListOptions)
 
 	if accountId, err := strconv.ParseUint(ctx.Param("account_id"), 10, 64); err != nil {
-		log.Errorf("invalid accountid: %v", err)
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": 1, "data": err.Error()})
+		rolexerr := rolexerror.NewRolexError(rolexerror.CodeAccountAccoutGroupsAccountIdNotValidError, err.Error())
+		rolexgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	} else {
 		listOptions.Filter = map[string]interface{}{
@@ -141,23 +153,26 @@ func (a *AccountApi) AccountGroups(ctx *gin.Context) {
 
 	groups, err := a.Authenticator.AccountGroups(listOptions)
 	if err != nil {
-		ctx.JSON(http.StatusNotFound, gin.H{"code": 1, "data": err.Error()})
+		rolexerr := rolexerror.NewRolexError(rolexerror.CodeAccountAccoutGroupsNotFoundError, err.Error())
+		rolexgin.HttpErrorResponse(ctx, rolexerr)
 	} else {
-		ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": groups})
+		rolexgin.HttpOkResponse(ctx, groups)
 	}
 }
 
 func (a *AccountApi) GetGroup(ctx *gin.Context) {
 	groupId, err := strconv.ParseUint(ctx.Param("group_id"), 10, 64)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": 1, "data": "bad groupid"})
+		rolexerr := rolexerror.NewRolexError(rolexerror.CodeAccountGetGroupGroupIdNotValidError, err.Error())
+		rolexgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	}
 	group, err := a.Authenticator.Group(groupId)
 	if err != nil {
-		ctx.JSON(http.StatusNotFound, gin.H{"code": 1, "data": err.Error()})
+		rolexerr := rolexerror.NewRolexError(rolexerror.CodeAccountGetGroupGroupIdNotFoundError, err.Error())
+		rolexgin.HttpErrorResponse(ctx, rolexerr)
 	} else {
-		ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": group})
+		rolexgin.HttpOkResponse(ctx, group)
 	}
 }
 
@@ -165,131 +180,141 @@ func (a *AccountApi) ListGroups(ctx *gin.Context) {
 	listOptions, _ := ctx.Get("listOptions")
 	groups, err := a.Authenticator.Groups(listOptions.(model.ListOptions))
 	if err != nil {
-		ctx.JSON(http.StatusNotFound, gin.H{"code": 1, "data": err.Error()})
+		rolexerr := rolexerror.NewRolexError(rolexerror.CodeAccountListGroupNotFoundError, err.Error())
+		rolexgin.HttpErrorResponse(ctx, rolexerr)
 	} else {
-		ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": groups})
+		rolexgin.HttpOkResponse(ctx, groups)
 	}
 }
 
 func (a *AccountApi) CreateGroup(ctx *gin.Context) {
 	if !a.Authenticator.ModificationAllowed() {
-		ctx.JSON(http.StatusUnauthorized, gin.H{"code": 1, "data": "403"})
+		rolexerr := rolexerror.NewRolexError(rolexerror.CodeAccountAuthenticatorModificationNotAllowedError, "moditication not allowed")
+		rolexgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	}
 
 	var group Group
 	if err := ctx.BindJSON(&group); err != nil {
-		log.Errorf("create group request body parse json error: %v", err)
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": 1, "data": err.Error()})
+		rolexerr := rolexerror.NewRolexError(rolexerror.CodeAccountCreateParamError, err.Error())
+		rolexgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	}
 
 	account, _ := ctx.Get("account")
 	group.CreaterId = account.(Account).ID
 	if err := a.Authenticator.CreateGroup(&group); err != nil {
-		log.Errorf("create group db operation error: %v", err)
-		ctx.JSON(http.StatusInternalServerError, gin.H{"code": 1, "data": err.Error()})
+		rolexerr := rolexerror.NewRolexError(rolexerror.CodeAccountCreateGroupFailedError, err.Error())
+		rolexgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	}
-	ctx.JSON(http.StatusCreated, gin.H{"code": 0, "data": "create success"})
+	rolexgin.HttpOkResponse(ctx, "success")
 }
 
 func (a *AccountApi) UpdateGroup(ctx *gin.Context) {
 	var group Group
 
-	if err := ctx.BindJSON(&group); err != nil {
-		log.Errorf("update group request body parse json error: %v", err)
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": 1, "data": err.Error()})
+	if !a.Authenticator.ModificationAllowed() {
+		rolexerr := rolexerror.NewRolexError(rolexerror.CodeAccountAuthenticatorModificationNotAllowedError, "moditication not allowed")
+		rolexgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	}
 
-	if !a.Authenticator.ModificationAllowed() {
-		ctx.JSON(http.StatusUnauthorized, gin.H{"code": 1, "data": "403"})
+	if err := ctx.BindJSON(&group); err != nil {
+		rolexerr := rolexerror.NewRolexError(rolexerror.CodeAccountCreateGroupParamError, err.Error())
+		rolexgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	}
 
 	if err := a.Authenticator.UpdateGroup(&group); err != nil {
-		log.Errorf("update group db operation error: %v", err)
-		ctx.JSON(http.StatusInternalServerError, gin.H{"code": 1, "data": err.Error()})
+		rolexerr := rolexerror.NewRolexError(rolexerror.CodeAccountUpdateGroupParamError, err.Error())
+		rolexgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	}
-	ctx.JSON(http.StatusCreated, gin.H{"code": 0, "data": "update success"})
+	rolexgin.HttpOkResponse(ctx, "success")
 }
 
 func (a *AccountApi) DeleteGroup(ctx *gin.Context) {
 	if !a.Authenticator.ModificationAllowed() {
-		ctx.JSON(http.StatusUnauthorized, gin.H{"code": 1, "data": "403"})
+		rolexerr := rolexerror.NewRolexError(rolexerror.CodeAccountAuthenticatorModificationNotAllowedError, "moditication not allowed")
+		rolexgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	}
 
 	groupId, err := strconv.ParseUint(ctx.Param("group_id"), 10, 64)
 	if err != nil {
-		log.Errorf("delete group invalid groupId error: %v", err)
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": 1, "data": "invalid group_id"})
+		rolexerr := rolexerror.NewRolexError(rolexerror.CodeAccountDeleteGroupGroupIdNotValidError, err.Error())
+		rolexgin.HttpErrorResponse(ctx, rolexerr)
 	}
 
 	if err := a.Authenticator.DeleteGroup(groupId); err != nil {
-		log.Errorf("delete group db operation error: %v", err)
-		ctx.JSON(http.StatusInternalServerError, gin.H{"code": 1, "data": err.Error()})
+		rolexerr := rolexerror.NewRolexError(rolexerror.CodeAccountDeleteGroupFailedError, err.Error())
+		rolexgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	}
 
-	ctx.JSON(http.StatusCreated, gin.H{"code": 0, "data": "delete success"})
+	rolexgin.HttpCreateResponse(ctx, "success")
 }
 
 func (a *AccountApi) JoinGroup(ctx *gin.Context) {
 	if !a.Authenticator.ModificationAllowed() {
-		ctx.JSON(http.StatusUnauthorized, gin.H{"code": 1, "data": "403"})
+		rolexerr := rolexerror.NewRolexError(rolexerror.CodeAccountAuthenticatorModificationNotAllowedError, "moditication not allowed")
+		rolexgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	}
 
 	accountId, err := strconv.ParseUint(ctx.Param("account_id"), 10, 64)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": 1, "data": "bad accountid"})
+		rolexerr := rolexerror.NewRolexError(rolexerror.CodeAccountJoinGroupGroupIdNotValidError, err.Error())
+		rolexgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	}
 
 	groupId, err := strconv.ParseUint(ctx.Param("group_id"), 10, 64)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": 1, "data": "bad accountid"})
+		rolexerr := rolexerror.NewRolexError(rolexerror.CodeAccountJoinGroupAccountIdNotValidError, err.Error())
+		rolexgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	}
 
 	if err := a.Authenticator.JoinGroup(accountId, groupId); err != nil {
-		log.Errorf("user join group db operation error: %v", err)
-		ctx.JSON(http.StatusInternalServerError, gin.H{"code": 1, "data": err.Error()})
+		rolexerr := rolexerror.NewRolexError(rolexerror.CodeAccountJoinGroupFailedError, err.Error())
+		rolexgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	}
 
-	ctx.JSON(http.StatusCreated, gin.H{"code": 0, "data": "user join group success"})
+	rolexgin.HttpOkResponse(ctx, "success")
 }
 
 func (a *AccountApi) LeaveGroup(ctx *gin.Context) {
 	if !a.Authenticator.ModificationAllowed() {
-		ctx.JSON(http.StatusUnauthorized, gin.H{"code": 1, "data": "403"})
+		rolexerr := rolexerror.NewRolexError(rolexerror.CodeAccountAuthenticatorModificationNotAllowedError, "moditication not allowed")
+		rolexgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	}
 
 	accountId, err := strconv.ParseUint(ctx.Param("account_id"), 10, 64)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": 1, "data": "bad accountid"})
+		rolexerr := rolexerror.NewRolexError(rolexerror.CodeAccountLeaveGroupAccountIdNotValidError, err.Error())
+		rolexgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	}
 
 	groupId, err := strconv.ParseUint(ctx.Param("group_id"), 10, 64)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": 1, "data": "bad groupid"})
+		rolexerr := rolexerror.NewRolexError(rolexerror.CodeAccountLeaveGroupGroupIdNotValidError, err.Error())
+		rolexgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	}
 
 	if err := a.Authenticator.LeaveGroup(accountId, groupId); err != nil {
-		log.Errorf("user leave  group db operation error: %v", err)
-		ctx.JSON(http.StatusInternalServerError, gin.H{"code": 1, "data": err.Error()})
+		rolexerr := rolexerror.NewRolexError(rolexerror.CodeAccountLeaveGroupFailedError, err.Error())
+		rolexgin.HttpErrorResponse(ctx, rolexerr)
 		return
 
 	}
 
-	ctx.JSON(http.StatusCreated, gin.H{"code": 0, "data": "user leave group success"})
+	rolexgin.HttpOkResponse(ctx, "success")
 }
 
 func (a *AccountApi) GrantServicePermission(ctx *gin.Context) {
@@ -299,23 +324,26 @@ func (a *AccountApi) GrantServicePermission(ctx *gin.Context) {
 	}
 
 	if err := ctx.BindJSON(&param); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": 1, "data": err.Error()})
+		rolexerr := rolexerror.NewRolexError(rolexerror.CodeAccountGrantServicePermissionParamError, err.Error())
+		rolexgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	}
 
 	err := a.RolexDockerClient.ServiceAddLabel(ctx.Param("service_id"), PermissionGrantLabelsPairFromGroupIdAndPerm(param.GroupID, param.Perm))
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"code": 1, "data": err.Error()})
+		rolexerr := rolexerror.NewRolexError(rolexerror.CodeAccountGrantServicePermissionFailedError, err.Error())
+		rolexgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": "success"})
+	rolexgin.HttpOkResponse(ctx, "success")
 }
 
 func (a *AccountApi) RevokeServicePermission(ctx *gin.Context) {
 	permission_id := ctx.Param("permission_id")
 
 	if len(strings.SplitN(permission_id, "-", 2)) != 2 {
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": 1, "data": "permission id not valid"})
+		rolexerr := rolexerror.NewRolexError(rolexerror.CodeAccountRevokeServicePermissionParamError, "permission invalid")
+		rolexgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	}
 
@@ -323,8 +351,9 @@ func (a *AccountApi) RevokeServicePermission(ctx *gin.Context) {
 
 	err := a.RolexDockerClient.ServiceRemoveLabel(ctx.Param("service_id"), labels)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"code": 1, "data": err.Error()})
+		rolexerr := rolexerror.NewRolexError(rolexerror.CodeAccountRevokeServicePermissionFailedError, err.Error())
+		rolexgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": "success"})
+	rolexgin.HttpOkResponse(ctx, "success")
 }
