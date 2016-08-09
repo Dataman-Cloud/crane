@@ -51,7 +51,8 @@ const (
 	CodeCreateVolumeParamError = 11601
 
 	//Go docker client error code
-	CodeGetDockerClientError = 17001
+	CodeConnToNodeError      = 11701
+	CodeGetNodeEndpointError = 11702
 
 	//Get config error code
 	CodeGetConfigError = 11901

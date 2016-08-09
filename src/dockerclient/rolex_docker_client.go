@@ -97,7 +97,7 @@ func (client *RolexDockerClient) SwarmNode(ctx context.Context) (*docker.Client,
 	var err error
 	node_id, ok := ctx.Value("node_id").(string)
 	if !ok {
-		err = rolexerror.NewRolexError(rolexerror.CodeGetDockerClientError, "node_id not found")
+		err = rolexerror.NewRolexError(rolexerror.CodeConnToNodeError, "node_id not found")
 		return nil, err
 	}
 
@@ -105,28 +105,27 @@ func (client *RolexDockerClient) SwarmNode(ctx context.Context) (*docker.Client,
 		return swarmNode, nil
 	}
 
-	host, err := client.NodeDaemonEndpoint(node_id, "tcp")
+	nodeUrl, err := client.NodeDaemonUrl(node_id)
 	if err != nil {
-		err = rolexerror.NewRolexError(rolexerror.CodeGetDockerClientError, "unable to parse node ip for "+host)
 		return nil, err
 	}
 
-	if client.config.DockerTlsVerify == "1" {
-		swarmNode, err = client.NewGoDockerClientTls(host, API_VERSION)
+	if nodeUrl.Scheme == "https" {
+		swarmNode, err = client.NewGoDockerClientTls(nodeUrl.String(), API_VERSION)
 	} else {
-		swarmNode, err = docker.NewVersionedClient(host, API_VERSION)
+		swarmNode, err = docker.NewVersionedClient(nodeUrl.String(), API_VERSION)
 	}
 
 	if err != nil {
-		message := fmt.Sprintf("failed to init client %s error: %s", host, err.Error())
-		err = rolexerror.NewRolexError(rolexerror.CodeGetDockerClientError, message)
+		message := fmt.Sprintf("failed to init client %s error: %s", nodeUrl.String(), err.Error())
+		err = rolexerror.NewRolexError(rolexerror.CodeConnToNodeError, message)
 		return nil, err
 	}
 
 	err = swarmNode.Ping()
 	if err != nil {
 		message := fmt.Sprintf("DockerClient ping error: %s", err.Error())
-		err = rolexerror.NewRolexError(rolexerror.CodeGetDockerClientError, message)
+		err = rolexerror.NewRolexError(rolexerror.CodeConnToNodeError, message)
 		return nil, err
 	}
 

@@ -3,7 +3,7 @@ package api
 import (
 	"os/exec"
 
-	"github.com/Dataman-Cloud/rolex/src/plugins/tty"
+	containertty "github.com/Dataman-Cloud/rolex/src/plugins/tty"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
@@ -25,13 +25,13 @@ func (api *Api) ConnectContainer(ctx *gin.Context) {
 	log.Info("Init message: ", string(stream))
 
 	// Add TLS config and file path
-	endpoint, err := api.GetDockerClient().NodeDaemonEndpoint(ctx.Param("node_id"), "tcp")
+	nodeUrl, err := api.GetDockerClient().NodeDaemonUrl(ctx.Param("node_id"))
 	if err != nil {
 		log.Error("Get container endpoint got error: ", err)
 		return
 	}
 
-	cmd := exec.Command("docker", "-H", endpoint, "exec", "-it", ctx.Param("container_id"), "sh")
+	cmd := exec.Command("docker", "-H", nodeUrl.String(), "exec", "-it", ctx.Param("container_id"), "sh")
 	client, err := containertty.New(cmd, conn, req, containertty.DefaultOptions)
 	if err != nil {
 		log.Error("Create tty client got error: ", err)
