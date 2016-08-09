@@ -166,11 +166,15 @@ func NewEnvEntry() *EnvEntry {
 }
 
 func loadEnvFile(envfile string) {
+	//TODO get node addr form swam API
+	ReadNodeAddrFromFile(NodeAddrInfoFilePath)
+
 	// load the environment file
 	log.Debug("envfile: ", envfile)
 	f, err := os.Open(envfile)
 	if err != nil {
-		log.Errorf("Read node addr info from %s got error: %s", envfile, err.Error())
+		log.Infof("Failed to open config file %s: %s", envfile, err.Error())
+		return
 	}
 	defer f.Close()
 
@@ -198,9 +202,6 @@ func loadEnvFile(envfile string) {
 			}
 		}
 	}
-
-	//TODO get node addr form swam API
-	ReadNodeAddrFromFile(NodeAddrInfoFilePath)
 }
 
 // helper function to parse a "key=value" environment variable string.
