@@ -5,6 +5,7 @@ import (
 
 	"github.com/Dataman-Cloud/rolex/src/model"
 	"github.com/Dataman-Cloud/rolex/src/util/rolexerror"
+	"github.com/Dataman-Cloud/rolex/src/util/rolexgin"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/docker/engine-api/types"
@@ -21,11 +22,11 @@ func (api *Api) InspectNode(ctx *gin.Context) {
 	node, err := api.GetDockerClient().InspectNode(nodeId)
 	if err != nil {
 		log.Errorf("InspectNode of %s got error: %s", nodeId, err.Error())
-		api.HttpErrorResponse(ctx, err)
+		rolexgin.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	api.HttpOkResponse(ctx, node)
+	rolexgin.HttpOkResponse(ctx, node)
 	return
 }
 
@@ -33,11 +34,11 @@ func (api *Api) ListNodes(ctx *gin.Context) {
 	nodes, err := api.GetDockerClient().ListNode(types.NodeListOptions{})
 	if err != nil {
 		log.Error("ListNode got error: ", err)
-		api.HttpErrorResponse(ctx, err)
+		rolexgin.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	api.HttpOkResponse(ctx, nodes)
+	rolexgin.HttpOkResponse(ctx, nodes)
 	return
 }
 
@@ -55,18 +56,18 @@ func (api *Api) UpdateNode(ctx *gin.Context) {
 				jsonErr.Offset, jsonErr.Type, jsonErr.Value)
 		}
 		rerror := rolexerror.NewRolexError(rolexerror.CodeUpdateNodeParamError, err.Error())
-		api.HttpErrorResponse(ctx, rerror)
+		rolexgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
 
 	nodeId := ctx.Param("node_id")
 	if err := api.GetDockerClient().UpdateNode(nodeId, nodeUpdate); err != nil {
 		log.Errorf("Update node %s got error: %s", nodeId, err.Error())
-		api.HttpErrorResponse(ctx, err)
+		rolexgin.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	api.HttpOkResponse(ctx, "success")
+	rolexgin.HttpOkResponse(ctx, "success")
 	return
 }
 
@@ -74,11 +75,11 @@ func (api *Api) RemoveNode(ctx *gin.Context) {
 	nodeId := ctx.Param("node_id")
 	if err := api.GetDockerClient().RemoveNode(nodeId); err != nil {
 		log.Errorf("Remove node %s got error: %s", nodeId, err.Error())
-		api.HttpErrorResponse(ctx, err)
+		rolexgin.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	api.HttpOkResponse(ctx, "success")
+	rolexgin.HttpOkResponse(ctx, "success")
 	return
 }
 
@@ -86,18 +87,18 @@ func (api *Api) LeaderNode(ctx *gin.Context) {
 	nodes, err := api.GetDockerClient().ListNode(types.NodeListOptions{})
 	if err != nil {
 		log.Error("LeaderNode got error: ", err)
-		api.HttpErrorResponse(ctx, err)
+		rolexgin.HttpErrorResponse(ctx, err)
 		return
 	}
 
 	for _, node := range nodes {
 		if node.ManagerStatus != nil && node.ManagerStatus.Leader {
-			api.HttpOkResponse(ctx, node.ManagerStatus)
+			rolexgin.HttpOkResponse(ctx, node.ManagerStatus)
 			return
 		}
 	}
 
-	api.HttpOkResponse(ctx, "")
+	rolexgin.HttpOkResponse(ctx, "")
 	return
 }
 
@@ -106,10 +107,10 @@ func (api *Api) Info(ctx *gin.Context) {
 	info, err := api.GetDockerClient().Info(rolexContext.(context.Context))
 	if err != nil {
 		log.Error("Get node info got error: ", err)
-		api.HttpErrorResponse(ctx, err)
+		rolexgin.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	api.HttpOkResponse(ctx, info)
+	rolexgin.HttpOkResponse(ctx, info)
 	return
 }
