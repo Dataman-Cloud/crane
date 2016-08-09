@@ -5,7 +5,7 @@
     <title>数人云</title>
     <base href="/">
     <!--build:css css/style.css-->
-    <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.css">
+    <!--<link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.css">-->
     <link rel="stylesheet" type="text/css"
           href="bower_components/angular-ui-notification/dist/angular-ui-notification.min.css">
     <link rel="stylesheet" type="text/css" href="bower_components/angular/angular-csp.css">
@@ -16,8 +16,8 @@
     <link rel="stylesheet" type="text/css" href="bower_components/codemirror/lib/codemirror.css">
     <link rel="stylesheet" type="text/css" href="bower_components/codemirror/theme/midnight.css">
     <link rel="stylesheet" type="text/css" href="bower_components/nvd3/build/nv.d3.css">
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    <!--<link rel="stylesheet" type="text/css" href="css/shurenyun.css">-->
+    <!--<link rel="stylesheet" type="text/css" href="css/style.css">-->
+    <!--<link rel="stylesheet"  type="text/css" href="css/shurenyun.css">-->
     <!--<link rel="stylesheet" type="text/css" href="css/material.css">-->
     <link rel="stylesheet" type="text/css" href="css/swarm.css">
     <!--endbuild-->
@@ -65,7 +65,7 @@
     </aside>
 
     <div flex layout="column">
-        <nav id="nav-main" layout="row" layout-align="space-between center">
+        <nav id="nav-main" layout="row" layout-align="space-between center" flex="none">
             <div flex="auto" layout="row" layout-align="start center">
                 <md-button class="md-icon-button" aria-label="Settings" flex="none" ng-click="rootCtrl.isShortMenu = !rootCtrl.isShortMenu">
                     <i class="fa fa-angle-double-left" ng-if="!rootCtrl.isShortMenu"></i>
@@ -134,7 +134,7 @@
             </md-toolbar>
         </nav>
 
-        <div class="main-container" flex data-ui-view></div>
+        <div id="container-main" data-ui-view></div>
 
         <div id="search-main" ng-show="rootCtrl.isSearch">
             <form style="">
