@@ -41,12 +41,7 @@ type ServiceScale struct {
 // ServiceCreate creates a new Service.
 func (client *RolexDockerClient) CreateService(service swarm.ServiceSpec, options types.ServiceCreateOptions) (types.ServiceCreateResponse, error) {
 	var response types.ServiceCreateResponse
-	serviceParam, err := json.Marshal(service)
-	if err != nil {
-		return response, err
-	}
-
-	content, err := client.HttpPost(client.swarmManagerHttpEndpoint+"/services/create", nil, serviceParam, nil)
+	content, err := client.HttpPost(client.swarmManagerHttpEndpoint+"/services/create", nil, service, nil)
 	if err != nil {
 		return response, err
 	}
