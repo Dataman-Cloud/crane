@@ -203,6 +203,7 @@ func (client *RolexDockerClient) NodeDaemonUrl(nodeId string) (*url.URL, error) 
 	if !strings.Contains(endpoint, "://") {
 		endpoint = conf.DockerEntryScheme + "://" + endpoint
 	}
+
 	u, err := url.Parse(endpoint)
 	if err != nil {
 		errMsg = fmt.Sprintf("failed to pasre endpoint: %s of node: %s error: %s", endpoint, nodeId, err.Error())
