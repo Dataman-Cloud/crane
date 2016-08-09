@@ -51,7 +51,7 @@ const (
 	CodeCreateVolumeParamError = 11601
 
 	//Go docker client error code
-	CodeGetDockerClientError = 1
+	CodeGetDockerClientError = 17001
 
 	//Get config error code
 	CodeGetConfigError = 11901
@@ -82,13 +82,13 @@ const (
 	CodeAccountJoinGroupGroupIdNotValidError            = 12023
 	CodeAccountJoinGroupAccountIdNotValidError          = 12024
 	CodeAccountJoinGroupFailedError                     = 12025
-	CodeAccountLeaveGroupGroupIdNotValidError           = 12023
-	CodeAccountLeaveGroupAccountIdNotValidError         = 12024
-	CodeAccountLeaveGroupFailedError                    = 12025
-	CodeAccountGrantServicePermissionParamError         = 12026
-	CodeAccountGrantServicePermissionFailedError        = 12027
-	CodeAccountRevokeServicePermissionParamError        = 12028
-	CodeAccountRevokeServicePermissionFailedError       = 12029
+	CodeAccountLeaveGroupGroupIdNotValidError           = 12026
+	CodeAccountLeaveGroupAccountIdNotValidError         = 12027
+	CodeAccountLeaveGroupFailedError                    = 12028
+	CodeAccountGrantServicePermissionParamError         = 12029
+	CodeAccountGrantServicePermissionFailedError        = 12030
+	CodeAccountRevokeServicePermissionParamError        = 12031
+	CodeAccountRevokeServicePermissionFailedError       = 12032
 
 	//Search
 	CodeInvalidSearchKeywords = 13001
