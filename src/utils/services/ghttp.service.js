@@ -121,7 +121,6 @@
             };
 
             Resource.prototype._handleErrors = function (status, data, deferred) {
-                console.log(data)
                 if (data && angular.isObject(data) && data.code && !this.options.ignoreCodes.includes(data.code)
                         && $rootScope.CODE_MESSAGE[data.code]) {
                     Notification.error($rootScope.CODE_MESSAGE[data.code]);
@@ -131,6 +130,7 @@
                     //$state.go('404');
                 } else {
                     data = {code: $rootScope.MESSAGE_CODE.unknow};
+                    Notification.error($rootScope.CODE_MESSAGE[data.code]);
                     deferred.reject(data)
                 }
             };
