@@ -11,7 +11,10 @@ import (
 	"github.com/Dataman-Cloud/rolex/src/plugins/auth/authenticators"
 	"github.com/Dataman-Cloud/rolex/src/util/config"
 	"github.com/Dataman-Cloud/rolex/src/util/db"
+	"github.com/Dataman-Cloud/rolex/src/util/rolexerror"
+	"github.com/Dataman-Cloud/rolex/src/util/rolexgin"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/docker/distribution/manifest/schema1"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
@@ -86,9 +89,9 @@ func (registry *Registry) Notifications(ctx *gin.Context) {
 	if err := ctx.BindJSON(&notification); err != nil {
 		switch jsonErr := err.(type) {
 		case *json.SyntaxError:
-			fmt.Printf("Notification JSON syntax error at byte %v: %s", jsonErr.Offset, jsonErr.Error())
+			log.Error("Notification JSON syntax error at byte %v: %s", jsonErr.Offset, jsonErr.Error())
 		case *json.UnmarshalTypeError:
-			fmt.Printf("Unexpected type at by type %v. Expected %s but received %s.",
+			log.Error("Unexpected type at by type %v. Expected %s but received %s.",
 				jsonErr.Offset, jsonErr.Type, jsonErr.Value)
 		}
 	}
@@ -129,18 +132,20 @@ func (registry *Registry) GetManifests(ctx *gin.Context) {
 
 	resp, _, err := registry.RegistryAPIGet(fmt.Sprintf("%s/%s/manifests/%s", ctx.Param("namespace"), ctx.Param("image"), ctx.Param("reference")), account.Email)
 	if err != nil {
-		ctx.JSON(http.StatusServiceUnavailable, gin.H{})
+		rolexerr := rolexerror.NewRolexError(rolexerror.CodeRegistryGetManifestError, err.Error())
+		rolexgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	}
 
 	var manifest schema1.Manifest
 	err = json.Unmarshal(resp, &manifest)
 	if err != nil {
-		ctx.JSON(http.StatusServiceUnavailable, gin.H{})
+		rolexerr := rolexerror.NewRolexError(rolexerror.CodeRegistryManifestParseError, err.Error())
+		rolexgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": manifest})
+	rolexgin.HttpOkResponse(ctx, manifest)
 }
 
 func (registry *Registry) DeleteManifests(ctx *gin.Context) {
@@ -153,11 +158,12 @@ func (registry *Registry) DeleteManifests(ctx *gin.Context) {
 
 	_, _, err := registry.RegistryAPIDeleteSchemaV2(fmt.Sprintf("%s/%s/manifests/%s", ctx.Param("namespace"), ctx.Param("image"), ctx.Param("reference")), account.Email)
 	if err != nil {
-		ctx.JSON(http.StatusServiceUnavailable, gin.H{})
+		err := rolexerror.NewRolexError(rolexerror.CodeRegistryManifestDeleteError, err.Error())
+		rolexgin.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": "success"})
+	rolexgin.HttpOkResponse(ctx, "success")
 }
 
 func (registry *Registry) MineCatalog(ctx *gin.Context) {
@@ -178,7 +184,8 @@ func (registry *Registry) MineCatalog(ctx *gin.Context) {
 		err = registry.DbClient.Where("namespace = ?", RegistryNamespaceForAccount(account)).Order("created_at DESC").Find(&images).Error
 	}
 	if err != nil {
-		ctx.JSON(http.StatusServiceUnavailable, gin.H{"code": 1, "data": err.Error()})
+		rolexerr := rolexerror.NewRolexError(rolexerror.CodeRegistryCatalogListError, err.Error())
+		rolexgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	}
 
@@ -187,7 +194,7 @@ func (registry *Registry) MineCatalog(ctx *gin.Context) {
 		registry.DbClient.Model(&ImageAccess{}).Where("namespace = ? AND image = ? AND action='push'", image.Namespace, image.Image).Count(&image.PushCount)
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": images})
+	rolexgin.HttpOkResponse(ctx, images)
 }
 
 func (registry *Registry) PublicCatalog(ctx *gin.Context) {
@@ -200,7 +207,8 @@ func (registry *Registry) PublicCatalog(ctx *gin.Context) {
 		err = registry.DbClient.Where("Publicity = 1").Order("created_at DESC").Find(&images).Error
 	}
 	if err != nil {
-		ctx.JSON(http.StatusServiceUnavailable, gin.H{"code": 1, "data": err.Error()})
+		rolexerr := rolexerror.NewRolexError(rolexerror.CodeRegistryCatalogListError, err.Error())
+		rolexgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	}
 
@@ -209,7 +217,7 @@ func (registry *Registry) PublicCatalog(ctx *gin.Context) {
 		registry.DbClient.Model(&ImageAccess{}).Where("namespace = ? AND image = ? AND action='push'", image.Namespace, image.Image).Count(&image.PushCount)
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": images})
+	rolexgin.HttpOkResponse(ctx, images)
 }
 
 func (registry *Registry) ImagePublicity(ctx *gin.Context) {
@@ -220,12 +228,13 @@ func (registry *Registry) ImagePublicity(ctx *gin.Context) {
 	if err := ctx.BindJSON(&param); err != nil {
 		switch jsonErr := err.(type) {
 		case *json.SyntaxError:
-			fmt.Printf("Notification JSON syntax error at byte %v: %s", jsonErr.Offset, jsonErr.Error())
+			log.Error("Notification JSON syntax error at byte %v: %s", jsonErr.Offset, jsonErr.Error())
 		case *json.UnmarshalTypeError:
-			fmt.Printf("Unexpected type at by type %v. Expected %s but received %s.",
+			log.Error("Unexpected type at by type %v. Expected %s but received %s.",
 				jsonErr.Offset, jsonErr.Type, jsonErr.Value)
 		}
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": 1, "data": "fail"})
+		rolexerr := rolexerror.NewRolexError(rolexerror.CodeRegistryImagePublicityParamError, err.Error())
+		rolexgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	}
 
@@ -233,11 +242,12 @@ func (registry *Registry) ImagePublicity(ctx *gin.Context) {
 	registry.DbClient.Where("namespace = ? AND image = ? ", ctx.Param("namespace"), ctx.Param("image")).Find(&image)
 	err := registry.DbClient.Model(&image).UpdateColumn("Publicity", param.Publicity).Error
 	if err != nil {
-		ctx.JSON(http.StatusServiceUnavailable, gin.H{"code": 1, "data": err.Error()})
+		rolexerr := rolexerror.NewRolexError(rolexerror.CodeRegistryImagePublicityUpdateError, err.Error())
+		rolexgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": "success"})
+	rolexgin.HttpOkResponse(ctx, "success")
 }
 
 func (registry *Registry) HandleNotification(n Event) {

@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/Dataman-Cloud/rolex/src/util/rolexerror"
+	"github.com/Dataman-Cloud/rolex/src/util/rolexgin"
 	"github.com/Dataman-Cloud/rolex/src/version"
 
 	log "github.com/Sirupsen/logrus"
@@ -30,11 +31,11 @@ func (api *Api) RolexConfig(ctx *gin.Context) {
 	if err != nil {
 		log.Errorf("InspectSwarm got error: %s", err.Error())
 		rerror := rolexerror.NewRolexError(rolexerror.CodeGetConfigError, err.Error())
-		api.HttpErrorResponse(ctx, rerror)
+		rolexgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
 
-	api.HttpOkResponse(ctx, config)
+	rolexgin.HttpOkResponse(ctx, config)
 	return
 }
 

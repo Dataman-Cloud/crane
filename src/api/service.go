@@ -8,6 +8,7 @@ import (
 	"github.com/Dataman-Cloud/rolex/src/dockerclient"
 	"github.com/Dataman-Cloud/rolex/src/dockerclient/model"
 	"github.com/Dataman-Cloud/rolex/src/util/rolexerror"
+	"github.com/Dataman-Cloud/rolex/src/util/rolexgin"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/docker/engine-api/types"
@@ -41,34 +42,31 @@ func encryptServiceId(serviceId string) string {
 }
 
 func (api *Api) ServiceCDAddr(ctx *gin.Context) {
-	api.HttpOkResponse(ctx, encryptServiceId(ctx.Param("service_id")))
+	rolexgin.HttpOkResponse(ctx, encryptServiceId(ctx.Param("service_id")))
 }
 
 func (api *Api) UpdateServiceImage(ctx *gin.Context) {
 	encryptedServicId := ctx.Param("service_id")
 	serviceId, err := decryptServiceId(encryptedServicId)
 	if err != nil {
-		log.Error("parse serviceId got error: ", err)
-		api.HttpErrorResponse(ctx, err)
+		rolexgin.HttpErrorResponse(ctx, err)
 		return
 	}
 
 	service, err := api.GetDockerClient().InspectServiceWithRaw(serviceId)
 	if err != nil {
-		log.Errorf("inspect service error: %v", err)
-		api.HttpErrorResponse(ctx, err)
+		rolexgin.HttpErrorResponse(ctx, err)
 		return
 	}
 
 	service.Spec.TaskTemplate.ContainerSpec.Image = ctx.Query("image")
 
 	if err := api.GetDockerClient().UpdateService(service.ID, service.Version, service.Spec, nil); err != nil {
-		log.Errorf("update service error: %v", err)
-		api.HttpErrorResponse(ctx, err)
+		rolexgin.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	api.HttpOkResponse(ctx, "success")
+	rolexgin.HttpOkResponse(ctx, "success")
 	return
 }
 
@@ -76,26 +74,23 @@ func (api *Api) UpdateService(ctx *gin.Context) {
 	var serviceSpec swarm.ServiceSpec
 
 	if err := ctx.BindJSON(&serviceSpec); err != nil {
-		log.Error("UpdateService invalied request body: ", err)
 		rerror := rolexerror.NewRolexError(rolexerror.CodeUpdateServiceParamError, err.Error())
-		api.HttpErrorResponse(ctx, rerror)
+		rolexgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
 
 	service, err := api.GetDockerClient().InspectServiceWithRaw(ctx.Param("service_id"))
 	if err != nil {
-		log.Errorf("inspect service error: %v", err)
-		api.HttpErrorResponse(ctx, err)
+		rolexgin.HttpErrorResponse(ctx, err)
 		return
 	}
 
 	if err := api.GetDockerClient().UpdateService(service.ID, service.Version, serviceSpec, nil); err != nil {
-		log.Errorf("update service error: %v", err)
-		api.HttpErrorResponse(ctx, err)
+		rolexgin.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	api.HttpOkResponse(ctx, "success")
+	rolexgin.HttpOkResponse(ctx, "success")
 	return
 }
 
@@ -103,11 +98,11 @@ func (api *Api) InspectService(ctx *gin.Context) {
 	service, err := api.GetDockerClient().InspectServiceWithRaw(ctx.Param("service_id"))
 	if err != nil {
 		log.Errorf("inspect service error: %v", err)
-		api.HttpErrorResponse(ctx, err)
+		rolexgin.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	api.HttpOkResponse(ctx, service)
+	rolexgin.HttpOkResponse(ctx, service)
 	return
 }
 
@@ -117,18 +112,18 @@ func (api *Api) CreateService(ctx *gin.Context) {
 	if err := ctx.BindJSON(&service); err != nil {
 		log.Error("CreateService invalied request body: ", err)
 		rerror := rolexerror.NewRolexError(rolexerror.CodeCreateServiceParamError, err.Error())
-		api.HttpErrorResponse(ctx, rerror)
+		rolexgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
 
 	response, err := api.GetDockerClient().CreateService(service, types.ServiceCreateOptions{})
 	if err != nil {
 		log.Error("CreateService got error: ", err)
-		api.HttpErrorResponse(ctx, err)
+		rolexgin.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	api.HttpOkResponse(ctx, response)
+	rolexgin.HttpOkResponse(ctx, response)
 	return
 }
 
@@ -141,18 +136,17 @@ func (api *Api) ListService(ctx *gin.Context) {
 		for k, v := range labelFilters {
 			args.Add("label", fmt.Sprintf("%s=%s", k, v))
 		}
-		fmt.Println(args)
 		opts.Filter = args
 	}
 
 	services, err := api.GetDockerClient().ListService(opts)
 	if err != nil {
 		log.Error("ListService got error: ", err)
-		api.HttpErrorResponse(ctx, err)
+		rolexgin.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	api.HttpOkResponse(ctx, services)
+	rolexgin.HttpOkResponse(ctx, services)
 	return
 }
 
@@ -160,11 +154,11 @@ func (api *Api) RemoveService(ctx *gin.Context) {
 	serviceId := ctx.Param("id")
 	if err := api.GetDockerClient().RemoveService(serviceId); err != nil {
 		log.Errorf("Remove service %s got error: %s", serviceId, err.Error())
-		api.HttpErrorResponse(ctx, err)
+		rolexgin.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	api.HttpOkResponse(ctx, "success")
+	rolexgin.HttpOkResponse(ctx, "success")
 	return
 }
 
@@ -174,17 +168,17 @@ func (api *Api) ScaleService(ctx *gin.Context) {
 	if err := ctx.BindJSON(&serviceScale); err != nil {
 		log.Errorf("Scale service %s got error: %s", serviceId, err.Error())
 		rerror := rolexerror.NewRolexError(rolexerror.CodeScaleServiceParamError, err.Error())
-		api.HttpErrorResponse(ctx, rerror)
+		rolexgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
 
 	if err := api.GetDockerClient().ScaleService(serviceId, serviceScale); err != nil {
 		log.Errorf("Scale service %s got error: %s", serviceId, err.Error())
-		api.HttpErrorResponse(ctx, err)
+		rolexgin.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	api.HttpOkResponse(ctx, "success")
+	rolexgin.HttpOkResponse(ctx, "success")
 	return
 }
 
@@ -199,7 +193,7 @@ func (api *Api) LogsService(ctx *gin.Context) {
 	if err != nil {
 		log.Errorf("ListTasks of service %s got error: %s", serviceId, err.Error())
 		rerror := rolexerror.NewRolexError(rolexerror.CodeListTaskParamError, err.Error())
-		api.HttpErrorResponse(ctx, rerror)
+		rolexgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
 
@@ -226,7 +220,7 @@ func (api *Api) StatsService(ctx *gin.Context) {
 	if err != nil {
 		log.Errorf("ListTasks of service %s got error: %s", serviceId, err.Error())
 		rerror := rolexerror.NewRolexError(rolexerror.CodeListTaskParamError, err.Error())
-		api.HttpErrorResponse(ctx, rerror)
+		rolexgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
 

@@ -2,6 +2,7 @@ package api
 
 import (
 	"github.com/Dataman-Cloud/rolex/src/util/rolexerror"
+	"github.com/Dataman-Cloud/rolex/src/util/rolexgin"
 
 	log "github.com/Sirupsen/logrus"
 	goclient "github.com/fsouza/go-dockerclient"
@@ -14,11 +15,11 @@ func (api *Api) InspectVolume(ctx *gin.Context) {
 	volume, err := api.GetDockerClient().InspectVolume(rolexContext.(context.Context), ctx.Param("volume_id"))
 	if err != nil {
 		log.Errorf("inspect volume error: %v", err)
-		api.HttpErrorResponse(ctx, err)
+		rolexgin.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	api.HttpOkResponse(ctx, volume)
+	rolexgin.HttpOkResponse(ctx, volume)
 	return
 }
 
@@ -26,19 +27,14 @@ func (api *Api) ListVolume(ctx *gin.Context) {
 	rolexContext, _ := ctx.Get("rolexContext")
 	var opts goclient.ListVolumesOptions
 
-	/*if err := ctx.BindJSON(&opts); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": util.PARAMETER_ERROR, "data": err.Error()})
-		return
-	}*/
-
 	volumes, err := api.GetDockerClient().ListVolumes(rolexContext.(context.Context), opts)
 	if err != nil {
 		log.Errorf("get volume list error: %v", err)
-		api.HttpErrorResponse(ctx, err)
+		rolexgin.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	api.HttpOkResponse(ctx, volumes)
+	rolexgin.HttpOkResponse(ctx, volumes)
 	return
 }
 
@@ -49,18 +45,18 @@ func (api *Api) CreateVolume(ctx *gin.Context) {
 	if err := ctx.BindJSON(&opts); err != nil {
 		log.Errorf("create volume request body parse json error: %v", err)
 		rerror := rolexerror.NewRolexError(rolexerror.CodeCreateVolumeParamError, err.Error())
-		api.HttpErrorResponse(ctx, rerror)
+		rolexgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
 
 	volume, err := api.GetDockerClient().CreateVolume(rolexContext.(context.Context), opts)
 	if err != nil {
 		log.Errorf("create volume error: %v", err)
-		api.HttpErrorResponse(ctx, err)
+		rolexgin.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	api.HttpOkResponse(ctx, volume)
+	rolexgin.HttpOkResponse(ctx, volume)
 	return
 }
 
@@ -68,10 +64,10 @@ func (api *Api) RemoveVolume(ctx *gin.Context) {
 	rolexContext, _ := ctx.Get("rolexContext")
 	if err := api.GetDockerClient().RemoveVolume(rolexContext.(context.Context), ctx.Param("volume_id")); err != nil {
 		log.Errorf("remove volume error: %v", err)
-		api.HttpErrorResponse(ctx, err)
+		rolexgin.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	api.HttpOkResponse(ctx, "success")
+	rolexgin.HttpOkResponse(ctx, "success")
 	return
 }

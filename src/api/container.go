@@ -8,6 +8,7 @@ import (
 
 	"github.com/Dataman-Cloud/rolex/src/dockerclient/model"
 	"github.com/Dataman-Cloud/rolex/src/util/rolexerror"
+	"github.com/Dataman-Cloud/rolex/src/util/rolexgin"
 
 	log "github.com/Sirupsen/logrus"
 	goclient "github.com/fsouza/go-dockerclient"
@@ -38,11 +39,11 @@ func (api *Api) InspectContainer(ctx *gin.Context) {
 	container, err := api.GetDockerClient().InspectContainer(rolexContext.(context.Context), cId)
 	if err != nil {
 		log.Errorf("InspectContainer of containerId %s got error: %s", cId, err.Error())
-		api.HttpErrorResponse(ctx, err)
+		rolexgin.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	api.HttpOkResponse(ctx, container)
+	rolexgin.HttpOkResponse(ctx, container)
 	return
 }
 
@@ -51,7 +52,7 @@ func (api *Api) ListContainers(ctx *gin.Context) {
 	if err != nil {
 		log.Error("Parse param all of list container got error: ", err)
 		rerror := rolexerror.NewRolexError(rolexerror.CodeListContainerParamError, err.Error())
-		api.HttpErrorResponse(ctx, rerror)
+		rolexgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
 
@@ -59,7 +60,7 @@ func (api *Api) ListContainers(ctx *gin.Context) {
 	if err != nil {
 		log.Error("Parse param size of list container got error: ", err)
 		rerror := rolexerror.NewRolexError(rolexerror.CodeListContainerParamError, err.Error())
-		api.HttpErrorResponse(ctx, rerror)
+		rolexgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
 
@@ -67,7 +68,7 @@ func (api *Api) ListContainers(ctx *gin.Context) {
 	if err != nil {
 		log.Error("Parse param all of limit container got error: ", err)
 		rerror := rolexerror.NewRolexError(rolexerror.CodeListContainerParamError, err.Error())
-		api.HttpErrorResponse(ctx, rerror)
+		rolexgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
 	limit := int(limitValue)
@@ -77,7 +78,7 @@ func (api *Api) ListContainers(ctx *gin.Context) {
 	if err := json.Unmarshal([]byte(queryFilters), &filters); err != nil {
 		log.Error("Unmarshal list container filters got error: ", err)
 		rerror := rolexerror.NewRolexError(rolexerror.CodeListContainerParamError, err.Error())
-		api.HttpErrorResponse(ctx, rerror)
+		rolexgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
 
@@ -94,11 +95,11 @@ func (api *Api) ListContainers(ctx *gin.Context) {
 	containers, err := api.GetDockerClient().ListContainers(rolexContext.(context.Context), listOpts)
 	if err != nil {
 		log.Error("ListContainers got error: ", err)
-		api.HttpErrorResponse(ctx, err)
+		rolexgin.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	api.HttpOkResponse(ctx, containers)
+	rolexgin.HttpOkResponse(ctx, containers)
 	return
 }
 
@@ -107,7 +108,7 @@ func (api *Api) PatchContainer(ctx *gin.Context) {
 	var containerRequest ContainerRequest
 	if err := ctx.BindJSON(&containerRequest); err != nil {
 		rerror := rolexerror.NewRolexError(rolexerror.CodePatchContainerParamError, err.Error())
-		api.HttpErrorResponse(ctx, rerror)
+		rolexgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
 
@@ -139,11 +140,11 @@ func (api *Api) PatchContainer(ctx *gin.Context) {
 
 	if err != nil {
 		log.Errorf("%s container of %s got error: %s", method, cId, err.Error())
-		api.HttpErrorResponse(ctx, err)
+		rolexgin.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	api.HttpOkResponse(ctx, "success")
+	rolexgin.HttpOkResponse(ctx, "success")
 	return
 }
 
@@ -152,7 +153,7 @@ func (api *Api) DeleteContainer(ctx *gin.Context) {
 	var containerRequest ContainerRequest
 	if err := ctx.BindJSON(&containerRequest); err != nil {
 		rerror := rolexerror.NewRolexError(rolexerror.CodeDeleteContainerParamError, err.Error())
-		api.HttpErrorResponse(ctx, rerror)
+		rolexgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
 
@@ -171,11 +172,11 @@ func (api *Api) DeleteContainer(ctx *gin.Context) {
 
 	if err != nil {
 		log.Errorf("%s container of %s got error %s", method, cId, err.Error())
-		api.HttpErrorResponse(ctx, err)
+		rolexgin.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	api.HttpOkResponse(ctx, "success")
+	rolexgin.HttpOkResponse(ctx, "success")
 	return
 }
 
@@ -185,11 +186,11 @@ func (api *Api) DiffContainer(ctx *gin.Context) {
 	changes, err := api.GetDockerClient().DiffContainer(rolexContext.(context.Context), cId)
 	if err != nil {
 		log.Errorf("Diff container of %s got error: %s", cId, err.Error())
-		api.HttpErrorResponse(ctx, err)
+		rolexgin.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	api.HttpOkResponse(ctx, changes)
+	rolexgin.HttpOkResponse(ctx, changes)
 	return
 }
 
