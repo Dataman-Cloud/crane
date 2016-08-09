@@ -59,9 +59,6 @@ type EnvEntry struct {
 	ROLEX_REGISTRY_PRIVATE_KEY_PATH string `required:"false"`
 	ROLEX_REGISTRY_ADDR             string `required:"false"`
 
-	// To be removed
-	ROLEX_NODE_PORT string `required:"true"`
-
 	ROLEX_ACCOUNT_TOKEN_STORE   string `required:"false"`
 	ROLEX_ACCOUNT_AUTHENTICATOR string `required:"false"`
 
