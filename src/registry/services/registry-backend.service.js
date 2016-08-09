@@ -7,7 +7,8 @@
     /* @ngInject */
     function registryBackend(gHttp) {
         return {
-            listRepositories: listRepositories,
+            listPublicRepositories: listPublicRepositories,
+            listMineRepositories: listMineRepositories,
             listRepositoryTags: listRepositoryTags,
             getImage: getImage,
             listCatalogs: listCatalogs,
@@ -15,8 +16,12 @@
             deleteImage: deleteImage
         };
 
-        function listRepositories() {
-            return gHttp.Resource('registry.repositories').get();
+        function listPublicRepositories() {
+            return gHttp.Resource('registry.publicRepositories').get();
+        }
+
+        function listMineRepositories() {
+            return gHttp.Resource('registry.mineRepositories').get();
         }
 
         function listRepositoryTags(repository) {

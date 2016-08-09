@@ -184,7 +184,8 @@
                 config: 'misc/v1/config'
             },
             registry: {
-                repositories: 'registry/v1/catalog',
+                publicRepositories: 'registry/v1/repositories/public',
+                mineRepositories: 'registry/v1/repositories/mine',
                 listTags: 'registry/v1/tag/list/$repository',
                 image: 'registry/v1/manifests/$tag/$repository',
                 catalogs: 'catalog/v1/catalogs',

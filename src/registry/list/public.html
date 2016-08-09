@@ -3,13 +3,13 @@
     <md-toolbar class="md-table-toolbar md-default">
         <div class="md-toolbar-tools">
             <form flex name="filter">
-                <input type="text" ng-model="repositorieListCtrl.filter" placeholder="搜索">
+                <input type="text"  placeholder="搜索">
             </form>
         </div>
     </md-toolbar>
 
     <ul class="collapse in">
-        <li class="panel" data-ng-repeat="repository in repositorieListContentCtrl.repositories |filter: repositorieListCtrl.filter">
+        <li class="panel" data-ng-repeat="repository in repositorieListPublicCtrl.repositories ">
             <div layout="row" layout-align="end start" class="panel-heading">
                 <div class="info" flex>
                     <h3>{/repository.name/}</h3>
@@ -17,7 +17,7 @@
                 <div layout-align="end center" class="operation">
                     <md-button class="md-raised" aria-label="add"
                                data-ng-show="!repository.show"
-                               ng-click="repositorieListContentCtrl.openRepository($index)">
+                               ng-click="repositorieListPublicCtrl.openRepository($index)">
                         <i class="fa fa-chevron-down" aria-hidden="true"></i>
                         <md-tooltip md-direction="top">
                             展开详情
@@ -25,7 +25,7 @@
                     </md-button>
                     <md-button class="md-raised" aria-label="add"
                                data-ng-show="repository.show"
-                               ng-click="repositorieListContentCtrl.closeRepository($index)">
+                               ng-click="repositorieListPublicCtrl.closeRepository($index)">
                         <i class="fa fa-chevron-up" aria-hidden="true"></i>
                         <md-tooltip md-direction="top">
                             收起详情
@@ -38,12 +38,16 @@
                     <thead md-head>
                     <tr md-row>
                         <th md-column><span>tag号</span></th>
+                        <th md-column><span>SHA256</span></th>
                     </tr>
                     </thead>
                     <tbody md-body>
                     <tr md-row ng-repeat="tag in repository.tags">
                         <td md-cell>
-                            <a data-ui-sref='registry.imageDetail({repository: repository.name, tag:tag})'>{/tag/}</a>
+                            <a data-ui-sref='registry.imageDetail({repository: repository.name, tag:tag.digest})'>{/tag.tag/}</a>
+                        </td>
+                        <td md-cell>
+                            <a data-ui-sref='registry.imageDetail({repository: repository.name, tag:tag.digest})'>{/tag.digest/}</a>
                         </td>
                         <td md-cell>
                             <md-menu md-offset="0 -5">
@@ -53,7 +57,7 @@
                                 <md-menu-content width="2">
                                     <md-menu-item>
                                         <md-button aria-label="delete"
-                                                   data-ng-click="repositorieListContentCtrl.deleteImage(repository.name, tag, $event)"
+                                                   data-ng-click="repositorieListPublicCtrl.deleteImage(repository.name, tag, $event)"
                                                   >
                                             删除
                                         </md-button>

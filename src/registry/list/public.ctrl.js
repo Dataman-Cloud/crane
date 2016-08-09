@@ -1,15 +1,16 @@
 (function () {
     'use strict';
     angular.module('app.registry')
-        .controller('RepositorieListContentCtrl', RepositorieListContentCtrl);
+        .controller('RepositorieListPublicCtrl', RepositorieListPublicCtrl);
 
 
     /* @ngInject */
-    function RepositorieListContentCtrl(repositories, type, registryBackend, registryCurd, utils, $rootScope, $stateParams) {
+    function RepositorieListPublicCtrl(repositories, registryBackend, registryCurd, utils, $rootScope, $stateParams) {
         var self = this;
-        
-        self.repositories = [];
-        
+
+
+       self.repositories = [];
+
         self.openRepository = openRepository;
         self.closeRepository = closeRepository;
         self.deleteImage = deleteImage;
@@ -17,11 +18,8 @@
         activate()
         
         function activate() {
-            angular.forEach(repositories.repositories, function (repository) {
-                if ((type === 'my' && registryCurd.isMyRepository(repository))||
-                    (type !== 'my' && registryCurd.isPublicRepository(repository))) {
-                    self.repositories.push({name: repository, tags: [], show: false});
-                }
+            angular.forEach(repositories, function (repository) {
+                self.repositories.push({name: repository.Namespace + "/" + repository.Image, tags: [], show: false});
             });
             angular.forEach(self.repositories, function (repository, index) {
                 if ($stateParams.open === repository.name) {
@@ -32,8 +30,12 @@
         
         function openRepository(index) {
             registryBackend.listRepositoryTags(self.repositories[index].name).then(function (data) {
-                self.repositories[index].tags = data.tags;
                 self.repositories[index].show = true;
+                self.repositories[index].tags = [];
+                angular.forEach(data, function (tag) {
+                  self.repositories[index].tags.push({tag: tag.Tag, digest: tag.Digest})
+                });
+                console.log(self.repositories);
             });
         }
         

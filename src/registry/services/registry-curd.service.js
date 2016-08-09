@@ -18,7 +18,7 @@
                 if (isPublicRepository(repository)) {
                     $state.go('registry.list.public', {open: repository}, {reload: true});
                 } else {
-                    $state.go('registry.list.my', {open: repository}, {reload: true});
+                    $state.go('registry.list.mine', {open: repository}, {reload: true});
                 }
 //                registryBackend.deleteImage(repository, tag)
 //                    .then(function (data) {

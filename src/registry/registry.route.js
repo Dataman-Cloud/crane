@@ -17,33 +17,9 @@
             .state('registry.list', {
                 url: '/list?open',
                 templateUrl: '/src/registry/list/list.html',
-                targetState: 'my',
+                targetState: 'catalogs',
                 ncyBreadcrumb: {
                     label: '镜像列表'
-                }
-            })
-            .state('registry.list.my', {
-                url: '/my',
-                templateUrl: '/src/registry/list/content.html',
-                controller: 'RepositorieListContentCtrl as repositorieListContentCtrl',
-                ncyBreadcrumb: {
-                    label: '我的镜像'
-                },
-                resolve: {
-                    repositories: listRepositories,
-                    type: function () {return 'my';}
-                }
-            })
-            .state('registry.list.public', {
-                url: '/public',
-                templateUrl: '/src/registry/list/content.html',
-                controller: 'RepositorieListContentCtrl as repositorieListContentCtrl',
-                ncyBreadcrumb: {
-                    label: '公共镜像'
-                },
-                resolve: {
-                    repositories: listRepositories,
-                    type: function () {return 'public';}
                 }
             })
             .state('registry.list.catalogs', {
@@ -55,6 +31,39 @@
                 },
                 resolve: {
                     catalogs: listCatalogs
+                }
+            })
+            .state('registry.catalogDetail', {
+                url: '/catalogDetail/:catalog_name',
+                templateUrl: '/src/registry/catalog-detail/detail.html',
+                controller: 'CatalogDetailCtrl as catalogDetailCtrl',
+                ncyBreadcrumb: {
+                    label: '应用部署'
+                },
+                resolve: {
+                    catalog: getCatalog
+                }
+            })
+            .state('registry.list.public', {
+                url: '/public',
+                templateUrl: '/src/registry/list/public.html',
+                controller: 'RepositorieListPublicCtrl as repositorieListPublicCtrl',
+                ncyBreadcrumb: {
+                    label: '公共镜像'
+                },
+                resolve: {
+                    repositories: listPublicRepositories
+                }
+            })
+            .state('registry.list.mine', {
+                url: '/mine',
+                templateUrl: '/src/registry/list/mine.html',
+                controller: 'RepositorieListMineCtrl as repositorieListMineCtrl',
+                ncyBreadcrumb: {
+                    label: '我的镜像'
+                },
+                resolve: {
+                    repositories: listMineRepositories
                 }
             })
             .state('registry.imageDetail', {
@@ -76,22 +85,16 @@
                 ncyBreadcrumb: {
                     label: '镜像历史'
                 }
-            })
-            .state('registry.catalogDetail', {
-                url: '/catalogDetail/:catalog_name',
-                templateUrl: '/src/registry/catalog-detail/detail.html',
-                controller: 'CatalogDetailCtrl as catalogDetailCtrl',
-                ncyBreadcrumb: {
-                    label: '应用部署'
-                },
-                resolve: {
-                    catalog: getCatalog
-                }
             });
+
+        /* @ngInject */
+        function listMineRepositories(registryBackend) {
+            return registryBackend.listMineRepositories();
+        }
             
         /* @ngInject */
-        function listRepositories(registryBackend) {
-            return registryBackend.listRepositories();
+        function listPublicRepositories(registryBackend) {
+            return registryBackend.listPublicRepositories();
         }
         
             
