@@ -1,5 +1,16 @@
 # Rolex Go for Dataman-inc
 
+## Quick Start
+
+你可以用下面方式快速启动一个 Rolex 环境
+
+执行命令
+
+  ```bash
+  MANAGER_HTTP_ENTRYPOINT=http://192.168.59.105:2375 ./build-and-start.sh
+  ```
+其中 MANAGER_HTTP_ENTRYPOINT 是 `swarm manager` 节点的 docker http socket 入口，譬如 http://192.168.59.105:2375
+
 ## Open ports between the hosts
 
 - TCP port 2377 for cluster management communications
@@ -28,7 +39,7 @@
 - 负责相关模块的 merge 操作， PR 被 merge 后，原branch A 就会被删除。
 
 
-## swarm stack使用
+## swarm stack 使用
 
 docker stack支持compose功能，现在这个功能点在实验阶段必须要装实验版docker才能看到，
 同时安装docker-compose，安装完毕编写docker-compose.yml文件,
