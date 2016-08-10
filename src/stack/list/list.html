@@ -27,13 +27,9 @@
                            data-ng-click="stackListCtrl.deleteStack($event, stack.Namespace)"></i></th>
                     <th><i class="fa fa-tasks" aria-hidden="true"></i></th>
                 </tr>
-                <tr>
-                    <td>Wordpress</td>
-                    <td>3 / 3</td>
-                </tr>
-                <tr>
-                    <td>MySQL</td>
-                    <td>3 / 3</td>
+                <tr data-ng-repeat="service in stack.Services | orderBy: $index">
+                    <td>{/service.Name/}</td>
+                    <td>{/service.NumTasksRunning/}/{/service.NumTasksTotal/}</td>
                 </tr>
             </table>
         </div>
