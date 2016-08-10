@@ -1,7 +1,6 @@
 package catalog
 
 import (
-	"net/http"
 	"path/filepath"
 
 	"github.com/Dataman-Cloud/rolex/src/util/config"
