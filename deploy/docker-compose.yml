@@ -1,35 +1,37 @@
 version: "2"
 services:
   rolex_registry:
-    image: demoregistry.dataman-inc.com/srypoc/registry:2.3.0
+    build:
+      context: ../doc/registry
+      dockerfile: ./Dockerfile
+    image: registry:rolex${TAG}
     ports:
       - "5000:5000"
       - "5001:5001"
+    environment:
+      - ROLEX_IP
     volumes:
-      - ./registry_storage:/storage
-      - ../doc/registry/config.yml:/etc/registry/config.yml
-    links:
-      - rolex
+      - ./registry_storage:/var/lib/registry
     restart: always
   rolex:
     build:
       context: ../
       dockerfile: ./deploy/Dockerfile
-    image: rolex:1.0
+    image: rolex:${TAG}
+    environment:
+      - ROLEX_SWARM_MANAGER_IP
     ports:
       - "5013:5013"
-    links:
-      - rolex_db
-    env_file:
-      - ./env
     restart: always
   rolex_db:
-    image: mysql:5.7
+    build:
+      context: ./mysql
+      dockerfile: ./Dockerfile
+    image: mysql:rolex${TAG}
     environment:
       - MYSQL_ROOT_PASSWORD=111111
     ports:
       - "3306:3306"
     volumes:
       - ./mysql_storage:/var/lib/mysql
-      - ./init.sql:/docker-entrypoint-initdb.d/rolex-init.sql
     restart: always
