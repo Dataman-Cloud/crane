@@ -90,6 +90,8 @@
             16002: '创建License失败'
         };
 
+        $rootScope.NODE_CONN_ERROR_CODE = [11701, 11702, 11703]
+
         $rootScope.CONTAINER_STATUS_LABELS = {
             running: '运行中',
             paused: '暂停中',
