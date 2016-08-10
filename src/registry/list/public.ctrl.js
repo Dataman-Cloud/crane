@@ -39,7 +39,6 @@
                 angular.forEach(data, function (tag) {
                   self.repositories[index].tags.push({tag: tag.Tag, digest: tag.Digest})
                 });
-                console.log(self.repositories);
             });
         }
         

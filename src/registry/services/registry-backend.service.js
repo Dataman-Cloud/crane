@@ -47,11 +47,13 @@
         }
 
         function hideImage(namespace, image) {
-            return gHttp.Resource('registry.publicity', {namespace: namespace, image: image}).patch({ "Publicity": 0 });
+          var data = { "Publicity": 0 };
+          return gHttp.Resource('registry.publicity', {namespace: namespace, image: image}).patch(data);
         }
 
         function publicImage(namespace, image) {
-            return gHttp.Resource('registry.publicity', {namespace: namespace, image: image}).patch({ "Publicity": 1 });
+          var data = { "Publicity": 1 };
+          return gHttp.Resource('registry.publicity', {namespace: namespace, image: image}).patch(data);
         }
     }
 })();
