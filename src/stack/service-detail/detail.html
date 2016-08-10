@@ -1,8 +1,20 @@
+<h1><i class="fa fa-stack-overflow" aria-hidden="true"></i> {/serviceDetailCtrl.service.Spec.Name/} </h1>
+<div class="sub-info-main">
+    <dl class="info-list">
+        <dt>任务数</dt>
+        <dd>{/serviceDetailCtrl.service.Spec.Mode.Replicated.Replicas/} 个</dd>
+        <dt>创建时间</dt>
+        <dd>{/serviceDetailCtrl.service.CreatedAt | date: 'yyyy-MM-dd HH:mm:ss'/}</dd>
+        <dt>更新时间</dt>
+        <dd>{/serviceDetailCtrl.service.UpdatedAt | date: 'yyyy-MM-dd HH:mm:ss'/}</dd>
+    </dl>
+</div>
+
 <md-tabs md-dynamic-height md-border-bottom>
+    <md-tab label="详情" dm-tab-sref="stack.serviceDetail.config"></md-tab>
     <md-tab label="任务列表" dm-tab-sref="stack.serviceDetail.task"></md-tab>
     <md-tab label="统计" dm-tab-sref="stack.serviceDetail.stats"></md-tab>
     <md-tab label="日志" dm-tab-sref="stack.serviceDetail.log"></md-tab>
-    <md-tab label="详情" dm-tab-sref="stack.serviceDetail.config"></md-tab>
     <md-tab label="持续部署" dm-tab-sref="stack.serviceDetail.cd"></md-tab>
 </md-tabs>
 <md-content ui-view></md-content>

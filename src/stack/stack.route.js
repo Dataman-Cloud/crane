@@ -27,13 +27,6 @@
                     label: '编排列表'
                 }
             })
-            .state('stack.create', {
-                url: '/create',
-                templateUrl: '/src/stack/create/create-nav.html',
-                ncyBreadcrumb: {
-                    label: '选择创建方式'
-                }
-            })
             .state('stack.createByJson', {
                 url: '/createByJson',
                 templateUrl: '/src/stack/create/create-by-Json.html',
