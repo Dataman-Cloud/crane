@@ -17,10 +17,10 @@ export GO15VENDOREXPERIMENT=1
 default: build
 
 build: fmt
-	 go build ${BUILD_OPTS} -ldflags "-X version.BuildTime `date -u +.%Y%m%d.%H%M%S` -X version.Version 0.1-`git rev-parse --short HEAD`" -v -o ./bin/rolex ./src/
+	 ${BUILD_OPTS} go build -ldflags "-X version.BuildTime `date -u +.%Y%m%d.%H%M%S` -X version.Version 0.1-`git rev-parse --short HEAD`" -v -o ./bin/rolex ./src/
 
 rel: fmt
-	GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -v -o ../rel/rolex ./src/
+	${BUILD_OPTS} go build -v -o ../rel/rolex ./src/
 
 doc:
 	godoc -http=:6060 -index
