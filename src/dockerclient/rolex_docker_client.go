@@ -7,7 +7,6 @@ import (
 	"io/ioutil"
 	"net/http"
 	"path/filepath"
-	"sync"
 	"time"
 
 	"github.com/Dataman-Cloud/rolex/src/util/config"
@@ -34,9 +33,6 @@ type RolexDockerClient struct {
 	// make sure swarmManager could connect to next if first one failed
 	swarmManager *docker.Client
 	// map clients connect to individual node
-	swarmNodes map[string]*docker.Client
-	// mutex control writing to swarmNodes
-	swarmNodesMutex *sync.Mutex
 
 	// http client shared both for cluster connection & client connection
 	sharedHttpClient         *http.Client
@@ -53,9 +49,6 @@ func NewRolexDockerClient(config *config.Config) (*RolexDockerClient, error) {
 	swarmManagerEntry := config.DockerEntryScheme + "://" + config.SwarmManagerIP + ":" + config.DockerEntryPort
 	client := &RolexDockerClient{
 		config: config,
-
-		swarmNodes:      make(map[string](*docker.Client), 0),
-		swarmNodesMutex: &sync.Mutex{},
 
 		swarmManagerHttpEndpoint: swarmManagerEntry,
 	}
@@ -90,10 +83,6 @@ func (client *RolexDockerClient) SwarmManager() *docker.Client {
 // return or cache daemon docker client base on host id stored in ctx
 func (client *RolexDockerClient) SwarmNode(ctx context.Context) (*docker.Client, error) {
 	var swarmNode *docker.Client
-
-	client.swarmNodesMutex.Lock()
-	defer client.swarmNodesMutex.Unlock()
-
 	var err error
 	nodeId, ok := ctx.Value("node_id").(string)
 	if !ok {
@@ -105,10 +94,6 @@ func (client *RolexDockerClient) SwarmNode(ctx context.Context) (*docker.Client,
 				Err:      fmt.Errorf("parse node id  failed"),
 			},
 		}
-	}
-
-	if swarmNode, found := client.swarmNodes[nodeId]; found {
-		return swarmNode, nil
 	}
 
 	nodeUrl, err := client.NodeDaemonUrl(nodeId)
@@ -137,8 +122,6 @@ func (client *RolexDockerClient) SwarmNode(ctx context.Context) (*docker.Client,
 			Err:  &rolexerror.NodeConnError{ID: nodeId, Endpoint: endpoint, Err: err},
 		}
 	}
-
-	client.swarmNodes[nodeId] = swarmNode
 
 	return swarmNode, nil
 }

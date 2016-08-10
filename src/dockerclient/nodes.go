@@ -14,7 +14,7 @@ import (
 
 	"github.com/docker/engine-api/types"
 	"github.com/docker/engine-api/types/swarm"
-	goclient "github.com/fsouza/go-dockerclient"
+	docker "github.com/fsouza/go-dockerclient"
 	"golang.org/x/net/context"
 )
 
@@ -177,7 +177,7 @@ func nodeRemoveLabels(spec *swarm.NodeSpec, rawMessage []byte) error {
 }
 
 // docker info
-func (client *RolexDockerClient) Info(ctx context.Context) (*goclient.DockerInfo, error) {
+func (client *RolexDockerClient) Info(ctx context.Context) (*docker.DockerInfo, error) {
 	swarmNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return nil, err
