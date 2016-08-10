@@ -8,8 +8,10 @@ import (
 	"github.com/Dataman-Cloud/rolex/src/version"
 
 	log "github.com/Sirupsen/logrus"
+	"github.com/docker/engine-api/types"
 	"github.com/docker/engine-api/types/swarm"
 	"github.com/gin-gonic/gin"
+	"golang.org/x/net/context"
 )
 
 type RolexConfigResponse struct {
@@ -40,7 +42,31 @@ func (api *Api) RolexConfig(ctx *gin.Context) {
 }
 
 func (api *Api) HealthCheck(ctx *gin.Context) {
-	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": "ok"})
+	// node docker client check
+	nodes, err := api.GetDockerClient().ListNode(types.NodeListOptions{})
+	if err != nil {
+		rolexgin.HttpErrorResponse(ctx, err)
+		return
+	}
+
+	var rolexContext context.Context
+	backgroundContext := context.Background()
+
+	for _, node := range nodes {
+		if node.Status.State != swarm.NodeStateReady {
+			continue
+		}
+
+		rolexContext = context.WithValue(backgroundContext, "node_id", node.ID)
+		_, err = api.GetDockerClient().SwarmNode(rolexContext)
+		if err != nil {
+			rolexgin.HttpErrorResponse(ctx, err)
+			return
+		}
+	}
+
+	rolexgin.HttpOkResponse(ctx, "success")
+	return
 }
 
 func (api *Api) Help(engine *gin.Engine) gin.HandlerFunc {

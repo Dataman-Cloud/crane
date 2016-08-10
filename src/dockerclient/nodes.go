@@ -187,16 +187,16 @@ func (client *RolexDockerClient) Info(ctx context.Context) (*goclient.DockerInfo
 
 func (client *RolexDockerClient) NodeDaemonUrl(nodeId string) (*url.URL, error) {
 	node, err := client.InspectNode(nodeId)
-	var errMsg string
+	var nodeConnErr *rolexerror.NodeConnError
 	if err != nil {
-		errMsg = fmt.Sprintf("failed to get node endpoint of %s info: %s", nodeId, err.Error())
-		return nil, rolexerror.NewRolexError(rolexerror.CodeGetNodeEndpointError, errMsg)
+		nodeConnErr = &rolexerror.NodeConnError{ID: nodeId, Endpoint: "", Err: err}
+		return nil, &rolexerror.RolexError{Code: rolexerror.CodeGetNodeEndpointError, Err: nodeConnErr}
 	}
 
 	endpoint, ok := node.Spec.Annotations.Labels[labelNodeEndpoint]
 	if !ok {
-		errMsg = fmt.Sprintf("endpoint of node %s is empty", nodeId)
-		return nil, rolexerror.NewRolexError(rolexerror.CodeGetNodeEndpointError, errMsg)
+		nodeConnErr = &rolexerror.NodeConnError{ID: nodeId, Endpoint: endpoint, Err: err}
+		return nil, &rolexerror.RolexError{Code: rolexerror.CodeGetNodeEndpointError, Err: nodeConnErr}
 	}
 
 	conf := config.GetConfig()
@@ -205,12 +205,11 @@ func (client *RolexDockerClient) NodeDaemonUrl(nodeId string) (*url.URL, error) 
 	}
 
 	u, err := url.Parse(endpoint)
-	if err != nil {
-		errMsg = fmt.Sprintf("failed to pasre endpoint: %s of node: %s error: %s", endpoint, nodeId, err.Error())
-	}
 
 	if u.Scheme == "" {
 		u.Scheme = conf.DockerEntryScheme
+		nodeConnErr = &rolexerror.NodeConnError{ID: nodeId, Endpoint: endpoint, Err: err}
+		return nil, &rolexerror.RolexError{Code: rolexerror.CodeGetNodeEndpointError, Err: nodeConnErr}
 	}
 
 	if !strings.Contains(u.Host, ":") {

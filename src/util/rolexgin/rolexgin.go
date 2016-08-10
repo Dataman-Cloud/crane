@@ -88,6 +88,6 @@ func HttpErrorResponse(ctx *gin.Context, err error) {
 		httpCode = http.StatusServiceUnavailable
 	}
 
-	ctx.JSON(httpCode, gin.H{"code": rerror.Code, "data": err.Error()})
+	ctx.JSON(httpCode, gin.H{"code": rerror.Code, "data": rerror.Err})
 	return
 }
