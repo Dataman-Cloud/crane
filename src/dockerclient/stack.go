@@ -21,6 +21,8 @@ type Stack struct {
 	Namespace string `json:"Namespace"`
 	// Services is the number of the services
 	ServiceCount int `json:"ServiceCount"`
+
+	Services []ServiceStatus
 }
 
 //StackDeploy deploy a new stack
@@ -65,6 +67,10 @@ func (client *RolexDockerClient) ListStack() ([]Stack, error) {
 
 	var stacks []Stack
 	for _, stack := range stackMap {
+		stackServices, err := client.ListStackService(stack.Namespace, types.ServiceListOptions{})
+		if err == nil {
+			stack.Services = stackServices
+		}
 		stacks = append(stacks, *stack)
 	}
 
