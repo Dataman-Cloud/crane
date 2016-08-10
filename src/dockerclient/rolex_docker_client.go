@@ -95,41 +95,50 @@ func (client *RolexDockerClient) SwarmNode(ctx context.Context) (*docker.Client,
 	defer client.swarmNodesMutex.Unlock()
 
 	var err error
-	node_id, ok := ctx.Value("node_id").(string)
+	nodeId, ok := ctx.Value("node_id").(string)
 	if !ok {
-		err = rolexerror.NewRolexError(rolexerror.CodeConnToNodeError, "node_id not found")
-		return nil, err
+		return nil, &rolexerror.RolexError{
+			Code: rolexerror.CodeConnToNodeError,
+			Err: &rolexerror.NodeConnError{
+				ID:       nodeId,
+				Endpoint: "",
+				Err:      fmt.Errorf("parse node id  failed"),
+			},
+		}
 	}
 
-	if swarmNode, found := client.swarmNodes[node_id]; found {
+	if swarmNode, found := client.swarmNodes[nodeId]; found {
 		return swarmNode, nil
 	}
 
-	nodeUrl, err := client.NodeDaemonUrl(node_id)
+	nodeUrl, err := client.NodeDaemonUrl(nodeId)
 	if err != nil {
 		return nil, err
 	}
 
+	endpoint := nodeUrl.String()
 	if nodeUrl.Scheme == "https" {
-		swarmNode, err = client.NewGoDockerClientTls(nodeUrl.String(), API_VERSION)
+		swarmNode, err = client.NewGoDockerClientTls(endpoint, API_VERSION)
 	} else {
-		swarmNode, err = docker.NewVersionedClient(nodeUrl.String(), API_VERSION)
+		swarmNode, err = docker.NewVersionedClient(endpoint, API_VERSION)
 	}
 
 	if err != nil {
-		message := fmt.Sprintf("failed to init client %s error: %s", nodeUrl.String(), err.Error())
-		err = rolexerror.NewRolexError(rolexerror.CodeConnToNodeError, message)
-		return nil, err
+		return nil, &rolexerror.RolexError{
+			Code: rolexerror.CodeConnToNodeError,
+			Err:  &rolexerror.NodeConnError{ID: nodeId, Endpoint: endpoint, Err: err},
+		}
 	}
 
 	err = swarmNode.Ping()
 	if err != nil {
-		message := fmt.Sprintf("DockerClient ping error: %s", err.Error())
-		err = rolexerror.NewRolexError(rolexerror.CodeConnToNodeError, message)
-		return nil, err
+		return nil, &rolexerror.RolexError{
+			Code: rolexerror.CodeConnToNodeError,
+			Err:  &rolexerror.NodeConnError{ID: nodeId, Endpoint: endpoint, Err: err},
+		}
 	}
 
-	client.swarmNodes[node_id] = swarmNode
+	client.swarmNodes[nodeId] = swarmNode
 
 	return swarmNode, nil
 }

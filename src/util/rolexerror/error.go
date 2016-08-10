@@ -1,19 +1,23 @@
 package rolexerror
 
+import (
+	"errors"
+)
+
 type RolexError struct {
-	Code    int    `json:"Code"`
-	Message string `json:"Message"`
+	Code int   `json:"Code"`
+	Err  error `json:"Err"`
 }
 
 func NewRolexError(code int, message string) error {
 	return &RolexError{
-		Code:    code,
-		Message: message,
+		Code: code,
+		Err:  errors.New(message),
 	}
 }
 
 func (e *RolexError) Error() string {
-	return e.Message
+	return e.Err.Error()
 }
 
 type ContainerStatsStopError struct {
@@ -27,4 +31,18 @@ func (e *ContainerStatsStopError) Error() string {
 	}
 
 	return "normal stop" + e.ID
+}
+
+type NodeConnError struct {
+	ID       string
+	Endpoint string
+	Err      error
+}
+
+func (e *NodeConnError) Error() string {
+	if e.Err != nil {
+		return e.Err.Error()
+	}
+
+	return e.ID + " : " + e.Endpoint + " conn error"
 }

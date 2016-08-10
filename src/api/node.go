@@ -15,10 +15,6 @@ import (
 
 func (api *Api) InspectNode(ctx *gin.Context) {
 	nodeId := ctx.Param("node_id")
-	if nodeId == "leader_manager" { // ugly will remove later
-		api.LeaderNode(ctx)
-		return
-	}
 	node, err := api.GetDockerClient().InspectNode(nodeId)
 	if err != nil {
 		log.Errorf("InspectNode of %s got error: %s", nodeId, err.Error())
@@ -80,25 +76,6 @@ func (api *Api) RemoveNode(ctx *gin.Context) {
 	}
 
 	rolexgin.HttpOkResponse(ctx, "success")
-	return
-}
-
-func (api *Api) LeaderNode(ctx *gin.Context) {
-	nodes, err := api.GetDockerClient().ListNode(types.NodeListOptions{})
-	if err != nil {
-		log.Error("LeaderNode got error: ", err)
-		rolexgin.HttpErrorResponse(ctx, err)
-		return
-	}
-
-	for _, node := range nodes {
-		if node.ManagerStatus != nil && node.ManagerStatus.Leader {
-			rolexgin.HttpOkResponse(ctx, node.ManagerStatus)
-			return
-		}
-	}
-
-	rolexgin.HttpOkResponse(ctx, "")
 	return
 }
 
