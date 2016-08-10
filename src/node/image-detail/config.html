@@ -1,56 +1,48 @@
-<section class="info-view" layout="row">
-    <header layout="row" flex="20">
-        <h4>端口映射</h4>
-    </header>
-    <div layout="column" flex="80">
-        <md-table-container dm-empty-display="nodeImageConfigCtrl.image.Config.ExposedPorts">
-            <table md-table>
-                <thead md-head>
-                <tr md-row>
-                    <th md-column><span>端口</span></th>
-                    <th md-column><span>协议</span></th>
-                </tr>
-                </thead>
-                <tbody md-body>
-                <tr md-row ng-repeat="(port, protocol)  in  nodeImageConfigCtrl.image.Config.ExposedPorts">
-                    <td md-cell>{/port | spliceStr: '/': 'key'/}</td>
-                    <td md-cell>{/port | spliceStr: '/': 'value'/}</td>
-                </tr>
-                </tbody>
-            </table>
-        </md-table-container>
+<section layout="row" class="info-list-detail">
+    <h2 flex="20">端口映射</h2>
+    <div flex="80" layout="row" layout-wrap>
+        <table cellpadding="0" cellspacing="0" dm-empty-display="nodeImageConfigCtrl.image.Config.ExposedPorts">
+            <tr>
+                <th>端口</th>
+                <th>协议</th>
+            </tr>
+
+            <tr ng-repeat="(port, protocol)  in  nodeImageConfigCtrl.image.Config.ExposedPorts">
+                <td>{/port | spliceStr: '/': 'key'/}</td>
+                <td>{/port | spliceStr: '/': 'value'/}</td>
+            </tr>
+        </table>
     </div>
 </section>
 
-<section class="info-view" layout="row">
-    <header layout="row" flex="20">
-        <h4>环境变量</h4>
-    </header>
-    <div layout="column" flex="80">
-        <md-table-container dm-empty-display="nodeImageConfigCtrl.image.Config.Env">
-            <table md-table>
-                <thead md-head>
-                <tr md-row>
-                    <th md-column><span>KEY</span></th>
-                    <th md-column><span>VALUE</span></th>
-                </tr>
-                </thead>
-                <tbody md-body>
-                <tr md-row ng-repeat="env  in  nodeImageConfigCtrl.image.Config.Env">
-                    <td md-cell>{/env | spliceStr: '=': 'key'/}</td>
-                    <td md-cell>{/env | spliceStr: '=': 'value'/}</td>
-                </tr>
-                </tbody>
-            </table>
-        </md-table-container>
+<section layout="row" class="info-list-detail">
+    <h2 flex="20">环境变量</h2>
+    <div flex="80" layout="row" layout-wrap>
+        <table cellpadding="0" cellspacing="0" dm-empty-display="nodeImageConfigCtrl.image.Config.Env">
+            <tr>
+                <th>KEY</th>
+                <th>VALUE</th>
+            </tr>
+
+            <tr ng-repeat="env  in  nodeImageConfigCtrl.image.Config.Env">
+                <td>{/env | spliceStr: '=': 'key'/}</td>
+                <td>{/env | spliceStr: '=': 'value'/}</td>
+            </tr>
+        </table>
     </div>
 </section>
 
-<section class="info-view" layout="row">
-    <header layout="row" flex="20">
-        <h4>启动命令</h4>
-    </header>
-    <div layout="column" flex="80">
-        <code data-ng-repeat="cmd in nodeImageConfigCtrl.image.Config.Cmd track by $index" dm-empty-display="nodeImageConfigCtrl.image.Config.Cmd">{/cmd/}</code>
+<section layout="row" class="info-list-detail">
+    <h2 flex="20">启动命令</h2>
+    <div flex="80" layout="row" layout-wrap>
+        <table cellpadding="0" cellspacing="0" dm-empty-display="nodeImageConfigCtrl.image.Config.Cmd">
+            <tr>
+                <th>CMD</th>
+            </tr>
+
+            <tr ng-repeat="cmd in nodeImageConfigCtrl.image.Config.Cmd track by $index">
+                <td>{/cmd/}</td>
+            </tr>
+        </table>
     </div>
 </section>

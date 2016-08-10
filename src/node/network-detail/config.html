@@ -1,32 +1,26 @@
-<h4>基本信息</h4>
-<md-table-container layout-padding>
-    <dl layout="row">
-        <dt flex="10" layout-margin>作用范围</dt>
-        <dd layout-margin>{/nodeNetworkConfigCtrl.network.Scope/}</dd>
-    </dl>
-    <dl layout="row">
-        <dt flex="10" layout-margin>支持 IPv6</dt>
-        <dd layout-margin>{/nodeNetworkConfigCtrl.network.EnableIPv6/}</dd>
-    </dl>
-    <dl layout="row">
-        <dt flex="10" layout-margin>仅内部网络</dt>
-        <dd layout-margin>{/nodeNetworkConfigCtrl.network.Internal/}</dd>
-    </dl>
-</md-table-container>
+<section layout="row" class="info-list-detail">
+    <h2 flex="20">基本信息</h2>
+    <div flex="80" layout="row" layout-wrap>
+        <div flex="30"><h5>作用范围</h5></div>
+        <div flex="70"><p>{/nodeNetworkConfigCtrl.network.Scope/}</p></div>
+        <div flex="30"><h5>支持 IPv6</h5></div>
+        <div flex="70"><p>{/nodeNetworkConfigCtrl.network.EnableIPv6/}</p></div>
+        <div flex="30"><h5>仅内部网络</h5></div>
+        <div flex="70"><p>{/nodeNetworkConfigCtrl.network.Internal/}</p></div>
+    </div>
+</section>
 
-
-<h4>地址管理</h4>
-<md-table-container layout-padding>
-    <dl layout="row">
-        <dt flex="10" layout-margin>子网掩码</dt>
-        <dd layout-margin>{/nodeNetworkConfigCtrl.network.IPAM.Config[0].Subnet/}</dd>
-    </dl>
-    <dl layout="row">
-        <dt flex="10" layout-margin>网关 IP</dt>
-        <dd layout-margin>{/nodeNetworkConfigCtrl.network.IPAM.Config[0].Gateway/}</dd>
-    </dl>
-    <dl layout="row">
-        <dt flex="10" layout-margin>Options</dt>
-        <dd layout="column"><p layout-margin data-ng-repeat="(key, value) in nodeNetworkConfigCtrl.network.Options">{/key/} : {/value/}</p></dd>
-    </dl>
-</md-table-container>
+<section layout="row" class="info-list-detail">
+    <h2 flex="20">地址管理</h2>
+    <div flex="80" layout="row" layout-wrap>
+        <div flex="30"><h5>子网掩码</h5></div>
+        <div flex="70"><p ng-class="{'no-info': !nodeNetworkConfigCtrl.network.IPAM.Config[0].Subnet}">
+            {/nodeNetworkConfigCtrl.network.IPAM.Config[0].Subnet || '未知'/}</p></div>
+        <div flex="30"><h5>网关 IP</h5></div>
+        <div flex="70"><p ng-class="{'no-info': !nodeNetworkConfigCtrl.network.IPAM.Config[0].Gateway}">
+            {/nodeNetworkConfigCtrl.network.IPAM.Config[0].Gateway || '未知'/}</p></div>
+        <div flex="30"><h5>Options</h5></div>
+        <div flex="70"><p ng-repeat="(key, value) in nodeNetworkConfigCtrl.network.Options">{/key/} : {/value/}</p>
+        </div>
+    </div>
+</section>
