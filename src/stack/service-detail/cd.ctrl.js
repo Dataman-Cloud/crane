@@ -4,8 +4,10 @@
         .controller('ServiceCdCtrl', ServiceCdCtrl);
 
     /* @ngInject */
-    function ServiceCdCtrl(serviceCdUrl, $stateParams) {
+    function ServiceCdCtrl(serviceCdUrl, $stateParams, utils) {
         var self = this;
-        self.serviceCdCommand = "curl -XPUT -H 'Content-Type: application/json' " +  BACKEND_URL_BASE.defaultBase + "api/v1/stacks/" + $stateParams.stack_name + "/services/" + serviceCdUrl + "/rolling_update?image=<your-new-image>";
+
+        var rolling_update_url = utils.buildFullURL('stack.serviceRollingUpdate', {stack_name: $stateParams.stack_name, service_id:  serviceCdUrl}, false);
+        self.serviceCdCommand = "curl -XPUT -H 'Content-Type: application/json' " +  rolling_update_url + "?image=<your-new-image>";
     }
 })();
