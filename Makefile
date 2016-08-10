@@ -1,5 +1,12 @@
 .PHONY: build doc fmt lint run test vet test-cover-html test-cover-func collect-cover-data
 
+OS := $(shell uname)
+ifeq ($(OS),Darwin)
+	BUILD_OPTS=
+else
+	BUILD_OPTS=CGO_ENABLED=0 GOOS=linux GOARCH=amd64
+endif
+
 # Prepend our vendor directory to the system GOPATH
 # so that import path resolution will prioritize
 # our third party snapshots.
@@ -10,7 +17,7 @@ export GO15VENDOREXPERIMENT=1
 default: build
 
 build: fmt
-	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-X version.BuildTime `date -u +.%Y%m%d.%H%M%S` -X version.Version 0.1-`git rev-parse --short HEAD`" -v -o ./bin/rolex ./src/
+	 go build ${BUILD_OPTS} -ldflags "-X version.BuildTime `date -u +.%Y%m%d.%H%M%S` -X version.Version 0.1-`git rev-parse --short HEAD`" -v -o ./bin/rolex ./src/
 
 rel: fmt
 	GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -v -o ../rel/rolex ./src/
