@@ -1,7 +1,6 @@
 package catalog
 
 import (
-	"net/http"
 	"path/filepath"
 
 	"github.com/Dataman-Cloud/rolex/src/util/config"
@@ -29,7 +28,6 @@ func (catalogApi *CatalogApi) GetCatalog(ctx *gin.Context) {
 func (catalogApi *CatalogApi) ListCatalog(ctx *gin.Context) {
 	catalogs, err := AllCatalogFromPath(catalogApi.Config.CatalogPath)
 	if err != nil {
-		ctx.JSON(http.StatusServiceUnavailable, gin.H{})
 		rolexerr := rolexerror.NewRolexError(rolexerror.CodeCatalogListCatalogError, err.Error())
 		rolexgin.HttpErrorResponse(ctx, rolexerr)
 		return
