@@ -65,9 +65,9 @@
                 if (options.form) {
                     promise.catch(function (data) {
                         if (data.code === $rootScope.MESSAGE_CODE.dataInvalid) {
-                            if(data.data){
+                            if (data.data) {
                                 options.form.message_error_info = data.data;
-                            }else {
+                            } else {
                                 Notification.error('参数错误');
                             }
                         }
@@ -102,7 +102,7 @@
                     params: this.options.params
                 };
 
-                if(!this.options.loading){
+                if (!this.options.loading) {
                     req.ignoreLoadingBar = true;
                 }
                 var deferred = $q.defer();
@@ -121,9 +121,10 @@
             };
 
             Resource.prototype._handleErrors = function (status, data, deferred) {
-                if (data && angular.isObject(data) && data.code && !this.options.ignoreCodes.includes(data.code)
-                        && $rootScope.CODE_MESSAGE[data.code]) {
-                    Notification.error($rootScope.CODE_MESSAGE[data.code]);
+                if (data && angular.isObject(data) && data.code && $rootScope.CODE_MESSAGE[data.code]) {
+                    if (!this.options.ignoreCodes.includes(data.code)) {
+                        Notification.error($rootScope.CODE_MESSAGE[data.code]);
+                    }
                 } else if (status == 401) {
                     utils.redirectLogin(true);
                 } else if (status == 404 || data.code === $rootScope.MESSAGE_CODE.noExist) {
@@ -131,8 +132,10 @@
                 } else {
                     data = {code: $rootScope.MESSAGE_CODE.unknow};
                     Notification.error($rootScope.CODE_MESSAGE[data.code]);
-                    deferred.reject(data)
                 }
+
+                deferred.reject(data)
+
             };
 
             return Resource;
