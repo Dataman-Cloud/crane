@@ -125,7 +125,10 @@
             }
 
             if (form.TaskTemplate.ContainerSpec.Mounts) {
-                form.formMounts = form.TaskTemplate.ContainerSpec.Mounts
+                angular.forEach(form.TaskTemplate.ContainerSpec.Mounts, function(mount, index){
+                    if(!mount.ReadOnly) mount.ReadOnly = false;
+                    form.formMounts.push(mount)
+                });
             }
 
             if (form.TaskTemplate.ContainerSpec.Command) {
