@@ -6,7 +6,7 @@ import (
 
 	"github.com/docker/engine-api/types"
 	"github.com/docker/engine-api/types/swarm"
-	goclient "github.com/fsouza/go-dockerclient"
+	docker "github.com/fsouza/go-dockerclient"
 	"golang.org/x/net/context"
 )
 
@@ -18,33 +18,33 @@ type DockerClientInterface interface {
 	NodeRemove(nodeId string) error
 	UpdateNode(nodeId string, opts opt.UpdateOptions) error
 
-	InspectContainer(id string) (*goclient.Container, error)
-	ListContainers(opts goclient.ListContainersOptions) ([]goclient.APIContainers, error)
-	RemoveContainer(opts goclient.RemoveContainerOptions) error
+	InspectContainer(id string) (*docker.Container, error)
+	ListContainers(opts docker.ListContainersOptions) ([]docker.APIContainers, error)
+	RemoveContainer(opts docker.RemoveContainerOptions) error
 	LogsContainer(nodeId, containerId string, message chan string)
 	StatsContainer(nodeId, containerId string, stats chan *model.ContainerStat)
 
-	ConnectNetwork(id string, opts goclient.NetworkConnectionOptions) error
-	CreateNetwork(opts goclient.CreateNetworkOptions) (*goclient.Network, error)
-	DisconnectNetwork(id string, opts goclient.NetworkConnectionOptions) error
-	InspectNetwork(id string) (*goclient.Network, error)
-	ListNetworks(opts goclient.NetworkFilterOpts) ([]goclient.Network, error)
+	ConnectNetwork(id string, opts docker.NetworkConnectionOptions) error
+	CreateNetwork(opts docker.CreateNetworkOptions) (*docker.Network, error)
+	DisconnectNetwork(id string, opts docker.NetworkConnectionOptions) error
+	InspectNetwork(id string) (*docker.Network, error)
+	ListNetworks(opts docker.NetworkFilterOpts) ([]docker.Network, error)
 	RemoveNetwork(id string) error
 
-	CreateNodeNetwork(ctx context.Context, opts goclient.CreateNetworkOptions) (*goclient.Network, error)
-	ConnectNodeNetwork(ctx context.Context, networkID string, opts goclient.NetworkConnectionOptions) error
-	DisconnectNodeNetwork(ctx context.Context, networkID string, opts goclient.NetworkConnectionOptions) error
-	InspectNodeNetwork(ctx context.Context, networkID string) (*goclient.Network, error)
-	ListNodeNetworks(ctx context.Context, opts goclient.NetworkFilterOpts) ([]goclient.Network, error)
+	CreateNodeNetwork(ctx context.Context, opts docker.CreateNetworkOptions) (*docker.Network, error)
+	ConnectNodeNetwork(ctx context.Context, networkID string, opts docker.NetworkConnectionOptions) error
+	DisconnectNodeNetwork(ctx context.Context, networkID string, opts docker.NetworkConnectionOptions) error
+	InspectNodeNetwork(ctx context.Context, networkID string) (*docker.Network, error)
+	ListNodeNetworks(ctx context.Context, opts docker.NetworkFilterOpts) ([]docker.Network, error)
 
-	InspectVolume(nodeId, name string) (*goclient.Volume, error)
-	ListVolumes(nodeId string, opts goclient.ListVolumesOptions) ([]goclient.Volume, error)
-	CreateVolume(nodeId string, opts goclient.CreateVolumeOptions) (*goclient.Volume, error)
+	InspectVolume(nodeId, name string) (*docker.Volume, error)
+	ListVolumes(nodeId string, opts docker.ListVolumesOptions) ([]docker.Volume, error)
+	CreateVolume(nodeId string, opts docker.CreateVolumeOptions) (*docker.Volume, error)
 	RemoveVolume(nodeId string, name string) error
 
-	ListImages(nodeId string, opts goclient.ListImagesOptions) ([]goclient.APIImages, error)
-	InspectImage(nodeId, imageId string) (*goclient.Image, error)
-	ImageHistory(nodeId, imageId string) ([]goclient.ImageHistory, error)
+	ListImages(nodeId string, opts docker.ListImagesOptions) ([]docker.APIImages, error)
+	InspectImage(nodeId, imageId string) (*docker.Image, error)
+	ImageHistory(nodeId, imageId string) ([]docker.ImageHistory, error)
 
 	DeployStack(bundle *model.Bundle) error
 	ListStack() ([]Stack, error)

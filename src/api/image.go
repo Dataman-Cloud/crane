@@ -8,7 +8,7 @@ import (
 	"github.com/Dataman-Cloud/rolex/src/util/rolexgin"
 
 	log "github.com/Sirupsen/logrus"
-	goclient "github.com/fsouza/go-dockerclient"
+	docker "github.com/fsouza/go-dockerclient"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/net/context"
 )
@@ -40,7 +40,7 @@ func (api *Api) ListImages(ctx *gin.Context) {
 		return
 	}
 
-	opts := goclient.ListImagesOptions{
+	opts := docker.ListImagesOptions{
 		All:     all,
 		Digests: digests,
 		Filter:  ctx.Query("filter"),

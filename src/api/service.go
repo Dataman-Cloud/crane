@@ -14,7 +14,7 @@ import (
 	"github.com/docker/engine-api/types"
 	"github.com/docker/engine-api/types/filters"
 	"github.com/docker/engine-api/types/swarm"
-	goclient "github.com/fsouza/go-dockerclient"
+	docker "github.com/fsouza/go-dockerclient"
 	"github.com/gin-gonic/gin"
 	"github.com/manucorporat/sse"
 	"golang.org/x/net/context"
@@ -285,8 +285,8 @@ func (api *Api) StatsService(ctx *gin.Context) {
 }
 
 func createStatOption() *model.ContainerStatOptions {
-	chnDone := make(chan bool, 1)                      //chosed by func StatsService
-	chnContainerStats := make(chan *goclient.Stats, 1) // closed by go-dockerclient
+	chnDone := make(chan bool, 1)                    //chosed by func StatsService
+	chnContainerStats := make(chan *docker.Stats, 1) // closed by go-dockerclient
 	return &model.ContainerStatOptions{
 		Stats:  chnContainerStats,
 		Stream: true,

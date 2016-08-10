@@ -9,7 +9,7 @@ import (
 	"github.com/docker/engine-api/types"
 	"github.com/docker/engine-api/types/filters"
 	"github.com/docker/engine-api/types/swarm"
-	goclient "github.com/fsouza/go-dockerclient"
+	docker "github.com/fsouza/go-dockerclient"
 )
 
 const (
@@ -192,17 +192,17 @@ func (client *RolexDockerClient) updateNetworks(networks []string, namespace str
 		return err
 	}
 
-	existingNetworkMap := make(map[string]goclient.Network)
+	existingNetworkMap := make(map[string]docker.Network)
 	for _, network := range existingNetworks {
 		existingNetworkMap[network.Name] = network
 	}
 
 	labels := client.getStackLabels(namespace, nil)
-	createOpts := &goclient.CreateNetworkOptions{
+	createOpts := &docker.CreateNetworkOptions{
 		Options: client.getStackLabelsInterface(labels),
 		Driver:  defaultNetworkDriver,
 		// docker TODO: remove when engine-api uses omitempty for IPAM
-		IPAM: goclient.IPAMOptions{Driver: "default"},
+		IPAM: docker.IPAMOptions{Driver: "default"},
 	}
 
 	for _, internalName := range networks {
@@ -329,6 +329,6 @@ func (client *RolexDockerClient) filterStackServices(namespace string) ([]swarm.
 }
 
 // get network by default filter
-func (client *RolexDockerClient) filterStackNetwork(namespace string) ([]goclient.Network, error) {
-	return client.ListNetworks(goclient.NetworkFilterOpts{})
+func (client *RolexDockerClient) filterStackNetwork(namespace string) ([]docker.Network, error) {
+	return client.ListNetworks(docker.NetworkFilterOpts{})
 }

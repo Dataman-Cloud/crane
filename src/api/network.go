@@ -7,14 +7,14 @@ import (
 	"github.com/Dataman-Cloud/rolex/src/util/rolexgin"
 
 	log "github.com/Sirupsen/logrus"
-	goclient "github.com/fsouza/go-dockerclient"
+	docker "github.com/fsouza/go-dockerclient"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/net/context"
 )
 
 type ConnectNetworkRequest struct {
 	Method         string
-	NetworkOptions goclient.NetworkConnectionOptions
+	NetworkOptions docker.NetworkConnectionOptions
 }
 
 const (
@@ -54,7 +54,7 @@ func (api *Api) ConnectNetwork(ctx *gin.Context) {
 }
 
 func (api *Api) CreateNetwork(ctx *gin.Context) {
-	var netWorkOption goclient.CreateNetworkOptions
+	var netWorkOption docker.CreateNetworkOptions
 
 	if err := ctx.BindJSON(&netWorkOption); err != nil {
 		log.Error("create network request body parse json error: ", err)
@@ -88,7 +88,7 @@ func (api *Api) InspectNetwork(ctx *gin.Context) {
 }
 
 func (api *Api) ListNetworks(ctx *gin.Context) {
-	filter := goclient.NetworkFilterOpts{}
+	filter := docker.NetworkFilterOpts{}
 
 	fp := ctx.DefaultQuery("filters", "{}")
 	if err := json.Unmarshal([]byte(fp), &filter); err != nil {
@@ -170,7 +170,7 @@ func (api *Api) InspectNodeNetwork(ctx *gin.Context) {
 func (api *Api) ListNodeNetworks(ctx *gin.Context) {
 	rolexContext, _ := ctx.Get("rolexContext")
 	nodeID := ctx.Param("node_id")
-	var filters goclient.NetworkFilterOpts
+	var filters docker.NetworkFilterOpts
 
 	fp := ctx.DefaultQuery("filters", "{}")
 	if err := json.Unmarshal([]byte(fp), &filters); err != nil {
@@ -192,7 +192,7 @@ func (api *Api) ListNodeNetworks(ctx *gin.Context) {
 }
 
 func (api *Api) CreateNodeNetwork(ctx *gin.Context) {
-	var netWorkOption goclient.CreateNetworkOptions
+	var netWorkOption docker.CreateNetworkOptions
 	rolexContext, _ := ctx.Get("rolexContext")
 
 	if err := ctx.BindJSON(&netWorkOption); err != nil {

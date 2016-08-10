@@ -8,11 +8,11 @@ import (
 	"github.com/Dataman-Cloud/rolex/src/util/rolexerror"
 
 	log "github.com/Sirupsen/logrus"
-	goclient "github.com/fsouza/go-dockerclient"
+	docker "github.com/fsouza/go-dockerclient"
 	"golang.org/x/net/context"
 )
 
-func (client *RolexDockerClient) ListContainers(ctx context.Context, opts goclient.ListContainersOptions) ([]goclient.APIContainers, error) {
+func (client *RolexDockerClient) ListContainers(ctx context.Context, opts docker.ListContainersOptions) ([]docker.APIContainers, error) {
 	swarmNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return nil, err
@@ -20,7 +20,7 @@ func (client *RolexDockerClient) ListContainers(ctx context.Context, opts goclie
 	return swarmNode.ListContainers(opts)
 }
 
-func (client *RolexDockerClient) InspectContainer(ctx context.Context, id string) (*goclient.Container, error) {
+func (client *RolexDockerClient) InspectContainer(ctx context.Context, id string) (*docker.Container, error) {
 	swarmNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return nil, err
@@ -34,7 +34,7 @@ func (client *RolexDockerClient) InspectContainer(ctx context.Context, id string
 	return container, err
 }
 
-func (client *RolexDockerClient) RemoveContainer(ctx context.Context, opts goclient.RemoveContainerOptions) error {
+func (client *RolexDockerClient) RemoveContainer(ctx context.Context, opts docker.RemoveContainerOptions) error {
 	swarmNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return err
@@ -48,7 +48,7 @@ func (client *RolexDockerClient) RemoveContainer(ctx context.Context, opts gocli
 	return err
 }
 
-func (client *RolexDockerClient) KillContainer(ctx context.Context, opts goclient.KillContainerOptions) error {
+func (client *RolexDockerClient) KillContainer(ctx context.Context, opts docker.KillContainerOptions) error {
 	swarmNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return err
@@ -62,7 +62,7 @@ func (client *RolexDockerClient) KillContainer(ctx context.Context, opts goclien
 	return err
 }
 
-func (client *RolexDockerClient) RenameContainer(ctx context.Context, opts goclient.RenameContainerOptions) error {
+func (client *RolexDockerClient) RenameContainer(ctx context.Context, opts docker.RenameContainerOptions) error {
 	swarmNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return err
@@ -76,7 +76,7 @@ func (client *RolexDockerClient) RenameContainer(ctx context.Context, opts gocli
 	return err
 }
 
-func (client *RolexDockerClient) DiffContainer(ctx context.Context, containerID string) ([]goclient.Change, error) {
+func (client *RolexDockerClient) DiffContainer(ctx context.Context, containerID string) ([]docker.Change, error) {
 	swarmNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return nil, err
@@ -104,7 +104,7 @@ func (client *RolexDockerClient) StopContainer(ctx context.Context, containerId 
 	return err
 }
 
-func (client *RolexDockerClient) StartContainer(ctx context.Context, containerID string, hostconfig *goclient.HostConfig) error {
+func (client *RolexDockerClient) StartContainer(ctx context.Context, containerID string, hostconfig *docker.HostConfig) error {
 	swarmNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return err
@@ -180,7 +180,7 @@ func (client *RolexDockerClient) LogsContainer(ctx context.Context, containerId 
 	go logReader(outrd, message)
 	go logReader(errrd, message)
 
-	opts := goclient.LogsOptions{
+	opts := docker.LogsOptions{
 		Container:    containerId,
 		OutputStream: outwr,
 		ErrorStream:  errwr,
@@ -230,7 +230,7 @@ func (client *RolexDockerClient) StatsContainer(ctx context.Context, opts model.
 	chnError := make(chan error, 1)
 	defer close(chnError)
 
-	statOpts := goclient.StatsOptions{
+	statOpts := docker.StatsOptions{
 		ID:     cId,
 		Stats:  opts.Stats,
 		Stream: opts.Stream,
