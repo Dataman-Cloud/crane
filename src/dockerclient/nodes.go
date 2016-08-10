@@ -9,7 +9,6 @@ import (
 	"strings"
 
 	"github.com/Dataman-Cloud/rolex/src/model"
-	"github.com/Dataman-Cloud/rolex/src/util/config"
 	"github.com/Dataman-Cloud/rolex/src/util/rolexerror"
 
 	"github.com/docker/engine-api/types"
@@ -23,6 +22,12 @@ const (
 	flagUpdateAvailability = "availability"
 	flagLabelAdd           = "label-add"
 	flagLabelRemove        = "label-rm"
+)
+
+const (
+	labelNodeEndpoint         = "dm.swarm.node.endpoint"
+	defaultNodeEndpointScheme = "tcp"
+	defaultNodeEndpointPort   = "2376"
 )
 
 // NodeList returns the list of nodes.
@@ -181,28 +186,32 @@ func (client *RolexDockerClient) Info(ctx context.Context) (*goclient.DockerInfo
 	return swarmNode.Info()
 }
 
-func (client *RolexDockerClient) NodeDaemonEndpoint(nodeId string, protocol string) (string, error) {
-	//node, err := client.InspectNode(nodeId)
-	//if err != nil {
-	//	return "", err
-	//}
-	//nodeIp := strings.Split(node.ManagerStatus.Addr, ":")[0]
-	//TODO Temporary solution
-	var nodeIp string
-	for key, val := range config.NodeAddrMap {
-		if nodeId == key {
-			nodeIp = val
-			break
-		}
+func (client *RolexDockerClient) NodeDaemonUrl(nodeId string) (*url.URL, error) {
+	node, err := client.InspectNode(nodeId)
+	var errMsg string
+	if err != nil {
+		errMsg = fmt.Sprintf("failed to get node endpoint of %s info: %s", nodeId, err.Error())
+		return nil, rolexerror.NewRolexError(rolexerror.CodeGetNodeEndpointError, errMsg)
 	}
-	switch strings.ToLower(protocol) {
-	case "http":
-		return "http://" + nodeIp + ":" + client.config.NodePort, nil
-	case "https":
-		return "https://" + nodeIp + ":" + client.config.NodePort, nil
-	case "tcp":
-		return "tcp://" + nodeIp + ":" + client.config.NodePort, nil
-	default:
-		return "tcp://" + nodeIp + ":" + client.config.NodePort, nil
+
+	endpoint, ok := node.Spec.Annotations.Labels[labelNodeEndpoint]
+	if !ok {
+		errMsg = fmt.Sprintf("endpoint of node %s is empty", nodeId)
+		return nil, rolexerror.NewRolexError(rolexerror.CodeGetNodeEndpointError, errMsg)
 	}
+
+	u, err := url.Parse(endpoint)
+	if err != nil {
+		errMsg = fmt.Sprintf("failed to pasre endpoint: %s of node: %s error: %s", endpoint, nodeId, err.Error())
+	}
+
+	if u.Scheme == "" {
+		u.Scheme = defaultNodeEndpointScheme
+	}
+
+	if !strings.Contains(u.Host, ":") {
+		u.Host = u.Host + ":" + defaultNodeEndpointPort
+	}
+
+	return u, nil
 }

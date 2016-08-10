@@ -21,15 +21,9 @@ type Config struct {
 	DbDSN           string
 	FeatureFlags    []string
 
-	HOST string
-	PORT uint64
-
 	// registry
 	RegistryPrivateKeyPath string
 	RegistryAddr           string
-
-	// To be removed, temp
-	NodePort string
 
 	// account
 	AccountAuthenticator string
@@ -65,9 +59,6 @@ type EnvEntry struct {
 	ROLEX_REGISTRY_PRIVATE_KEY_PATH string `required:"false"`
 	ROLEX_REGISTRY_ADDR             string `required:"false"`
 
-	// To be removed
-	ROLEX_NODE_PORT string `required:"true"`
-
 	ROLEX_ACCOUNT_TOKEN_STORE   string `required:"false"`
 	ROLEX_ACCOUNT_AUTHENTICATOR string `required:"false"`
 
@@ -94,8 +85,6 @@ func InitConfig(envFile string) *Config {
 
 	config.RegistryPrivateKeyPath = envEntry.ROLEX_REGISTRY_PRIVATE_KEY_PATH
 	config.RegistryAddr = envEntry.ROLEX_REGISTRY_ADDR
-
-	config.NodePort = envEntry.ROLEX_NODE_PORT
 
 	config.AccountAuthenticator = envEntry.ROLEX_ACCOUNT_AUTHENTICATOR
 	config.AccountTokenStore = envEntry.ROLEX_ACCOUNT_TOKEN_STORE
@@ -170,7 +159,8 @@ func loadEnvFile(envfile string) {
 	log.Debug("envfile: ", envfile)
 	f, err := os.Open(envfile)
 	if err != nil {
-		log.Errorf("Read node addr info from %s got error: %s", envfile, err.Error())
+		log.Infof("Failed to open config file %s: %s", envfile, err.Error())
+		return
 	}
 	defer f.Close()
 
@@ -198,9 +188,6 @@ func loadEnvFile(envfile string) {
 			}
 		}
 	}
-
-	//TODO get node addr form swam API
-	ReadNodeAddrFromFile(NodeAddrInfoFilePath)
 }
 
 // helper function to parse a "key=value" environment variable string.
@@ -243,41 +230,3 @@ func exitMissingEnv(env string) {
 func exitCheckEnv(env string, err error) {
 	log.Errorf("Check env %s got error: %s", env, err.Error())
 }
-
-//////////////////////////////////////////////////////////////////////////////////
-// Temporary solution: get map of node ip to node id(name) from file. Remove in future
-var NodeAddrMap map[string]string
-var NodeAddrInfoFilePath = "node_addr_file"
-
-func ReadNodeAddrFromFile(filePath string) {
-	log.Debug("Node addr info file path: ", filePath)
-	NodeAddrMap = make(map[string]string)
-	f, err := os.Open(filePath)
-	if err != nil {
-		log.Errorf("Read node addr info from %s got error: %s", filePath, err.Error())
-		return
-	}
-	defer f.Close()
-
-	r := bufio.NewReader(f)
-	for {
-		line, _, err := r.ReadLine()
-		if err != nil {
-			break
-		}
-
-		if len(line) == 0 {
-			continue
-		}
-
-		key, val, err := parseln(string(line))
-		if err != nil {
-			log.Errorf("Parse info %s got error: %s", line, err.Error())
-			continue
-		}
-
-		NodeAddrMap[key] = val
-	}
-}
-
-//////////////////////////////////////////////////////////////////////////////////

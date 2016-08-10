@@ -23,9 +23,13 @@ _testmain.go
 *.test
 *.prof
 /bin/rolex
+bin/nohup.out
+mysql_storage
+registry_storage
+docker
 env_file
 deploy/env
-node_addr_file
+deploy/docker-compose.yml
 coverage-all.out
 coverage.out
 coverage.html

@@ -81,9 +81,6 @@ func HttpErrorResponse(ctx *gin.Context, err error) {
 		rolexerror.CodeAccountGetGroupGroupIdNotFoundError:
 		httpCode = http.StatusNotFound
 
-	case rolexerror.CodeGetDockerClientError,
-		rolexerror.CodeGetConfigError:
-		httpCode = http.StatusServiceUnavailable
 	default:
 		httpCode = http.StatusServiceUnavailable
 	}
