@@ -13,15 +13,6 @@
         </header>
 
         <div class="main-content">
-
-            <md-toolbar class="md-table-toolbar md-default">
-                <div class="md-toolbar-tools">
-                    <form flex name="filter">
-                        <input type="text" ng-model="nodeListCtrl.filter" placeholder="搜索">
-                    </form>
-                </div>
-            </md-toolbar>
-
             <md-table-container>
                 <table md-table>
                     <thead md-head>
@@ -36,7 +27,7 @@
                     </tr>
                     </thead>
                     <tbody md-body>
-                    <tr md-row ng-repeat="node in nodeListCtrl.nodes | filter: nodeListCtrl.filter">
+                    <tr md-row ng-repeat="node in nodeListCtrl.nodes">
                         <td md-cell>
                             <a data-ui-sref="node.detail({node_id: node.ID})">{/node.Description.Hostname/}</a>
                         </td>
@@ -47,9 +38,8 @@
                         <td md-cell>{/node.CreatedAt | date: 'yyyy-MM-dd HH:mm:ss'/}</td>
                         <td md-cell>
                             <md-menu md-offset="0 -5">
-                                <md-button aria-label="nodeListMenu" class="md-button md-raised"
-                                           ng-click="$mdOpenMenu($event)">
-                                    <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                                <md-button class="md-icon-button" aria-label="More" ng-click="$mdOpenMenu($event)">
+                                    <i class="fa fa-ellipsis-h"></i>
                                 </md-button>
                                 <md-menu-content width="2">
                                     <md-menu-item>
@@ -80,9 +70,6 @@
                     </tr>
                     </tbody>
                 </table>
-                <div class="alert alert-warning text-center" data-ng-if="!nodeListCtrl.nodes.length">
-                    未查询到主机信息
-                </div>
             </md-table-container>
         </div>
     </section>

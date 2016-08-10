@@ -1,73 +1,62 @@
-<div class="main-container app-layout">
-    <section class="main-section">
-        <header layout="row" layout-align="start start">
-            <div class="info" flex="95" layout="column">
-                <h2><i class="fa fa-server" aria-hidden="true"></i> {/nodeDetailCtrl.node.Name/}</h2>
-                <dl layout="row" layout-wrap layout-align="start end">
-                    <dt flex="none">运行容器</dt>
-                    <dd flex="none" class="text-success">{/nodeDetailCtrl.node.ContainersRunning/}</dd>
-                    <dt flex="none">容器总数</dt>
-                    <dd flex="none">{/nodeDetailCtrl.node.Containers/}</dd>
-                    <dt flex="none">暂停容器</dt>
-                    <dd flex="none">{/nodeDetailCtrl.node.ContainersPaused/}</dd>
-                    <dt flex="none">停止容器</dt>
-                    <dd flex="none" class="text-danger">{/nodeDetailCtrl.node.ContainersStopped/}</dd>
-                    <dt flex="none">镜像个数</dt>
-                    <dd flex="none">{/nodeDetailCtrl.node.Images/}</dd>
-                </dl>
-                <dl layout="row" layout-wrap layout-align="start end">
-                    <dt flex="none">系统</dt>
-                    <dd flex="none">{/nodeDetailCtrl.node.OperatingSystem/}</dd>
-                    <dt flex="none">内核版本</dt>
-                    <dd flex="none">{/nodeDetailCtrl.node.KernelVersion/}</dd>
-                    <dt flex="none">CPU</dt>
-                    <dd flex="none">{/nodeDetailCtrl.node.NCPU/}核</dd>
-                    <dt flex="none">内存</dt>
-                    <dd flex="none">{/nodeDetailCtrl.node.MemTotal | size/}</dd>
-                </dl>
-                <dl layout="row" layout-wrap layout-align="start end" data-ng-if="nodeDetailCtrl.node.Label">
-                    <dt flex="none">主机标签</dt>
-                    <dd flex="none">{/nodeDetailCtrl.node.Label/}</dd>
-                </dl>
-            </div>
-            <div flex="auto" class="operation" style="position:relative;">
-                <md-fab-speed-dial md-open="false" md-direction="left"
-                                   class="md-scale" style="position:absolute; top: 0; right: 0;">
-                    <md-fab-trigger>
-                        <md-button aria-label="menu" class="md-fab md-mini">
-                            <md-tooltip md-direction="top">更多操作</md-tooltip>
-                            <i class="fa fa-ellipsis-h"></i>
-                        </md-button>
-                    </md-fab-trigger>
-                    <md-fab-actions>
-                        <md-button aria-label="start" class="md-fab md-raised md-mini"
-                                   data-ui-sref="node.createVolume({node_id: $stateParams.node_id})">
-                            <md-tooltip md-direction="top">创建存储</md-tooltip>
-                            <i class="fa fa-hdd-o"></i>
-                        </md-button>
-                        <md-button aria-label="start" class="md-fab md-raised md-mini"
-                                   data-ui-sref="node.createNetwork({node_id: $stateParams.node_id})">
-                            <md-tooltip md-direction="top">创建单机网络</md-tooltip>
-                            <i class="fa fa-edge"></i>
-                        </md-button>
-                        <md-button aria-label="start" class="md-fab md-raised md-mini"
-                                   data-ng-click="">
-                            <md-tooltip md-direction="top">删除</md-tooltip>
-                            <i class="fa fa-trash"></i>
-                        </md-button>
-                    </md-fab-actions>
-                </md-fab-speed-dial>
-            </div>
-        </header>
-        <md-content>
-            <md-tabs md-dynamic-height md-border-bottom>
-                <md-tab label="基本信息" dm-tab-sref="node.detail.config"></md-tab>
-                <md-tab label="容器" dm-tab-sref="node.detail.container"></md-tab>
-                <md-tab label="网络" dm-tab-sref="node.detail.network"></md-tab>
-                <md-tab label="储存卷" dm-tab-sref="node.detail.volume"></md-tab>
-                <md-tab label="镜像" dm-tab-sref="node.detail.image"></md-tab>
-            </md-tabs>
-            <md-content class="md-padding main-tab-content" ui-view>
-            </md-content>
-    </section>
+<h1>
+    <i class="fa fa-stack-overflow" aria-hidden="true"></i>
+    {/nodeDetailCtrl.node.Name/}
+</h1>
+<div class="sub-info-main">
+    <dl class="info-list">
+        <dt>运行容器</dt><dd>{/nodeDetailCtrl.node.ContainersRunning/}</dd>
+        <dt>容器总数</dt><dd>{/nodeDetailCtrl.node.Containers/}</dd>
+        <dt>暂停容器</dt><dd>{/nodeDetailCtrl.node.ContainersPaused/}</dd>
+        <dt>停止容器</dt><dd>{/nodeDetailCtrl.node.ContainersStopped/}</dd>
+        <dt>镜像个数</dt><dd>{/nodeDetailCtrl.node.Images/}</dd>
+    </dl>
+    <dl class="info-list">
+        <dt>系统</dt><dd>{/nodeDetailCtrl.node.OperatingSystem/}</dd>
+        <dt>内核版本</dt><dd>{/nodeDetailCtrl.node.KernelVersion/}</dd>
+        <dt>CPU</dt><dd>{/nodeDetailCtrl.node.NCPU/} 核</dd>
+        <dt>内存</dt><dd>{/nodeDetailCtrl.node.MemTotal | size/}</dd>
+    </dl>
+    <dl class="info-list" ng-if="nodeDetailCtrl.node.Label">
+        <dt>主机标签</dt><dd>{/nodeDetailCtrl.node.Label/}</dd>
+    </dl>
 </div>
+
+<md-tabs md-dynamic-height md-border-bottom>
+    <md-tab label="基本信息" dm-tab-sref="node.detail.config"></md-tab>
+    <md-tab label="容器" dm-tab-sref="node.detail.container"></md-tab>
+    <md-tab label="网络" dm-tab-sref="node.detail.network"></md-tab>
+    <md-tab label="储存卷" dm-tab-sref="node.detail.volume"></md-tab>
+    <md-tab label="镜像" dm-tab-sref="node.detail.image"></md-tab>
+</md-tabs>
+<md-content ui-view></md-content>
+
+
+<!-- need add  -->
+<!--<div flex="auto" class="operation" style="position:relative;">-->
+    <!--<md-fab-speed-dial md-open="false" md-direction="left"-->
+                       <!--class="md-scale" style="position:absolute; top: 0; right: 0;">-->
+        <!--<md-fab-trigger>-->
+            <!--<md-button aria-label="menu" class="md-fab md-mini">-->
+                <!--<md-tooltip md-direction="top">更多操作</md-tooltip>-->
+                <!--<i class="fa fa-ellipsis-h"></i>-->
+            <!--</md-button>-->
+        <!--</md-fab-trigger>-->
+        <!--<md-fab-actions>-->
+            <!--<md-button aria-label="start" class="md-fab md-raised md-mini"-->
+                       <!--data-ui-sref="node.createVolume({node_id: $stateParams.node_id})">-->
+                <!--<md-tooltip md-direction="top">创建存储</md-tooltip>-->
+                <!--<i class="fa fa-hdd-o"></i>-->
+            <!--</md-button>-->
+            <!--<md-button aria-label="start" class="md-fab md-raised md-mini"-->
+                       <!--data-ui-sref="node.createNetwork({node_id: $stateParams.node_id})">-->
+                <!--<md-tooltip md-direction="top">创建单机网络</md-tooltip>-->
+                <!--<i class="fa fa-edge"></i>-->
+            <!--</md-button>-->
+            <!--<md-button aria-label="start" class="md-fab md-raised md-mini"-->
+                       <!--data-ng-click="">-->
+                <!--<md-tooltip md-direction="top">删除</md-tooltip>-->
+                <!--<i class="fa fa-trash"></i>-->
+            <!--</md-button>-->
+        <!--</md-fab-actions>-->
+    <!--</md-fab-speed-dial>-->
+<!--</div>-->

@@ -1,62 +1,39 @@
-<section class="info-view" layout="row">
-    <header layout="row" flex="20">
-        <h4>docker 信息</h4>
-    </header>
-    <div layout="column" flex="80">
-        <dl layout="row">
-            <dt flex="20" title="Server Version">版本</dt>
-            <dd flex-offset="5" flex="75">{/nodeConfigCtrl.node.ServerVersion/}</dd>
-        </dl>
-        <dl layout="row">
-            <dt flex="20" title="Storage Driver">存储驱动</dt>
-            <dd flex-offset="5" flex="75">{/nodeConfigCtrl.node.Driver/}</dd>
-        </dl>
-        <dl layout="row">
-            <dt flex="20" title="Docker Root Dir">Docker 存储目录</dt>
-            <dd flex-offset="5" flex="75">{/nodeConfigCtrl.node.DockerRootDir/}</dd>
-        </dl>
-        <dl layout="row">
-            <dt flex="20">Debug 模式</dt>
-            <dd flex-offset="5" flex="75">{/nodeConfigCtrl.node.Debug/}</dd>
-        </dl>
-        <dl layout="row">
-            <dt flex="20">IPv4Forwarding</dt>
-            <dd flex-offset="5" flex="75">{/nodeConfigCtrl.node.IPv4Forwarding/}</dd>
-        </dl>
-        <dl layout="row">
-            <dt flex="20" title="Cgroup Driver">Cgroup 驱动</dt>
-            <dd flex-offset="5" flex="75">{/nodeConfigCtrl.node.CgroupDriver/}</dd>
-        </dl>
-        <dl layout="row">
-            <dt flex="20">LoggingDriver</dt>
-            <dd flex-offset="5" flex="75">{/nodeConfigCtrl.node.LoggingDriver/}</dd>
-        </dl>
-        <dl layout="row">
-            <dt flex="20" title="Oom Kill Disable">允许内存溢出</dt>
-            <dd flex-offset="5" flex="75">{/nodeConfigCtrl.node.OomKillDisable/}</dd>
-        </dl>
-    <div>
+<section layout="row" class="info-list-detail">
+    <h2 flex="20">Docker 信息</h2>
+    <div flex="80" layout="row" layout-wrap>
+        <div flex="30"><h5>版本</h5></div>
+        <div flex="70"><p>{/nodeConfigCtrl.node.ServerVersion/}</p></div>
+        <div flex="30"><h5>存储驱动</h5></div>
+        <div flex="70"><p>{/nodeConfigCtrl.node.Driver/}</p></div>
+        <div flex="30"><h5>Docker 存储目录</h5></div>
+        <div flex="70"><p>{/nodeConfigCtrl.node.DockerRootDir/}</p></div>
+        <div flex="30"><h5>Debug 模式</h5></div>
+        <div flex="70"><p>{/nodeConfigCtrl.node.Debug/}</p></div>
+        <div flex="30"><h5>IPv4Forwarding</h5></div>
+        <div flex="70"><p>{/nodeConfigCtrl.node.IPv4Forwarding/}</p></div>
+        <div flex="30"><h5>Cgroup 驱动</h5></div>
+        <div flex="70"><p>{/nodeConfigCtrl.node.CgroupDriver/}</p></div>
+        <div flex="30"><h5>LoggingDriver</h5></div>
+        <div flex="70"><p>{/nodeConfigCtrl.node.LoggingDriver/}</p></div>
+        <div flex="30"><h5>允许内存溢出</h5></div>
+        <div flex="70"><p>{/nodeConfigCtrl.node.OomKillDisable/}</p></div>
+    </div>
 </section>
-<section class="info-view" layout="row">
-    <header layout="row" flex="20">
-        <h4>主机信息</h4>
-    </header>
-    <div layout="column" flex="80">
-        <dl layout="row">
-            <dt flex="20">CPU</dt>
-            <dd flex-offset="5" flex="75">{/nodeConfigCtrl.node.NCPU/}</dd>
-        </dl>
-        <dl layout="row">
-            <dt flex="20">内存</dt>
-            <dd flex-offset="5" flex="75">{/nodeConfigCtrl.node.MemTotal | size/}</dd>
-        </dl>
-        <dl layout="row">
-            <dt flex="20">内核版本</dt>
-            <dd flex-offset="5" flex="75">{/nodeConfigCtrl.node.KernelVersion/}</dd>
-        </dl>
-        <dl layout="row">
-            <dt flex="20">系统时间</dt>
-            <dd flex-offset="5" flex="75">{/nodeConfigCtrl.node.SystemTime | date: 'yyyy-MM-dd HH:mm:ss'/}</dd>
-        </dl>
+
+<section layout="row" class="info-list-detail">
+    <h2 flex="20">主机信息</h2>
+    <div flex="80" layout="row" layout-wrap>
+        <div flex="30">
+            <h5>CPU
+                <small>核</small>
+            </h5>
+        </div>
+        <div flex="70"><p>{/nodeConfigCtrl.node.NCPU/}</p></div>
+        <div flex="30"><h5>内存</h5></div>
+        <div flex="70"><p>{/nodeConfigCtrl.node.MemTotal | size/}</p></div>
+        <div flex="30"><h5>内核版本</h5></div>
+        <div flex="70"><p>{/nodeConfigCtrl.node.KernelVersion/}</p></div>
+        <div flex="30"><h5>系统时间</h5></div>
+        <div flex="70"><p>{/nodeConfigCtrl.node.SystemTime | date: 'yyyy-MM-dd HH:mm:ss'/}</p></div>
     </div>
 </section>
