@@ -31,12 +31,8 @@
             return gHttp.Resource('node.nodes').get({params: params, "loading": loading});
         }
 
-        function handleNode(nodeId, data, type) {
-            if (data && data.Spec) {
-                data.Spec.Availability = type
-            }
-
-            return gHttp.Resource('node.node', {node_id: nodeId}).patch(data);
+        function handleNode(nodeId, method, options) {
+            return gHttp.Resource('node.node', {node_id: nodeId}).patch({"Method": method, "Options":options});
         }
 
         function getNode(nodeId) {

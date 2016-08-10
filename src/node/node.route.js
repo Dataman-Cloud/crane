@@ -65,9 +65,6 @@
                 url: '/config',
                 templateUrl: '/src/node/detail/config.html',
                 controller: 'NodeConfigCtrl as nodeConfigCtrl',
-                resolve: {
-                    node: getNode
-                },
                 ncyBreadcrumb: {
                     label: '基本信息'
                 }
@@ -234,8 +231,8 @@
         }
 
         /* @ngInject */
-        function getNode(nodeBackend, $stateParams) {
-            return nodeBackend.getNode($stateParams.node_id);
+        function getNode(nodeCurd, $stateParams) {
+            return nodeCurd.getNode($stateParams.node_id);
         }
 
         /* @ngInject */
