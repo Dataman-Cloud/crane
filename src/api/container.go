@@ -11,7 +11,7 @@ import (
 	"github.com/Dataman-Cloud/rolex/src/util/rolexgin"
 
 	log "github.com/Sirupsen/logrus"
-	goclient "github.com/fsouza/go-dockerclient"
+	docker "github.com/fsouza/go-dockerclient"
 	"github.com/gin-gonic/gin"
 	"github.com/manucorporat/sse"
 	"golang.org/x/net/context"
@@ -82,7 +82,7 @@ func (api *Api) ListContainers(ctx *gin.Context) {
 		return
 	}
 
-	listOpts := goclient.ListContainersOptions{
+	listOpts := docker.ListContainersOptions{
 		All:     all,
 		Size:    size,
 		Limit:   limit,
@@ -117,7 +117,7 @@ func (api *Api) PatchContainer(ctx *gin.Context) {
 	cId := ctx.Param("container_id")
 	switch method {
 	case "rename":
-		opts := goclient.RenameContainerOptions{
+		opts := docker.RenameContainerOptions{
 			Name: containerRequest.Name,
 			ID:   cId,
 		}
@@ -161,10 +161,10 @@ func (api *Api) DeleteContainer(ctx *gin.Context) {
 	method := containerRequest.Method
 	cId := ctx.Param("container_id")
 	if method == CONTAINER_RM {
-		opts := goclient.RemoveContainerOptions{ID: cId, Force: true}
+		opts := docker.RemoveContainerOptions{ID: cId, Force: true}
 		err = api.GetDockerClient().RemoveContainer(rolexContext.(context.Context), opts)
 	} else if method == CONTAINER_KILL {
-		opts := goclient.KillContainerOptions{ID: cId}
+		opts := docker.KillContainerOptions{ID: cId}
 		err = api.GetDockerClient().KillContainer(rolexContext.(context.Context), opts)
 	} else {
 		err = rolexerror.NewRolexError(rolexerror.CodeDeleteContainerMethodUndefined, containerRequest.Method)
@@ -218,7 +218,7 @@ func (api *Api) StatsContainer(ctx *gin.Context) {
 	defer close(chnMsg)
 	chnDone := make(chan bool)
 	defer close(chnDone)
-	chnContainerStats := make(chan *goclient.Stats) // closed by go-dockerclient
+	chnContainerStats := make(chan *docker.Stats) // closed by go-dockerclient
 
 	chnErr := make(chan error, 1)
 	defer close(chnErr)

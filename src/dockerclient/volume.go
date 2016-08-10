@@ -1,11 +1,11 @@
 package dockerclient
 
 import (
-	goclient "github.com/fsouza/go-dockerclient"
+	docker "github.com/fsouza/go-dockerclient"
 	"golang.org/x/net/context"
 )
 
-func (client *RolexDockerClient) InspectVolume(ctx context.Context, name string) (*goclient.Volume, error) {
+func (client *RolexDockerClient) InspectVolume(ctx context.Context, name string) (*docker.Volume, error) {
 	swarmNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return nil, err
@@ -13,7 +13,7 @@ func (client *RolexDockerClient) InspectVolume(ctx context.Context, name string)
 	return swarmNode.InspectVolume(name)
 }
 
-func (client *RolexDockerClient) ListVolumes(ctx context.Context, opts goclient.ListVolumesOptions) ([]goclient.Volume, error) {
+func (client *RolexDockerClient) ListVolumes(ctx context.Context, opts docker.ListVolumesOptions) ([]docker.Volume, error) {
 	swarmNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return nil, err
@@ -21,7 +21,7 @@ func (client *RolexDockerClient) ListVolumes(ctx context.Context, opts goclient.
 	return swarmNode.ListVolumes(opts)
 }
 
-func (client *RolexDockerClient) CreateVolume(ctx context.Context, opts goclient.CreateVolumeOptions) (*goclient.Volume, error) {
+func (client *RolexDockerClient) CreateVolume(ctx context.Context, opts docker.CreateVolumeOptions) (*docker.Volume, error) {
 	swarmNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return nil, err

@@ -8,7 +8,7 @@ import (
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/docker/engine-api/types"
-	goclient "github.com/fsouza/go-dockerclient"
+	docker "github.com/fsouza/go-dockerclient"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/net/context"
 )
@@ -84,7 +84,7 @@ func (searchApi *SearchApi) loadData() {
 			backContext := context.WithValue(context.Background(), "node_id", node.ID)
 			if networks, err := searchApi.
 				RolexDockerClient.
-				ListNodeNetworks(backContext, goclient.NetworkFilterOpts{}); err == nil {
+				ListNodeNetworks(backContext, docker.NetworkFilterOpts{}); err == nil {
 				for _, network := range networks {
 					searchApi.Index = append(searchApi.Index, network.ID)
 					searchApi.Store[network.ID] = Document{
@@ -114,7 +114,7 @@ func (searchApi *SearchApi) loadData() {
 
 			if volumes, err := searchApi.
 				RolexDockerClient.
-				ListVolumes(backContext, goclient.ListVolumesOptions{}); err == nil {
+				ListVolumes(backContext, docker.ListVolumesOptions{}); err == nil {
 				for _, volume := range volumes {
 					searchApi.Index = append(searchApi.Index, volume.Name)
 					searchApi.Store[volume.Name] = Document{

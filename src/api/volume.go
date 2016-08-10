@@ -5,7 +5,7 @@ import (
 	"github.com/Dataman-Cloud/rolex/src/util/rolexgin"
 
 	log "github.com/Sirupsen/logrus"
-	goclient "github.com/fsouza/go-dockerclient"
+	docker "github.com/fsouza/go-dockerclient"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/net/context"
 )
@@ -25,7 +25,7 @@ func (api *Api) InspectVolume(ctx *gin.Context) {
 
 func (api *Api) ListVolume(ctx *gin.Context) {
 	rolexContext, _ := ctx.Get("rolexContext")
-	var opts goclient.ListVolumesOptions
+	var opts docker.ListVolumesOptions
 
 	volumes, err := api.GetDockerClient().ListVolumes(rolexContext.(context.Context), opts)
 	if err != nil {
@@ -40,7 +40,7 @@ func (api *Api) ListVolume(ctx *gin.Context) {
 
 func (api *Api) CreateVolume(ctx *gin.Context) {
 	rolexContext, _ := ctx.Get("rolexContext")
-	var opts goclient.CreateVolumeOptions
+	var opts docker.CreateVolumeOptions
 
 	if err := ctx.BindJSON(&opts); err != nil {
 		log.Errorf("create volume request body parse json error: %v", err)

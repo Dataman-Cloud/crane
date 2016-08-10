@@ -3,7 +3,7 @@ package model
 import (
 	"time"
 
-	goclient "github.com/fsouza/go-dockerclient"
+	docker "github.com/fsouza/go-dockerclient"
 )
 
 type ContainerStat struct {
@@ -13,12 +13,12 @@ type ContainerStat struct {
 	TaskId      string
 	TaskName    string
 	ContainerId string
-	Stat        *goclient.Stats
+	Stat        *docker.Stats
 }
 
 type ContainerStatOptions struct {
 	ID                  string
-	Stats               chan *goclient.Stats
+	Stats               chan *docker.Stats
 	Stream              bool
 	Timeout             time.Duration
 	Done                chan bool

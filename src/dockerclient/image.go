@@ -1,11 +1,11 @@
 package dockerclient
 
 import (
-	goclient "github.com/fsouza/go-dockerclient"
+	docker "github.com/fsouza/go-dockerclient"
 	"golang.org/x/net/context"
 )
 
-func (client *RolexDockerClient) ListImages(ctx context.Context, opts goclient.ListImagesOptions) ([]goclient.APIImages, error) {
+func (client *RolexDockerClient) ListImages(ctx context.Context, opts docker.ListImagesOptions) ([]docker.APIImages, error) {
 	swarmNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return nil, err
@@ -13,7 +13,7 @@ func (client *RolexDockerClient) ListImages(ctx context.Context, opts goclient.L
 	return swarmNode.ListImages(opts)
 }
 
-func (client *RolexDockerClient) InspectImage(ctx context.Context, imageID string) (*goclient.Image, error) {
+func (client *RolexDockerClient) InspectImage(ctx context.Context, imageID string) (*docker.Image, error) {
 	swarmNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return nil, err
@@ -21,7 +21,7 @@ func (client *RolexDockerClient) InspectImage(ctx context.Context, imageID strin
 	return swarmNode.InspectImage(imageID)
 }
 
-func (client *RolexDockerClient) ImageHistory(ctx context.Context, imageID string) ([]goclient.ImageHistory, error) {
+func (client *RolexDockerClient) ImageHistory(ctx context.Context, imageID string) ([]docker.ImageHistory, error) {
 	swarmNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return nil, err
