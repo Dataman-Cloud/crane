@@ -188,6 +188,7 @@
                 mineRepositories: 'registry/v1/repositories/mine',
                 listTags: 'registry/v1/tag/list/$repository',
                 image: 'registry/v1/manifests/$tag/$repository',
+                publicity: 'registry/v1/$namespace/$image/publicity',
                 catalogs: 'catalog/v1/catalogs',
                 catalog: 'catalog/v1/catalogs/$catalog_name'
             },

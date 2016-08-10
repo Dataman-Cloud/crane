@@ -13,7 +13,9 @@
             getImage: getImage,
             listCatalogs: listCatalogs,
             getCatalog: getCatalog,
-            deleteImage: deleteImage
+            deleteImage: deleteImage,
+            hideImage: hideImage,
+            publicImage: publicImage
         };
 
         function listPublicRepositories() {
@@ -39,9 +41,19 @@
         function getCatalog(catalogName) {
             return gHttp.Resource('registry.catalog', {catalog_name: catalogName}).get();
         }
-        
+
         function deleteImage(repository, tag) {
             return gHttp.Resource('registry.image', {repository: repository, tag: tag}).delete();
+        }
+
+        function hideImage(namespace, image) {
+          var data = { "Publicity": 0 };
+          return gHttp.Resource('registry.publicity', {namespace: namespace, image: image}).patch(data);
+        }
+
+        function publicImage(namespace, image) {
+          var data = { "Publicity": 1 };
+          return gHttp.Resource('registry.publicity', {namespace: namespace, image: image}).patch(data);
         }
     }
 })();
