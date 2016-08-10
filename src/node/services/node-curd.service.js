@@ -11,7 +11,6 @@
     function nodeCurd(nodeBackend, $state, confirmModal, Notification, utils, formModal) {
         //////
         return {
-            getNode: getNode,
             deleteVolume: deleteVolume,
             removeContainer: removeContainer,
             killContainer: killContainer,
@@ -19,24 +18,16 @@
             drainNode: drainNode,
             activeNode: activeNode,
             pauseNode: pauseNode,
-            createNetwork: createNetwork
+            createNetwork: createNetwork,
+            updateNodeEndpoint: updateNodeEndpoint
         };
-
-        function getNode(nodeId) {
-            nodeBackend.getNode(nodeId).then(function (data) {}, function (data) {
-                if ((data.code = 11702 || data.code == 11701) && data.data && angular.isObject(data.data)) {
-                    updateNodeEndpoint(data.data.ID, data.data.Endpoint)
-                }
-            })
-
-            return nodeBackend.getNode(nodeId)
-        }
         
         function updateNodeEndpoint(nodeId, endpoint) {
             formModal.open('/src/node/modals/form-nodeIp.html', null, {dataName: 'endpoint', initData: endpoint})
                 .then(function (endpoint) {
                 nodeBackend.handleNode(nodeId, "label-add", {"dm.swarm.node.endpoint":endpoint}).then(function (data) {
                     Notification.success('更新主机成功');
+                    $state.reload()
                 });
             });
         }
