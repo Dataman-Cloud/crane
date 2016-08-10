@@ -15,7 +15,8 @@
             upServiceScale: upServiceScale,
             deleteStack: deleteStack,
             listServiceTasks: listServiceTasks,
-            updateService: updateService
+            updateService: updateService,
+            getServiceCDUrl: getServiceCDUrl
         };
 
         function createStack(data, form, groupId) {
@@ -50,6 +51,10 @@
 
         function getService(stackName, serviceID) {
             return gHttp.Resource('stack.service', {stack_name: stackName, service_id: serviceID}).get();
+        }
+
+        function getServiceCDUrl(stackName, serviceID) {
+            return gHttp.Resource('stack.serviceCdUrl', {stack_name: stackName, service_id: serviceID}).get();
         }
 
         function listServiceTasks(stackName, serviceID) {

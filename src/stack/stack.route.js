@@ -131,6 +131,17 @@
                 ncyBreadcrumb: {
                     label: '统计'
                 }
+            })
+            .state('stack.serviceDetail.cd', {
+                url: '/cd',
+                templateUrl: '/src/stack/service-detail/cd.html',
+                controller: 'ServiceCdCtrl as serviceCdCtrl',
+                resolve: {
+                  serviceCdUrl: getServiceCDUrl
+                },
+                ncyBreadcrumb: {
+                    label: '持续部署'
+                }
             });
     }
     
@@ -157,5 +168,10 @@
     /*@ngInject*/
     function listServiceTasks(stackBackend, $stateParams) {
         return stackBackend.listServiceTasks($stateParams.stack_name, $stateParams.service_id);
+    }
+
+    /*@ngInject*/
+    function getServiceCDUrl(stackBackend, $stateParams) {
+        return stackBackend.getServiceCDUrl($stateParams.stack_name, $stateParams.service_id);
     }
 })();
