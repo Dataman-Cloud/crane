@@ -1,0 +1,37 @@
+version: "2"
+services:
+  blackmamba:
+    build:
+      context: ../
+      dockerfile: ./deploy/Dockerfile
+    image: blackmamba:1.0
+    ports:
+      - "80:80"
+    links:
+      - rolex
+  rolex_registry:
+    image: registry:rolex${TAG}
+    ports:
+      - "5000:5000"
+      - "5001:5001"
+    environment:
+      - ROLEX_IP
+    volumes:
+      - ./registry_storage:/var/lib/registry
+    restart: always
+  rolex:
+    image: rolex:${TAG}
+    environment:
+      - ROLEX_SWARM_MANAGER_IP
+    ports:
+      - "5013:5013"
+    restart: always
+  rolex_db:
+    image: mysql:rolex${TAG}
+    environment:
+      - MYSQL_ROOT_PASSWORD=111111
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql_storage:/var/lib/mysql
+    restart: always
