@@ -8,7 +8,7 @@
 
 
     /* @ngInject */
-    function nodeCurd(nodeBackend, $state, confirmModal, Notification, utils) {
+    function nodeCurd(nodeBackend, $state, confirmModal, Notification, utils, formModal) {
         //////
         return {
             deleteVolume: deleteVolume,
@@ -18,9 +18,20 @@
             drainNode: drainNode,
             activeNode: activeNode,
             pauseNode: pauseNode,
-            createNetwork: createNetwork
+            createNetwork: createNetwork,
+            updateNodeEndpoint: updateNodeEndpoint
         };
-
+        
+        function updateNodeEndpoint(nodeId, endpoint) {
+            formModal.open('/src/node/modals/form-nodeIp.html', null, {dataName: 'endpoint', initData: endpoint})
+                .then(function (endpoint) {
+                nodeBackend.handleNode(nodeId, "label-add", {"dm.swarm.node.endpoint":endpoint}).then(function (data) {
+                    Notification.success('更新主机成功');
+                    $state.reload()
+                });
+            });
+        }
+        
         function deleteVolume(id, name) {
             confirmModal.open("是否确认删除该储存卷？").then(function () {
                 nodeBackend.deleteVolume(id, name)

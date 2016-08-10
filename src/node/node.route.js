@@ -4,7 +4,7 @@
         .config(route);
 
     /* @ngInject */
-    function route($stateProvider, $locationProvider, $interpolateProvider) {
+    function route($stateProvider, $locationProvider, $interpolateProvider, $rootscope) {
         $stateProvider
             .state('node', {
                 url: '/node',
@@ -65,9 +65,6 @@
                 url: '/config',
                 templateUrl: '/src/node/detail/config.html',
                 controller: 'NodeConfigCtrl as nodeConfigCtrl',
-                resolve: {
-                    node: getNode
-                },
                 ncyBreadcrumb: {
                     label: '基本信息'
                 }
@@ -234,8 +231,15 @@
         }
 
         /* @ngInject */
-        function getNode(nodeBackend, $stateParams) {
-            return nodeBackend.getNode($stateParams.node_id);
+        function getNode(nodeCurd, $stateParams, nodeBackend, $q) {
+            return nodeBackend.getNode($stateParams.node_id).catch(function (res) {
+                var deferred = $q.defer();
+                if (res.data && angular.isObject(res.data) && data.code && $rootscope.NODE_CONN_ERROR_CODE.indexOf(data.code) > 0) {
+                    nodeCurd.updateNodeEndpoint(res.data.ID, res.data.Endpoint)
+                }
+                deferred.reject();
+                return deferred.promise;
+            });
         }
 
         /* @ngInject */
