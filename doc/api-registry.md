@@ -121,12 +121,12 @@ curl -XGET localhost:2375/registry/v1/manifests/latest/library/registry
 
 
 
-#### `/catalogs/mine`
+#### `/repositories/mine`
 
 **Request:**
 
 ```
-curl -XGET localhost:2375/registry/v1/catalogs/mine
+curl -XGET localhost:2375/registry/v1/repositories/mine
 ```
 
 **Response:**
@@ -165,12 +165,12 @@ curl -XGET localhost:2375/registry/v1/catalogs/mine
 ```
 
 
-#### `/catalogs/public`
+#### `/repositories/public`
 
 **Request:**
 
 ```
-curl -XGET localhost:2375/registry/v1/catalogs/public
+curl -XGET localhost:2375/registry/v1/repositories/public
 ```
 
 **Response:**

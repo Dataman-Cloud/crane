@@ -166,7 +166,7 @@ func (registry *Registry) DeleteManifests(ctx *gin.Context) {
 	rolexgin.HttpOkResponse(ctx, "success")
 }
 
-func (registry *Registry) MineCatalog(ctx *gin.Context) {
+func (registry *Registry) MineRepositories(ctx *gin.Context) {
 	keywords := ctx.Query("keywords")
 	account_, found := ctx.Get("account")
 	if !found {
@@ -197,7 +197,7 @@ func (registry *Registry) MineCatalog(ctx *gin.Context) {
 	rolexgin.HttpOkResponse(ctx, images)
 }
 
-func (registry *Registry) PublicCatalog(ctx *gin.Context) {
+func (registry *Registry) PublicRepositories(ctx *gin.Context) {
 	keywords := ctx.Query("keywords")
 	var images []*Image
 	var err error
