@@ -9,7 +9,7 @@ ROLEX_DB_DRIVER=mysql
 
 ROLEX_FEATURE_FLAGS=registry,logging,account,catalog,search
 
-ROLEX_REGISTRY_PRIVATE_KEY_PATH=../doc/registry/private_key.pem
+ROLEX_REGISTRY_PRIVATE_KEY_PATH=./private_key.pem
 ROLEX_REGISTRY_ADDR=http://rolex_registry:5000
 
 ROLEX_ACCOUNT_TOKEN_STORE=default
