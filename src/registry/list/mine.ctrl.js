@@ -8,17 +8,21 @@
     function RepositorieListMineCtrl(repositories, registryBackend, registryCurd, utils, $rootScope, $stateParams) {
         var self = this;
 
-       self.repositories = [];
+        self.repositories = repositories;
 
         self.openRepository = openRepository;
         self.closeRepository = closeRepository;
         self.deleteImage = deleteImage;
+        self.publicImage = publicImage;
+        self.hideImage = hideImage;
         
         activate()
         
         function activate() {
-            angular.forEach(repositories, function (repository) {
-                self.repositories.push({name: repository.Namespace + "/" + repository.Image, tags: [], show: false});
+            angular.forEach(self.repositories, function (repository) {
+              repository.tags = [];
+              repository.show = false;
+              repository.name = repository.Namespace + "/" + repository.Image;
             });
             angular.forEach(self.repositories, function (repository, index) {
                 if ($stateParams.open === repository.name) {
@@ -40,6 +44,14 @@
         
         function deleteImage(repository, tag, ev) {
             registryCurd.deleteImage(repository, tag, ev);
+        }
+
+        function publicImage(namespace, image) {
+            registryCurd.publicImage(namespace, image);
+        }
+
+        function hideImage(namespace, image) {
+            registryCurd.hideImage(namespace, image);
         }
     }
 })();

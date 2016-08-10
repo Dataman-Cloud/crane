@@ -10,6 +10,8 @@
         return {
             deleteImage: deleteImage,
             isPublicRepository: isPublicRepository,
+            hideImage: hideImage,
+            publicImage: publicImage,
             isMyRepository: isMyRepository
         };
         
@@ -33,6 +35,14 @@
         
         function isMyRepository(repository) {
             return utils.startWith(repository, $rootScope.accountId+'/')
+        }
+
+        function publicImage(namespace, image) {
+            registryBackend.publicImage(namespace, image)
+        }
+
+        function hideImage(namespace, image) {
+            registryBackend.hideImage(namespace, image)
         }
     }
 })();

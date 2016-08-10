@@ -19,7 +19,11 @@
         
         function activate() {
             angular.forEach(repositories, function (repository) {
-                self.repositories.push({name: repository.Namespace + "/" + repository.Image, tags: [], show: false});
+                self.repositories.push({name: repository.Namespace + "/" + repository.Image,
+                                       pullCount: repository.PullCount,
+                                       pushCount: repository.PushCount,
+                                       tags: [],
+                                       show: false});
             });
             angular.forEach(self.repositories, function (repository, index) {
                 if ($stateParams.open === repository.name) {

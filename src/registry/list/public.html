@@ -14,6 +14,12 @@
                 <div class="info" flex>
                     <h3>{/repository.name/}</h3>
                 </div>
+                <div class="info" flex>
+                    下载次数: {/repository.pullCount/}
+                </div>
+                <div class="info" flex>
+                    上传次数: {/repository.pushCount/}
+                </div>
                 <div layout-align="end center" class="operation">
                     <md-button class="md-raised" aria-label="add"
                                data-ng-show="!repository.show"
