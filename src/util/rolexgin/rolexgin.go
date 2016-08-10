@@ -5,6 +5,7 @@ import (
 
 	"github.com/Dataman-Cloud/rolex/src/util/rolexerror"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
 )
 
@@ -38,6 +39,8 @@ func HttpErrorResponse(ctx *gin.Context, err error) {
 		ctx.JSON(http.StatusServiceUnavailable, gin.H{"code": rolexerror.CodeUndefined, "data": err.Error()})
 		return
 	}
+
+	log.Errorf("[%s] %s GOT error: %s", ctx.Request.Method, ctx.Request.URL.Path, rerror.Message)
 
 	var httpCode int
 	switch rerror.Code {
