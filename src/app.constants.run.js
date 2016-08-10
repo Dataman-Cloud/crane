@@ -171,6 +171,8 @@
                 stack: 'api/v1/stacks/$stack_name',
                 services: 'api/v1/stacks/$stack_name/services',
                 service: 'api/v1/stacks/$stack_name/services/$service_id',
+                serviceCdUrl: 'api/v1/stacks/$stack_name/services/$service_id/cd_url',
+                serviceRollingUpdate: 'api/v1/stacks/$stack_name/services/$service_id/rolling_update',
                 tasks: 'api/v1/stacks/$stack_name/services/$service_id/tasks',
                 serviceLog: 'api/v1/stacks/$stack_name/services/$service_id/logs',
                 serviceStats: 'api/v1/stacks/$stack_name/services/$service_id/stats'
