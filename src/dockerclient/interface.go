@@ -45,4 +45,23 @@ type DockerClientInterface interface {
 	ListImages(nodeId string, opts goclient.ListImagesOptions) ([]goclient.APIImages, error)
 	InspectImage(nodeId, imageId string) (*goclient.Image, error)
 	ImageHistory(nodeId, imageId string) ([]goclient.ImageHistory, error)
+
+	DeployStack(bundle *model.Bundle) error
+	ListStack() ([]Stack, error)
+	ListStackService(namespace string, opts types.ServiceListOptions) ([]ServiceStatus, error)
+	InspectStack(namespace string) (*model.Bundle, error)
+	RemoveStack(namespace string) error
+	FilterServiceByStack(namespace string, opts types.ServiceListOptions) ([]swarm.Service, error)
+	ConvertStackService(swarmService swarm.ServiceSpec) model.RolexService
+
+	CreateService(service swarm.ServiceSpec, options types.ServiceCreateOptions) (types.ServiceCreateResponse, error)
+	ListServiceSpec(options types.ServiceListOptions) ([]swarm.Service, error)
+	ListService(options types.ServiceListOptions) ([]ServiceStatus, error)
+	GetServicesStatus(services []swarm.Service) ([]ServiceStatus, error)
+	RemoveService(serviceID string) error
+	UpdateService(serviceID string, version swarm.Version, service swarm.ServiceSpec, header map[string][]string) error
+	ScaleService(serviceID string, serviceScale ServiceScale) error
+	InspectServiceWithRaw(serviceID string) (swarm.Service, error)
+	ServiceAddLabel(serviceID string, labels map[string]string) error
+	ServiceRemoveLabel(serviceID string, labels []string) error
 }
