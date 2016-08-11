@@ -6,6 +6,7 @@ import (
 	"strconv"
 	//"time"
 
+	"github.com/Dataman-Cloud/rolex/src/model"
 	"github.com/Dataman-Cloud/rolex/src/plugins/auth"
 
 	"github.com/gin-gonic/gin"
@@ -45,6 +46,18 @@ func Authorization(a *auth.AccountApi) gin.HandlerFunc {
 
 		//a.TokenStore.Set(ctx, ctx.Request.Header.Get("Authorization"), fmt.Sprintf("%d", acc.ID), time.Now().Add(auth.SESSION_DURATION))
 		ctx.Set("account", auth.ReferenceToValue(acc))
+
+		if groups, err := a.Authenticator.AccountGroups(model.ListOptions{
+			Filter: map[string]interface{}{
+				"account_id": accountId,
+			},
+		}); err != nil {
+			ctx.JSON(http.StatusUnauthorized, gin.H{"code": 1, "data": "Unable to find a user group they belong to"})
+			ctx.Abort()
+			return
+		} else {
+			ctx.Set("groups", *groups)
+		}
 
 		ctx.Next()
 	}
