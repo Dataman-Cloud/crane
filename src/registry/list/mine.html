@@ -1,13 +1,4 @@
 <div class="main-content">
-
-    <md-toolbar class="md-table-toolbar md-default">
-        <div class="md-toolbar-tools">
-            <form flex name="filter">
-                <input type="text"  placeholder="搜索">
-            </form>
-        </div>
-    </md-toolbar>
-
     <ul class="collapse in">
         <li class="panel" data-ng-repeat="repository in repositorieListMineCtrl.repositories ">
             <div layout="row" layout-align="end start" class="panel-heading">
@@ -64,12 +55,20 @@
                 <thead md-head>
                   <tr md-row>
                     <th md-column><span>tag号</span></th>
+                     <th md-column><span>大小</span></th>
+                     <th md-column><span>摘要</span></th>
                   </tr>
                 </thead>
                 <tbody md-body>
                   <tr md-row ng-repeat="tag in repository.tags">
                     <td md-cell>
-                      <a data-ui-sref='registry.imageDetail({repository: repository.name, tag:tag})'>{/tag/}</a>
+                      <a data-ui-sref='registry.imageDetail({repository: repository.name, tag:tag})'>{/tag.tag/}</a>
+                    </td>
+                    <td md-cell>
+                        {/tag.size | size/}
+                    </td>
+                    <td md-cell>
+                        <a data-ui-sref='registry.imageDetail({repository: repository.name, tag:tag.digest})'>{/tag.digest/}</a>
                     </td>
                     <td md-cell>
                       <md-menu md-offset="0 -5">

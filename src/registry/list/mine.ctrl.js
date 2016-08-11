@@ -33,8 +33,11 @@
         
         function openRepository(index) {
             registryBackend.listRepositoryTags(self.repositories[index].name).then(function (data) {
-                self.repositories[index].tags = data.tags;
                 self.repositories[index].show = true;
+                self.repositories[index].tags = [];
+                angular.forEach(data, function (tag) {
+                  self.repositories[index].tags.push({tag: tag.Tag, digest: tag.Digest, size: tag.Size})
+                });
             });
         }
         

@@ -13,7 +13,6 @@
 
         self.openRepository = openRepository;
         self.closeRepository = closeRepository;
-        self.deleteImage = deleteImage;
         
         activate()
         
@@ -25,6 +24,7 @@
                                        tags: [],
                                        show: false});
             });
+
             angular.forEach(self.repositories, function (repository, index) {
                 if ($stateParams.open === repository.name) {
                     openRepository(index);
@@ -37,17 +37,13 @@
                 self.repositories[index].show = true;
                 self.repositories[index].tags = [];
                 angular.forEach(data, function (tag) {
-                  self.repositories[index].tags.push({tag: tag.Tag, digest: tag.Digest})
+                  self.repositories[index].tags.push({tag: tag.Tag, digest: tag.Digest, size: tag.Size})
                 });
             });
         }
         
         function closeRepository(index) {
             self.repositories[index].show = false;
-        }
-        
-        function deleteImage(repository, tag, ev) {
-            registryCurd.deleteImage(repository, tag, ev);
         }
     }
 })();
