@@ -1,6 +1,8 @@
 package dockerclient
 
 import (
+	"github.com/Dataman-Cloud/rolex/src/util/rolexerror"
+
 	docker "github.com/fsouza/go-dockerclient"
 	"golang.org/x/net/context"
 )
@@ -26,6 +28,11 @@ func (client *RolexDockerClient) CreateVolume(ctx context.Context, opts docker.C
 	if err != nil {
 		return nil, err
 	}
+
+	if opts.Name == "" || !isValidName.MatchString(opts.Name) {
+		return nil, rolexerror.NewRolexError(rolexerror.CodeInvalidVolumeName, "invalid name, only [a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9] are allowed")
+	}
+
 	return swarmNode.CreateVolume(opts)
 }
 

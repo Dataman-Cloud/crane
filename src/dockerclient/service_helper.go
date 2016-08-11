@@ -81,7 +81,11 @@ func validatePlacement(placement *swarm.Placement) error {
 		return nil
 	}
 	_, err := scheduler.ParseExprs(placement.Constraints)
-	return rolexerror.NewRolexError(rolexerror.CodeInvalidServicePlacement, err.Error())
+	if err != nil {
+		return rolexerror.NewRolexError(rolexerror.CodeInvalidServicePlacement, err.Error())
+	}
+
+	return nil
 }
 
 func validateUpdate(uc *swarm.UpdateConfig) error {

@@ -18,6 +18,10 @@ func (client *RolexDockerClient) ConnectNetwork(id string, opts docker.NetworkCo
 }
 
 func (client *RolexDockerClient) CreateNetwork(opts docker.CreateNetworkOptions) (*docker.Network, error) {
+	if opts.Name == "" || !isValidName.MatchString(opts.Name) {
+		return nil, rolexerror.NewRolexError(rolexerror.CodeInvalidNetworkName, "invalid name, only [a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9] are allowed")
+	}
+
 	return client.SwarmManager().CreateNetwork(opts)
 }
 
