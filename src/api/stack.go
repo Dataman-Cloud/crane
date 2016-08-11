@@ -36,6 +36,7 @@ func (api *Api) CreateStack(ctx *gin.Context) {
 
 	if api.Config.FeatureEnabled("account") {
 		groupId := ctx.DefaultQuery("group_id", "-1")
+		groupId = "1"
 		gId, err := strconv.ParseUint(groupId, 10, 64)
 		if err != nil || gId < 0 {
 			log.Error("CreateStack invalid group_id")
