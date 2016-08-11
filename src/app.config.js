@@ -27,12 +27,9 @@
         $translateProvider.useSanitizeValueStrategy(null);
 
         $breadcrumbProvider.setOptions({
-            template: '<ol class="breadcrumb">' +
-            '<li ng-repeat="step in steps" ng-class="{active: $last}" ng-switch="$last || !!step.abstract">' +
+            template: '<div id="breadcrumb-main"><span ng-repeat="step in steps" ng-switch="$last || !!step.abstract"> ' +
             '<a ng-switch-when="false" href="{/step.ncyBreadcrumbLink/}">{/step.ncyBreadcrumbLabel/} > </a>' +
-            '<span ng-switch-when="true">{/step.ncyBreadcrumbLabel/}</span>' +
-            '</li>' +
-            '</ol>'
+            '<span ng-switch-when="true" >{{step.ncyBreadcrumbLabel}}</span></div>'
         });
     }
 })();
