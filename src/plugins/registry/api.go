@@ -110,7 +110,8 @@ func (registry *Registry) TagList(ctx *gin.Context) {
 	var tags []*Tag
 	err := registry.DbClient.Where("namespace = ? AND image = ?", ctx.Param("namespace"), ctx.Param("image")).Find(&tags).Error
 	if err != nil {
-		ctx.JSON(http.StatusNotFound, gin.H{"code": 1, "data": err.Error()})
+		rolexerr := rolexerror.NewRolexError(rolexerror.CodeRegistryTagsListError, err.Error())
+		rolexgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	}
 
@@ -119,7 +120,7 @@ func (registry *Registry) TagList(ctx *gin.Context) {
 		registry.DbClient.Model(&ImageAccess{}).Where("namespace = ? AND image = ? AND digest = ? AND action='push'", tag.Namespace, tag.Image, tag.Digest).Count(&tag.PushCount)
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"code": 0, "data": tags})
+	rolexgin.HttpOkResponse(ctx, tags)
 }
 
 func (registry *Registry) GetManifests(ctx *gin.Context) {

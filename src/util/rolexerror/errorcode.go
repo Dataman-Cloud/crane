@@ -101,6 +101,7 @@ const (
 	CodeRegistryImagePublicityParamError  = 14004
 	CodeRegistryImagePublicityUpdateError = 14005
 	CodeRegistryCatalogListError          = 14006
+	CodeRegistryTagsListError             = 14007
 
 	//Catalog
 	CodeCatalogGetCatalogError  = 15001

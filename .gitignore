@@ -33,3 +33,4 @@ deploy/docker-compose.yml
 coverage-all.out
 coverage.out
 coverage.html
+doc/registry/config.yml
