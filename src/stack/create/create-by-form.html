@@ -79,7 +79,7 @@
                         </div>
                     </div>
                     <div class="form-group" layout="column">
-                        <label>镜像地址<span class="required">*</span></label>
+                        <label>镜像<span class="required">*</span></label>
                         <div class="form-control">
                             <input type="text"
                                    data-ng-model="serve.TaskTemplate.ContainerSpec.Image"
@@ -196,7 +196,7 @@
                         </div>
 
                         <div class="form-group" layout="column">
-                            <label>重启策略</label>
+                            <label>容错策略</label>
                             <div class="form-control" layout="row" layout-align="start center">
                                 <md-radio-group data-ng-model="serve.TaskTemplate.RestartPolicy.Condition" layout="row"
                                                 aria-label="restart-condition" flex>
@@ -236,7 +236,7 @@
                                            name="restartPolicy">
                                 </div>
                                 <div flex="25">
-                                    <label class="sub-label">最大尝试重启?次</label>
+                                    <label class="sub-label">最多尝试重启?次</label>
                                     <input type="number" min="0"
                                            data-ng-model="serve.TaskTemplate.RestartPolicy.MaxAttempts"
                                            name="restartMaxAttempts">
