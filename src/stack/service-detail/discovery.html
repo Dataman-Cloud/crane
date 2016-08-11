@@ -6,7 +6,7 @@
         <tr md-row ng-repeat="port in serviceDiscoveryCtrl.service.Spec.EndpointSpec.Ports">
             <td data-ng-if="port.PublishedPort" md-cell>
                 <p ng-repeat="node in serviceDiscoveryCtrl.nodes">
-                    <span data-ng-if='node.Spec.Labels["dm.swarm.node.endpoint"]'>{/port.Protocol/}://{/node.Spec.Labels["dm.swarm.node.endpoint"] | ip/}:{/port.PublishedPort/}</span>
+                    <a data-ng-if='node.Spec.Labels["dm.swarm.node.endpoint"]' href="http://{/node.Spec.Labels['dm.swarm.node.endpoint'] | ip/}:{/port.PublishedPort/}" > {/node.Spec.Labels['dm.swarm.node.endpoint'] | ip/}:{/port.PublishedPort/} </a>
                 </p>
             </td>
         </tr>
