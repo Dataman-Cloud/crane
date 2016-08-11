@@ -4,7 +4,7 @@
         .config(route);
 
     /* @ngInject */
-    function route($stateProvider, $locationProvider, $interpolateProvider, $rootscope) {
+    function route($stateProvider) {
         $stateProvider
             .state('node', {
                 url: '/node',
@@ -234,7 +234,7 @@
         function getNode(nodeCurd, $stateParams, nodeBackend, $q) {
             return nodeBackend.getNode($stateParams.node_id).catch(function (res) {
                 var deferred = $q.defer();
-                if (res.data && angular.isObject(res.data) && data.code && $rootscope.NODE_CONN_ERROR_CODE.indexOf(data.code) > 0) {
+                if (res.data && angular.isObject(res.data) && data.code && NODE_CONN_ERROR_CODE.indexOf(data.code) > 0) {
                     nodeCurd.updateNodeEndpoint(res.data.ID, res.data.Endpoint)
                 }
                 deferred.reject();

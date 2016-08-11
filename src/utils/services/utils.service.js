@@ -25,7 +25,7 @@
                 base = BACKEND_URL_BASE.defaultBase;
             }
             base = buildBase(base, isWS);
-            return urlJoin(base, $rootScope.BACKEND_URL[categoryKey][detailKey]);
+            return urlJoin(base, BACKEND_URL[categoryKey][detailKey]);
         }
         
         function urlJoin(domain, uri) {

@@ -4,7 +4,7 @@
     angular.module('app.utils').factory('gHttp', gHttp);
 
     /* @ngInject */
-    function gHttp(utils, $q, $rootScope, $http, Notification, $state, cfpLoadingBar) {
+    function gHttp(utils, $q, $rootScope, $http, Notification) {
         var token;
 
         var ResourceCls = buildResourceCls();
@@ -58,13 +58,13 @@
                     options.form.message_error_info = null;
 
                     options.ignoreCodes = options.ignoreCodes || [];
-                    options.ignoreCodes.push($rootScope.MESSAGE_CODE.dataInvalid);
+                    options.ignoreCodes.push(MESSAGE_CODE.dataInvalid);
                     options.form.$setValidity("submit", false);
                 }
                 var promise = this.req(method, options);
                 if (options.form) {
                     promise.catch(function (data) {
-                        if (data.code === $rootScope.MESSAGE_CODE.dataInvalid) {
+                        if (data.code === MESSAGE_CODE.dataInvalid) {
                             if (data.data) {
                                 options.form.message_error_info = data.data;
                             } else {
@@ -107,7 +107,7 @@
                 }
                 var deferred = $q.defer();
                 $http(req).success(function (data) {
-                    if (data.code === $rootScope.MESSAGE_CODE.success) {
+                    if (data.code === MESSAGE_CODE.success) {
                         deferred.resolve(data.data);
                     } else {
                         this._handleErrors(status, data, deferred);
@@ -121,17 +121,17 @@
             };
 
             Resource.prototype._handleErrors = function (status, data, deferred) {
-                if (data && angular.isObject(data) && data.code && $rootScope.CODE_MESSAGE[data.code]) {
+                if (data && angular.isObject(data) && data.code && CODE_MESSAGE[data.code]) {
                     if (!this.options.ignoreCodes.includes(data.code)) {
-                        Notification.error($rootScope.CODE_MESSAGE[data.code]);
+                        Notification.error(CODE_MESSAGE[data.code]);
                     }
                 } else if (status == 401) {
                     utils.redirectLogin(true);
-                } else if (status == 404 || data.code === $rootScope.MESSAGE_CODE.noExist) {
+                } else if (status == 404 || data.code === MESSAGE_CODE.noExist) {
                     //$state.go('404');
                 } else {
-                    data = {code: $rootScope.MESSAGE_CODE.unknow};
-                    Notification.error($rootScope.CODE_MESSAGE[data.code]);
+                    data = {code: MESSAGE_CODE.unknow};
+                    Notification.error(CODE_MESSAGE[data.code]);
                 }
 
                 deferred.reject(data)
