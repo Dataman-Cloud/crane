@@ -60,6 +60,18 @@ a:active {
     color: #93CCDC;
     text-decoration: underline;
 }
+::selection {
+background:#1FA2BF; 
+color:#FFF;
+}
+::-moz-selection {
+background:#1FA2BF;
+color:#FFF;
+}
+::-webkit-selection {
+background:#1FA2BF;
+color:#FFF;
+}  
 section {
     margin: 0;
 }
@@ -213,12 +225,13 @@ section {
     color: #D3D1D5;
     padding: 25px;
 }
-#container-main > header > h1 {
-    margin-bottom: 0;
-}
-#container-main > header {
+#container-main #header-main {
     margin-bottom: 25px;
 }
+#container-main #header-main h1 {
+    margin-bottom: 0;
+}
+
 
 
 
@@ -438,8 +451,10 @@ a.md-button.md-default-theme.md-primary.md-raised, a.md-button.md-primary.md-rai
     height: 24px;
     min-height: 24px;
     line-height: 24px;
-    width: 110px;
-    font-size: 14px
+    min-width: 110px;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 0 12px;
 }
 
 

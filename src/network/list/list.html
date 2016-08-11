@@ -1,53 +1,49 @@
-<div>
-        <header layout="row" layout-align="start space-between">
-                <h1 flex="auto">网络列表</h1>
-            <div    class="operation" flex="none">
-                <md-button class="md-fab md-mini" aria-label="创建虚拟网络" data-ui-sref="network.create">
-                    <md-tooltip md-direction="top">创建虚拟网络</md-tooltip>
-                    <i class="fa fa-plus" aria-hidden="true"></i>
-                </md-button>
-            </div>
-        </header>
-            <md-table-container>
-                <table md-table>
-                    <thead md-head>
-                    <tr md-row>
-                        <th md-column>名称</th>
-                        <th md-column>类型</th>
-                        <th md-column>内部网络</th>
-                        <th md-column>子网掩码</th>
-                        <th md-column>网关</th>
-                        <th md-column>IP 范围</th>
-                        <th md-column>操作</th>
-                    </tr>
-                    </thead>
-                    <tbody md-body>
-                    <tr md-row ng-repeat="network in networkListCtrl.networks | filter: networkListCtrl.filter">
-                        <td md-cell>
-                            <a data-ui-sref="network.detail({network_id: network.Id})">{/network.Name/}</a>
-                        </td>
-                        <td md-cell>{/network.Driver/}</td>
-                        <td md-cell>{/network.Internal ? '是':'否'/}</td>
-                        <td md-cell>{/network.IPAM.Config[0].Subnet || '未配置'/}</td>
-                        <td md-cell>{/network.IPAM.Config[0].Gateway || '未配置'/}</td>
-                        <td md-cell>{/network.IPAM.Config[0].IPRange || '未配置'/}</td>
-                        <td md-cell>
-                            <md-menu md-offset="0 -5">
-                                <md-button class="md-icon-button" aria-label="More" ng-click="$mdOpenMenu($event)">
-                                    <i class="fa fa-ellipsis-h"></i>
-                                </md-button>
-                                <md-menu-content width="2">
-                                    <md-button aria-label="delete"
-                                               data-ng-click="networkListCtrl.deleteNetwork(network.Id)">删除
-                                    </md-button>
-                                </md-menu-content>
-                            </md-menu>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-                <div class="alert alert-warning text-center" data-ng-if="!networkListCtrl.networks.length">
-                    未查询到网络信息
-                </div>
-            </md-table-container>
-</div>
+<header layout="row" layout-align="end start" id="header-main">
+    <div flex="none">
+        <md-button class="md-button md-primary md-small md-raised" aria-label="创建虚拟网络" data-ui-sref="network.create">
+            <i class="fa fa-plus" aria-hidden="true"></i> 创建虚拟网络
+        </md-button>
+    </div>
+</header>
+    <md-table-container>
+        <table md-table>
+            <thead md-head>
+            <tr md-row>
+                <th md-column>名称</th>
+                <th md-column>类型</th>
+                <th md-column>内部网络</th>
+                <th md-column>子网掩码</th>
+                <th md-column>网关</th>
+                <th md-column>IP 范围</th>
+                <th md-column>操作</th>
+            </tr>
+            </thead>
+            <tbody md-body>
+            <tr md-row ng-repeat="network in networkListCtrl.networks | filter: networkListCtrl.filter">
+                <td md-cell>
+                    <a data-ui-sref="network.detail({network_id: network.Id})">{/network.Name/}</a>
+                </td>
+                <td md-cell>{/network.Driver/}</td>
+                <td md-cell>{/network.Internal ? '是':'否'/}</td>
+                <td md-cell><span data-ng-if="network.IPAM.Config[0].Subnet">{/network.IPAM.Config[0].Subnet/}</span><span data-ng-if="!network.IPAM.Config[0].Subnet" class="no-info">未配置</span></td>
+                <td md-cell><span data-ng-if="network.IPAM.Config[0].Gateway">{/network.IPAM.Config[0].Gateway/}</span><span data-ng-if="!network.IPAM.Config[0].Gateway" class="no-info">未配置</span></td>
+                <td md-cell><span data-ng-if="network.IPAM.Config[0].IPRange">{/network.IPAM.Config[0].IPRange/}</span><span data-ng-if="!network.IPAM.Config[0].IPRange" class="no-info">未配置</span></td>
+                <td md-cell>
+                    <md-menu md-offset="0 -5">
+                        <md-button class="md-icon-button" aria-label="More" ng-click="$mdOpenMenu($event)">
+                            <i class="fa fa-ellipsis-h"></i>
+                        </md-button>
+                        <md-menu-content width="2">
+                            <md-button aria-label="delete"
+                                       data-ng-click="networkListCtrl.deleteNetwork(network.Id)">删除
+                            </md-button>
+                        </md-menu-content>
+                    </md-menu>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="alert alert-warning text-center" data-ng-if="!networkListCtrl.networks.length">
+            未查询到网络信息
+        </div>
+    </md-table-container>
