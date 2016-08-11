@@ -136,6 +136,7 @@ func (db *DbAuthenicator) Groups(listOptions model.ListOptions) (*[]auth.Group, 
 	if err = db.DbClient.
 		Offset(listOptions.Offset).
 		Limit(listOptions.Limit).
+		Where(listOptions.Filter).
 		Find(&groups).Error; err != nil {
 		return nil, err
 	}

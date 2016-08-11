@@ -53,6 +53,7 @@ type DockerClientInterface interface {
 	RemoveStack(namespace string) error
 	FilterServiceByStack(namespace string, opts types.ServiceListOptions) ([]swarm.Service, error)
 	ConvertStackService(swarmService swarm.ServiceSpec) model.RolexService
+	GetStackGroup(namespace string) (uint64, error)
 
 	CreateService(service swarm.ServiceSpec, options types.ServiceCreateOptions) (types.ServiceCreateResponse, error)
 	ListServiceSpec(options types.ServiceListOptions) ([]swarm.Service, error)

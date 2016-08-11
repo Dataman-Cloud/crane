@@ -1,7 +1,10 @@
 package dockerclient
 
 import (
+	"errors"
 	"fmt"
+	"strconv"
+	"strings"
 
 	"github.com/Dataman-Cloud/rolex/src/dockerclient/model"
 
@@ -152,6 +155,25 @@ func (client *RolexDockerClient) FilterServiceByStack(namespace string, opts typ
 	}
 
 	return stackServices, nil
+}
+
+func (client *RolexDockerClient) GetStackGroup(namespace string) (uint64, error) {
+	bundle, err := client.InspectStack(namespace)
+	if err != nil {
+		return 0, err
+	}
+
+	for _, service := range bundle.Stack.Services {
+		for k, _ := range service.Labels {
+			if strings.HasPrefix(k, "com.rolex.permissions") {
+				groupId, err := strconv.ParseUint(strings.Split(k, ".")[3], 10, 64)
+				if err == nil {
+					return groupId, nil
+				}
+			}
+		}
+	}
+	return 0, errors.New("can't found stack groupid")
 }
 
 // convert swarm service to bundle service
