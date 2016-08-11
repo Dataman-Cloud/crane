@@ -126,11 +126,6 @@ func (client *RolexDockerClient) SwarmNode(ctx context.Context) (*docker.Client,
 	return swarmNode, nil
 }
 
-// ping to test swarmManager connection
-func (client *RolexDockerClient) Ping() error {
-	return client.swarmManager.Ping()
-}
-
 func (client *RolexDockerClient) NewGoDockerClientTls(endpoint string, apiVersion string) (*docker.Client, error) {
 	tlsCaCert, tlsCert, tlsKey := SharedClientCertFiles(client.config)
 	return docker.NewVersionedTLSClient(endpoint, tlsCert, tlsKey, tlsCaCert, apiVersion)
