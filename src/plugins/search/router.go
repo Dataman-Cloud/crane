@@ -30,10 +30,11 @@ type SearchApi struct {
 }
 
 type Document struct {
-	ID    string
-	Name  string
-	Type  string
-	Param map[string]string
+	ID      string
+	Name    string
+	Type    string
+	GroupId uint64 `json:"-"`
+	Param   map[string]string
 }
 
 func (searchApi *SearchApi) RegisterApiForSearch(router *gin.Engine, middlewares ...gin.HandlerFunc) {
@@ -135,10 +136,13 @@ func (searchApi *SearchApi) loadData() {
 
 	if stacks, err := searchApi.RolexDockerClient.ListStack(); err == nil {
 		for _, stack := range stacks {
+			groupId, _ := searchApi.RolexDockerClient.GetStackGroup(stack.Namespace)
+
 			searchApi.Index = append(searchApi.Index, stack.Namespace)
 			searchApi.Store[stack.Namespace] = Document{
-				ID:   stack.Namespace,
-				Type: DOCUMENT_STACK,
+				ID:      stack.Namespace,
+				Type:    DOCUMENT_STACK,
+				GroupId: groupId,
 				Param: map[string]string{
 					"NameSpace": stack.Namespace,
 				},
@@ -152,9 +156,10 @@ func (searchApi *SearchApi) loadData() {
 						append(searchApi.Index, service.ID)
 					searchApi.Store[service.ID] =
 						Document{
-							ID:   service.ID,
-							Name: stack.Namespace,
-							Type: DOCUMENT_SERVICE,
+							ID:      service.ID,
+							Name:    stack.Namespace,
+							Type:    DOCUMENT_SERVICE,
+							GroupId: groupId,
 							Param: map[string]string{
 								"NameSpace": stack.Namespace,
 								"ServiceId": service.ID,
@@ -165,9 +170,10 @@ func (searchApi *SearchApi) loadData() {
 						append(searchApi.Index, service.Name)
 					searchApi.Store[service.Name] =
 						Document{
-							ID:   service.ID,
-							Name: stack.Namespace,
-							Type: DOCUMENT_SERVICE,
+							ID:      service.ID,
+							Name:    stack.Namespace,
+							Type:    DOCUMENT_SERVICE,
+							GroupId: groupId,
 							Param: map[string]string{
 								"NameSpace": stack.Namespace,
 								"ServiceId": service.ID,
@@ -182,8 +188,9 @@ func (searchApi *SearchApi) loadData() {
 								append(searchApi.Index, task.ID)
 							searchApi.Store[task.ID] =
 								Document{
-									ID:   task.ID,
-									Type: DOCUMENT_TASK,
+									ID:      task.ID,
+									Type:    DOCUMENT_TASK,
+									GroupId: groupId,
 									Param: map[string]string{
 										"NodeId":      task.NodeID,
 										"ContainerId": task.Status.ContainerStatus.ContainerID,
