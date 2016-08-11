@@ -26,10 +26,21 @@
                 </div>
             </td>
             <td md-cell>
-                <md-button aria-label="delete" class="md-button md-raised"
-                           data-ng-click="nodeVolumeCtrl.deleteVolume(volume.Name)">
-                    删除
-                </md-button>
+                <md-menu>
+                    <md-button class="md-icon-button" aria-label="More" ng-click="$mdOpenMenu($event)">
+                        <i class="fa fa-ellipsis-h"></i>
+                    </md-button>
+
+                    <md-menu-content width="2">
+                        <md-menu-item>
+                            <md-button aria-label="delete"
+                                       data-ng-click="nodeVolumeCtrl.deleteVolume(volume.Name)">
+                                删除
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+
             </td>
         </tr>
         </tbody>
