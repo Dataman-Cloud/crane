@@ -2,7 +2,7 @@ package middlewares
 
 import (
 	"fmt"
-	"github.com/Dataman-Cloud/rolex/src/model"
+	//"github.com/Dataman-Cloud/rolex/src/model"
 	"github.com/Dataman-Cloud/rolex/src/plugins/auth"
 
 	"github.com/docker/engine-api/types/swarm"
@@ -21,7 +21,8 @@ func AuthorizeServiceAccess(a *auth.AccountApi) func(permissionRequired auth.Per
 			}
 
 			account := account_.(auth.Account)
-			listOptions := model.ListOptions{
+			_ = account
+			/*listOptions := model.ListOptions{
 				Filter: map[string]interface{}{
 					"account_id": account.ID,
 				},
@@ -66,7 +67,7 @@ func AuthorizeServiceAccess(a *auth.AccountApi) func(permissionRequired auth.Per
 					return
 				}
 
-			}
+			}*/
 
 			ctx.Next()
 		}

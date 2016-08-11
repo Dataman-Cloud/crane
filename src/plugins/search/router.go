@@ -136,7 +136,8 @@ func (searchApi *SearchApi) loadData() {
 
 	if stacks, err := searchApi.RolexDockerClient.ListStack(); err == nil {
 		for _, stack := range stacks {
-			groupId, _ := searchApi.RolexDockerClient.GetStackGroup(stack.Namespace)
+			//groupId, _ := searchApi.RolexDockerClient.GetStackGroup(stack.Namespace)
+			groupId := uint64(1)
 
 			searchApi.Index = append(searchApi.Index, stack.Namespace)
 			searchApi.Store[stack.Namespace] = Document{
