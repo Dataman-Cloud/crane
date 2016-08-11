@@ -1,27 +1,13 @@
-<div class="main-content app-layout">
-    <section class="main-section">
-        <header layout="row" layout-align="end start">
-            <div class="info" flex>
-                <h2>网络列表</h2>
-            </div>
-            <div layout-align="end center" class="operation">
+<div>
+        <header layout="row" layout-align="start space-between">
+                <h1 flex="auto">网络列表</h1>
+            <div    class="operation" flex="none">
                 <md-button class="md-fab md-mini" aria-label="创建虚拟网络" data-ui-sref="network.create">
                     <md-tooltip md-direction="top">创建虚拟网络</md-tooltip>
                     <i class="fa fa-plus" aria-hidden="true"></i>
                 </md-button>
             </div>
         </header>
-
-        <div class="main-content">
-
-            <md-toolbar class="md-table-toolbar md-default">
-                <div class="md-toolbar-tools">
-                    <form flex name="filter">
-                        <input type="text" ng-model="networkListCtrl.filter" placeholder="搜索">
-                    </form>
-                </div>
-            </md-toolbar>
-
             <md-table-container>
                 <table md-table>
                     <thead md-head>
@@ -47,9 +33,8 @@
                         <td md-cell>{/network.IPAM.Config[0].IPRange || '未配置'/}</td>
                         <td md-cell>
                             <md-menu md-offset="0 -5">
-                                <md-button aria-label="appListMenu" class="md-button md-raised"
-                                           ng-click="$mdOpenMenu($event)">
-                                    <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                                <md-button class="md-icon-button" aria-label="More" ng-click="$mdOpenMenu($event)">
+                                    <i class="fa fa-ellipsis-h"></i>
                                 </md-button>
                                 <md-menu-content width="2">
                                     <md-button aria-label="delete"
@@ -65,6 +50,4 @@
                     未查询到网络信息
                 </div>
             </md-table-container>
-        </div>
-    </section>
 </div>

@@ -17,9 +17,8 @@
             <td md-cell>{/value.MacAddress || '-'/}</td>
             <td md-cell>
                 <md-menu md-offset="0 -5">
-                    <md-button aria-label="networkContainerMenu" class="md-button md-raised"
-                               ng-click="$mdOpenMenu($event)">
-                        <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                    <md-button class="md-icon-button" aria-label="More" ng-click="$mdOpenMenu($event)">
+                        <i class="fa fa-ellipsis-h"></i>
                     </md-button>
                     <md-menu-content width="2">
                         <md-menu-item>
@@ -36,7 +35,4 @@
         </tr>
         </tbody>
     </table>
-    <div class="alert alert-warning text-center" data-ng-if="false">
-        未查询到容器信息
-    </div>
 </md-table-container>

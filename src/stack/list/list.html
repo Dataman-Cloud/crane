@@ -1,64 +1,36 @@
-<div class="main-content app-layout">
-    <section class="main-section">
-        <header layout="row" layout-align="end start">
-            <div class="info" flex>
-                <h2>应用编排</h2>
-            </div>
-            <div layout-align="end center" class="operation">
-                <md-button class="md-fab md-mini" aria-label="新建编排" data-ui-sref="stack.create">
-                    <i class="fa fa-plus" aria-hidden="true"></i>
-                    <md-tooltip md-direction="top">
-                        新建编排
-                    </md-tooltip>
-                </md-button>
-            </div>
-        </header>
-        <div class="main-content">
+<header layout="row">
+    <h1></h1>
+    <md-button class="md-raised md-primary" flex="25" data-ui-sref="stack.createByJson"><i class="fa fa-code"></i> Json
+        创建应用
+    </md-button>
+    <md-button class="md-raised md-primary" flex="25" data-ui-sref="stack.createByForm"><i
+            class="fa fa-mouse-pointer"></i> 快捷方式创建应用
+    </md-button>
+    <md-button class="md-raised md-primary" flex="25" data-ui-sref="registry.list.catalogs"><i
+            class="fa fa-shopping-basket"></i> 应用目录创建应用
+    </md-button>
+</header>
 
-            <md-toolbar class="md-table-toolbar md-default">
-                <div class="md-toolbar-tools">
-                    <form flex name="filter">
-                        <input type="text" ng-model="stackListCtrl.filter" placeholder="搜索">
-                    </form>
-                </div>
-            </md-toolbar>
-
-            <md-table-container>
-                <table md-table>
-                    <thead md-head>
-                    <tr md-row>
-                        <th md-column>名称</th>
-                        <th md-column>服务数量</th>
-                        <th md-column>操作</th>
-                    </tr>
-                    </thead>
-                    <tbody md-body>
-                    <tr md-row
-                        ng-repeat="stack in stackListCtrl.stacks | filter: stackListCtrl.filter | orderBy: $index">
-                        <td md-cell>
-                            <a data-ui-sref="stack.detail({stack_name: stack.Namespace})">{/stack.Namespace/}</a>
-                        </td>
-                        <td md-cell>
-                            {/stack.ServiceCount/}
-                        </td>
-                        <td md-cell>
-                            <md-button aria-label="delete" class="md-button md-raised"
-                                       data-ng-click="stackListCtrl.deleteStack($event, stack.Namespace)">
-                                删除
-                            </md-button>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-
-                <div class="alert alert-warning text-center" data-ng-if="stackListCtrl.stacks.length <= 0">
-                    未查询到编排信息
-                </div>
-            </md-table-container>
+<div layout="row" layout-wrap>
+    <div flex="50" data-ng-repeat="stack in stackListCtrl.stacks | filter: stackListCtrl.filter | orderBy: $index">
+        <div class="app-panel">
+            <header>
+                <h1><a data-ui-sref="stack.detail({stack_name: stack.Namespace})">{/stack.Namespace/}</a></h1>
+                <ul layout="row">
+                    <li>2016-01-01 10:10:10</li>
+                    <li flex-offset="5">服务数量: {/stack.ServiceCount/}</li>
+                </ul>
+            </header>
+            <table>
+                <tr>
+                    <th><i class="fa fa-wrench" aria-hidden="true"></i></th>
+                    <th><i class="fa fa-tasks" aria-hidden="true"></i></th>
+                </tr>
+                <tr data-ng-repeat="service in stack.Services | orderBy: $index">
+                    <td>{/service.Name/}</td>
+                    <td>{/service.NumTasksRunning/}/{/service.NumTasksTotal/}</td>
+                </tr>
+            </table>
         </div>
-
-        <footer></footer>
-        <section>
-        </section>
-    </section>
+    </div>
 </div>

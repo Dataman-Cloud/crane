@@ -96,7 +96,7 @@ BACKEND_URL = {
         nodes: 'api/v1/nodes',
         nodeInfo: 'api/v1/nodes/$node_id/info',
         node: 'api/v1/nodes/$node_id',
-        leader: 'api/v1/nodes/leader_manager',
+        leader: 'api/v1/nodes/manager_info',
         volumes: 'api/v1/nodes/$node_id/volumes',
         volume: 'api/v1/nodes/$node_id/volumes/$volume_id',
         images: 'api/v1/nodes/$node_id/images',

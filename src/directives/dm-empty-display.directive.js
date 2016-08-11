@@ -16,7 +16,7 @@
 
         function link(scope, elem) {
             if (utils.isEmpty(scope.value)) {
-                elem.replaceWith('<div class="alert-noinfo">暂无信息</div>');
+                elem.replaceWith('<div class="no-info">暂无信息</div>');
             }
         }
     }

@@ -1,104 +1,95 @@
-<section class="main-section">
-    <header layout="row" layout-align="end start">
-        <div class="info" flex>
-            <h2>添加存储卷</h2>
+<h1>添加存储卷</h1>
+<form name="createVolume" class="form-main">
+    <div class="form-group" layout="column">
+        <label>卷名<span class="required">*</span>
+            <small></small>
+        </label>
+        <div class="form-control">
+            <input type="text" name="name"
+                   data-ng-model="nodeCreateVolumeCtrl.form.Name"
+                   data-ng-pattern="/^[A-Za-z0-9]+$/"
+                   data-required="required">
         </div>
-    </header>
-    <div class="main-content">
-        <form flex name="createVolume">
-            <div layout="row" layout-align="end start" class="form-group form-group-input">
-                <label flex="15">卷名</label>
-                <div flex="50" layout="column">
-                    <div flex>
-                        <input type="text" class="form-input" name="name"
-                               data-ng-model="nodeCreateVolumeCtrl.form.Name"
-                               data-ng-pattern="/^[A-Za-z0-9]+$/"
-                               data-required="required">
-                    </div>
+        <div ng-messages="createVolume.name.$error" ng-if="createVolume.name.$dirty"
+             role="alert">
+            <p class="help-text"
+               ng-message="required">
+                <small>不能为空</small>
+            </p>
 
-                    <div ng-messages="createVolume.name.$error" ng-if="createVolume.name.$dirty"
-                         role="alert">
-                        <p class="error-info help-info-bottom"
-                           ng-message="required">
-                            <small>不能为空</small>
-                        </p>
+            <p class="help-text"
+               ng-message="pattern">
+                <small>卷名必须为字母或者数字</small>
+            </p>
+        </div>
+    </div>
 
-                        <p class="error-info help-info-bottom"
-                           ng-message="pattern">
-                            <small>卷名必须为字母或者数字</small>
-                        </p>
-                    </div>
-                </div>
-                <div flex></div>
+    <div class="form-group" layout="column">
+        <label>驱动<span class="required">*</span>
+            <small></small>
+        </label>
+        <div class="form-control">
+            <div class="form-control">
+                <md-select data-ng-model="nodeCreateVolumeCtrl.form.Driver" data-required="required"
+                           aria-label="selectDriver" name="driver">
+                    <md-option value="local">
+                        本地
+                    </md-option>
+                </md-select>
             </div>
+        </div>
+    </div>
 
-            <div layout="row" layout-align="end center" class="form-group form-group-select">
-                <label flex="15">驱动</label>
-                <div flex="50" layout="column">
-                    <md-input-container>
-                        <md-select data-ng-model="nodeCreateVolumeCtrl.form.Driver" data-required="required"
-                                   aria-label="selectDriver" name="driver">
-                            <md-option value="local">
-                                本地
-                            </md-option>
-                        </md-select>
-                    </md-input-container>
-                </div>
-                <div flex></div>
-            </div>
+    <div class="form-group" layout="column">
+        <label>选项
+            <small>可添加多个选项</small>
+        </label>
+        <div class="sub-button">
+            <md-button class="md-raised md-success md-small"
+                       data-ng-click="nodeCreateVolumeCtrl.addLabel()">
+                添加选项
+            </md-button>
+        </div>
+        <div data-ng-repeat="label in nodeCreateVolumeCtrl.labels track by $index">
+            <ng-form name="labels">
+                <div class="form-control sub-group" layout="row" layout-align="start center">
+                    <input type="text" placeholder="KEY" flex="20"
+                           data-ng-model="label.key" data-required="required"
+                           name="labelKey" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/">
 
-            <div layout="row" layout-align="start start" class="form-group form-group-input form-group-addrow">
-                <label flex="15">选项</label>
-                <div flex="60" layout="column">
-                    <div flex>
-                        <md-button class="md-primary"
-                                   aria-label="Add Labels"
-                                   data-ng-click="nodeCreateVolumeCtrl.addLabel()">
-                            <i class="fa fa-plus"></i>
-                            添加选项
-                        </md-button>
-                        可添加个多选项
-                    </div>
-                    <div class="add-row-container"
-                         data-ng-repeat="label in nodeCreateVolumeCtrl.labels track by $index">
-                        <ng-form name="labels" layout="row" layout-align="start center">
-                            <input type="text" placeholder="KEY" flex="40"
-                                   data-ng-model="label.key" data-required="required"
-                                   name="labelKey" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/">
-                            <input type="text" placeholder="VALUE" flex-offset="5" flex="40"
-                                   data-ng-model="label.value" data-required="required"
-                                   name="labelValue" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/">
-                            <div flex-offset="5" flex>
-                                <md-button class="md-icon-button md-accent" aria-label="delete"
-                                           data-ng-click="nodeCreateVolumeCtrl.deleteLabel($index)">
-                                    <i class="fa fa-trash"></i>
-                                </md-button>
-                            </div>
-                        </ng-form>
-                        <div ng-messages="labels.labelKey.$error" ng-if="labels.labelKey.$dirty" role="alert">
-                            <p class="error-info help-info-bottom"
-                               ng-message="pattern">
-                                <small>选项 Key 不能包含中文</small>
-                            </p>
-                        </div>
+                    <input type="text" placeholder="VALUE" flex="20"
+                           data-ng-model="label.value" data-required="required"
+                           name="labelValue" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/">
 
-                        <div ng-messages="labels.labelValue.$error" ng-if="labels.labelValue.$dirty" role="alert">
-                            <p class="error-info help-info-bottom"
-                               ng-message="pattern">
-                                <small>选项 Value 不能包含中文</small>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div layout="row" class="form-footer-button">
-                <div flex-offset="15">
-                    <md-button class="md-raised md-primary" data-ng-click="nodeCreateVolumeCtrl.create()"
-                               data-ng-disabled="createVolume.$invalid">创建
+                    <md-button class="md-icon-button md-primary" aria-label="delete"
+                               data-ng-click="nodeCreateVolumeCtrl.deleteLabel($index)">
+                        <i class="fa fa-trash-o" aria-hidden="true"></i>
                     </md-button>
                 </div>
+            </ng-form>
+            <div ng-messages="labels.labelKey.$error" ng-if="labels.labelKey.$dirty" role="alert">
+                <p class="help-text"
+                   ng-message="pattern">
+                    <small>选项 Key 不能包含中文</small>
+                </p>
             </div>
-        </form>
+
+            <div ng-messages="labels.labelValue.$error" ng-if="labels.labelValue.$dirty" role="alert">
+                <p class="help-text"
+                   ng-message="pattern">
+                    <small>选项 Value 不能包含中文</small>
+                </p>
+            </div>
+        </div>
     </div>
-</section>
+
+    <footer class="form-buttons">
+        <md-button class="md-raised md-primary"
+                   data-ng-click="nodeCreateVolumeCtrl.create()"
+                   data-ng-disabled="createVolume.$invalid">创建
+        </md-button>
+        <md-button class="md-raised"
+                   data-ng-click="rootCtrl.goBack()">取消
+        </md-button>
+    </footer>
+</form>

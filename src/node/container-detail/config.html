@@ -1,182 +1,125 @@
-<section class="info-view" layout="row">
-    <header layout="row" flex="20">
-        <h4>启动命令</h4>
-    </header>
-    <div layout="column" flex="80">
-        <code data-ng-repeat="cmd in nodeContainerConfigCtrl.container.Config.Cmd track by $index" dm-empty-display="nodeContainerConfigCtrl.container.Config.Cmd">{/cmd/}</code>
+<section layout="row" class="info-list-detail">
+    <h2 flex="20">基础信息</h2>
+    <div flex="80" layout="row" layout-wrap>
+        <div flex="30"><h5>镜像</h5></div>
+        <div flex="70"><p>{/nodeContainerConfigCtrl.container.Config.Image/}</p></div>
+        <div flex="30"><h5>摘要</h5></div>
+        <div flex="70"><p>{/nodeContainerConfigCtrl.container.Image/}</p></div>
+        <div flex="30"><h5>容器主机名</h5></div>
+        <div flex="70"><p>{/nodeContainerConfigCtrl.container.Config.Hostname/}</p></div>
+        <div flex="30"><h5>网络模式</h5></div>
+        <div flex="70"><p>{/nodeContainerConfigCtrl.container.HostConfig.NetworkMode/}</p></div>
+        <div flex="30"><h5>hostname 文件</h5></div>
+        <div flex="70"><p>{/nodeContainerConfigCtrl.container.HostnamePath/}</p></div>
+        <div flex="30"><h5>host 文件</h5></div>
+        <div flex="70"><p>{/nodeContainerConfigCtrl.container.HostsPath/}</p></div>
+        <div flex="30"><h5>log 文件</h5></div>
+        <div flex="70"><p>{/nodeContainerConfigCtrl.container.LogPath/}</p></div>
+        <div flex="30"><h5>resolv.conf 文件</h5></div>
+        <div flex="70"><p>{/nodeContainerConfigCtrl.container.ResolvConfPath/}</p></div>
     </div>
 </section>
 
-<section class="info-view" layout="row">
-    <header layout="row" flex="20">
-        <h4>端口映射</h4>
-    </header>
-    <div layout="column" flex="80">
-        <md-table-container dm-empty-display="nodeContainerConfigCtrl.container.Config.ExposedPorts">
-            <table md-table>
-                <thead md-head>
-                <tr md-row>
-                    <th md-column><span>端口</span></th>
-                    <th md-column><span>协议</span></th>
-                </tr>
-                </thead>
-                <tbody md-body>
-                <tr md-row ng-repeat="(port, protocol)  in  nodeContainerConfigCtrl.container.Config.ExposedPorts">
-                    <td md-cell>{/port | spliceStr: '/': 'key'/}</td>
-                    <td md-cell>{/port | spliceStr: '/': 'value'/}</td>
-                </tr>
-                </tbody>
-            </table>
-        </md-table-container>
+<section layout="row" class="info-list-detail">
+    <h2 flex="20">环境变量</h2>
+    <div flex="80" layout="row" layout-wrap>
+        <table cellpadding="0" cellspacing="0" dm-empty-display="nodeContainerConfigCtrl.container.Config.Env">
+            <tr>
+                <th>KEY</th>
+                <th>VALUE</th>
+            </tr>
+
+            <tr ng-repeat="env  in  nodeContainerConfigCtrl.container.Config.Env">
+                <td>{/env | spliceStr: '=': 'key'/}</td>
+                <td>{/env | spliceStr: '=': 'value'/}</td>
+            </tr>
+        </table>
     </div>
 </section>
 
-<section class="info-view" layout="row">
-    <header layout="row" flex="20">
-        <h4>环境变量</h4>
-    </header>
-    <div layout="column" flex="80">
-        <md-table-container dm-empty-display="nodeContainerConfigCtrl.container.Config.Env">
-            <table md-table>
-                <thead md-head>
-                <tr md-row>
-                    <th md-column><span>键</span></th>
-                    <th md-column><span>值</span></th>
-                </tr>
-                </thead>
-                <tbody md-body>
-                <tr md-row ng-repeat="env  in  nodeContainerConfigCtrl.container.Config.Env">
-                    <td md-cell>{/env | spliceStr: '=': 'key'/}</td>
-                    <td md-cell>{/env | spliceStr: '=': 'value'/}</td>
-                </tr>
-                </tbody>
-            </table>
-        </md-table-container>
+<section layout="row" class="info-list-detail">
+    <h2 flex="20">端口映射</h2>
+    <div flex="80" layout="row" layout-wrap>
+        <table cellpadding="0" cellspacing="0" dm-empty-display="nodeContainerConfigCtrl.container.Config.ExposedPorts">
+            <tr>
+                <th>端口</th>
+                <th>协议</th>
+            </tr>
+
+            <tr ng-repeat="(port, protocol)  in  nodeContainerConfigCtrl.container.Config.ExposedPorts">
+                <td>{/port | spliceStr: '/': 'key'/}</td>
+                <td>{/port | spliceStr: '/': 'value'/}</td>
+            </tr>
+        </table>
     </div>
 </section>
 
-<section class="info-view" layout="row">
-    <header layout="row" flex="20">
-        <h4 title="Restart Policy">重启策略</h4>
-    </header>
-    <div layout="column" flex="80">
-        <md-table-container>
-            <table md-table>
-            </table>
-        </md-table-container>
+<section layout="row" class="info-list-detail">
+    <h2 flex="20">网络配置</h2>
+    <div flex="80" layout="row" layout-wrap>
+        <table cellpadding="0" cellspacing="0"
+               dm-empty-display="nodeContainerConfigCtrl.container.NetworkSettings.Networks">
+            <tr>
+                <th>网络</th>
+                <th>网关</th>
+                <th>IP 地址</th>
+                <th>MAC 地址</th>
+            </tr>
+
+            <tr data-ng-repeat="(name, network) in nodeContainerConfigCtrl.container.NetworkSettings.Networks">
+                <td><a data-ui-sref="node.networkDetail({node_id:$stateParams.node_id, network_id: network.NetworkID})">{/name/}</a>
+                </td>
+                <td>{/network.Gateway/}</td>
+                <td>{/network.IPAddress/}</td>
+                <td>{/network.MacAddress/}</td>
+            </tr>
+        </table>
     </div>
 </section>
 
-<section class="info-view" layout="row">
-    <header layout="row" flex="20">
-        <h4>网络配置</h4>
-    </header>
-    <div layout="column" flex="80">
-        <md-table-container dm-empty-display="nodeContainerConfigCtrl.container.NetworkSettings.Networks">
-            <table md-table>
-                <thead md-head>
-                <tr md-row>
-                    <th md-column><span>网络</span></th>
-                    <th md-column><span>网关</span></th>
-                    <th md-column><span>IP 地址</span></th>
-                    <th md-column><span>MAC 地址</span></th>
-                </tr>
-                </thead>
-                <tbody md-body>
-                <tr md-row data-ng-repeat="(name, network) in nodeContainerConfigCtrl.container.NetworkSettings.Networks">
-                    <th md-cell><a data-ui-sref="node.networkDetail({node_id:$stateParams.node_id, network_id: network.NetworkID})">{/name/}</a></th>
-                    <th md-cell>{/network.Gateway/}</th>
-                    <th md-cell>{/network.IPAddress/}</th>
-                    <th md-cell>{/network.MacAddress/}</th>
-                </tr>
-                </tbody>
-            </table>
-        </md-table-container>
-    <div>
-</section>
+<section layout="row" class="info-list-detail">
+    <h2 flex="20">容器标签</h2>
+    <div flex="80" layout="row" layout-wrap>
+        <table cellpadding="0" cellspacing="0" dm-empty-display="nodeContainerConfigCtrl.container.Config.Labels">
+            <tr>
+                <th>KEY</th>
+                <th>VALUE</th>
+            </tr>
 
-<section class="info-view" layout="row">
-    <header layout="row" flex="20">
-        <h4>容器标签</h4>
-    </header>
-    <div layout="column" flex="80">
-        <md-table-container dm-empty-display="nodeContainerConfigCtrl.container.Config.Labels">
-            <table md-table>
-                <thead md-head>
-                <tr md-row>
-                    <th md-column><span>键</span></th>
-                    <th md-column><span>值</span></th>
-                </tr>
-                </thead>
-                <tbody md-body>
-                <tr md-row ng-repeat="(key, value)  in  nodeContainerConfigCtrl.container.Config.Labels">
-                    <td md-cell>{/key/}</td>
-                    <td md-cell>{/value/}</td>
-                </tr>
-                </tbody>
-            </table>
-        </md-table-container>
+            <tr ng-repeat="(key, value)  in  nodeContainerConfigCtrl.container.Config.Labels">
+                <td>{/key/}</td>
+                <td>{/value/}</td>
+            </tr>
+        </table>
     </div>
 </section>
 
-<section class="info-view" layout="row">
-    <header layout="row" flex="20">
-        <h4>存储卷</h4>
-    </header>
-    <div layout="column" flex="80">
-        <md-table-container dm-empty-display="nodeContainerConfigCtrl.container.Config.Volumes">
-            <table md-table>
-                <thead md-head>
-                <tr md-row>
-                    <th md-column><span>路径</span></th>
-                </tr>
-                </thead>
-                <tbody md-body>
-                <tr md-row ng-repeat="(volume, obj)  in  nodeContainerConfigCtrl.container.Config.Volumes">
-                    <td md-cell>{/volume/}</td>
-                </tr>
-                </tbody>
-            </table>
-        </md-table-container>
+<section layout="row" class="info-list-detail">
+    <h2 flex="20">存储卷</h2>
+    <div flex="80" layout="row" layout-wrap>
+        <table cellpadding="0" cellspacing="0" dm-empty-display="nodeContainerConfigCtrl.container.Config.Volumes">
+            <tr>
+                <th>路径</th>
+            </tr>
+
+            <tr ng-repeat="(volume, obj)  in  nodeContainerConfigCtrl.container.Config.Volumes">
+                <td>{/volume/}</td>
+            </tr>
+        </table>
     </div>
 </section>
 
-<section class="info-view" layout="row">
-    <header layout="row" flex="20">
-        <h4>基础信息</h4>
-    </header>
-    <div layout="column" flex="80">
-        <dl layout="row">
-            <dt flex="20" title="Image">镜像</dt>
-            <dd flex-offset="5" flex="75">{/nodeContainerConfigCtrl.container.Config.Image/}</dd>
-        </dl>
-        <dl layout="row">
-            <dt flex="20" title="Image Digest">摘要</dt>
-            <dd flex-offset="5" flex="75">{/nodeContainerConfigCtrl.container.Image/}</dd>
-        </dl>
-        <dl layout="row">
-            <dt flex="20" title="Container Hostname">容器主机名</dt>
-            <dd flex-offset="5" flex="75">{/nodeContainerConfigCtrl.container.Config.Hostname/}</dd>
-        </dl>
-        <dl layout="row">
-            <dt flex="20" title="NetworkMode">网络模式</dt>
-            <dd flex-offset="5" flex="75">{/nodeContainerConfigCtrl.container.HostConfig.NetworkMode/}</dd>
-        </dl>
-        <dl layout="row">
-            <dt flex="20" title="HostnamePath">hostname 文件</dt>
-            <dd flex-offset="5" flex="75">{/nodeContainerConfigCtrl.container.HostnamePath/}</dd>
-        </dl>
-        <dl layout="row">
-            <dt flex="20" title="HostsPath">host 文件</dt>
-            <dd flex-offset="5" flex="75">{/nodeContainerConfigCtrl.container.HostsPath/}</dd>
-        </dl>
-        <dl layout="row">
-            <dt flex="20" title="LogPath">log 文件</dt>
-            <dd flex-offset="5" flex="75">{/nodeContainerConfigCtrl.container.LogPath/}</dd>
-        </dl>
-        <dl layout="row">
-            <dt flex="20" title="ResolvConfPath">resolv.conf 文件</dt>
-            <dd flex-offset="5" flex="75">{/nodeContainerConfigCtrl.container.ResolvConfPath/}</dd>
-        </dl>
-    <div>
+<section layout="row" class="info-list-detail">
+    <h2 flex="20">启动命令</h2>
+    <div flex="80" layout="row" layout-wrap>
+        <table cellpadding="0" cellspacing="0" dm-empty-display="nodeContainerConfigCtrl.container.Config.Cmd">
+            <tr>
+                <th>CMD</th>
+            </tr>
+
+            <tr ng-repeat="cmd in nodeContainerConfigCtrl.container.Config.Cmd track by $index">
+                <td>{/cmd/}</td>
+            </tr>
+        </table>
+    </div>
 </section>

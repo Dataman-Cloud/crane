@@ -234,7 +234,7 @@
         function getNode(nodeCurd, $stateParams, nodeBackend, $q) {
             return nodeBackend.getNode($stateParams.node_id).catch(function (res) {
                 var deferred = $q.defer();
-                if (res.data && angular.isObject(res.data) && data.code && NODE_CONN_ERROR_CODE.indexOf(data.code) > 0) {
+                if (res.data && angular.isObject(res.data) && res.code && NODE_CONN_ERROR_CODE.indexOf(res.code) > 0) {
                     nodeCurd.updateNodeEndpoint(res.data.ID, res.data.Endpoint)
                 }
                 deferred.reject();
