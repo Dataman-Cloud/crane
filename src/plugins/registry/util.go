@@ -149,6 +149,11 @@ func base64UrlEncode(b []byte) string {
 }
 
 func (registry *Registry) GetPermission(username, namespace, image string) string {
+	if namespace == "library" && len(registry.Authenticator.GetDefaultAccounts()) > 0 &&
+		registry.Authenticator.GetDefaultAccounts()[0].Email == username {
+		return "RW"
+	}
+
 	if namespace == "library" {
 		return "R"
 	}
