@@ -1043,9 +1043,10 @@
 		{
 			"importpath": "github.com/fsouza/go-dockerclient",
 			"repository": "https://github.com/fsouza/go-dockerclient",
-			"vcs": "",
-			"revision": "1a3d0cfd7814bbfe44ada7617654948c99891749",
-			"branch": "master"
+			"vcs": "git",
+			"revision": "a53ba79627e888ef775bdcf15813f07d7a232867",
+			"branch": "master",
+			"notests": true
 		},
 		{
 			"importpath": "github.com/gin-gonic/gin",
