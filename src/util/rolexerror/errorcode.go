@@ -30,6 +30,7 @@ const (
 	CodeNetworkPredefined          = 11206
 	CodeNetworkNotFound            = 11207
 	CodeNetworkOrContainerNotFound = 11208
+	CodeInvalidNetworkName         = 11209
 
 	//Node error code
 	CodeUpdateNodeParamError  = 11301
@@ -56,9 +57,11 @@ const (
 
 	//Stack error code
 	CodeCreateStackParamError = 11501
+	CodeInvalidStackName      = 11502
 
 	//Volume error code
 	CodeCreateVolumeParamError = 11601
+	CodeInvalidVolumeName      = 11602
 
 	//Go docker client error code
 	CodeConnToNodeError      = 11701

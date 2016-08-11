@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/Dataman-Cloud/rolex/src/dockerclient/model"
+	"github.com/Dataman-Cloud/rolex/src/util/rolexerror"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/docker/engine-api/types"
@@ -28,8 +29,12 @@ type Stack struct {
 	Services []ServiceStatus
 }
 
-//StackDeploy deploy a new stack
+// deploy a new stack
 func (client *RolexDockerClient) DeployStack(bundle *model.Bundle) error {
+	if bundle.Namespace == "" || !isValidName.MatchString(bundle.Namespace) {
+		return rolexerror.NewRolexError(rolexerror.CodeInvalidStackName, "invalid name, only [a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]")
+	}
+
 	networks := client.getUniqueNetworkNames(bundle.Stack.Services)
 
 	if err := client.updateNetworks(networks, bundle.Namespace); err != nil {
@@ -39,7 +44,7 @@ func (client *RolexDockerClient) DeployStack(bundle *model.Bundle) error {
 	return client.deployServices(bundle.Stack.Services, bundle.Namespace)
 }
 
-// StackList list all stack
+// list all stack
 func (client *RolexDockerClient) ListStack() ([]Stack, error) {
 	filter := filters.NewArgs()
 	filter.Add("label", labelNamespace)
