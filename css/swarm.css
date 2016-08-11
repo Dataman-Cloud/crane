@@ -105,7 +105,7 @@ section {
 {
     font-size: 16px;
     margin-right: 15px;
-    margin-left: 30px;
+    margin-left: 15px;
     width: 18px;
 }
 #sidebar-main li a
@@ -113,14 +113,14 @@ section {
     font-size: 16px;
     line-height: 42px;
 
-    display: block;
+    display: inline-block;
     padding: 0;
     height: 42px;
     margin: 0;
     border-radius: 0;
     text-align: left;
 
-    color: #C7CACF;
+    color: #93929D;
     border-left: 3px solid transparent;
 }
 #sidebar-main li a:hover
@@ -131,7 +131,7 @@ section {
 }
 #sidebar-main li.active a
 {
-    color: #1FA2BF;
+    color: #FFF;
     border-left: 3px solid #1FA2BF;
     border-radius: 0;
 }
@@ -190,23 +190,31 @@ section {
 }
 
 /* 面包屑导航样式 */
-.breadcrumb li {
-    display: inline-block;
-    font-size: 14px;
+#breadcrumb-main {
+    font-size: 16px;
 }
-.breadcrumb li a {
-    color: #DBDADD;
+#breadcrumb-main a {
+    color: #93929D;
+    cursor: pointer;
 }
-.breadcrumb li span {
-    color: #1FA2BF;
+#breadcrumb-main a:hover {
+    color: #E8EAEC;
+    text-decoration: none;
+}
+#breadcrumb-main i {
+    color: #3F4855;
+    margin: 0 12px;
+}
+#breadcrumb-main span {
+    color: #E8EAEC;
 }
 
 #container-main {
     color: #D3D1D5;
     padding: 25px;
 }
-#container-main > h1 {
-    margin-bottom: 25px;
+#container-main > header > h1 {
+    margin-bottom: 0;
 }
 #container-main > header {
     margin-bottom: 25px;
@@ -396,7 +404,7 @@ md-radio-button .md-label {
     min-height: 40px;
     min-width: 110px;
     box-shadow: none!important;
-    border: none!important;
+    border: none;
     font-size: 16px;
 }
 .md-button.md-raised {
