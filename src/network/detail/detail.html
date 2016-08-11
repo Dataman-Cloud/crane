@@ -1,16 +1,10 @@
-<div class="main-container app-layout">
-    <section class="main-section">
-        <header layout="row" layout-align="end start">
-            <div class="info" flex>
-                <h2>{/networkDetailCtrl.network.Name/}</h2>
-            </div>
-        </header>
-        <md-content>
-            <md-tabs md-dynamic-height md-border-bottom>
-                <md-tab label="配置" dm-tab-sref="network.detail.config"></md-tab>
-                <md-tab label="容器" dm-tab-sref="network.detail.container"></md-tab>
-            </md-tabs>
-            <md-content class="md-padding main-tab-content" ui-view>
-            </md-content>
-    </section>
-</div>
+<h1>
+    <i class="fa fa-stack-overflow" aria-hidden="true"></i>
+    {/networkDetailCtrl.network.Name/}
+</h1>
+
+<md-tabs md-dynamic-height md-border-bottom>
+    <md-tab label="配置" dm-tab-sref="network.detail.config"></md-tab>
+    <md-tab label="容器" dm-tab-sref="network.detail.container"></md-tab>
+</md-tabs>
+<md-content ui-view></md-content>
