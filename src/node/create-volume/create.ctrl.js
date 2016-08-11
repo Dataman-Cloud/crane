@@ -18,6 +18,7 @@
         self.create = create;
         self.addLabel = addLabel;
         self.deleteLabel = deleteLabel;
+        self.listLabel = listLabel;
 
         activate();
 
@@ -47,6 +48,16 @@
 
         function deleteLabel(index) {
             self.labels.splice(index, 1);
+        }
+
+        function listLabel(curIndex) {
+            var labels = self.labels.map(function (item, index) {
+                if (item.key && curIndex !== index) {
+                    return item.key
+                }
+            });
+
+            return labels
         }
     }
 })();

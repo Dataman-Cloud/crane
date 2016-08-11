@@ -26,6 +26,7 @@
         self.create = create;
         self.addLabel = addLabel;
         self.deleteLabel = deleteLabel;
+        self.listLabel = listLabel;
 
         activate();
 
@@ -35,7 +36,7 @@
 
         function create() {
             angular.forEach(self.labels, function (item, index) {
-                self.form.Options[item.key] = item.value
+                self.form.Labels[item.key] = item.value
             });
 
             nodeCurd.createNetwork(self.form, $stateParams.node_id, $scope.createNetwork)
@@ -52,6 +53,16 @@
 
         function deleteLabel(index) {
             self.labels.splice(index, 1);
+        }
+
+        function listLabel(curIndex) {
+            var labels = self.labels.map(function (item, index) {
+                if (item.key && curIndex !== index) {
+                    return item.key
+                }
+            });
+
+            return labels
         }
     }
 })();

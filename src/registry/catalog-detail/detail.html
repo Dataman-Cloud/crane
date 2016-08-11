@@ -1,49 +1,47 @@
-<div class="main-content app-layout">
-    <section class="main-section">
-        <header layout="row" layout-align="end start">
-            <div class="info" flex>
-                <h2>应用部署</h2>
+<h1>应用部署</h1>
+<md-tabs md-dynamic-height md-border-bottom>
+    <md-tab label="基本信息">
+        <form name="staticForm" class="form-main">
+            <div class="form-group" layout="column">
+                <label>编排名称<span class="required">*</span>
+                    <small></small>
+                </label>
+                <div class="form-control">
+                    <input type="text" data-required="required" name="stackName"
+                           data-ng-model="catalogDetailCtrl.form.Namespace">
+                </div>
+                <div ng-messages="staticForm.stackName.$error" ng-if="staticForm.stackName.$dirty" role="alert">
+                    <p class="help-text"
+                       ng-message="required">
+                        <small>名称不能为空</small>
+                    </p>
+                </div>
             </div>
-        </header>
-        <md-content>
-            <md-tabs md-dynamic-height md-border-bottom>
-                <md-tab label="基本信息">
-                    <md-content class="md-padding main-tab-content">
-                        <form name="staticForm">
-                            <div layout="row" layout-align="end start" class="form-group form-group-input">
-                                <label flex="15">编排名称</label>
-                                <div flex="50" layout="column">
-                                    <div flex="none">
-                                        <input type="text" class="form-input" data-required="required"
-                                               data-ng-model="catalogDetailCtrl.form.Namespace">
-                                    </div>
-                                </div>
-                                <div flex></div>
-                            </div>
 
-                            <div layout="row" layout-align="end center" class="form-group form-group-select">
-                                <label flex="15">选择用户组</label>
-                                <div flex="50" layout="column">
-                                    <md-input-container>
-                                        <md-select data-ng-model="catalogDetailCtrl.selectGroupId"
-                                                   aria-label="selectGroupId"
-                                                   md-on-open="catalogDetailCtrl.loadGroups()">
-                                            <md-option ng-value="" ng-selected="true">空</md-option>
-                                            <md-option
-                                                    data-ng-repeat="group in catalogDetailCtrl.groups"
-                                                    ng-value="group.Id">{/group.Name/}
-                                            </md-option>
-                                        </md-select>
-                                    </md-input-container>
-                                </div>
-                                <div flex></div>
-                            </div>
+            <div class="form-group" layout="column">
+                <label>选择用户组
+                    <small></small>
+                </label>
+                <div class="form-control">
+                    <div class="form-control">
+                        <md-select data-ng-model="catalogDetailCtrl.selectGroupId"
+                                   aria-label="selectGroupId"
+                                   md-on-open="catalogDetailCtrl.loadGroups()">
+                            <md-option ng-value="" ng-selected="true">空</md-option>
+                            <md-option
+                                    data-ng-repeat="group in catalogDetailCtrl.groups"
+                                    ng-value="group.Id">{/group.Name/}
+                            </md-option>
+                        </md-select>
+                    </div>
+                </div>
+            </div>
 
-                            <div layout="row" layout-align="end start" class="form-group form-group-textarea">
-                                <label flex="15">Stack JSON</label>
-                                <div flex="50" layout="column">
-                                    <div layout="row">
-                                        <div class="CodeMirror-container">
+            <div layout="row" layout-align="end start" class="form-group form-group-textarea">
+                <label flex="15">Stack JSON</label>
+                <div flex="50" layout="column">
+                    <div layout="row">
+                        <div class="CodeMirror-container">
                                 <textarea data-ng-model="catalogDetailCtrl.stack"
                                           data-required="required" name="Stack"
                                           ui-codemirror ui-codemirror-opts="catalogDetailCtrl.editorOptions"
@@ -51,44 +49,40 @@
                                           data-ng-change="catalogDetailCtrl.stackChange()">
 
                                 </textarea>
-                                        </div>
-                                    </div>
-                                    <div ng-messages="staticForm.Stack.$error" ng-if="staticForm.Stack.$dirty"
-                                         role="alert">
-                                        <p class="error-info help-info-bottom"
-                                           ng-message="required">
-                                            <small>不能为空</small>
-                                        </p>
-                                    </div>
-                                    <p class="help-info-bottom error-info"
-                                       data-ng-show="catalogDetailCtrl.errorInfo.stack">
-                                        {/catalogDetailCtrl.errorInfo.stack/}
-                                    </p>
-                                </div>
-                                <div flex></div>
-                            </div>
+                        </div>
+                    </div>
+                    <div ng-messages="staticForm.Stack.$error" ng-if="staticForm.Stack.$dirty"
+                         role="alert">
+                        <p class="error-info help-info-bottom"
+                           ng-message="required">
+                            <small>不能为空</small>
+                        </p>
+                    </div>
+                    <p class="help-info-bottom error-info"
+                       data-ng-show="catalogDetailCtrl.errorInfo.stack">
+                        {/catalogDetailCtrl.errorInfo.stack/}
+                    </p>
+                </div>
+                <div flex></div>
+            </div>
 
-                            <div layout="row" class="form-footer-button">
-                                <div flex-offset="15" layout="row" layout-align="end end">
-                                    <md-button class="md-raised md-primary"
-                                               data-ng-click="catalogDetailCtrl.create()">
-                                        创建
-                                    </md-button>
-                                </div>
-                            </div>
-                        </form>
-                    </md-content>
-                </md-tab>
-                <md-tab label="详情">
-                    <md-content class="main-tab-content">
-                        <div class="alert alert-warning text-center" data-ng-if="!catalogDetailCtrl.markdown">
-                            暂无详情
-                        </div>
-                        <div marked="catalogDetailCtrl.markdown">
-                        </div>
-                    </md-content>
-                </md-tab>
-            </md-tabs>
+            <footer class="form-buttons">
+                <md-button class="md-raised md-primary"
+                           data-ng-disabled="staticForm.$invalid  || catalogDetailCtrl.errorInfo.stack"
+                           data-ng-click="catalogDetailCtrl.create()">
+                    创建
+                </md-button>
+            </footer>
+        </form>
+    </md-tab>
+
+    <md-tab label="详情">
+        <md-content class="main-tab-content">
+            <div class="alert alert-warning text-center" data-ng-if="!catalogDetailCtrl.markdown">
+                暂无详情
+            </div>
+            <div marked="catalogDetailCtrl.markdown">
+            </div>
         </md-content>
-    </section>
-</div>
+    </md-tab>
+</md-tabs>

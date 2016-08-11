@@ -110,7 +110,7 @@
                     <input type="text" placeholder="KEY" flex="20"
                            data-ng-model="label.key" data-required="required"
                            name="labelKey" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/"
-                           dm-check-include="networkCreateCtrl.listLabel()">
+                           dm-check-include="networkCreateCtrl.listLabel($index)">
 
                     <input type="text" placeholder="VALUE" flex="20"
                            data-ng-model="label.value" data-required="required"

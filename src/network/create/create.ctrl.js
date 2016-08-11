@@ -55,9 +55,9 @@
             self.labels.splice(index, 1);
         }
 
-        function listLabel() {
+        function listLabel(curIndex) {
             var labels = self.labels.map(function (item, index) {
-                if (item.key) {
+                if (item.key && curIndex !== index) {
                     return item.key
                 }
             });

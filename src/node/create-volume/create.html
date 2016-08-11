@@ -41,13 +41,13 @@
     </div>
 
     <div class="form-group" layout="column">
-        <label>选项
-            <small>可添加多个选项</small>
+        <label>标签
+            <small>可添加多个标签</small>
         </label>
         <div class="sub-button">
             <md-button class="md-raised md-success md-small"
                        data-ng-click="nodeCreateVolumeCtrl.addLabel()">
-                添加选项
+                添加标签
             </md-button>
         </div>
         <div data-ng-repeat="label in nodeCreateVolumeCtrl.labels track by $index">
@@ -55,7 +55,8 @@
                 <div class="form-control sub-group" layout="row" layout-align="start center">
                     <input type="text" placeholder="KEY" flex="20"
                            data-ng-model="label.key" data-required="required"
-                           name="labelKey" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/">
+                           name="labelKey" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/"
+                           dm-check-include="nodeCreateVolumeCtrl.listLabel($index)">
 
                     <input type="text" placeholder="VALUE" flex="20"
                            data-ng-model="label.value" data-required="required"
@@ -70,14 +71,18 @@
             <div ng-messages="labels.labelKey.$error" ng-if="labels.labelKey.$dirty" role="alert">
                 <p class="help-text"
                    ng-message="pattern">
-                    <small>选项 Key 不能包含中文</small>
+                    <small>标签 Key 不能包含中文</small>
+                </p>
+                <p class="help-text"
+                   ng-message="dmCheckInclude">
+                    <small>标签 Key 不能重复</small>
                 </p>
             </div>
 
             <div ng-messages="labels.labelValue.$error" ng-if="labels.labelValue.$dirty" role="alert">
                 <p class="help-text"
                    ng-message="pattern">
-                    <small>选项 Value 不能包含中文</small>
+                    <small>标签 Value 不能包含中文</small>
                 </p>
             </div>
         </div>

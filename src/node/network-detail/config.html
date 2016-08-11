@@ -19,8 +19,23 @@
         <div flex="30"><h5>网关 IP</h5></div>
         <div flex="70"><p ng-class="{'no-info': !nodeNetworkConfigCtrl.network.IPAM.Config[0].Gateway}">
             {/nodeNetworkConfigCtrl.network.IPAM.Config[0].Gateway || '未知'/}</p></div>
-        <div flex="30"><h5>Options</h5></div>
-        <div flex="70"><p ng-repeat="(key, value) in nodeNetworkConfigCtrl.network.Options">{/key/} : {/value/}</p>
-        </div>
+    </div>
+    </div>
+</section>
+
+<section layout="row" class="info-list-detail">
+    <h2 flex="20">标签</h2>
+    <div flex="80" layout="row" layout-wrap>
+        <table cellpadding="0" cellspacing="0" dm-empty-display="nodeNetworkConfigCtrl.network.Labels">
+            <tr>
+                <th>KEY</th>
+                <th>VALUE</th>
+            </tr>
+
+            <tr ng-repeat="(key, value) in nodeNetworkConfigCtrl.network.Labels">
+                <td>{/key/}</td>
+                <td>{/value/}</td>
+            </tr>
+        </table>
     </div>
 </section>
