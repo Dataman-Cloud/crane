@@ -2,7 +2,6 @@ package api
 
 import (
 	"encoding/base64"
-	"fmt"
 	"io"
 
 	"github.com/Dataman-Cloud/rolex/src/dockerclient"
@@ -124,29 +123,6 @@ func (api *Api) CreateService(ctx *gin.Context) {
 	}
 
 	rolexgin.HttpOkResponse(ctx, response)
-	return
-}
-
-// ServiceList returns the list of services.
-func (api *Api) ListService(ctx *gin.Context) {
-	opts := types.ServiceListOptions{}
-	if labelFilters_, found := ctx.Get("labelFilters"); found {
-		labelFilters := labelFilters_.(map[string]string)
-		args := filters.NewArgs()
-		for k, v := range labelFilters {
-			args.Add("label", fmt.Sprintf("%s=%s", k, v))
-		}
-		opts.Filter = args
-	}
-
-	services, err := api.GetDockerClient().ListService(opts)
-	if err != nil {
-		log.Error("ListService got error: ", err)
-		rolexgin.HttpErrorResponse(ctx, err)
-		return
-	}
-
-	rolexgin.HttpOkResponse(ctx, services)
 	return
 }
 

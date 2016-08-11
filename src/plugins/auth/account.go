@@ -12,7 +12,7 @@ type Account struct {
 	Phone    string    `json:"Phone"`
 	LoginAt  time.Time `json:"LoginAt"`
 	Password string    `json:"Password" gorm:"not null"`
-	Token    string    `json:"-"`
+	Token    string    `gorm:"-"`
 }
 
 type AccountFilter url.Values

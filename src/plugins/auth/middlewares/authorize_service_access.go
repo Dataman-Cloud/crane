@@ -44,10 +44,28 @@ func AuthorizeServiceAccess(a *auth.AccountApi) func(permissionRequired auth.Per
 					return
 				}
 			} else { // for list services request
-				if !ListServiceAuthorization(ctx, groups, permissionRequired) {
+				authpass := false
+				groupId, err := a.RolexDockerClient.GetStackGroup(ctx.Param("namespace"))
+				if err != nil {
 					ctx.Abort()
 					return
 				}
+				for _, group := range *groups {
+					if group.ID == groupId {
+						authpass = true
+					}
+				}
+
+				if !authpass {
+					ctx.Abort()
+					return
+				}
+
+				if !ListServiceAuthorization(ctx, groupId, permissionRequired) {
+					ctx.Abort()
+					return
+				}
+
 			}
 
 			ctx.Next()
@@ -66,17 +84,14 @@ func SingleServiceAuthorizationCheck(service swarm.Service, groups *[]auth.Group
 }
 
 // add label filter only
-func ListServiceAuthorization(ctx *gin.Context, groups *[]auth.Group, permissionRequired auth.Permission) bool {
+func ListServiceAuthorization(ctx *gin.Context, groupId uint64, permissionRequired auth.Permission) bool {
 	labelFilters := make(map[string]string, 0)
 	//for _, group := range *groups {
 	//labelFilters[fmt.Sprintf("%s.%d.%s", auth.PERMISSION_LABEL_PREFIX, group.ID, permissionRequired.Display)] = "true"
 	//}
 
 	// support only one group now as docker label filter doesn't support `OR` operation or `REGEXP` operation
-	if len(*groups) > 0 {
-		group := (*groups)[0]
-		labelFilters[fmt.Sprintf("%s.%d.%s", auth.PERMISSION_LABEL_PREFIX, group.ID, permissionRequired.Display)] = "true"
-	}
+	labelFilters[fmt.Sprintf("%s.%d.%s", auth.PERMISSION_LABEL_PREFIX, groupId, permissionRequired.Display)] = "true"
 
 	ctx.Set("labelFilters", labelFilters)
 	return true
