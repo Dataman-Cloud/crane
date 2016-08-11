@@ -16,6 +16,7 @@ const (
 	CodeContainerNotFound              = 11006
 	CodeContainerAlreadyRunning        = 11007
 	CodeContainerNotRunning            = 11008
+	CodeInvalidImageName               = 11009
 
 	//Image error code
 	CodeListImageParamError = 11101
@@ -37,9 +38,18 @@ const (
 	CodeErrorNodeAvailability = 11304
 
 	//Service error code
-	CodeUpdateServiceParamError = 11401
-	CodeCreateServiceParamError = 11402
-	CodeScaleServiceParamError  = 11403
+	CodeUpdateServiceParamError    = 11401
+	CodeCreateServiceParamError    = 11402
+	CodeScaleServiceParamError     = 11403
+	CodeInvalidServiceNanoCPUs     = 11404
+	CodeInvalidServiceDelay        = 11405
+	CodeInvalidServiceWindow       = 11406
+	CodeInvalidServiceEndpoint     = 11407
+	CodeInvalidServicePlacement    = 11408
+	CodeInvalidServiceMemoryBytes  = 11409
+	CodeInvalidServiceUpdateConfig = 11410
+	CodeInvalidServiceSpec         = 11411
+	CodeInvalidServiceName         = 11412
 
 	//Task error code
 	CodeListTaskParamError = 11404
