@@ -1,6 +1,34 @@
 <h1>
     <i class="fa fa-stack-overflow" aria-hidden="true"></i>
     {/nodeDetailCtrl.node.Name/}
+    <div flex="auto" class="operation" style="position:relative;">
+        <md-fab-speed-dial md-open="false" md-direction="left"
+                           class="md-scale" style="position:absolute; top: 0; right: 0;">
+            <md-fab-trigger>
+                <md-button aria-label="menu" class="md-fab md-mini">
+                    <md-tooltip md-direction="top">更多操作</md-tooltip>
+                    <i class="fa fa-ellipsis-h"></i>
+                </md-button>
+            </md-fab-trigger>
+            <md-fab-actions>
+                <md-button aria-label="start" class="md-fab md-raised md-mini"
+                           data-ui-sref="node.createVolume({node_id: $stateParams.node_id})">
+                    <md-tooltip md-direction="top">创建存储</md-tooltip>
+                    <i class="fa fa-hdd-o"></i>
+                </md-button>
+                <md-button aria-label="start" class="md-fab md-raised md-mini"
+                           data-ui-sref="node.createNetwork({node_id: $stateParams.node_id})">
+                    <md-tooltip md-direction="top">创建单机网络</md-tooltip>
+                    <i class="fa fa-edge"></i>
+                </md-button>
+                <md-button aria-label="start" class="md-fab md-raised md-mini"
+                           data-ng-click="">
+                    <md-tooltip md-direction="top">删除</md-tooltip>
+                    <i class="fa fa-trash"></i>
+                </md-button>
+            </md-fab-actions>
+        </md-fab-speed-dial>
+    </div>
 </h1>
 <div class="sub-info-main">
     <dl class="info-list">
@@ -29,34 +57,3 @@
     <md-tab label="镜像" dm-tab-sref="node.detail.image"></md-tab>
 </md-tabs>
 <md-content ui-view></md-content>
-
-
-<!-- need add  -->
-<!--<div flex="auto" class="operation" style="position:relative;">-->
-    <!--<md-fab-speed-dial md-open="false" md-direction="left"-->
-                       <!--class="md-scale" style="position:absolute; top: 0; right: 0;">-->
-        <!--<md-fab-trigger>-->
-            <!--<md-button aria-label="menu" class="md-fab md-mini">-->
-                <!--<md-tooltip md-direction="top">更多操作</md-tooltip>-->
-                <!--<i class="fa fa-ellipsis-h"></i>-->
-            <!--</md-button>-->
-        <!--</md-fab-trigger>-->
-        <!--<md-fab-actions>-->
-            <!--<md-button aria-label="start" class="md-fab md-raised md-mini"-->
-                       <!--data-ui-sref="node.createVolume({node_id: $stateParams.node_id})">-->
-                <!--<md-tooltip md-direction="top">创建存储</md-tooltip>-->
-                <!--<i class="fa fa-hdd-o"></i>-->
-            <!--</md-button>-->
-            <!--<md-button aria-label="start" class="md-fab md-raised md-mini"-->
-                       <!--data-ui-sref="node.createNetwork({node_id: $stateParams.node_id})">-->
-                <!--<md-tooltip md-direction="top">创建单机网络</md-tooltip>-->
-                <!--<i class="fa fa-edge"></i>-->
-            <!--</md-button>-->
-            <!--<md-button aria-label="start" class="md-fab md-raised md-mini"-->
-                       <!--data-ng-click="">-->
-                <!--<md-tooltip md-direction="top">删除</md-tooltip>-->
-                <!--<i class="fa fa-trash"></i>-->
-            <!--</md-button>-->
-        <!--</md-fab-actions>-->
-    <!--</md-fab-speed-dial>-->
-<!--</div>-->
