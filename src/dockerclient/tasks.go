@@ -3,11 +3,26 @@ package dockerclient
 import (
 	"encoding/json"
 	"net/url"
+	"sort"
 
 	"github.com/docker/engine-api/types"
 	"github.com/docker/engine-api/types/filters"
 	"github.com/docker/engine-api/types/swarm"
 )
+
+type Tasks []swarm.Task
+
+func (t Tasks) Len() int {
+	return len(t)
+}
+
+func (t Tasks) Swap(i, j int) {
+	t[i], t[j] = t[j], t[i]
+}
+
+func (t Tasks) Less(i, j int) bool {
+	return t[j].CreatedAt.Unix() < t[i].CreatedAt.Unix()
+}
 
 // TaskList returns the list of tasks.
 func (client *RolexDockerClient) ListTasks(options types.TaskListOptions) ([]swarm.Task, error) {
@@ -31,6 +46,8 @@ func (client *RolexDockerClient) ListTasks(options types.TaskListOptions) ([]swa
 	if err := json.Unmarshal(content, &tasks); err != nil {
 		return tasks, err
 	}
+
+	sort.Sort(Tasks(tasks))
 
 	return tasks, nil
 }
