@@ -6,7 +6,7 @@
         <div flex="30"><h5>任务数量</h5></div>
         <div flex="70">
           <p data-ng-if="serviceConfigCtrl.service.Spec.Mode.Replicated" ng-class="{'no-info': !serviceConfigCtrl.service.Spec.Mode.Replicated.Replicas}">
-          {/serviceConfigCtrl.service.Spec.Mode.Replicated.Replicas || '未指定'/}
+          {/serviceConfigCtrl.service.Spec.Mode.Replicated.Replicas || '未配置'/}
           </p>
           <p data-ng-if="serviceConfigCtrl.service.Spec.Mode.Global">一主机一任务</p>
         </div>
@@ -17,12 +17,12 @@
         </div>
         <div flex="70">
             <p ng-class="{'no-info': !serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.StopGracePeriod}">
-                {/serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.StopGracePeriod / Math.pow(10, 9)|| '未指定'/}
+                {/serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.StopGracePeriod / Math.pow(10, 9)|| '未配置'/}
             </p>
         </div>
         <div flex="30"><h5>容器目录</h5></div>
         <div flex="70"><p ng-class="{'no-info': !serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Dir}">
-          {/serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Dir || '未指定'/}</p>
+          {/serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Dir || '未配置'/}</p>
         </div>
     </div>
 </section>
@@ -38,7 +38,7 @@
         <div flex="70"><p
                 ng-class="{'no-info': !serviceConfigCtrl.service.Spec.TaskTemplate.Resources.Limits.NanoCPUs}">
             {/serviceConfigCtrl.service.Spec.TaskTemplate.Resources.Limits.NanoCPUs /
-            Math.pow(10, 9) || '未指定'/}</p></div>
+            Math.pow(10, 9) || '未配置'/}</p></div>
 
         <div flex="30">
             <h5 class="help-info">内存
@@ -49,7 +49,7 @@
                 ng-class="{'no-info': !serviceConfigCtrl.service.Spec.TaskTemplate.Resources.Limits.MemoryBytes}">
             {/serviceConfigCtrl.service.Spec.TaskTemplate.Resources.Limits.MemoryBytes / (
             1024 * 1024) ||
-            '未指定'/}</p>
+            '未配置'/}</p>
         </div>
     </div>
 </section>
@@ -65,7 +65,7 @@
         <div flex="70"><p
                 ng-class="{'no-info': !serviceConfigCtrl.service.Spec.TaskTemplate.Resources.Reservations.NanoCPUs}">
             {/serviceConfigCtrl.service.Spec.TaskTemplate.Resources.Reservations.NanoCPUs
-            / Math.pow(10, 9) || '未指定'/}</p></div>
+            / Math.pow(10, 9) || '未配置'/}</p></div>
 
         <div flex="30">
             <h5 class="help-info">内存
@@ -75,7 +75,7 @@
         <div flex="70"><p
                 ng-class="{'no-info': !serviceConfigCtrl.service.Spec.TaskTemplate.Resources.Reservations.MemoryBytes}">
             {/serviceConfigCtrl.service.Spec.TaskTemplate.Resources.Reservations.MemoryBytes / ( 1024 *
-            1024) || '未指定'/}</p>
+            1024) || '未配置'/}</p>
         </div>
     </div>
 </section>
@@ -85,26 +85,26 @@
     <div flex="80" layout="row" layout-wrap>
         <div flex="30"><h5>重启策略</h5></div>
         <div flex="70"><p ng-class="{'no-info': !serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.Condition}">
-          {/TASK_RESTART_POLICY_COND(serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.Condition) || '未指定'/}</p>
+          {/TASK_RESTART_POLICY_COND(serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.Condition) || '未配置'/}</p>
         </div>
         <div flex="30">
             <h5 class="help-info">重启间隔<small>秒</small></h5>
         </div>
         <div flex="70"><p ng-class="{'no-info': !serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.Delay}"> {/serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.Delay / Math.pow(10, 9) ||
-          '未指定'/}</p>
+          '未配置'/}</p>
         </div>
         <div flex="30">
           <h5>在?时间之内<small>秒</small></h5>
         </div>
         <div flex="70">
           <p ng-class="{'no-info': !serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.Window}">
-          {/serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.Window / Math.pow(10, 9) || '未指定'/}
+          {/serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.Window / Math.pow(10, 9) || '未配置'/}
           </p>
         </div>
         <div flex="30"><h5>最多尝试重启?次</h5></div>
         <div flex="70">
           <p ng-class="{'no-info': !serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.MaxAttempts}">
-          {/serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.MaxAttempts || '未指定'/}
+          {/serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.MaxAttempts || '未配置'/}
           </p>
         </div>
     </div>
@@ -117,10 +117,10 @@
         <h5>在?时间内<small>秒</small></h5>
         </div>
         <div flex="70"><p ng-class="{'no-info': !serviceConfigCtrl.service.Spec.UpdateConfig.Delay}">
-            {/serviceConfigCtrl.service.Spec.UpdateConfig.Delay / Math.pow(10, 9) || '未指定'/}</p></div>
+            {/serviceConfigCtrl.service.Spec.UpdateConfig.Delay / Math.pow(10, 9) || '未配置'/}</p></div>
         <div flex="30"><h5>并行更新?个任务</h5></div>
         <div flex="70"><p ng-class="{'no-info': !serviceConfigCtrl.service.Spec.UpdateConfig.Parallelism}">
-            {/serviceConfigCtrl.service.Spec.UpdateConfig.Parallelism || '未指定'/}</p></div>
+            {/serviceConfigCtrl.service.Spec.UpdateConfig.Parallelism || '未配置'/}</p></div>
     </div>
 </section>
 
