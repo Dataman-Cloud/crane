@@ -81,6 +81,12 @@ section {
 .text-info {
     color: #B5D17C;
 }
+.ellipsis {
+    width: 200px; 
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis;
+}
 
 #main
 {
@@ -459,8 +465,19 @@ a.md-button.md-default-theme.md-primary.md-raised, a.md-button.md-primary.md-rai
     font-weight: 700;
     padding: 0 12px;
 }
-
-
+/* switch 样式 */
+md-switch {
+    display: inline-flex;
+}
+md-switch.md-default-theme.md-checked.md-primary .md-thumb, md-switch.md-checked.md-primary .md-thumb {
+    background-color: #1FA2BF;
+}
+md-switch.md-default-theme.md-checked.md-primary .md-ink-ripple, md-switch.md-checked.md-primary .md-ink-ripple {
+    color: #1FA2BF;
+}
+md-switch.md-default-theme.md-checked.md-primary .md-bar, md-switch.md-checked.md-primary .md-bar {
+    background-color: rgba(31,162,191,0.5);
+}
 /* tab 样式 */
 md-tabs-canvas {
     height: 40px;
@@ -523,6 +540,7 @@ md-content {
     border-bottom: 1px solid #93929D;
     margin-bottom: 25px;
     padding-bottom: 25px;
+    color: #93929D;
 }
 .info-list-detail h2 {
     color: #D3D1D5;
@@ -565,9 +583,17 @@ md-content {
     color: #93929D;
     border-bottom: 1px solid #5A616E;
     padding-top: 0;
+    font-size: 12px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+.info-list-detail th small {
+    color: #5A616E;
+    margin-left: 10px;
 }
 .info-list-detail td {
     color: #D3D1D5;
+    padding: 0 24px 0 0;
 }
 .info-list-detail tr:hover td {
     background-color: #5A616E;

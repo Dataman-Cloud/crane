@@ -1,3 +1,38 @@
+<section data-ng-repeat="repository in repositorieListPublicCtrl.repositories ">
+    <div class="info-list-detail" layout="row">
+        <div flex="20">
+            <h2>{/repository.name/}</h2>
+            <dl layout="row">
+                <dt><i class="fa fa-cloud-download"></i><md-tooltip md-direction="bottom">下载次数</md-tooltip></dt><dd flex-offset="5" class="text-info">{/repository.pullCount/}</dd>
+                <dt flex-offset="10"><i class="fa fa-cloud-upload"><md-tooltip md-direction="bottom">上传次数</md-tooltip></i></dt><dd flex-offset="5" class="text-info">{/repository.pushCount/}</dd>
+            </dl>
+        </div>
+        <div flex="80">
+            <table cellpadding="0" cellspacing="0">
+                    <tr>
+                        <th>TAG</th>
+                        <th>大小<small>MB</small></th>
+                        <th>摘要</th>
+                    </tr>
+                    <tr ng-repeat="tag in repository.tags">
+                        <td>{/tag.tag/}</td>
+                        <td>{/tag.size | size/}</td>
+                        <td><p class="ellipsis">{/tag.digest/}<p></td>
+                    </tr>
+                </table>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+
+
+
+<!--
+
 <div class="main-content">
     <ul class="collapse in">
         <li class="panel" data-ng-repeat="repository in repositorieListPublicCtrl.repositories ">
@@ -57,3 +92,4 @@
         </li>
     </ul>
 </div>
+-->

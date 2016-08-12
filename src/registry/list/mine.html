@@ -1,3 +1,51 @@
+<section data-ng-repeat="repository in repositorieListMineCtrl.repositories ">
+    <div class="info-list-detail" layout="row">
+        <div flex="20">
+            <h2>{/repository.Namespace + "/" + repository.Image/}</h2>
+            <dl layout="row">
+                <dt><i class="fa fa-cloud-download"></i><md-tooltip md-direction="bottom">下载次数</md-tooltip></dt><dd flex-offset="5" class="text-info">{/repository.PullCount/}</dd>
+                <dt flex-offset="10"><i class="fa fa-cloud-upload"><md-tooltip md-direction="bottom">上传次数</md-tooltip></i></dt><dd flex-offset="5" class="text-info">{/repository.PushCount/}</dd>
+            </dl>
+            <md-switch class="md-primary">公共镜像</md-switch>
+        </div>
+        <div flex="80">
+            <table cellpadding="0" cellspacing="0">
+              <tr >
+                  <th>TAG</th>
+                  <th>大小<small>MB</small></th>
+                  <th>摘要</th>
+                  <th>操作</th>
+              </tr>
+              <tr ng-repeat="tag in repository.tags">
+              <td>{/tag.tag/}</td>
+              <td>{/tag.size | size/}</td>
+              <td><p class="ellipsis">{/tag.digest/}<md-tooltip md-direction="bottom">{/tag.digest/}</md-tooltip></p></td>
+              <td>
+                <md-menu>
+                  <md-button class="md-icon-button" aria-label="More" ng-click="$mdOpenMenu($event)">
+                      <i class="fa fa-ellipsis-h"></i>
+                  </md-button>
+                  <md-menu-content>
+                      <md-menu-item>
+                          <md-button aria-label="delete" data-ng-click="repositorieListMineCtrl.deleteImage(repository.name, tag, $event)">
+                          删除
+                       </md-button>
+                      </md-menu-item>
+                  </md-menu-content>
+                </md-menu>
+              </td>
+            </tr>
+          </table>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+
+
 <div class="main-content">
     <ul class="collapse in">
         <li class="panel" data-ng-repeat="repository in repositorieListMineCtrl.repositories ">
