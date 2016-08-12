@@ -66,7 +66,7 @@
                 templateUrl: '/src/node/detail/config.html',
                 controller: 'NodeConfigCtrl as nodeConfigCtrl',
                 ncyBreadcrumb: {
-                    label: '基本信息'
+                    skip: true
                 }
             })
             .state('node.detail.container', {
@@ -77,7 +77,7 @@
                     containers: listContainers
                 },
                 ncyBreadcrumb: {
-                    label: '容器列表'
+                    skip: true
                 }
             })
             .state('node.detail.network', {
@@ -88,7 +88,7 @@
                     networks: listNetworks
                 },
                 ncyBreadcrumb: {
-                    label: '网络列表'
+                    skip: true
                 }
             })
             .state('node.detail.volume', {
@@ -99,7 +99,7 @@
                     volumes: listVolumes
                 },
                 ncyBreadcrumb: {
-                    label: '存储列表'
+                    skip: true
                 }
             })
             .state('node.detail.image', {
@@ -110,7 +110,7 @@
                     images: listImages
                 },
                 ncyBreadcrumb: {
-                    label: '镜像列表'
+                    skip: true
                 }
             })
             .state('node.imageDetail', {
@@ -131,7 +131,7 @@
                 templateUrl: '/src/node/image-detail/config.html',
                 controller: 'NodeImageConfigCtrl as nodeImageConfigCtrl',
                 ncyBreadcrumb: {
-                    label: '详情'
+                    skip: true
                 }
             })
             .state('node.imageDetail.layer', {
@@ -142,7 +142,7 @@
                     layer: getLayer
                 },
                 ncyBreadcrumb: {
-                    label: '层级'
+                    skip: true
                 }
             })
             .state('node.containerDetail', {
@@ -164,7 +164,7 @@
                 templateUrl: '/src/node/container-detail/config.html',
                 controller: 'NodeContainerConfigCtrl as nodeContainerConfigCtrl',
                 ncyBreadcrumb: {
-                    label: '详情'
+                    skip: true
                 }
             })
             .state('node.containerDetail.log', {
@@ -172,7 +172,7 @@
                 templateUrl: '/src/node/container-detail/log.html',
                 controller: 'NodeContainerLogCtrl as nodeContainerLogCtrl',
                 ncyBreadcrumb: {
-                    label: '日志'
+                    skip: true
                 }
             })
             .state('node.containerDetail.stats', {
@@ -180,7 +180,7 @@
                 templateUrl: '/src/node/container-detail/stats.html',
                 controller: 'NodeContainerStatsCtrl as nodeContainerStatsCtrl',
                 ncyBreadcrumb: {
-                    label: '统计'
+                    skip: true
                 }
             })
             .state('node.containerDetail.diff', {
@@ -191,7 +191,7 @@
                     diffs: diffContainer
                 },
                 ncyBreadcrumb: {
-                    label: '变更'
+                    skip: true
                 }
             })
             .state('node.containerDetail.terminal', {
@@ -199,7 +199,7 @@
                 templateUrl: '/src/node/container-detail/terminal.html',
                 controller: 'NodeContainerTerminalCtrl as nodeContainerTerminalCtrl',
                 ncyBreadcrumb: {
-                    label: '终端'
+                    skip: true
                 }
             })
             .state('node.networkDetail', {
@@ -221,7 +221,7 @@
                 templateUrl: '/src/node/network-detail/config.html',
                 controller: 'NodeNetworkConfigCtrl as nodeNetworkConfigCtrl',
                 ncyBreadcrumb: {
-                    label: '详情'
+                    skip: true
                 }
             });
 

@@ -74,7 +74,7 @@
                     services: listStackServices 
                 },
                 ncyBreadcrumb: {
-                    label: '服务列表'
+                    skip: true
                 }
             })
             .state('stack.serviceDetail', {
@@ -95,7 +95,7 @@
                 templateUrl: '/src/stack/service-detail/config.html',
                 controller: 'ServiceConfigCtrl as serviceConfigCtrl',
                 ncyBreadcrumb: {
-                    label: '配置'
+                    skip: true
                 }
             })
             .state('stack.serviceDetail.task', {
@@ -106,7 +106,7 @@
                     tasks: listServiceTasks
                 },
                 ncyBreadcrumb: {
-                    label: '任务列表'
+                    skip: true
                 }
             })
             .state('stack.serviceDetail.log', {
@@ -114,7 +114,7 @@
                 templateUrl: '/src/stack/service-detail/log.html',
                 controller: 'ServiceLogCtrl as serviceLogCtrl',
                 ncyBreadcrumb: {
-                    label: '日志'
+                    skip: true
                 }
             })
             .state('stack.serviceDetail.stats', {
@@ -122,7 +122,7 @@
                 templateUrl: '/src/stack/service-detail/stats.html',
                 controller: 'ServiceStatsCtrl as serviceStatsCtrl',
                 ncyBreadcrumb: {
-                    label: '统计'
+                    skip: true
                 }
             })
             .state('stack.serviceDetail.discovery', {
@@ -134,7 +134,7 @@
                     nodes: listNodes
                 },
                 ncyBreadcrumb: {
-                    label: '入口列表'
+                    skip: true
                 }
             })
             .state('stack.serviceDetail.cd', {
@@ -145,7 +145,7 @@
                   serviceCdUrl: getServiceCDUrl
                 },
                 ncyBreadcrumb: {
-                    label: '持续部署'
+                    skip: true
                 }
             });
     }

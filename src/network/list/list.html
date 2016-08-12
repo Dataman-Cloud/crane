@@ -19,15 +19,18 @@
         </tr>
         </thead>
         <tbody md-body>
-        <tr md-row ng-repeat="network in networkListCtrl.networks | filter: networkListCtrl.filter">
+        <tr md-row ng-repeat="network in networkListCtrl.networks">
             <td md-cell>
                 <a data-ui-sref="network.detail({network_id: network.Id})">{/network.Name/}</a>
             </td>
             <td md-cell>{/network.Driver/}</td>
             <td md-cell>{/network.Internal ? '是':'否'/}</td>
-            <td md-cell><span data-ng-if="network.IPAM.Config[0].Subnet">{/network.IPAM.Config[0].Subnet/}</span><span data-ng-if="!network.IPAM.Config[0].Subnet" class="no-info">未配置</span></td>
-            <td md-cell><span data-ng-if="network.IPAM.Config[0].Gateway">{/network.IPAM.Config[0].Gateway/}</span><span data-ng-if="!network.IPAM.Config[0].Gateway" class="no-info">未配置</span></td>
-            <td md-cell><span data-ng-if="network.IPAM.Config[0].IPRange">{/network.IPAM.Config[0].IPRange/}</span><span data-ng-if="!network.IPAM.Config[0].IPRange" class="no-info">未配置</span></td>
+            <td md-cell><span ng-class="{'no-info': !network.IPAM.Config[0].Subnet}">{/network.IPAM.Config[0].Subnet || '未配置'/}</span>
+            </td>
+            <td md-cell><span ng-class="{'no-info': !network.IPAM.Config[0].Gateway}">{/network.IPAM.Config[0].Gateway || '未配置'/}</span>
+            </td>
+            <td md-cell><span ng-class="{'no-info': !network.IPAM.Config[0].IPRange}">{/network.IPAM.Config[0].IPRange || '未配置'/}</span>
+            </td>
             <td md-cell>
                 <md-menu md-offset="0 -5">
                     <md-button class="md-icon-button" aria-label="More" ng-click="$mdOpenMenu($event)">
