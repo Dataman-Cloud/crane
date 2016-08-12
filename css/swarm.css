@@ -78,6 +78,9 @@ section {
 .no-info {
     color: #5A616E!important;
 }
+.text-info {
+    color: #B5D17C;
+}
 
 #main
 {
@@ -476,12 +479,14 @@ md-tabs .md-tab {
     line-height: 40px;
     padding: 0 10px;
     min-width: 180px;
-    border: 1px solid #93929D;
+    border-top: 1px solid #93929D;
+    border-left: 1px solid #93929D;
+    border-bottom: 1px solid #93929D;
     color: #93929D;
     font-size: 16px;
 }
-md-tabs .md-tab:first-child {
-    border-right: 0;
+md-tabs .md-tab:last-of-type {
+    border-right: 1px solid #93929D;
 }
 md-tabs.md-default-theme .md-tab.md-active, md-tabs .md-tab.md-active, md-tabs.md-default-theme .md-tab.md-active md-icon, md-tabs .md-tab.md-active md-icon, md-tabs.md-default-theme .md-tab.md-focused, md-tabs .md-tab.md-focused, md-tabs.md-default-theme .md-tab.md-focused md-icon, md-tabs .md-tab.md-focused md-icon {
     color: #1FA2BF;

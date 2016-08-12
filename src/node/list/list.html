@@ -24,8 +24,8 @@
             <td md-cell>
                 <a data-ui-sref="node.detail({node_id: node.ID})">{/node.Description.Hostname/}</a>
             </td>
-            <td md-cell ><p ng-repeat="(key, value) in node.Spec.Labels">{/key/}:{/value/}</p></td>
-            <td md-cell><span data-ng-if="node.ManagerStatus.Leader">*</span>{/NODE_ROLE[node.Spec.Role]/}</td>
+            <td md-cell><p ng-repeat="(key, value) in node.Spec.Labels">{/key/}:{/value/}</p></td>
+            <td md-cell>{/NODE_ROLE[node.Spec.Role]/} <i class="fa fa-anchor text-info" data-ng-if="node.ManagerStatus.Leader"></i></td>
             <td md-cell>{/NODE_AVAILABILITY[node.Spec.Availability]/}</td>
             <td md-cell>{/NODE_STATE[node.Status.State]/}</td>
             <td md-cell>{/node.CreatedAt | date: 'yyyy-MM-dd HH:mm:ss'/}</td>
