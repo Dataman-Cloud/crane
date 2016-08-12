@@ -37,6 +37,7 @@ const (
 	CodeErrorUpdateNodeMethod = 11302
 	CodeErrorNodeRole         = 11303
 	CodeErrorNodeAvailability = 11304
+	CodeGetNodeInfoError      = 11305
 
 	//Service error code
 	CodeUpdateServiceParamError    = 11401
@@ -64,8 +65,9 @@ const (
 	CodeInvalidVolumeName      = 11602
 
 	//Go docker client error code
-	CodeConnToNodeError      = 11701
-	CodeGetNodeEndpointError = 11702
+	CodeConnToNodeError          = 11701
+	CodeGetNodeEndpointError     = 11702
+	CodeNodeEndpointIpMatchError = 11703
 
 	//Get config error code
 	CodeGetConfigError = 11901
