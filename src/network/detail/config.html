@@ -22,3 +22,45 @@
         </div>
     </div>
 </section>
+
+<section layout="row" class="info-list-detail">
+    <h2 flex="20">连接容器</h2>
+    <div flex="80" dm-empty-display="networkConfigCtrl.network.Containers">
+    <table>
+        <thead>
+        <tr>
+            <th>容器名称</th>
+            <th>IPv4 地址</th>
+            <th>IPv6 地址</th>
+            <th>Mac 地址</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="(key, value) in networkConfigCtrl.network.Containers">
+            <td>{/value.Name/}</td>
+            <td><span ng-class="{'no-info': !value.IPv4Address}">{/value.IPv4Address || '未配置'/}</span></td>
+            <td><span ng-class="{'no-info': !value.IPv6Address}">{/value.IPv6Address || '未配置'/}</span></td>
+            <td><span ng-class="{'no-info': !value.MacAddress}">{/value.MacAddress || '未配置'/}</span></td>
+            <td>
+                <md-menu md-offset="0 -5">
+                    <md-button class="md-icon-button" aria-label="More" ng-click="$mdOpenMenu($event)">
+                        <i class="fa fa-ellipsis-h"></i>
+                    </md-button>
+                    <md-menu-content width="2">
+                        <md-menu-item>
+                            <md-button aria-label="Connect">连接
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button aria-label="Disconnect">断开
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    </div>
+</section>

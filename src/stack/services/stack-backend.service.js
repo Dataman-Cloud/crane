@@ -46,7 +46,7 @@
             return gHttp.Resource('stack.service', {
                 stack_name: stackName,
                 service_id: serviceID
-            }).patch({Scale: scale});
+            }).patch({NumTasks: scale});
         }
 
         function getService(stackName, serviceID) {

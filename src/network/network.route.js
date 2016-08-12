@@ -45,14 +45,6 @@
                     label: '网络详情'
                 }
             })
-            .state('network.detail.container', {
-                url: '/container',
-                templateUrl: '/src/network/detail/container.html',
-                controller: 'NetworkContainerCtrl as networkContainerCtrl',
-                ncyBreadcrumb: {
-                    skip: true
-                }
-            })
             .state('network.detail.config', {
                 url: '/config',
                 templateUrl: '/src/network/detail/config.html',
