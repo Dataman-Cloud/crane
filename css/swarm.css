@@ -659,3 +659,12 @@ table.md-table tr:hover td.md-cell {
     padding-bottom: 10px;
     padding-right: 30px;
 }
+
+article {
+    color: #D3D1D5;
+    max-width: 600px;
+}
+article p {
+    line-height: 2;
+    margin: 0 0 2em 0;
+}

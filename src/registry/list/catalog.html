@@ -1,3 +1,4 @@
+<!--
 <section class="main-section">
     <div class="main-content">
         <div layout="row" layout-wrap>
@@ -18,3 +19,26 @@
         </div>
     </div>
 </section>
+-->
+
+
+
+
+
+<div layout="row" layout-wrap>
+    <md-card md-theme="{{ showDarkTheme ? 'dark-purple' : 'default' }}" md-theme-watch flex="23" data-ng-repeat="catalog in repositorieListCatalogCtrl.catalogs">
+        <md-card-title>
+          <md-card-title-text>
+            <span class="md-headline">{/catalog.Name/}</span>
+            <span class="md-subhead">{/catalog.Description/}</span>
+          </md-card-title-text>
+          <md-card-title-media>
+            <div class="md-media-sm card-media"><img  ng-src="{/catalog.Icon/}" class="md-card-image" alt="Washed Out"></div>
+          </md-card-title-media>
+        </md-card-title>
+        <md-card-actions layout="row" layout-align="end center">
+          <md-button class="md-raised md-primary" data-ui-sref="registry.catalogDetail({catalog_name: catalog.Name})">部署</md-button>
+        </md-card-actions>
+      </md-card>
+</div>
+
