@@ -61,5 +61,9 @@
             'any': '退出后重启',
             'on-failure': '失败重启'
         };
+
+        $rootScope.VOL_DRIVER = {
+            'local': '本地'
+        };
     }
 })();

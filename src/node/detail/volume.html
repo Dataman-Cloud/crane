@@ -4,8 +4,6 @@
         <tr md-row>
             <th md-column>储存卷</th>
             <th md-column>驱动</th>
-            <th md-column>服务</th>
-            <th md-column>主机名称</th>
             <th md-column>挂载点</th>
             <th md-column>操作</th>
         </tr>
@@ -17,9 +15,7 @@
                     {/volume.Name/}
                 </div>
             </td>
-            <td md-cell>{/volume.Driver/}</td>
-            <td md-cell>-</td>
-            <td md-cell>-</td>
+            <td md-cell>{/VOL_DRIVER[volume.Driver]/}</td>
             <td md-cell>
                 <div style="max-width: 200px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
                     {/volume.Mountpoint/}

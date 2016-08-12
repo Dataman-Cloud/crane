@@ -85,7 +85,7 @@
     <div flex="80" layout="row" layout-wrap>
         <div flex="30"><h5>重启策略</h5></div>
         <div flex="70"><p ng-class="{'no-info': !serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.Condition}">
-          {/TASK_RESTART_POLICY_COND(serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.Condition) || '未配置'/}</p>
+          {/TASK_RESTART_POLICY_COND[serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.Condition] || '未配置'/}</p>
         </div>
         <div flex="30">
             <h5 class="help-info">重启间隔<small>秒</small></h5>

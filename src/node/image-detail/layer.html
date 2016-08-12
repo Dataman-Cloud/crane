@@ -20,7 +20,9 @@
                 </div>
             </td>
             <td md-cell>
-                <span data-ng-repeat="tag in layer.Tags">{/tag/}</span>
+                <ul>
+                    <li data-ng-repeat="tag in layer.Tags">{/tag/}</li>
+                </ul>
             </td>
         </tr>
         </tbody>

@@ -13,7 +13,7 @@
                 rawSize /= 1024;
                 unitIndex++;
             }
-            return rawSize.toFixed(2) + units[unitIndex];
+            return rawSize.toFixed(2) + ' ' + units[unitIndex];
         }
     }
 })();

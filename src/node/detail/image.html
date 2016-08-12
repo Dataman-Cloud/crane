@@ -5,19 +5,19 @@
             <th md-column>名称</th>
             <th md-column>大小</th>
             <th md-column>创建时间</th>
-            <th md-column>Label</th>
         </tr>
         </thead>
         <tbody md-body>
         <tr md-row ng-repeat="image in nodeImageCtrl.images | filter: nodeImageCtrl.filter">
             <td md-cell>
-                <a data-ui-sref="node.imageDetail({node_id: $stateParams.node_id, image_id: image.Id})">{/image.RepoTags[0]/}</a>
+                <ul>
+                    <li ng-repeat="tag in image.RepoTags">
+                        <a data-ui-sref="node.imageDetail({node_id: $stateParams.node_id, image_id: image.Id})">{/tag/}</a>
+                    </li>
+                </ul>
             </td>
             <td md-cell>{/image.Size / (1024 * 1024) | limitTo: 6/} MB</td>
             <td md-cell>{/image.Created * 1000| date: 'yyyy-MM-dd HH:mm:ss'/}</td>
-            <td md-cell>
-                <div data-ng-repeat="(key, value) in image.Label"> {/key/}:{/value/}</div>
-            </td>
         </tr>
         </tbody>
     </table>
