@@ -25,7 +25,7 @@ func (client *RolexDockerClient) HttpGet(requestUrl string, query url.Values, he
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("http response status code is %d error: %s", resp.StatusCode, string(result))
+		return nil, fmt.Errorf("%s", result)
 	}
 
 	return result, nil
@@ -50,7 +50,7 @@ func (client *RolexDockerClient) HttpDelete(requestUrl string) ([]byte, error) {
 	}
 
 	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusNoContent {
-		return nil, fmt.Errorf("http response status code is %d error: %s", resp.StatusCode, string(result))
+		return nil, fmt.Errorf("%s", result)
 	}
 
 	return result, nil
@@ -98,7 +98,7 @@ func (client *RolexDockerClient) HttpPost(requestUrl string, query url.Values, o
 	}
 
 	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusCreated {
-		return nil, fmt.Errorf("http response status code is %d error: %s", resp.StatusCode, string(result))
+		return nil, fmt.Errorf("%s", result)
 	}
 
 	return result, nil
@@ -131,7 +131,7 @@ func (client *RolexDockerClient) HttpPut(requestUrl string, query url.Values, bo
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("http response status code is %d error: %s", resp.StatusCode, string(result))
+		return nil, fmt.Errorf("%s", result)
 	}
 
 	return result, nil
