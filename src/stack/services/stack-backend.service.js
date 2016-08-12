@@ -21,7 +21,9 @@
 
         function createStack(data, form, groupId) {
             var params = {
-                group_id: groupId
+                //TODO: disabled group function, so I am setting group_id = 1 bypass the func
+                //group_id: groupId
+                group_id: 1
             };
             return gHttp.Resource('stack.stacks').post(data, {form: form, params: params});
         }
