@@ -98,6 +98,8 @@ CODE_MESSAGE = {
 
 NODE_CONN_ERROR_CODE = [11701, 11702, 11703];
 
+SHOW_ERROR_DATA_MESSAGE = [10001];
+
 BACKEND_URL = {
     auth: {
         login: 'account/v1/login',
