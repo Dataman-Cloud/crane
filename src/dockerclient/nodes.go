@@ -182,6 +182,7 @@ func (client *RolexDockerClient) Info(nodeId string) (types.Info, error) {
 		return nodeInfo, err
 	}
 
+	//TODO hardcode may have better way
 	if nodeUrl.Scheme == "tcp" {
 		nodeUrl.Scheme = "http"
 	}
