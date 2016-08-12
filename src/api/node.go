@@ -10,7 +10,6 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/docker/engine-api/types"
 	"github.com/gin-gonic/gin"
-	"golang.org/x/net/context"
 )
 
 func (api *Api) InspectNode(ctx *gin.Context) {
@@ -106,8 +105,7 @@ func (api *Api) RemoveNode(ctx *gin.Context) {
 }
 
 func (api *Api) Info(ctx *gin.Context) {
-	rolexContext, _ := ctx.Get("rolexContext")
-	info, err := api.GetDockerClient().Info(rolexContext.(context.Context))
+	info, err := api.GetDockerClient().Info(ctx.Param("node_id"))
 	if err != nil {
 		log.Error("Get node info got error: ", err)
 		rolexgin.HttpErrorResponse(ctx, err)

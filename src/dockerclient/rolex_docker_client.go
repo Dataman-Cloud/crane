@@ -37,7 +37,6 @@ type RolexDockerClient struct {
 	// http client shared both for cluster connection & client connection
 	sharedHttpClient         *http.Client
 	swarmManagerHttpEndpoint string
-	swarmNodeHttpEndpoints   []string
 
 	config *config.Config
 }
@@ -115,7 +114,7 @@ func (client *RolexDockerClient) SwarmNode(ctx context.Context) (*docker.Client,
 		}
 	}
 
-	err = swarmNode.Ping()
+	nodeInfo, err := client.Info(nodeId)
 	if err != nil {
 		return nil, &rolexerror.RolexError{
 			Code: rolexerror.CodeConnToNodeError,
@@ -123,6 +122,12 @@ func (client *RolexDockerClient) SwarmNode(ctx context.Context) (*docker.Client,
 		}
 	}
 
+	if nodeId != nodeInfo.Swarm.NodeID {
+		return nil, &rolexerror.RolexError{
+			Code: rolexerror.CodeNodeEndpointIpMatchError,
+			Err:  &rolexerror.NodeConnError{ID: nodeId, Endpoint: endpoint, Err: fmt.Errorf("node id not matched endpoint")},
+		}
+	}
 	return swarmNode, nil
 }
 

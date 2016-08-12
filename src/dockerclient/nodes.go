@@ -14,8 +14,6 @@ import (
 
 	"github.com/docker/engine-api/types"
 	"github.com/docker/engine-api/types/swarm"
-	docker "github.com/fsouza/go-dockerclient"
-	"golang.org/x/net/context"
 )
 
 const (
@@ -177,12 +175,28 @@ func nodeRemoveLabels(spec *swarm.NodeSpec, rawMessage []byte) error {
 }
 
 // docker info
-func (client *RolexDockerClient) Info(ctx context.Context) (*docker.DockerInfo, error) {
-	swarmNode, err := client.SwarmNode(ctx)
+func (client *RolexDockerClient) Info(nodeId string) (types.Info, error) {
+	var nodeInfo types.Info
+	nodeUrl, err := client.NodeDaemonUrl(nodeId)
 	if err != nil {
-		return nil, err
+		return nodeInfo, err
 	}
-	return swarmNode.Info()
+
+	//TODO hardcode may have better way
+	if nodeUrl.Scheme == "tcp" {
+		nodeUrl.Scheme = "http"
+	}
+
+	content, err := client.HttpGet(nodeUrl.String()+"/info", url.Values{}, nil)
+	if err != nil {
+		return nodeInfo, rolexerror.NewRolexError(rolexerror.CodeGetNodeInfoError, err.Error())
+	}
+
+	if err := json.Unmarshal(content, &nodeInfo); err != nil {
+		return nodeInfo, rolexerror.NewRolexError(rolexerror.CodeGetNodeInfoError, err.Error())
+	}
+
+	return nodeInfo, nil
 }
 
 func (client *RolexDockerClient) NodeDaemonUrl(nodeId string) (*url.URL, error) {
@@ -206,8 +220,7 @@ func (client *RolexDockerClient) NodeDaemonUrl(nodeId string) (*url.URL, error) 
 
 	u, err := url.Parse(endpoint)
 
-	if u.Scheme == "" {
-		u.Scheme = conf.DockerEntryScheme
+	if err != nil {
 		nodeConnErr = &rolexerror.NodeConnError{ID: nodeId, Endpoint: endpoint, Err: err}
 		return nil, &rolexerror.RolexError{Code: rolexerror.CodeGetNodeEndpointError, Err: nodeConnErr}
 	}
