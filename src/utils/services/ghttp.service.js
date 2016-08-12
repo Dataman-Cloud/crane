@@ -68,7 +68,7 @@
                             if (data.data) {
                                 options.form.message_error_info = data.data;
                             } else {
-                                Notification.error('参数错误');
+                                Notification.error(CODE_MESSAGE[data.code]);
                             }
                         }
                         options.form.$setValidity("submit", true);
@@ -122,7 +122,7 @@
 
             Resource.prototype._handleErrors = function (status, data, deferred) {
                 if (data && angular.isObject(data) && data.code && CODE_MESSAGE[data.code]) {
-                    if (!this.options.ignoreCodes.includes(data.code)) {
+                    if (this.options.ignoreCodes.indexOf(data.code) === -1) {
                         Notification.error(CODE_MESSAGE[data.code]);
                     }
                 } else if (status == 401) {

@@ -29,7 +29,7 @@
         $breadcrumbProvider.setOptions({
             template: '<div id="breadcrumb-main"><span ng-repeat="step in steps" ng-switch="$last || !!step.abstract">' +
             '<a ng-switch-when="false" href="{/step.ncyBreadcrumbLink/}">{/step.ncyBreadcrumbLabel/}</a>' +
-            '<i class="fa fa-angle-right" aria-hidden="true"></i>' +
+            '<i class="fa fa-angle-right" aria-hidden="true" ng-switch-when="false"></i>' +
             '<span ng-switch-when="true" >{{step.ncyBreadcrumbLabel}}</span></div>'
         });
     }

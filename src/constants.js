@@ -1,6 +1,6 @@
 MESSAGE_CODE = {
     success: 0,
-    dataInvalid: 10001,
+    dataInvalid: 10002,
     noExist: 10009,
     unknow: 10000
 };
@@ -8,6 +8,7 @@ MESSAGE_CODE = {
 CODE_MESSAGE = {
     10000: '服务忙, 请稍后重试',
     10001: '服务忙, 请稍后重试',
+    10002: '参数错误',
     11001: '获取容器列表参数错误',
     11002: '更新容器参数错误',
     11003: '不支持的容器更新操作',

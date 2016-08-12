@@ -79,7 +79,7 @@
                         </div>
                     </div>
                     <div class="form-group" layout="column">
-                        <label>镜像地址<span class="required">*</span></label>
+                        <label>镜像<span class="required">*</span></label>
                         <div class="form-control">
                             <input type="text"
                                    data-ng-model="serve.TaskTemplate.ContainerSpec.Image"
@@ -105,26 +105,6 @@
 
                     <div data-ng-show="serve.showAdvanceContent">
                         <div class="form-group" layout="column">
-                            <label>重启策略</label>
-                            <div class="form-control" layout="row" layout-align="start center">
-                                <md-radio-group data-ng-model="serve.TaskTemplate.RestartPolicy.Condition" layout="row"
-                                                aria-label="restart-condition" flex>
-                                    <div flex="25">
-                                        <md-radio-button value="any" class="md-primary">any</md-radio-button>
-                                    </div>
-                                    <div flex="25">
-                                        <md-radio-button value="none" class="md-primary">none</md-radio-button>
-                                    </div>
-                                    <div flex="25">
-                                        <md-radio-button value="on-failure" class="md-primary">on-failure
-                                        </md-radio-button>
-                                    </div>
-                                </md-radio-group>
-                            </div>
-                            <p class="help-text"></p>
-                        </div>
-
-                        <div class="form-group" layout="column">
                             <label>任务数量</label>
                             <div class="form-control" layout="row" layout-align="start center">
                                 <md-radio-group data-ng-model="serve.defaultMode" layout="row" aria-label="defaultMode"
@@ -137,7 +117,7 @@
                                                data-ng-model="serve.Mode.Replicated.Replicas" name="replicas">
                                     </div>
                                     <div flex="25">
-                                        <md-radio-button value="Global" class="md-primary" flex-offset="5">一主机一任务
+                                        <md-radio-button value="Global" class="md-primary" flex-offset="5">一节点一任务
                                         </md-radio-button>
                                     </div>
                                 </md-radio-group>
@@ -146,93 +126,7 @@
                         </div>
 
                         <div class="form-group" layout="column">
-                            <label>杀死容器前等待时间</label>
-                            <div class="form-control">
-                                <input type="number"
-                                       data-ng-model="serve.TaskTemplate.ContainerSpec.StopGracePeriod"
-                                       name="stopGracePeriod">
-                            </div>
-                            <div ng-messages="staticForm.stopGracePeriod.$error"
-                                 ng-if="staticForm.stopGracePeriod.$dirty"
-                                 role="alert">
-                            </div>
-                        </div>
-
-                        <div class="form-group" layout="column">
-                            <label>更新策略</label>
-                            <div class="form-control sub-group" layout="row" layout-align="start center">
-                                <div flex="25">
-                                    <label class="sub-label">更新延迟
-                                        <small>秒</small>
-                                    </label>
-                                    <input type="number" min="0"
-                                           data-ng-model="serve.UpdateConfig.Delay" name="updateDelay">
-                                </div>
-                                <div flex="25">
-                                    <label class="sub-label">更新并行任务数</label>
-                                    <input type="number" min="0"
-                                           data-ng-model="serve.UpdateConfig.Parallelism"
-                                           name="updateParallelism">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group" layout="column">
-                            <label>重启策略</label>
-                            <div class="form-control sub-group" layout="row" layout-align="start center">
-                                <div flex="25">
-                                    <label class="sub-label">重启延时
-                                        <small>秒</small>
-                                    </label>
-                                    <input type="number"
-                                           data-ng-model="serve.TaskTemplate.RestartPolicy.Delay"
-                                           name="restartDelay" min="0">
-                                </div>
-                                <div flex="25">
-                                    <label class="sub-label">重启间隔
-                                        <small>秒</small>
-                                    </label>
-                                    <input type="number" min="0"
-                                           data-ng-model="serve.TaskTemplate.RestartPolicy.Window"
-                                           name="restartPolicy">
-                                </div>
-                                <div flex="25">
-                                    <label class="sub-label">重启最大尝试次数</label>
-                                    <input type="number" min="0"
-                                           data-ng-model="serve.TaskTemplate.RestartPolicy.MaxAttempts"
-                                           name="restartMaxAttempts">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group" layout="column">
-                            <label>容器工作目录</label>
-                            <div class="form-control">
-                                <input type="text"
-                                       data-ng-model="serve.TaskTemplate.ContainerSpec.Dir" name="workdir">
-                            </div>
-                            <div ng-messages="staticForm.workdir.$error"
-                                 ng-if="staticForm.workdir.$dirty"
-                                 role="alert">
-                            </div>
-                        </div>
-
-                        <div class="form-group" layout="column">
-                            <label>选择网络</label>
-                            <div class="form-control">
-                                <md-select data-ng-model="serve.Networks" multiple aria-label="Networks"
-                                           md-on-open="stackCreateByFormCtrl.loadNetworks()">
-                                    <md-option
-                                            data-ng-repeat="network in stackCreateByFormCtrl.networks | filter: {Driver: '!bridge'}"
-                                            ng-value="network.Id">{/network.Name/}
-                                    </md-option>
-                                </md-select>
-                            </div>
-                            <p class="help-text"></p>
-                        </div>
-
-                        <div class="form-group" layout="column">
-                            <label>资源限制</label>
+                            <label>每个任务的资源限制</label>
                             <div class="form-control sub-group" layout="row" layout-align="start center">
                                 <div flex="25">
                                     <label class="sub-label">CPU
@@ -266,7 +160,7 @@
                         </div>
 
                         <div class="form-group" layout="column">
-                            <label>资源预留</label>
+                            <label>每个任务的资源预留</label>
                             <div class="form-control sub-group" layout="row" layout-align="start center">
                                 <div flex="25">
                                     <label class="sub-label">CPU
@@ -299,6 +193,118 @@
                                     <small>内存最小为 4 MB</small>
                                 </p>
                             </div>
+                        </div>
+
+                        <div class="form-group" layout="column">
+                            <label>容错策略</label>
+                            <div class="form-control" layout="row" layout-align="start center">
+                                <md-radio-group data-ng-model="serve.TaskTemplate.RestartPolicy.Condition" layout="row"
+                                                aria-label="restart-condition" flex>
+                                    <div flex="25">
+                                      <md-radio-button value="any" class="md-primary">
+                                      <i class="fa fa-umbrella"></i>
+                                      <md-tooltip md-direction="top">无论任务正常或异常退出，都重启, 适合批处理或定时任务场景</md-tooltip>
+                                      退出后重启
+                                      </md-radio-button>
+                                    </div>
+                                    <div flex="25">
+                                        <md-radio-button value="none" class="md-primary">不重启</md-radio-button>
+                                    </div>
+                                    <div flex="25">
+                                      <md-radio-button value="on-failure" class="md-primary">
+                                      <i class="fa fa-umbrella"></i>
+                                      <md-tooltip md-direction="top">在退出状态码(exit code)非 0 的情况下重启</md-tooltip>
+                                      失败重启
+                                      </md-radio-button>
+                                    </div>
+                                </md-radio-group>
+                            </div>
+                            <div class="form-control sub-group" layout="row" layout-align="start center">
+                                <div flex="25">
+                                  <label class="sub-label">重启间隔
+                                    <small>秒</small>
+                                  </label>
+                                  <input type="number" data-ng-model="serve.TaskTemplate.RestartPolicy.Delay"
+                                  name="restartDelay" min="0">
+                                </div>
+                                <div flex="25">
+                                    <label class="sub-label">在?时间之内
+                                        <small>秒</small>
+                                    </label>
+                                    <input type="number" min="0"
+                                           data-ng-model="serve.TaskTemplate.RestartPolicy.Window"
+                                           name="restartPolicy">
+                                </div>
+                                <div flex="25">
+                                    <label class="sub-label">最多尝试重启?次</label>
+                                    <input type="number" min="0"
+                                           data-ng-model="serve.TaskTemplate.RestartPolicy.MaxAttempts"
+                                           name="restartMaxAttempts">
+                                </div>
+                            </div>
+                            <p class="help-text"></p>
+                        </div>
+
+                        <div class="form-group" layout="column">
+                            <label>更新策略</label>
+                            <div class="form-control sub-group" layout="row" layout-align="start center">
+                                <div flex="25">
+                                    <label class="sub-label">在?时间内
+                                        <small>秒</small>
+                                    </label>
+                                    <input type="number" min="0"
+                                           data-ng-model="serve.UpdateConfig.Delay" name="updateDelay">
+                                </div>
+                                <div flex="25">
+                                    <label class="sub-label">并行更新?个任务</label>
+                                    <input type="number" min="0"
+                                           data-ng-model="serve.UpdateConfig.Parallelism"
+                                           name="updateParallelism">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" layout="column">
+                          <label>
+                            <i class="fa fa-umbrella"></i>
+                            <md-tooltip md-direction="top">容器将在容忍时间之后被强制杀死</md-tooltip>
+                            容器退出的容忍时间
+                          </label>
+                            <div class="form-control">
+                                <input type="number"
+                                       data-ng-model="serve.TaskTemplate.ContainerSpec.StopGracePeriod"
+                                       name="stopGracePeriod">
+                            </div>
+                            <div ng-messages="staticForm.stopGracePeriod.$error"
+                                 ng-if="staticForm.stopGracePeriod.$dirty"
+                                 role="alert">
+                            </div>
+                        </div>
+
+                        <div class="form-group" layout="column">
+                            <label>容器工作目录</label>
+                            <div class="form-control">
+                                <input type="text"
+                                       data-ng-model="serve.TaskTemplate.ContainerSpec.Dir" name="workdir">
+                            </div>
+                            <div ng-messages="staticForm.workdir.$error"
+                                 ng-if="staticForm.workdir.$dirty"
+                                 role="alert">
+                            </div>
+                        </div>
+
+                        <div class="form-group" layout="column">
+                            <label>选择网络</label>
+                            <div class="form-control">
+                                <md-select data-ng-model="serve.Networks" multiple aria-label="Networks"
+                                           md-on-open="stackCreateByFormCtrl.loadNetworks()">
+                                    <md-option
+                                            data-ng-repeat="network in stackCreateByFormCtrl.networks | filter: {Driver: '!bridge'}"
+                                            ng-value="network.Id">{/network.Name/}
+                                    </md-option>
+                                </md-select>
+                            </div>
+                            <p class="help-text"></p>
                         </div>
 
                         <div class="form-group" layout="column">

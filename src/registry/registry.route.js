@@ -27,7 +27,7 @@
                 templateUrl: '/src/registry/list/catalog.html',
                 controller: 'RepositorieListCatalogCtrl as repositorieListCatalogCtrl',
                 ncyBreadcrumb: {
-                    label: '应用目录'
+                    skip: true
                 },
                 resolve: {
                     catalogs: listCatalogs
@@ -49,7 +49,7 @@
                 templateUrl: '/src/registry/list/public.html',
                 controller: 'RepositorieListPublicCtrl as repositorieListPublicCtrl',
                 ncyBreadcrumb: {
-                    label: '公共镜像'
+                    skip: true
                 },
                 resolve: {
                     repositories: listPublicRepositories
@@ -60,7 +60,7 @@
                 templateUrl: '/src/registry/list/mine.html',
                 controller: 'RepositorieListMineCtrl as repositorieListMineCtrl',
                 ncyBreadcrumb: {
-                    label: '我的镜像'
+                    skip: true
                 },
                 resolve: {
                     repositories: listMineRepositories
@@ -83,7 +83,7 @@
                 templateUrl: '/src/registry/image-detail/history.html',
                 controller: 'RegistryImageHistoryCtrl as registryImageHistoryCtrl',
                 ncyBreadcrumb: {
-                    label: '镜像历史'
+                    skip: true
                 }
             });
 

@@ -50,7 +50,7 @@
                 templateUrl: '/src/network/detail/container.html',
                 controller: 'NetworkContainerCtrl as networkContainerCtrl',
                 ncyBreadcrumb: {
-                    label: '容器列表'
+                    skip: true
                 }
             })
             .state('network.detail.config', {
@@ -58,7 +58,7 @@
                 templateUrl: '/src/network/detail/config.html',
                 controller: 'NetworkConfigCtrl as networkConfigCtrl',
                 ncyBreadcrumb: {
-                    label: '配置'
+                    skip: true
                 }
             });
 
