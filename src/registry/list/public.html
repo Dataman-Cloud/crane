@@ -3,8 +3,8 @@
         <div flex="20">
             <h2>{/repository.name/}</h2>
             <dl layout="row">
-                <dt><i class="fa fa-cloud-download"></i><md-tooltip md-direction="bottom">下载次数</md-tooltip></dt><dd flex-offset="5" class="text-info">{/repository.pullCount/}</dd>
-                <dt flex-offset="10"><i class="fa fa-cloud-upload"><md-tooltip md-direction="bottom">上传次数</md-tooltip></i></dt><dd flex-offset="5" class="text-info">{/repository.pushCount/}</dd>
+                <dt><i class="fa fa-cloud-download"></i><md-tooltip md-direction="bottom">下载次数</md-tooltip></dt><dd flex-offset="5" class="text-info">{/repository.PullCount/}</dd>
+                <dt flex-offset="10"><i class="fa fa-cloud-upload"><md-tooltip md-direction="bottom">上传次数</md-tooltip></i></dt><dd flex-offset="5" class="text-info">{/repository.PushCount/}</dd>
             </dl>
         </div>
         <div flex="80">
@@ -26,70 +26,3 @@
 
 
 
-
-
-
-
-
-<!--
-
-<div class="main-content">
-    <ul class="collapse in">
-        <li class="panel" data-ng-repeat="repository in repositorieListPublicCtrl.repositories ">
-            <div layout="row" layout-align="end start" class="panel-heading">
-                <div class="info" flex>
-                    <h3>{/repository.name/}</h3>
-                </div>
-                <div class="info" flex>
-                    下载次数: {/repository.pullCount/}
-                </div>
-                <div class="info" flex>
-                    上传次数: {/repository.pushCount/}
-                </div>
-                <div layout-align="end center" class="operation">
-                    <md-button class="md-raised" aria-label="add"
-                               data-ng-show="!repository.show"
-                               ng-click="repositorieListPublicCtrl.openRepository($index)">
-                        <i class="fa fa-chevron-down" aria-hidden="true"></i>
-                        <md-tooltip md-direction="top">
-                            展开详情
-                        </md-tooltip>
-                    </md-button>
-                    <md-button class="md-raised" aria-label="add"
-                               data-ng-show="repository.show"
-                               ng-click="repositorieListPublicCtrl.closeRepository($index)">
-                        <i class="fa fa-chevron-up" aria-hidden="true"></i>
-                        <md-tooltip md-direction="top">
-                            收起详情
-                        </md-tooltip>
-                    </md-button>
-                </div>
-            </div>
-            <div class="panel-collapse">
-                <table md-table ng-show="repository.show">
-                    <thead md-head>
-                    <tr md-row>
-                        <th md-column><span>tag号</span></th>
-                        <th md-column><span>大小</span></th>
-                        <th md-column><span>摘要</span></th>
-                    </tr>
-                    </thead>
-                    <tbody md-body>
-                    <tr md-row ng-repeat="tag in repository.tags">
-                        <td md-cell>
-                            <a data-ui-sref='registry.imageDetail({repository: repository.name, tag:tag.digest})'>{/tag.tag/}</a>
-                        </td>
-                        <td md-cell>
-                            {/tag.size | size/}
-                        </td>
-                        <td md-cell>
-                            <a data-ui-sref='registry.imageDetail({repository: repository.name, tag:tag.digest})'>{/tag.digest/}</a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </li>
-    </ul>
-</div>
--->
