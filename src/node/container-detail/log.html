@@ -1,7 +1,7 @@
-<div class="log-panel">
+<div class="log-panel" id="containerLog">
     <ul class="list-unstyled">
-        <li data-ng-repeat='log in nodeContainerLogCtrl.logs' >
-            {/log/}
+        <li data-ng-repeat='log in nodeContainerLogCtrl.logs track by $index'>
+            <p ng-bind-html="log"></p>
         </li>
     </ul>
     <code data-ng-if='nodeContainerLogCtrl.logs.length <= 0'>暂无日志</code>
