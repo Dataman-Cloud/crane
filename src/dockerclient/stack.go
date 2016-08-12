@@ -129,6 +129,18 @@ func (client *RolexDockerClient) RemoveStack(namespace string) error {
 		}
 	}
 
+	filter := docker.NetworkFilterOpts{"label": map[string]bool{labelNamespace: true}}
+	networks, err := client.ListNetworks(filter)
+	if err != nil {
+		return err
+	}
+
+	for _, network := range networks {
+		if err := client.RemoveNetwork(network.ID); err != nil {
+			return err
+		}
+	}
+
 	return nil
 }
 
@@ -224,10 +236,9 @@ func (client *RolexDockerClient) updateNetworks(networks []string, namespace str
 		existingNetworkMap[network.Name] = network
 	}
 
-	labels := client.getStackLabels(namespace, nil)
 	createOpts := &docker.CreateNetworkOptions{
-		Options: client.getStackLabelsInterface(labels),
-		Driver:  defaultNetworkDriver,
+		Label:  client.getStackLabels(namespace, nil),
+		Driver: defaultNetworkDriver,
 		// docker TODO: remove when engine-api uses omitempty for IPAM
 		IPAM: docker.IPAMOptions{Driver: "default"},
 	}
@@ -331,16 +342,6 @@ func (client *RolexDockerClient) getStackLabels(namespace string, labels map[str
 
 	labels[labelNamespace] = namespace
 	return labels
-}
-
-// convert labels map[string]string to map[string]interface{}
-func (client *RolexDockerClient) getStackLabelsInterface(labels map[string]string) map[string]interface{} {
-	labelsInterface := make(map[string]interface{})
-	for key, value := range labels {
-		labelsInterface[key] = value
-	}
-
-	return labelsInterface
 }
 
 // split joint stack filter
