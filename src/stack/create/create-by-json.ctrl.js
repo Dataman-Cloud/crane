@@ -39,7 +39,7 @@
         self.loadGroups = loadGroups;
         self.onFileSelect = onFileSelect;
         self.create = create;
-        self.download = download;
+        self.createAndDownload = createAndDownload;
         self.stackChange = stackChange;
         self.getStackExample = getStackExample;
 
@@ -112,9 +112,10 @@
                 });
         }
 
-	function download() {
+	function createAndDownload() {
 	    var data = new Blob([self.stack], { type: 'text/plain;charset=utf-8' });
 	    FileSaver.saveAs(data, self.form.Namespace + '.json');
+            self.create()
 	}
     }
 })();
