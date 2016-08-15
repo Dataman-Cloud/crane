@@ -9,7 +9,7 @@
         </tr>
         </thead>
         <tbody md-body>
-        <tr md-row ng-repeat="volume in nodeVolumeCtrl.volumes | filter: nodeVolumeCtrl.filter">
+        <tr md-row ng-repeat="volume in nodeVolumeCtrl.volumes">
             <td md-cell>
                 <div style="max-width: 200px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
                     {/volume.Name/}

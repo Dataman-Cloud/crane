@@ -22,11 +22,8 @@
 -->
 
 
-
-
-
 <div layout="row" layout-wrap>
-    <md-card md-theme="{{ showDarkTheme ? 'dark-purple' : 'default' }}" md-theme-watch flex="23" data-ng-repeat="catalog in repositorieListCatalogCtrl.catalogs">
+    <md-card flex="23" data-ng-repeat="catalog in repositorieListCatalogCtrl.catalogs">
         <md-card-title>
           <md-card-title-text>
             <span class="md-headline">{/catalog.Name/}</span>

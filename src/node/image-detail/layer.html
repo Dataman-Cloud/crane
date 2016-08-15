@@ -13,7 +13,10 @@
         <tr md-row ng-repeat="layer in nodeImageLayerCtrl.layer track by $index">
             <td md-cell>{/$index + 1/}</td>
             <td md-cell>{/layer.Created * 1000 | date: 'yyyy-MM-dd HH:mm:ss'/}</td>
-            <td md-cell>{/layer.Size / (1024 * 1024) || '0' | limitTo: 5/} MB</td>
+            <td md-cell>
+                <span ng-if="layer.Size">{/layer.Size | size/}</span>
+                <span ng-if="!layer.Size" ng-class="{'no-info': !layer.Size}">未知</span>
+            </td>
             <td md-cell>
                 <div style="max-width: 350px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
                     {/layer.CreatedBy/}

@@ -10,13 +10,13 @@
         </tr>
         </thead>
         <tbody md-body>
-        <tr md-row ng-repeat="network in nodeNetworkCtrl.networks | filter: nodeNetworkCtrl.filter">
+        <tr md-row ng-repeat="network in nodeNetworkCtrl.networks">
             <td md-cell>
                 <a data-ui-sref="node.networkDetail({node_id: $stateParams.node_id, network_id: network.Id})">{/network.Name/}</a>
             </td>
             <td md-cell>{/network.Scope/}</td>
             <td md-cell>{/network.Driver/}</td>
-            <td md-cell>{/network.Containers | keylength/}</td>
+            <td md-cell><span ng-class="{'no-info': !network.Containers}">{/network.Containers | keylength/}</span></td>
             <td md-cell>
                 <md-menu md-offset="0 -5">
                     <md-button class="md-icon-button" aria-label="More" ng-click="$mdOpenMenu($event)">

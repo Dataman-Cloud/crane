@@ -12,16 +12,19 @@
         </tr>
         </thead>
         <tbody md-body>
-        <tr md-row ng-repeat="container in nodeContainerCtrl.containers | filter: nodeContainerCtrl.filter">
+        <tr md-row ng-repeat="container in nodeContainerCtrl.containers">
             <td md-cell>
                 <a data-ui-sref="node.containerDetail({node_id: $stateParams.node_id, container_id: container.Id})">{/container.Names[0].substring(1)/}</a>
             <td md-cell>
+                <span ng-if="!container.Ports.length" ng-class="{'no-info': !container.Ports.length}">未配置</span>
                 <p ng-repeat="port in container.Ports">
                     <span ng-show="container.NetworkSettings.Networks.bridge.IPAddress">{/container.NetworkSettings.Networks.bridge.IPAddress/}:</span>{/port.PrivatePort/}/{/port.Type/}
                 </p>
             </td>
-            <td md-cell>{/container.Labels['com.docker.swarm.service.name']/}</td>
-            <td md-cell>{/container.Labels['com.docker.swarm.task.name']/}</td>
+            <td md-cell><span ng-class="{'no-info': !container.Labels['com.docker.swarm.service.name']}">{/container.Labels['com.docker.swarm.service.name'] || '未配置'/}</span>
+            </td>
+            <td md-cell><span ng-class="{'no-info': !container.Labels['com.docker.swarm.task.name']}">{/container.Labels['com.docker.swarm.task.name'] || '未配置'/}</span>
+            </td>
             <td md-cell>
                 <p>{/CONTAINER_STATUS_LABELS[container.State]/}
                     <br>{/container.Status | statusZh /}

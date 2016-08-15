@@ -13,7 +13,7 @@
             if (angular.isObject(input)) {
                 return Object.keys(input).length;
             } else {
-                return '-'
+                return '未配置'
             }
         }
     }

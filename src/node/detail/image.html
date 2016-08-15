@@ -8,7 +8,7 @@
         </tr>
         </thead>
         <tbody md-body>
-        <tr md-row ng-repeat="image in nodeImageCtrl.images | filter: nodeImageCtrl.filter">
+        <tr md-row ng-repeat="image in nodeImageCtrl.images">
             <td md-cell>
                 <ul>
                     <li ng-repeat="tag in image.RepoTags">
@@ -16,7 +16,7 @@
                     </li>
                 </ul>
             </td>
-            <td md-cell>{/image.Size / (1024 * 1024) | limitTo: 6/} MB</td>
+            <td md-cell>{/image.Size | size/}</td>
             <td md-cell>{/image.Created * 1000| date: 'yyyy-MM-dd HH:mm:ss'/}</td>
         </tr>
         </tbody>
