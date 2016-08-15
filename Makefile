@@ -38,7 +38,7 @@ run: build
 	./bin/rolex
 
 test:
-	go test ./src/...
+	go test -cover=true ./src/...
 
 # http://godoc.org/code.google.com/p/go.tools/cmd/vet
 # go get code.google.com/p/go.tools/cmd/vet
