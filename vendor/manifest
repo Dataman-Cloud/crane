@@ -1027,6 +1027,14 @@
 			"branch": "master"
 		},
 		{
+			"importpath": "github.com/erikstmartin/go-testdb",
+			"repository": "https://github.com/erikstmartin/go-testdb",
+			"vcs": "git",
+			"revision": "8d10e4a1bae52cd8b81ffdec3445890d6dccab3d",
+			"branch": "master",
+			"notests": true
+		},
+		{
 			"importpath": "github.com/fatih/color",
 			"repository": "https://github.com/fatih/color",
 			"vcs": "",
