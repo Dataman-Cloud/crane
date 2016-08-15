@@ -35,16 +35,17 @@ type ClientContext struct {
 }
 
 type Options struct {
-	CloseSignal     int                    `hcl:"close_signal"`
-	Preferences     HtermPrefernces        `hcl:"preferences"`
-	RawPreferences  map[string]interface{} `hcl:"preferences"`
-	EnableReconnect bool                   `hcl:"enable_reconnect"`
-	ReconnectTime   int                    `hcl:"reconnect_time"`
-	Once            bool                   `hcl:"once"`
-	PermitWrite     bool                   `hcl:"permit_write"`
-	TitleFormat     string                 `hcl:"title_format"`
-	EnableRandomUrl bool                   `hcl:"enable_random_url"`
-	RandomUrlLength int                    `hcl:"random_url_length"`
+	CloseSignal       int                    `hcl:"close_signal"`
+	Preferences       HtermPrefernces        `hcl:"preferences"`
+	RawPreferences    map[string]interface{} `hcl:"preferences"`
+	EnableReconnect   bool                   `hcl:"enable_reconnect"`
+	ReconnectTime     int                    `hcl:"reconnect_time"`
+	Once              bool                   `hcl:"once"`
+	PermitWrite       bool                   `hcl:"permit_write"`
+	TitleFormat       string                 `hcl:"title_format"`
+	EnableCustomTitle bool                   `hcl:"custom_title"`
+	EnableRandomUrl   bool                   `hcl:"enable_random_url"`
+	RandomUrlLength   int                    `hcl:"random_url_length"`
 }
 
 const (
@@ -82,15 +83,16 @@ var (
 	}
 
 	DefaultOptions = &Options{
-		PermitWrite:     true,
-		EnableRandomUrl: false,
-		RandomUrlLength: 8,
-		TitleFormat:     SubProtocol + "TTY - {{ .Command }} ({{ .Hostname }})",
-		EnableReconnect: false,
-		ReconnectTime:   10,
-		Once:            false,
-		CloseSignal:     1, // syscall.SIGHUP
-		Preferences:     HtermPrefernces{},
+		PermitWrite:       true,
+		EnableRandomUrl:   false,
+		RandomUrlLength:   8,
+		TitleFormat:       SubProtocol + "TTY - {{ .Command }} ({{ .Hostname }})",
+		EnableCustomTitle: false,
+		EnableReconnect:   false,
+		ReconnectTime:     10,
+		Once:              false,
+		CloseSignal:       1, // syscall.SIGHUP
+		Preferences:       HtermPrefernces{},
 	}
 )
 
@@ -176,7 +178,7 @@ func (ctx *ClientContext) write(data []byte) error {
 	return ctx.Conn.WriteMessage(websocket.TextMessage, data)
 }
 
-func (ctx ClientContext) sendInitialize() error {
+func (ctx ClientContext) sendCustomTitle() error {
 	hostname, _ := os.Hostname()
 	titleVars := ContextVars{
 		Command:    strings.Join(ctx.Command.Args, " "),
@@ -196,6 +198,15 @@ func (ctx ClientContext) sendInitialize() error {
 		return err
 	}
 
+	return nil
+}
+
+func (ctx ClientContext) sendInitialize() error {
+	if ctx.Options.EnableCustomTitle {
+		if err := ctx.sendCustomTitle(); err != nil {
+			return err
+		}
+	}
 	prefStruct := structs.New(ctx.Options.Preferences)
 	prefMap := prefStruct.Map()
 	htermPrefs := make(map[string]interface{})
@@ -242,7 +253,6 @@ func (ctx *ClientContext) processReceive() {
 			return
 		}
 
-		log.Println("received data", string(data))
 		switch data[0] {
 		case Input:
 			if !ctx.Options.PermitWrite {
