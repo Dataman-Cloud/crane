@@ -1,8 +1,14 @@
-<h1>
-    <i class="fa fa-stack-overflow" aria-hidden="true"></i>
-    {/stackDetailCtrl.stack.Namespace/}
-</h1>
-
+<header layout="row" id="header-main">
+	<h1 flex="auto">
+	    <i class="fa fa-stack-overflow" aria-hidden="true"></i>
+	    {/stackDetailCtrl.stack.Namespace/}
+	</h1>
+	<div flex="none">
+		<md-button class="md-button md-primary md-small md-raised" aria-label="删除应用">
+            <i class="fa fa-trash" aria-hidden="true"></i> 删除应用
+        </md-button>
+	</div>
+</header>
 <md-tabs md-dynamic-height md-border-bottom>
     <md-tab label="服务列表" dm-tab-sref="stack.detail.service"></md-tab>
 </md-tabs>

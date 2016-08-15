@@ -3,7 +3,7 @@
         <thead md-head>
         <tr md-row>
             <th md-column>服务名称</th>
-            <th md-column>任务数(运行中/总数)</th>
+            <th md-column>任务数 <small>运行中/总数</small></th>
             <th md-column>创建时间</th>
             <th md-column>更新时间</th>
             <th md-column>操作</th>
@@ -25,20 +25,17 @@
 
                     <md-menu-content width="2">
                         <md-menu-item>
-                            <md-button aria-label="scale"
-                                       data-ng-click="stackServiceCtrl.upServiceScale($event, stackDetailCtrl.stack.Namespace, service.Name, service.TaskTotal)">
-                                修改任务数
+                            <md-button aria-label="scale" data-ng-click="stackServiceCtrl.upServiceScale($event, stackDetailCtrl.stack.Namespace, service.Name, service.TaskTotal)">
+                                <i class="fa fa-sort" aria-hidden="true"></i> 修改任务数
                             </md-button>
                         </md-menu-item>
                         <md-menu-item>
-                            <md-button aria-label="stop"
-                                       data-ng-click="stackServiceCtrl.stopService(stackDetailCtrl.stack.Namespace, service.Name)">
-                                停止
+                            <md-button aria-label="stop" data-ng-click="stackServiceCtrl.stopService(stackDetailCtrl.stack.Namespace, service.Name)">
+                                <i class="fa fa-stop" aria-hidden="true"></i> 停止
                             </md-button>
                         </md-menu-item>
                         <md-menu-item>
-                            <md-button aria-label="update"
-                                       data-ui-sref="stack.serviceUpdate({stack_name: $stateParams.stack_name, service_id: service.ID})">
+                            <md-button aria-label="update" data-ui-sref="stack.serviceUpdate({stack_name: $stateParams.stack_name, service_id: service.ID})">
                                 更新
                             </md-button>
                         </md-menu-item>
