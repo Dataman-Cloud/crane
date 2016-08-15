@@ -11,9 +11,9 @@
           <p data-ng-if="serviceConfigCtrl.service.Spec.Mode.Global">一主机一任务</p>
         </div>
         <div flex="30">
-          <i class="fa fa-umbrella"></i>
-          <md-tooltip md-direction="top">容器将在容忍时间之后被强制杀死</md-tooltip>
-          <h5>容器退出的容忍时间</h5>
+          <h5 class="help-info">容器退出的容忍时间<i class="fa fa-umbrella"></i>
+            <md-tooltip md-direction="top">容器将在容忍时间之后被强制杀死</md-tooltip>
+          </h5>
         </div>
         <div flex="70">
             <p ng-class="{'no-info': !serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.StopGracePeriod}">
@@ -31,9 +31,7 @@
     <h2 flex="20">每个任务的资源限制</h2>
     <div flex="80" layout="row" layout-wrap>
         <div flex="30">
-            <h5 class="help-info">CPU
-                <small>(核)</small>
-            </h5>
+            <h5>CPU<small>核</small></h5>
         </div>
         <div flex="70"><p
                 ng-class="{'no-info': !serviceConfigCtrl.service.Spec.TaskTemplate.Resources.Limits.NanoCPUs}">
@@ -41,9 +39,7 @@
             Math.pow(10, 9) || '未配置'/}</p></div>
 
         <div flex="30">
-            <h5 class="help-info">内存
-                <small>(MB)</small>
-            </h5>
+            <h5>内存<small>MB</small></h5>
         </div>
         <div flex="70"><p
                 ng-class="{'no-info': !serviceConfigCtrl.service.Spec.TaskTemplate.Resources.Limits.MemoryBytes}">
@@ -58,9 +54,7 @@
     <h2 flex="20">每个任务的资源预留</h2>
     <div flex="80" layout="row" layout-wrap>
         <div flex="30">
-            <h5 class="help-info">CPU
-                <small>(核)</small>
-            </h5>
+            <h5>CPU<small>核</small></h5>
         </div>
         <div flex="70"><p
                 ng-class="{'no-info': !serviceConfigCtrl.service.Spec.TaskTemplate.Resources.Reservations.NanoCPUs}">
@@ -68,9 +62,7 @@
             / Math.pow(10, 9) || '未配置'/}</p></div>
 
         <div flex="30">
-            <h5 class="help-info">内存
-                <small>(MB)</small>
-            </h5>
+            <h5>内存<small>MB</small></h5>
         </div>
         <div flex="70"><p
                 ng-class="{'no-info': !serviceConfigCtrl.service.Spec.TaskTemplate.Resources.Reservations.MemoryBytes}">
@@ -149,7 +141,6 @@
                 <th>KEY</th>
                 <th>VALUE</th>
             </tr>
-
             <tr ng-repeat="(key, value) in serviceConfigCtrl.service.Spec.Labels">
                 <td>{/key/}</td>
                 <td>{/value/}</td>

@@ -4,5 +4,5 @@
             <p ng-bind-html="log"></p>
         </li>
     </ul>
-    <code data-ng-if='serviceLogCtrl.logs.length <= 0'>暂无日志</code>
+    <div data-ng-if='serviceLogCtrl.logs.length <= 0' class="no-info">暂无日志</div>
 </div>

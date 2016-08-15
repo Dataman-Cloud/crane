@@ -1,17 +1,17 @@
-<div layout="row" layout-padding layout-wrap layout-fill style="padding-bottom: 32px;">
-  <h4>{/serviceCdCtrl.serviceCdCommand/}</h3>
-</div>
-<div layout="column" layout-padding layout-wrap layout-fill style="padding-bottom: 32px;">
-  <div flex>
-  1. 执行上面Bash命令可重新部署应用此应用
-  </div>
-
-  <div flex>
-  2. 将your-new-image 替换为新的镜像地址，请确保该镜像真实存在，并且集群主机能够拉取(docker pull) 该镜像
-  </div>
-
-  <div flex>
-  3. 请勿泄露本命令
+<div layout="row">
+  <div flex="35"><code>{/serviceCdCtrl.serviceCdCommand/}</code></div>
+  <div flex="60" flex-offset="5">
+    <article>
+      <ol>
+        <li>执行上面 Bash 命令可重新部署应用此应用；</li>
+        <li>将 your-new-image 替换为新的镜像地址，请确保该镜像真实存在，并且集群主机能够拉取<code>docker pull</code>该镜像；</li>
+        <li>请勿泄露本命令。</li>
+      </ol>
+    </article>
   </div>
 
 </div>
+
+
+
+

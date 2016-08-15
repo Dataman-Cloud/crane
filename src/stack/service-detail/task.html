@@ -18,7 +18,7 @@
                 <a data-ui-sref="node.detail({node_id: task.NodeID})">{/serviceTaskCtrl.nodesMapping[task.NodeID].Description.Hostname/}</a>
             </td>
             <td md-cell>
-                <a data-ui-sref="node.containerDetail({node_id: task.NodeID, container_id: task.Status.ContainerStatus.ContainerID})">{/task.Status.ContainerStatus.ContainerID/}</a>
+                <a data-ui-sref="node.containerDetail({node_id: task.NodeID, container_id: task.Status.ContainerStatus.ContainerID})" class="ellipsis">{/task.Status.ContainerStatus.ContainerID/}</a>
             </td>
             <td md-cell>{/task.CreatedAt | date: 'yyyy-MM-dd HH:mm:ss'/}</td>
             <td md-cell>{/task.UpdatedAt | date: 'yyyy-MM-dd HH:mm:ss'/}</td>

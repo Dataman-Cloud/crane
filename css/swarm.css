@@ -75,6 +75,15 @@ color:#FFF;
 section {
     margin: 0;
 }
+code {
+    background-color: #f9f2f4;
+    color: #c7254e;
+    font-size: 11px;
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+    display: inline-block;
+    padding: 10px;
+    word-break: break-all;
+}
 .no-info {
     color: #5A616E!important;
 }
@@ -82,10 +91,11 @@ section {
     color: #B5D17C;
 }
 .ellipsis {
-    width: 200px; 
+    max-width: 200px; 
     white-space: nowrap; 
     overflow: hidden; 
     text-overflow: ellipsis;
+    display: inline-block;
 }
 
 #main
@@ -578,6 +588,7 @@ md-content {
     min-height: 40px;
     margin: 0;
     padding: 13px 0;
+    min-width: 100px;
 }
 .info-list-detail th {
     color: #93929D;
@@ -593,7 +604,7 @@ md-content {
 }
 .info-list-detail td {
     color: #D3D1D5;
-    padding: 0 24px 0 0;
+    padding-right: 24px;
 }
 .info-list-detail tr:hover td {
     background-color: #5A616E;
@@ -640,6 +651,12 @@ table.md-table tr:hover td.md-cell {
     background: #101515;
     padding: 10px;
 }
+.log-panel .no-info {
+    padding-top: 100px;
+    padding-bottom: 100px;
+    font-size: 36px;
+    text-align: center;
+}
 .app-panel {
     background-color: #E8EAEC;
     padding: 15px;
@@ -663,8 +680,24 @@ table.md-table tr:hover td.md-cell {
 article {
     color: #D3D1D5;
     max-width: 600px;
+    font-size: 14px;
 }
 article p {
-    line-height: 2;
+    line-height: 1.5;
     margin: 0 0 2em 0;
+}
+article code {
+    margin-bottom: 2em;
+}
+article ol li {
+    list-style: decimal;
+    margin-bottom: 2em;
+    line-height: 1.5;
+}
+article ol li code {
+    display: inline;
+    line-height: 1;
+    padding: 0 1px;
+    margin-left: 6px;
+    margin-right: 6px;
 }
