@@ -21,6 +21,7 @@ const (
 	flagUpdateAvailability = "availability"
 	flagLabelAdd           = "label-add"
 	flagLabelRemove        = "label-rm"
+	flagLabelUpdate        = "label-update"
 )
 
 const (
@@ -98,6 +99,10 @@ func (client *RolexDockerClient) UpdateNode(nodeId string, opts model.UpdateOpti
 		if err := nodeRemoveLabels(spec, opts.Options); err != nil {
 			return err
 		}
+	case flagLabelUpdate:
+		if err := nodeUpdateLabels(spec, opts.Options); err != nil {
+			return err
+		}
 	default:
 		return rolexerror.NewRolexError(rolexerror.CodeErrorUpdateNodeMethod, fmt.Sprintf("Invalid update node method %s", opts.Method))
 	}
@@ -157,6 +162,17 @@ func nodeAddLabels(spec *swarm.NodeSpec, rawMessage []byte) error {
 	for k, v := range labelsAdd {
 		spec.Annotations.Labels[k] = v
 	}
+
+	return nil
+}
+
+func nodeUpdateLabels(spec *swarm.NodeSpec, rawMessage []byte) error {
+	var labelsUpdate map[string]string
+	if err := json.Unmarshal(rawMessage, &labelsUpdate); err != nil {
+		return err
+	}
+
+	spec.Annotations.Labels = labelsUpdate
 
 	return nil
 }
