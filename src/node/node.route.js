@@ -236,8 +236,8 @@
             //per error_code_XXX can trigger the special error_XXX_handle_func
             return nodeBackend.getNode($stateParams.node_id).catch(function (res) {
                 var deferred = $q.defer();
-                if (res.data && angular.isObject(res.data) && res.code && NODE_CONN_ERROR_CODE.indexOf(res.code) > 0) {
-                    nodeCurd.updateNodeEndpoint(res.data.ID, res.data.Endpoint)
+                if (res.data && angular.isObject(res.data) && res.code && NODE_CONN_ERROR_CODE.indexOf(res.code) != -1) {
+                    nodeCurd.updateEndpoint(res.data.ID, res.data.Endpoint)
                 }
                 deferred.reject();
                 return deferred.promise;

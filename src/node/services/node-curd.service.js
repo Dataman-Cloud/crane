@@ -8,7 +8,7 @@
 
 
     /* @ngInject */
-    function nodeCurd(nodeBackend, $state, confirmModal, Notification, utils, formModal) {
+    function nodeCurd(nodeBackend, $state, confirmModal, Notification, utils, updateLabelsFormModal, formModal) {
         //////
         return {
             deleteVolume: deleteVolume,
@@ -19,16 +19,46 @@
             activeNode: activeNode,
             pauseNode: pauseNode,
             createNetwork: createNetwork,
-            updateNodeEndpoint: updateNodeEndpoint
+            updateEndpoint: updateEndpoint,
+            updateLabels: updateLabels,
+            removeLabels: removeLabels
         };
         
-        function updateNodeEndpoint(nodeId, endpoint) {
-            formModal.open('/src/node/modals/form-nodeIp.html', null, {dataName: 'endpoint', initData: endpoint})
+        function updateEndpoint(nodeId, env, endpoint) {
+            formModal.open('/src/node/modals/form-nodeIp.html', env, {dataName: 'endpoint', initData: endpoint})
                 .then(function (endpoint) {
-                nodeBackend.handleNode(nodeId, "label-add", {"dm.swarm.node.endpoint":endpoint}).then(function (data) {
+                var labels = {}
+                labels[NODE_ENDPOINT_LABEL] = endpoint
+                nodeBackend.handleNode(nodeId, "label-add", labels).then(function (data) {
                     Notification.success('更新主机成功');
                     $state.reload()
                 });
+            });
+        }
+
+        function updateLabels(nodeId, env, labels) {
+            var labelList = [];
+            angular.forEach(labels, function (value, key) {
+                this.push({"key": key, "value": value})
+            }, labelList);
+
+            updateLabelsFormModal.open('/src/node/modals/form-labels.html', env, {dataName: 'labels', initData: labelList})
+                .then(function (labelList) {
+                    var newLabels = {}
+                    angular.forEach(labelList, function (label) {
+                        this[label.key] = label.value;
+                    }, newLabels);
+                    nodeBackend.handleNode(nodeId, "label-update", newLabels).then(function (data) {
+                        Notification.success('更新主机成功');
+                        $state.reload()
+                    });
+                });
+        }
+
+        function removeLabels(nodeId, rmList) {
+            nodeBackend.handleNode(nodeId, "label-rm", rmList).then(function (data) {
+                Notification.success('更新主机成功');
+                $state.reload()
             });
         }
         

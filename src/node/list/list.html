@@ -40,6 +40,14 @@
                     </md-button>
                     <md-menu-content width="2">
                         <md-menu-item>
+                            <md-button aria-label="endpoint" data-ng-click="nodeListCtrl.updateEndpoint(node.ID, $event, node.Spec.Labels)">访问地址
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button aria-label="labels" data-ng-click="nodeListCtrl.updateLabels(node.ID, $event, node.Spec.Labels)">编辑标签
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
                             <md-button aria-label="drain"
                                        data-ng-disabled="node.Spec.Availability !== 'active'"
                                        data-ng-click="nodeListCtrl.drainNode(node.ID, node)">停止调度

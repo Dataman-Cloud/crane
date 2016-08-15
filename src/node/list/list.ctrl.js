@@ -13,6 +13,8 @@
         self.drainNode = drainNode;
         self.activeNode = activeNode;
         self.pauseNode = pauseNode;
+        self.updateEndpoint = updateEndpoint;
+        self.updateLabels = updateLabels;
 
         activate();
 
@@ -42,6 +44,20 @@
             };
 
             return data;
+        }
+
+        function updateEndpoint(nodeId, env, labels) {
+            var endpoint = ""
+            if (labels && labels.hasOwnProperty(NODE_ENDPOINT_LABEL)) {
+                endpoint = labels[NODE_ENDPOINT_LABEL]
+            }
+
+            nodeCurd.updateEndpoint(nodeId, env, endpoint)
+        }
+
+        function updateLabels(nodeId, env, labels) {
+            labels = labels || {}
+            nodeCurd.updateLabels(nodeId, env, labels)
         }
     }
 })();
