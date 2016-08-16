@@ -90,6 +90,9 @@ code {
 .text-info {
     color: #B5D17C;
 }
+.text-danger {
+    color: #932024;
+}
 .ellipsis {
     max-width: 200px; 
     white-space: nowrap; 
@@ -322,12 +325,21 @@ input[type='number'] {
     padding-left: 15px;
     padding-right: 5px;
 }
-input:focus {
+input:focus, textarea:focus {
     background-color: #3F4855;
     border: 1px solid #1FA2BF;
     box-shadow: none;
     outline: none;
-
+}
+textarea {
+    background-color: #3F4855;
+    border: 1px solid #666C71;
+    width: 580px;
+    height: 120px;
+    color: #D3D1D5;
+    font-size: 16px;
+    padding-left: 15px;
+    padding-right: 15px;
 }
 md-select {
     margin: 0;
@@ -391,7 +403,7 @@ md-radio-button .md-label {
 }
 .form-main .form-control {
     margin-bottom: 10px;
-    height: 40px;
+    min-height: 40px;
 }
 .form-main .form-control:last-of-type {
     margin-bottom: 10px;
@@ -439,6 +451,9 @@ md-radio-button .md-label {
     border: none;
     font-size: 16px;
 }
+.md-button:last-of-type {
+    margin: 0;
+}
 .md-button.md-raised {
     background-color: #E8EAEC;
     color: #475263;
@@ -463,7 +478,7 @@ a.md-button.md-default-theme.md-primary.md-raised, a.md-button.md-primary.md-rai
 .md-button.md-success {
     background-color: #78AD26;
 }
-.md-button.md-success:hover  {
+.md-button.md-success:hover {
     background-color: #86B53A!important;
 }
 .md-button.md-small {
@@ -474,6 +489,13 @@ a.md-button.md-default-theme.md-primary.md-raised, a.md-button.md-primary.md-rai
     font-size: 14px;
     font-weight: 700;
     padding: 0 12px;
+}
+.md-button[disabled], .md-button[disabled]:hover {
+    background-color: #C7CACF!important;
+    color: #AFB6BC!important;
+ }
+.md-primary.md-ink-ripple:hover {
+    color: #C7CACF!important;
 }
 /* switch 样式 */
 md-switch {
@@ -700,4 +722,16 @@ article ol li code {
     padding: 0 1px;
     margin-left: 6px;
     margin-right: 6px;
+}
+.cm-s-midnight.CodeMirror {
+    background-color: #3F4855;
+    border: 1px solid #666C71;
+    color: #D3D1D5;
+    font-size: 12px;
+    width: 580px;
+}
+.cm-s-midnight .CodeMirror-gutters {
+    background-color: #3F4855;
+    border-right: 1px solid #666C71;
+    color: #D3D1D5;
 }

@@ -1,27 +1,16 @@
-<h1>增加应用</h1>
 <form name="staticForm" class="form-main">
     <div class="form-group" layout="column">
         <label>应用名称<span class="required">*</span>
             <small></small>
         </label>
         <div class="form-control">
-            <input type="text" data-ng-model="stackCreateByJsonCtrl.form.Namespace"
-                   data-required="required" name="Name"
-                   data-ng-pattern="/^[A-Za-z0-9]+$/">
+            <input type="text" data-ng-model="stackCreateByJsonCtrl.form.Namespace" data-required="required" name="Name" data-ng-pattern="/^[A-Za-z0-9]+$/">
         </div>
-        <div ng-messages="staticForm.Name.$error" ng-if="staticForm.Name.$dirty"
-             role="alert">
-            <p class="error-info help-info-bottom"
-               ng-message="required">
-                <small>名称不能为空</small>
-            </p>
-            <p class="error-info help-info-bottom"
-               ng-message="pattern">
-                <small>名称必须数字或者英文</small>
-            </p>
+        <div ng-messages="staticForm.Name.$error" ng-if="staticForm.Name.$dirty" role="alert">
+            <p class="text-danger help-text" ng-message="required">名称不能为空</p>
+            <p class="text-danger help-text" ng-message="pattern">名称必须数字或者英文</p>
         </div>
     </div>
-
     <!--<div class="form-group" layout="column">
         <label>选择用户组
             <small></small>
@@ -40,6 +29,48 @@
         </div>
     </div>-->
 
+    <div class="form-group" layout="column">
+        <label>Stack JSON<span class="required">*</span></label>
+        <div class="form-control">
+            <textarea data-ng-model="stackCreateByJsonCtrl.stack" data-required="required" name="Stack" ui-codemirror ui-codemirror-opts="stackCreateByJsonCtrl.editorOptions" ui-refresh="stackCreateByJsonCtrl.refreshCodeMirror" data-ng-change="stackCreateByJsonCtrl.stackChange()"></textarea>
+        </div>
+        <div ng-messages="staticForm.Name.$error" ng-if="staticForm.Name.$dirty" role="alert">
+            <p class="text-danger help-text" ng-message="required">名称不能为空</p>
+            <p class="text-danger help-text" ng-message="pattern">名称必须数字或者英文</p>
+        </div>
+        <div layout="row" layout-align="space-between start" style="width: 580px;">
+            <div flex="none">
+                <input id="dockerFileInput" name="file" type="file" class="ng-hide" accept="text/plain, .json" onchange="angular.element(this).scope().stackCreateByJsonCtrl.onFileSelect(this.files)">
+                <md-button trigger-prev-click class="md-small md-primary"><i class="fa fa-upload"></i> 从文件中读取</md-button>
+            </div>
+
+            <div flex="none">
+                <md-menu md-offset="0 -5">
+                    <md-button aria-label="More" ng-click="$mdOpenMenu($event)" class="md-small md-primary">
+                        <i class="fa fa-ellipsis-h"></i> 试试看
+                    </md-button>
+                    <md-menu-content width="2">
+                        <md-menu-item>
+                            <md-button data-ng-click="stackCreateByJsonCtrl.getStackExample('2048')"><i class="fa fa-file-text"></i> 2048 单服务</md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button data-ng-click="stackCreateByJsonCtrl.getStackExample('mysql_display')"><i class="fa fa-file-text"></i> Mysql, Mywebsql 编排</md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button data-ng-click="stackCreateByJsonCtrl.getStackExample('wordpress')"><i class="fa fa-file-text"></i> wordpress, Mysql 编排</md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+            </div>
+        </div>
+    </div>
+    <footer class="form-buttons">
+        <md-button class="md-raised md-primary" data-ng-disabled="staticForm.$invalid || stackCreateByJsonCtrl.errorInfo.stack" data-ng-click="stackCreateByJsonCtrl.create()">创 建</md-button>
+        <md-button class="md-raised md-primary" data-ng-disabled="staticForm.$invalid || stackCreateByJsonCtrl.errorInfo.stack" data-ng-click="stackCreateByJsonCtrl.createAndDownload()">创建并导出 </md-button>
+        <md-button class="md-raised" data-ng-click="rootCtrl.goBack()">取 消</md-button>
+    </footer>
+</form>
+<!--
     <div layout="row" layout-align="end start" class="form-group form-group-textarea">
         <label flex="15">DAB</label>
         <div flex="50" layout="column">
@@ -106,3 +137,4 @@
         <md-button class="md-raised" data-ng-click="rootCtrl.goBack()">取消</md-button>
     </footer>
 </form>
+-->
