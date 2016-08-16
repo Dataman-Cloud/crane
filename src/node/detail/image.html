@@ -2,6 +2,7 @@
     <table md-table>
         <thead md-head>
         <tr md-row>
+            <th md-column>镜像ID</th>
             <th md-column>名称</th>
             <th md-column>大小</th>
             <th md-column>创建时间</th>
@@ -9,6 +10,9 @@
         </thead>
         <tbody md-body>
         <tr md-row ng-repeat="image in nodeImageCtrl.images">
+            <td md-cell>
+                <a data-ui-sref="node.imageDetail({node_id: $stateParams.node_id, image_id: image.Id})" class="ellipsis">{/image.Id/}</a>
+            </td>
             <td md-cell>
                 <ul>
                     <li ng-repeat="tag in image.RepoTags">
