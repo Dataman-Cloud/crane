@@ -227,6 +227,14 @@
 			"notests": true
 		},
 		{
+			"importpath": "github.com/Dataman-Cloud/go-dockerclient",
+			"repository": "https://github.com/Dataman-Cloud/go-dockerclient",
+			"vcs": "git",
+			"revision": "b3a414d6d65411a34b0ac21fa04d3b698ef04d19",
+			"branch": "master",
+			"notests": true
+		},
+		{
 			"importpath": "github.com/Sirupsen/logrus",
 			"repository": "https://github.com/Sirupsen/logrus",
 			"vcs": "",
@@ -1047,14 +1055,6 @@
 			"vcs": "",
 			"revision": "be738c8546f55b34e60125afa50ed73a9a9c460e",
 			"branch": "master"
-		},
-		{
-			"importpath": "github.com/fsouza/go-dockerclient",
-			"repository": "https://github.com/fsouza/go-dockerclient",
-			"vcs": "git",
-			"revision": "a53ba79627e888ef775bdcf15813f07d7a232867",
-			"branch": "master",
-			"notests": true
 		},
 		{
 			"importpath": "github.com/gin-gonic/gin",

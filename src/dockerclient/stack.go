@@ -9,11 +9,11 @@ import (
 	"github.com/Dataman-Cloud/rolex/src/dockerclient/model"
 	"github.com/Dataman-Cloud/rolex/src/util/rolexerror"
 
+	docker "github.com/Dataman-Cloud/go-dockerclient"
 	log "github.com/Sirupsen/logrus"
 	"github.com/docker/engine-api/types"
 	"github.com/docker/engine-api/types/filters"
 	"github.com/docker/engine-api/types/swarm"
-	docker "github.com/fsouza/go-dockerclient"
 )
 
 const (
