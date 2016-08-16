@@ -1,7 +1,7 @@
 package dockerclient
 
 import (
-	docker "github.com/fsouza/go-dockerclient"
+	docker "github.com/Dataman-Cloud/go-dockerclient"
 	"golang.org/x/net/context"
 )
 

@@ -6,9 +6,9 @@ import (
 	"github.com/Dataman-Cloud/rolex/src/dockerclient"
 	"github.com/Dataman-Cloud/rolex/src/util/config"
 
+	docker "github.com/Dataman-Cloud/go-dockerclient"
 	log "github.com/Sirupsen/logrus"
 	"github.com/docker/engine-api/types"
-	docker "github.com/fsouza/go-dockerclient"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/net/context"
 )

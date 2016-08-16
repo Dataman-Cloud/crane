@@ -9,11 +9,11 @@ import (
 	"github.com/Dataman-Cloud/rolex/src/util/rolexerror"
 	"github.com/Dataman-Cloud/rolex/src/util/rolexgin"
 
+	docker "github.com/Dataman-Cloud/go-dockerclient"
 	log "github.com/Sirupsen/logrus"
 	"github.com/docker/engine-api/types"
 	"github.com/docker/engine-api/types/filters"
 	"github.com/docker/engine-api/types/swarm"
-	docker "github.com/fsouza/go-dockerclient"
 	"github.com/gin-gonic/gin"
 	"github.com/manucorporat/sse"
 	"golang.org/x/net/context"

@@ -7,8 +7,8 @@ import (
 	"github.com/Dataman-Cloud/rolex/src/util/rolexerror"
 	"github.com/Dataman-Cloud/rolex/src/util/rolexgin"
 
+	docker "github.com/Dataman-Cloud/go-dockerclient"
 	log "github.com/Sirupsen/logrus"
-	docker "github.com/fsouza/go-dockerclient"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/net/context"
 )

@@ -4,9 +4,9 @@ import (
 	"github.com/Dataman-Cloud/rolex/src/dockerclient/model"
 	opt "github.com/Dataman-Cloud/rolex/src/model"
 
+	docker "github.com/Dataman-Cloud/go-dockerclient"
 	"github.com/docker/engine-api/types"
 	"github.com/docker/engine-api/types/swarm"
-	docker "github.com/fsouza/go-dockerclient"
 	"golang.org/x/net/context"
 )
 

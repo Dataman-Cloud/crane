@@ -12,8 +12,8 @@ import (
 	"github.com/Dataman-Cloud/rolex/src/util/config"
 	"github.com/Dataman-Cloud/rolex/src/util/rolexerror"
 
+	docker "github.com/Dataman-Cloud/go-dockerclient"
 	log "github.com/Sirupsen/logrus"
-	docker "github.com/fsouza/go-dockerclient"
 	"golang.org/x/net/context"
 )
 
