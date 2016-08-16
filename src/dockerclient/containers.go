@@ -187,7 +187,7 @@ func (client *RolexDockerClient) LogsContainer(ctx context.Context, containerId 
 		Stdout:       true,
 		Stderr:       true,
 		Follow:       true,
-		Tail:         "0",
+		Tail:         "10",
 	}
 	err = swarNode.Logs(opts)
 	log.Infof("read container log error: %v", err)
