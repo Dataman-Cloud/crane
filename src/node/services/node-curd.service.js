@@ -27,8 +27,8 @@
         function updateEndpoint(nodeId, env, endpoint) {
             formModal.open('/src/node/modals/form-nodeIp.html', env, {dataName: 'endpoint', initData: endpoint})
                 .then(function (endpoint) {
-                var labels = {}
-                labels[NODE_ENDPOINT_LABEL] = endpoint
+                var labels = {};
+                labels[NODE_ENDPOINT_LABEL] = endpoint;
                 nodeBackend.handleNode(nodeId, "label-add", labels).then(function (data) {
                     Notification.success('更新主机成功');
                     $state.reload()
@@ -44,7 +44,7 @@
 
             updateLabelsFormModal.open('/src/node/modals/form-labels.html', env, {dataName: 'labels', initData: labelList})
                 .then(function (labelList) {
-                    var newLabels = {}
+                    var newLabels = {};
                     angular.forEach(labelList, function (label) {
                         this[label.key] = label.value;
                     }, newLabels);
