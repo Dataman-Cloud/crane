@@ -11,7 +11,7 @@
                 template: '<ui-view/>',
                 targetState: 'config',
                 ncyBreadcrumb: {
-                    label: '系统信息'
+                    label: '设置'
                 }
             })
             .state('misc.config', {
