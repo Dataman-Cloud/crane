@@ -275,8 +275,15 @@
         }
 
         /* @ngInject */
-        function getContainer(nodeBackend, $stateParams) {
-            return nodeBackend.getContainer($stateParams.node_id, $stateParams.container_id)
+        function getContainer(nodeBackend, $stateParams, $q, nodeCurd) {
+            return  nodeBackend.getContainer($stateParams.node_id, $stateParams.container_id).catch(function (res) {
+                var deferred = $q.defer();
+                if (res.data && angular.isObject(res.data) && res.code && NODE_CONN_ERROR_CODE.indexOf(res.code) != -1) {
+                    nodeCurd.updateEndpoint(res.data.ID, res.data.Endpoint)
+                }
+                deferred.reject();
+                return deferred.promise;
+            });
         }
 
         /* @ngInject */

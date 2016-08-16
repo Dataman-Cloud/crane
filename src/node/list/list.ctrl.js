@@ -47,7 +47,7 @@
         }
 
         function updateEndpoint(nodeId, env, labels) {
-            var endpoint = ""
+            var endpoint = "";
             if (labels && labels.hasOwnProperty(NODE_ENDPOINT_LABEL)) {
                 endpoint = labels[NODE_ENDPOINT_LABEL]
             }
@@ -56,7 +56,7 @@
         }
 
         function updateLabels(nodeId, env, labels) {
-            labels = labels || {}
+            labels = labels || {};
             nodeCurd.updateLabels(nodeId, env, labels)
         }
     }
