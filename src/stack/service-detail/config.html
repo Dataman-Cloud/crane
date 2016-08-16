@@ -27,7 +27,7 @@
     </div>
 </section>
 
-<section layout="row" class="info-list-detail">
+<section layout="row" class="info-list-detail" ng-show="serviceConfigCtrl.service.Spec.TaskTemplate.Resources.Limits">
     <h2 flex="20">每个任务的资源限制</h2>
     <div flex="80" layout="row" layout-wrap>
         <div flex="30">
@@ -50,7 +50,7 @@
     </div>
 </section>
 
-<section layout="row" class="info-list-detail">
+<section layout="row" class="info-list-detail" ng-show="serviceConfigCtrl.service.Spec.TaskTemplate.Resources.Reservations">
     <h2 flex="20">每个任务的资源预留</h2>
     <div flex="80" layout="row" layout-wrap>
         <div flex="30">
@@ -72,7 +72,7 @@
     </div>
 </section>
 
-<section layout="row" class="info-list-detail">
+<section layout="row" class="info-list-detail" ng-show="serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy">
     <h2 flex="20">容错</h2>
     <div flex="80" layout="row" layout-wrap>
         <div flex="30"><h5>重启策略</h5></div>
@@ -102,7 +102,7 @@
     </div>
 </section>
 
-<section layout="row" class="info-list-detail">
+<section layout="row" class="info-list-detail" ng-show="serviceConfigCtrl.service.Spec.UpdateConfig">
     <h2 flex="20">滚动更新</h2>
     <div flex="80" layout="row" layout-wrap>
         <div flex="30">
@@ -116,7 +116,7 @@
     </div>
 </section>
 
-<section layout="row" class="info-list-detail">
+<section layout="row" class="info-list-detail" ng-show="serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Env">
     <h2 flex="20">环境变量</h2>
     <div flex="80" layout="row" layout-wrap>
         <table cellpadding="0" cellspacing="0" dm-empty-display="serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Env">
@@ -133,7 +133,7 @@
     </div>
 </section>
 
-<section layout="row" class="info-list-detail">
+<section layout="row" class="info-list-detail" ng-show="serviceConfigCtrl.service.Spec.Labels">
     <h2 flex="20">服务标签</h2>
     <div flex="80" layout="row" layout-wrap>
         <table cellpadding="0" cellspacing="0" dm-empty-display="serviceConfigCtrl.service.Spec.Labels">
@@ -149,7 +149,7 @@
     </div>
 </section>
 
-<section layout="row" class="info-list-detail">
+<section layout="row" class="info-list-detail" ng-show="serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Labels">
     <h2 flex="20">容器标签</h2>
     <div flex="80" layout="row" layout-wrap>
         <table cellpadding="0" cellspacing="0" dm-empty-display="serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Labels">
@@ -166,7 +166,7 @@
     </div>
 </section>
 
-<section layout="row" class="info-list-detail">
+<section layout="row" class="info-list-detail" ng-show="serviceConfigCtrl.service.Spec.EndpointSpec.Ports">
     <h2 flex="20">端口映射</h2>
     <div flex="80" layout="row" layout-wrap>
         <table cellpadding="0" cellspacing="0" dm-empty-display="serviceConfigCtrl.service.Spec.EndpointSpec.Ports">
@@ -185,7 +185,7 @@
     </div>
 </section>
 
-<section layout="row" class="info-list-detail">
+<section layout="row" class="info-list-detail" ng-show="serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Mounts">
     <h2 flex="20">挂载</h2>
     <div flex="80" layout="row" layout-wrap>
         <table cellpadding="0" cellspacing="0" dm-empty-display="serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Mounts">
@@ -204,8 +204,8 @@
     </div>
 </section>
 
-<section layout="row" class="info-list-detail">
-    <h2 flex="20">容器标签</h2>
+<section layout="row" class="info-list-detail" ng-show="serviceConfigCtrl.service.Spec.TaskTemplate.Placement.Constraints">
+    <h2 flex="20">限制条件</h2>
     <div flex="80" layout="row" layout-wrap>
         <table cellpadding="0" cellspacing="0" dm-empty-display="serviceConfigCtrl.service.Spec.TaskTemplate.Placement.Constraints">
             <tr>
@@ -221,7 +221,7 @@
     </div>
 </section>
 
-<section layout="row" class="info-list-detail">
+<section layout="row" class="info-list-detail" ng-show="serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Command">
     <h2 flex="20">启动命令</h2>
     <div flex="80" layout="row" layout-wrap>
         <table cellpadding="0" cellspacing="0" dm-empty-display="serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Command">
