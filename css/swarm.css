@@ -105,12 +105,13 @@ code {
 {
     position: relative;
     overflow-x: hidden;
+    overflow-y: auto;
     height: 100%;
 }
 
 /* 通用左侧导航 */
 #sidebar-main {
-    width: 100px;
+    width: 150px;
     -transition-duration: 0.5s;
     -moz-transition-duration: 0.5s; /* Firefox */
     -webkit-transition-duration: 0.5s;  /* Safari 和 Chrome */
@@ -388,6 +389,21 @@ md-radio-button .md-off {
 md-radio-button .md-label {
     color: #D3D1D5;
 }
+input::-webkit-input-placeholder {
+    color: #5A616E; /* WebKit browsers */
+}
+input:-moz-placeholder {
+　　color: #5A616E; /* Mozilla Firefox 4 to 18 */
+}
+input::-moz-placeholder {
+　　color: #5A616E; /* Mozilla Firefox 19+ */
+}
+input:-ms-input-placeholder {
+　　color: #5A616E; /* Internet Explorer 10+ */
+}
+
+
+
 .form-main .form-group {
     margin-bottom: 20px;
 }
@@ -602,6 +618,13 @@ md-content {
     color: #D3D1D5;
     margin: 0;
 }
+.info-list-detail li {
+    color: #D3D1D5;
+    margin-bottom: 5px;
+}
+.info-list-detail li:last-of-type {
+    margin-bottom: 0;
+}
 .info-list-detail table {
     width: 100%;
 }
@@ -662,6 +685,17 @@ table.md-table td.md-cell {
 }
 table.md-table tr:hover td.md-cell {
     background-color: #5A616E;
+}
+table.md-table th.md-column a.help-info {
+    position: relative;
+    display; inline-block;
+}
+table.md-table th.md-column a.help-info i {
+    position: absolute;
+    left: -10px;
+    top: 4px;
+    font-size: 8px;
+    color: #B5D17C;
 }
 .chart-panel {
     margin-right: 25px;

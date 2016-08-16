@@ -32,16 +32,7 @@
             <td md-cell><span ng-class="{'no-info': !network.IPAM.Config[0].IPRange}">{/network.IPAM.Config[0].IPRange || '未配置'/}</span>
             </td>
             <td md-cell>
-                <md-menu md-offset="0 -5">
-                    <md-button class="md-icon-button" aria-label="More" ng-click="$mdOpenMenu($event)">
-                        <i class="fa fa-ellipsis-h"></i>
-                    </md-button>
-                    <md-menu-content width="2">
-                        <md-button aria-label="delete"
-                                   data-ng-click="networkListCtrl.deleteNetwork(network.Id)">删除
-                        </md-button>
-                    </md-menu-content>
-                </md-menu>
+                <md-button class="md-icon-button" aria-label="delete" data-ng-click="networkListCtrl.deleteNetwork(network.Id)"><i class="fa fa-trash"></i><md-tooltip md-direction="left">删除网络</md-tooltip></md-button>
             </td>
         </tr>
         </tbody>
