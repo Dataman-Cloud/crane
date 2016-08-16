@@ -7,4 +7,9 @@ export TAG=1.0
 export ROLEX_SWARM_MANAGER_IP=$ROLEX_IP
 docker-compose -p rolex -f deploy/docker-compose.yml stop
 docker-compose -p rolex -f deploy/docker-compose.yml rm -f
+
+# remove the deprecated image: rolex:$TAG , and triger build action again
+# have to rm the image specially to avoid mysql/registry build.
+docker rmi -f rolex:$TAG
+
 docker-compose -p rolex -f deploy/docker-compose.yml up -d

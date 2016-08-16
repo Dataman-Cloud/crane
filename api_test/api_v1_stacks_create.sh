@@ -3,30 +3,20 @@
 # create stack
 msg "create a stack from bundle with invalid json content"
 http --check-status --ignore-stdin --timeout=4.5 post $SERVER_PATH/api/v1/stacks Authorization:$token &>/dev/null foo=bar
-if [ "$?" != "4" ]
+if [ "$?" != "5" ]
 then
   fail "create stack error"
 else
-  ok "create stack with invalid json response header should be 400"
+  ok "create stack with invalid json response header should be 503"
 fi
 
 msg "create a stack from bundle"
-http --check-status --ignore-stdin --timeout=4.5 post $SERVER_PATH/api/v1/stacks Authorization:$token foo=bar | jq .code | grep 12001 1>/dev/null 2>&1
+http --check-status --ignore-stdin --timeout=4.5 post $SERVER_PATH/api/v1/stacks Authorization:$token foo=bar | jq .code | grep 11502 1>/dev/null 2>&1
 if [ "$?" != "0" ]
 then
   fail "create stack error"
 else
-  ok "create stack with invalid json error code is 12001"
-fi
-
-
-msg "create a stack from bundle check group id not valid"
-http --check-status --ignore-stdin --timeout=4.5 post $SERVER_PATH/api/v1/stacks Authorization:$token foo=bar | jq .data | grep "invalid group id" 1>/dev/null 2>&1
-if [ "$?" != "0" ]
-then
-  fail "create stack error"
-else
-  ok "create stack with invalid json error is 'invalid group id'"
+  ok "create stack with invalid json error code is 11502"
 fi
 
 stack_name=`cat data_stack_create_correct.json | jq .Namespace | tr -d '"'`

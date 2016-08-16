@@ -20,4 +20,3 @@ then
 else
   ok "delete stack with namespace not exists should return 404"
 fi
-

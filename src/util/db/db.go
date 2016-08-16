@@ -21,7 +21,7 @@ func DB() *gorm.DB {
 func InitDB() {
 	var err error
 	conf := config.GetConfig()
-	log.Infof("mysql connection uri: %s", conf.DbDSN)
+	log.Infof("connecting mysql uri: %s", conf.DbDSN)
 
 	db, err = gorm.Open(conf.DbDriver, conf.DbDSN)
 	if err != nil {
