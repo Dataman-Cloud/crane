@@ -1,7 +1,7 @@
-<h1>创建应用编排</h1>
+<h1>增加应用</h1>
 <form name="staticForm" class="form-main">
     <div class="form-group" layout="column">
-        <label>编排名称<span class="required">*</span>
+        <label>应用名称<span class="required">*</span>
             <small></small>
         </label>
         <div class="form-control">
@@ -41,7 +41,7 @@
     </div>-->
 
     <div layout="row" layout-align="end start" class="form-group form-group-textarea">
-        <label flex="15">Stack JSON</label>
+        <label flex="15">DAB</label>
         <div flex="50" layout="column">
             <div layout="row">
                 <div class="CodeMirror-container">
@@ -75,15 +75,15 @@
 
                 <p class="help-info-bottom">
                     <md-button class="md-primary" data-ng-click="stackCreateByJsonCtrl.getStackExample('2048')"><i
-                            class="fa fa-file-text"></i> 2048 单服务
+                            class="fa fa-file-text"></i> 2048
                     </md-button>
                     <md-button class="md-primary"
                                data-ng-click="stackCreateByJsonCtrl.getStackExample('mysql_display')"><i
-                            class="fa fa-file-text"></i> Mysql, Mywebsql 编排
+                            class="fa fa-file-text"></i> Mysql, Mywebsql
                     </md-button>
                     <md-button class="md-primary"
                                data-ng-click="stackCreateByJsonCtrl.getStackExample('wordpress')"><i
-                            class="fa fa-file-text"></i> wordpress, Mysql 编排
+                            class="fa fa-file-text"></i> wordpress, Mysql
                     </md-button>
                 </p>
             </div>
@@ -96,13 +96,13 @@
         <md-button class="md-raised md-primary"
                    data-ng-disabled="staticForm.$invalid || stackCreateByJsonCtrl.errorInfo.stack"
                    data-ng-click="stackCreateByJsonCtrl.create()">
-            创建
+            增加
         </md-button>
         <md-button class="md-raised md-primary"
                    data-ng-disabled="staticForm.$invalid || stackCreateByJsonCtrl.errorInfo.stack"
                    data-ng-click="stackCreateByJsonCtrl.createAndDownload()">
-            创建并导出
+            增加并导出
         </md-button>
-        <md-button class="md-raised" data-ng-click="rootCtrl.goBack()">取 消</md-button>
+        <md-button class="md-raised" data-ng-click="rootCtrl.goBack()">取消</md-button>
     </footer>
 </form>

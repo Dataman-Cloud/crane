@@ -107,7 +107,7 @@ code {
 
 /* 通用左侧导航 */
 #sidebar-main {
-    width: 200px;
+    width: 100px;
     -transition-duration: 0.5s;
     -moz-transition-duration: 0.5s; /* Firefox */
     -webkit-transition-duration: 0.5s;  /* Safari 和 Chrome */

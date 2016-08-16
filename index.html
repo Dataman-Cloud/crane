@@ -32,32 +32,33 @@
             <img src="pics/logo-white-ico.svg" ng-if="rootCtrl.isShortMenu">
         </a>
         <ul>
-            <li title="应用编排" data-ui-sref-active="active">
+            <li title="应用" data-ui-sref-active="active">
                 <md-button data-ui-sref="stack" data-ui-sref-opts="{reload: true, inherit: false}">
-                    <i class="fa fa-stack-overflow"></i>应用编排
+                    <i class="fa fa-stack-overflow"></i>应用
                 </md-button>
             </li>
 
-            <li title="主机管理" data-ui-sref-active="active">
-                <md-button data-ui-sref="node" data-ui-sref-opts="{inherit: false}">
-                    <i class="fa fa-server"></i>主机管理
-                </md-button>
-            </li>
-
-            <li title="网络管理" data-ui-sref-active="active">
-                <md-button data-ui-sref="network" data-ui-sref-opts="{inherit: false}">
-                    <i class="fa fa-internet-explorer"></i>网络管理
-                </md-button>
-            </li>
-
-            <li title="镜像仓库" data-ui-sref-active="active">
+            <li title="镜像" data-ui-sref-active="active">
                 <md-button data-ui-sref="registry" data-ui-sref-opts="{inherit: false}">
-                    <i class="fa fa-shopping-cart"></i>镜像仓库
+                    <i class="fa fa-shopping-cart"></i>镜像
                 </md-button>
             </li>
 
-            <li title="系统信息" data-ui-sref-active="active">
-                <md-button data-ui-sref="misc" data-ui-sref-opts="{inherit: false}"><i class="fa fa-cogs"></i>系统信息
+
+            <li title="主机" data-ui-sref-active="active">
+                <md-button data-ui-sref="node" data-ui-sref-opts="{inherit: false}">
+                    <i class="fa fa-server"></i>主机
+                </md-button>
+            </li>
+
+            <li title="网络" data-ui-sref-active="active">
+                <md-button data-ui-sref="network" data-ui-sref-opts="{inherit: false}">
+                    <i class="fa fa-internet-explorer"></i>网络
+                </md-button>
+            </li>
+
+            <li title="设置" data-ui-sref-active="active">
+                <md-button data-ui-sref="misc" data-ui-sref-opts="{inherit: false}"><i class="fa fa-cogs"></i>设置
                 </md-button>
             </li>
         </ul>
@@ -86,7 +87,7 @@
                             <md-menu-item>
                                 <md-button>
                                     <i class="fa fa-stack-overflow"></i>
-                                    新建编排
+                                    新建应用
                                 </md-button>
                             </md-menu-item>
                             <md-menu-item>
@@ -146,7 +147,7 @@
                         md-items="item in rootCtrl.querySearch(rootCtrl.searchText)"
                         md-item-text="item.Name ? item.Name : item.ID"
                         md-min-length="1"
-                        placeholder="输入关键字查询"
+                        placeholder="输入关键字..."
                         md-delay="500"
                         md-selected-item-change="rootCtrl.searchJump(item)" class="search-header">
                     <md-item-template>

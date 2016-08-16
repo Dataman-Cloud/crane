@@ -11,7 +11,7 @@
                 template: '<ui-view/>',
                 targetState: 'list',
                 ncyBreadcrumb: {
-                    label: '镜像仓库'
+                    label: '镜像'
                 }
             })
             .state('registry.list', {
