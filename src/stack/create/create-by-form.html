@@ -2,7 +2,7 @@
     <h1>第一步. 填写应用基本信息</h1>
     <form name="stepOneForm" class="form-main">
         <div class="form-group" layout="column">
-            <label>编排名称<span class="required">*</span>
+            <label>应用名称<span class="required">*</span>
                 <small></small>
             </label>
             <div class="form-control">
@@ -314,7 +314,7 @@
                             <div class="sub-button">
                                 <md-button class="md-raised md-success md-small"
                                            data-ng-click="stackCreateByFormCtrl.addConfig(serve.EndpointSpec.Ports, 'Ports')">
-                                    添加端口映射
+                                  <i class='fa fa-plus'></i> 端口映射
                                 </md-button>
                             </div>
                             <div data-ng-repeat="port in serve.EndpointSpec.Ports track by $index">
@@ -368,7 +368,7 @@
                             <div class="sub-button">
                                 <md-button class="md-raised md-success md-small"
                                            data-ng-click="stackCreateByFormCtrl.addConfig(serve.TaskTemplate.ContainerSpec.Env, 'Env')">
-                                    添加环境变量
+                                   <i class='fa fa-plus'></i>  环境变量
                                 </md-button>
                             </div>
                             <div data-ng-repeat="env in serve.TaskTemplate.ContainerSpec.Env track by $index">
@@ -418,7 +418,7 @@
                             <div class="sub-button">
                                 <md-button class="md-raised md-success md-small"
                                            data-ng-click="stackCreateByFormCtrl.addConfig(serve.Labels, 'ServeLabels')">
-                                    添加标签
+                                   <i class='fa fa-plus'></i> 服务标签
                                 </md-button>
                             </div>
                             <div data-ng-repeat="label in serve.Labels track by $index">
@@ -470,7 +470,7 @@
                             <div class="sub-button">
                                 <md-button class="md-raised md-success md-small"
                                            data-ng-click="stackCreateByFormCtrl.addConfig(serve.TaskTemplate.ContainerSpec.Labels, 'Labels')">
-                                    添加标签
+                                    <i class='fa fa-plus'></i> 容器标签
                                 </md-button>
                             </div>
                             <div data-ng-repeat="label in serve.TaskTemplate.ContainerSpec.Labels track by $index">
@@ -516,58 +516,13 @@
                         </div>
 
                         <div class="form-group" layout="column">
-                            <label>挂载
-                                <small>可添加多个挂载</small>
-                            </label>
-                            <div class="sub-button">
-                                <md-button class="md-raised md-success md-small"
-                                           data-ng-click="stackCreateByFormCtrl.addConfig(serve.TaskTemplate.ContainerSpec.Mounts, 'Mounts')">
-                                    添加挂载
-                                </md-button>
-                            </div>
-                            <div data-ng-repeat="mount in serve.TaskTemplate.ContainerSpec.Mounts track by $index">
-                                <ng-form name="mountForm">
-                                    <div class="form-control sub-group" layout="row" layout-align="start center">
-                                        <input flex="20" type="text" placeholder="Source"
-                                               data-ng-model="mount.Source" data-required="required"
-                                               name="Source" max="65535" min="1">
-
-                                        <md-select ng-model="mount.ReadOnly" data-required="required" flex="20"
-                                                   aria-label="select mount">
-                                            <md-option ng-value="true">只读</md-option>
-                                            <md-option ng-value="false">读写</md-option>
-                                        </md-select>
-
-                                        <input flex="20" type="text" placeholder="Target"
-                                               data-ng-model="mount.Target" data-required="required"
-                                               name="Target" max="65535" min="1">
-
-                                        <md-button class="md-icon-button md-primary" aria-label="trash"
-                                                   data-ng-click="stackCreateByFormCtrl.deleteConfig($index, serve.TaskTemplate.ContainerSpec.Mounts)">
-                                            <i class="fa fa-trash-o" aria-hidden="true"></i>
-                                        </md-button>
-                                    </div>
-                                </ng-form>
-                                <div ng-messages="mountForm.Source.$error"
-                                     ng-if="mountForm.Source.$dirty"
-                                     role="alert">
-                                </div>
-
-                                <div ng-messages="mountForm.Target.$error"
-                                     ng-if="mountForm.Target.$dirty"
-                                     role="alert">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group" layout="column">
                             <label>限制条件
                                 <small>可添加多个限制条件</small>
                             </label>
                             <div class="sub-button">
                                 <md-button class="md-raised md-success md-small"
                                            data-ng-click="stackCreateByFormCtrl.addConfig(serve.TaskTemplate.Placement.Constraints, 'Constraints')">
-                                    添加限制条件
+                                   <i class='fa fa-plus'></i>  限制条件
                                 </md-button>
                             </div>
                             <div data-ng-repeat="constraint in serve.TaskTemplate.Placement.Constraints track by $index">
@@ -612,13 +567,58 @@
                         </div>
 
                         <div class="form-group" layout="column">
-                            <label>命令行
-                                <small>可添加多个 CMD</small>
+                            <label>存储
+                                <small>可添加多个存储</small>
+                            </label>
+                            <div class="sub-button">
+                                <md-button class="md-raised md-success md-small"
+                                           data-ng-click="stackCreateByFormCtrl.addConfig(serve.TaskTemplate.ContainerSpec.Mounts, 'Mounts')">
+                                    <i class='fa fa-plus'></i> 存储
+                                </md-button>
+                            </div>
+                            <div data-ng-repeat="mount in serve.TaskTemplate.ContainerSpec.Mounts track by $index">
+                                <ng-form name="mountForm">
+                                    <div class="form-control sub-group" layout="row" layout-align="start center">
+                                        <input flex="20" type="text" placeholder="Source"
+                                               data-ng-model="mount.Source" data-required="required"
+                                               name="Source" max="65535" min="1">
+
+                                        <md-select ng-model="mount.ReadOnly" data-required="required" flex="20"
+                                                   aria-label="select mount">
+                                            <md-option ng-value="true">只读</md-option>
+                                            <md-option ng-value="false">读写</md-option>
+                                        </md-select>
+
+                                        <input flex="20" type="text" placeholder="Target"
+                                               data-ng-model="mount.Target" data-required="required"
+                                               name="Target" max="65535" min="1">
+
+                                        <md-button class="md-icon-button md-primary" aria-label="trash"
+                                                   data-ng-click="stackCreateByFormCtrl.deleteConfig($index, serve.TaskTemplate.ContainerSpec.Mounts)">
+                                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                        </md-button>
+                                    </div>
+                                </ng-form>
+                                <div ng-messages="mountForm.Source.$error"
+                                     ng-if="mountForm.Source.$dirty"
+                                     role="alert">
+                                </div>
+
+                                <div ng-messages="mountForm.Target.$error"
+                                     ng-if="mountForm.Target.$dirty"
+                                     role="alert">
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group" layout="column">
+                            <label>命令行</small>
                             </label>
                             <div class="sub-button">
                                 <md-button class="md-raised md-success md-small"
                                            data-ng-click="stackCreateByFormCtrl.addConfig(serve.TaskTemplate.ContainerSpec.Command, 'Cmd')">
-                                    添加 CMD
+                                  <i class='fa fa-plus'></i>   CMD
                                 </md-button>
                             </div>
                             <div data-ng-repeat="cmd in serve.TaskTemplate.ContainerSpec.Command track by $index">
