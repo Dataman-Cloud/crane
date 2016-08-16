@@ -11,7 +11,7 @@
 </header>
 
 <div layout="row" layout-wrap>
-    <div flex="50" data-ng-repeat="stack in stackListCtrl.stacks | filter: stackListCtrl.filter | orderBy: $index">
+    <div flex="50" data-ng-repeat="stack in stackListCtrl.stacks | orderBy: $index">
         <div class="app-panel">
             <header>
                 <h1><a data-ui-sref="stack.detail({stack_name: stack.Namespace})">{/stack.Namespace/}</a></h1>

@@ -36,6 +36,7 @@
     "angular-breadcrumb": "^0.4.1",
     "angular-marked": "^1.2.2",
     "angular-file-saver": "^1.1.2",
-    "angular-translate": "^2.11.1"
+    "angular-translate": "^2.11.1",
+    "angular-filter": "^0.5.9"
   }
 }
