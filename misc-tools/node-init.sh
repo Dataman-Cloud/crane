@@ -109,6 +109,19 @@ iptables_docker_rules() {
     if sudo iptables -L | grep "DOCKER" > /dev/null; then
         if sudo iptables -L | grep "REJECT" > /dev/null; then
             printf "\033[41mERROR:\033[0m Some REJECT rules found in iptables, which may cause undesired exceptions, to continue, please remove the REJECT rules and restart Iptables service.\n"
+            printf "One way to delete iptables rules is by its chain and line number. To determine a rule's line number, list the rules in the table format and add the --line-numbers option:\n"
+            printf "\n"
+            printf "sudo iptables -L --line-numbers\n"
+            printf "\n"
+            printf "\tChain INPUT (policy DROP)\n"
+            printf "\tnum  target     prot opt source               destination\n"
+            printf "\t1    ACCEPT     all  --  anywhere             anywhere             ctstate RELATED,ESTABLISHED\n"
+            printf "\t2    DROP       all  --  anywhere             anywhere             ctstate INVALID\n"
+            printf "\t3    REJECT     udp  --  anywhere             anywhere             reject-with icmp-port-unreachable\n"
+            printf "Once you know which rule you want to delete, note the chain and line number of the rule. Then run the iptables -D command followed by the chain and rule number. For example:\n"
+            printf "\n"
+            printf "sudo iptables -D INPUT 3\n"
+            printf "\n"
             exit 1
         fi
     else
@@ -127,6 +140,7 @@ firewalld_is_enabled() {
         printf "\e[1;34mWARN:\e[0m You'd better to disable Firewalld&enable iptables, or must restart docker daemon after firewalld restarted.\n"
         echo "More info: https://docs.docker.com/v1.6/installation/centos/#firewalld"
         echo "More info: https://github.com/docker/docker/issues/16137"
+        exit 1
     fi
 }
 
