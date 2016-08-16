@@ -116,7 +116,7 @@ func (client *RolexDockerClient) InspectStack(namespace string) (*model.Bundle, 
 	}, nil
 }
 
-// RemoveStack remove all service under the stack
+// remove all service and network in the stack
 func (client *RolexDockerClient) RemoveStack(namespace string) error {
 	services, err := client.FilterServiceByStack(namespace, types.ServiceListOptions{})
 	if err != nil {
@@ -124,21 +124,26 @@ func (client *RolexDockerClient) RemoveStack(namespace string) error {
 	}
 
 	for _, service := range services {
+		log.Info("begin to remove service ", service.Spec.Name)
 		if err := client.RemoveService(service.ID); err != nil {
 			return err
 		}
 	}
 
-	filter := docker.NetworkFilterOpts{"label": map[string]bool{labelNamespace: true}}
-	networks, err := client.ListNetworks(filter)
+	networks, err := client.filterStackNetwork(namespace)
 	if err != nil {
 		return err
 	}
 
 	for _, network := range networks {
+		log.Info("begin to remove network ", network.Name)
 		if err := client.RemoveNetwork(network.ID); err != nil {
 			return err
 		}
+	}
+
+	if len(services) == 0 && len(networks) == 0 {
+		return rolexerror.NewRolexError(rolexerror.CodeStackNotFound, fmt.Sprintf("stack %s not found", namespace))
 	}
 
 	return nil
@@ -237,7 +242,7 @@ func (client *RolexDockerClient) updateNetworks(networks []string, namespace str
 	}
 
 	createOpts := &docker.CreateNetworkOptions{
-		Label:  client.getStackLabels(namespace, nil),
+		Labels: client.getStackLabels(namespace, nil),
 		Driver: defaultNetworkDriver,
 		// docker TODO: remove when engine-api uses omitempty for IPAM
 		IPAM: docker.IPAMOptions{Driver: "default"},
@@ -358,5 +363,24 @@ func (client *RolexDockerClient) filterStackServices(namespace string) ([]swarm.
 
 // get network by default filter
 func (client *RolexDockerClient) filterStackNetwork(namespace string) ([]docker.Network, error) {
-	return client.ListNetworks(docker.NetworkFilterOpts{})
+	filter := docker.NetworkFilterOpts{"label": map[string]bool{labelNamespace: true}}
+	networks, err := client.ListNetworks(filter)
+	if err != nil {
+		return nil, err
+	}
+
+	var stackNetwork []docker.Network
+	for _, network := range networks {
+		if network.Labels == nil {
+			continue
+		}
+
+		if name, ok := network.Labels[labelNamespace]; !ok || name != namespace {
+			continue
+		}
+
+		stackNetwork = append(stackNetwork, network)
+	}
+
+	return stackNetwork, nil
 }

@@ -32,7 +32,6 @@ type RolexDockerClient struct {
 	// TODO swarm cluster has multiple manager and can be changed at runtime
 	// make sure swarmManager could connect to next if first one failed
 	swarmManager *docker.Client
-	// map clients connect to individual node
 
 	// http client shared both for cluster connection & client connection
 	sharedHttpClient         *http.Client
