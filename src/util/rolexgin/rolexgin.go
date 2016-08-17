@@ -81,7 +81,8 @@ func HttpErrorResponse(ctx *gin.Context, err error) {
 		rolexerror.CodeNetworkNotFound,
 		rolexerror.CodeNetworkOrContainerNotFound,
 		rolexerror.CodeAccountGroupAccountsNotFoundError,
-		rolexerror.CodeAccountGetGroupGroupIdNotFoundError:
+		rolexerror.CodeAccountGetGroupGroupIdNotFoundError,
+		rolexerror.CodeStackNotFound:
 		httpCode = http.StatusNotFound
 
 	default:

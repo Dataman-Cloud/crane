@@ -59,6 +59,7 @@ const (
 	//Stack error code
 	CodeCreateStackParamError = 11501
 	CodeInvalidStackName      = 11502
+	CodeStackNotFound         = 11503
 
 	//Volume error code
 	CodeCreateVolumeParamError = 11601
