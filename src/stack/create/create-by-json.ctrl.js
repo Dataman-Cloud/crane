@@ -70,7 +70,7 @@
 
         function create() {
             self.form.Stack = angular.fromJson(self.stack);
-            stackCurd.createStack(self.form, $scope.staticForm, self.selectGroupId)
+            return stackCurd.createStack(self.form, $scope.staticForm, self.selectGroupId)
         }
 
         function stackChange() {
@@ -113,9 +113,11 @@
         }
 
 	function createAndDownload() {
-	    var data = new Blob([self.stack], { type: 'text/plain;charset=utf-8' });
-	    FileSaver.saveAs(data, self.form.Namespace + '.json');
-            self.create()
+	    var blob = new Blob([self.stack], { type: 'text/plain;charset=utf-8' });
+        create()
+            .then(function(data){
+                FileSaver.saveAs(blob, self.form.Namespace + '.json');
+            })
 	}
     }
 })();

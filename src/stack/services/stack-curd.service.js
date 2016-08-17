@@ -45,7 +45,7 @@
         }
 
         function createStack(formData, form, groupId) {
-            stackBackend.createStack(formData, form, groupId)
+            return stackBackend.createStack(formData, form, groupId)
                 .then(function (data) {
                     Notification.success('创建成功');
                     $state.go('stack.detail.service', {stack_name: formData.Namespace})
