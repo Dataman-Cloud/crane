@@ -1,4 +1,4 @@
 #!/bin/bash
 
 # test help
-assert_200 "get" "misc/v1/help"
+assert_status_code "get" "misc/v1/help" 200

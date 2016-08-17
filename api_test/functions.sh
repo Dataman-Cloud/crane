@@ -13,36 +13,14 @@ function msg () {
   echo "[INFO] $1"
 }
 
-function assert_200 () {
+function assert_status_code () {
   msg "http $1 $2"
-  http --check-status --ignore-stdin --timeout=4.5 $1 $SERVER_PATH/$2 &>/dev/null
-  if [ "$?" != "0" ]
+  status_code="$(http -h --timeout=4.5 $1 $SERVER_PATH/$2 Authorization:$token | grep HTTP/  | cut -d ' ' -f 2)"
+  if [ "$status_code" != "$3" ]
   then
-    fail "request $1 didn't get response $?"
+    fail "request $2 $1 respone status code get $? not $3"
   else
-    ok "request $1 got response header 200"
-  fi
-}
-
-function assert_400 () {
-  msg "http $1 $2"
-  http --check-status --ignore-stdin --timeout=4.5 $1 $SERVER_PATH/$2 &>/dev/null
-  if [ "$?" != "4" ]
-  then
-    fail "request $1 didn't get response $?"
-  else
-    ok "request $1 got response header 400"
-  fi
-}
-
-function assert_404 () {
-  msg "http $1 $2"
-  http --check-status --ignore-stdin --timeout=4.5 $1 $SERVER_PATH/$2 &>/dev/null
-  if [ "$?" != "4" ]
-  then
-    fail "request $1 didn't get response $?"
-  else
-    ok "request $1 got response header 404"
+    ok "request $2 $1 got response status code $3"
   fi
 }
 
