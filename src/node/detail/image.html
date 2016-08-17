@@ -6,6 +6,7 @@
             <th md-column>名称</th>
             <th md-column>大小</th>
             <th md-column>创建时间</th>
+            <th md-column>操作</th>
         </tr>
         </thead>
         <tbody md-body>
@@ -22,6 +23,9 @@
             </td>
             <td md-cell>{/image.Size | size/}</td>
             <td md-cell>{/image.Created * 1000| date: 'yyyy-MM-dd HH:mm:ss'/}</td>
+            <td md-cell>
+                <md-button class="md-icon-button" aria-label="delete" data-ng-click="nodeImageCtrl.deleteImage($stateParams.node_id, image.Id)"><i class="fa fa-trash"></i><md-tooltip md-direction="left">删除镜像</md-tooltip></md-button>
+            </td>
         </tr>
         </tbody>
     </table>

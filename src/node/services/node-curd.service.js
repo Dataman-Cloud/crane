@@ -12,6 +12,7 @@
         //////
         return {
             deleteVolume: deleteVolume,
+            deleteImage: deleteImage,
             removeContainer: removeContainer,
             killContainer: killContainer,
             getNodesMapping: getNodesMapping,
@@ -65,6 +66,16 @@
         function deleteVolume(id, name) {
             confirmModal.open("是否确认删除该储存卷？").then(function () {
                 nodeBackend.deleteVolume(id, name)
+                    .then(function (data) {
+                        Notification.success('删除成功');
+                        $state.reload()
+                    })
+            });
+        }
+
+        function deleteImage(nodeId, imageId) {
+            confirmModal.open("是否确认删除该镜像？").then(function () {
+                nodeBackend.deleteImage(nodeId, imageId)
                     .then(function (data) {
                         Notification.success('删除成功');
                         $state.reload()

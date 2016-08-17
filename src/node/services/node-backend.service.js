@@ -16,6 +16,7 @@
             deleteVolume: deleteVolume,
             listImages: listImages,
             getImage: getImage,
+            deleteImage: deleteImage,
             getImageHistory: getImageHistory,
             listContainers: listContainers,
             getContainer: getContainer,
@@ -62,6 +63,10 @@
 
         function getImage(nodeId, imageId) {
             return gHttp.Resource('node.image', {node_id: nodeId, image_id: imageId}).get();
+        }
+
+        function deleteImage(nodeId, imageId) {
+            return gHttp.Resource('node.image', {node_id: nodeId, image_id: imageId}).delete();
         }
 
         function getImageHistory(nodeId, imageId) {
