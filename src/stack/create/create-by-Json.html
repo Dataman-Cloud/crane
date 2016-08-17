@@ -34,10 +34,17 @@
         <div class="form-control">
             <textarea data-ng-model="stackCreateByJsonCtrl.stack" data-required="required" name="Stack" ui-codemirror ui-codemirror-opts="stackCreateByJsonCtrl.editorOptions" ui-refresh="stackCreateByJsonCtrl.refreshCodeMirror" data-ng-change="stackCreateByJsonCtrl.stackChange()"></textarea>
         </div>
-        <div ng-messages="staticForm.Name.$error" ng-if="staticForm.Name.$dirty" role="alert">
-            <p class="text-danger help-text" ng-message="required">名称不能为空</p>
-            <p class="text-danger help-text" ng-message="pattern">名称必须数字或者英文</p>
+
+        <div ng-messages="staticForm.Stack.$error" ng-if="staticForm.Stack.$dirty" role="alert">
+            <p class="text-danger help-text"
+               ng-message="required">
+                <small>不能为空</small>
+            </p>
         </div>
+        <p class="text-danger help-text" data-ng-show="stackCreateByJsonCtrl.errorInfo.stack">
+            {/stackCreateByJsonCtrl.errorInfo.stack/}
+        </p>
+
         <div layout="row" layout-align="space-between start" style="width: 580px;">
             <div flex="none">
                 <input id="dockerFileInput" name="file" type="file" class="ng-hide" accept="text/plain, .json" onchange="angular.element(this).scope().stackCreateByJsonCtrl.onFileSelect(this.files)">
@@ -70,71 +77,3 @@
         <md-button class="md-raised" data-ng-click="rootCtrl.goBack()">取 消</md-button>
     </footer>
 </form>
-<!--
-    <div layout="row" layout-align="end start" class="form-group form-group-textarea">
-        <label flex="15" dm-doc-link='https://blog.docker.com/2016/06/docker-app-bundle'>DAB</label>
-        <div flex="50" layout="column">
-            <div layout="row">
-                <div class="CodeMirror-container">
-                                <textarea data-ng-model="stackCreateByJsonCtrl.stack"
-                                          data-required="required" name="Stack"
-                                          ui-codemirror ui-codemirror-opts="stackCreateByJsonCtrl.editorOptions"
-                                          ui-refresh="stackCreateByJsonCtrl.refreshCodeMirror"
-                                          data-ng-change="stackCreateByJsonCtrl.stackChange()">
-
-                                </textarea>
-                </div>
-            </div>
-            <div ng-messages="staticForm.Stack.$error" ng-if="staticForm.Stack.$dirty" role="alert">
-                <p class="error-info help-info-bottom"
-                   ng-message="required">
-                    <small>不能为空</small>
-                </p>
-            </div>
-            <p class="help-info-bottom error-info" data-ng-show="stackCreateByJsonCtrl.errorInfo.stack">
-                {/stackCreateByJsonCtrl.errorInfo.stack/}
-            </p>
-
-            <div layout="row" layout-align="space-between center">
-                <p class="help-info-bottom">
-                    <input id="dockerFileInput" name="file" type="file" class="ng-hide"
-                           accept="text/plain, .json"
-                           onchange="angular.element(this).scope().stackCreateByJsonCtrl.onFileSelect(this.files)">
-                    <md-button class="md-primary" trigger-prev-click><i class="fa fa-upload"></i> 从文件中读取
-                    </md-button>
-                </p>
-
-                <p class="help-info-bottom">
-                    <md-button class="md-primary" data-ng-click="stackCreateByJsonCtrl.getStackExample('2048')"><i
-                            class="fa fa-file-text"></i> 2048
-                    </md-button>
-                    <md-button class="md-primary"
-                               data-ng-click="stackCreateByJsonCtrl.getStackExample('mysql_display')"><i
-                            class="fa fa-file-text"></i> Mysql, Mywebsql
-                    </md-button>
-                    <md-button class="md-primary"
-                               data-ng-click="stackCreateByJsonCtrl.getStackExample('wordpress')"><i
-                            class="fa fa-file-text"></i> wordpress, Mysql
-                    </md-button>
-                </p>
-            </div>
-
-        </div>
-        <div flex></div>
-    </div>
-
-    <footer class="form-buttons">
-        <md-button class="md-raised md-primary"
-                   data-ng-disabled="staticForm.$invalid || stackCreateByJsonCtrl.errorInfo.stack"
-                   data-ng-click="stackCreateByJsonCtrl.create()">
-            增加
-        </md-button>
-        <md-button class="md-raised md-primary"
-                   data-ng-disabled="staticForm.$invalid || stackCreateByJsonCtrl.errorInfo.stack"
-                   data-ng-click="stackCreateByJsonCtrl.createAndDownload()">
-            增加并导出
-        </md-button>
-        <md-button class="md-raised" data-ng-click="rootCtrl.goBack()">取消</md-button>
-    </footer>
-</form>
--->
