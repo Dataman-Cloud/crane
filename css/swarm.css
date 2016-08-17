@@ -549,6 +549,7 @@ md-tabs .md-tab {
     border-bottom: 1px solid #93929D;
     color: #93929D;
     font-size: 16px;
+    text-transform: none;
 }
 md-tabs .md-tab:last-of-type {
     border-right: 1px solid #93929D;
