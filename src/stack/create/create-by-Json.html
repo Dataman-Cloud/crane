@@ -30,7 +30,7 @@
     </div>-->
 
     <div class="form-group" layout="column">
-        <label>Stack JSON<span class="required">*</span></label>
+        <label dm-doc-link='https://blog.docker.com/2016/06/docker-app-bundle/'>DAB<span class="required">*</span></label>
         <div class="form-control">
             <textarea data-ng-model="stackCreateByJsonCtrl.stack" data-required="required" name="Stack" ui-codemirror ui-codemirror-opts="stackCreateByJsonCtrl.editorOptions" ui-refresh="stackCreateByJsonCtrl.refreshCodeMirror" data-ng-change="stackCreateByJsonCtrl.stackChange()"></textarea>
         </div>

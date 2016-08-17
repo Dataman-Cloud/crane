@@ -101,7 +101,7 @@
                 this.ws.onclose = function(event) {
                     if (term) {
                         term.uninstallKeyboard();
-                        term.io.showOverlay("Connection Closed", null);
+                        term.io.showOverlay("容器不存在", null);
                     }
                     clearInterval(pingTimer);
                     if (autoReconnect > 0) {
