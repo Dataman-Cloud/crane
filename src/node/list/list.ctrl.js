@@ -22,28 +22,16 @@
             ///
         }
 
-        function drainNode(nodeId, node) {
-            var data = handleNodeFormat(node);
-            nodeCurd.drainNode(nodeId, data)
+        function drainNode(nodeId) {
+            nodeCurd.drainNode(nodeId)
         }
 
-        function activeNode(nodeId, node) {
-            var data = handleNodeFormat(node);
-            nodeCurd.activeNode(nodeId, data)
+        function activeNode(nodeId) {
+            nodeCurd.activeNode(nodeId)
         }
 
-        function pauseNode(nodeId, node) {
-            var data = handleNodeFormat(node);
-            nodeCurd.pauseNode(nodeId, data)
-        }
-
-        function handleNodeFormat(node) {
-            var data = {
-                Spec: node.Spec || '',
-                Version: node.Version || ''
-            };
-
-            return data;
+        function pauseNode(nodeId) {
+            nodeCurd.pauseNode(nodeId)
         }
 
         function updateEndpoint(nodeId, env, labels) {

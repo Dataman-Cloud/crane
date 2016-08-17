@@ -98,9 +98,9 @@
             })
         }
 
-        function drainNode(nodeId, data) {
+        function drainNode(nodeId) {
             confirmModal.open("是否确认下线该主机？").then(function () {
-                nodeBackend.handleNode(nodeId, data, 'drain')
+                nodeBackend.handleNode(nodeId, "availability", 'drain')
                     .then(function (data) {
                         Notification.success('下线成功');
                         $state.reload()
@@ -108,9 +108,9 @@
             });
         }
 
-        function activeNode(nodeId, data) {
+        function activeNode(nodeId) {
             confirmModal.open("是否确认激活该主机？").then(function () {
-                nodeBackend.handleNode(nodeId, data, 'active')
+                nodeBackend.handleNode(nodeId, "availability", 'active')
                     .then(function (data) {
                         Notification.success('激活成功');
                         $state.reload()
@@ -118,9 +118,9 @@
             });
         }
 
-        function pauseNode(nodeId, data) {
+        function pauseNode(nodeId) {
             confirmModal.open("是否确认暂停该主机？").then(function () {
-                nodeBackend.handleNode(nodeId, data, 'pause')
+                nodeBackend.handleNode(nodeId, "availability", 'pause')
                     .then(function (data) {
                         Notification.success('暂停成功');
                         $state.reload()
