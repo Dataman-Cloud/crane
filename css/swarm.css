@@ -294,6 +294,11 @@ code {
     color: #FFF;
     font-weight: bold;
 }
+
+#serviceLog{
+  max-height: 1000px;
+  overflow-y: scroll;
+}
 /* 表单样式 */
 label {
     color: #D3D1D5;

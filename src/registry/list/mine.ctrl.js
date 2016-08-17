@@ -10,7 +10,6 @@
 
         self.repositories = repositories;
 
-        self.deleteImage = deleteImage;
         self.publicImage = publicImage;
         self.hideImage = hideImage;
         self.toggleImagePublicity = toggleImagePublicity;
@@ -41,10 +40,6 @@
           }else{
             hideImage(repository.Namespace, repository.Image)
           }
-        }
-
-        function deleteImage(repository, tag, ev) {
-            registryCurd.deleteImage(repository, tag, ev);
         }
 
         function publicImage(namespace, image) {

@@ -15,7 +15,7 @@
         $interpolateProvider.endSymbol('/}');
 
         NotificationProvider.setOptions({
-            delay: 3000,
+            delay: 3000 * 3,
             positionX: 'right',
             positionY: 'top',
             replaceMessage: true,

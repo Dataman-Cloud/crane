@@ -14,26 +14,11 @@
                   <th>TAG</th>
                   <th>大小<small>MB</small></th>
                   <th>摘要</th>
-                  <th>操作</th>
               </tr>
               <tr ng-repeat="tag in repository.tags">
               <td>{/tag.tag/}</td>
               <td>{/tag.size | size/}</td>
               <td><p class="ellipsis">{/tag.digest/}<md-tooltip md-direction="bottom">{/tag.digest/}</md-tooltip></p></td>
-              <td>
-                <md-menu>
-                  <md-button class="md-icon-button" aria-label="More" ng-click="$mdOpenMenu($event)">
-                      <i class="fa fa-ellipsis-h"></i>
-                  </md-button>
-                  <md-menu-content>
-                      <md-menu-item>
-                          <md-button aria-label="delete" data-ng-click="repositorieListMineCtrl.deleteImage(repository.name, tag, $event)">
-                          删除
-                       </md-button>
-                      </md-menu-item>
-                  </md-menu-content>
-                </md-menu>
-              </td>
             </tr>
           </table>
         </div>
