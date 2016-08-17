@@ -41,7 +41,7 @@ func (db *DbAuthenicator) ModificationAllowed() bool {
 func (db *DbAuthenicator) Login(a *auth.Account) (string, error) {
 	if err = db.DbClient.
 		Select("id, title, email, phone, login_at").
-		Where("email = ? AND password = ?", a.Email, a.Password).
+		Where("email = ? AND password = ?", a.Email, db.EncryptPassword(a.Password)).
 		First(a).Error; err != nil {
 		return "", err
 	}
