@@ -36,7 +36,7 @@
 
         function create() {
             angular.forEach(self.labels, function (item, index) {
-                self.form.Options[item.key] = item.value
+                self.form.Labels[item.key] = item.value
             });
 
             networkCurd.create(self.form, $scope.createNetwork)
