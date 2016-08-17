@@ -92,7 +92,6 @@ func (a *AccountApi) AccountLogin(ctx *gin.Context) {
 		return
 	}
 
-	acc.Password = a.Authenticator.EncryptPassword(acc.Password)
 	token, err := a.Authenticator.Login(&acc)
 	if err != nil {
 		rolexerr := rolexerror.NewRolexError(rolexerror.CodeAccountLoginFailedError, err.Error())
