@@ -11,6 +11,7 @@
         <thead md-head>
         <tr md-row>
             <th md-column>主机名</th>
+            <th md-column>ID</th>
             <th md-column>主机标签</th>
             <th md-column>集群角色</th>
             <th md-column dm-doc-link='https://github.com/docker/engine-api/blob/master/types/swarm/node.go#L34'> 可用性</th>
@@ -24,6 +25,7 @@
             <td md-cell>
                 <a data-ui-sref="node.detail({node_id: node.ID})">{/node.Description.Hostname/}</a>
             </td>
+            <td md-cell class='ellipsis'>{/node.ID/}</td>
             <td md-cell>
                 <ul>
                     <li ng-repeat="(key, value) in node.Spec.Labels">{/key/}:{/value/}</li>
