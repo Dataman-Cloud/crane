@@ -27,7 +27,7 @@
                         <md-select data-ng-model="catalogDetailCtrl.selectGroupId"
                                    aria-label="selectGroupId"
                                    md-on-open="catalogDetailCtrl.loadGroups()">
-                            <md-option ng-value="" ng-selected="true">空</md-option>
+                            <md-option value="null" ng-selected="true">空</md-option>
                             <md-option
                                     data-ng-repeat="group in catalogDetailCtrl.groups"
                                     ng-value="group.Id">{/group.Name/}
