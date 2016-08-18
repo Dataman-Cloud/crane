@@ -37,33 +37,29 @@
                 </div>
             </div>-->
 
-            <div layout="row" layout-align="end start" class="form-group form-group-textarea">
-                <label flex="15">Stack JSON</label>
-                <div flex="50" layout="column">
-                    <div layout="row">
-                        <div class="CodeMirror-container">
-                                <textarea data-ng-model="catalogDetailCtrl.stack"
-                                          data-required="required" name="Stack"
-                                          ui-codemirror ui-codemirror-opts="catalogDetailCtrl.editorOptions"
-                                          ui-refresh="catalogDetailCtrl.refreshCodeMirror"
-                                          data-ng-change="catalogDetailCtrl.stackChange()">
+            <div class="form-group" layout="column">
+                <label dm-doc-link='https://blog.docker.com/2016/06/docker-app-bundle/'>DAB<span
+                        class="required">*</span></label>
+                <div class="form-control">
+                    <textarea data-ng-model="catalogDetailCtrl.stack"
+                              data-required="required" name="Stack"
+                              ui-codemirror ui-codemirror-opts="catalogDetailCtrl.editorOptions"
+                              ui-refresh="catalogDetailCtrl.refreshCodeMirror"
+                              data-ng-change="catalogDetailCtrl.stackChange()">
+                    </textarea>
+                </div>
 
-                                </textarea>
-                        </div>
-                    </div>
-                    <div ng-messages="staticForm.Stack.$error" ng-if="staticForm.Stack.$dirty"
-                         role="alert">
-                        <p class="error-info help-info-bottom"
-                           ng-message="required">
-                            <small>不能为空</small>
-                        </p>
-                    </div>
-                    <p class="help-info-bottom error-info"
-                       data-ng-show="catalogDetailCtrl.errorInfo.stack">
-                        {/catalogDetailCtrl.errorInfo.stack/}
+                <div ng-messages="staticForm.Stack.$error" ng-if="staticForm.Stack.$dirty"
+                     role="alert">
+                    <p class="text-danger help-text"
+                       ng-message="required">
+                        <small>不能为空</small>
                     </p>
                 </div>
-                <div flex></div>
+                <p class="text-danger help-text"
+                   data-ng-show="catalogDetailCtrl.errorInfo.stack">
+                    {/catalogDetailCtrl.errorInfo.stack/}
+                </p>
             </div>
 
             <footer class="form-buttons">
