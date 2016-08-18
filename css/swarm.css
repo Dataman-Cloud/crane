@@ -317,6 +317,17 @@ code {
     font-weight: bold;
 }
 
+.md-autocomplete-suggestions-container .item-metadata i, .md-autocomplete-suggestions-container .item-title i {
+    font-style: normal;
+    margin-left: 5px;
+    color: #3F4855;
+}
+.md-autocomplete-suggestions-container .item-metadata span, .md-autocomplete-suggestions-container .item-title span {
+    color: #D3D1D5;
+    margin-left: 5px; 
+    margin-right: 20px;
+}
+
 #serviceLog{
   max-height: 1000px;
   overflow-y: scroll;
