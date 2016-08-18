@@ -85,6 +85,14 @@
                 ncyBreadcrumb: {
                     skip: true
                 }
+            })
+            .state('registry.new', {
+                url: '/registry/new',
+                templateUrl: '/src/registry/new/new.html',
+                controller: 'RegistryNewCtrl as registryNewCtrl',
+                ncyBreadcrumb: {
+                    label: '添加镜像'
+                }
             });
 
         /* @ngInject */

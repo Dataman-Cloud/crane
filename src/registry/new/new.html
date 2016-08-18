@@ -1,0 +1,18 @@
+<div class="main-container app-layout">
+    <section class="main-section">
+        <header layout="row" layout-align="start start">
+            <div class="info" flex="95" layout="column">
+                <dl layout="row" layout-wrap layout-align="start end">
+                  注意： push/pull镜像之前确保docker daemon启动参数 --insecure-registry=YOUR_SERVER_IP:5000
+                  <ul>
+                    <li>docker login -H YOUR_DOCKER_DAMONE_ENTRYPOINT SERVCE_IP:5000 -uadmin@admin.com -pYOUR_PASSWORD</li>
+                    <li>docker push YOUR_EMAIL_PREFIX/IMAGE_NAME</li>
+                  </ul>
+
+                </dl>
+            </div>
+            <div layout-align="end center" class="operation">
+            </div>
+        </header>
+    </section>
+</div>
