@@ -21,7 +21,7 @@
             restarting: 'text-info',
             created: 'text-info',
             exited: 'text-danger'
-        }
+        };
 
         $rootScope.STATS_POINT_NUM = 180;
 

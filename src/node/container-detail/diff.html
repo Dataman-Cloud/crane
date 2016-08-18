@@ -8,7 +8,11 @@
         </thead>
         <tbody md-body>
         <tr md-row ng-repeat="diff  in  nodeContainerDiffCtrl.diffs">
-            <td md-cell>{/DIFF_KIND[diff.Kind]/}</td>
+            <td md-cell>
+                <p ng-class="{'text-info': diff.Kind === 0, 'text-success': diff.Kind === 1, 'text-danger': diff.Kind === 2}">
+                    {/DIFF_KIND[diff.Kind]/}
+                </p>
+            </td>
             <td md-cell>{/diff.Path/}</td>
         </tr>
         </tbody>
