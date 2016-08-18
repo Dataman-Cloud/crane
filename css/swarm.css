@@ -445,7 +445,7 @@ input:-ms-input-placeholder {
 .form-main .fold-line {
     height: 20px;
     margin-bottom: 25px;
-    background: url(../images/bg-line-gray.png) repeat-x 0 8px;
+    background: url(../pics/bg-line-gray.png) repeat-x 0 8px;
 }
 .form-main .fold-line a i{
     margin-right: 10px;
@@ -694,7 +694,7 @@ table.md-table tr:hover td.md-cell {
 }
 table.md-table th.md-column a.help-info {
     position: relative;
-    display; inline-block;
+    display: inline-block;
 }
 table.md-table th.md-column a.help-info i {
     position: absolute;

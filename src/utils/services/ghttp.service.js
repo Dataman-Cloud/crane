@@ -130,7 +130,7 @@
                     }
                 } else if (status == 401) {
                     utils.redirectLogin(true);
-                } else if (status == 404 || data.code === MESSAGE_CODE.noExist) {
+                } else if (status == 404) {
                     //$state.go('404');
                 } else {
                     data = {code: MESSAGE_CODE.unknow};
