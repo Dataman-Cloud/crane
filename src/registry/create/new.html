@@ -1,0 +1,15 @@
+<p>
+注意： push/pull镜像之前确保docker daemon启动参数 --insecure-registry=YOUR_SERVER_IP:5000
+</p>
+
+<p>
+<code>
+  docker login -H YOUR_DOCKER_DAMONE_ENTRYPOINT SERVCE_IP:5000 -uadmin@admin.com -pYOUR_PASSWORD
+</code>
+</p>
+
+<p>
+<code>
+  docker push YOUR_EMAIL_PREFIX/IMAGE_NAME
+</code>
+</p>
