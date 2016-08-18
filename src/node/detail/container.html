@@ -6,7 +6,7 @@
             <th md-column>内部地址</th>
             <th md-column>服务</th>
             <th md-column>任务</th>
-            <th md-column>状态</th>
+            <th md-column>状态/运行时间</th>
             <th md-column>创建时间</th>
             <th md-column>操作</th>
         </tr>
@@ -14,21 +14,23 @@
         <tbody md-body>
         <tr md-row ng-repeat="container in nodeContainerCtrl.containers">
             <td md-cell>
-                <a data-ui-sref="node.containerDetail({node_id: $stateParams.node_id, container_id: container.Id})">{/container.Names[0].substring(1)/}</a>
+                <a class="ellipsis" data-ui-sref="node.containerDetail({node_id: $stateParams.node_id, container_id: container.Id})">{/container.Names[0].substring(1)/}<md-tooltip md-direction="top">{/container.Names[0].substring(1)/}</md-tooltip></a>
+            </td>
             <td md-cell>
                 <span ng-if="!container.Ports.length" ng-class="{'no-info': !container.Ports.length}">未配置</span>
-                <p ng-repeat="port in container.Ports">
-                    <span ng-show="container.NetworkSettings.Networks.bridge.IPAddress">{/container.NetworkSettings.Networks.bridge.IPAddress/}:</span>{/port.PrivatePort/}/{/port.Type/}
-                </p>
+                <ul>
+                    <li ng-repeat="port in container.Ports"><span ng-show="container.NetworkSettings.Networks.bridge.IPAddress">{/container.NetworkSettings.Networks.bridge.IPAddress/}:</span>{/port.PrivatePort/}/{/port.Type/}</li>
+                </ul>
             </td>
             <td md-cell><span ng-class="{'no-info': !container.Labels['com.docker.swarm.service.name']}">{/container.Labels['com.docker.swarm.service.name'] || '未配置'/}</span>
             </td>
             <td md-cell><span ng-class="{'no-info': !container.Labels['com.docker.swarm.task.name']}">{/container.Labels['com.docker.swarm.task.name'] || '未配置'/}</span>
             </td>
             <td md-cell>
-                <p>{/CONTAINER_STATUS_LABELS[container.State]/}
-                    <br>{/container.Status | statusZh /}
-                </p>
+                <ul>
+                    <li class="{/CONTAINER_STATUS_LABELS_CLASS[container.State]/}">{/CONTAINER_STATUS_LABELS[container.State]/}</li>
+                    <li>{/container.Status | statusZh /}</li>
+                </ul>
             </td>
             <td md-cell>{/container.Created * 1000 | date: 'yyyy-MM-dd HH:mm:ss'/}</td>
             <td md-cell>
