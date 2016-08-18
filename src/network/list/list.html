@@ -24,7 +24,9 @@
             <td md-cell>
                 <a data-ui-sref="network.detail({network_id: network.Id})">{/network.Name/}</a>
             </td>
-            <td md-cell class='ellipsis'>{/network.Id/}</td>
+            <td md-cell>
+                <p class="ellipsis">{/network.Id/}<md-tooltip md-direction="top">{/network.Id/}</md-tooltip></p>
+            </td>
             <td md-cell>{/network.Driver/}</td>
             <td md-cell>{/network.Internal ? '是':'否'/}</td>
             <td md-cell><span ng-class="{'no-info': !network.IPAM.Config[0].Subnet}">{/network.IPAM.Config[0].Subnet || '未配置'/}</span>

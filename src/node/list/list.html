@@ -25,7 +25,9 @@
             <td md-cell>
                 <a data-ui-sref="node.detail({node_id: node.ID})">{/node.Description.Hostname/}</a>
             </td>
-            <td md-cell class='ellipsis'>{/node.ID/}</td>
+            <td md-cell>
+                <p class="ellipsis">{/node.ID/}</p>
+            </td>
             <td md-cell>
                 <ul>
                     <li ng-repeat="(key, value) in node.Spec.Labels">{/key/}:{/value/}</li>
@@ -43,33 +45,33 @@
                     <md-menu-content width="2">
                         <md-menu-item>
                             <md-button aria-label="endpoint" data-ng-click="nodeListCtrl.updateEndpoint(node.ID, $event, node.Spec.Labels)">访问地址
-                                <md-tooltip md-direction="top">编辑连接主机Docker Daemon的地址</md-tooltip>
+                                <md-tooltip md-direction="left">编辑连接主机Docker Daemon的地址</md-tooltip>
                             </md-button>
                         </md-menu-item>
                         <md-menu-item>
                             <md-button aria-label="labels" data-ng-click="nodeListCtrl.updateLabels(node.ID, $event, node.Spec.Labels)">编辑标签
-                                <md-tooltip md-direction="top">编辑主机标签</md-tooltip>
+                                <md-tooltip md-direction="left">编辑主机标签</md-tooltip>
                             </md-button>
                         </md-menu-item>
                         <md-menu-item>
                             <md-button aria-label="drain"
                                        data-ng-disabled="node.Spec.Availability !== 'active'"
                                        data-ng-click="nodeListCtrl.drainNode(node.ID)">停止调度
-                                <md-tooltip md-direction="top">停止调度后该主机上的任务将被分配到其它主机上, 新的任务也不会被分配到该主机</md-tooltip>
+                                <md-tooltip md-direction="left">停止调度后该主机上的任务将被分配到其它主机上, 新的任务也不会被分配到该主机</md-tooltip>
                             </md-button>
                         </md-menu-item>
                         <md-menu-item>
                             <md-button aria-label="active"
                                        data-ng-disabled="node.Spec.Availability === 'active'"
                                        data-ng-click="nodeListCtrl.activeNode(node.ID)">恢复调度
-                                <md-tooltip md-direction="top">恢复任务在这台主机上的自由调度</md-tooltip>
+                                <md-tooltip md-direction="left">恢复任务在这台主机上的自由调度</md-tooltip>
                             </md-button>
                         </md-menu-item>
                         <md-menu-item>
                             <md-button aria-label="pause"
                                        data-ng-disabled="node.Spec.Availability !== 'active'"
                                        data-ng-click="nodeListCtrl.pauseNode(node.ID)">暂停调度
-                                <md-tooltip md-direction="top">暂停调度后新的任务将不再被分配到该主机，但已经发布到该主机上的任务不会受到影响</md-tooltip>
+                                <md-tooltip md-direction="left">暂停调度后新的任务将不再被分配到该主机，但已经发布到该主机上的任务不会受到影响</md-tooltip>
                             </md-button>
                         </md-menu-item>
                     </md-menu-content>
