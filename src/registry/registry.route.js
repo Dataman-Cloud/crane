@@ -85,6 +85,13 @@
                 ncyBreadcrumb: {
                     skip: true
                 }
+            })
+            .state('registry.createNote', {
+                url: '/createNote',
+                templateUrl: '/src/registry/create-note/note.html',
+                ncyBreadcrumb: {
+                    label: '如何创建镜像'
+                }
             });
 
         /* @ngInject */
