@@ -10,33 +10,11 @@
         </thead>
         <tbody md-body>
         <tr md-row ng-repeat="volume in nodeVolumeCtrl.volumes">
-            <td md-cell>
-                <div style="max-width: 200px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
-                    {/volume.Name/}
-                </div>
-            </td>
+            <td md-cell><p class="ellipsis">{/volume.Name/}<md-tooltip md-direction="top">{/volume.Name/}</md-tooltip></p></td>
             <td md-cell>{/VOL_DRIVER[volume.Driver]/}</td>
+            <td md-cell><p class="ellipsis">{/volume.Mountpoint/}<md-tooltip md-direction="top">{/volume.Mountpoint/}</md-tooltip></p></td>
             <td md-cell>
-                <div style="max-width: 200px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
-                    {/volume.Mountpoint/}
-                </div>
-            </td>
-            <td md-cell>
-                <md-menu>
-                    <md-button class="md-icon-button" aria-label="More" ng-click="$mdOpenMenu($event)">
-                        <i class="fa fa-ellipsis-h"></i>
-                    </md-button>
-
-                    <md-menu-content width="2">
-                        <md-menu-item>
-                            <md-button aria-label="delete"
-                                       data-ng-click="nodeVolumeCtrl.deleteVolume(volume.Name)">
-                                删除
-                            </md-button>
-                        </md-menu-item>
-                    </md-menu-content>
-                </md-menu>
-
+                <md-button class="md-icon-button" aria-label="delete" data-ng-click="nodeVolumeCtrl.deleteVolume(volume.Name)"><i class="fa fa-trash"/><md-tooltip md-direction="left">删除储存卷</md-tooltip></md-button>
             </td>
         </tr>
         </tbody>

@@ -12,12 +12,12 @@
         <tbody md-body>
         <tr md-row ng-repeat="image in nodeImageCtrl.images">
             <td md-cell>
-                <a data-ui-sref="node.imageDetail({node_id: $stateParams.node_id, image_id: image.Id})" class="ellipsis">{/image.Id/}</a>
+                <a data-ui-sref="node.imageDetail({node_id: $stateParams.node_id, image_id: image.Id})" class="ellipsis">{/image.Id/}<md-tooltip md-direction="top">{/image.Id/}</md-tooltip></a>
             </td>
             <td md-cell>
                 <ul>
                     <li ng-repeat="tag in image.RepoTags">
-                        <a data-ui-sref="node.imageDetail({node_id: $stateParams.node_id, image_id: image.Id})">{/tag/}</a>
+                        <a data-ui-sref="node.imageDetail({node_id: $stateParams.node_id, image_id: image.Id})" class="ellipsis">{/tag/}<md-tooltip md-direction="top">{/tag/}</md-tooltip></a>
                     </li>
                 </ul>
             </td>

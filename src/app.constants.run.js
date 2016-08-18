@@ -14,6 +14,15 @@
             exited: '已退出'
         };
 
+        $rootScope.CONTAINER_STATUS_LABELS_CLASS = {
+            running: 'text-success',
+            paused: 'text-danger',
+            dead: 'text-danger',
+            restarting: 'text-info',
+            created: 'text-info',
+            exited: 'text-danger'
+        };
+
         $rootScope.STATS_POINT_NUM = 180;
 
         $rootScope.DIFF_KIND = {
