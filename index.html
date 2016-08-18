@@ -5,8 +5,8 @@
     <title>数人云</title>
     <base href="/">
     <!--build:css css/style.css-->
-    <!--<link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.css">-->
-    <link rel="stylesheet" type="text/css" href="bower_components/angular-ui-notification/dist/angular-ui-notification.min.css">
+    <link rel="stylesheet" type="text/css"
+          href="bower_components/angular-ui-notification/dist/angular-ui-notification.min.css">
     <link rel="stylesheet" type="text/css" href="bower_components/angular/angular-csp.css">
     <link rel="stylesheet" type="text/css" href="bower_components/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="bower_components/angular-material/angular-material.css">
@@ -15,9 +15,6 @@
     <link rel="stylesheet" type="text/css" href="bower_components/codemirror/lib/codemirror.css">
     <link rel="stylesheet" type="text/css" href="bower_components/codemirror/theme/midnight.css">
     <link rel="stylesheet" type="text/css" href="bower_components/nvd3/build/nv.d3.css">
-    <!--<link rel="stylesheet" type="text/css" href="css/style.css">-->
-    <!--<link rel="stylesheet"  type="text/css" href="css/shurenyun.css">-->
-    <!--<link rel="stylesheet" type="text/css" href="css/material.css">-->
     <link rel="stylesheet" type="text/css" href="css/swarm.css">
     <!--endbuild-->
     <link rel="shortcut icon" type="image/x-icon" href="pics/favicon.ico"/>
@@ -67,7 +64,8 @@
     <div flex layout="column">
         <nav id="nav-main" layout="row" layout-align="space-between center" flex="none">
             <div flex="auto" layout="row" layout-align="start center">
-                <md-button class="md-icon-button" aria-label="Settings" flex="none" ng-click="rootCtrl.isShortMenu = !rootCtrl.isShortMenu">
+                <md-button class="md-icon-button" aria-label="Settings" flex="none"
+                           ng-click="rootCtrl.isShortMenu = !rootCtrl.isShortMenu">
                     <i class="fa fa-angle-double-left" ng-if="!rootCtrl.isShortMenu"></i>
                     <i class="fa fa-angle-double-right" ng-if="rootCtrl.isShortMenu"></i>
                 </md-button>
@@ -76,7 +74,7 @@
 
             <md-toolbar flex="none">
                 <div class="md-toolbar-tools">
-                    <md-button class="md-icon-button" aria-label="Search"  ng-click="rootCtrl.openSearch()">
+                    <md-button class="md-icon-button" aria-label="Search" ng-click="rootCtrl.openSearch()">
                         <i class="fa fa-search"></i>
                     </md-button>
                     <md-menu>
@@ -153,7 +151,8 @@
                     <md-item-template>
                         <div>
                                 <span class="item-title">
-                                    <md-icon md-svg-icon="pics/dataman-logo-icon.svg"></md-icon>
+                                    <i class="fa fa-server"
+                                       ng-class="{'fa-server': item.Type === 'node' || item.Type === 'network' || item.Type === 'volume', 'fa-stack-overflow': item.Type === 'stack', 'fa-wrench': item.Type === 'service', 'fa-cube': item.Type === 'task'}"></i>
                                     <span md-highlight-text="rootCtrl.searchText" md-highlight-flags="^i">
                                         Name: {/item.Name/}
                                     </span>
