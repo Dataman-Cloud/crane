@@ -86,12 +86,11 @@
                     skip: true
                 }
             })
-            .state('registry.new', {
-                url: '/registry/new',
-                templateUrl: '/src/registry/new/new.html',
-                controller: 'RegistryNewCtrl as registryNewCtrl',
+            .state('registry.createNote', {
+                url: '/createNote',
+                templateUrl: '/src/registry/create-note/note.html',
                 ncyBreadcrumb: {
-                    label: '添加镜像'
+                    label: '如何创建镜像'
                 }
             });
 
