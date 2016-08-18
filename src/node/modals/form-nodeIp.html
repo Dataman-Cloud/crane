@@ -1,5 +1,5 @@
 <md-dialog aria-label="select image">
-    <form name="staticForm">
+    <form name="staticForm" class="form-main">
         <md-toolbar>
             <div class="md-toolbar-tools">
                 <h2>需要主机的 Docker TCP Socket 地址</h2>
@@ -10,57 +10,24 @@
                 </md-button>
             </div>
         </md-toolbar>
-        <md-dialog-content style="width: 800px; max-height: 400px; min-height: 100px;">
-            <div layout="row" layout-align="end center" class="form-group form-group-input" layout-margin
-                 layout-padding>
-                <div flex="90" layout="column">
-                    <div flex>
-                        <p>请提供该主机 Docker Daemon 的 TCP Socket 地址</p>
-                        <p>为了获取主机详情信息，需要在该主机上开启 Docker Daemon TCP Socket 服务。</p>
-                    </div>
-                </div>
-            </div>
-            <div layout="row" layout-align="end center" class="form-group form-group-input" layout-margin
-                 layout-padding>
-                <label flex="30">Docker TCP Socket 地址</label>
-                <div flex="60" layout="column">
-                    <div flex>
-                        <input type="text" class="form-input" name="endpoint" aria-label="endpoint" placeholder="http://192.168.59.105:2375" data-ng-model="formCtrl.endpoint">
-                    </div>
-                </div>
-                <div flex></div>
-            </div>
-            <div layout="row" layout-align="end center" class="form-group form-group-input" layout-margin
-                 layout-padding>
-                <div flex="90" layout="column">
-                    <div flex>
-                        <p>如何配置 Docker Daemon 的 TCP Socket 地址?<br><br>
-                        CentOS/RHEL(systemd):<br>
-                        编辑文件 /usr/lib/systemd/system/docker.service , 设置<br>
-                        ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:$DOCKER_TCP_SOCKET -H unix:///var/run/docker.sock<br>
-                        保存并执行命令<br>
-                        <code>systemctl daemon-reload && service docker restart</code><br><br>
-                        Ubuntu(upstart):<br>
-                        编辑文件 /etc/default/docker , 设置<br>
-                        DOCKER_OPTS="-H tcp://0.0.0.0:$DOCKER_TCP_SOCKET -H unix:///var/run/docker.sock"<br>
-                        保存并执行命令<br>
-                        <code>service docker restart</code><br><br>
-                        <a href="https://docs.docker.com/engine/reference/commandline/dockerd/#/daemon-socket-option">参考链接<a>
-                        </p>
-                    </div>
-                </div>
-            </div>
+        <md-dialog-content>
+            <p>请提供该主机 Docker Daemon 的 TCP Socket 地址。</p>
+            <p>为了获取主机详情信息，需要在该主机上开启 Docker Daemon TCP Socket 服务。</p>
+            <p>Docker TCP Socket 地址</p>
+            <input type="text" name="endpoint" aria-label="endpoint" placeholder="http://192.168.59.105:2375" data-ng-model="formCtrl.endpoint">
+            <p>如何配置 Docker Daemon 的 TCP Socket 地址?</p>
+            <p>CentOS/RHEL(systemd):</p>
+            <p>编辑文件 /usr/lib/systemd/system/docker.service , 设置</p>
+            <p>ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:$DOCKER_TCP_SOCKET -H unix:///var/run/docker.sock</p>
+            <p>保存并执行命令</p>
+            <code>systemctl daemon-reload && service docker restart</code>
+            <p>Ubuntu(upstart):</p>
+            <p>编辑文件 /etc/default/docker , 设置</p>
+            <p>DOCKER_OPTS="-H tcp://0.0.0.0:$DOCKER_TCP_SOCKET -H unix:///var/run/docker.sock"</p>
+            <p>保存并执行命令</p>
+            <code>service docker restart</code>
+            <p><a href="https://docs.docker.com/engine/reference/commandline/dockerd/#/daemon-socket-option">参考链接<a></p>
         </md-dialog-content>
-        <md-dialog-actions layout="row">
-            <span flex></span>
-            <md-button ng-click="formCtrl.cancel()" aria-label="cancel">
-                取消
-            </md-button>
-            <md-button data-ng-disabled="staticForm.$invalid" data-ng-click="formCtrl.ok()"
-                       aria-label="ok" style="margin-right:20px;">
-                确认
-            </md-button>
-        </md-dialog-actions>
     </form>
 </md-dialog>
 
