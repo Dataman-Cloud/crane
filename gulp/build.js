@@ -6,20 +6,14 @@ var $ = require('gulp-load-plugins')({
     pattern: ['gulp-*', 'main-bower-files', 'del']
 });
 
-gulp.task('copy-conf', function () {
-    gulp.src('conf.js')
-        .pipe(gulp.dest('dist/'));
-});
+gulp.task('copy', function () {
+    var fonts = ['bower_components/font-awesome/fonts/*'];
+    var source = ['pics/**', 'conf.js', 'stack_samples/**', 'misc-tools/**'];
 
-gulp.task('copy-pics', ['copy-conf'], function () {
-    gulp.src('pics/*')
-        .pipe(gulp.dest('dist/pics/'));
-});
-
-gulp.task('copy-fonts', ['copy-pics'], function () {
-    var sources = ['bower_components/font-awesome/fonts/*'];
-    gulp.src(sources)
+    gulp.src(fonts)
         .pipe(gulp.dest('dist/fonts'));
+    gulp.src(source, {base: '.'})
+        .pipe(gulp.dest('dist/'));
 });
 
 //directives html
@@ -232,4 +226,4 @@ gulp.task('delete', function () {
     return $.del([path.join(conf.paths.dist, '/'), path.join(conf.paths.tmp, '/')]);
 });
 
-gulp.task('build', ['copy-fonts', 'clean']);
+gulp.task('build', ['copy', 'clean']);

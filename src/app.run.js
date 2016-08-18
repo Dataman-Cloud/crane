@@ -34,12 +34,11 @@
                     }
                 }
             });
-
     }
-    
+
     function sum(iter, valueGetter) {
         var sum = 0;
-        angular.forEach(iter, function(item){
+        angular.forEach(iter, function (item) {
             var value = item;
             if (valueGetter) {
                 value = valueGetter(item);
@@ -48,15 +47,16 @@
         });
         return sum;
     }
-    
+
     function maxPlus(iter, valueGetter) {
         var max;
-        angular.forEach(iter, function(item){
+        angular.forEach(iter, function (item) {
             var value = valueGetter(item);
             if (max === undefined || value > max) {
                 max = value;
             }
-        })
+        });
+
         return max;
     }
 })();
