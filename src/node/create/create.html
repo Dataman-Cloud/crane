@@ -1,118 +1,52 @@
 <form class="form-main" name="addNode" role="form" data-ng-if="nodeCreateCtrl.step === 'one'">
-  <div class="form-group" layout="column">
-    <label>主机 IP<span class="required">*</span></label>
-    <div class="form-control">
-       <input type="text" class="form-input" name="ip" data-ng-model="nodeCreateCtrl.ip" data-ng-pattern="/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/" data-required="required">
+    <div class="form-group" layout="column">
+        <label>主机 IP<span class="required">*</span></label>
+        <div class="form-control">
+            <input type="text" class="form-input" name="ip" data-ng-model="nodeCreateCtrl.ip"
+                   data-ng-pattern="/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/" data-required="required">
+        </div>
+        <div ng-messages="addNode.ip.$error" ng-if="addNode.ip.$dirty" role="alert">
+            <p class="help-text" ng-message="pattern">IP 地址格式错误</p>
+            <p class="help-text" ng-message="required">不能为空</p>
+        </div>
     </div>
-    <div ng-messages="addNode.ip.$error" ng-if="addNode.ip.$dirty" role="alert">
-        <p class="help-text" ng-message="pattern">IP 地址格式错误</p>
-        <p class="help-text" ng-message="required">不能为空</p>
-    </div>
-  </div>
-  <footer class="form-buttons">
-    <md-button class="md-raised md-primary" data-ng-click="nodeCreateCtrl.buildCmd(); nodeCreateCtrl.step = 'two'" data-ng-disabled="addNode.$invalid">下一步</md-button>
-  </footer>
+    <footer class="form-buttons">
+        <md-button class="md-raised md-primary" data-ng-click="nodeCreateCtrl.buildCmd(); nodeCreateCtrl.step = 'two'"
+                   data-ng-disabled="addNode.$invalid">下一步
+        </md-button>
+    </footer>
 </form>
 
 <form class="form-main" name="nodeCmd" role="form" data-ng-if="nodeCreateCtrl.step === 'two'">
-  <div class="form-group" layout="column">
-    <label>1. 安装 Docker<span class="required">*</span><small>主机已安装 Docker，请跳过。</small></label>
-    <div class="form-control">
-       <code id="install-docker-code">{/nodeCreateCtrl.DOCKERSCRIT/}</code>
-       <div class="sub-button"><md-button class="md-raised md-success md-small copy" ngclipboard data-clipboard-target="#install-docker-code"><i class="fa fa-clone"></i> 点击复制代码</md-button></div>
+    <div class="form-group" layout="column">
+        <label>1. 安装 Docker<span class="required">*</span>
+            <small>主机已安装 Docker，请跳过。</small>
+        </label>
+        <div class="form-control">
+            <code id="install-docker-code">{/nodeCreateCtrl.DOCKERSCRIT/}</code>
+            <div class="sub-button">
+                <md-button class="md-raised md-success md-small copy" ngclipboard
+                           data-clipboard-target="#install-docker-code"><i class="fa fa-clone"></i> 点击复制代码
+                </md-button>
+            </div>
+        </div>
+
     </div>
-    
-  </div>
-<div class="form-group" layout="column">
-    <label>2. 添加主机命令<span class="required">*</span><small>请登录目标主机，运行以下命令，本操作需要 sudo 权限。</small></label>
-    <div class="form-control">
-       <code id="install-docker-code">{/nodeCreateCtrl.cmd/}</code>
-       <div class="sub-button">
-            <md-button class="md-raised md-success md-small copy" ngclipboard data-clipboard-target="#cmd"><i class="fa fa-clone"></i> 点击复制命令</md-button>
+    <div class="form-group" layout="column">
+        <label>2. 添加主机命令<span class="required">*</span>
+            <small>请登录目标主机，运行以下命令，本操作需要 sudo 权限。</small>
+        </label>
+        <div class="form-control">
+            <code id="cmd">{/nodeCreateCtrl.cmd/}</code>
+            <div class="sub-button">
+                <md-button class="md-raised md-success md-small copy" ngclipboard data-clipboard-target="#cmd"><i
+                        class="fa fa-clone"></i> 点击复制命令
+                </md-button>
+            </div>
         </div>
     </div>
-  </div>
-  <footer class="form-buttons">
-    <md-button class="md-raised" data-ng-click="nodeCreateCtrl.step = 'one'">上一步</md-button><md-button class="md-raised md-primary" data-ng-click="$state.go('node.list')">完成</md-button>
-  </footer>
+    <footer class="form-buttons">
+        <md-button class="md-raised" data-ng-click="nodeCreateCtrl.step = 'one'">上一步</md-button>
+        <md-button class="md-raised md-primary" data-ng-click="$state.go('node.list')">完成</md-button>
+    </footer>
 </form>
-
-
-
-<!--<form flex name="addNode" class="form-horizontal" role="form" data-ng-if="nodeCreateCtrl.step === 'one'">
-            <div layout="row" layout-align="start start" class="form-group form-group-input">
-                <label flex="15">主机 IP</label>
-                <div flex="50" layout="column">
-                    <div flex>
-                        <input type="text" class="form-input" name="ip"
-                               data-ng-model="nodeCreateCtrl.ip" data-ng-pattern="/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/"
-                               data-required="required">
-                    </div>
-
-                    <div ng-messages="addNode.ip.$error" ng-if="addNode.ip.$dirty"
-                         role="alert">
-                        <p class="error-info help-info-bottom"
-                           ng-message="pattern">
-                            <small>IP 地址格式错误</small>
-                        </p>
-                        <p class="error-info help-info-bottom"
-                           ng-message="required">
-                            <small>不能为空</small>
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div layout="row" class="form-footer-button">
-                <div flex-offset="15">
-                    <md-button class="md-raised md-primary" data-ng-click="nodeCreateCtrl.buildCmd(); nodeCreateCtrl.step = 'two'"
-                               data-ng-disabled="addNode.$invalid">下一步</md-button>
-                </div>
-            </div>
-        </form>-->
-
-<!--
-        <form flex name="nodeCmd" class="form-horizontal" role="form" data-ng-if="nodeCreateCtrl.step === 'two'">
-
-            <div layout="row" layout-align="start start" class="form-group form-group-input form-group-addrow">
-                <label flex="15">连接主机</label>
-                <div flex="50" class="install-code">
-                    <dl>
-                        <dt>
-                        <h4>1. 安装 Docker</h4>
-                        <p>主机已安装 Docker，请跳过。</p>
-                        <code id="install-docker-code" class="text-info">
-                            {/nodeCreateCtrl.DOCKERSCRIT/}
-                        </code>
-                        </dt>
-                        <dd>
-                            <md-button class="md-button md-primary copy" ngclipboard data-clipboard-target="#install-docker-code">
-                                <i class="fa fa-clone"></i> 点击复制代码
-                            </md-button>
-                        </dd>
-                    </dl>
-                    <dl>
-                        <dt>
-                        <h4>2. 添加主机命令</h4>
-                        <p>请登录目标主机，运行以下命令，本操作需要 sudo 权限。</p>
-                        <code id="cmd" class="text-info">
-                            {/nodeCreateCtrl.cmd/}
-                        </code>
-                        </dt>
-                        <dd>
-                            <md-button class="md-button md-primary copy"
-                                       ngclipboard data-clipboard-target="#cmd">
-                                <i class="fa fa-clone"></i> 点击复制命令
-                            </md-button>
-                        </dd>
-                    </dl>
-                </div>
-            </div>
-            <div layout="row" class="form-footer-button">
-                <div flex-offset="15">
-                    <md-button class="md-raised" data-ng-click="nodeCreateCtrl.step = 'one'">上一步</md-button>
-                    <md-button class="md-raised md-primary" data-ng-click="$state.go('node.list')">完成</md-button>
-                </div>
-            </div>
-        </form>
--->
