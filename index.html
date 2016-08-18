@@ -150,18 +150,14 @@
                         md-selected-item-change="rootCtrl.searchJump(item)" class="search-header">
                     <md-item-template>
                         <div>
-                                <span class="item-title">
-                                    <i class="fa fa-server"
-                                       ng-class="{'fa-server': item.Type === 'node' || item.Type === 'network' || item.Type === 'volume', 'fa-stack-overflow': item.Type === 'stack', 'fa-wrench': item.Type === 'service', 'fa-cube': item.Type === 'task'}"></i>
-                                    <span md-highlight-text="rootCtrl.searchText" md-highlight-flags="^i">
-                                        Name: {/item.Name/}
-                                    </span>
-                                </span>
-                                <span class="item-metadata">
-                                    <span class="item-metastat">
-                                      ID: {/item.ID/}
-                                    </span>
-                                </span>
+                            <span class="item-title">
+                                <i class="fa fa-server"
+                                   ng-class="{'fa-server': item.Type === 'node' || item.Type === 'network' || item.Type === 'volume', 'fa-stack-overflow': item.Type === 'stack', 'fa-wrench': item.Type === 'service', 'fa-cube': item.Type === 'task'}"></i>
+                                <span ng-show="item.Name">Name<i>{/item.Name/}</i></span>
+                            </span>
+                            <span class="item-metadata">
+                                <span class="item-metastat" ng-show="item.ID">ID<i>{/item.ID/}</i></span>
+                            </span>
                         </div>
                     </md-item-template>
                     <md-not-found>
