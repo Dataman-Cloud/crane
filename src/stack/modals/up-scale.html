@@ -1,5 +1,5 @@
 <md-dialog aria-label="select image">
-    <form name="staticForm">
+    <form name="staticForm" class="form-main">
         <md-toolbar>
             <div class="md-toolbar-tools">
                 <h2>修改任务数</h2>
@@ -10,38 +10,21 @@
                 </md-button>
             </div>
         </md-toolbar>
-        <md-dialog-content style="width: 400px; max-height: 400px; min-height: 100px;">
-            <div layout="row" layout-align="end center" class="form-group form-group-input" layout-margin
-                 layout-padding>
-                <label flex="30">任务个数</label>
-                <div flex="60" layout="column">
-                    <div flex>
-                        <input type="number" class="form-input" name="scale" aria-label="scale"
-                               data-ng-model="formCtrl.scale" data-required min="1">
-                    </div>
+        <md-dialog-content>
+            <div class="form-group">
+                <label>任务个数</label>
+                <div class="form-control">
+                    <input type="number" class="form-input" name="scale" aria-label="scale" data-ng-model="formCtrl.scale" data-required min="1">
                     <div ng-messages="staticForm.scale.$error" ng-if="staticForm.scale.$dirty" role="alert">
-                        <p class="error-info help-info-bottom"
-                           ng-message="required">
-                            <small>任务数不能为空</small>
-                        </p>
-                        <p class="error-info help-info-bottom"
-                           ng-message="min">
-                            <small>任务数最小值为1</small>
-                        </p>
+                        <p class="help-info text-danger" ng-message="required">任务数不能为空</p>
+                        <p class="help-info text-danger" ng-message="min">任务数最小值为1</p>
                     </div>
                 </div>
-                <div flex></div>
             </div>
         </md-dialog-content>
         <md-dialog-actions layout="row">
-            <span flex></span>
-            <md-button ng-click="formCtrl.cancel()" aria-label="cancel">
-                取消
-            </md-button>
-            <md-button data-ng-disabled="staticForm.$invalid" data-ng-click="formCtrl.ok()"
-                       aria-label="ok" style="margin-right:20px;">
-                确认
-            </md-button>
+            <md-button ng-click="formCtrl.cancel()" aria-label="cancel">取消</md-button>
+            <md-button data-ng-disabled="staticForm.$invalid" data-ng-click="formCtrl.ok()" aria-label="ok" class="md-primary">确认</md-button>
         </md-dialog-actions>
     </form>
 </md-dialog>

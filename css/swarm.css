@@ -443,6 +443,7 @@ input:-ms-input-placeholder {
 }
 .form-main label {
     margin-bottom: 5px;
+    display: inline-block;
 }
 .form-main .form-control {
     margin-bottom: 10px;
@@ -821,3 +822,24 @@ article ol li code {
     border-right: 1px solid #666C71;
     color: #D3D1D5;
 }
+md-dialog md-dialog-content {
+    padding: 25px;
+    max-width: 800px;
+    min-width: 300px;
+}
+md-dialog md-toolbar.md-default-theme:not(.md-menu-toolbar), md-dialog md-toolbar:not(.md-menu-toolbar) {
+    background-color: #1FA2BF!important;
+}
+md-dialog md-dialog-content input[type="number"], md-dialog md-dialog-content input[type="text"] {
+    width: auto;
+}
+md-dialog md-dialog-content label {
+    color: #354052;
+}
+md-dialog .md-actions .md-button, md-dialog md-dialog-actions .md-button{
+    margin-right: 20px!important;
+}
+md-dialog .md-actions .md-button:last-of-type, md-dialog md-dialog-actions .md-button:last-of-type {
+    margin-right: 0!important;
+}
+
