@@ -842,4 +842,6 @@ md-dialog .md-actions .md-button, md-dialog md-dialog-actions .md-button{
 md-dialog .md-actions .md-button:last-of-type, md-dialog md-dialog-actions .md-button:last-of-type {
     margin-right: 0!important;
 }
-
+md-card.md-default-theme .md-card-image, md-card .md-card-image {
+    width: 100%;
+}
