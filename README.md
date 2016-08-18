@@ -11,6 +11,16 @@
   ```
 其中 ROLEX_IP 是运行该程序的主机IP，另外，该主机将作为 swarm manager
 
+## Jenkins 的 exec
+
+  ```bash
+  /bin/sh -xe jenkins-job.sh
+
+  ROLEX_IP=$IP ./build-and-start.sh
+  sleep 20
+  cd api_test&&./run.sh
+  ```
+
 ## Open ports between the hosts
 
 - TCP port 2377 for cluster management communications
