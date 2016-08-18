@@ -26,8 +26,12 @@
             <p>DOCKER_OPTS="-H tcp://0.0.0.0:$DOCKER_TCP_SOCKET -H unix:///var/run/docker.sock"</p>
             <p>保存并执行命令</p>
             <code>service docker restart</code>
-            <p><a href="https://docs.docker.com/engine/reference/commandline/dockerd/#/daemon-socket-option">参考链接<a></p>
+            <p><a href="https://docs.docker.com/engine/reference/commandline/dockerd/#/daemon-socket-option">参考链接</a></p>
         </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <md-button ng-click="formCtrl.cancel()" aria-label="cancel">取消</md-button>
+            <md-button data-ng-disabled="staticForm.$invalid" data-ng-click="formCtrl.ok()" aria-label="ok" class="md-primary">连接</md-button>
+        </md-dialog-actions>
     </form>
 </md-dialog>
 
