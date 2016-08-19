@@ -11,13 +11,11 @@ Rolex RoadMap
 4. network management(overlay network, local network)
 5. node management (node label, node maintainence)
 6. volume management(local)
-7. cli
-8. acl - plugin(LDAP, DB, etc.)
-9. image management - plugin
-10. app store - plugin
-11. webssh - plugin
-12. system info
-13. license
+7. image management - plugin
+8. app store - plugin
+9. webssh - plugin
+10. system info
+11. license
 
 ### V2.0
 
@@ -26,6 +24,8 @@ Rolex RoadMap
 3. batch job
 4. audit
 5. event stream
+6. cli
+7. acl - plugin(LDAP, DB, etc.)
 
 
 ### V3.0
