@@ -236,6 +236,15 @@
 			"notests": true
 		},
 		{
+			"importpath": "github.com/Dataman-Cloud/go-component/encrypt",
+			"repository": "https://github.com/Dataman-Cloud/go-component",
+			"vcs": "git",
+			"revision": "987afd17cc85bef16ffd4a1ff16b0ecd5b37d7b8",
+			"branch": "master",
+			"path": "/encrypt",
+			"notests": true
+		},
+		{
 			"importpath": "github.com/Dataman-Cloud/go-component/tty",
 			"repository": "https://github.com/Dataman-Cloud/go-component",
 			"vcs": "git",

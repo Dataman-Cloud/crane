@@ -3,10 +3,10 @@ package license
 import (
 	"strconv"
 
-	"github.com/Dataman-Cloud/rolex/src/util/encrypt"
 	"github.com/Dataman-Cloud/rolex/src/util/rolexerror"
 	"github.com/Dataman-Cloud/rolex/src/util/rolexgin"
 
+	"github.com/Dataman-Cloud/go-component/encrypt"
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
 )
