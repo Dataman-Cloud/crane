@@ -227,6 +227,15 @@
 			"notests": true
 		},
 		{
+			"importpath": "github.com/Dataman-Cloud/go-component/config",
+			"repository": "https://github.com/Dataman-Cloud/go-component",
+			"vcs": "git",
+			"revision": "01a33c57502de25c86363418f13337a17d13989d",
+			"branch": "master",
+			"path": "/config",
+			"notests": true
+		},
+		{
 			"importpath": "github.com/Dataman-Cloud/go-component/tty",
 			"repository": "https://github.com/Dataman-Cloud/go-component",
 			"vcs": "git",
