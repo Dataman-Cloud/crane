@@ -3,7 +3,7 @@ package api
 import (
 	"os/exec"
 
-	containertty "github.com/Dataman-Cloud/rolex/src/plugins/tty"
+	containertty "github.com/Dataman-Cloud/go-component/tty"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"

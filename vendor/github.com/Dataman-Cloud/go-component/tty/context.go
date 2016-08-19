@@ -1,4 +1,4 @@
-package containertty
+package tty
 
 import (
 	"bytes"
