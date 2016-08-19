@@ -7,7 +7,7 @@ export NODE_INIT=${VERSION:-../misc-tools}/node-init.sh
 
 # node env check
 echo "Checking the node status"
-$NODE_INIT
+$NODE_INIT || exit 1
 
 # swarm init
 echo "Trying to init swarm cluster"
