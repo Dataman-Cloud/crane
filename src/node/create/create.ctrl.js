@@ -10,7 +10,7 @@
         self.step = 'one';
         self.ip = '';
         self.managerIp = '';
-        self.DOCKERSCRIT = 'curl -sSL https://coding.net/u/upccup/p/dm-agent-installer/git/raw/master/install-docker.sh | sh';
+        self.DOCKERSCRIT = 'curl -fsSL https://get.docker.com/ | sh';
 
 
         self.buildCmd = buildCmd;
