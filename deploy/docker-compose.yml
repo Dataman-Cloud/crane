@@ -4,7 +4,7 @@ services:
     build:
       context: ../
       dockerfile: ./deploy/Dockerfile
-    image: blackmamba:1.0
+    image: blackmamba:${TAG}
     ports:
       - "80:80"
     links:
