@@ -566,6 +566,9 @@ md-switch.md-default-theme.md-checked.md-primary .md-bar, md-switch.md-checked.m
     background-color: rgba(31,162,191,0.5);
 }
 /* tab 样式 */
+md-tabs {
+    margin-bottom: 25px;
+}
 md-tabs-canvas {
     height: 40px;
     margin-bottom: -1px;
@@ -575,7 +578,6 @@ md-pagination-wrapper {
     height: 40px;
 }
 md-tabs md-tabs-wrapper {
-    margin-bottom: 25px;
     border-color: #93929D;
 }
 md-tabs .md-tab {
@@ -764,7 +766,7 @@ table.md-table td.md-cell .md-icon-button {
 .chart-panel {
     margin-right: 25px;
     margin-bottom: 25px;
-    background: #101515;
+    background: #FFF;
     padding: 10px;
 }
 .log-panel{
