@@ -227,6 +227,15 @@
 			"notests": true
 		},
 		{
+			"importpath": "github.com/Dataman-Cloud/go-component/tty",
+			"repository": "https://github.com/Dataman-Cloud/go-component",
+			"vcs": "git",
+			"revision": "6eac73123cd5393f5cd896a8d4e923a411a0590e",
+			"branch": "master",
+			"path": "/tty",
+			"notests": true
+		},
+		{
 			"importpath": "github.com/Dataman-Cloud/go-dockerclient",
 			"repository": "https://github.com/Dataman-Cloud/go-dockerclient",
 			"vcs": "git",
