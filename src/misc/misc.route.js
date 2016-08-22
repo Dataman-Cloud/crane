@@ -4,7 +4,7 @@
         .config(route);
 
     /* @ngInject */
-    function route($stateProvider, $locationProvider, $interpolateProvider) {
+    function route($stateProvider) {
         $stateProvider
             .state('misc', {
                 url: '/misc',
@@ -27,8 +27,8 @@
             });
 
         /* @ngInject */
-        function getConfig(misc) {
-            return misc.rolexConfig()
+        function getConfig(miscBackend) {
+            return miscBackend.rolexConfig()
         }
     }
 })();

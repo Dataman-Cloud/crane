@@ -1,7 +1,6 @@
 MESSAGE_CODE = {
     success: 0,
     dataInvalid: 10002,
-    noExist: 10009,
     unknow: 10000
 };
 
@@ -159,5 +158,8 @@ BACKEND_URL = {
     },
     layout: {
         search: 'search/v1/luckysearch'
+    },
+    licence: {
+        licence: 'license/v1/license'
     }
 };

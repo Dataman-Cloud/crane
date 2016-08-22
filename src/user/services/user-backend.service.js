@@ -9,7 +9,8 @@
         return {
             logout: logout,
             aboutMe: aboutMe,
-            listGroup: listGroup
+            listGroup: listGroup,
+            checkLicense: checkLicense
         };
 
         function logout() {
@@ -22,6 +23,10 @@
 
         function listGroup(id) {
             return gHttp.Resource('auth.groups', {account_id: id}).get();
+        }
+
+        function checkLicense() {
+            return gHttp.Resource('licence.licence').get();
         }
     }
 })();

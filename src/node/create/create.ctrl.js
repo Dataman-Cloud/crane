@@ -4,7 +4,7 @@
         .controller('NodeCreateCtrl', NodeCreateCtrl);
 
     /* @ngInject */
-    function NodeCreateCtrl(nodeBackend, misc) {
+    function NodeCreateCtrl(nodeBackend, miscBackend) {
         var self = this;
 
         self.step = 'one';
@@ -22,7 +22,7 @@
         }
 
         function buildCmd() {
-            var miscConfig = misc.rolexConfig()
+            var miscConfig = miscBackend.rolexConfig()
                 .then(function(data){
                     self.workerToken = data.SwarmInfo.JoinTokens.Worker;
             });

@@ -15,12 +15,7 @@
         $interpolateProvider.endSymbol('/}');
 
         NotificationProvider.setOptions({
-            delay: 3000 * 3,
-            positionX: 'right',
-            positionY: 'top',
-            replaceMessage: true,
-            startTop: 20,
-            startRight: 260
+            replaceMessage: true
         });
 
         $translateProvider.preferredLanguage('zh-cn');

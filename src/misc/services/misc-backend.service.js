@@ -1,11 +1,11 @@
 (function () {
     'use strict';
     angular.module('app.misc')
-        .factory('misc', misc);
+        .factory('miscBackend', miscBackend);
 
 
     /* @ngInject */
-    function misc(gHttp) {
+    function miscBackend(gHttp) {
         return {
           rolexConfig: rolexConfig
         };

@@ -4,7 +4,7 @@
         .controller('RootCtrl', RootCtrl);
 
     /* @ngInject */
-    function RootCtrl($state, $window, mdSideNav, gHttp, utils, userBackend, $rootScope, tty, stream, layoutBackend) {
+    function RootCtrl($state, $window, mdSideNav, gHttp, utils, userBackend, $rootScope, tty, stream, layoutBackend, miscBackend) {
         var self = this;
 
         $rootScope.accountId = null;
@@ -23,7 +23,8 @@
         function activate() {
             ///
             initUser();
-            listComponent()
+            listComponent();
+            checkLicense();
         }
 
         function initUser() {
@@ -43,8 +44,15 @@
                 })
         }
 
+        function checkLicense() {
+            userBackend.checkLicense()
+                .then(function (data) {
+                    $rootScope.licenseValidFlag = (Date.now() / 1000) < data.License;
+                })
+        }
+
         function listComponent() {
-            gHttp.Resource('misc.config').get()
+            miscBackend.rolexConfig()
                 .then(function (data) {
                     $rootScope.componentList = data.FeatureFlags;
                 });
@@ -109,12 +117,12 @@
             }
         }
 
-        function openSearch(){
+        function openSearch() {
             self.isSearch = !self.isSearch;
             self.searchText = '';
-            setTimeout(function(){
+            setTimeout(function () {
                 document.querySelector('#autoCompleteSearch').focus();
-            },0);
+            }, 0);
         }
     }
 })();
