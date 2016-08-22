@@ -40,9 +40,18 @@ func (licenseApi *LicenseApi) Create(ctx *gin.Context) {
 		Select("license").
 		First(&objSetting).
 		Error; err != nil {
-		log.Errorf("get license error: %v", err)
-		rolexerr := rolexerror.NewRolexError(rolexerror.CodeLicenseCreateLicenseError, err.Error())
-		rolexgin.HttpErrorResponse(ctx, rolexerr)
+		objSetting.License = setting.License
+		if err = licenseApi.DbClient.
+			Model(&Setting{}).
+			Select("license").
+			Save(&objSetting).
+			Error; err != nil {
+			log.Errorf("update license error: %v", err)
+			rolexerr := rolexerror.NewRolexError(rolexerror.CodeLicenseCreateLicenseError, err.Error())
+			rolexgin.HttpErrorResponse(ctx, rolexerr)
+			return
+		}
+		rolexgin.HttpOkResponse(ctx, "update license success")
 		return
 	}
 
