@@ -766,7 +766,7 @@ table.md-table td.md-cell .md-icon-button {
 .chart-panel {
     margin-right: 25px;
     margin-bottom: 25px;
-    background: #FFF;
+    background: #101515;
     padding: 10px;
 }
 .log-panel{
@@ -857,4 +857,46 @@ md-dialog .md-actions .md-button:last-of-type, md-dialog md-dialog-actions .md-b
 }
 md-card.md-default-theme .md-card-image, md-card .md-card-image {
     width: 100%;
+}
+
+/* D3样式 */
+/* 信息图标题 */
+nvd3 .title {
+    font-size: 18px;
+    color: #D3D1D5;
+}
+/* 纵轴线 */
+.nvd3 .nv-x.nv-axis .tick line {
+    display: none;
+}
+/* 横轴线 */
+.nvd3 .nv-y.nv-axis .tick line {
+    stroke: #252D31;
+}
+/* 纵轴文字 */
+.nvd3 .nv-x.nv-axis .tick text {
+    fill: #93929D;
+    font-size: 11px;
+}
+/* 横轴文字 */
+.nvd3 .nv-y.nv-axis .tick text {
+    fill: #93929D;
+    font-size: 11px;
+}
+/* 横轴极值文字 */
+.nvd3 .nv-axis .nv-axisMaxMin text {
+    fill: #93929D;
+    font-size: 11px;
+}
+.nvd3 .nv-axis path {
+    display: none;
+}
+/* 标签 */
+nvd3 .nv-axislabel {
+    display: none;
+}
+/* legend文字颜色 */
+.nv-series .nv-legend-text {
+    fill: #93929D;
+    font-size: 11px;
 }

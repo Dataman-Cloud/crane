@@ -31,7 +31,7 @@
             Options.prototype._createNetworkOptions = function() {
                 var options = chartUtil.createDefaultOptions();
                 options.chart.yAxis.axisLabel = '速率';
-                options.title.text = '网络监控';
+                options.title.text = '网络接收/发送速率';
                 options.chart.yAxis.tickFormat = function(d){
                         return $filter('netRate')(d);
                     };
@@ -42,14 +42,14 @@
             Options.prototype._createCpuOptions = function() {
                 var options = chartUtil.createDefaultOptions();
                 options.chart.yAxis.axisLabel = 'CPU使用率';
-                options.title.text = 'CPU监控';
+                options.title.text = 'CPU 使用率';
                 return options
             };
             
             Options.prototype._createMemOptions = function() {
                 var options = chartUtil.createDefaultOptions();
                 options.chart.yAxis.axisLabel = '内存使用率';
-                options.title.text = '内存监控'; 
+                options.title.text = '内存使用率'; 
                 return options;
             };
             
@@ -67,7 +67,7 @@
             };
             
             Options.prototype._pushCpuData = function(serialName, x, data, cpuApi) {
-                var serialKey = serialName + ' CPU使用率';
+                var serialKey = serialName;
                 chartUtil.pushData(this.cpuData, serialKey, {x:x, y:this._getCpuUsageRate(data)}, $rootScope.STATS_POINT_NUM);
                 if (chartUtil.updateForceY(this.cpuOptions.chart, this.cpuData, 0, 1.2, 1, 100)){
                     cpuApi.refresh();
@@ -77,7 +77,7 @@
             }
             
             Options.prototype._pushMemData = function(serialName, x, data, memApi) {
-                var serialKey = serialName + ' 内存使用率';
+                var serialKey = serialName;
                 chartUtil.pushData(this.memData, serialKey, {x:x, y:data.memory_stats.usage/data.memory_stats.limit * 100, 
                     total: data.memory_stats.limit, use:data.memory_stats.usage}, $rootScope.STATS_POINT_NUM);
                 if (chartUtil.updateForceY(this.memOptions.chart, this.memData, 0, 1.2, 1, 100)){
@@ -88,9 +88,9 @@
             }
             
             Options.prototype._pushNetworkData = function(serialName, x, data, networkApi) {
-                chartUtil.pushData(this.networkData, serialName+' 网络接收速率', {x:x, y:Math.sum(data.networks, function (network) {return network.rx_bytes})},
+                chartUtil.pushData(this.networkData, serialName, {x:x, y:Math.sum(data.networks, function (network) {return network.rx_bytes})},
                         $rootScope.STATS_POINT_NUM);
-                chartUtil.pushData(this.networkData, serialName+' 网络发送速率', {x:x, y:Math.sum(data.networks, function (network) {return network.tx_bytes})},
+                chartUtil.pushData(this.networkData, serialName, {x:x, y:Math.sum(data.networks, function (network) {return network.tx_bytes})},
                         $rootScope.STATS_POINT_NUM);
                 networkApi.update();
             }
