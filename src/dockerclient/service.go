@@ -31,6 +31,10 @@ type ServiceStatus struct {
 	Command         string    `json:"Command"`
 	CreatedAt       time.Time `json:"CreatedAt"`
 	UpdatedAt       time.Time `json:"UpdatedAt"`
+	LimitCpus       int64     `json:"LimitCpus"`
+	LimitMems       int64     `json:"LimitMems"`
+	ReserveCpus     int64     `json:"ReserveCpus"`
+	ReserveMems     int64     `json:"ReserveMems"`
 }
 
 // scale a service request
@@ -133,6 +137,17 @@ func (client *RolexDockerClient) GetServicesStatus(services []swarm.Service) ([]
 			taskTotal = len(activeNodes)
 		}
 
+		var limitCpus int64
+		var limitMems int64
+		var reserveCpus int64
+		var reserveMems int64
+		if service.Spec.TaskTemplate.Resources != nil {
+			limitCpus = int64(runningTasks[service.ID]) * service.Spec.TaskTemplate.Resources.Limits.NanoCPUs
+			limitMems = int64(runningTasks[service.ID]) * service.Spec.TaskTemplate.Resources.Limits.MemoryBytes
+			reserveCpus = int64(taskTotal) * service.Spec.TaskTemplate.Resources.Reservations.NanoCPUs
+			reserveMems = int64(taskTotal) * service.Spec.TaskTemplate.Resources.Reservations.MemoryBytes
+		}
+
 		serviceSt := ServiceStatus{
 			ID:              service.ID,
 			Name:            service.Spec.Name,
@@ -142,6 +157,10 @@ func (client *RolexDockerClient) GetServicesStatus(services []swarm.Service) ([]
 			Command:         strings.Join(service.Spec.TaskTemplate.ContainerSpec.Args, " "),
 			CreatedAt:       service.CreatedAt,
 			UpdatedAt:       service.UpdatedAt,
+			LimitCpus:       limitCpus,
+			LimitMems:       limitMems,
+			ReserveCpus:     reserveCpus,
+			ReserveMems:     reserveMems,
 		}
 
 		servicesSt = append(servicesSt, serviceSt)
