@@ -1,3 +1,18 @@
 #!/bin/bash
 
-TAG=1.0 ROLEX_SWARM_MANAGER_IP=$ROLEX_IP docker-compose -p rolex up -d
+export ROLEX_SWARM_MANAGER_IP=$ROLEX_IP
+export TAG=${VERSION:-1.0}
+export DOCKER_COMPOSE=${VERSION:-.}/docker-compose.yml
+export NODE_INIT=${VERSION:-../misc-tools}/node-init.sh
+
+# node env check
+echo "Checking the node status"
+$NODE_INIT || exit 1
+
+# swarm init
+echo "Trying to init swarm cluster"
+$(docker swarm init --advertise-addr=$ROLEX_IP &>/dev/null) || {
+   echo "Swarm cluster have been running!"
+}
+
+docker-compose -p rolex -f $DOCKER_COMPOSE up -d

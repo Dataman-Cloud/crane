@@ -1,16 +1,13 @@
 version: "2"
 services:
   blackmamba:
-    build:
-      context: ../
-      dockerfile: ./deploy/Dockerfile
-    image: blackmamba:${TAG}
+    image: demoregistry.dataman-inc.com/library/blackmamba:${TAG}
     ports:
       - "80:80"
     links:
       - rolex
   rolex_registry:
-    image: registry:rolex${TAG}
+    image: demoregistry.dataman-inc.com/library/registry:rolex${TAG}
     ports:
       - "5000:5000"
       - "5001:5001"
@@ -20,14 +17,14 @@ services:
       - ./registry_storage:/var/lib/registry
     restart: always
   rolex:
-    image: rolex:${TAG}
+    image: demoregistry.dataman-inc.com/library/rolex:${TAG}
     environment:
       - ROLEX_SWARM_MANAGER_IP
     ports:
       - "5013:5013"
     restart: always
   rolex_db:
-    image: mysql:rolex${TAG}
+    image: demoregistry.dataman-inc.com/library/mysql:rolex${TAG}
     environment:
       - MYSQL_ROOT_PASSWORD=111111
     ports:
