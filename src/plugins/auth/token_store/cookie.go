@@ -9,7 +9,7 @@ import (
 
 	"github.com/Dataman-Cloud/rolex/src/plugins/auth"
 
-	"github.com/Dataman-Cloud/go-component/encrypt"
+	"github.com/Dataman-Cloud/go-component/utils/encrypt"
 	"github.com/gin-gonic/gin"
 )
 

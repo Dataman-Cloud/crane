@@ -6,7 +6,7 @@ import (
 	"github.com/Dataman-Cloud/rolex/src/util/rolexerror"
 	"github.com/Dataman-Cloud/rolex/src/util/rolexgin"
 
-	"github.com/Dataman-Cloud/go-component/encrypt"
+	"github.com/Dataman-Cloud/go-component/utils/encrypt"
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
 )
