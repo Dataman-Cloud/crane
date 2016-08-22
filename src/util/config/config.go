@@ -5,7 +5,7 @@ import (
 
 	"github.com/Dataman-Cloud/rolex/src/util"
 
-	dmConfig "github.com/Dataman-Cloud/go-component/config"
+	dmConfig "github.com/Dataman-Cloud/go-component/utils/config"
 	log "github.com/Sirupsen/logrus"
 )
 

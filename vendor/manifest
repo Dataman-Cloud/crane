@@ -227,21 +227,30 @@
 			"notests": true
 		},
 		{
-			"importpath": "github.com/Dataman-Cloud/go-component/config",
-			"repository": "https://github.com/Dataman-Cloud/go-component",
-			"vcs": "git",
-			"revision": "01a33c57502de25c86363418f13337a17d13989d",
-			"branch": "master",
-			"path": "/config",
-			"notests": true
-		},
-		{
 			"importpath": "github.com/Dataman-Cloud/go-component/tty",
 			"repository": "https://github.com/Dataman-Cloud/go-component",
 			"vcs": "git",
 			"revision": "6eac73123cd5393f5cd896a8d4e923a411a0590e",
 			"branch": "master",
 			"path": "/tty",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/Dataman-Cloud/go-component/utils/config",
+			"repository": "https://github.com/Dataman-Cloud/go-component",
+			"vcs": "git",
+			"revision": "c19977ba41302ca47d724fa50d2fa0aefe29b2a2",
+			"branch": "master",
+			"path": "/utils/config",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/Dataman-Cloud/go-component/utils/encrypt",
+			"repository": "https://github.com/Dataman-Cloud/go-component",
+			"vcs": "git",
+			"revision": "c19977ba41302ca47d724fa50d2fa0aefe29b2a2",
+			"branch": "master",
+			"path": "/utils/encrypt",
 			"notests": true
 		},
 		{
