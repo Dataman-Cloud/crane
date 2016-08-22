@@ -4,10 +4,11 @@ import (
 	"encoding/base64"
 	"io"
 
+	"github.com/Dataman-Cloud/go-component/utils/dmerror"
+	"github.com/Dataman-Cloud/go-component/utils/dmgin"
 	"github.com/Dataman-Cloud/rolex/src/dockerclient"
 	"github.com/Dataman-Cloud/rolex/src/dockerclient/model"
 	"github.com/Dataman-Cloud/rolex/src/util/rolexerror"
-	"github.com/Dataman-Cloud/rolex/src/util/rolexgin"
 
 	docker "github.com/Dataman-Cloud/go-dockerclient"
 	log "github.com/Sirupsen/logrus"
@@ -17,6 +18,14 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/manucorporat/sse"
 	"golang.org/x/net/context"
+)
+
+const (
+	CodeUpdateServiceParamError = "400-11401"
+	CodeCreateServiceParamError = "400-11402"
+	CodeScaleServiceParamError  = "400-11403"
+
+	CodeListTaskParamError = "400-11404"
 )
 
 func reverseString(s string) string {
@@ -41,31 +50,31 @@ func encryptServiceId(serviceId string) string {
 }
 
 func (api *Api) ServiceCDAddr(ctx *gin.Context) {
-	rolexgin.HttpOkResponse(ctx, encryptServiceId(ctx.Param("service_id")))
+	dmgin.HttpOkResponse(ctx, encryptServiceId(ctx.Param("service_id")))
 }
 
 func (api *Api) UpdateServiceImage(ctx *gin.Context) {
 	encryptedServicId := ctx.Param("service_id")
 	serviceId, err := decryptServiceId(encryptedServicId)
 	if err != nil {
-		rolexgin.HttpErrorResponse(ctx, err)
+		dmgin.HttpErrorResponse(ctx, err)
 		return
 	}
 
 	service, err := api.GetDockerClient().InspectServiceWithRaw(serviceId)
 	if err != nil {
-		rolexgin.HttpErrorResponse(ctx, err)
+		dmgin.HttpErrorResponse(ctx, err)
 		return
 	}
 
 	service.Spec.TaskTemplate.ContainerSpec.Image = ctx.Query("image")
 
 	if err := api.GetDockerClient().UpdateService(service.ID, service.Version, service.Spec, nil); err != nil {
-		rolexgin.HttpErrorResponse(ctx, err)
+		dmgin.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	rolexgin.HttpOkResponse(ctx, "success")
+	dmgin.HttpOkResponse(ctx, "success")
 	return
 }
 
@@ -73,23 +82,23 @@ func (api *Api) UpdateService(ctx *gin.Context) {
 	var serviceSpec swarm.ServiceSpec
 
 	if err := ctx.BindJSON(&serviceSpec); err != nil {
-		rerror := rolexerror.NewRolexError(rolexerror.CodeUpdateServiceParamError, err.Error())
-		rolexgin.HttpErrorResponse(ctx, rerror)
+		rerror := dmerror.NewError(CodeUpdateServiceParamError, err.Error())
+		dmgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
 
 	service, err := api.GetDockerClient().InspectServiceWithRaw(ctx.Param("service_id"))
 	if err != nil {
-		rolexgin.HttpErrorResponse(ctx, err)
+		dmgin.HttpErrorResponse(ctx, err)
 		return
 	}
 
 	if err := api.GetDockerClient().UpdateService(service.ID, service.Version, serviceSpec, nil); err != nil {
-		rolexgin.HttpErrorResponse(ctx, err)
+		dmgin.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	rolexgin.HttpOkResponse(ctx, "success")
+	dmgin.HttpOkResponse(ctx, "success")
 	return
 }
 
@@ -97,11 +106,11 @@ func (api *Api) InspectService(ctx *gin.Context) {
 	service, err := api.GetDockerClient().InspectServiceWithRaw(ctx.Param("service_id"))
 	if err != nil {
 		log.Errorf("inspect service error: %v", err)
-		rolexgin.HttpErrorResponse(ctx, err)
+		dmgin.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	rolexgin.HttpOkResponse(ctx, service)
+	dmgin.HttpOkResponse(ctx, service)
 	return
 }
 
@@ -110,19 +119,19 @@ func (api *Api) CreateService(ctx *gin.Context) {
 	var service swarm.ServiceSpec
 	if err := ctx.BindJSON(&service); err != nil {
 		log.Error("CreateService invalied request body: ", err)
-		rerror := rolexerror.NewRolexError(rolexerror.CodeCreateServiceParamError, err.Error())
-		rolexgin.HttpErrorResponse(ctx, rerror)
+		rerror := dmerror.NewError(CodeCreateServiceParamError, err.Error())
+		dmgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
 
 	response, err := api.GetDockerClient().CreateService(service, types.ServiceCreateOptions{})
 	if err != nil {
 		log.Error("CreateService got error: ", err)
-		rolexgin.HttpErrorResponse(ctx, err)
+		dmgin.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	rolexgin.HttpOkResponse(ctx, response)
+	dmgin.HttpOkResponse(ctx, response)
 	return
 }
 
@@ -130,11 +139,11 @@ func (api *Api) RemoveService(ctx *gin.Context) {
 	serviceId := ctx.Param("id")
 	if err := api.GetDockerClient().RemoveService(serviceId); err != nil {
 		log.Errorf("Remove service %s got error: %s", serviceId, err.Error())
-		rolexgin.HttpErrorResponse(ctx, err)
+		dmgin.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	rolexgin.HttpOkResponse(ctx, "success")
+	dmgin.HttpOkResponse(ctx, "success")
 	return
 }
 
@@ -143,18 +152,18 @@ func (api *Api) ScaleService(ctx *gin.Context) {
 	var serviceScale dockerclient.ServiceScale
 	if err := ctx.BindJSON(&serviceScale); err != nil {
 		log.Errorf("Scale service %s got error: %s", serviceId, err.Error())
-		rerror := rolexerror.NewRolexError(rolexerror.CodeScaleServiceParamError, err.Error())
-		rolexgin.HttpErrorResponse(ctx, rerror)
+		rerror := dmerror.NewError(CodeScaleServiceParamError, err.Error())
+		dmgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
 
 	if err := api.GetDockerClient().ScaleService(serviceId, serviceScale); err != nil {
 		log.Errorf("Scale service %s got error: %s", serviceId, err.Error())
-		rolexgin.HttpErrorResponse(ctx, err)
+		dmgin.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	rolexgin.HttpOkResponse(ctx, "success")
+	dmgin.HttpOkResponse(ctx, "success")
 	return
 }
 
@@ -168,8 +177,8 @@ func (api *Api) LogsService(ctx *gin.Context) {
 	tasks, err := api.GetDockerClient().ListTasks(types.TaskListOptions{Filter: taskFilter})
 	if err != nil {
 		log.Errorf("ListTasks of service %s got error: %s", serviceId, err.Error())
-		rerror := rolexerror.NewRolexError(rolexerror.CodeListTaskParamError, err.Error())
-		rolexgin.HttpErrorResponse(ctx, rerror)
+		rerror := dmerror.NewError(CodeListTaskParamError, err.Error())
+		dmgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
 
@@ -195,8 +204,8 @@ func (api *Api) StatsService(ctx *gin.Context) {
 	tasks, err := api.GetDockerClient().ListTasks(types.TaskListOptions{Filter: taskFilter})
 	if err != nil {
 		log.Errorf("ListTasks of service %s got error: %s", serviceId, err.Error())
-		rerror := rolexerror.NewRolexError(rolexerror.CodeListTaskParamError, err.Error())
-		rolexgin.HttpErrorResponse(ctx, rerror)
+		rerror := dmerror.NewError(CodeListTaskParamError, err.Error())
+		dmgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
 

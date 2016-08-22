@@ -8,6 +8,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/Dataman-Cloud/go-component/utils/dmerror"
 	"github.com/Dataman-Cloud/rolex/src/model"
 	"github.com/Dataman-Cloud/rolex/src/util/config"
 	"github.com/Dataman-Cloud/rolex/src/util/rolexerror"
@@ -22,6 +23,18 @@ const (
 	flagLabelAdd           = "label-add"
 	flagLabelRemove        = "label-rm"
 	flagLabelUpdate        = "label-update"
+)
+
+const (
+	CodeErrorUpdateNodeMethod = "503-11302"
+	CodeErrorNodeRole         = "503-11303"
+	CodeErrorNodeAvailability = "503-11304"
+	CodeGetNodeInfoError      = "503-11305"
+
+	//Go docker client error code
+	CodeConnToNodeError          = "503-11701"
+	CodeGetNodeEndpointError     = "503-11702"
+	CodeNodeEndpointIpMatchError = "503-11703"
 )
 
 const (
@@ -104,7 +117,7 @@ func (client *RolexDockerClient) UpdateNode(nodeId string, opts model.UpdateOpti
 			return err
 		}
 	default:
-		return rolexerror.NewRolexError(rolexerror.CodeErrorUpdateNodeMethod, fmt.Sprintf("Invalid update node method %s", opts.Method))
+		return dmerror.NewError(CodeErrorUpdateNodeMethod, fmt.Sprintf("Invalid update node method %s", opts.Method))
 	}
 
 	query := url.Values{}
@@ -127,7 +140,7 @@ func nodeRole(rawMessage []byte) (swarm.NodeRole, error) {
 	if role != swarm.NodeRoleWorker && role != swarm.NodeRoleManager {
 		errMsg := fmt.Sprintf("node role only support %s/%s but got %s",
 			swarm.NodeRoleWorker, swarm.NodeRoleManager, role)
-		err = rolexerror.NewRolexError(rolexerror.CodeErrorNodeRole, errMsg)
+		err = dmerror.NewError(CodeErrorNodeRole, errMsg)
 	}
 
 	return role, err
@@ -143,7 +156,7 @@ func nodeAvailability(rawMessage []byte) (swarm.NodeAvailability, error) {
 	if availability != swarm.NodeAvailabilityActive && availability != swarm.NodeAvailabilityPause && availability != swarm.NodeAvailabilityDrain {
 		errMsg := fmt.Sprintf("node availability only support %s/%s/%s, but got %s",
 			swarm.NodeAvailabilityActive, swarm.NodeAvailabilityPause, swarm.NodeAvailabilityDrain, availability)
-		err = rolexerror.NewRolexError(rolexerror.CodeErrorNodeAvailability, errMsg)
+		err = dmerror.NewError(CodeErrorNodeAvailability, errMsg)
 	}
 
 	return availability, err
@@ -205,11 +218,11 @@ func (client *RolexDockerClient) Info(nodeId string) (types.Info, error) {
 
 	content, err := client.sharedHttpClient.GET(nil, nodeUrl.String()+"/info", url.Values{}, nil)
 	if err != nil {
-		return nodeInfo, rolexerror.NewRolexError(rolexerror.CodeGetNodeInfoError, err.Error())
+		return nodeInfo, dmerror.NewError(CodeGetNodeInfoError, err.Error())
 	}
 
 	if err := json.Unmarshal(content, &nodeInfo); err != nil {
-		return nodeInfo, rolexerror.NewRolexError(rolexerror.CodeGetNodeInfoError, err.Error())
+		return nodeInfo, dmerror.NewError(CodeGetNodeInfoError, err.Error())
 	}
 
 	return nodeInfo, nil
@@ -220,13 +233,13 @@ func (client *RolexDockerClient) NodeDaemonUrl(nodeId string) (*url.URL, error) 
 	var nodeConnErr *rolexerror.NodeConnError
 	if err != nil {
 		nodeConnErr = &rolexerror.NodeConnError{ID: nodeId, Endpoint: "", Err: err}
-		return nil, &rolexerror.RolexError{Code: rolexerror.CodeGetNodeEndpointError, Err: nodeConnErr}
+		return nil, &dmerror.DmError{Code: CodeGetNodeEndpointError, Err: nodeConnErr}
 	}
 
 	endpoint, ok := node.Spec.Annotations.Labels[labelNodeEndpoint]
 	if !ok {
 		nodeConnErr = &rolexerror.NodeConnError{ID: nodeId, Endpoint: endpoint, Err: err}
-		return nil, &rolexerror.RolexError{Code: rolexerror.CodeGetNodeEndpointError, Err: nodeConnErr}
+		return nil, &dmerror.DmError{Code: CodeGetNodeEndpointError, Err: nodeConnErr}
 	}
 
 	conf := config.GetConfig()
@@ -238,7 +251,7 @@ func (client *RolexDockerClient) NodeDaemonUrl(nodeId string) (*url.URL, error) 
 
 	if err != nil {
 		nodeConnErr = &rolexerror.NodeConnError{ID: nodeId, Endpoint: endpoint, Err: err}
-		return nil, &rolexerror.RolexError{Code: rolexerror.CodeGetNodeEndpointError, Err: nodeConnErr}
+		return nil, &dmerror.DmError{Code: CodeGetNodeEndpointError, Err: nodeConnErr}
 	}
 
 	if !strings.Contains(u.Host, ":") {

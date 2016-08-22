@@ -7,8 +7,8 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/Dataman-Cloud/go-component/utils/dmerror"
 	"github.com/Dataman-Cloud/rolex/src/dockerclient/model"
-	"github.com/Dataman-Cloud/rolex/src/util/rolexerror"
 
 	docker "github.com/Dataman-Cloud/go-dockerclient"
 	log "github.com/Sirupsen/logrus"
@@ -35,6 +35,11 @@ func (s Stacks) Less(i, j int) bool {
 	return s[j].Services[0].CreatedAt.Unix() < s[i].Services[0].CreatedAt.Unix()
 }
 
+const (
+	CodeInvalidStackName = "503-11502"
+	CodeStackNotFound    = "404-11503"
+)
+
 type Stack struct {
 	// Name is the name of the stack
 	Namespace string `json:"Namespace"`
@@ -47,7 +52,7 @@ type Stack struct {
 // deploy a new stack
 func (client *RolexDockerClient) DeployStack(bundle *model.Bundle) error {
 	if bundle.Namespace == "" || !isValidName.MatchString(bundle.Namespace) {
-		return rolexerror.NewRolexError(rolexerror.CodeInvalidStackName, "invalid name, only [a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]")
+		return dmerror.NewError(CodeInvalidStackName, "invalid name, only [a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]")
 	}
 
 	networks := client.getUniqueNetworkNames(bundle.Stack.Services)
@@ -160,7 +165,7 @@ func (client *RolexDockerClient) RemoveStack(namespace string) error {
 	}
 
 	if len(services) == 0 && len(networks) == 0 {
-		return rolexerror.NewRolexError(rolexerror.CodeStackNotFound, fmt.Sprintf("stack %s not found", namespace))
+		return dmerror.NewError(CodeStackNotFound, fmt.Sprintf("stack %s not found", namespace))
 	}
 
 	return nil

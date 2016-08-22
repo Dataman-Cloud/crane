@@ -227,30 +227,11 @@
 			"notests": true
 		},
 		{
-			"importpath": "github.com/Dataman-Cloud/go-component/tty",
+			"importpath": "github.com/Dataman-Cloud/go-component",
 			"repository": "https://github.com/Dataman-Cloud/go-component",
 			"vcs": "git",
-			"revision": "6eac73123cd5393f5cd896a8d4e923a411a0590e",
+			"revision": "55a1ab1e75932e260ca4c73a4d9dd2e05c976767",
 			"branch": "master",
-			"path": "/tty",
-			"notests": true
-		},
-		{
-			"importpath": "github.com/Dataman-Cloud/go-component/utils/config",
-			"repository": "https://github.com/Dataman-Cloud/go-component",
-			"vcs": "git",
-			"revision": "c19977ba41302ca47d724fa50d2fa0aefe29b2a2",
-			"branch": "master",
-			"path": "/utils/config",
-			"notests": true
-		},
-		{
-			"importpath": "github.com/Dataman-Cloud/go-component/utils/encrypt",
-			"repository": "https://github.com/Dataman-Cloud/go-component",
-			"vcs": "git",
-			"revision": "c19977ba41302ca47d724fa50d2fa0aefe29b2a2",
-			"branch": "master",
-			"path": "/utils/encrypt",
 			"notests": true
 		},
 		{
@@ -388,12 +369,12 @@
 			"path": "/pkg/system"
 		},
 		{
-			"importpath": "github.com/docker/engine-api/types",
+			"importpath": "github.com/docker/engine-api",
 			"repository": "https://github.com/docker/engine-api",
-			"vcs": "",
-			"revision": "16c66e864c3c2f2dc8c35276232aafe9828c88bc",
+			"vcs": "git",
+			"revision": "2f8c367944a28130f3c2fb9f0aad7f1d5db952a9",
 			"branch": "master",
-			"path": "/types"
+			"notests": true
 		},
 		{
 			"importpath": "github.com/docker/go-connections/nat",
@@ -402,6 +383,15 @@
 			"revision": "990a1a1a70b0da4c4cb70e117971a4f0babfbf1a",
 			"branch": "master",
 			"path": "/nat"
+		},
+		{
+			"importpath": "github.com/docker/go-connections/sockets",
+			"repository": "https://github.com/docker/go-connections",
+			"vcs": "git",
+			"revision": "0bad1a3951398f88ef4dd75fdb42af374430be89",
+			"branch": "master",
+			"path": "/sockets",
+			"notests": true
 		},
 		{
 			"importpath": "github.com/docker/go-events",

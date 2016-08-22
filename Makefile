@@ -11,7 +11,7 @@ endif
 # so that import path resolution will prioritize
 # our third party snapshots.
 export GO15VENDOREXPERIMENT=1
-# GOPATH := ${PWD}/vendor:${GOPATH}
+#GOPATH := ${PWD}/vendor:${GOPATH}
 # export GOPATH
 
 default: build

@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"time"
 
+	"github.com/Dataman-Cloud/go-component/utils/dmerror"
 	"github.com/Dataman-Cloud/rolex/src/util/config"
 	"github.com/Dataman-Cloud/rolex/src/util/rolexerror"
 
@@ -21,6 +22,16 @@ const (
 
 const (
 	API_VERSION = "1.23"
+)
+
+const (
+	//Container error code
+	CodePatchContainerParamError      = "400-11002"
+	CodePatchContainerMethodUndefined = "400-11003"
+	CodeContainerNotFound             = "404-11006"
+	CodeContainerAlreadyRunning       = "400-11007"
+	CodeContainerNotRunning           = "400-11008"
+	CodeInvalidImageName              = "503-11009"
 )
 
 type RolexDockerClient struct {
@@ -82,8 +93,8 @@ func (client *RolexDockerClient) SwarmNode(ctx context.Context) (*docker.Client,
 	var err error
 	nodeId, ok := ctx.Value("node_id").(string)
 	if !ok {
-		return nil, &rolexerror.RolexError{
-			Code: rolexerror.CodeConnToNodeError,
+		return nil, &dmerror.DmError{
+			Code: CodeConnToNodeError,
 			Err: &rolexerror.NodeConnError{
 				ID:       nodeId,
 				Endpoint: "",
@@ -105,23 +116,23 @@ func (client *RolexDockerClient) SwarmNode(ctx context.Context) (*docker.Client,
 	}
 
 	if err != nil {
-		return nil, &rolexerror.RolexError{
-			Code: rolexerror.CodeConnToNodeError,
+		return nil, &dmerror.DmError{
+			Code: CodeConnToNodeError,
 			Err:  &rolexerror.NodeConnError{ID: nodeId, Endpoint: endpoint, Err: err},
 		}
 	}
 
 	nodeInfo, err := client.Info(nodeId)
 	if err != nil {
-		return nil, &rolexerror.RolexError{
-			Code: rolexerror.CodeConnToNodeError,
+		return nil, &dmerror.DmError{
+			Code: CodeConnToNodeError,
 			Err:  &rolexerror.NodeConnError{ID: nodeId, Endpoint: endpoint, Err: err},
 		}
 	}
 
 	if nodeId != nodeInfo.Swarm.NodeID {
-		return nil, &rolexerror.RolexError{
-			Code: rolexerror.CodeNodeEndpointIpMatchError,
+		return nil, &dmerror.DmError{
+			Code: CodeNodeEndpointIpMatchError,
 			Err:  &rolexerror.NodeConnError{ID: nodeId, Endpoint: endpoint, Err: fmt.Errorf("node id not matched endpoint")},
 		}
 	}
@@ -156,15 +167,15 @@ func ToRolexError(err error) error {
 	var detailError error
 	switch err.(type) {
 	case *docker.NoSuchContainer:
-		detailError = rolexerror.NewRolexError(rolexerror.CodeContainerNotFound, err.Error())
+		detailError = dmerror.NewError(CodeContainerNotFound, err.Error())
 	case *docker.NoSuchNetwork:
-		detailError = rolexerror.NewRolexError(rolexerror.CodeNetworkNotFound, err.Error())
+		detailError = dmerror.NewError(CodeNetworkNotFound, err.Error())
 	case *docker.NoSuchNetworkOrContainer:
-		detailError = rolexerror.NewRolexError(rolexerror.CodeNetworkOrContainerNotFound, err.Error())
+		detailError = dmerror.NewError(CodeNetworkOrContainerNotFound, err.Error())
 	case *docker.ContainerAlreadyRunning:
-		detailError = rolexerror.NewRolexError(rolexerror.CodeContainerAlreadyRunning, err.Error())
+		detailError = dmerror.NewError(CodeContainerAlreadyRunning, err.Error())
 	case *docker.ContainerNotRunning:
-		detailError = rolexerror.NewRolexError(rolexerror.CodeContainerNotRunning, err.Error())
+		detailError = dmerror.NewError(CodeContainerNotRunning, err.Error())
 	default:
 		detailError = err
 	}

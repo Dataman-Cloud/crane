@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"regexp"
 
-	"github.com/Dataman-Cloud/rolex/src/util/rolexerror"
+	"github.com/Dataman-Cloud/go-component/utils/dmerror"
 
 	distreference "github.com/docker/distribution/reference"
 	"github.com/docker/engine-api/types/swarm"
@@ -22,12 +22,12 @@ func validateResources(r *swarm.Resources) error {
 	var errMsg string
 	if r.NanoCPUs != 0 && r.NanoCPUs < 1e6 {
 		errMsg = fmt.Sprintf("invalid cpu value %g: Must be at least %g", float64(r.NanoCPUs)/1e9, 1e6/1e9)
-		return rolexerror.NewRolexError(rolexerror.CodeInvalidServiceNanoCPUs, errMsg)
+		return dmerror.NewError(CodeInvalidServiceNanoCPUs, errMsg)
 	}
 
 	if r.MemoryBytes != 0 && r.MemoryBytes < 4*1024*1024 {
 		errMsg = fmt.Sprintf("invalid memory value %d: Must be at least 4MiB", r.MemoryBytes)
-		return rolexerror.NewRolexError(rolexerror.CodeInvalidServiceMemoryBytes, errMsg)
+		return dmerror.NewError(CodeInvalidServiceMemoryBytes, errMsg)
 	}
 	return nil
 }
@@ -54,22 +54,22 @@ func validateRestartPolicy(rp *swarm.RestartPolicy) error {
 	if rp.Delay != nil {
 		delay, err := ptypes.Duration(ptypes.DurationProto(*rp.Delay))
 		if err != nil {
-			return rolexerror.NewRolexError(rolexerror.CodeInvalidServiceDelay, err.Error())
+			return dmerror.NewError(CodeInvalidServiceDelay, err.Error())
 		}
 		if delay < 0 {
 			errMsg = "TaskSpec: restart-delay cannot be negative"
-			return rolexerror.NewRolexError(rolexerror.CodeInvalidServiceDelay, errMsg)
+			return dmerror.NewError(CodeInvalidServiceDelay, errMsg)
 		}
 	}
 
 	if rp.Window != nil {
 		win, err := ptypes.Duration(ptypes.DurationProto(*rp.Window))
 		if err != nil {
-			return rolexerror.NewRolexError(rolexerror.CodeInvalidServiceWindow, err.Error())
+			return dmerror.NewError(CodeInvalidServiceWindow, err.Error())
 		}
 		if win < 0 {
 			errMsg = "TaskSpec: restart-window cannot be negative"
-			return rolexerror.NewRolexError(rolexerror.CodeInvalidServiceWindow, errMsg)
+			return dmerror.NewError(CodeInvalidServiceWindow, errMsg)
 		}
 	}
 
@@ -82,7 +82,7 @@ func validatePlacement(placement *swarm.Placement) error {
 	}
 	_, err := scheduler.ParseExprs(placement.Constraints)
 	if err != nil {
-		return rolexerror.NewRolexError(rolexerror.CodeInvalidServicePlacement, err.Error())
+		return dmerror.NewError(CodeInvalidServicePlacement, err.Error())
 	}
 
 	return nil
@@ -95,11 +95,11 @@ func validateUpdate(uc *swarm.UpdateConfig) error {
 
 	delay, err := ptypes.Duration(ptypes.DurationProto(uc.Delay))
 	if err != nil {
-		return rolexerror.NewRolexError(rolexerror.CodeInvalidServiceDelay, err.Error())
+		return dmerror.NewError(CodeInvalidServiceDelay, err.Error())
 	}
 
 	if delay < 0 {
-		return rolexerror.NewRolexError(rolexerror.CodeInvalidServiceUpdateConfig, "TaskSpec: update-delay cannot be negative")
+		return dmerror.NewError(CodeInvalidServiceUpdateConfig, "TaskSpec: update-delay cannot be negative")
 	}
 
 	return nil
@@ -150,13 +150,13 @@ func validateEndpointSpec(epSpec *swarm.EndpointSpec) error {
 	}
 
 	if len(epSpec.Ports) > 0 && epSpec.Mode == swarm.ResolutionModeDNSRR {
-		return rolexerror.NewRolexError(rolexerror.CodeInvalidServiceEndpoint, "EndpointSpec: ports can't be used with dnsrr mode")
+		return dmerror.NewError(CodeInvalidServiceEndpoint, "EndpointSpec: ports can't be used with dnsrr mode")
 	}
 
 	portSet := make(map[swarm.PortConfig]struct{})
 	for _, port := range epSpec.Ports {
 		if _, ok := portSet[port]; ok {
-			return rolexerror.NewRolexError(rolexerror.CodeInvalidServiceEndpoint, "EndpointSpec: duplicate ports provided")
+			return dmerror.NewError(CodeInvalidServiceEndpoint, "EndpointSpec: duplicate ports provided")
 		}
 
 		portSet[port] = struct{}{}
@@ -167,7 +167,7 @@ func validateEndpointSpec(epSpec *swarm.EndpointSpec) error {
 
 func validateServiceSpec(spec *swarm.ServiceSpec) error {
 	if spec == nil {
-		return rolexerror.NewRolexError(rolexerror.CodeInvalidServiceSpec, "service spec must not null")
+		return dmerror.NewError(CodeInvalidServiceSpec, "service spec must not null")
 	}
 	if err := validateAnnotations(spec.Annotations); err != nil {
 		return err
@@ -190,10 +190,10 @@ func validateServiceSpec(spec *swarm.ServiceSpec) error {
 
 func validateAnnotations(m swarm.Annotations) error {
 	if m.Name == "" {
-		return rolexerror.NewRolexError(rolexerror.CodeInvalidServiceName, "meta: name must be provided")
+		return dmerror.NewError(CodeInvalidServiceName, "meta: name must be provided")
 	} else if !isValidName.MatchString(m.Name) {
 		// if the name doesn't match the regex
-		return rolexerror.NewRolexError(rolexerror.CodeInvalidServiceName, "invalid name, only [a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]")
+		return dmerror.NewError(CodeInvalidServiceName, "invalid name, only [a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]")
 	}
 	return nil
 }
@@ -201,7 +201,7 @@ func validateAnnotations(m swarm.Annotations) error {
 func validateImageName(imageName string) error {
 	_, err := distreference.ParseNamed(imageName)
 	if err != nil {
-		return rolexerror.NewRolexError(rolexerror.CodeInvalidImageName, err.Error())
+		return dmerror.NewError(CodeInvalidImageName, err.Error())
 	}
 	return nil
 }
