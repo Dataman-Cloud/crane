@@ -37,11 +37,12 @@ func (client *RolexDockerClient) DeployStack(bundle *model.Bundle) error {
 
 	networks := client.getUniqueNetworkNames(bundle.Stack.Services)
 
-	if err := client.updateNetworks(networks, bundle.Namespace); err != nil {
+	newNetworkMap, err := client.updateNetworks(networks, bundle.Namespace)
+	if err != nil {
 		return err
 	}
 
-	return client.deployServices(bundle.Stack.Services, bundle.Namespace)
+	return client.deployServices(bundle.Stack.Services, bundle.Namespace, newNetworkMap)
 }
 
 // list all stack
@@ -230,10 +231,10 @@ func (client *RolexDockerClient) getUniqueNetworkNames(services map[string]model
 }
 
 // update network
-func (client *RolexDockerClient) updateNetworks(networks []string, namespace string) error {
-	existingNetworks, err := client.filterStackNetwork(namespace)
+func (client *RolexDockerClient) updateNetworks(networks []string, namespace string) (map[string]bool, error) {
+	existingNetworks, err := client.ListNetworks(docker.NetworkFilterOpts{})
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	existingNetworkMap := make(map[string]docker.Network)
@@ -248,29 +249,40 @@ func (client *RolexDockerClient) updateNetworks(networks []string, namespace str
 		IPAM: docker.IPAMOptions{Driver: "default"},
 	}
 
+	newNetworkMap := make(map[string]bool)
 	for _, internalName := range networks {
-		name := fmt.Sprintf("%s_%s", namespace, internalName)
-		if _, exists := existingNetworkMap[name]; exists {
+		if _, exists := existingNetworkMap[internalName]; exists {
+			newNetworkMap[internalName] = false
 			continue
 		}
-		log.Infof("Creating network %s\n", name)
 
+		name := fmt.Sprintf("%s_%s", namespace, internalName)
+		log.Infof("Creating network %s\n", name)
 		createOpts.Name = name
 		if _, err := client.CreateNetwork(*createOpts); err != nil {
-			return err
+			return newNetworkMap, err
 		}
+		newNetworkMap[name] = true
 	}
 
-	return nil
+	return newNetworkMap, nil
 }
 
-func (client *RolexDockerClient) convertNetworks(networks []string, namespace string, name string) []swarm.NetworkAttachmentConfig {
+func (client *RolexDockerClient) convertNetworks(newNetworkMap map[string]bool, namespace string, name string) []swarm.NetworkAttachmentConfig {
 	nets := []swarm.NetworkAttachmentConfig{}
-	for _, network := range networks {
-		nets = append(nets, swarm.NetworkAttachmentConfig{
-			Target:  namespace + "_" + network,
-			Aliases: []string{name},
-		})
+	for network, isNew := range newNetworkMap {
+		if isNew {
+			nets = append(nets, swarm.NetworkAttachmentConfig{
+				Target:  namespace + "_" + network,
+				Aliases: []string{name},
+			})
+
+		} else {
+			nets = append(nets, swarm.NetworkAttachmentConfig{
+				Target:  network,
+				Aliases: []string{name},
+			})
+		}
 	}
 
 	return nets
@@ -285,7 +297,7 @@ func (client *RolexDockerClient) getServiceNetworks(nets []swarm.NetworkAttachme
 	return networkList
 }
 
-func (client *RolexDockerClient) deployServices(services map[string]model.RolexService, namespace string) error {
+func (client *RolexDockerClient) deployServices(services map[string]model.RolexService, namespace string, newNetworkMap map[string]bool) error {
 	existingServices, err := client.filterStackServices(namespace)
 	if err != nil {
 		return err
@@ -306,7 +318,7 @@ func (client *RolexDockerClient) deployServices(services map[string]model.RolexS
 			Mode:         service.Mode,
 			TaskTemplate: service.TaskTemplate,
 			EndpointSpec: service.EndpointSpec,
-			Networks:     client.convertNetworks(service.Networks, namespace, internalName),
+			Networks:     client.convertNetworks(newNetworkMap, namespace, internalName),
 			UpdateConfig: service.UpdateConfig,
 		}
 
