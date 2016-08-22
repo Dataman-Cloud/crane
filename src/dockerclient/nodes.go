@@ -32,7 +32,7 @@ const (
 func (client *RolexDockerClient) ListNode(opts types.NodeListOptions) ([]swarm.Node, error) {
 	var nodes []swarm.Node
 
-	content, err := client.HttpGet(client.swarmManagerHttpEndpoint+"/nodes", nil, nil)
+	content, err := client.sharedHttpClient.GET(nil, client.swarmManagerHttpEndpoint+"/nodes", nil, nil)
 	if err != nil {
 		return nodes, err
 	}
@@ -48,7 +48,7 @@ func (client *RolexDockerClient) ListNode(opts types.NodeListOptions) ([]swarm.N
 func (client *RolexDockerClient) InspectNode(nodeId string) (swarm.Node, error) {
 	var node swarm.Node
 
-	content, err := client.HttpGet(client.swarmManagerHttpEndpoint+"/"+path.Join("nodes", nodeId), nil, nil)
+	content, err := client.sharedHttpClient.GET(nil, client.swarmManagerHttpEndpoint+"/"+path.Join("nodes", nodeId), nil, nil)
 	if err != nil {
 		return node, err
 	}
@@ -62,7 +62,7 @@ func (client *RolexDockerClient) InspectNode(nodeId string) (swarm.Node, error) 
 
 // Remove a single node
 func (client *RolexDockerClient) RemoveNode(nodeId string) error {
-	_, err := client.HttpDelete(client.swarmManagerHttpEndpoint + "/" + path.Join("nodes", nodeId))
+	_, err := client.sharedHttpClient.DELETE(nil, client.swarmManagerHttpEndpoint+"/"+path.Join("nodes", nodeId), nil, nil)
 	if err != nil {
 		return err
 	}
@@ -109,7 +109,7 @@ func (client *RolexDockerClient) UpdateNode(nodeId string, opts model.UpdateOpti
 
 	query := url.Values{}
 	query.Set("version", strconv.FormatUint(node.Version.Index, 10))
-	_, err = client.HttpPost(client.swarmManagerHttpEndpoint+"/"+path.Join("nodes", nodeId, "update"), query, node.Spec, nil)
+	_, err = client.sharedHttpClient.POST(nil, client.swarmManagerHttpEndpoint+"/"+path.Join("nodes", nodeId, "update"), query, node.Spec, nil)
 	if err != nil {
 		return err
 	}
@@ -203,7 +203,7 @@ func (client *RolexDockerClient) Info(nodeId string) (types.Info, error) {
 		nodeUrl.Scheme = "http"
 	}
 
-	content, err := client.HttpGet(nodeUrl.String()+"/info", url.Values{}, nil)
+	content, err := client.sharedHttpClient.GET(nil, nodeUrl.String()+"/info", url.Values{}, nil)
 	if err != nil {
 		return nodeInfo, rolexerror.NewRolexError(rolexerror.CodeGetNodeInfoError, err.Error())
 	}
