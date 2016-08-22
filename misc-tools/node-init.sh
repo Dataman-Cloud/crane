@@ -45,7 +45,7 @@ docker_required() {
       echo "-> Checking docker runtime environment..."
   else
       echo "********************************************************"
-      printf "\033[41mERROR:\033[0m command **dockerd** is NOT FOUND! Please make sure docker-engine>=$DOCKER_MINOR_VERSION_REQUIRED is installed!\n"
+      printf "\033[41mERROR:\033[0m command **dockerd** is NOT FOUND! Please make sure docker-engine>=1.$DOCKER_MINOR_VERSION_REQUIRED is installed!\n"
       echo "********************************************************"
       exit 1
   fi
@@ -254,7 +254,8 @@ have_a_init()
             fi
             if _command_exists firewall-cmd; then
                 firewalld_is_enabled
-            elif _command_exists iptables; then
+            fi
+            if _command_exists iptables; then
                 iptables_docker_rules
             else
                 printf "\033[41mERROR:\033[0m Command iptables does not exists.\n"
