@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"strconv"
 
+	"github.com/Dataman-Cloud/rolex/src/dockerclient"
 	"github.com/Dataman-Cloud/rolex/src/dockerclient/model"
 	"github.com/Dataman-Cloud/rolex/src/plugins/auth"
 	"github.com/Dataman-Cloud/rolex/src/util/rolexerror"
@@ -70,6 +71,25 @@ func (api *Api) CreateStack(ctx *gin.Context) {
 
 func (api *Api) ListStack(ctx *gin.Context) {
 	stacks, err := api.GetDockerClient().ListStack()
+
+	if groups, ok := ctx.Get("groups"); ok {
+		var astacks []dockerclient.Stack
+		for _, stack := range stacks {
+			groupId, err := api.GetDockerClient().GetStackGroup(stack.Namespace)
+			if err != nil {
+				break
+			}
+			for _, group := range groups.([]auth.Group) {
+				if group.ID == groupId {
+					astacks = append(astacks, stack)
+					break
+				}
+			}
+		}
+		rolexgin.HttpOkResponse(ctx, astacks)
+		return
+	}
+
 	if err != nil {
 		log.Error("Stack deploy got error: ", err)
 		rolexgin.HttpErrorResponse(ctx, err)
