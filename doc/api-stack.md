@@ -82,7 +82,21 @@ services:
   "data": [
     {
       "Namespace": "stack-test",
-      "ServiceCount": 1
+      "ServiceCount": 1,
+      "services": {
+      	"ID":"",
+	"Name":"",
+	"NumTasksRunning":1,
+	"NumTasksTotal":1,
+	"Image":"",
+	"Command":"",
+	"CreatedAt":"",
+	"UpdatedAt":"",
+	"LimitCpus":0,
+	"LimitMems":0,
+	"ReserveCpus":0,
+	"ReserveMems":0
+      }
     },
     {
       "Namespace": "test-2",
