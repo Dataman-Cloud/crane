@@ -231,7 +231,7 @@ func (client *RolexDockerClient) getUniqueNetworkNames(services map[string]model
 
 // update network
 func (client *RolexDockerClient) updateNetworks(networks []string, namespace string) error {
-	existingNetworks, err := client.filterStackNetwork(namespace)
+	existingNetworks, err := client.ListNetworks(docker.NetworkFilterOpts{})
 	if err != nil {
 		return err
 	}
@@ -249,12 +249,12 @@ func (client *RolexDockerClient) updateNetworks(networks []string, namespace str
 	}
 
 	for _, internalName := range networks {
-		name := fmt.Sprintf("%s_%s", namespace, internalName)
-		if _, exists := existingNetworkMap[name]; exists {
+		if _, exists := existingNetworkMap[internalName]; exists {
 			continue
 		}
 		log.Infof("Creating network %s\n", name)
 
+		name := fmt.Sprintf("%s_%s", namespace, internalName)
 		createOpts.Name = name
 		if _, err := client.CreateNetwork(*createOpts); err != nil {
 			return err
