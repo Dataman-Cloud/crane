@@ -11,7 +11,7 @@ import (
 func (client *RolexDockerClient) InspectSwarm() (swarm.Swarm, error) {
 	var swarmInfo swarm.Swarm
 
-	content, err := client.HttpGet(client.swarmManagerHttpEndpoint+"/swarm", nil, nil)
+	content, err := client.sharedHttpClient.GET(nil, client.swarmManagerHttpEndpoint+"/swarm", nil, nil)
 	if err != nil {
 		return swarmInfo, err
 	}
@@ -32,7 +32,7 @@ func (client *RolexDockerClient) Ping() error {
 func (client *RolexDockerClient) ManagerInfo() (types.Info, error) {
 	var systemInfo types.Info
 
-	content, err := client.HttpGet(client.swarmManagerHttpEndpoint+"/info", nil, nil)
+	content, err := client.sharedHttpClient.GET(nil, client.swarmManagerHttpEndpoint+"/info", nil, nil)
 	if err != nil {
 		return systemInfo, err
 	}

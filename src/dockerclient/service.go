@@ -49,7 +49,7 @@ func (client *RolexDockerClient) CreateService(service swarm.ServiceSpec, option
 		return response, err
 	}
 
-	content, err := client.HttpPost(client.swarmManagerHttpEndpoint+"/services/create", nil, service, nil)
+	content, err := client.sharedHttpClient.POST(nil, client.swarmManagerHttpEndpoint+"/services/create", nil, service, nil)
 	if err != nil {
 		return response, err
 	}
@@ -74,7 +74,7 @@ func (client *RolexDockerClient) ListServiceSpec(options types.ServiceListOption
 		query.Set("filters", filterJSON)
 	}
 
-	content, err := client.HttpGet(client.swarmManagerHttpEndpoint+"/services", query, nil)
+	content, err := client.sharedHttpClient.GET(nil, client.swarmManagerHttpEndpoint+"/services", query, nil)
 	if err != nil {
 		return services, err
 	}
@@ -171,7 +171,7 @@ func (client *RolexDockerClient) GetServicesStatus(services []swarm.Service) ([]
 
 // ServiceRemove kills and removes a service.
 func (client *RolexDockerClient) RemoveService(serviceID string) error {
-	_, err := client.HttpDelete(client.swarmManagerHttpEndpoint + "/services/" + serviceID)
+	_, err := client.sharedHttpClient.DELETE(nil, client.swarmManagerHttpEndpoint+"/services/"+serviceID, nil, nil)
 	return err
 }
 
@@ -180,7 +180,7 @@ func (client *RolexDockerClient) RemoveService(serviceID string) error {
 func (client *RolexDockerClient) UpdateService(serviceID string, version swarm.Version, service swarm.ServiceSpec, header map[string][]string) error {
 	query := url.Values{}
 	query.Set("version", strconv.FormatUint(version.Index, 10))
-	if _, err := client.HttpPost(client.swarmManagerHttpEndpoint+"/services/"+serviceID+"/update", query, service, nil); err != nil {
+	if _, err := client.sharedHttpClient.POST(nil, client.swarmManagerHttpEndpoint+"/services/"+serviceID+"/update", query, service, nil); err != nil {
 		return err
 	}
 
@@ -207,7 +207,7 @@ func (client *RolexDockerClient) ScaleService(serviceID string, serviceScale Ser
 func (client *RolexDockerClient) InspectServiceWithRaw(serviceID string) (swarm.Service, error) {
 	var service swarm.Service
 
-	content, err := client.HttpGet(client.swarmManagerHttpEndpoint+"/services/"+serviceID, nil, nil)
+	content, err := client.sharedHttpClient.GET(nil, client.swarmManagerHttpEndpoint+"/services/"+serviceID, nil, nil)
 	if err != nil {
 		return service, err
 	}

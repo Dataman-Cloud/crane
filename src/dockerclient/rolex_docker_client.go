@@ -1,10 +1,7 @@
 package dockerclient
 
 import (
-	"crypto/tls"
-	"crypto/x509"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"path/filepath"
 	"time"
@@ -12,6 +9,7 @@ import (
 	"github.com/Dataman-Cloud/rolex/src/util/config"
 	"github.com/Dataman-Cloud/rolex/src/util/rolexerror"
 
+	"github.com/Dataman-Cloud/go-component/utils/httpclient"
 	docker "github.com/Dataman-Cloud/go-dockerclient"
 	log "github.com/Sirupsen/logrus"
 	"golang.org/x/net/context"
@@ -34,7 +32,7 @@ type RolexDockerClient struct {
 	swarmManager *docker.Client
 
 	// http client shared both for cluster connection & client connection
-	sharedHttpClient         *http.Client
+	sharedHttpClient         *httpclient.Client
 	swarmManagerHttpEndpoint string
 
 	config *config.Config
@@ -56,7 +54,7 @@ func NewRolexDockerClient(config *config.Config) (*RolexDockerClient, error) {
 		client.sharedHttpClient, err = client.NewHttpClientTls()
 	} else {
 		client.swarmManager, err = docker.NewVersionedClient(swarmManagerEntry, API_VERSION)
-		client.sharedHttpClient = &http.Client{Timeout: defaultHttpRequestTimeout}
+		client.sharedHttpClient, err = client.NewHttpClient()
 	}
 
 	if err != nil {
@@ -135,33 +133,15 @@ func (client *RolexDockerClient) NewGoDockerClientTls(endpoint string, apiVersio
 	return docker.NewVersionedTLSClient(endpoint, tlsCert, tlsKey, tlsCaCert, apiVersion)
 }
 
-func (client *RolexDockerClient) NewHttpClientTls() (*http.Client, error) {
+func (client *RolexDockerClient) NewHttpClient() (*httpclient.Client, error) {
+	httpClient := &http.Client{Timeout: defaultHttpRequestTimeout}
+	return httpclient.NewClient(httpClient, nil)
+}
+
+func (client *RolexDockerClient) NewHttpClientTls() (*httpclient.Client, error) {
 	tlsCaCert, tlsCert, tlsKey := SharedClientCertFiles(client.config)
-
-	caCert, err := ioutil.ReadFile(tlsCaCert)
-	if err != nil {
-		return nil, err
-	}
-
-	caCertPool := x509.NewCertPool()
-	caCertPool.AppendCertsFromPEM(caCert)
-	httpTLSCert, err := tls.LoadX509KeyPair(tlsCert, tlsKey)
-	if err != nil {
-		return nil, err
-	}
-
-	tlsConfig := &tls.Config{
-		Certificates: []tls.Certificate{httpTLSCert},
-		RootCAs:      caCertPool,
-	}
-
-	tlsConfig.BuildNameToCertificate()
-
-	httpClient := &http.Client{Transport: &http.Transport{
-		TLSClientConfig: tlsConfig,
-	}, Timeout: defaultHttpRequestTimeout}
-
-	return httpClient, nil
+	httpClient := &http.Client{Timeout: defaultHttpRequestTimeout}
+	return httpclient.NewTLSClient(tlsCaCert, tlsCert, tlsKey, httpClient, nil)
 }
 
 func SharedClientCertFiles(config *config.Config) (string, string, string) {
