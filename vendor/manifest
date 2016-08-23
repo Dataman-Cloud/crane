@@ -248,7 +248,7 @@
 			"importpath": "github.com/Dataman-Cloud/go-component/license",
 			"repository": "https://github.com/Dataman-Cloud/go-component",
 			"vcs": "git",
-			"revision": "6296b5885ab6c83755b72460d0306683640fce3a",
+			"revision": "4347499e442bd7c4ef690d90ac6038bda3dfbabc",
 			"branch": "master",
 			"path": "/license",
 			"notests": true
