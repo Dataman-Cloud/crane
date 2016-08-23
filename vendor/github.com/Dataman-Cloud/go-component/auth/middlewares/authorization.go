@@ -1,12 +1,12 @@
 package middlewares
 
 import (
-	//"fmt"
-	"net/http"
 	"strconv"
-	//"time"
 
 	"github.com/Dataman-Cloud/go-component/auth"
+	"github.com/Dataman-Cloud/go-component/utils/dmerror"
+	"github.com/Dataman-Cloud/go-component/utils/dmgin"
+	"github.com/Dataman-Cloud/go-component/utils/model"
 
 	"github.com/gin-gonic/gin"
 )
@@ -22,14 +22,14 @@ func Authorization(a *auth.AccountApi) gin.HandlerFunc {
 		}
 
 		if len(ctx.Request.Header.Get("Authorization")) == 0 {
-			ctx.JSON(http.StatusUnauthorized, gin.H{"code": 1, "data": "401"})
+			dmgin.HttpErrorResponse(ctx, dmerror.NewError(auth.CodeAccountTokenInvalidError, "Invalid Authorization"))
 			ctx.Abort()
 			return
 		}
 
 		value, err := a.TokenStore.Get(ctx, ctx.Request.Header.Get("Authorization"))
 		if err != nil {
-			ctx.JSON(http.StatusUnauthorized, gin.H{"code": 1, "data": "token doesn't exists or expired"})
+			dmgin.HttpErrorResponse(ctx, dmerror.NewError(auth.CodeAccountTokenInvalidError, "Invalid Authorization"))
 			ctx.Abort()
 			return
 		}
@@ -38,20 +38,19 @@ func Authorization(a *auth.AccountApi) gin.HandlerFunc {
 
 		acc, err := a.Authenticator.Account(accountId)
 		if err != nil {
-			ctx.JSON(http.StatusUnauthorized, gin.H{"code": 1, "data": "account not found"})
+			dmgin.HttpErrorResponse(ctx, dmerror.NewError(auth.CodeAccountTokenInvalidError, "Invalid Authorization"))
 			ctx.Abort()
 			return
 		}
 
-		//a.TokenStore.Set(ctx, ctx.Request.Header.Get("Authorization"), fmt.Sprintf("%d", acc.ID), time.Now().Add(auth.SESSION_DURATION))
 		ctx.Set("account", auth.ReferenceToValue(acc))
 
-		if groups, err := a.Authenticator.AccountGroups(auth.ListOptions{
+		if groups, err := a.Authenticator.AccountGroups(model.ListOptions{
 			Filter: map[string]interface{}{
 				"account_id": accountId,
 			},
 		}); err != nil {
-			ctx.JSON(http.StatusUnauthorized, gin.H{"code": 1, "data": "Unable to find a user group they belong to"})
+			dmgin.HttpErrorResponse(ctx, dmerror.NewError(auth.CodeAccountTokenInvalidError, "Invalid Authorization"))
 			ctx.Abort()
 			return
 		} else {
