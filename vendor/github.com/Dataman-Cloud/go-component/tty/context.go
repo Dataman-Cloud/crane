@@ -137,13 +137,14 @@ func (ctx *ClientContext) HandleClient() {
 
 	go func() {
 		<-exit
-		ctx.Pty.Close()
 
 		// Even if the Pty has been closed
 		// Read(0 processSend() keeps blocking and the process doen't exit
-		// ctx.Command.Process.Signal(syscall.Signal(ctx.App.Options.CloseSignal))
-
+		ctx.Command.Process.Signal(syscall.Signal(ctx.Options.CloseSignal))
 		ctx.Command.Wait()
+
+		ctx.Pty.Close()
+
 		ctx.Conn.Close()
 		log.Infof("Connection closed: %s", ctx.Request.RemoteAddr)
 	}()

@@ -230,7 +230,7 @@
 			"importpath": "github.com/Dataman-Cloud/go-component/tty",
 			"repository": "https://github.com/Dataman-Cloud/go-component",
 			"vcs": "git",
-			"revision": "6eac73123cd5393f5cd896a8d4e923a411a0590e",
+			"revision": "265afa633186340e13fd7ad843942f48ce87cbac",
 			"branch": "master",
 			"path": "/tty",
 			"notests": true
