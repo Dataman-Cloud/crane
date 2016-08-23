@@ -293,7 +293,7 @@
 			"importpath": "github.com/Dataman-Cloud/go-component/utils/dmgin",
 			"repository": "https://github.com/Dataman-Cloud/go-component",
 			"vcs": "git",
-			"revision": "265afa633186340e13fd7ad843942f48ce87cbac",
+			"revision": "dc43dc1443a01aef53aeb19af48a64bf53e73842",
 			"branch": "master",
 			"path": "utils/dmgin",
 			"notests": true
