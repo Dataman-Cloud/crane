@@ -53,7 +53,7 @@ func (licenseApi *LicenseApi) Create(ctx *gin.Context) {
 			Save(&objSetting).
 			Error; err != nil {
 			log.Errorf("update license error: %v", err)
-			rolexerr := rolexerror.NewRolexError(rolexerror.CodeLicenseCreateLicenseError, err.Error())
+			rolexerr := dmerror.NewError(CodeLicenseCreateLicenseError, err.Error())
 			dmgin.HttpErrorResponse(ctx, rolexerr)
 			return
 		}
