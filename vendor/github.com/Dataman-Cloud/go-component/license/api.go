@@ -34,11 +34,18 @@ func (licenseApi *LicenseApi) Create(ctx *gin.Context) {
 		return
 	}
 
-	if _, err = encrypt.Decrypt(key, setting.License); err != nil {
+	if sk, err := encrypt.Decrypt(key, setting.License); err != nil {
 		log.Errorf("invalid license error: %v", err)
 		rolexerr := dmerror.NewError(CodeLicenseCreateLicenseError, err.Error())
 		dmgin.HttpErrorResponse(ctx, rolexerr)
 		return
+	} else {
+		if _, err = strconv.ParseUint(sk, 10, 64); err != nil {
+			log.Errorf("invalid license error: %v", err)
+			rolexerr := dmerror.NewError(CodeLicenseCreateLicenseError, err.Error())
+			dmgin.HttpErrorResponse(ctx, rolexerr)
+			return
+		}
 	}
 
 	var objSetting Setting
