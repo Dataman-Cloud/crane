@@ -50,7 +50,7 @@
 ```
 {
     "code": 0,
-    "data": 
+    "data":
         {
             "CreatedAt": "2016-07-15T02:45:55.187874604Z",
             "DesiredState": "running",
