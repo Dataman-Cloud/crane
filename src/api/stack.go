@@ -4,15 +4,24 @@ import (
 	"encoding/json"
 	"strconv"
 
+	"github.com/Dataman-Cloud/go-component/auth"
+	"github.com/Dataman-Cloud/go-component/utils/dmerror"
+	"github.com/Dataman-Cloud/go-component/utils/dmgin"
 	"github.com/Dataman-Cloud/rolex/src/dockerclient/model"
-	"github.com/Dataman-Cloud/rolex/src/plugins/auth"
-	"github.com/Dataman-Cloud/rolex/src/util/rolexerror"
-	"github.com/Dataman-Cloud/rolex/src/util/rolexgin"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/docker/engine-api/types"
 	"github.com/docker/engine-api/types/filters"
 	"github.com/gin-gonic/gin"
+)
+
+const (
+	//Stack error code
+	CodeCreateStackParamError = "400-11501"
+	CodeInvalidStackName      = "503-11502"
+	CodeStackNotFound         = "404-11503"
+
+	CodeInvalidGroupId = "400-12001"
 )
 
 func (api *Api) UpdateStack(ctx *gin.Context) {}
@@ -29,8 +38,8 @@ func (api *Api) CreateStack(ctx *gin.Context) {
 				jsonErr.Offset, jsonErr.Type, jsonErr.Value)
 		}
 
-		rerror := rolexerror.NewRolexError(rolexerror.CodeCreateStackParamError, err.Error())
-		rolexgin.HttpErrorResponse(ctx, rerror)
+		rerror := dmerror.NewError(CodeCreateStackParamError, err.Error())
+		dmgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
 
@@ -40,8 +49,8 @@ func (api *Api) CreateStack(ctx *gin.Context) {
 		gId, err := strconv.ParseUint(groupId, 10, 64)
 		if err != nil || gId < 0 {
 			log.Error("CreateStack invalid group_id")
-			rerror := rolexerror.NewRolexError(rolexerror.CodeInvalidGroupId, "invalid group id")
-			rolexgin.HttpErrorResponse(ctx, rerror)
+			rerror := dmerror.NewError(CodeInvalidGroupId, "invalid group id")
+			dmgin.HttpErrorResponse(ctx, rerror)
 			return
 		}
 
@@ -60,11 +69,11 @@ func (api *Api) CreateStack(ctx *gin.Context) {
 
 	if err := api.GetDockerClient().DeployStack(&stackBundle); err != nil {
 		log.Error("Stack deploy got error: ", err)
-		rolexgin.HttpErrorResponse(ctx, err)
+		dmgin.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	rolexgin.HttpOkResponse(ctx, "success")
+	dmgin.HttpOkResponse(ctx, "success")
 	return
 }
 
@@ -72,11 +81,11 @@ func (api *Api) ListStack(ctx *gin.Context) {
 	stacks, err := api.GetDockerClient().ListStack()
 	if err != nil {
 		log.Error("Stack deploy got error: ", err)
-		rolexgin.HttpErrorResponse(ctx, err)
+		dmgin.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	rolexgin.HttpOkResponse(ctx, stacks)
+	dmgin.HttpOkResponse(ctx, stacks)
 	return
 }
 
@@ -86,11 +95,11 @@ func (api *Api) InspectStack(ctx *gin.Context) {
 	bundle, err := api.GetDockerClient().InspectStack(namespace)
 	if err != nil {
 		log.Error("InspectStack got error: ", err)
-		rolexgin.HttpErrorResponse(ctx, err)
+		dmgin.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	rolexgin.HttpOkResponse(ctx, bundle)
+	dmgin.HttpOkResponse(ctx, bundle)
 	return
 }
 
@@ -110,11 +119,11 @@ func (api *Api) ListStackService(ctx *gin.Context) {
 	servicesStatus, err := api.GetDockerClient().ListStackService(namespace, opts)
 	if err != nil {
 		log.Error("ListStackService got error: ", err)
-		rolexgin.HttpErrorResponse(ctx, err)
+		dmgin.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	rolexgin.HttpOkResponse(ctx, servicesStatus)
+	dmgin.HttpOkResponse(ctx, servicesStatus)
 	return
 }
 
@@ -122,10 +131,10 @@ func (api *Api) RemoveStack(ctx *gin.Context) {
 	namespace := ctx.Param("namespace")
 	if err := api.GetDockerClient().RemoveStack(namespace); err != nil {
 		log.Error("Remove stack got error: ", err)
-		rolexgin.HttpErrorResponse(ctx, err)
+		dmgin.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	rolexgin.HttpOkResponse(ctx, "success")
+	dmgin.HttpOkResponse(ctx, "success")
 	return
 }

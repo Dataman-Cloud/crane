@@ -3,8 +3,8 @@ package api
 import (
 	"net/http"
 
-	"github.com/Dataman-Cloud/rolex/src/util/rolexerror"
-	"github.com/Dataman-Cloud/rolex/src/util/rolexgin"
+	"github.com/Dataman-Cloud/go-component/utils/dmerror"
+	"github.com/Dataman-Cloud/go-component/utils/dmgin"
 	"github.com/Dataman-Cloud/rolex/src/version"
 
 	log "github.com/Sirupsen/logrus"
@@ -12,6 +12,11 @@ import (
 	"github.com/docker/engine-api/types/swarm"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/net/context"
+)
+
+const (
+	//Get config error code
+	CodeGetConfigError = "503-11901"
 )
 
 type RolexConfigResponse struct {
@@ -32,12 +37,12 @@ func (api *Api) RolexConfig(ctx *gin.Context) {
 
 	if err != nil {
 		log.Errorf("InspectSwarm got error: %s", err.Error())
-		rerror := rolexerror.NewRolexError(rolexerror.CodeGetConfigError, err.Error())
-		rolexgin.HttpErrorResponse(ctx, rerror)
+		rerror := dmerror.NewError(CodeGetConfigError, err.Error())
+		dmgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
 
-	rolexgin.HttpOkResponse(ctx, config)
+	dmgin.HttpOkResponse(ctx, config)
 	return
 }
 
@@ -45,7 +50,7 @@ func (api *Api) HealthCheck(ctx *gin.Context) {
 	// node docker client check
 	nodes, err := api.GetDockerClient().ListNode(types.NodeListOptions{})
 	if err != nil {
-		rolexgin.HttpErrorResponse(ctx, err)
+		dmgin.HttpErrorResponse(ctx, err)
 		return
 	}
 
@@ -60,12 +65,12 @@ func (api *Api) HealthCheck(ctx *gin.Context) {
 		rolexContext = context.WithValue(backgroundContext, "node_id", node.ID)
 		_, err = api.GetDockerClient().SwarmNode(rolexContext)
 		if err != nil {
-			rolexgin.HttpErrorResponse(ctx, err)
+			dmgin.HttpErrorResponse(ctx, err)
 			return
 		}
 	}
 
-	rolexgin.HttpOkResponse(ctx, "success")
+	dmgin.HttpOkResponse(ctx, "success")
 	return
 }
 

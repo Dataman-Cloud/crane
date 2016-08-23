@@ -3,15 +3,16 @@ package api
 import (
 	"time"
 
+	"github.com/Dataman-Cloud/go-component/auth"
+	"github.com/Dataman-Cloud/go-component/auth/authenticators"
+	chains "github.com/Dataman-Cloud/go-component/auth/middlewares"
+	"github.com/Dataman-Cloud/go-component/auth/token_store"
+	"github.com/Dataman-Cloud/go-component/catalog"
+	"github.com/Dataman-Cloud/go-component/license"
+	"github.com/Dataman-Cloud/go-component/registry"
+	"github.com/Dataman-Cloud/go-component/search"
 	"github.com/Dataman-Cloud/rolex/src/api/middlewares"
-	"github.com/Dataman-Cloud/rolex/src/plugins/auth"
-	"github.com/Dataman-Cloud/rolex/src/plugins/auth/authenticators"
-	chains "github.com/Dataman-Cloud/rolex/src/plugins/auth/middlewares"
-	"github.com/Dataman-Cloud/rolex/src/plugins/auth/token_store"
-	"github.com/Dataman-Cloud/rolex/src/plugins/catalog"
-	"github.com/Dataman-Cloud/rolex/src/plugins/license"
-	"github.com/Dataman-Cloud/rolex/src/plugins/registry"
-	"github.com/Dataman-Cloud/rolex/src/plugins/search"
+	"github.com/Dataman-Cloud/rolex/src/plugins"
 	"github.com/Dataman-Cloud/rolex/src/util/log"
 
 	"github.com/Sirupsen/logrus"
@@ -55,23 +56,20 @@ func (api *Api) ApiRouter() *gin.Engine {
 	}
 
 	if api.Config.FeatureEnabled("registry") {
-		r := registry.NewRegistry(api.Config)
-		r.MigriateTable()
+		r := registry.NewRegistry(api.Config.AccountAuthenticator, api.Config.RegistryPrivateKeyPath, api.Config.RegistryAddr)
 		r.RegisterApiForRegistry(router, Authorization)
 	}
 
 	if api.Config.FeatureEnabled("catalog") {
-		c := &catalog.CatalogApi{Config: api.Config}
+		c := &catalog.CatalogApi{CatalogPath: api.Config.CatalogPath}
 		c.RegisterApiForCatalog(router, Authorization)
 	}
 
 	if api.Config.FeatureEnabled("search") {
 		s := &search.SearchApi{
-			RolexDockerClient: api.Client,
-			Config:            api.Config,
+			Indexer: plugins.NewRolexIndex(api.Client),
 		}
 		s.RegisterApiForSearch(router, Authorization)
-		go s.IndexData()
 	}
 
 	if api.Config.FeatureEnabled("license") {

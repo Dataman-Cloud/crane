@@ -3,13 +3,21 @@ package api
 import (
 	"encoding/json"
 
-	"github.com/Dataman-Cloud/rolex/src/util/rolexerror"
-	"github.com/Dataman-Cloud/rolex/src/util/rolexgin"
+	"github.com/Dataman-Cloud/go-component/utils/dmerror"
+	"github.com/Dataman-Cloud/go-component/utils/dmgin"
 
 	docker "github.com/Dataman-Cloud/go-dockerclient"
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/net/context"
+)
+
+const (
+	CodeConnectNetworkParamError  = "400-11201"
+	CodeConnectNetworkMethodError = "400-11202"
+	CodeCreateNetworkParamError   = "400-11203"
+	CodeInspectNetworkParamError  = "400-11204"
+	CodeListNetworkParamError     = "400-11205"
 )
 
 type ConnectNetworkRequest struct {
@@ -27,8 +35,8 @@ func (api *Api) ConnectNetwork(ctx *gin.Context) {
 
 	if err := ctx.BindJSON(&connectNetworkRequest); err != nil {
 		log.Errorf("connect network request body parse json error: %v", err)
-		rerror := rolexerror.NewRolexError(rolexerror.CodeConnectNetworkParamError, err.Error())
-		rolexgin.HttpErrorResponse(ctx, rerror)
+		rerror := dmerror.NewError(CodeConnectNetworkParamError, err.Error())
+		dmgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
 
@@ -40,16 +48,16 @@ func (api *Api) ConnectNetwork(ctx *gin.Context) {
 	case NETWORK_DISCONNECT:
 		err = api.GetDockerClient().DisconnectNetwork(networkID, connectNetworkRequest.NetworkOptions)
 	default:
-		err = rolexerror.NewRolexError(rolexerror.CodeConnectNetworkMethodError, connectNetworkRequest.Method)
+		err = dmerror.NewError(CodeConnectNetworkMethodError, connectNetworkRequest.Method)
 	}
 
 	if err != nil {
 		log.Errorf("disconnect to network %s got error: %s", networkID, err.Error())
-		rolexgin.HttpErrorResponse(ctx, err)
+		dmgin.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	rolexgin.HttpOkResponse(ctx, "success")
+	dmgin.HttpOkResponse(ctx, "success")
 	return
 }
 
@@ -58,19 +66,19 @@ func (api *Api) CreateNetwork(ctx *gin.Context) {
 
 	if err := ctx.BindJSON(&netWorkOption); err != nil {
 		log.Error("create network request body parse json error: ", err)
-		rerror := rolexerror.NewRolexError(rolexerror.CodeCreateNetworkParamError, err.Error())
-		rolexgin.HttpErrorResponse(ctx, rerror)
+		rerror := dmerror.NewError(CodeCreateNetworkParamError, err.Error())
+		dmgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
 
 	network, err := api.GetDockerClient().CreateNetwork(netWorkOption)
 	if err != nil {
 		log.Error("create network error: ", err)
-		rolexgin.HttpErrorResponse(ctx, err)
+		dmgin.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	rolexgin.HttpOkResponse(ctx, network)
+	dmgin.HttpOkResponse(ctx, network)
 	return
 }
 
@@ -78,12 +86,12 @@ func (api *Api) InspectNetwork(ctx *gin.Context) {
 	network, err := api.GetDockerClient().InspectNetwork(ctx.Param("network_id"))
 	if err != nil {
 		log.Error("inspect network error: ", err)
-		rerror := rolexerror.NewRolexError(rolexerror.CodeInspectNetworkParamError, err.Error())
-		rolexgin.HttpErrorResponse(ctx, rerror)
+		rerror := dmerror.NewError(CodeInspectNetworkParamError, err.Error())
+		dmgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
 
-	rolexgin.HttpOkResponse(ctx, network)
+	dmgin.HttpOkResponse(ctx, network)
 	return
 }
 
@@ -93,29 +101,29 @@ func (api *Api) ListNetworks(ctx *gin.Context) {
 	fp := ctx.DefaultQuery("filters", "{}")
 	if err := json.Unmarshal([]byte(fp), &filter); err != nil {
 		log.Error("list network request body parse json error: ", err)
-		rerror := rolexerror.NewRolexError(rolexerror.CodeListNetworkParamError, err.Error())
-		rolexgin.HttpErrorResponse(ctx, rerror)
+		rerror := dmerror.NewError(CodeListNetworkParamError, err.Error())
+		dmgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
 
 	networks, err := api.GetDockerClient().ListNetworks(filter)
 	if err != nil {
 		log.Error("list network get network list error: ", err)
-		rolexgin.HttpErrorResponse(ctx, err)
+		dmgin.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	rolexgin.HttpOkResponse(ctx, networks)
+	dmgin.HttpOkResponse(ctx, networks)
 	return
 }
 
 func (api *Api) RemoveNetwork(ctx *gin.Context) {
 	if err := api.GetDockerClient().RemoveNetwork(ctx.Param("network_id")); err != nil {
-		rolexgin.HttpErrorResponse(ctx, err)
+		dmgin.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	rolexgin.HttpOkResponse(ctx, "remove succsee")
+	dmgin.HttpOkResponse(ctx, "remove succsee")
 	return
 }
 
@@ -124,8 +132,8 @@ func (api *Api) ConnectNodeNetwork(ctx *gin.Context) {
 	var connectNetworkRequest ConnectNetworkRequest
 	if err := ctx.BindJSON(&connectNetworkRequest); err != nil {
 		log.Errorf("connect network request body parse json error: %v", err)
-		rerror := rolexerror.NewRolexError(rolexerror.CodeConnectNetworkParamError, err.Error())
-		rolexgin.HttpErrorResponse(ctx, rerror)
+		rerror := dmerror.NewError(CodeConnectNetworkParamError, err.Error())
+		dmgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
 
@@ -139,16 +147,16 @@ func (api *Api) ConnectNodeNetwork(ctx *gin.Context) {
 	case NETWORK_DISCONNECT:
 		err = api.GetDockerClient().DisconnectNodeNetwork(rolexContext.(context.Context), networkID, connectNetworkRequest.NetworkOptions)
 	default:
-		err = rolexerror.NewRolexError(rolexerror.CodeConnectNetworkMethodError, method)
+		err = dmerror.NewError(CodeConnectNetworkMethodError, method)
 	}
 
 	if err != nil {
 		log.Errorf("%s to node: %s network %s got error: %s", method, nodeID, networkID, err.Error())
-		rolexgin.HttpErrorResponse(ctx, err)
+		dmgin.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	rolexgin.HttpOkResponse(ctx, "success")
+	dmgin.HttpOkResponse(ctx, "success")
 	return
 }
 
@@ -159,11 +167,11 @@ func (api *Api) InspectNodeNetwork(ctx *gin.Context) {
 	network, err := api.GetDockerClient().InspectNodeNetwork(rolexContext.(context.Context), networkID)
 	if err != nil {
 		log.Errorf("inspect network of node: %s networkid: %s got error: %s", nodeID, networkID, err)
-		rolexgin.HttpErrorResponse(ctx, err)
+		dmgin.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	rolexgin.HttpOkResponse(ctx, network)
+	dmgin.HttpOkResponse(ctx, network)
 	return
 }
 
@@ -175,19 +183,19 @@ func (api *Api) ListNodeNetworks(ctx *gin.Context) {
 	fp := ctx.DefaultQuery("filters", "{}")
 	if err := json.Unmarshal([]byte(fp), &filters); err != nil {
 		log.Error("list network request body parse json error: ", err)
-		rerror := rolexerror.NewRolexError(rolexerror.CodeListNetworkParamError, err.Error())
-		rolexgin.HttpErrorResponse(ctx, rerror)
+		rerror := dmerror.NewError(CodeListNetworkParamError, err.Error())
+		dmgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
 
 	networks, err := api.GetDockerClient().ListNodeNetworks(rolexContext.(context.Context), filters)
 	if err != nil {
 		log.Errorf("list network get network of %s got error: %s", nodeID, err)
-		rolexgin.HttpErrorResponse(ctx, err)
+		dmgin.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	rolexgin.HttpOkResponse(ctx, networks)
+	dmgin.HttpOkResponse(ctx, networks)
 	return
 }
 
@@ -197,18 +205,18 @@ func (api *Api) CreateNodeNetwork(ctx *gin.Context) {
 
 	if err := ctx.BindJSON(&netWorkOption); err != nil {
 		log.Error("create node network request body parse json error: ", err)
-		rerror := rolexerror.NewRolexError(rolexerror.CodeCreateNetworkParamError, err.Error())
-		rolexgin.HttpErrorResponse(ctx, rerror)
+		rerror := dmerror.NewError(CodeCreateNetworkParamError, err.Error())
+		dmgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
 
 	network, err := api.GetDockerClient().CreateNodeNetwork(rolexContext.(context.Context), netWorkOption)
 	if err != nil {
 		log.Error("create network error: ", err)
-		rolexgin.HttpErrorResponse(ctx, err)
+		dmgin.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	rolexgin.HttpOkResponse(ctx, network)
+	dmgin.HttpOkResponse(ctx, network)
 	return
 }
