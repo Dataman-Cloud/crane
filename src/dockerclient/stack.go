@@ -3,6 +3,7 @@ package dockerclient
 import (
 	"errors"
 	"fmt"
+	"sort"
 	"strconv"
 	"strings"
 
@@ -19,6 +20,20 @@ import (
 const (
 	labelNamespace = "com.docker.stack.namespace"
 )
+
+type Stacks []Stack
+
+func (s Stacks) Len() int {
+	return len(s)
+}
+
+func (s Stacks) Swap(i, j int) {
+	s[i], s[j] = s[j], s[i]
+}
+
+func (s Stacks) Less(i, j int) bool {
+	return s[j].Services[0].CreatedAt.Unix() < s[i].Services[0].CreatedAt.Unix()
+}
 
 type Stack struct {
 	// Name is the name of the stack
@@ -82,6 +97,7 @@ func (client *RolexDockerClient) ListStack() ([]Stack, error) {
 		}
 		stacks = append(stacks, *stack)
 	}
+	sort.Sort(Stacks(stacks))
 
 	return stacks, nil
 }
