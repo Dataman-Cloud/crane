@@ -70,7 +70,8 @@
                 },
                 "UpdateConfig": {
                     "Parallelism": null,//更新并行任务数
-                    "Delay": null //更新延迟
+                    "Delay": null, //更新延迟
+                    "FailureAction": 'continue' //更新失败策略 pause/continue
                 },
                 "Networks": [], //网络
                 "EndpointSpec": {

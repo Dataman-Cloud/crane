@@ -5,15 +5,16 @@
         <div flex="70"><p>{/serviceDetailCtrl.service.Spec.TaskTemplate.ContainerSpec.Image/}</p></div>
         <div flex="30"><h5>任务数量</h5></div>
         <div flex="70">
-          <p data-ng-if="serviceConfigCtrl.service.Spec.Mode.Replicated" ng-class="{'no-info': !serviceConfigCtrl.service.Spec.Mode.Replicated.Replicas}">
-          {/serviceConfigCtrl.service.Spec.Mode.Replicated.Replicas || '未配置'/}
-          </p>
-          <p data-ng-if="serviceConfigCtrl.service.Spec.Mode.Global">一主机一任务</p>
+            <p data-ng-if="serviceConfigCtrl.service.Spec.Mode.Replicated"
+               ng-class="{'no-info': !serviceConfigCtrl.service.Spec.Mode.Replicated.Replicas}">
+                {/serviceConfigCtrl.service.Spec.Mode.Replicated.Replicas || '未配置'/}
+            </p>
+            <p data-ng-if="serviceConfigCtrl.service.Spec.Mode.Global">一主机一任务</p>
         </div>
         <div flex="30">
-          <h5 class="help-info">容器退出的容忍时间<i class="fa fa-umbrella"></i>
-            <md-tooltip md-direction="top">容器将在容忍时间之后被强制杀死</md-tooltip>
-          </h5>
+            <h5 class="help-info">容器退出的容忍时间<i class="fa fa-umbrella"></i>
+                <md-tooltip md-direction="top">容器将在容忍时间之后被强制杀死</md-tooltip>
+            </h5>
         </div>
         <div flex="70">
             <p ng-class="{'no-info': !serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.StopGracePeriod}">
@@ -22,7 +23,7 @@
         </div>
         <div flex="30"><h5>容器目录</h5></div>
         <div flex="70"><p ng-class="{'no-info': !serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Dir}">
-          {/serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Dir || '未配置'/}</p>
+            {/serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Dir || '未配置'/}</p>
         </div>
     </div>
 </section>
@@ -31,7 +32,9 @@
     <h2 flex="20">每个任务的资源限制</h2>
     <div flex="80" layout="row" layout-wrap>
         <div flex="30">
-            <h5>CPU<small>核</small></h5>
+            <h5>CPU
+                <small>核</small>
+            </h5>
         </div>
         <div flex="70"><p
                 ng-class="{'no-info': !serviceConfigCtrl.service.Spec.TaskTemplate.Resources.Limits.NanoCPUs}">
@@ -39,7 +42,9 @@
             Math.pow(10, 9) || '未配置'/}</p></div>
 
         <div flex="30">
-            <h5>内存<small>MB</small></h5>
+            <h5>内存
+                <small>MB</small>
+            </h5>
         </div>
         <div flex="70"><p
                 ng-class="{'no-info': !serviceConfigCtrl.service.Spec.TaskTemplate.Resources.Limits.MemoryBytes}">
@@ -50,11 +55,14 @@
     </div>
 </section>
 
-<section layout="row" class="info-list-detail" ng-show="serviceConfigCtrl.service.Spec.TaskTemplate.Resources.Reservations">
+<section layout="row" class="info-list-detail"
+         ng-show="serviceConfigCtrl.service.Spec.TaskTemplate.Resources.Reservations">
     <h2 flex="20">每个任务的资源预留</h2>
     <div flex="80" layout="row" layout-wrap>
         <div flex="30">
-            <h5>CPU<small>核</small></h5>
+            <h5>CPU
+                <small>核</small>
+            </h5>
         </div>
         <div flex="70"><p
                 ng-class="{'no-info': !serviceConfigCtrl.service.Spec.TaskTemplate.Resources.Reservations.NanoCPUs}">
@@ -62,7 +70,9 @@
             / Math.pow(10, 9) || '未配置'/}</p></div>
 
         <div flex="30">
-            <h5>内存<small>MB</small></h5>
+            <h5>内存
+                <small>MB</small>
+            </h5>
         </div>
         <div flex="70"><p
                 ng-class="{'no-info': !serviceConfigCtrl.service.Spec.TaskTemplate.Resources.Reservations.MemoryBytes}">
@@ -77,27 +87,33 @@
     <div flex="80" layout="row" layout-wrap>
         <div flex="30"><h5>重启策略</h5></div>
         <div flex="70"><p ng-class="{'no-info': !serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.Condition}">
-          {/TASK_RESTART_POLICY_COND[serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.Condition] || '未配置'/}</p>
+            {/TASK_RESTART_POLICY_COND[serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.Condition] ||
+            '未配置'/}</p>
         </div>
         <div flex="30">
-            <h5 class="help-info">重启间隔<small>秒</small></h5>
+            <h5 class="help-info">重启间隔
+                <small>秒</small>
+            </h5>
         </div>
-        <div flex="70"><p ng-class="{'no-info': !serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.Delay}"> {/serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.Delay / Math.pow(10, 9) ||
-          '未配置'/}</p>
+        <div flex="70"><p ng-class="{'no-info': !serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.Delay}">
+            {/serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.Delay / Math.pow(10, 9) ||
+            '未配置'/}</p>
         </div>
         <div flex="30">
-          <h5>在?时间之内<small>秒</small></h5>
+            <h5>在?时间之内
+                <small>秒</small>
+            </h5>
         </div>
         <div flex="70">
-          <p ng-class="{'no-info': !serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.Window}">
-          {/serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.Window / Math.pow(10, 9) || '未配置'/}
-          </p>
+            <p ng-class="{'no-info': !serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.Window}">
+                {/serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.Window / Math.pow(10, 9) || '未配置'/}
+            </p>
         </div>
         <div flex="30"><h5>最多尝试重启?次</h5></div>
         <div flex="70">
-          <p ng-class="{'no-info': !serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.MaxAttempts}">
-          {/serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.MaxAttempts || '未配置'/}
-          </p>
+            <p ng-class="{'no-info': !serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.MaxAttempts}">
+                {/serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.MaxAttempts || '未配置'/}
+            </p>
         </div>
     </div>
 </section>
@@ -105,8 +121,13 @@
 <section layout="row" class="info-list-detail" ng-show="serviceConfigCtrl.service.Spec.UpdateConfig">
     <h2 flex="20">滚动更新</h2>
     <div flex="80" layout="row" layout-wrap>
+        <div flex="30"><h5>更新失败策略</h5></div>
+        <div flex="70"><p>{/serviceConfigCtrl.service.Spec.UpdateConfig.FailureAction === 'continue' ? '继续尝试' :
+            '停止尝试'/}</p></div>
         <div flex="30">
-        <h5>在?时间内<small>秒</small></h5>
+            <h5>在?时间内
+                <small>秒</small>
+            </h5>
         </div>
         <div flex="70"><p ng-class="{'no-info': !serviceConfigCtrl.service.Spec.UpdateConfig.Delay}">
             {/serviceConfigCtrl.service.Spec.UpdateConfig.Delay / Math.pow(10, 9) || '未配置'/}</p></div>
@@ -119,7 +140,8 @@
 <section layout="row" class="info-list-detail" ng-show="serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Env">
     <h2 flex="20">环境变量</h2>
     <div flex="80" layout="row" layout-wrap>
-        <table cellpadding="0" cellspacing="0" dm-empty-display="serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Env">
+        <table cellpadding="0" cellspacing="0"
+               dm-empty-display="serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Env">
             <tr>
                 <th>KEY</th>
                 <th>VALUE</th>
@@ -149,10 +171,12 @@
     </div>
 </section>
 
-<section layout="row" class="info-list-detail" ng-show="serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Labels">
+<section layout="row" class="info-list-detail"
+         ng-show="serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Labels">
     <h2 flex="20">容器标签</h2>
     <div flex="80" layout="row" layout-wrap>
-        <table cellpadding="0" cellspacing="0" dm-empty-display="serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Labels">
+        <table cellpadding="0" cellspacing="0"
+               dm-empty-display="serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Labels">
             <tr>
                 <th>KEY</th>
                 <th>VALUE</th>
@@ -185,10 +209,12 @@
     </div>
 </section>
 
-<section layout="row" class="info-list-detail" ng-show="serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Mounts">
+<section layout="row" class="info-list-detail"
+         ng-show="serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Mounts">
     <h2 flex="20">挂载</h2>
     <div flex="80" layout="row" layout-wrap>
-        <table cellpadding="0" cellspacing="0" dm-empty-display="serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Mounts">
+        <table cellpadding="0" cellspacing="0"
+               dm-empty-display="serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Mounts">
             <tr>
                 <th>主机路径</th>
                 <th>权限</th>
@@ -204,10 +230,12 @@
     </div>
 </section>
 
-<section layout="row" class="info-list-detail" ng-show="serviceConfigCtrl.service.Spec.TaskTemplate.Placement.Constraints">
+<section layout="row" class="info-list-detail"
+         ng-show="serviceConfigCtrl.service.Spec.TaskTemplate.Placement.Constraints">
     <h2 flex="20">限制条件</h2>
     <div flex="80" layout="row" layout-wrap>
-        <table cellpadding="0" cellspacing="0" dm-empty-display="serviceConfigCtrl.service.Spec.TaskTemplate.Placement.Constraints">
+        <table cellpadding="0" cellspacing="0"
+               dm-empty-display="serviceConfigCtrl.service.Spec.TaskTemplate.Placement.Constraints">
             <tr>
                 <th>KEY</th>
                 <th>VALUE</th>
@@ -221,10 +249,12 @@
     </div>
 </section>
 
-<section layout="row" class="info-list-detail" ng-show="serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Command">
+<section layout="row" class="info-list-detail"
+         ng-show="serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Command">
     <h2 flex="20">启动命令</h2>
     <div flex="80" layout="row" layout-wrap>
-        <table cellpadding="0" cellspacing="0" dm-empty-display="serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Command">
+        <table cellpadding="0" cellspacing="0"
+               dm-empty-display="serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Command">
             <tr>
                 <th>CMD</th>
             </tr>

@@ -4,8 +4,63 @@
         .controller('StackCreateByFormCtrl', StackCreateByFormCtrl);
 
     /* @ngInject */
-    function StackCreateByFormCtrl($state, stackCurd, $stateParams, networkBackend, $scope, userBackend, $rootScope) {
+    function StackCreateByFormCtrl(stackCurd, networkBackend, $scope, userBackend, $rootScope) {
         var self = this;
+        var formTemplate = {
+            "Name": "",
+            "Labels": [],
+            "TaskTemplate": {
+                "ContainerSpec": {
+                    "Image": "", //镜像地址
+                    "Labels": [],//标签,需要转换为 {}
+                    "Command": [], //命令行
+                    "Env": [],//环境变量
+                    "Dir": "",//目录
+                    "User": "",
+                    "Mounts": [],//挂载
+                    "StopGracePeriod": null //杀死容器前等待时间
+                },
+                "Resources": {
+                    "Limits": {
+                        "NanoCPUs": null, //CPU 限制
+                        "MemoryBytes": null //内存限制
+                    },
+                    "Reservations": {
+                        "NanoCPUs": null, //CPU 预留
+                        "MemoryBytes": null //内存预留
+                    }
+                },
+                "RestartPolicy": {
+                    "Condition": "any", //重启模式
+                    "Delay": null, //重启延迟
+                    "MaxAttempts": null,//重启最大尝试次数
+                    "Window": null
+                },
+                "Placement": {
+                    "Constraints": [] //限制条件
+                },
+                "LogDriver": {}
+            },
+            "Mode": {
+                //Replicated/Global 二选一
+                "Replicated": {
+                    "Replicas": 1 //任务数
+                }
+                //"Global": {}
+            },
+            "UpdateConfig": {
+                "Parallelism": null,//更新并行任务数
+                "Delay": null,//更新延迟
+                "FailureAction": 'continue' //更新失败策略 pause/continue
+            },
+            "Networks": [], //网络
+            "EndpointSpec": {
+                "Mode": "vip", //vip/dnsrr
+                "Ports": [] //端口
+            },
+            "defaultMode": 'Replicated',
+            "showAdvanceContent": false
+        };
 
         self.step = 1;
         self.serveNameList = [];
@@ -18,62 +73,7 @@
             }
         };
 
-        self.serveFormArray = [
-            {
-                "Name": "",
-                "Labels": [],
-                "TaskTemplate": {
-                    "ContainerSpec": {
-                        "Image": "", //镜像地址
-                        "Labels": [],//标签,需要转换为 {}
-                        "Command": [], //命令行
-                        "Env": [],//环境变量
-                        "Dir": "",//目录
-                        "User": "",
-                        "Mounts": [],//挂载
-                        "StopGracePeriod": null //杀死容器前等待时间
-                    },
-                    "Resources": {
-                        "Limits": {
-                            "NanoCPUs": null, //CPU 限制
-                            "MemoryBytes": null //内存限制
-                        },
-                        "Reservations": {
-                            "NanoCPUs": null, //CPU 预留
-                            "MemoryBytes": null //内存预留
-                        }
-                    },
-                    "RestartPolicy": {
-                        "Condition": "any", //重启模式
-                        "Delay": null, //重启延迟
-                        "MaxAttempts": null,//重启最大尝试次数
-                        "Window": null
-                    },
-                    "Placement": {
-                        "Constraints": [] //限制条件
-                    },
-                    "LogDriver": {}
-                },
-                "Mode": {
-                    //Replicated/Global 二选一
-                    "Replicated": {
-                        "Replicas": 1 //任务数
-                    }
-                    //"Global": {}
-                },
-                "UpdateConfig": {
-                    "Parallelism": null,//更新并行任务数
-                    "Delay": null //更新延迟
-                },
-                "Networks": [], //网络
-                "EndpointSpec": {
-                    "Mode": "vip", //vip/dnsrr
-                    "Ports": [] //端口
-                },
-                "defaultMode": 'Replicated',
-                "showAdvanceContent": false
-            }
-        ];
+        self.serveFormArray = [angular.copy(formTemplate)];
 
         self.loadGroups = loadGroups;
         self.addServe = addServe;
@@ -94,61 +94,7 @@
         }
 
         function addServe() {
-            var form = {
-                "Name": "",
-                "Labels": [],
-                "TaskTemplate": {
-                    "ContainerSpec": {
-                        "Image": "", //镜像地址
-                        "Labels": [],//标签,需要转换为 {}
-                        "Command": [], //命令行
-                        "Env": [],//环境变量
-                        "Dir": "",//目录
-                        "User": "",
-                        "Mounts": [],//挂载
-                        "StopGracePeriod": null //杀死容器前等待时间
-                    },
-                    "Resources": {
-                        "Limits": {
-                            "NanoCPUs": null, //CPU 限制
-                            "MemoryBytes": null //内存限制
-                        },
-                        "Reservations": {
-                            "NanoCPUs": null, //CPU 预留
-                            "MemoryBytes": null //内存预留
-                        }
-                    },
-                    "RestartPolicy": {
-                        "Condition": "any", //重启模式
-                        "Delay": null, //重启延迟
-                        "MaxAttempts": null,//重启最大尝试次数
-                        "Window": null //重启间隔
-                    },
-                    "Placement": {
-                        "Constraints": [] //限制条件
-                    },
-                    "LogDriver": {}
-                },
-                "Mode": {
-                    //Replicated/Global 二选一
-                    "Replicated": {
-                        "Replicas": 1 //任务数
-                    }
-                    //"Global": {}
-                },
-                "UpdateConfig": {
-                    "Parallelism": null,//更新并行任务数
-                    "Delay": null //更新延迟
-                },
-                "Networks": [], //网络
-                "EndpointSpec": {
-                    "Mode": "vip", //vip/dnsrr
-                    "Ports": [] //端口
-                },
-                "defaultMode": 'Replicated',
-                "showAdvanceContent": false
-            };
-
+            var form = angular.copy(formTemplate);
             self.serveFormArray.push(form);
         }
 

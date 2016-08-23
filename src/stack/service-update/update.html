@@ -11,15 +11,15 @@
             </div>
             <div ng-messages="staticForm.name.$error" ng-if="staticForm.name.$dirty"
                  role="alert">
-                <p class="help-text"
+                <p class="text-danger help-text"
                    ng-message="required">
                     <small>名称不能为空</small>
                 </p>
-                <p class="help-text"
+                <p class="text-danger help-text"
                    ng-message="pattern">
                     <small>名称必须数字或者英文</small>
                 </p>
-                <p class="help-text"
+                <p class="text-danger help-text"
                    ng-message="dmCheckInclude">
                     <small>服务名不能重复</small>
                 </p>
@@ -35,7 +35,7 @@
             </div>
             <div ng-messages="staticForm.Image.$error" ng-if="staticForm.Image.$dirty"
                  role="alert">
-                <p class="help-text"
+                <p class="text-danger help-text"
                    ng-message="required">
                     <small>名称不能为空</small>
                 </p>
@@ -52,223 +52,237 @@
         </div>
 
         <div data-ng-show="serviceUpdateCtrl.showAdvanceContent">
-        <div class="form-group" layout="column">
-            <label>任务数量</label>
-            <div class="form-control" layout="row" layout-align="start center">
-                <md-radio-group data-ng-model="serviceUpdateCtrl.form.defaultMode" layout="row" aria-label="defaultMode"
-                                data-ng-change="serviceUpdateCtrl.modeChange()"
-                                layout-align="start center" flex>
+            <div class="form-group" layout="column">
+                <label>任务数量</label>
+                <div class="form-control" layout="row" layout-align="start center">
+                    <md-radio-group data-ng-model="serviceUpdateCtrl.form.defaultMode" layout="row"
+                                    aria-label="defaultMode"
+                                    data-ng-change="serviceUpdateCtrl.modeChange()"
+                                    layout-align="start center" flex>
+                        <div flex="25">
+                            <md-radio-button value="Replicated" class="md-primary" data-ng-disabled="true">固定数
+                            </md-radio-button>
+                            <input type="number" min="0"
+                                   data-ng-show="serviceUpdateCtrl.form.defaultMode === 'Replicated'"
+                                   data-ng-required="serviceUpdateCtrl.form.defaultMode === 'Replicated'"
+                                   data-ng-model="serviceUpdateCtrl.form.Mode.Replicated.Replicas   " name="replicas">
+                        </div>
+                        <div flex="25">
+                            <md-radio-button value="Global" class="md-primary" flex-offset="5" data-ng-disabled="true">
+                                一节点一任务
+                            </md-radio-button>
+                        </div>
+                    </md-radio-group>
+                </div>
+                <p class="text-danger help-text"></p>
+            </div>
+
+            <div class="form-group" layout="column">
+                <label>每个任务的资源限制</label>
+                <div class="form-control sub-group" layout="row" layout-align="start center">
                     <div flex="25">
-                        <md-radio-button value="Replicated" class="md-primary" data-ng-disabled="true">固定数
-                        </md-radio-button>
-                        <input type="number" min="0" data-ng-show="serviceUpdateCtrl.form.defaultMode === 'Replicated'"
-                               data-ng-required="serviceUpdateCtrl.form.defaultMode === 'Replicated'"
-                               data-ng-model="serviceUpdateCtrl.form.Mode.Replicated.Replicas   " name="replicas">
+                        <label class="sub-label">CPU
+                            <small>核</small>
+                        </label>
+                        <input type="number"
+                               data-ng-model="serviceUpdateCtrl.form.TaskTemplate.Resources.Limits.NanoCPUs"
+                               name="limitCpu" min="0.01">
                     </div>
                     <div flex="25">
-                        <md-radio-button value="Global" class="md-primary" flex-offset="5" data-ng-disabled="true">
-                            一节点一任务
-                        </md-radio-button>
+                        <label class="sub-label">内存
+                            <small>MB</small>
+                        </label>
+                        <input type="number"
+                               data-ng-model="serviceUpdateCtrl.form.TaskTemplate.Resources.Limits.MemoryBytes"
+                               name="limitMem" min="4">
                     </div>
-                </md-radio-group>
+                </div>
+                <div ng-messages="staticForm.limitCpu.$error" ng-if="staticForm.limitCpu.$dirty"
+                     role="alert">
+                    <p class="text-danger help-text"
+                       ng-message="min">
+                        <small>CPU 最小为 0.01</small>
+                    </p>
+                </div>
+                <div ng-messages="staticForm.limitMem.$error" ng-if="staticForm.limitMem.$dirty"
+                     role="alert">
+                    <p class="text-danger help-text"
+                       ng-message="min">
+                        <small>内存最小为 4 MB</small>
+                    </p>
+                </div>
             </div>
-            <p class="help-text"></p>
-        </div>
 
-        <div class="form-group" layout="column">
-            <label>每个任务的资源限制</label>
-            <div class="form-control sub-group" layout="row" layout-align="start center">
-                <div flex="25">
-                    <label class="sub-label">CPU
-                        <small>核</small>
-                    </label>
-                    <input type="number"
-                           data-ng-model="serviceUpdateCtrl.form.TaskTemplate.Resources.Limits.NanoCPUs"
-                           name="limitCpu" min="0.01">
+            <div class="form-group" layout="column">
+                <label>每个任务的资源预留</label>
+                <div class="form-control sub-group" layout="row" layout-align="start center">
+                    <div flex="25">
+                        <label class="sub-label">CPU
+                            <small>核</small>
+                        </label>
+                        <input type="number"
+                               data-ng-model="serviceUpdateCtrl.form.TaskTemplate.Resources.Reservations.NanoCPUs"
+                               name="ReservationsCpu" min="0.01">
+                    </div>
+                    <div flex="25">
+                        <label class="sub-label">内存
+                            <small>MB</small>
+                        </label>
+                        <input type="number"
+                               data-ng-model="serviceUpdateCtrl.form.TaskTemplate.Resources.Reservations.MemoryBytes"
+                               name="ReservationsMem" min="4">
+                    </div>
                 </div>
-                <div flex="25">
-                    <label class="sub-label">内存
-                        <small>MB</small>
-                    </label>
-                    <input type="number"
-                           data-ng-model="serviceUpdateCtrl.form.TaskTemplate.Resources.Limits.MemoryBytes"
-                           name="limitMem" min="4">
+                <div ng-messages="staticForm.ReservationsCpu.$error"
+                     ng-if="staticForm.ReservationsCpu.$dirty"
+                     role="alert">
+                    <p class="text-danger help-text"
+                       ng-message="min">
+                        <small>CPU 最小为 0.01</small>
+                    </p>
+                </div>
+                <div ng-messages="staticForm.ReservationsMem.$error"
+                     ng-if="staticForm.ReservationsMem.$dirty"
+                     role="alert">
+                    <p class="text-danger help-text"
+                       ng-message="min">
+                        <small>内存最小为 4 MB</small>
+                    </p>
                 </div>
             </div>
-            <div ng-messages="staticForm.limitCpu.$error" ng-if="staticForm.limitCpu.$dirty"
-                 role="alert">
-                <p class="help-text"
-                   ng-message="min">
-                    <small>CPU 最小为 0.01</small>
-                </p>
-            </div>
-            <div ng-messages="staticForm.limitMem.$error" ng-if="staticForm.limitMem.$dirty"
-                 role="alert">
-                <p class="help-text"
-                   ng-message="min">
-                    <small>内存最小为 4 MB</small>
-                </p>
-            </div>
-        </div>
 
-        <div class="form-group" layout="column">
-            <label>每个任务的资源预留</label>
-            <div class="form-control sub-group" layout="row" layout-align="start center">
-                <div flex="25">
-                    <label class="sub-label">CPU
-                        <small>核</small>
-                    </label>
-                    <input type="number"
-                           data-ng-model="serviceUpdateCtrl.form.TaskTemplate.Resources.Reservations.NanoCPUs"
-                           name="ReservationsCpu" min="0.01">
+            <div class="form-group" layout="column">
+                <label>容错策略</label>
+                <div class="form-control" layout="row" layout-align="start center">
+                    <md-radio-group data-ng-model="serviceUpdateCtrl.form.TaskTemplate.RestartPolicy.Condition"
+                                    layout="row" aria-label="restart-condition" flex>
+                        <div flex="25">
+                            <md-radio-button value="any" class="md-primary">
+                                <i class="fa fa-umbrella"></i>
+                                <md-tooltip md-direction="top">无论任务正常或异常退出，都重启, 适合批处理或定时任务场景</md-tooltip>
+                                退出后重启
+                            </md-radio-button>
+                        </div>
+                        <div flex="25">
+                            <md-radio-button value="none" class="md-primary">不重启</md-radio-button>
+                        </div>
+                        <div flex="25">
+                            <md-radio-button value="on-failure" class="md-primary">
+                                <i class="fa fa-umbrella"></i>
+                                <md-tooltip md-direction="top">在退出状态码(exit code)非 0 的情况下重启</md-tooltip>
+                                失败重启
+                            </md-radio-button>
+                        </div>
+                    </md-radio-group>
                 </div>
-                <div flex="25">
-                    <label class="sub-label">内存
-                        <small>MB</small>
-                    </label>
-                    <input type="number"
-                           data-ng-model="serviceUpdateCtrl.form.TaskTemplate.Resources.Reservations.MemoryBytes"
-                           name="ReservationsMem" min="4">
+                <div class="form-control sub-group" layout="row" layout-align="start center">
+                    <div flex="25">
+                        <label class="sub-label">重启间隔
+                            <small>秒</small>
+                        </label>
+                        <input type="number"
+                               data-ng-model="serviceUpdateCtrl.form.TaskTemplate.RestartPolicy.Delay"
+                               name="restartDelay" min="0">
+                    </div>
+                    <div flex="25">
+                        <label class="sub-label">在?时间之内
+                            <small>秒</small>
+                        </label>
+                        <input type="number" min="0"
+                               data-ng-model="serviceUpdateCtrl.form.TaskTemplate.RestartPolicy.Window"
+                               name="restartMaxAttempts">
+                    </div>
+                    <div flex="25">
+                        <label class="sub-label">最多尝试重启?次</label>
+                        <input type="number" min="0"
+                               data-ng-model="serviceUpdateCtrl.form.TaskTemplate.RestartPolicy.MaxAttempts"
+                               name="restartMaxAttempts">
+                    </div>
                 </div>
             </div>
-            <div ng-messages="staticForm.ReservationsCpu.$error"
-                 ng-if="staticForm.ReservationsCpu.$dirty"
-                 role="alert">
-                <p class="help-text"
-                   ng-message="min">
-                    <small>CPU 最小为 0.01</small>
-                </p>
-            </div>
-            <div ng-messages="staticForm.ReservationsMem.$error"
-                 ng-if="staticForm.ReservationsMem.$dirty"
-                 role="alert">
-                <p class="help-text"
-                   ng-message="min">
-                    <small>内存最小为 4 MB</small>
-                </p>
-            </div>
-          </div>
 
-          <div class="form-group" layout="column">
-            <label>容错策略</label>
-            <div class="form-control" layout="row" layout-align="start center">
-              <md-radio-group data-ng-model="serviceUpdateCtrl.form.TaskTemplate.RestartPolicy.Condition"
-              layout="row" aria-label="restart-condition" flex>
-              <div flex="25">
-                <md-radio-button value="any" class="md-primary">
-                <i class="fa fa-umbrella"></i>
-                <md-tooltip md-direction="top">无论任务正常或异常退出，都重启, 适合批处理或定时任务场景</md-tooltip>
-                退出后重启
-                </md-radio-button>
-              </div>
-              <div flex="25">
-                <md-radio-button value="none" class="md-primary">不重启</md-radio-button>
-              </div>
-              <div flex="25">
-                <md-radio-button value="on-failure" class="md-primary">
-                <i class="fa fa-umbrella"></i>
-                <md-tooltip md-direction="top">在退出状态码(exit code)非 0 的情况下重启</md-tooltip>
-                失败重启
-                </md-radio-button>
-              </div>
-              </md-radio-group>
-            </div>
-            <div class="form-control sub-group" layout="row" layout-align="start center">
-                <div flex="25">
-                    <label class="sub-label">重启间隔
-                        <small>秒</small>
-                    </label>
-                    <input type="number"
-                           data-ng-model="serviceUpdateCtrl.form.TaskTemplate.RestartPolicy.Delay"
-                           name="restartDelay" min="0">
+            <div class="form-group" layout="column">
+                <label>更新策略</label>
+                <div class="form-control" layout="row" layout-align="start center">
+                    <md-radio-group data-ng-model="serviceUpdateCtrl.form.UpdateConfig.FailureAction" layout="row"
+                                    aria-label="restart-condition" flex>
+                        <div flex="25">
+                            <md-radio-button value="continue" class="md-primary">更新失败后继续尝试</md-radio-button>
+                        </div>
+                        <div flex="25">
+                            <md-radio-button value="pause" class="md-primary">更新失败后停止</md-radio-button>
+                        </div>
+                    </md-radio-group>
                 </div>
-                <div flex="25">
-                    <label class="sub-label">在?时间之内
-                        <small>秒</small>
-                    </label>
-                    <input type="number" min="0"
-                           data-ng-model="serviceUpdateCtrl.form.TaskTemplate.RestartPolicy.Window"
-                           name="restartMaxAttempts">
-                </div>
-                <div flex="25">
-                    <label class="sub-label">最多尝试重启?次</label>
-                    <input type="number" min="0"
-                           data-ng-model="serviceUpdateCtrl.form.TaskTemplate.RestartPolicy.MaxAttempts"
-                           name="restartMaxAttempts">
+                <div class="form-control sub-group" layout="row" layout-align="start center">
+                    <div flex="25">
+                        <label class="sub-label">在?时间之内
+                            <small>秒</small>
+                        </label>
+                        <input type="number" min="0"
+                               data-ng-model="serviceUpdateCtrl.form.UpdateConfig.Delay" name="updateDelay">
+                    </div>
+                    <div flex="25">
+                        <label class="sub-label">并行更新?个任务</label>
+                        <input type="number" min="0"
+                               data-ng-model="serviceUpdateCtrl.form.UpdateConfig.Parallelism"
+                               name="updateParallelism">
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="form-group" layout="column">
-            <label>更新策略</label>
-            <div class="form-control sub-group" layout="row" layout-align="start center">
-                <div flex="25">
-                    <label class="sub-label">在?时间之内
-                        <small>秒</small>
-                    </label>
-                    <input type="number" min="0"
-                           data-ng-model="serviceUpdateCtrl.form.UpdateConfig.Delay" name="updateDelay">
+            <div class="form-group" layout="column">
+                <label>
+                    <i class="fa fa-umbrella"></i>
+                    <md-tooltip md-direction="top">容器将在容忍时间之后被强制杀死</md-tooltip>
+                    容器退出的容忍时间
+                </label>
+                <div class="form-control">
+                    <input type="number" name="stopGracePeriod"
+                           data-ng-model="serviceUpdateCtrl.form.TaskTemplate.ContainerSpec.StopGracePeriod">
                 </div>
-                <div flex="25">
-                    <label class="sub-label">并行更新?个任务</label>
-                    <input type="number" min="0"
-                           data-ng-model="serviceUpdateCtrl.form.UpdateConfig.Parallelism"
-                           name="updateParallelism">
+                <div ng-messages="staticForm.stopGracePeriod.$error"
+                     ng-if="staticForm.stopGracePeriod.$dirty"
+                     role="alert">
                 </div>
             </div>
-        </div>
 
-        <div class="form-group" layout="column">
-          <label>
-            <i class="fa fa-umbrella"></i>
-            <md-tooltip md-direction="top">容器将在容忍时间之后被强制杀死</md-tooltip>
-            容器退出的容忍时间
-          </label>
-          <div class="form-control">
-                <input type="number" name="stopGracePeriod"
-                       data-ng-model="serviceUpdateCtrl.form.TaskTemplate.ContainerSpec.StopGracePeriod">
+            <div class="form-group" layout="column">
+                <label>容器工作目录</label>
+                <div class="form-control">
+                    <input type="text"
+                           data-ng-model="serviceUpdateCtrl.form.TaskTemplate.ContainerSpec.Dir" name="workdir">
+                </div>
+                <div ng-messages="staticForm.workdir.$error"
+                     ng-if="staticForm.workdir.$dirty"
+                     role="alert">
+                </div>
             </div>
-            <div ng-messages="staticForm.stopGracePeriod.$error"
-                 ng-if="staticForm.stopGracePeriod.$dirty"
-                 role="alert">
+            <div class="form-group" layout="column">
+                <label>选择网络</label>
+                <div class="form-control">
+                    <md-select data-ng-model="serviceUpdateCtrl.form.formNetworks" multiple
+                               aria-label="Networks" data-ng-disabled="true">
+                        <md-option data-ng-repeat="network in serviceUpdateCtrl.networks | filter: {Driver: '!bridge'}"
+                                   ng-value="network.Name"
+                                   ng-selected="serviceUpdateCtrl.initSelectNetworks(network.Name)">{/network.Name/}
+                        </md-option>
+                    </md-select>
+                </div>
+                <p class="text-danger help-text"></p>
             </div>
-        </div>
 
-        <div class="form-group" layout="column">
-            <label>容器工作目录</label>
-            <div class="form-control">
-                <input type="text"
-                       data-ng-model="serviceUpdateCtrl.form.TaskTemplate.ContainerSpec.Dir" name="workdir">
-            </div>
-            <div ng-messages="staticForm.workdir.$error"
-                 ng-if="staticForm.workdir.$dirty"
-                 role="alert">
-            </div>
-        </div>
-        <div class="form-group" layout="column">
-          <label>选择网络</label>
-          <div class="form-control">
-            <md-select data-ng-model="serviceUpdateCtrl.form.formNetworks" multiple
-            aria-label="Networks" data-ng-disabled="true">
-            <md-option data-ng-repeat="network in serviceUpdateCtrl.networks | filter: {Driver: '!bridge'}"
-            ng-value="network.Name" ng-selected="serviceUpdateCtrl.initSelectNetworks(network.Name)">{/network.Name/}
-            </md-option>
-            </md-select>
-          </div>
-          <p class="help-text"></p>
-        </div>
-
-        <div class="form-group" layout="column">
-          <label>端口映射
-            <small>可添加多个端口映射</small>
-            </label>
-            <div class="sub-button">
-              <md-button class="md-raised md-success md-small"
-              data-ng-click="serviceUpdateCtrl.addConfig(serviceUpdateCtrl.form.formPorts, 'Ports')">
-              添加端口映射
-              </md-button>
-            </div>
-            <div data-ng-repeat="port in serviceUpdateCtrl.form.formPorts track by $index">
+            <div class="form-group" layout="column">
+                <label>端口映射
+                    <small>可添加多个端口映射</small>
+                </label>
+                <div class="sub-button">
+                    <md-button class="md-raised md-success md-small"
+                               data-ng-click="serviceUpdateCtrl.addConfig(serviceUpdateCtrl.form.formPorts, 'Ports')">
+                        添加端口映射
+                    </md-button>
+                </div>
+                <div data-ng-repeat="port in serviceUpdateCtrl.form.formPorts track by $index">
                     <ng-form name="portForm">
                         <div class="form-control sub-group" layout="row" layout-align="start center">
                             <input type="number" placeholder="TargetPort" flex="20"
@@ -291,11 +305,11 @@
                     <div ng-messages="portForm.TargetPort.$error"
                          ng-if="portForm.TargetPort.$dirty"
                          role="alert">
-                        <p class="help-text"
+                        <p class="text-danger help-text"
                            ng-message="max">
                             <small>服务端口最大不超过 65535</small>
                         </p>
-                        <p class="help-text"
+                        <p class="text-danger help-text"
                            ng-message="min">
                             <small>服务端口最小为 1</small>
                         </p>
@@ -304,7 +318,7 @@
                     <div ng-messages="portForm.PublishedPort.$error"
                          ng-if="portForm.PublishedPort.$dirty"
                          role="alert">
-                        <p class="help-text"
+                        <p class="text-danger help-text"
                            ng-message="max">
                             <small>主机端口最大不超过 65535</small>
                         </p>
@@ -342,11 +356,11 @@
                     </ng-form>
                     <div ng-messages="envForm.envKey.$error" ng-if="envForm.envKey.$dirty"
                          role="alert">
-                        <p class="help-text"
+                        <p class="text-danger help-text"
                            ng-message="pattern">
                             <small>环境变量 Key 值不能包含中文</small>
                         </p>
-                        <p class="help-text"
+                        <p class="text-danger help-text"
                            ng-message="dmCheckInclude">
                             <small>环境变量 Key 值不能重复</small>
                         </p>
@@ -354,7 +368,7 @@
 
                     <div ng-messages="envForm.envValue.$error" ng-if="envForm.envValue.$dirty"
                          role="alert">
-                        <p class="help-text"
+                        <p class="text-danger help-text"
                            ng-message="pattern">
                             <small>环境变量 Value 值不能包含中文</small>
                         </p>
@@ -395,11 +409,11 @@
                     <div ng-messages="labelForm.labelKey.$error"
                          ng-if="labelForm.labelKey.$dirty"
                          role="alert">
-                        <p class="help-text"
+                        <p class="text-danger help-text"
                            ng-message="pattern">
                             <small>标签 Key 值不能包含中文</small>
                         </p>
-                        <p class="help-text"
+                        <p class="text-danger help-text"
                            ng-message="dmCheckInclude">
                             <small>标签 Key 值不能重复</small>
                         </p>
@@ -408,7 +422,7 @@
                     <div ng-messages="labelForm.labelValue.$error"
                          ng-if="labelForm.labelValue.$dirty"
                          role="alert">
-                        <p class="help-text"
+                        <p class="text-danger help-text"
                            ng-message="pattern">
                             <small>标签 Value 值不能包含中文</small>
                         </p>
@@ -446,11 +460,11 @@
                     <div ng-messages="labelForm.labelKey.$error"
                          ng-if="labelForm.labelKey.$dirty"
                          role="alert">
-                        <p class="help-text"
+                        <p class="text-danger help-text"
                            ng-message="pattern">
                             <small>标签 Key 值不能包含中文</small>
                         </p>
-                        <p class="help-text"
+                        <p class="text-danger help-text"
                            ng-message="dmCheckInclude">
                             <small>标签 Key 值不能重复</small>
                         </p>
@@ -459,7 +473,7 @@
                     <div ng-messages="labelForm.labelValue.$error"
                          ng-if="labelForm.labelValue.$dirty"
                          role="alert">
-                        <p class="help-text"
+                        <p class="text-danger help-text"
                            ng-message="pattern">
                             <small>标签 Value 值不能包含中文</small>
                         </p>
@@ -543,15 +557,15 @@
                     <div ng-messages="constraintForm.constraintKey.$error"
                          ng-if="constraintForm.constraintKey.$dirty"
                          role="alert">
-                        <p class="help-text"
+                        <p class="text-danger help-text"
                            ng-message="pattern">
                             <small>KEY 不能包含中文</small>
                         </p>
-                        <p class="help-text"
+                        <p class="text-danger help-text"
                            ng-message="dmCheckInclude">
                             <small>KEY 不能重复</small>
                         </p>
-                        <p class="help-text"
+                        <p class="text-danger help-text"
                            ng-message="minlength">
                             <small>KEY 长度不少于 2</small>
                         </p>
@@ -559,7 +573,7 @@
                     <div ng-messages="constraintForm.constraintValue.$error"
                          ng-if="constraintForm.constraintValue.$dirty"
                          role="alert">
-                        <p class="help-text"
+                        <p class="text-danger help-text"
                            ng-message="pattern">
                             <small>VALUE 不能包含中文</small>
                         </p>
