@@ -110,7 +110,14 @@ func (api *Api) InspectService(ctx *gin.Context) {
 		return
 	}
 
-	dmgin.HttpOkResponse(ctx, service)
+	rolexService := model.RolexService{
+		ID:           service.ID,
+		Meta:         service.Meta,
+		Spec:         api.GetDockerClient().ConvertStackService(service.Spec),
+		Endpoint:     service.Endpoint,
+		UpdateStatus: service.UpdateStatus,
+	}
+	dmgin.HttpOkResponse(ctx, rolexService)
 	return
 }
 

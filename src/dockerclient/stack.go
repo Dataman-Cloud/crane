@@ -124,7 +124,7 @@ func (client *RolexDockerClient) InspectStack(namespace string) (*model.Bundle, 
 		return nil, err
 	}
 
-	stackServices := make(map[string]model.RolexService)
+	stackServices := make(map[string]model.RolexServiceSpec)
 	for _, swarmService := range services {
 		stackServices[swarmService.Spec.Name] = client.ConvertStackService(swarmService.Spec)
 	}
@@ -220,21 +220,7 @@ func (client *RolexDockerClient) GetStackGroup(namespace string) (uint64, error)
 	return 0, errors.New("can't found stack groupid")
 }
 
-// convert swarm service to bundle service
-func (client *RolexDockerClient) ConvertStackService(swarmService swarm.ServiceSpec) model.RolexService {
-	networks := client.getServiceNetworks(swarmService.Networks)
-	return model.RolexService{
-		Name:         swarmService.Name,
-		Labels:       swarmService.Labels,
-		TaskTemplate: swarmService.TaskTemplate,
-		Mode:         swarmService.Mode,
-		UpdateConfig: swarmService.UpdateConfig,
-		Networks:     networks,
-		EndpointSpec: swarmService.EndpointSpec,
-	}
-}
-
-func (client *RolexDockerClient) getUniqueNetworkNames(services map[string]model.RolexService) []string {
+func (client *RolexDockerClient) getUniqueNetworkNames(services map[string]model.RolexServiceSpec) []string {
 	networkSet := make(map[string]bool)
 
 	for _, service := range services {
@@ -309,16 +295,7 @@ func (client *RolexDockerClient) convertNetworks(newNetworkMap map[string]bool, 
 	return nets
 }
 
-func (client *RolexDockerClient) getServiceNetworks(nets []swarm.NetworkAttachmentConfig) []string {
-	networkList := []string{}
-	for _, network := range nets {
-		networkList = append(networkList, network.Target)
-	}
-
-	return networkList
-}
-
-func (client *RolexDockerClient) deployServices(services map[string]model.RolexService, namespace string, newNetworkMap map[string]bool) error {
+func (client *RolexDockerClient) deployServices(services map[string]model.RolexServiceSpec, namespace string, newNetworkMap map[string]bool) error {
 	existingServices, err := client.filterStackServices(namespace)
 	if err != nil {
 		return err
