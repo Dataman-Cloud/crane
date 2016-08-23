@@ -5,6 +5,7 @@
 
     /*@ngInject*/
     function run($rootScope) {
+        $rootScope.DOCKER_REGISTRY_URL = DOCKER_REGISTRY_URL;
         $rootScope.CONTAINER_STATUS_LABELS = {
             running: '运行中',
             paused: '暂停中',

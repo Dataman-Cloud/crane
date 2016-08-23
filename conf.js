@@ -14,3 +14,4 @@ BACKEND_URL_BASE = {
 HOME_URL = '/auth';
 SAMPLES_URL = '/stack/samples/';
 MISC_TOOLS_URL = window.location.protocol + "//" + window.location.host + '/misc-tools/';
+DOCKER_REGISTRY_URL = window.location.host + ':5000/';
