@@ -126,7 +126,7 @@ func (client *RolexDockerClient) InspectStack(namespace string) (*model.Bundle, 
 
 	stackServices := make(map[string]model.RolexServiceSpec)
 	for _, swarmService := range services {
-		stackServices[swarmService.Spec.Name] = client.ConvertStackService(swarmService.Spec)
+		stackServices[swarmService.Spec.Name] = client.ToRolexServiceSpec(swarmService.Spec)
 	}
 
 	return &model.Bundle{

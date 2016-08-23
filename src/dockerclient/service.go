@@ -263,24 +263,24 @@ func (client *RolexDockerClient) ServiceRemoveLabel(serviceID string, labels []s
 	return client.UpdateService(service.ID, service.Version, service.Spec, nil)
 }
 
-func (client *RolexDockerClient) getServiceNetworks(nets []swarm.NetworkAttachmentConfig) []string {
-	networkList := []string{}
-	for _, network := range nets {
-		networkInfo, err := client.InspectNetwork(network.Target)
+func (client *RolexDockerClient) getServiceNetworkNames(networkAttachmentConfigs []swarm.NetworkAttachmentConfig) []string {
+	networkNameList := []string{}
+	for _, networkAttachmentConfig := range networkAttachmentConfigs {
+		networkInfo, err := client.InspectNetwork(networkAttachmentConfig.Target)
 		if err != nil {
 			log.Warnf("convert service network got error: %f", err.Error())
 			continue
 		}
 
-		networkList = append(networkList, networkInfo.Name)
+		networkNameList = append(networkNameList, networkInfo.Name)
 	}
 
-	return networkList
+	return networkNameList
 }
 
 // convert swarm service to bundle service
-func (client *RolexDockerClient) ConvertStackService(swarmService swarm.ServiceSpec) model.RolexServiceSpec {
-	networks := client.getServiceNetworks(swarmService.Networks)
+func (client *RolexDockerClient) ToRolexServiceSpec(swarmService swarm.ServiceSpec) model.RolexServiceSpec {
+	networks := client.getServiceNetworkNames(swarmService.Networks)
 	rolexServiceSpec := model.RolexServiceSpec{
 		Name:         swarmService.Name,
 		Labels:       swarmService.Labels,

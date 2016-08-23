@@ -30,7 +30,7 @@ type RolexServiceSpec struct {
 type RolexService struct {
 	ID string `json:"ID"`
 	swarm.Meta
-	Spec         RolexServiceSpec   `josn:"Spec"`
+	Spec         RolexServiceSpec   `json:"Spec"`
 	Endpoint     swarm.Endpoint     `json:"Endpoint"`
 	UpdateStatus swarm.UpdateStatus `json:"UpdateStatus"`
 }

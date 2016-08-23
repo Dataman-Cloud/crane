@@ -113,7 +113,7 @@ func (api *Api) InspectService(ctx *gin.Context) {
 	rolexService := model.RolexService{
 		ID:           service.ID,
 		Meta:         service.Meta,
-		Spec:         api.GetDockerClient().ConvertStackService(service.Spec),
+		Spec:         api.GetDockerClient().ToRolexServiceSpec(service.Spec),
 		Endpoint:     service.Endpoint,
 		UpdateStatus: service.UpdateStatus,
 	}
