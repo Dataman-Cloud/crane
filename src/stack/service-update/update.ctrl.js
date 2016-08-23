@@ -248,13 +248,7 @@
         function initSelectNetworks(name) {
             if (service.Spec.Networks && service.Spec.Networks.length) {
 
-                var selectNetworks = [];
-                angular.forEach(service.Spec.Networks, function (item, index) {
-                    //BUG: how to get the network name
-                    selectNetworks.push(item.Target)
-                });
-
-                return selectNetworks.indexOf(name) !== -1;
+                return service.Spec.Networks.indexOf(name) !== -1;
             }
         }
 

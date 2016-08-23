@@ -25,6 +25,13 @@
         <div flex="70"><p ng-class="{'no-info': !serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Dir}">
             {/serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Dir || '未配置'/}</p>
         </div>
+        <div flex="30"><h5>网络</h5></div>
+        <div flex="70">
+            <ul>
+                <li data-ng-repeat="network in serviceConfigCtrl.service.Spec.Networks">{/network/}</li>
+            </ul>
+            <p ng-class="{'no-info': !serviceConfigCtrl.service.Spec.Networks.length}" data-ng-if="!serviceConfigCtrl.service.Spec.Networks.length"> 未配置 </p>
+        </div>
     </div>
 </section>
 
