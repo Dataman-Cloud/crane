@@ -900,3 +900,45 @@ nvd3 .nv-axislabel {
     fill: #93929D;
     font-size: 11px;
 }
+
+/* licence */
+.licence-alert {
+    background-color: #E76C4C;
+    color: #D3D1D5;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    font-size: 18px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    font-weight: bold;
+}
+.licence-alert a {
+    color: #FFF;
+    text-decoration: underline;
+}
+.licence-alert a:hover {
+    text-decoration: none;
+}
+
+.feedback-btn, .feedback-btn:visited {
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    background: #1FA2BF;
+    color: rgba(255,255,255,0.8);
+    display: block;
+    font-size: 18px;
+    position: absolute;
+    left: 20px;
+    bottom: 80px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+.feedback-btn:hover {
+    color: #FFF;
+}
+
+

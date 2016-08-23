@@ -8,6 +8,7 @@
         var self = this;
 
         $rootScope.accountId = null;
+        $rootScope.licenseValidFlag = true;
 
         self.noticeNav = mdSideNav.createSideNav('noticeNav');
         self.goBack = goBack;
@@ -24,7 +25,6 @@
             ///
             initUser();
             listComponent();
-            checkLicense();
         }
 
         function initUser() {
@@ -55,6 +55,10 @@
             miscBackend.rolexConfig()
                 .then(function (data) {
                     $rootScope.componentList = data.FeatureFlags;
+
+                    if(data.FeatureFlags.indexOf('license') !== -1){
+                        checkLicense();
+                    }
                 });
         }
 
