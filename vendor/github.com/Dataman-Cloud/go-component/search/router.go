@@ -66,6 +66,8 @@ type Document struct {
 }
 
 func (searchApi *SearchApi) RegisterApiForSearch(router *gin.Engine, middlewares ...gin.HandlerFunc) {
+	searchApi.IndexData()
+
 	searchV1 := router.Group("/search/v1", middlewares...)
 	{
 		searchV1.GET("/luckysearch", searchApi.Search)
