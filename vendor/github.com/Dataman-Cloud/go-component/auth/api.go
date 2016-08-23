@@ -8,6 +8,7 @@ import (
 
 	"github.com/Dataman-Cloud/go-component/utils/dmerror"
 	"github.com/Dataman-Cloud/go-component/utils/dmgin"
+	"github.com/Dataman-Cloud/go-component/utils/model"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
@@ -47,14 +48,8 @@ const (
 	CodeAccountGrantServicePermissionFailedError        = "503-12030"
 	CodeAccountRevokeServicePermissionParamError        = "400-12031"
 	CodeAccountRevokeServicePermissionFailedError       = "503-12032"
+	CodeAccountTokenInvalidError                        = "401-12033"
 )
-
-type ListOptions struct {
-	Offset uint64
-	Limit  uint64
-
-	Filter map[string]interface{}
-}
 
 func (a *AccountApi) CreateAccount(ctx *gin.Context) {
 	var acc Account
@@ -117,7 +112,7 @@ func (a *AccountApi) GetAccount(ctx *gin.Context) {
 func (a *AccountApi) ListAccounts(ctx *gin.Context) {
 	listOptions, _ := ctx.Get("listOptions")
 
-	accounts, err := a.Authenticator.Accounts(listOptions.(ListOptions))
+	accounts, err := a.Authenticator.Accounts(listOptions.(model.ListOptions))
 	if err != nil {
 		rolexerr := dmerror.NewError(CodeAccountGetAccountNotFoundError, err.Error())
 		dmgin.HttpErrorResponse(ctx, rolexerr)
@@ -156,7 +151,7 @@ func (a *AccountApi) AccountLogout(ctx *gin.Context) {
 
 func (a *AccountApi) GroupAccounts(ctx *gin.Context) {
 	listObj, _ := ctx.Get("listOptions")
-	listOptions := listObj.(ListOptions)
+	listOptions := listObj.(model.ListOptions)
 
 	if groupId, err := strconv.ParseUint(ctx.Param("group_id"), 10, 64); err != nil {
 		log.Errorf("invalid groupid: %v", err)
@@ -180,7 +175,7 @@ func (a *AccountApi) GroupAccounts(ctx *gin.Context) {
 
 func (a *AccountApi) AccountGroups(ctx *gin.Context) {
 	listObj, _ := ctx.Get("listOptions")
-	listOptions := listObj.(ListOptions)
+	listOptions := listObj.(model.ListOptions)
 
 	if accountId, err := strconv.ParseUint(ctx.Param("account_id"), 10, 64); err != nil {
 		rolexerr := dmerror.NewError(CodeAccountAccoutGroupsAccountIdNotValidError, err.Error())
@@ -219,7 +214,7 @@ func (a *AccountApi) GetGroup(ctx *gin.Context) {
 
 func (a *AccountApi) ListGroups(ctx *gin.Context) {
 	listOptions, _ := ctx.Get("listOptions")
-	groups, err := a.Authenticator.Groups(listOptions.(ListOptions))
+	groups, err := a.Authenticator.Groups(listOptions.(model.ListOptions))
 	if err != nil {
 		rolexerr := dmerror.NewError(CodeAccountListGroupNotFoundError, err.Error())
 		dmgin.HttpErrorResponse(ctx, rolexerr)

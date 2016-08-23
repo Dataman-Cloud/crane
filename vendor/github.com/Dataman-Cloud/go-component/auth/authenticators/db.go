@@ -8,6 +8,7 @@ import (
 
 	"github.com/Dataman-Cloud/go-component/auth"
 	"github.com/Dataman-Cloud/go-component/utils/db"
+	"github.com/Dataman-Cloud/go-component/utils/model"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
@@ -48,7 +49,7 @@ func (db *DbAuthenicator) Login(a *auth.Account) (string, error) {
 	return auth.GenToken(a), nil
 }
 
-func (db *DbAuthenicator) Accounts(listOptions auth.ListOptions) (*[]auth.Account, error) {
+func (db *DbAuthenicator) Accounts(listOptions model.ListOptions) (*[]auth.Account, error) {
 	var auths []auth.Account
 	if err = db.DbClient.
 		Select("id, title, email, phone, login_at").
@@ -130,7 +131,7 @@ func (db *DbAuthenicator) CreateAccount(groupId uint64, a *auth.Account) error {
 	return nil
 }
 
-func (db *DbAuthenicator) Groups(listOptions auth.ListOptions) (*[]auth.Group, error) {
+func (db *DbAuthenicator) Groups(listOptions model.ListOptions) (*[]auth.Group, error) {
 	var groups []auth.Group
 	if err = db.DbClient.
 		Offset(listOptions.Offset).
@@ -214,7 +215,7 @@ func (db *DbAuthenicator) LeaveGroup(accountId, groupId uint64) error {
 	return nil
 }
 
-func (db *DbAuthenicator) GroupAccounts(listOptions auth.ListOptions) (*[]auth.Account, error) {
+func (db *DbAuthenicator) GroupAccounts(listOptions model.ListOptions) (*[]auth.Account, error) {
 	var accounts []auth.Account
 	var accountGroup []auth.AccountGroup
 	if err := db.DbClient.
@@ -239,7 +240,7 @@ func (db *DbAuthenicator) GroupAccounts(listOptions auth.ListOptions) (*[]auth.A
 	return &accounts, nil
 }
 
-func (db *DbAuthenicator) AccountGroups(listOptions auth.ListOptions) (*[]auth.Group, error) {
+func (db *DbAuthenicator) AccountGroups(listOptions model.ListOptions) (*[]auth.Group, error) {
 	var groups []auth.Group
 	var accountGroup []auth.AccountGroup
 	if err := db.DbClient.

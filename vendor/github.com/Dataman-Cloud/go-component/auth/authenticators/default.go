@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/Dataman-Cloud/go-component/auth"
+	"github.com/Dataman-Cloud/go-component/utils/model"
 	"github.com/Dataman-Cloud/rolex/src/util/config"
 )
 
@@ -57,7 +58,7 @@ func (d *Default) Login(a *auth.Account) (token string, err error) {
 	return "", auth.ErrLoginFailed
 }
 
-func (d *Default) Accounts(listOptions auth.ListOptions) (auths *[]auth.Account, err error) {
+func (d *Default) Accounts(listOptions model.ListOptions) (auths *[]auth.Account, err error) {
 	return &Accounts, nil
 }
 
@@ -85,11 +86,11 @@ func (d *Default) CreateAccount(groupId uint64, a *auth.Account) error {
 	return nil
 }
 
-func (d *Default) AccountGroups(listOptions auth.ListOptions) (auths *[]auth.Group, err error) {
+func (d *Default) AccountGroups(listOptions model.ListOptions) (auths *[]auth.Group, err error) {
 	return &Groups, nil
 }
 
-func (d *Default) Groups(listOptions auth.ListOptions) (auths *[]auth.Group, err error) {
+func (d *Default) Groups(listOptions model.ListOptions) (auths *[]auth.Group, err error) {
 	return &Groups, nil
 }
 

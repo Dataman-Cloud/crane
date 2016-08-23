@@ -1,5 +1,9 @@
 package auth
 
+import (
+	"github.com/Dataman-Cloud/go-component/utils/model"
+)
+
 type Authenticator interface {
 	AccountPermissions(account *Account) (*[]string, error)
 
@@ -7,14 +11,14 @@ type Authenticator interface {
 	EncryptPassword(password string) string
 
 	DeleteGroup(groupId uint64) error
-	Groups(listOptions ListOptions) (*[]Group, error)
+	Groups(listOptions model.ListOptions) (*[]Group, error)
 	Group(id uint64) (*Group, error)
 	CreateGroup(role *Group) error
 	UpdateGroup(role *Group) error
-	GroupAccounts(account ListOptions) (*[]Account, error)
+	GroupAccounts(account model.ListOptions) (*[]Account, error)
 
-	AccountGroups(account ListOptions) (*[]Group, error)
-	Accounts(listOptions ListOptions) (*[]Account, error)
+	AccountGroups(account model.ListOptions) (*[]Group, error)
+	Accounts(listOptions model.ListOptions) (*[]Account, error)
 	Account(id interface{}) (*Account, error)
 	CreateAccount(groupId uint64, a *Account) error
 	UpdateAccount(a *Account) error
