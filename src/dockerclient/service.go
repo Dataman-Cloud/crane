@@ -9,6 +9,9 @@ import (
 	"strings"
 	"time"
 
+	"github.com/Dataman-Cloud/rolex/src/dockerclient/model"
+
+	log "github.com/Sirupsen/logrus"
 	"github.com/docker/engine-api/types"
 	"github.com/docker/engine-api/types/filters"
 	"github.com/docker/engine-api/types/swarm"
@@ -258,4 +261,43 @@ func (client *RolexDockerClient) ServiceRemoveLabel(serviceID string, labels []s
 	}
 
 	return client.UpdateService(service.ID, service.Version, service.Spec, nil)
+}
+
+func (client *RolexDockerClient) getServiceNetworkNames(networkAttachmentConfigs []swarm.NetworkAttachmentConfig) []string {
+	networkNameList := []string{}
+	for _, networkAttachmentConfig := range networkAttachmentConfigs {
+		networkInfo, err := client.InspectNetwork(networkAttachmentConfig.Target)
+		if err != nil {
+			log.Warnf("convert service network got error: %f", err.Error())
+			continue
+		}
+
+		networkNameList = append(networkNameList, networkInfo.Name)
+	}
+
+	return networkNameList
+}
+
+// convert swarm service to bundle service
+func (client *RolexDockerClient) ToRolexServiceSpec(swarmService swarm.ServiceSpec) model.RolexServiceSpec {
+	networks := client.getServiceNetworkNames(swarmService.Networks)
+	rolexServiceSpec := model.RolexServiceSpec{
+		Name:         swarmService.Name,
+		Labels:       swarmService.Labels,
+		TaskTemplate: swarmService.TaskTemplate,
+		Mode:         swarmService.Mode,
+		Networks:     networks,
+		UpdateConfig: swarmService.UpdateConfig,
+		EndpointSpec: swarmService.EndpointSpec,
+	}
+
+	if rolexServiceSpec.UpdateConfig == nil {
+		rolexServiceSpec.UpdateConfig = &swarm.UpdateConfig{}
+	}
+
+	if rolexServiceSpec.EndpointSpec == nil {
+		rolexServiceSpec.EndpointSpec = &swarm.EndpointSpec{}
+	}
+
+	return rolexServiceSpec
 }
