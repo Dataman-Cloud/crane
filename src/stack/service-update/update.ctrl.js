@@ -244,14 +244,16 @@
                 })
         }
 
-        function initSelectNetworks(id) {
+        function initSelectNetworks(name) {
             if (service.Spec.Networks && service.Spec.Networks.length) {
 
                 var selectNetworks = [];
                 angular.forEach(service.Spec.Networks, function (item, index) {
+                    //BUG: how to get the network name
                     selectNetworks.push(item.Target)
                 });
-                return selectNetworks.includes(id) ? true : false;
+
+                return selectNetworks.indexOf(name) !== -1;
             }
         }
 
