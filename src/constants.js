@@ -98,7 +98,7 @@ CODE_MESSAGE = {
 };
 
 NODE_CONN_ERROR_CODE = [11701, 11702, 11703];
-NODE_ENDPOINT_LABEL = "dm.swarm.node.endpoint"
+NODE_ENDPOINT_LABEL = "dm.swarm.node.endpoint";
 
 SHOW_ERROR_MESSAGE = [10001];
 
@@ -159,7 +159,7 @@ BACKEND_URL = {
     layout: {
         search: 'search/v1/luckysearch'
     },
-    licence: {
-        licence: 'license/v1/license'
+    license: {
+        license: 'license/v1/license'
     }
 };

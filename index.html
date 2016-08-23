@@ -119,6 +119,13 @@
                                     用户中心
                                 </md-button>
                             </md-menu-item>
+                            <md-menu-item dm-display-components="license">
+                                <md-button data-ng-click="rootCtrl.regLicense($event)">
+                                    <md-icon md-svg-src="pics/ic_power_settings.svg"
+                                             aria-label="ic_power_settings"></md-icon>
+                                    激活 License
+                                </md-button>
+                            </md-menu-item>
                             <md-menu-item>
                                 <md-button data-ng-click="rootCtrl.logout()">
                                     <md-icon md-svg-src="pics/ic_power_settings.svg"
@@ -266,6 +273,7 @@
 
 <script src="src/user/user.module.js" type="text/javascript"></script>
 <script src="src/user/services/user-backend.service.js" type="text/javascript"></script>
+<script src="src/user/services/user-curd.service.js" type="text/javascript"></script>
 
 <script src="src/stack/stack.module.js" type="text/javascript"></script>
 <script src="src/stack/stack.config.js" type="text/javascript"></script>

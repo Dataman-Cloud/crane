@@ -4,7 +4,7 @@
         .controller('RootCtrl', RootCtrl);
 
     /* @ngInject */
-    function RootCtrl($state, $window, mdSideNav, gHttp, utils, userBackend, $rootScope, tty, stream, layoutBackend, miscBackend) {
+    function RootCtrl($state, $window, mdSideNav, gHttp, utils, userBackend, $rootScope, tty, stream, layoutBackend, miscBackend, userCurd) {
         var self = this;
 
         $rootScope.accountId = null;
@@ -18,6 +18,7 @@
         self.logout = logout;
         self.searchJump = searchJump;
         self.openSearch = openSearch;
+        self.regLicense = regLicense;
 
         activate();
 
@@ -51,12 +52,16 @@
                 })
         }
 
+        function regLicense(ev) {
+            userCurd.registerLicense(ev);
+        }
+
         function listComponent() {
             miscBackend.rolexConfig()
                 .then(function (data) {
                     $rootScope.componentList = data.FeatureFlags;
 
-                    if(data.FeatureFlags.indexOf('license') !== -1){
+                    if (data.FeatureFlags.indexOf('license') !== -1) {
                         checkLicense();
                     }
                 });

@@ -10,7 +10,8 @@
             logout: logout,
             aboutMe: aboutMe,
             listGroup: listGroup,
-            checkLicense: checkLicense
+            checkLicense: checkLicense,
+            registerLicense: registerLicense
         };
 
         function logout() {
@@ -26,7 +27,15 @@
         }
 
         function checkLicense() {
-            return gHttp.Resource('licence.licence').get();
+            return gHttp.Resource('license.license').get();
+        }
+
+        function registerLicense(license) {
+            var data = {
+                License: license
+            };
+
+            return gHttp.Resource('license.license').post(data);
         }
     }
 })();
