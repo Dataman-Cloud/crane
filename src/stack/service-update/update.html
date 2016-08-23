@@ -251,7 +251,7 @@
             <md-select data-ng-model="serviceUpdateCtrl.form.formNetworks" multiple
             aria-label="Networks" data-ng-disabled="true">
             <md-option data-ng-repeat="network in serviceUpdateCtrl.networks | filter: {Driver: '!bridge'}"
-            ng-value="network.Id" ng-selected="serviceUpdateCtrl.initSelectNetworks(network.Id)">{/network.Name/}
+            ng-value="network.Name" ng-selected="serviceUpdateCtrl.initSelectNetworks(network.Name)">{/network.Name/}
             </md-option>
             </md-select>
           </div>

@@ -300,7 +300,7 @@
                                            md-on-open="stackCreateByFormCtrl.loadNetworks()">
                                     <md-option
                                             data-ng-repeat="network in stackCreateByFormCtrl.networks | filter: {Driver: '!bridge'}"
-                                            ng-value="network.Id">{/network.Name/}
+                                            ng-value="network.Name">{/network.Name/}
                                     </md-option>
                                 </md-select>
                             </div>
