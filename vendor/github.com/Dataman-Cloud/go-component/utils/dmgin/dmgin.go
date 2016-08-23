@@ -12,7 +12,8 @@ import (
 )
 
 const (
-	CodeOk = 0
+	CodeOk        = 0
+	CodeUndefined = 10001
 )
 
 // RHttprespnse retrun none error code 200
@@ -44,18 +45,18 @@ func HttpErrorResponse(ctx *gin.Context, err error) {
 
 	rerror, ok := err.(*dmerror.DmError)
 	if !ok {
-		ctx.JSON(http.StatusServiceUnavailable, gin.H{"code": dmerror.CodeUndefined, "data": err.Error()})
+		ctx.JSON(http.StatusServiceUnavailable, gin.H{"code": CodeUndefined, "data": err, "message": err.Error()})
 		return
 	}
 
-	httpCode := 503
-	errCode := rerror.Code
+	httpCode := http.StatusServiceUnavailable
+	errCode := CodeUndefined
 
 	codes := strings.Split(rerror.Code, "-")
 	if len(codes) == 2 {
 		httpCode, _ = strconv.Atoi(codes[0])
-		errCode = codes[1]
+		errCode, _ = strconv.Atoi(codes[1])
 	}
-	ctx.JSON(httpCode, gin.H{"code": errCode, "data": rerror.Err})
+	ctx.JSON(httpCode, gin.H{"code": errCode, "data": rerror.Err, "message": rerror.Err.Error()})
 	return
 }
