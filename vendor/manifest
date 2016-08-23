@@ -230,7 +230,7 @@
 			"importpath": "github.com/Dataman-Cloud/go-component/auth",
 			"repository": "https://github.com/Dataman-Cloud/go-component",
 			"vcs": "git",
-			"revision": "fe3bd910aac21aa57a79c45691abcb28f07f224f",
+			"revision": "dc43dc1443a01aef53aeb19af48a64bf53e73842",
 			"branch": "master",
 			"path": "/auth",
 			"notests": true
@@ -320,7 +320,7 @@
 			"importpath": "github.com/Dataman-Cloud/go-component/utils/model",
 			"repository": "https://github.com/Dataman-Cloud/go-component",
 			"vcs": "git",
-			"revision": "fe3bd910aac21aa57a79c45691abcb28f07f224f",
+			"revision": "dc43dc1443a01aef53aeb19af48a64bf53e73842",
 			"branch": "master",
 			"path": "utils/model",
 			"notests": true
