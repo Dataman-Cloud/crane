@@ -1,34 +1,3 @@
-<!--<md-table-container>
-    <h2 flex="20">IP:Port</h2>
-    <table md-table>
-        <thead md-head>
-        </thead>
-        <tbody md-body>
-        <tr md-row ng-repeat="port in serviceDiscoveryCtrl.service.Spec.EndpointSpec.Ports">
-            <td data-ng-if="port.PublishedPort" md-cell>
-                <p ng-repeat="node in serviceDiscoveryCtrl.nodes">
-                    <a data-ng-if='node.Spec.Labels["dm.swarm.node.endpoint"]' ng-href="http://{/node.Spec.Labels['dm.swarm.node.endpoint'] | ip/}:{/port.PublishedPort/}"  target='_blank'> {/node.Spec.Labels['dm.swarm.node.endpoint'] | ip/}:{/port.PublishedPort/}</a>
-                </p>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <h2 flex="20">nginx conf 配置参考</h2>
-    <pre><code id="nginx" class="text-info">{/serviceDiscoveryCtrl.nginx/}</code></pre>
-    <md-button class="md-button md-primary copy" ngclipboard data-clipboard-target="#nginx">
-      <i class="fa fa-clone"></i> 点击复制文本
-    </md-button>
-    <h2 flex="20">haproxy cfg 配置参考</h2>
-    <pre><code id="haproxy" class="text-info">{/serviceDiscoveryCtrl.haproxy/}</code></pre>
-    <md-button class="md-button md-primary copy" ngclipboard data-clipboard-target="#haproxy">
-      <i class="fa fa-clone"></i> 点击复制文本
-    </md-button>
-</md-table-container>-->
-
-
-
-
-
 <section layout="row" class="info-list-detail">
     <h2 flex="20">IP:Port</h2>
     <div flex="80" layout="row" layout-wrap>
@@ -40,7 +9,7 @@
 <section layout="row" class="info-list-detail">
     <h2 flex="20">nginx conf 配置参考</h2>
     <div flex="80" layout="column" layout-align="start start">
-        <code id="nginx">{/serviceDiscoveryCtrl.nginx/}</code>
+        <code id="nginx"><pre>{/serviceDiscoveryCtrl.nginx/}</pre></code>
         <md-button class="md-button md-primary copy" ngclipboard data-clipboard-target="#nginx">
           <i class="fa fa-clone"></i> 点击复制文本
         </md-button>
@@ -49,7 +18,7 @@
 <section layout="row" class="info-list-detail">
     <h2 flex="20">haproxy cfg 配置参考</h2>
     <div flex="80" layout="column" layout-align="start start">
-        <code id="haproxy">{/serviceDiscoveryCtrl.haproxy/}</code>
+        <code id="haproxy"><pre>{/serviceDiscoveryCtrl.haproxy/}</pre></code>
         <md-button class="md-button md-primary copy" ngclipboard data-clipboard-target="#haproxy">
           <i class="fa fa-clone"></i> 点击复制文本
         </md-button>
