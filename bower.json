@@ -38,5 +38,8 @@
     "angular-file-saver": "^1.1.2",
     "angular-translate": "^2.11.1",
     "angular-filter": "^0.5.9"
+  },
+  "resolutions": {
+    "angular": "~1.5.*"
   }
 }
