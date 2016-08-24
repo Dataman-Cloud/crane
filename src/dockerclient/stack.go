@@ -21,6 +21,11 @@ const (
 	labelNamespace = "com.docker.stack.namespace"
 )
 
+const (
+	CodeInvalidStackName = "503-11502"
+	CodeStackNotFound    = "404-11503"
+)
+
 type Stacks []Stack
 
 func (s Stacks) Len() int {
@@ -34,11 +39,6 @@ func (s Stacks) Swap(i, j int) {
 func (s Stacks) Less(i, j int) bool {
 	return s[j].Services[0].CreatedAt.Unix() < s[i].Services[0].CreatedAt.Unix()
 }
-
-const (
-	CodeInvalidStackName = "503-11502"
-	CodeStackNotFound    = "404-11503"
-)
 
 type Stack struct {
 	// Name is the name of the stack
@@ -237,7 +237,6 @@ func (client *RolexDockerClient) getUniqueNetworkNames(services map[string]model
 	return networks
 }
 
-// update network
 func (client *RolexDockerClient) updateNetworks(networks []string, namespace string) (map[string]bool, error) {
 	existingNetworks, err := client.ListNetworks(docker.NetworkFilterOpts{})
 	if err != nil {

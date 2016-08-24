@@ -2,6 +2,7 @@ package api
 
 import (
 	"net/http"
+	"runtime"
 
 	"github.com/Dataman-Cloud/go-component/utils/dmerror"
 	"github.com/Dataman-Cloud/go-component/utils/dmgin"
@@ -24,6 +25,7 @@ type RolexConfigResponse struct {
 	BuildTime    string      `json:"Build"`
 	FeatureFlags []string    `json:"FeatureFlags"`
 	SwarmInfo    swarm.Swarm `json:"SwarmInfo"`
+	NumGoroutine int
 }
 
 func (api *Api) RolexConfig(ctx *gin.Context) {
@@ -31,6 +33,7 @@ func (api *Api) RolexConfig(ctx *gin.Context) {
 	config.Version = version.Version
 	config.BuildTime = version.BuildTime
 	config.FeatureFlags = api.GetConfig().FeatureFlags
+	config.NumGoroutine = runtime.NumGoroutine()
 
 	var err error
 	config.SwarmInfo, err = api.GetDockerClient().InspectSwarm()
