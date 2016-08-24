@@ -389,6 +389,10 @@ md-select {
     background-color: #3F4855;
     border: 1px solid #666C71!important;
     padding: 0 0 0 15px;
+    
+}
+.md-select-value .md-text {
+    color: #D3D1D5;
 }
 md-select:focus:not([disabled]) .md-select-value {
     border-bottom-width: 1px;
@@ -470,6 +474,9 @@ input:-ms-input-placeholder {
     width: 100%;
     margin-right: 15px;
 }
+.form-main .sub-group input[type='number'] {
+    margin-right: 15px;
+ }
 .form-main .sub-group input[type='text']:last-of-type {
     margin-right: 0px;
 }
@@ -610,6 +617,9 @@ md-content {
     background-color: transparent;
     padding: 0;
     color: #354052;
+}
+md-select-menu md-content {
+    background-color: #FFF;
 }
 .info-list {
     margin-bottom: 5px; 
@@ -772,6 +782,7 @@ table.md-table td.md-cell .md-icon-button {
 .log-panel{
     background: #101515;
     padding: 10px;
+    color: #d3d1d5;
 }
 .log-panel .no-info {
     padding-top: 100px;
