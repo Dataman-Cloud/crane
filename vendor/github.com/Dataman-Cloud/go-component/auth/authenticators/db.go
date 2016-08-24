@@ -8,6 +8,7 @@ import (
 
 	"github.com/Dataman-Cloud/go-component/auth"
 	"github.com/Dataman-Cloud/go-component/utils/db"
+	"github.com/Dataman-Cloud/go-component/utils/dmerror"
 	"github.com/Dataman-Cloud/go-component/utils/model"
 
 	"github.com/jinzhu/gorm"
@@ -39,14 +40,17 @@ func (db *DbAuthenicator) ModificationAllowed() bool {
 }
 
 func (db *DbAuthenicator) Login(a *auth.Account) (string, error) {
+	var account auth.Account
 	if err = db.DbClient.
 		Select("id, title, email, phone, login_at").
-		Where("email = ? AND password = ?", a.Email, db.EncryptPassword(a.Password)).
-		First(a).Error; err != nil {
-		return "", err
+		Where("email = ?", a.Email).
+		First(&account).Error; err != nil {
+		return "", dmerror.NewError(auth.CodeAccountLoginFailedEmailNotValidError, err.Error())
+	} else if account.Password != db.EncryptPassword(a.Password) {
+		return "", dmerror.NewError(auth.CodeAccountLoginFailedPasswordNotValidError, "Invalid Password")
 	}
 
-	return auth.GenToken(a), nil
+	return auth.GenToken(&account), nil
 }
 
 func (db *DbAuthenicator) Accounts(listOptions model.ListOptions) (*[]auth.Account, error) {

@@ -22,7 +22,7 @@ const (
 	CodeAccountGetAccountError                          = "503-12004"
 	CodeAccountGetAccountNotFoundError                  = "503-12005"
 	CodeAccountLoginParamError                          = "400-12006"
-	CodeAccountLoginFailedError                         = "503-12007"
+	CodeAccountLoginFailedError                         = "401-12007"
 	CodeAccountLogoutError                              = "503-12008"
 	CodeAccountGroupAccountsGroupIdNotValidError        = "400-12009"
 	CodeAccountGroupAccountsNotFoundError               = "404-12010"
@@ -49,6 +49,8 @@ const (
 	CodeAccountRevokeServicePermissionParamError        = "400-12031"
 	CodeAccountRevokeServicePermissionFailedError       = "503-12032"
 	CodeAccountTokenInvalidError                        = "401-12033"
+	CodeAccountLoginFailedEmailNotValidError            = "401-12034"
+	CodeAccountLoginFailedPasswordNotValidError         = "401-12035"
 )
 
 func (a *AccountApi) CreateAccount(ctx *gin.Context) {
@@ -131,10 +133,10 @@ func (a *AccountApi) AccountLogin(ctx *gin.Context) {
 
 	token, err := a.Authenticator.Login(&acc)
 	if err != nil {
-		rolexerr := dmerror.NewError(CodeAccountLoginFailedError, err.Error())
-		dmgin.HttpErrorResponse(ctx, rolexerr)
+		dmgin.HttpErrorResponse(ctx, err)
 		return
 	}
+
 	a.TokenStore.Set(ctx, token, fmt.Sprintf("%d", acc.ID), time.Now().Add(SESSION_DURATION))
 	acc.Password = ""
 	dmgin.HttpOkResponse(ctx, token)
