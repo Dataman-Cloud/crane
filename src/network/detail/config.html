@@ -4,17 +4,17 @@
         <div flex="30"><h5>作用范围</h5></div>
         <div flex="70"><p>{/networkConfigCtrl.network.Scope/}</p></div>
         <div flex="30"><h5>支持 IPv6</h5></div>
-        <div flex="70"><p>{/networkConfigCtrl.network.EnableIPv6/}</p></div>
+        <div flex="70"><p>{/networkConfigCtrl.network.EnableIPv6 ? '是' : '否'/}</p></div>
         <div flex="30"><h5>仅内部网络</h5></div>
-        <div flex="70"><p>{/networkConfigCtrl.network.Internal/}</p></div>
+        <div flex="70"><p>{/networkConfigCtrl.network.Internal ? '是' : '否'/}</p></div>
         <div flex="30"><h5>选项</h5></div>
-        <div flex="70">
+        <div flex="70" dm-empty-display="networkConfigCtrl.network.Options" dm-empty-text="未配置">
             <ul>
                 <li data-ng-repeat="(key, value) in networkConfigCtrl.network.Options">{/key/} : {/value/}</li>
             </ul>
         </div>
         <div flex="30"><h5>标签</h5></div>
-        <div flex="70">
+        <div flex="70" dm-empty-display="networkConfigCtrl.network.Labels" dm-empty-text="未配置">
             <ul>
                 <li data-ng-repeat="(key, value) in networkConfigCtrl.network.Labels">{/key/} : {/value/}</li>
             </ul>

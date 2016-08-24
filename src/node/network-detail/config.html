@@ -4,17 +4,17 @@
         <div flex="30"><h5>作用范围</h5></div>
         <div flex="70"><p>{/nodeNetworkConfigCtrl.network.Scope/}</p></div>
         <div flex="30"><h5>支持 IPv6</h5></div>
-        <div flex="70"><p>{/nodeNetworkConfigCtrl.network.EnableIPv6/}</p></div>
+        <div flex="70"><p>{/nodeNetworkConfigCtrl.network.EnableIPv6 ? '是' : '否'/}</p></div>
         <div flex="30"><h5>仅内部网络</h5></div>
-        <div flex="70"><p>{/nodeNetworkConfigCtrl.network.Internal/}</p></div>
+        <div flex="70"><p>{/nodeNetworkConfigCtrl.network.Internal ? '是' : '否'/}</p></div>
         <div flex="30"><h5>选项</h5></div>
-        <div flex="70">
+        <div flex="70" dm-empty-display="nodeNetworkConfigCtrl.network.Options" dm-empty-text="未配置">
             <ul>
                 <li data-ng-repeat="(key, value) in nodeNetworkConfigCtrl.network.Options">{/key/} : {/value/}</li>
             </ul>
         </div>
         <div flex="30"><h5>标签</h5></div>
-        <div flex="70">
+        <div flex="70" dm-empty-display="nodeNetworkConfigCtrl.network.Labels" dm-empty-text="未配置">
             <ul>
                 <li data-ng-repeat="(key, value) in nodeNetworkConfigCtrl.network.Labels">{/key/} : {/value/}</li>
             </ul>
@@ -27,10 +27,10 @@
     <div flex="80" layout="row" layout-wrap>
         <div flex="30"><h5>子网掩码</h5></div>
         <div flex="70"><p ng-class="{'no-info': !nodeNetworkConfigCtrl.network.IPAM.Config[0].Subnet}">
-            {/nodeNetworkConfigCtrl.network.IPAM.Config[0].Subnet || '未知'/}</p></div>
+            {/nodeNetworkConfigCtrl.network.IPAM.Config[0].Subnet || '未配置'/}</p></div>
         <div flex="30"><h5>网关 IP</h5></div>
         <div flex="70"><p ng-class="{'no-info': !nodeNetworkConfigCtrl.network.IPAM.Config[0].Gateway}">
-            {/nodeNetworkConfigCtrl.network.IPAM.Config[0].Gateway || '未知'/}</p></div>
+            {/nodeNetworkConfigCtrl.network.IPAM.Config[0].Gateway || '未配置'/}</p></div>
     </div>
     </div>
 </section>
