@@ -3,20 +3,30 @@
         <h1><i class="fa fa-server" aria-hidden="true"></i>{/nodeDetailCtrl.node.Name/}</h1>
         <div class="sub-info-main">
             <dl class="info-list">
-                <dt>运行容器</dt><dd>{/nodeDetailCtrl.node.ContainersRunning/}</dd>
-                <dt>容器总数</dt><dd>{/nodeDetailCtrl.node.Containers/}</dd>
-                <dt>暂停容器</dt><dd>{/nodeDetailCtrl.node.ContainersPaused/}</dd>
-                <dt>停止容器</dt><dd>{/nodeDetailCtrl.node.ContainersStopped/}</dd>
-                <dt>镜像个数</dt><dd>{/nodeDetailCtrl.node.Images/}</dd>
+                <dt>运行容器</dt>
+                <dd>{/nodeDetailCtrl.node.ContainersRunning/}</dd>
+                <dt>容器总数</dt>
+                <dd>{/nodeDetailCtrl.node.Containers/}</dd>
+                <dt>暂停容器</dt>
+                <dd>{/nodeDetailCtrl.node.ContainersPaused/}</dd>
+                <dt>停止容器</dt>
+                <dd>{/nodeDetailCtrl.node.ContainersStopped/}</dd>
+                <dt>镜像个数</dt>
+                <dd>{/nodeDetailCtrl.node.Images/}</dd>
             </dl>
             <dl class="info-list">
-                <dt>系统</dt><dd>{/nodeDetailCtrl.node.OperatingSystem/}</dd>
-                <dt>内核版本</dt><dd>{/nodeDetailCtrl.node.KernelVersion/}</dd>
-                <dt>CPU</dt><dd>{/nodeDetailCtrl.node.NCPU/} 核</dd>
-                <dt>内存</dt><dd>{/nodeDetailCtrl.node.MemTotal | size/}</dd>
+                <dt>系统</dt>
+                <dd>{/nodeDetailCtrl.node.OperatingSystem/}</dd>
+                <dt>内核版本</dt>
+                <dd>{/nodeDetailCtrl.node.KernelVersion/}</dd>
+                <dt>CPU</dt>
+                <dd>{/nodeDetailCtrl.node.NCPU/} 核</dd>
+                <dt>内存</dt>
+                <dd>{/nodeDetailCtrl.node.MemTotal | size/}</dd>
             </dl>
             <dl class="info-list" ng-if="nodeDetailCtrl.node.Label">
-                <dt>主机标签</dt><dd>{/nodeDetailCtrl.node.Label/}</dd>
+                <dt>主机标签</dt>
+                <dd>{/nodeDetailCtrl.node.Label/}</dd>
             </dl>
         </div>
     </div>
