@@ -5,6 +5,8 @@ services:
       context: ../
       dockerfile: ./deploy/Dockerfile
     image: blackmamba:${TAG}
+    volumes:
+      - /etc/localtime:/etc/localtime
     ports:
       - "80:80"
     links:
@@ -18,6 +20,7 @@ services:
       - ROLEX_IP
     volumes:
       - ./registry_storage:/var/lib/registry
+      - /etc/localtime:/etc/localtime
     restart: always
   rolex:
     image: rolex:${TAG}
@@ -34,4 +37,5 @@ services:
       - "3306:3306"
     volumes:
       - ./mysql_storage:/var/lib/mysql
+      - /etc/localtime:/etc/localtime
     restart: always

@@ -18,7 +18,7 @@ services:
       - ROLEX_IP
     volumes:
       - ./registry_storage:/var/lib/registry
-      - /etc/localtime:/etc/localtime 
+      - /etc/localtime:/etc/localtime
     restart: always
   rolex:
     image: demoregistry.dataman-inc.com/library/rolex:${TAG}
