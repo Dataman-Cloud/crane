@@ -4,8 +4,11 @@ services:
     image: demoregistry.dataman-inc.com/library/blackmamba:${TAG}
     ports:
       - "80:80"
+    volumes:
+      - /etc/localtime:/etc/localtime
     links:
       - rolex
+    restart: always
   rolex_registry:
     image: demoregistry.dataman-inc.com/library/registry:rolex${TAG}
     ports:
@@ -15,11 +18,14 @@ services:
       - ROLEX_IP
     volumes:
       - ./registry_storage:/var/lib/registry
+      - /etc/localtime:/etc/localtime 
     restart: always
   rolex:
     image: demoregistry.dataman-inc.com/library/rolex:${TAG}
     environment:
       - ROLEX_SWARM_MANAGER_IP
+    volumes:
+      - /etc/localtime:/etc/localtime
     ports:
       - "5013:5013"
     restart: always
@@ -31,4 +37,5 @@ services:
       - "3306:3306"
     volumes:
       - ./mysql_storage:/var/lib/mysql
+      - /etc/localtime:/etc/localtime
     restart: always
