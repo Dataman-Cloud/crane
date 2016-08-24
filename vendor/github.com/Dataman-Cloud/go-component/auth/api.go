@@ -138,7 +138,6 @@ func (a *AccountApi) AccountLogin(ctx *gin.Context) {
 	}
 
 	a.TokenStore.Set(ctx, token, fmt.Sprintf("%d", acc.ID), time.Now().Add(SESSION_DURATION))
-	acc.Password = ""
 	dmgin.HttpOkResponse(ctx, token)
 }
 

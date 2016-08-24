@@ -42,7 +42,7 @@ func (db *DbAuthenicator) ModificationAllowed() bool {
 func (db *DbAuthenicator) Login(a *auth.Account) (string, error) {
 	var account auth.Account
 	if err = db.DbClient.
-		Select("id, title, email, phone, login_at").
+		Select("id, title, email, phone, login_at, password").
 		Where("email = ?", a.Email).
 		First(&account).Error; err != nil {
 		return "", dmerror.NewError(auth.CodeAccountLoginFailedEmailNotValidError, err.Error())
@@ -50,6 +50,7 @@ func (db *DbAuthenicator) Login(a *auth.Account) (string, error) {
 		return "", dmerror.NewError(auth.CodeAccountLoginFailedPasswordNotValidError, "Invalid Password")
 	}
 
+	a.ID = account.ID
 	return auth.GenToken(&account), nil
 }
 
