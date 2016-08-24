@@ -13,44 +13,48 @@
             pushData: pushData,
             updateForceY: updateForceY
         };
-        
+
         function createDefaultOptions() {
             var colors = [
-                        '#1f77b4',
-                        '#ff7f0e',
-                        '#2ca02c',
-                        '#d62728',
-                        '#9467bd',
-                        '#8c564b',
-                        '#e377c2',
-                        '#7f7f7f',
-                        '#bcbd22',
-                        '#17becf'
-                      ];
+                '#1f77b4',
+                '#ff7f0e',
+                '#2ca02c',
+                '#d62728',
+                '#9467bd',
+                '#8c564b',
+                '#e377c2',
+                '#7f7f7f',
+                '#bcbd22',
+                '#17becf'
+            ];
             return {
                 chart: {
                     type: 'lineChart',
                     noData: '暂无数据',
                     height: 450,
-                    margin : {
+                    margin: {
                         top: 20,
                         right: 20,
                         bottom: 40,
                         left: 55
                     },
-                    x: function(d){ return d.x; },
-                    y: function(d){ return d.y; },
+                    x: function (d) {
+                        return d.x;
+                    },
+                    y: function (d) {
+                        return d.y;
+                    },
                     useInteractiveGuideline: true,
                     xAxis: {
                         axisLabel: '时间',
-                        tickFormat: function(d){
+                        tickFormat: function (d) {
                             return $filter('date')(d, 'HH:mm:ss');
                         },
                         showMaxMin: false
                     },
                     yAxis: {
-                        tickFormat: function(d){
-                            return d3.format('.02f')(d)+'%';
+                        tickFormat: function (d) {
+                            return d3.format('.02f')(d) + '%';
                         },
                         axisLabelDistance: -10
                     },
@@ -59,9 +63,9 @@
                     color: function (d, i) {
                         if (!colors[i]) {
                             while (true) {
-                                var color = '#'+('00000'+(Math.random()*0x1000000<<0).toString(16)).slice(-6);
+                                var color = '#' + ('00000' + (Math.random() * 0x1000000 << 0).toString(16)).slice(-6);
                                 var duplicate = false;
-                                for (var j=0; j<colors.length; j++) {
+                                for (var j = 0; j < colors.length; j++) {
                                     if (colors[j] == color) {
                                         duplicate = true;
                                         break;
@@ -81,7 +85,7 @@
                 }
             }
         }
-        
+
         function pushData(data, serialKey, value, pointNum, interval, area) {
             if (!interval) {
                 interval = 1000;
@@ -90,7 +94,7 @@
                 area = true;
             }
             var i;
-            for (i=0; i<data.length; i++) {
+            for (i = 0; i < data.length; i++) {
                 if (data[i].key === serialKey) {
                     break;
                 }
@@ -107,11 +111,11 @@
                 if (data[i].values.length > pointNum) {
                     data[i].values.shift();
                 } else {
-                    data[i].values.unshift({x: data[i].values[0].x-interval, y: 0});
+                    data[i].values.unshift({x: data[i].values[0].x - interval, y: 0});
                 }
             }
         }
-        
+
         function updateForceY(chartOptions, data, min, maxRatio, minMax, maxMax) {
             var newForceY = _buildNewForceY(data, min, maxRatio, minMax, maxMax);
             var flag = false;
@@ -121,7 +125,7 @@
             }
             return flag;
         }
-        
+
         function _buildNewForceY(data, min, maxRatio, minMax, maxMax) {
             var valueMax = Math.maxPlus(data, function (serialData) {
                 return Math.maxPlus(serialData.values, function (value) {
