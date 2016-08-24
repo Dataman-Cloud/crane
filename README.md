@@ -25,8 +25,10 @@
 
 ### 通用启动方案
 
-   - 项目目录下执行 ``` npm install ```
-   - 项目目录下执行 ``` gulp serve ```
+   - 项目目录下执行 ``` npm install ``` (前提全局安装了 npm, brew install node)
+   - 项目目录下执行 ``` bower install ```(前提全局安装了 bower, npm install -g bower)
+   - 修改项目下的 conf.js
+   - 项目目录下执行 ``` gulp serve ```(前提全局安装了 gulp, npm install -g gulp)
    - 打开浏览器 默认指定 5000 端口, 例如:http://localhost:5000
     
 ### 在 Linux 下面 (如果通用方案不行)
