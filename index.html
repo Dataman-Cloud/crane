@@ -41,7 +41,6 @@
                 </md-button>
             </li>
 
-
             <li title="主机" data-ui-sref-active="active">
                 <md-button data-ui-sref="node" data-ui-sref-opts="{inherit: false}">
                     <i class="fa fa-server"></i>主机
@@ -55,7 +54,7 @@
             </li>
 
             <li title="设置" data-ui-sref-active="active">
-                <md-button data-ui-sref="misc" data-ui-sref-opts="{inherit: false}"><i class="fa fa-cogs"></i>设置
+                <md-button data-ui-sref="misc" data-ui-sref-opts="{inherit: false}"><i class="fa fa-cogs"></i>信息
                 </md-button>
             </li>
         </ul>
@@ -77,31 +76,6 @@
                     <md-button class="md-icon-button" aria-label="Search" ng-click="rootCtrl.openSearch()">
                         <i class="fa fa-search"></i>
                     </md-button>
-                    <md-menu>
-                        <md-button class="md-icon-button" aria-label="More" ng-click="$mdOpenMenu($event)">
-                            <i class="fa fa-th"></i>
-                        </md-button>
-                        <md-menu-content>
-                            <md-menu-item>
-                                <md-button>
-                                    <i class="fa fa-stack-overflow"></i>
-                                    新建应用
-                                </md-button>
-                            </md-menu-item>
-                            <md-menu-item>
-                                <md-button>
-                                    <i class="fa fa-server"></i>
-                                    添加主机
-                                </md-button>
-                            </md-menu-item>
-                            <md-menu-item>
-                                <md-button>
-                                    <i class="fa fa-internet-explorer"></i>
-                                    新建网络
-                                </md-button>
-                            </md-menu-item>
-                        </md-menu-content>
-                    </md-menu>
 
                     <md-button class="md-icon-button" aria-label="More" ng-click="rootCtrl.noticeNav.buildToggler()"
                                ng-hide="rootCtrl.noticeNav.isOpenNav()">
@@ -113,12 +87,6 @@
                             <i class="fa fa-user"></i>
                         </md-button>
                         <md-menu-content>
-                            <md-menu-item>
-                                <md-button>
-                                    <i class="fa fa-users"></i>
-                                    用户中心
-                                </md-button>
-                            </md-menu-item>
                             <md-menu-item dm-display-components="license">
                                 <md-button data-ng-click="rootCtrl.regLicense($event)">
                                     <md-icon md-svg-src="pics/ic_power_settings.svg"

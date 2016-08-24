@@ -11,7 +11,7 @@
                 template: '<ui-view/>',
                 targetState: 'config',
                 ncyBreadcrumb: {
-                    label: '设置'
+                    label: '信息'
                 }
             })
             .state('misc.config', {
@@ -22,7 +22,7 @@
                     rolexconfig: getConfig
                 },
                 ncyBreadcrumb: {
-                    label: '配置'
+                    skip: true
                 }
             });
 
