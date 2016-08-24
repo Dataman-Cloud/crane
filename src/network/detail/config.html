@@ -4,9 +4,17 @@
         <div flex="30"><h5>作用范围</h5></div>
         <div flex="70"><p>{/networkConfigCtrl.network.Scope/}</p></div>
         <div flex="30"><h5>支持 IPv6</h5></div>
-        <div flex="70"><p>{/networkConfigCtrl.network.EnableIPv6 ? '是' : '否'/}</p></div>
+        <div flex="70">
+            <p ng-class="{'no-info': !networkConfigCtrl.network.EnableIPv6}">
+                {/networkConfigCtrl.network.EnableIPv6 ? '是' : '否'/}
+            </p>
+        </div>
         <div flex="30"><h5>仅内部网络</h5></div>
-        <div flex="70"><p>{/networkConfigCtrl.network.Internal ? '是' : '否'/}</p></div>
+        <div flex="70">
+            <p ng-class="{'no-info': !networkConfigCtrl.network.Internal}">
+                {/networkConfigCtrl.network.Internal ? '是' : '否'/}
+            </p>
+        </div>
         <div flex="30"><h5>选项</h5></div>
         <div flex="70" dm-empty-display="networkConfigCtrl.network.Options" dm-empty-text="未配置">
             <ul>
@@ -24,7 +32,7 @@
 
 <section layout="row" class="info-list-detail">
     <h2 flex="20">地址管理</h2>
-    <div flex="80" layout="row" layout-wrap>
+    <div flex="80" layout="row" layout-wrap dm-empty-display="network.IPAM.Config[0]">
         <div flex="30"><h5>子网掩码</h5></div>
         <div flex="70"><p>{/networkConfigCtrl.network.IPAM.Config[0].Subnet/}</p></div>
         <div flex="30"><h5>网关 IP</h5></div>
@@ -35,23 +43,27 @@
 <section layout="row" class="info-list-detail">
     <h2 flex="20">连接容器</h2>
     <div flex="80" dm-empty-display="networkConfigCtrl.network.Containers">
-    <table cellpadding="0" cellspacing="0">
-        <thead>
-        <tr>
-            <th>容器名称</th>
-            <th>IPv4 地址</th>
-            <th>IPv6 地址</th>
-            <th>Mac 地址</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="(key, value) in networkConfigCtrl.network.Containers">
-            <td><p class="ellipsis">{/value.Name/}<md-tooltip md-direction="top">{/value.Name/}</md-tooltip></p></td>
-            <td><span ng-class="{'no-info': !value.IPv4Address}">{/value.IPv4Address || '未配置'/}</span></td>
-            <td><span ng-class="{'no-info': !value.IPv6Address}">{/value.IPv6Address || '未配置'/}</span></td>
-            <td><span ng-class="{'no-info': !value.MacAddress}">{/value.MacAddress || '未配置'/}</span></td>
-        </tr>
-        </tbody>
-    </table>
+        <table cellpadding="0" cellspacing="0">
+            <thead>
+            <tr>
+                <th>容器名称</th>
+                <th>IPv4 地址</th>
+                <th>IPv6 地址</th>
+                <th>Mac 地址</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="(key, value) in networkConfigCtrl.network.Containers">
+                <td>
+                    <p class="ellipsis">{/value.Name/}
+                        <md-tooltip md-direction="top">{/value.Name/}</md-tooltip>
+                    </p>
+                </td>
+                <td><span ng-class="{'no-info': !value.IPv4Address}">{/value.IPv4Address || '未配置'/}</span></td>
+                <td><span ng-class="{'no-info': !value.IPv6Address}">{/value.IPv6Address || '未配置'/}</span></td>
+                <td><span ng-class="{'no-info': !value.MacAddress}">{/value.MacAddress || '未配置'/}</span></td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </section>
