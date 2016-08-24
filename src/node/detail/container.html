@@ -14,12 +14,17 @@
         <tbody md-body>
         <tr md-row ng-repeat="container in nodeContainerCtrl.containers">
             <td md-cell>
-                <a class="ellipsis" data-ui-sref="node.containerDetail({node_id: $stateParams.node_id, container_id: container.Id})">{/container.Names[0].substring(1)/}<md-tooltip md-direction="top">{/container.Names[0].substring(1)/}</md-tooltip></a>
+                <a class="ellipsis"
+                   data-ui-sref="node.containerDetail({node_id: $stateParams.node_id, container_id: container.Id})">{/container.Names[0].substring(1)/}
+                    <md-tooltip md-direction="top">{/container.Names[0].substring(1)/}</md-tooltip>
+                </a>
             </td>
             <td md-cell>
                 <span ng-if="!container.Ports.length" ng-class="{'no-info': !container.Ports.length}">未配置</span>
                 <ul>
-                    <li ng-repeat="port in container.Ports"><span ng-show="container.NetworkSettings.Networks.bridge.IPAddress">{/container.NetworkSettings.Networks.bridge.IPAddress/}:</span>{/port.PrivatePort/}/{/port.Type/}</li>
+                    <li ng-repeat="port in container.Ports">
+                        <span ng-show="container.NetworkSettings.Networks.bridge.IPAddress">{/container.NetworkSettings.Networks.bridge.IPAddress/}:</span>{/port.PrivatePort/}/{/port.Type/}
+                    </li>
                 </ul>
             </td>
             <td md-cell><span ng-class="{'no-info': !container.Labels['com.docker.swarm.service.name']}">{/container.Labels['com.docker.swarm.service.name'] || '未配置'/}</span>
@@ -28,7 +33,9 @@
             </td>
             <td md-cell>
                 <ul>
-                    <li class="{/CONTAINER_STATUS_LABELS_CLASS[container.State]/}">{/CONTAINER_STATUS_LABELS[container.State]/}</li>
+                    <li class="{/CONTAINER_STATUS_LABELS_CLASS[container.State]/}">
+                        {/CONTAINER_STATUS_LABELS[container.State]/}
+                    </li>
                     <li>{/container.Status | statusZh /}</li>
                 </ul>
             </td>

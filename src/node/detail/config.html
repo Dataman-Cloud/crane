@@ -8,15 +8,27 @@
         <div flex="30"><h5>Docker 存储目录</h5></div>
         <div flex="70"><p>{/nodeConfigCtrl.node.DockerRootDir/}</p></div>
         <div flex="30"><h5>Debug 模式</h5></div>
-        <div flex="70"><p>{/nodeConfigCtrl.node.Debug/}</p></div>
+        <div flex="70">
+            <p ng-class="{'no-info': !nodeConfigCtrl.node.Debug}">
+                {/nodeConfigCtrl.node.Debug ? '是' : '否'/}
+            </p>
+        </div>
         <div flex="30"><h5>IPv4Forwarding</h5></div>
-        <div flex="70"><p>{/nodeConfigCtrl.node.IPv4Forwarding/}</p></div>
+        <div flex="70">
+            <p ng-class="{'no-info': !nodeConfigCtrl.node.IPv4Forwarding}">
+                {/nodeConfigCtrl.node.IPv4Forwarding ? '是' : '否'/}
+            </p>
+        </div>
         <div flex="30"><h5>Cgroup 驱动</h5></div>
         <div flex="70"><p>{/nodeConfigCtrl.node.CgroupDriver/}</p></div>
         <div flex="30"><h5>LoggingDriver</h5></div>
         <div flex="70"><p>{/nodeConfigCtrl.node.LoggingDriver/}</p></div>
         <div flex="30"><h5>允许内存溢出</h5></div>
-        <div flex="70"><p>{/nodeConfigCtrl.node.OomKillDisable/}</p></div>
+        <div flex="70">
+            <p ng-class="{'no-info': !nodeConfigCtrl.node.OomKillDisable}">
+                {/nodeConfigCtrl.node.OomKillDisable ? '是' : '否'/}
+            </p>
+        </div>
     </div>
 </section>
 
