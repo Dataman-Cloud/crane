@@ -22,8 +22,8 @@
 -->
 
 
-<div layout="row" layout-wrap>
-    <div flex="25" data-ng-repeat="catalog in repositorieListCatalogCtrl.catalogs">
+<div layout="row" layout-wrap ng-flow-grid min-item-width="300">
+    <div data-ng-repeat="catalog in repositorieListCatalogCtrl.catalogs" class="flowGridItem">
         <md-card>
             <md-card-title>
               <md-card-title-text>

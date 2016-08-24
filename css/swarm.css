@@ -98,7 +98,7 @@ code {
     color: #93CCDC;
 }
 .text-danger {
-    color: #7D2023;
+    color: #FF3333;
 }
 .text-warning {
     color: #E76C4C;
@@ -933,12 +933,14 @@ nvd3 .nv-axislabel {
     display: block;
     font-size: 18px;
     position: absolute;
-    left: 20px;
-    bottom: 80px;
+    left: 15px;
+    bottom: 70px;
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
 }
 .feedback-btn:hover {
     color: #FFF;
 }
 
-
+md-card {
+    margin: 0 25px 25px 0;
+}
