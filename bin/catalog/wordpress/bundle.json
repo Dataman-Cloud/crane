@@ -37,16 +37,7 @@
             "UpdateConfig": null,
             "Networks": [
                 "ingress"
-            ],
-            "EndpointSpec": {
-                "Mode": "vip",
-                "Ports": [{
-                    "Name": "testport",
-                    "Protocol": "tcp",
-                    "TargetPort": 3306,
-                    "PublishedPort": 3306
-                }]
-            }
+            ]
         },
         "wordpress": {
             "Name": "wordpress",
