@@ -144,5 +144,283 @@ definitions:
       Version:
         type: string
         description: 应用版本
-      Stack:
-        ty
+      Services:
+        type: object
+        description: 应用所包含的服务, 是一个key为服务名称value为服务参数的map
+        additionalProperties:
+          $ref: '#definitions/ServiceSpec'
+
+  ServiceSpec:
+    type: object
+    description: 下发服务所需的静态参数
+    required:
+      - Name
+      - Labels
+      - TaskTemplate
+      - Mode
+      - UpdateConfig
+      - Networks
+      - EndpointSpec
+    properties:
+      Name:
+        type: string
+        description: 服务名称, 服务创建时会在服务名称前加上应用名称
+      Labels:
+        type: object
+        description: 服务标签 类型 map[string]string
+        additionalProperties:
+          type: string
+      TaskTemplate:
+        schema:
+          $ref: '#definitions/TaskSpec'
+      Mode:
+        schema:
+          $ref: '#definitions/ServiceMode'
+      UpdateConfig:
+        schema:
+          $ref: '#definitions/UpdateConfig'
+      Networks:
+        description: 服务需要加入的网络名称列表
+        type: arrray
+        items:
+          description: 网络名称
+          type: string
+      EndpointSpec:
+        schema:
+          $ref: '#definitions/EndpointSpec'
+
+  TaskSpec:
+    description: 创建任务需要的静态参数
+    type: object
+    required:
+      - ContainerSpec
+      - Resources
+      - RestartPolicy
+      - Placement
+      - LogDriver
+    properties:
+      ContainerSpec:
+        scheam:
+          $ref: '#definitions/ContainerSpec'
+      Resources:
+        scheam:
+          $ref: '#definitions/Resources'
+      RestartPolicy:
+        scheam:
+          $ref: '#definitions/RestartPolicy'
+      Placement:
+        scheam:
+          $ref: '#definitions/Placement'
+      LogDriver:
+        scheam:
+          $ref: '#definitions/LogDriver'
+
+  ContainerSpec:
+    description: 创建服务容器相关静态参数
+    type: object
+    required:
+      - Image
+      - Labels
+      - Command
+      - Args
+      - Env
+      - Dir
+      - User
+      - Groups
+      - TTY
+      - Mounts
+      - StopGracePeriod
+    properties:
+      Image:
+        description: 镜像名称
+        type: string
+      Labels:
+        description: 容器标签
+        type: object
+        additionalProperties:
+          type: string
+      Command:
+        description: 容器启动命令
+        type: array
+        items:
+          type: string
+      Args:
+        description: 容器启动命令的参数
+        type: array
+        items:
+          type: string
+      Env:
+        description: 容器启动时需要的环境变量
+        type: array
+        items:
+          type: string
+      Dir:
+        description: 容器的工作目录
+        type: string
+      User:
+        description: 容器所属用户
+        type: string
+      Groups:
+        description: 容器所属用户组
+        type: array
+        items:
+          type: string
+      TTY:
+        description: 是否分配虚拟终端
+        type: bool
+      Mounts:
+        description: 容器挂载目录
+        type: array
+        items:
+          $ref: '#definitions/Mount'
+      StopGracePeriod:
+        description: 杀死容器前的等待时间
+        type: integer
+        format: int32
+
+  Mount:
+    description: 挂载目录参数
+    type: object
+    required:
+      - Type
+      - Source
+      - Target
+      - ReadOnly
+      - BindOptions
+      - VolumeOptions
+    properties:
+      Type:
+        description: 挂载类型 (bind/volume)
+        type: string
+      Source:
+        description: 主机文件路径
+        type: string
+      Target:
+        description: 容器文件路径
+        type: string
+      ReadOnly:
+        description: 挂载到容器内部的文件是否只读
+        type: bool
+      BindOptions:
+        description: 挂载方式为bind时的参数
+        type: object
+          scheam:
+            description: 传播模式
+            required:
+              - Propagation
+            properties:
+              Propagation:
+                description:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
