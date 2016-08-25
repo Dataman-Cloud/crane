@@ -23,24 +23,24 @@ paths:
           description: 创建应用所需的参数
           required: true
           schema:
-            $ref: '#definitions/Bundle'
-      response:
+            $ref: '#/definitions/Bundle'
+      responses:
         '200':
           description: 创建成功返回success
           schema:
-            $ref: '#definitions/GeneralOkResponse'
+            $ref: '#/definitions/GeneralOkResponse'
         '401':
           description: token 验证失败
           schema:
-            $ref: '#definitions/GeneralErrorResponse'
+            $ref: '#/definitions/GeneralErrorResponse'
         '400':
           description: 创建stack参数错误
           schema:
-            $ref: '#definitions/GeneralErrorResponse'
+            $ref: '#/definitions/GeneralErrorResponse'
         '503':
           description: 创建stack失败
           schema:
-            $ref: '#definitions/GeneralErrorResponse'
+            $ref: '#/definitions/GeneralErrorResponse'
 
 
   /login:
@@ -86,10 +86,8 @@ paths:
         '401':
           description: 登录失败, 返回相应的errorcode 和错误信息
           schema:
-            $ref: '#definitions/GeneralErrorResponse'
+            $ref: '#/definitions/GeneralErrorResponse'
                 
-    
-
 definitions:
   GeneralOkResponse:
     type: object
@@ -132,8 +130,7 @@ definitions:
         type: string
         description: 应用的名称(应用所包含所有服务的前缀)
       Stack:
-        schema:
-          $ref: '#definitions/Stack'
+        $ref: '#/definitions/Stack'
 
   Stack:
     type: object
@@ -148,7 +145,7 @@ definitions:
         type: object
         description: 应用所包含的服务, 是一个key为服务名称value为服务参数的map
         additionalProperties:
-          $ref: '#definitions/ServiceSpec'
+          $ref: '#/definitions/ServiceSpec'
 
   ServiceSpec:
     type: object
@@ -171,23 +168,19 @@ definitions:
         additionalProperties:
           type: string
       TaskTemplate:
-        schema:
-          $ref: '#definitions/TaskSpec'
+        $ref: '#/definitions/TaskSpec'
       Mode:
-        schema:
-          $ref: '#definitions/ServiceMode'
+        $ref: '#/definitions/ServiceMode'
       UpdateConfig:
-        schema:
-          $ref: '#definitions/UpdateConfig'
+        $ref: '#/definitions/UpdateConfig'
       Networks:
         description: 服务需要加入的网络名称列表
-        type: arrray
+        type: array
         items:
           description: 网络名称
           type: string
       EndpointSpec:
-        schema:
-          $ref: '#definitions/EndpointSpec'
+        $ref: '#/definitions/EndpointSpec'
 
   TaskSpec:
     description: 创建任务需要的静态参数
@@ -200,20 +193,15 @@ definitions:
       - LogDriver
     properties:
       ContainerSpec:
-        scheam:
-          $ref: '#definitions/ContainerSpec'
+        $ref: '#/definitions/ContainerSpec'
       Resources:
-        scheam:
-          $ref: '#definitions/Resources'
+        $ref: '#/definitions/ResourceRequirements'
       RestartPolicy:
-        scheam:
-          $ref: '#definitions/RestartPolicy'
+        $ref: '#/definitions/RestartPolicy'
       Placement:
-        scheam:
-          $ref: '#definitions/Placement'
+        $ref: '#/definitions/Placement'
       LogDriver:
-        scheam:
-          $ref: '#definitions/LogDriver'
+        $ref: '#/definitions/Driver'
 
   ContainerSpec:
     description: 创建服务容器相关静态参数
@@ -267,12 +255,12 @@ definitions:
           type: string
       TTY:
         description: 是否分配虚拟终端
-        type: bool
+        type: boolean
       Mounts:
         description: 容器挂载目录
         type: array
         items:
-          $ref: '#definitions/Mount'
+          $ref: '#/definitions/Mount'
       StopGracePeriod:
         description: 杀死容器前的等待时间
         type: integer
@@ -300,28 +288,227 @@ definitions:
         type: string
       ReadOnly:
         description: 挂载到容器内部的文件是否只读
-        type: bool
+        type: boolean
       BindOptions:
         description: 挂载方式为bind时的参数
         type: object
-          scheam:
-            description: 传播模式
+        description: 传播参数
+        required:
+          - Propagation
+        properties:
+          Propagation:
+            description: 文件权限
+            type: string
+            enum:
+              - rprivate
+              - private
+              - rshared
+              - shared
+              - rslave
+              - slave
+      VolumeOptions:
+        description: 挂载方式为volume时的挂载参数
+        type: object
+        required:
+          - NoCopy
+          - Labels
+          - DriverConfig
+        properties:
+          NoCopy:
+            description: 是否禁止复制
+            type: boolean
+          Labels:
+            description: 挂载的标签
+            type: object
+            additionalProperties:
+              type: string
+          DriverConfig:
+            description: 挂载驱动
+            type: object
             required:
-              - Propagation
+              - Name
+              - Options
             properties:
-              Propagation:
-                description:
+              Name:
+                description: 驱动名称
+                type: string
+              Options:
+                description: 驱动参数
+                type: object
+                additionalProperties:
+                  type: string
+
+  ResourceRequirements:
+    description: 服务资源使用参数
+    type: object
+    required:
+      - Limits
+      - Reservations
+    properties:
+      Limits:
+        description: 任务的资源限制
+        $ref: '#/definitions/Resources'
+      Reservations:
+        description: 任务的资源预留
+        $ref: '#/definitions/Resources'
 
 
+  Resources:
+    type: object
+    required:
+      - NanoCPUs
+      - MemoryBytes
+    properties:
+      NanoCPUs:
+        description: 允许CPU占用的资源(CPU核数*10^9)
+        type: integer
+        format: int32
+      MemoryBytes:
+        description: 允许内存占用的资源()
+        type: integer
+        format: int32
+
+  RestartPolicy:
+    description: 容器退出后重启策略
+    type: object
+    required:
+      - Condition
+      - Delay
+      - MaxAttempts
+      - Window
+    properties:
+      Condition:
+        description: 重启策略
+        type: string
+        enum:
+          - none
+          - on-failure
+          - any
+      Delay:
+        description: 重启间隔
+        type: integer
+        format: int32
+      MaxAttempts:
+        description: 重启最多尝试次数
+        type: integer
+        format: int32
+      Window:
+        description: 重启窗口(策略在一个窗口期结束后重新开始新的窗口)
+        type: integer
+        format: int32
+
+  Placement:
+    description: 分发策略(限制服务发布到特定主机)
+    type: array
+    items:
+      type: string
+
+  Driver:
+    description: 驱动参数
+    type: object
+    required:
+      - Name
+      - Options
+    properties:
+      Name:
+        description: 驱动名称
+        type: string
+      Options:
+        description: 驱动标签
+        type: object
+        additionalProperties:
+          type: string
+
+  ServiceMode:
+    description: 发布服务模式
+    type: object
+    required:
+      - Replicated
+      - Global
+    properties:
+      Replicated:
+        description: 服务发布选择复制模式需要的参数和Global 参数互斥
+        type: object
+        required:
+          - Replicas
+        properties:
+          Replicas:
+            description: 目标容器总数
+            type: integer
+            format: int32
+      Global:
+        description: 一主机一容器模式(和Replicated参数2选1)
+        type: object
 
 
+  UpdateConfig:
+    description: 服务更细策略
+    type: object
+    required:
+      - Parallelism
+      - Delay
+      - FailureAction
+    properties:
+      Parallelism:
+        description: 并行更新任务数
+        type: integer
+        format: int32
+      Delay:
+        description: 任务的更新间隔
+        type: integer
+        format: int32
+      FailureAction:
+        description: 任务更新失败后时候继续
+        type: string
+        enum:
+          - pause
+          - continue
 
+  EndpointSpec:
+    description: 服务访问策略
+    type: object
+    required:
+      - Mode
+      - Ports
+    properties:
+      Mode:
+        description: 服务访问地址解析模式
+        type: string
+        enum:
+          - vip
+          - dnsrr
+      Ports:
+        description: 端口映射列表
+        type: array
+        items:
+          $ref: '#/definitions/PortConfig'
 
-
-
-
-
-
+  PortConfig:
+    description: 端口映射配置参数
+    type: object
+    required:
+      - Name
+      - Protocol
+      - TargetPort
+      - PublishedPort
+    properties:
+      Name:
+        description: 端口映射名称
+        type: string
+      Protocol:
+        description: 端口映射协议
+        type: string
+        enum:
+          - tcp
+          - udp
+      TargetPort:
+        description: 容器内部需要转发的端口
+        type: integer
+        format: int32
+      PublishedPort:
+        description: 主机对外暴露端口
+        type: integer
+        format: int32
 
 
 
