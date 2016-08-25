@@ -1,6 +1,8 @@
 package dockerclient
 
 import (
+	"net/url"
+
 	"github.com/Dataman-Cloud/rolex/src/dockerclient/model"
 	opt "github.com/Dataman-Cloud/rolex/src/model"
 
@@ -15,10 +17,12 @@ type DockerClientInterface interface {
 	InspectSwarm() (swarm.Swarm, error)
 	ManagerInfo() (types.Info, error)
 
-	NodeList(opts types.NodeListOptions) ([]swarm.Node, error)
-	NodeInspect(nodeId string) (swarm.Node, error)
-	NodeRemove(nodeId string) error
+	Info(nodeId string) (types.Info, error)
+	ListNode(opts types.NodeListOptions) ([]swarm.Node, error)
+	InspectNode(nodeId string) (swarm.Node, error)
+	RemoveNode(nodeId string) error
 	UpdateNode(nodeId string, opts opt.UpdateOptions) error
+	NodeDaemonUrl(nodeId string) (*url.URL, error)
 
 	InspectContainer(id string) (*docker.Container, error)
 	ListContainers(opts docker.ListContainersOptions) ([]docker.APIContainers, error)
