@@ -53,9 +53,10 @@
         function buildFullURL(name, params, isWS) {
             var url = getUrlTemplate(name, isWS);
             if (params) {
-                $.each(params, function (key, val) {
-                    url = url.replace("$" + key, val);
-                });
+                for(var key in params){
+                    if(params.hasOwnProperty(key))
+                        url = url.replace("$" + key, params[key]);
+                }
             }
             return url;
         }
