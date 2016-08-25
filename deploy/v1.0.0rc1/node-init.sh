@@ -175,6 +175,7 @@ ntp_is_enabled_on_centos_or_rhel()
         echo "NTP service status seems good."
     else
         printf "\033[41mERROR:\033[0m Cannot find the command ntpstat, Please enable the NTP service on your node.\n"
+        printf "You can run  yum install -y ntp && systemctl start ntpd && systemctl enable ntpd && systemctl disable chronyd \n"
         exit 1
     fi
 }
