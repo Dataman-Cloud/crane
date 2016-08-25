@@ -11,11 +11,13 @@
             <table cellpadding="0" cellspacing="0">
                     <tr>
                         <th>TAG</th>
+                        <th>docker pull</th>
                         <th>大小<small>MB</small></th>
                         <th>摘要</th>
                     </tr>
                     <tr ng-repeat="tag in repository.tags">
                         <td>{/tag.tag/}</td>
+                        <td>docker pull {/DOCKER_REGISTRY_URL/}{/repository.name/}:{/tag.tag/}</td>
                         <td>{/tag.size | size/}</td>
                         <td><p class="ellipsis">{/tag.digest/}<p></td>
                     </tr>
