@@ -11,7 +11,7 @@
         <tbody md-body>
         <tr md-row ng-repeat="volume in nodeVolumeCtrl.volumes">
             <td md-cell>
-                <p class="ellipsis">{/volume.Name/}
+                <p class="ellipsis">{/volume.Name | limitTo: ID_LIMIT_LENGTH/}
                     <md-tooltip md-direction="top">{/volume.Name/}</md-tooltip>
                 </p>
             </td>

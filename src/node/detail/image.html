@@ -2,7 +2,7 @@
     <table md-table>
         <thead md-head>
         <tr md-row>
-            <th md-column>镜像ID</th>
+            <th md-column>ID</th>
             <th md-column>名称</th>
             <th md-column>大小</th>
             <th md-column>创建时间</th>
@@ -13,7 +13,8 @@
         <tr md-row ng-repeat="image in nodeImageCtrl.images">
             <td md-cell>
                 <a class="ellipsis"
-                   data-ui-sref="node.imageDetail({node_id: $stateParams.node_id, image_id: image.Id})">{/image.Id/}
+                   data-ui-sref="node.imageDetail({node_id: $stateParams.node_id, image_id: image.Id})">{/image.Id |
+                    limitTo: ID_LIMIT_LENGTH/}
                     <md-tooltip md-direction="top">{/image.Id/}</md-tooltip>
                 </a>
             </td>

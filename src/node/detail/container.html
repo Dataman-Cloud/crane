@@ -2,8 +2,9 @@
     <table md-table>
         <thead md-head>
         <tr md-row>
-            <th md-column>容器名称</th>
-            <th md-column>内部地址</th>
+            <th md-column>ID</th>
+            <th md-column>名称</th>
+            <th md-column>对内地址</th>
             <th md-column>服务</th>
             <th md-column>任务</th>
             <th md-column>状态/运行时间</th>
@@ -13,6 +14,13 @@
         </thead>
         <tbody md-body>
         <tr md-row ng-repeat="container in nodeContainerCtrl.containers">
+            <td md-cell>
+                <a class="ellipsis"
+                   data-ui-sref="node.containerDetail({node_id: $stateParams.node_id, container_id: container.Id})">{/container.Id
+                    | limitTo: ID_LIMIT_LENGTH/}
+                    <md-tooltip md-direction="top">{/container.Id/}</md-tooltip>
+                </a>
+            </td>
             <td md-cell>
                 <a class="ellipsis"
                    data-ui-sref="node.containerDetail({node_id: $stateParams.node_id, container_id: container.Id})">{/container.Names[0].substring(1)/}
@@ -49,11 +57,13 @@
                         <md-menu-item>
                             <md-button aria-label="rm" data-ng-click="nodeContainerCtrl.removeContainer(container.Id)">
                                 移除
+                                <strong>(rm)</strong>
                             </md-button>
                         </md-menu-item>
                         <md-menu-item>
                             <md-button aria-label="kill" data-ng-click="nodeContainerCtrl.killContainer(container.Id)">
                                 杀死
+                                <strong>(kill)</strong>
                             </md-button>
                         </md-menu-item>
                     </md-menu-content>
