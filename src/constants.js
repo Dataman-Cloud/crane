@@ -31,7 +31,7 @@ CODE_MESSAGE = {
     11302: '不支持的节点操作类型',
     11303: '未定义的节点角色',
     11304: '不支持的节点状态',
-    11305: '获取及诶单信息失败',
+    11305: '获取及节点信息失败',
     11401: '更新服务参数错误',
     11402: '创建服务参数错误',
     11403: '扩展服务参数错误',
@@ -51,6 +51,7 @@ CODE_MESSAGE = {
     11701: '连接到指定节点失败',
     11702: '连接到指定节点失败, 目标地址为空',
     11703: '指定节点的连接地址和节点ID不匹配',
+    11704: '连接到指定节点失败, 错误的访问地址',
     11901: '获取配置失败',
     12001: '未定义的用户组',
     12002: '创建用户参数错误',
@@ -97,8 +98,8 @@ CODE_MESSAGE = {
     16002: '创建License失败'
 };
 
-NODE_CONN_ERROR_CODE = [11701, 11702, 11703];
-NODE_ENDPOINT_LABEL = "dm.swarm.node.endpoint";
+NODE_CONN_ERROR_CODE = [11701, 11702, 11703, 11704];
+NODE_ENDPOINT_LABEL = "dm.swarm.node.endpoint"
 
 SHOW_ERROR_MESSAGE = [10001];
 
@@ -111,6 +112,7 @@ BACKEND_URL = {
     },
     node: {
         nodes: 'api/v1/nodes',
+        endpoint: 'api/v1/nodes/$node_id/endpoint/$endpoint',
         nodeInfo: 'api/v1/nodes/$node_id/info',
         node: 'api/v1/nodes/$node_id',
         leader: 'api/v1/nodes/manager_info',

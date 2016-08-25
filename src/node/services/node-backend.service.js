@@ -10,6 +10,7 @@
             listNodes: listNodes,
             getNode: getNode,
             handleNode: handleNode,
+            updateNodeEndpoint: updateNodeEndpoint,
             getManagerInfo: getManagerInfo,
             createVolume: createVolume,
             listVolumes: listVolumes,
@@ -38,6 +39,10 @@
 
         function getNode(nodeId) {
             return gHttp.Resource('node.nodeInfo', {node_id: nodeId}).get();
+        }
+
+        function updateNodeEndpoint(nodeId, endpoint) {
+            return gHttp.Resource('node.endpoint', {node_id: nodeId, endpoint: endpoint}).put();
         }
 
         function getManagerInfo() {
