@@ -13,7 +13,8 @@
         <tr md-row ng-repeat="image in nodeImageCtrl.images">
             <td md-cell>
                 <a class="ellipsis"
-                   data-ui-sref="node.imageDetail({node_id: $stateParams.node_id, image_id: image.Id})">{/image.Id | fixIdWidth/}
+                   data-ui-sref="node.imageDetail({node_id: $stateParams.node_id, image_id: image.Id})">{/image.Id |
+                    limitTo: ID_LIMIT_LENGTH/}
                     <md-tooltip md-direction="top">{/image.Id/}</md-tooltip>
                 </a>
             </td>

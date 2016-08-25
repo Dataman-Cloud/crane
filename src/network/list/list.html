@@ -22,7 +22,7 @@
         <tbody md-body>
         <tr md-row ng-repeat="network in networkListCtrl.networks">
             <td md-cell>
-                <a class="ellipsis" data-ui-sref="network.detail({network_id: network.Id})">{/network.Id | fixIdWidth/}
+                <a class="ellipsis" data-ui-sref="network.detail({network_id: network.Id})">{/network.Id | limitTo: ID_LIMIT_LENGTH/}
                     <md-tooltip md-direction="top">{/network.Id/}</md-tooltip>
                 </a>
             </td>
@@ -40,7 +40,7 @@
             <td md-cell><span ng-class="{'no-info': !network.IPAM.Config[0].IPRange}">{/network.IPAM.Config[0].IPRange || '未配置'/}</span>
             </td>
             <td md-cell>
-                <md-button class="md-icon-button" aria-label="delete" ng-disabled="networkListCtrl.reserved_network_names.includes(network.Name)"
+                <md-button class="md-icon-button" aria-label="delete" ng-hide="RESERVED_NETWORK_NAMES.indexOf(network.Name) !== -1"
                            data-ng-click="networkListCtrl.deleteNetwork(network.Id)"><i class="fa fa-trash"></i>
                     <md-tooltip md-direction="left">删除网络</md-tooltip>
                 </md-button>

@@ -74,5 +74,16 @@
         $rootScope.VOL_DRIVER = {
             'local': '本地'
         };
+
+        $rootScope.RESERVED_NETWORK_NAMES = [
+            "ingress",
+            "none",
+            "host",
+            "bridge",
+            "docker_gwbridge"
+        ];
+
+        $rootScope.ID_LIMIT_LENGTH = 12;
+
     }
 })();

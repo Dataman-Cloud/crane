@@ -14,7 +14,8 @@
         <tr md-row ng-repeat="network in nodeNetworkCtrl.networks">
             <td md-cell>
                 <a class="ellipsis"
-                   data-ui-sref="node.networkDetail({node_id: $stateParams.node_id, network_id: network.Id})">{/network.Id | fixIdWidth/}</a>
+                   data-ui-sref="node.networkDetail({node_id: $stateParams.node_id, network_id: network.Id})">{/network.Id
+                    | limitTo: ID_LIMIT_LENGTH/}</a>
                 <md-tooltip md-direction="top">{/network.Id/}</md-tooltip>
             </td>
             <td md-cell>
@@ -26,7 +27,8 @@
             <td md-cell>{/network.Driver/}</td>
             <td md-cell><span ng-class="{'no-info': !network.Containers}">{/network.Containers | keylength/}</span></td>
             <td md-cell>
-                <md-button class="md-icon-button" aria-label="delete" ng-disabled="nodeNetworkCtrl.reserved_network_names.includes(network.Name)"
+                <md-button class="md-icon-button" aria-label="delete"
+                           ng-hide="RESERVED_NETWORK_NAMES.indexOf(network.Name) !== -1"
                            data-ng-click="nodeNetworkCtrl.deleteNetwork(network.Id)"><i class="fa fa-trash"/>
                     <md-tooltip md-direction="left">删除网络</md-tooltip>
                 </md-button>

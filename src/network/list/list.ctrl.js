@@ -13,8 +13,6 @@
         self.connectNetwork = connectNetwork;
         self.disconnectNetwork = disconnectNetwork;
 
-        self.reserved_network_names = RESERVED_NETWORK_NAMES;
-
         activate();
 
         function activate() {

@@ -10,8 +10,6 @@
         self.networks = networks;
         self.deleteNetwork = deleteNetwork;
 
-        self.reserved_network_names = RESERVED_NETWORK_NAMES;
-
         function deleteNetwork(id) {
             networkCurd.deleteNetwork(id)
         }

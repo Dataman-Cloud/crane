@@ -4,14 +4,6 @@ MESSAGE_CODE = {
     unknow: 10000
 };
 
-RESERVED_NETWORK_NAMES = [
-  "ingress",
-  "none",
-  "host",
-  "bridge",
-  "docker_gwbridge"
-]
-
 CODE_MESSAGE = {
     10000: '服务忙, 请稍后重试',
     10001: '服务忙, 请稍后重试',

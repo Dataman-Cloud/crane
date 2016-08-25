@@ -16,8 +16,9 @@
         <tr md-row ng-repeat="container in nodeContainerCtrl.containers">
             <td md-cell>
                 <a class="ellipsis"
-                   data-ui-sref="node.containerDetail({node_id: $stateParams.node_id, container_id: container.Id})">{/container.Id | fixIdWidth/}
-                    <md-tooltip md-direction="top">{/container.Id.substring(1)/}</md-tooltip>
+                   data-ui-sref="node.containerDetail({node_id: $stateParams.node_id, container_id: container.Id})">{/container.Id
+                    | limitTo: ID_LIMIT_LENGTH/}
+                    <md-tooltip md-direction="top">{/container.Id/}</md-tooltip>
                 </a>
             </td>
             <td md-cell>
