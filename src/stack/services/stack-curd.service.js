@@ -13,7 +13,6 @@
         return {
             upServiceScale: upServiceScale,
             deleteStack: deleteStack,
-            stopService: stopService,
             createStack: createStack,
             updateService: updateService
         };
@@ -34,13 +33,6 @@
                     .then(function (data) {
                         $state.go('stack.list', undefined, {reload: true});
                     })
-            });
-        }
-
-        function stopService(stackName, serviceID) {
-            stackBackend.upServiceScale(stackName, serviceID, 0).then(function (data) {
-                Notification.success('停止成功');
-                $state.reload();
             });
         }
 

@@ -9,7 +9,6 @@
 
         self.services = services;
         self.upServiceScale = stackCurd.upServiceScale;
-        self.stopService = stackCurd.stopService;
         self.updateService = updateService;
 
         function updateService(stackName, serviceId) {
