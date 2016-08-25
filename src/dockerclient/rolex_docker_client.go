@@ -96,8 +96,8 @@ func (client *RolexDockerClient) SwarmManager() *docker.Client {
 	return client.swarmManager
 }
 
-// return or cache daemon docker client base on host id stored in ctx
-func (client *RolexDockerClient) createNodeClienet(nodeId string) (*docker.Client, error) {
+// create a daemon docker client base on host id stored in ctx
+func (client *RolexDockerClient) createNodeClient(nodeId string) (*docker.Client, error) {
 	var swarmNode *docker.Client
 	nodeUrl, err := client.NodeDaemonUrl(nodeId)
 	if err != nil {
@@ -136,7 +136,7 @@ func (client *RolexDockerClient) SwarmNode(ctx context.Context) (*docker.Client,
 		}
 	}
 
-	nodeClient, err := client.createNodeClienet(nodeId)
+	nodeClient, err := client.createNodeClient(nodeId)
 	if err != nil {
 		return nil, err
 	}
