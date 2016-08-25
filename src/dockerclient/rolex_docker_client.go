@@ -1,8 +1,10 @@
 package dockerclient
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
+	"net/url"
 	"path/filepath"
 	"time"
 
@@ -13,6 +15,7 @@ import (
 	"github.com/Dataman-Cloud/go-component/utils/httpclient"
 	docker "github.com/Dataman-Cloud/go-dockerclient"
 	log "github.com/Sirupsen/logrus"
+	"github.com/docker/engine-api/types"
 	"golang.org/x/net/context"
 )
 
@@ -32,6 +35,12 @@ const (
 	CodeContainerAlreadyRunning       = "400-11007"
 	CodeContainerNotRunning           = "400-11008"
 	CodeInvalidImageName              = "503-11009"
+
+	//Go docker client error code
+	CodeConnToNodeError          = "503-11701"
+	CodeGetNodeEndpointError     = "503-11702"
+	CodeNodeEndpointIpMatchError = "503-11703"
+	CodeVerifyNodeEnpointFailed  = "503-11704"
 )
 
 type RolexDockerClient struct {
@@ -87,22 +96,9 @@ func (client *RolexDockerClient) SwarmManager() *docker.Client {
 	return client.swarmManager
 }
 
-// return or cache daemon docker client base on host id stored in ctx
-func (client *RolexDockerClient) SwarmNode(ctx context.Context) (*docker.Client, error) {
+// create a daemon docker client base on host id stored in ctx
+func (client *RolexDockerClient) createNodeClient(nodeId string) (*docker.Client, error) {
 	var swarmNode *docker.Client
-	var err error
-	nodeId, ok := ctx.Value("node_id").(string)
-	if !ok {
-		return nil, &dmerror.DmError{
-			Code: CodeConnToNodeError,
-			Err: &rolexerror.NodeConnError{
-				ID:       nodeId,
-				Endpoint: "",
-				Err:      fmt.Errorf("parse node id  failed"),
-			},
-		}
-	}
-
 	nodeUrl, err := client.NodeDaemonUrl(nodeId)
 	if err != nil {
 		return nil, err
@@ -122,21 +118,85 @@ func (client *RolexDockerClient) SwarmNode(ctx context.Context) (*docker.Client,
 		}
 	}
 
-	nodeInfo, err := client.Info(nodeId)
-	if err != nil {
+	return swarmNode, nil
+}
+
+// create node client: form manager node got endpoint by node label and verify node id
+// by get docker info form httpclient
+func (client *RolexDockerClient) SwarmNode(ctx context.Context) (*docker.Client, error) {
+	nodeId, ok := ctx.Value("node_id").(string)
+	if !ok {
 		return nil, &dmerror.DmError{
+			Code: CodeConnToNodeError,
+			Err: &rolexerror.NodeConnError{
+				ID:       nodeId,
+				Endpoint: "",
+				Err:      fmt.Errorf("parse node id  failed"),
+			},
+		}
+	}
+
+	nodeClient, err := client.createNodeClient(nodeId)
+	if err != nil {
+		return nil, err
+	}
+
+	nodeUrl, err := client.NodeDaemonUrl(nodeId)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := client.VerifyNodeEndpoint(nodeId, nodeUrl); err != nil {
+		return nil, err
+	}
+
+	return nodeClient, nil
+}
+
+func (client *RolexDockerClient) VerifyNodeEndpoint(nodeId string, nodeUrl *url.URL) error {
+	if nodeUrl == nil {
+		return &dmerror.DmError{
+			Code: CodeGetNodeEndpointError,
+			Err:  &rolexerror.NodeConnError{ID: nodeId, Err: fmt.Errorf("verify endpoint failed: empty node url")},
+		}
+	}
+	var nodeInfo types.Info
+	//TODO hardcode may have better way
+	if nodeUrl.Scheme == "tcp" {
+		nodeUrl.Scheme = "http"
+	}
+
+	endpoint := nodeUrl.String()
+	content, err := client.sharedHttpClient.GET(nil, endpoint+"/info", url.Values{}, nil)
+	if err != nil {
+		return &dmerror.DmError{
+			Code: CodeVerifyNodeEnpointFailed,
+			Err:  &rolexerror.NodeConnError{ID: nodeId, Endpoint: endpoint, Err: fmt.Errorf("verify endpoint failed: %s", err.Error())},
+		}
+	}
+
+	if err := json.Unmarshal(content, &nodeInfo); err != nil {
+		return &dmerror.DmError{
+			Code: CodeVerifyNodeEnpointFailed,
+			Err:  &rolexerror.NodeConnError{ID: nodeId, Endpoint: endpoint, Err: fmt.Errorf("verify endpoint failed: %s", err.Error())},
+		}
+	}
+
+	if err != nil {
+		return &dmerror.DmError{
 			Code: CodeConnToNodeError,
 			Err:  &rolexerror.NodeConnError{ID: nodeId, Endpoint: endpoint, Err: err},
 		}
 	}
 
 	if nodeId != nodeInfo.Swarm.NodeID {
-		return nil, &dmerror.DmError{
+		return &dmerror.DmError{
 			Code: CodeNodeEndpointIpMatchError,
 			Err:  &rolexerror.NodeConnError{ID: nodeId, Endpoint: endpoint, Err: fmt.Errorf("node id not matched endpoint")},
 		}
 	}
-	return swarmNode, nil
+
+	return nil
 }
 
 func (client *RolexDockerClient) NewGoDockerClientTls(endpoint string, apiVersion string) (*docker.Client, error) {
