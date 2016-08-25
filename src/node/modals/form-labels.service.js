@@ -64,13 +64,14 @@
             };
 
             self.checkRepeatKey = function (curIndex) {
-                initData.map(function (item, index) {
+                var keys = [];
+                keys = initData.map(function (item, index) {
                     if (item.key && index != curIndex) {
                         return item.key;
                     }
                 });
 
-                return initData;
+                return keys;
             }
         }
     }
