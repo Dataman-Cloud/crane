@@ -98,7 +98,7 @@ func (api *Api) InspectNetwork(ctx *gin.Context) {
 func (api *Api) ListNetworks(ctx *gin.Context) {
 	filter := docker.NetworkFilterOpts{}
 
-	fp := ctx.DefaultQuery("filters", "{}")
+	fp := ctx.DefaultQuery("filters", "{\"driver\": {\"overlay\": true}}")
 	if err := json.Unmarshal([]byte(fp), &filter); err != nil {
 		log.Error("list network request body parse json error: ", err)
 		rerror := dmerror.NewError(CodeListNetworkParamError, err.Error())
