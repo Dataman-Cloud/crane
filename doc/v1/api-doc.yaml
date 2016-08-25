@@ -87,7 +87,7 @@ paths:
           description: 登录失败, 返回相应的errorcode 和错误信息
           schema:
             $ref: '#/definitions/GeneralErrorResponse'
-                
+
 definitions:
   GeneralOkResponse:
     type: object
