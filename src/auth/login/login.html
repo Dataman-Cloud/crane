@@ -1,12 +1,13 @@
-<div id="login" class="login">
-    <div class="container">
+<div class="login">
+    <div class="login-panel">
         <header>
-            <a ui-sref="auth.login"><img src="/pics/logo-shurenyun-ico-black.svg" class="logo"></a>
-            <h1>请登录数人云账户</h1>
+            <div class="logo"><img src="/pics/logo-shurenyun-ico-blue.svg"></div>
+            <h1>Log in to shurenyun</h1>
         </header>
-        <form class="loginForm" name="staticForm" data-ng-submit="loginCtrl.login()">
+        <form name="staticForm" data-ng-submit="loginCtrl.login()">
             <div class="form-group">
-                <input type="text" placeholder="Email" class="form-control input-first" data-required="required"
+                <label>uesr name</label>
+                <input type="text" placeholder="Email" data-required="required"
                        name="Email"
                        ng-model="loginCtrl.form.Email">
                 <div class="prompt-box" style="display: block;"
@@ -19,7 +20,8 @@
             </div>
 
             <div class="form-group">
-                <input type="password" placeholder="密码" class="form-control input-last" data-required="required"
+                <label>password</label>
+                <input type="password" placeholder="密码" data-required="required"
                        name="password"
                        ng-model="loginCtrl.form.Password">
                 <div class="prompt-box" style="display: block;"
@@ -32,11 +34,9 @@
             </div>
 
             <div class="form-group">
-                <button class="btn btn-block" type="submit" id="login-btn-login">登录</button>
+                <button class="btn-login" type="submit" id="login-btn-login">LOGIN</button>
             </div>
+            <a href="#">Don't remember your password?</a>
         </form>
-        <div class="switch">
-            <a title="注册" href="#" id="login-btn-register">注册</a>
-        </div>
     </div>
 </div>
