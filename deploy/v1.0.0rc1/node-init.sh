@@ -140,6 +140,7 @@ firewalld_is_enabled() {
         printf "\e[1;34mWARN:\e[0m You'd better to disable Firewalld&enable iptables, or must restart docker daemon after firewalld restarted.\n"
         echo "More info: https://docs.docker.com/v1.6/installation/centos/#firewalld"
         echo "More info: https://github.com/docker/docker/issues/16137"
+        echo "you can run systemctl disable firewalld && systemctl stop firewalld"
         exit 1
     fi
 }
@@ -147,13 +148,14 @@ firewalld_is_enabled() {
 selinux_is_disabled() {
     if _command_exists getenforce; then
         echo "-> Checking SELinux by command getenforce..."
-        if getenforce | grep "Disabled" > /dev/null; then
-            echo "SELinux has been disabled as desired."
+        if getenforce | grep -v "Enforcing" > /dev/null; then
+            echo "SELinux has been stopped  as desired."
         else
             printf "\033[41mERROR:\033[0m We'd better to disable SELinux.\n"
             printf "\n"
             printf "How to disable it?\n"
             printf "Set SELINUX=disabled in file /etc/sysconfig/selinux for permanent effect"
+            echo "setenforce 0 && sed -i 's/SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config"
             echo "Learn more: https://dataman.kf5.com/posts/view/124303/"
             exit 1
         fi
