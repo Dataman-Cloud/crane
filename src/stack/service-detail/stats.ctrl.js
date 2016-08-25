@@ -7,7 +7,7 @@
     function ServiceStatsCtrl(stream, $stateParams, $scope, statsChart) {
         var self = this;
         
-        self.stats = []
+        self.stats = [];
         self.chartOptions = statsChart.Options('TaskName');
         activate();
         
