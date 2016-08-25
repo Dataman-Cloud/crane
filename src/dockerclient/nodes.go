@@ -13,8 +13,10 @@ import (
 	"github.com/Dataman-Cloud/rolex/src/util/config"
 	"github.com/Dataman-Cloud/rolex/src/util/rolexerror"
 
+	docker "github.com/Dataman-Cloud/go-dockerclient"
 	"github.com/docker/engine-api/types"
 	"github.com/docker/engine-api/types/swarm"
+	"golang.org/x/net/context"
 )
 
 const (
@@ -30,11 +32,6 @@ const (
 	CodeErrorNodeRole         = "503-11303"
 	CodeErrorNodeAvailability = "503-11304"
 	CodeGetNodeInfoError      = "503-11305"
-
-	//Go docker client error code
-	CodeConnToNodeError          = "503-11701"
-	CodeGetNodeEndpointError     = "503-11702"
-	CodeNodeEndpointIpMatchError = "503-11703"
 )
 
 const (
@@ -204,28 +201,12 @@ func nodeRemoveLabels(spec *swarm.NodeSpec, rawMessage []byte) error {
 }
 
 // docker info
-func (client *RolexDockerClient) Info(nodeId string) (types.Info, error) {
-	var nodeInfo types.Info
-	nodeUrl, err := client.NodeDaemonUrl(nodeId)
+func (client *RolexDockerClient) Info(ctx context.Context) (*docker.DockerInfo, error) {
+	swarmNode, err := client.SwarmNode(ctx)
 	if err != nil {
-		return nodeInfo, err
+		return nil, err
 	}
-
-	//TODO hardcode may have better way
-	if nodeUrl.Scheme == "tcp" {
-		nodeUrl.Scheme = "http"
-	}
-
-	content, err := client.sharedHttpClient.GET(nil, nodeUrl.String()+"/info", url.Values{}, nil)
-	if err != nil {
-		return nodeInfo, dmerror.NewError(CodeGetNodeInfoError, err.Error())
-	}
-
-	if err := json.Unmarshal(content, &nodeInfo); err != nil {
-		return nodeInfo, dmerror.NewError(CodeGetNodeInfoError, err.Error())
-	}
-
-	return nodeInfo, nil
+	return swarmNode.Info()
 }
 
 func (client *RolexDockerClient) NodeDaemonUrl(nodeId string) (*url.URL, error) {
@@ -242,6 +223,10 @@ func (client *RolexDockerClient) NodeDaemonUrl(nodeId string) (*url.URL, error) 
 		return nil, &dmerror.DmError{Code: CodeGetNodeEndpointError, Err: nodeConnErr}
 	}
 
+	return parseEndpoint(endpoint)
+}
+
+func parseEndpoint(endpoint string) (*url.URL, error) {
 	conf := config.GetConfig()
 	if !strings.Contains(endpoint, "://") {
 		endpoint = conf.DockerEntryScheme + "://" + endpoint
@@ -250,8 +235,7 @@ func (client *RolexDockerClient) NodeDaemonUrl(nodeId string) (*url.URL, error) 
 	u, err := url.Parse(endpoint)
 
 	if err != nil {
-		nodeConnErr = &rolexerror.NodeConnError{ID: nodeId, Endpoint: endpoint, Err: err}
-		return nil, &dmerror.DmError{Code: CodeGetNodeEndpointError, Err: nodeConnErr}
+		return nil, err
 	}
 
 	if !strings.Contains(u.Host, ":") {
@@ -259,4 +243,40 @@ func (client *RolexDockerClient) NodeDaemonUrl(nodeId string) (*url.URL, error) 
 	}
 
 	return u, nil
+}
+
+func (client *RolexDockerClient) UpdateNodeEndpoint(nodeId, endpoint string) error {
+	nodeUrl, err := parseEndpoint(endpoint)
+	if err != nil {
+		return &dmerror.DmError{
+			Code: CodeGetNodeEndpointError,
+			Err:  &rolexerror.NodeConnError{ID: nodeId, Err: fmt.Errorf("update endpoint failed: %s", err.Error())},
+		}
+	}
+
+	if err := client.VerifyNodeEndpoint(nodeId, nodeUrl); err != nil {
+		return err
+	}
+
+	node, err := client.InspectNode(nodeId)
+	if err != nil {
+		return err
+	}
+
+	spec := &node.Spec
+
+	if spec.Annotations.Labels == nil {
+		spec.Annotations.Labels = make(map[string]string)
+	}
+
+	spec.Annotations.Labels[labelNodeEndpoint] = endpoint
+	query := url.Values{}
+	query.Set("version", strconv.FormatUint(node.Version.Index, 10))
+	_, err = client.sharedHttpClient.POST(nil, client.swarmManagerHttpEndpoint+"/"+path.Join("nodes", nodeId, "update"), query, node.Spec, nil)
+	if err != nil {
+		return err
+	}
+
+	return nil
+
 }

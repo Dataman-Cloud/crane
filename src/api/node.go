@@ -10,6 +10,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/docker/engine-api/types"
 	"github.com/gin-gonic/gin"
+	"golang.org/x/net/context"
 )
 
 const (
@@ -109,7 +110,8 @@ func (api *Api) RemoveNode(ctx *gin.Context) {
 }
 
 func (api *Api) Info(ctx *gin.Context) {
-	info, err := api.GetDockerClient().Info(ctx.Param("node_id"))
+	rolexContext, _ := ctx.Get("rolexContext")
+	info, err := api.GetDockerClient().Info(rolexContext.(context.Context))
 	if err != nil {
 		log.Error("Get node info got error: ", err)
 		dmgin.HttpErrorResponse(ctx, err)
@@ -118,4 +120,18 @@ func (api *Api) Info(ctx *gin.Context) {
 
 	dmgin.HttpOkResponse(ctx, info)
 	return
+}
+
+func (api *Api) UpdateEndpoint(ctx *gin.Context) {
+	nodeId := ctx.Param("node_id")
+	endpoint := ctx.Param("endpoint")
+	if err := api.GetDockerClient().UpdateNodeEndpoint(nodeId, endpoint); err != nil {
+		log.Errorf("Update node %s endpoint  to %s got error: %s", nodeId, endpoint, err.Error())
+		dmgin.HttpErrorResponse(ctx, err)
+		return
+	}
+
+	dmgin.HttpOkResponse(ctx, "success")
+	return
+
 }
