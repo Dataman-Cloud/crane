@@ -11,6 +11,38 @@ produces:
   - application/json
   
 paths:
+  /stacks:
+    post:
+      summary: 创建一个应用, 一个应用可包含多个服务
+      description: 创建应用的API, 成功返回 HTTPStatus 200, 失败返回相应的错误信息
+      tags:
+        - Stacks
+      parameters:
+        - name: body
+          in: body
+          description: 创建应用所需的参数
+          required: true
+          schema:
+            $ref: '#definitions/Bundle'
+      response:
+        '200':
+          description: 创建成功返回success
+          schema:
+            $ref: '#definitions/GeneralOkResponse'
+        '401':
+          description: token 验证失败
+          schema:
+            $ref: '#definitions/GeneralErrorResponse'
+        '400':
+          description: 创建stack参数错误
+          schema:
+            $ref: '#definitions/GeneralErrorResponse'
+        '503':
+          description: 创建stack失败
+          schema:
+            $ref: '#definitions/GeneralErrorResponse'
+
+
   /login:
     post:
       summary: 通过用户邮箱和密码登陆系统, 登陆成功返回token
@@ -54,21 +86,63 @@ paths:
         '401':
           description: 登录失败, 返回相应的errorcode 和错误信息
           schema:
-            type: object
-            required:
-              - code
-              - data
-              - message
-            properties:
-              code:
-                type: integer
-                format: int32
-              data:
-                type: object
-                description: 关于请求失败的额外的信息, 如果没有则为{}
-              message:
-                type: string
-                description: 关于请求失败的简单说明信息
+            $ref: '#definitions/GeneralErrorResponse'
                 
     
 
+definitions:
+  GeneralOkResponse:
+    type: object
+    required:
+      - code
+      - data
+    properties:
+      code:
+        type: integer
+        format: int32
+      data:
+        type: string
+
+  GeneralErrorResponse:
+    type: object
+    required:
+      - code
+      - data
+      - message
+    properties:
+      code:
+        type: integer
+        format: int32
+        description: 错误码，错误码对应详情可以查看(https://github.com/Dataman-Cloud/blackmamba/blob/master/src/constants.js)
+      data:
+        type: object
+        description: 有关错误的详细信息, 如果没有返回{}
+      message:
+        type: string
+        description: 错误的简单描述
+
+
+  Bundle:
+    type: object
+    required:
+      - Namespace
+      - Stack
+    properties:
+      Namespace:
+        type: string
+        description: 应用的名称(应用所包含所有服务的前缀)
+      Stack:
+        schema:
+          $ref: '#definitions/Stack'
+
+  Stack:
+    type: object
+    required:
+      - Version
+      - Services
+    properties:
+      Version:
+        type: string
+        description: 应用版本
+      Stack:
+        ty
