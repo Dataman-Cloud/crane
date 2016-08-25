@@ -4,7 +4,7 @@ services:
     build:
       context: ../doc/registry
       dockerfile: ./Dockerfile
-    image: registry:rolex${TAG}
+    image: ${REGISTRY_PREFIX}registry:rolex${TAG}
     ports:
       - "5000:5000"
       - "5001:5001"
@@ -17,7 +17,7 @@ services:
     build:
       context: ../
       dockerfile: ./deploy/Dockerfile
-    image: rolex:${TAG}
+    image: ${REGISTRY_PREFIX}rolex:${TAG}
     environment:
       - ROLEX_SWARM_MANAGER_IP
     ports:
@@ -27,7 +27,7 @@ services:
     build:
       context: ./mysql
       dockerfile: ./Dockerfile
-    image: mysql:rolex${TAG}
+    image: ${REGISTRY_PREFIX}mysql:rolex${TAG}
     environment:
       - MYSQL_ROOT_PASSWORD=111111
     ports:
