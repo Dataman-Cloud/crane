@@ -1,0 +1,74 @@
+swagger: '2.0'
+info:
+  title: shurenyun API
+  description: "数人云 API 文档"
+  version: "1"
+host: 192.168.59.104
+schemes:
+  - https
+basePath: /api/v1
+produces:
+  - application/json
+  
+paths:
+  /login:
+    post:
+      summary: 通过用户邮箱和密码登陆系统, 登陆成功返回token
+      description: 向服务器验证用户邮箱和密码, 验证成功返回当前登录用户的token; 否则返回相应的错误信息
+      tags:
+        - Account
+      parameters:
+        - name: body
+          in: body
+          description: 登陆用户的邮箱和密码
+          required: true
+          schema:
+            type: object
+            properties:
+              Email:
+                type: string
+                description: 用户邮箱
+              Password:
+                type: string
+                description: 用户密码
+      responses:
+        '200':
+          description: 登陆成功返回当前用户的token
+          schema:
+            type: object
+            required:
+              - code
+              - data
+            properties:
+              code:
+                type: integer
+                format: int32
+              data:
+                type: object
+                required:
+                  - token
+                properties:
+                  token:
+                    type: string
+                    description: 用户登陆凭证
+        '401':
+          description: 登录失败, 返回相应的errorcode 和错误信息
+          schema:
+            type: object
+            required:
+              - code
+              - data
+              - message
+            properties:
+              code:
+                type: integer
+                format: int32
+              data:
+                type: object
+                description: 关于请求失败的额外的信息, 如果没有则为{}
+              message:
+                type: string
+                description: 关于请求失败的简单说明信息
+                
+    
+
