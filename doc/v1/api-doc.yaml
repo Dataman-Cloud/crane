@@ -18,6 +18,11 @@ paths:
       tags:
         - Stacks
       parameters:
+        - name: Authorization
+          in: header
+          description: 用户token
+          required: true
+          type: string
         - name: body
           in: body
           description: 创建应用所需的参数
@@ -25,20 +30,61 @@ paths:
           schema:
             $ref: '#/definitions/Bundle'
       responses:
-        '200':
+        200:
           description: 创建成功返回success
           schema:
             $ref: '#/definitions/GeneralOkResponse'
-        '401':
+        401:
           description: token 验证失败
           schema:
             $ref: '#/definitions/GeneralErrorResponse'
-        '400':
+        400:
           description: 创建stack参数错误
           schema:
             $ref: '#/definitions/GeneralErrorResponse'
-        '503':
+        503:
           description: 创建stack失败
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
+    get:
+      summary: 查询所有应用列表, 以及每个应用包含服务的简单信息
+      description: 查询所有应用API, 返回所有应用, 以及应用包含服务的简单信息
+      tags:
+        - Stacks
+      parameters:
+        - name: Authorization
+          in: header
+          description: 用户token
+          required: true
+          type: string
+      responses:
+        200:
+          description: 所有应用列表
+          schema:
+            type: array
+            items:
+              type: object
+              required:
+                - Namespace
+                - ServiceCount
+                - Services
+              properties:
+                Namespace:
+                  type: string
+                  description: 应用名称
+                ServiceCount:
+                  type: integer
+                  format: int32
+                Services:
+                  type: array
+                  items:
+                    $ref: '#/definitions/ServiceStatus'
+        401:
+          description: token 验证失败
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
+        503:
+          description: 查询所有应用失败, 具体错误可以查看错误码
           schema:
             $ref: '#/definitions/GeneralErrorResponse'
 
@@ -64,7 +110,7 @@ paths:
                 type: string
                 description: 用户密码
       responses:
-        '200':
+        200:
           description: 登陆成功返回当前用户的token
           schema:
             type: object
@@ -83,11 +129,11 @@ paths:
                   token:
                     type: string
                     description: 用户登陆凭证
-        '401':
+        401:
           description: 登录失败, 返回相应的errorcode 和错误信息
           schema:
             $ref: '#/definitions/GeneralErrorResponse'
-                
+
 definitions:
   GeneralOkResponse:
     type: object
@@ -118,7 +164,6 @@ definitions:
       message:
         type: string
         description: 错误的简单描述
-
 
   Bundle:
     type: object
@@ -352,7 +397,6 @@ definitions:
         description: 任务的资源预留
         $ref: '#/definitions/Resources'
 
-
   Resources:
     type: object
     required:
@@ -440,7 +484,6 @@ definitions:
         description: 一主机一容器模式(和Replicated参数2选1)
         type: object
 
-
   UpdateConfig:
     description: 服务更细策略
     type: object
@@ -510,7 +553,65 @@ definitions:
         type: integer
         format: int32
 
-
+  ServiceStatus:
+    description: 服务运行状态和简要服务参数
+    type: object
+    required:
+      - ID
+      - Name
+      - NumTasksRunning
+      - NumTasksTotal
+      - Image
+      - Command
+      - CreatedAt
+      - UpdatedAt
+      - LimitCpus
+      - LimitMems
+      - ReserveCpus
+      - ReserveMems
+    properties:
+      ID:
+        description: 服务ID
+        type: string
+      Name:
+        description: 服务名称
+        type: string
+      NumTasksRunning:
+        description: 正在运行的任务数
+        type: integer
+        format: int32
+      NumTasksTotal:
+        description: 计划运行的任务数
+        type: integer
+        format: int32
+      Image:
+        description: 镜像名称
+        type: string
+      Command:
+        description: 容器启动命令
+        type: string
+      CreatedAt:
+        description: 服务创建时间
+        type: string
+      UpdatedAt:
+        description: 服务最后更新时间
+        type: string
+      LimitCpus:
+        description: 服务限制使用的CPU资源(正在运行的任务数量*单个任务CPU限制)
+        type: integer
+        format: int32
+      LimitMems:
+        description: 服务限制使用的内存资源(正在运行的任务数量*单个任务C内存限制)
+        type: integer
+        format: int32
+      ReserveCpus:
+        description: 服务预留CPU资源(计划任务数*单个任务CPU预留)
+        type: integer
+        format: int32
+      ReserveMems:
+        description: 服务预留内存资源(计划任务数*单个任务内存预留)
+        type: integer
+        format: int32
 
 
 
