@@ -5,13 +5,13 @@
 
 <p>
   <code>
-    docker -H YOUR_DOCKER_DAEMONE_ENTRYPOINT login REGISTRY_IP:5000 -uadmin@admin.com -pYOUR_PASSWORD
+    docker -H YOUR_DOCKER_DAEMONE_ENTRYPOINT login {/DOCKER_REGISTRY_URL/} -uYOUR_ACCOUNT -pYOUR_PASSWORD
   </code>
 </p>
 
 <p>
   <code>
-    docker -H YOUR_DOCKER_DAEMONE_ENTRYPOINT push admin/IMAGE_NAME
+    docker -H YOUR_DOCKER_DAEMONE_ENTRYPOINT push {/DOCKER_REGISTRY_URL/}admin/IMAGE_NAME
   </code>
 </p>
 
