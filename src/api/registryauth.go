@@ -18,8 +18,14 @@ const (
 )
 
 func (api *Api) Create(ctx *gin.Context) {
-	var registryAuth rauth.RegistryAuth
+	account, ok := ctx.Get("account")
+	if !ok {
+		log.Error("get registryAuths invalid user")
+		dmgin.HttpErrorResponse(ctx, dmerror.NewError(CodeRegistryAuthInvalidUserError, "invalid user"))
+		return
+	}
 
+	var registryAuth rauth.RegistryAuth
 	if err := ctx.BindJSON(&registryAuth); err != nil {
 		log.Errorf("create registryAuth param error: %v", err)
 		dmgin.HttpErrorResponse(ctx, dmerror.NewError(CodeCreateRegistryAuthParamError, err.Error()))
@@ -37,6 +43,7 @@ func (api *Api) Create(ctx *gin.Context) {
 		return
 	}
 
+	registryAuth.AccountId = account.(auth.Account).ID
 	if err := rauth.GetHubApi().Create(&registryAuth); err != nil {
 		log.Errorf("create registryAuth operation error: %v", err)
 		dmgin.HttpErrorResponse(ctx, err)

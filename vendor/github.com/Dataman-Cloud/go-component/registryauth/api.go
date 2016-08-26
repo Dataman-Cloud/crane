@@ -40,10 +40,19 @@ func (hubApi *HubApi) Create(auth *RegistryAuth) error {
 
 func (hubApi *HubApi) List(registryAuth *RegistryAuth) ([]RegistryAuth, error) {
 	var registryAuths []RegistryAuth
-	err := hubApi.DbClient.Where(registryAuth).Find(&registryAuths).Error
+	err := hubApi.DbClient.Select("id, name, username, account_id").Where(registryAuth).Find(&registryAuths).Error
 	return registryAuths, err
 }
 
 func (hubApi *HubApi) Delete(registryAuth *RegistryAuth) error {
-	return hubApi.DbClient.Delete(registryAuth).Error
+	return hubApi.DbClient.
+		Where("name = ? AND account_id = ?", registryAuth.Name, registryAuth.AccountId).
+		Delete(registryAuth).
+		Error
+}
+
+func (hubApi *HubApi) Get(name string) (*RegistryAuth, error) {
+	var registryAuth RegistryAuth
+	err := hubApi.DbClient.Where("name = ?", name).First(&registryAuth).Error
+	return &registryAuth, err
 }
