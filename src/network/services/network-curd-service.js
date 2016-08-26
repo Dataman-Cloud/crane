@@ -20,7 +20,7 @@
         function create(data, form) {
             networkBackend.create(data, form)
                 .then(function (data) {
-                    $state.go('network.list')
+                    $state.go('network.list', undefined, {reload: true})
                 })
         }
 
