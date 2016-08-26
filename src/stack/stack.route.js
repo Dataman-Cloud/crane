@@ -4,8 +4,13 @@
         .config(route);
 
     /* @ngInject */
-    function route($stateProvider, $locationProvider, $interpolateProvider, $urlRouterProvider) {
-        $urlRouterProvider.otherwise('/stack');
+    function route($stateProvider, $urlRouterProvider) {
+
+        //warning: otherwise(url) will be redirect loop on state with errored resolve
+        $urlRouterProvider.otherwise(function($injector) {
+            var $state = $injector.get('$state');
+            $state.go('stack');
+        });
 
         $stateProvider
             .state('stack', {
