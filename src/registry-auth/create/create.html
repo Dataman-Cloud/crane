@@ -7,11 +7,11 @@
                    data-ng-pattern="/^[A-Za-z0-9]+$/">
         </div>
         <div ng-messages="createRegAuth.name.$error" ng-if="createRegAuth.name.$dirty" role="alert">
-            <p class="help-text"
+            <p class="text-danger help-text"
                ng-message="required">
                 <small>名称不能为空</small>
             </p>
-            <p class="help-text"
+            <p class="text-danger help-text"
                ng-message="pattern">
                 <small>名称必须数字或者英文</small>
             </p>
@@ -24,17 +24,17 @@
         </label>
         <div class="form-control">
             <input type="text" name="UserName" data-required="required"
-                   data-ng-model="createRegAuth.form.UserName"
+                   data-ng-model="regAuthCreateCtrl.form.Username"
                    data-ng-pattern="/^[A-Za-z0-9]+$/">
         </div>
         <div ng-messages="createRegAuth.UserName.$error" ng-if="createRegAuth.UserName.$dirty" role="alert">
-            <p class="help-text"
+            <p class="text-danger help-text"
                ng-message="required">
-                <small>名称不能为空</small>
+                <small>用户名不能为空</small>
             </p>
-            <p class="help-text"
+            <p class="text-danger help-text"
                ng-message="pattern">
-                <small>名称必须数字或者英文</small>
+                <small>用户名必须数字或者英文</small>
             </p>
         </div>
     </div>
@@ -45,16 +45,16 @@
         </label>
         <div class="form-control">
             <input type="text" name="PassWord" data-required="required"
-                   data-ng-model="regAuthCreateCtrl.form.PassWord"
+                   data-ng-model="regAuthCreateCtrl.form.Password"
                    data-ng-pattern="/^[A-Za-z0-9]+$/">
         </div>
         <div ng-messages="createRegAuth.PassWord.$error" ng-if="createRegAuth.PassWord.$dirty"
              role="alert">
-            <p class="help-text"
+            <p class="text-danger help-text"
                ng-message="required">
                 <small>密码不能为空</small>
             </p>
-            <p class="help-text"
+            <p class="text-danger help-text"
                ng-message="pattern">
                 <small>密码必须数字或者英文</small>
             </p>

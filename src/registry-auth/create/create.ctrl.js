@@ -4,13 +4,13 @@
         .controller('RegistryAuthCreateCtrl', RegistryAuthCreateCtrl);
 
     /* @ngInject */
-    function RegistryAuthCreateCtrl() {
+    function RegistryAuthCreateCtrl(registryAuthCurd) {
         var self = this;
 
         self.form = {
             Name: '',
-            UserName: '',
-            PassWord: ''
+            Username: '',
+            Password: ''
         };
 
         self.create = create;
@@ -22,7 +22,7 @@
         }
 
         function create() {
-            console.log(self.form)
+            registryAuthCurd.createRegAuth(self.form)
         }
     }
 })();

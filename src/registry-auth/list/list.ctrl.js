@@ -5,8 +5,10 @@
 
 
     /* @ngInject */
-    function RegistryAuthListCtrl() {
+    function RegistryAuthListCtrl(reAuths, registryAuthCurd) {
         var self = this;
+
+        self.reAuths = reAuths;
 
         self.deleteRegAuth = deleteRegAuth;
 
@@ -16,8 +18,8 @@
             ///
         }
 
-        function deleteRegAuth() {
-            //TODO
+        function deleteRegAuth(name) {
+            registryAuthCurd.deleteRegAuth(name)
         }
     }
 })();

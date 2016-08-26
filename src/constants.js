@@ -94,8 +94,12 @@ CODE_MESSAGE = {
     14006: '获取镜像仓库应用目录列表失败',
     15001: '获取应用目录失败',
     15002: '获取应用目录列表失败',
-    16001: '获取License失败',
-    16002: '创建License失败'
+    16001: '获取 License失败',
+    16002: '创建 License失败',
+    17001: '创建 RegAuth 参数错误',
+    17002: 'RegAuth 已存在',
+    17003: '删除 RegAuth 参数错误',
+    17004: '无效的用户'
 };
 
 NODE_CONN_ERROR_CODE = [11701, 11702, 11703, 11704];
@@ -157,6 +161,10 @@ BACKEND_URL = {
         publicity: 'registry/v1/$namespace/$image/publicity',
         catalogs: 'catalog/v1/catalogs',
         catalog: 'catalog/v1/catalogs/$catalog_name'
+    },
+    registryauth: {
+        registryauths: 'registryauth/v1/registryauths',
+        registryauth: 'registryauth/v1/registryauths/$regauth_name'
     },
     layout: {
         search: 'search/v1/luckysearch'

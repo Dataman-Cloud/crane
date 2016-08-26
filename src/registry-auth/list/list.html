@@ -18,13 +18,13 @@
         </tr>
         </thead>
         <tbody md-body>
-        <tr md-row ng-repeat="reAuth in [{},{},{}]">
-            <td md-cell>IDIDIDID</td>
-            <td md-cell>用户名</td>
-            <td md-cell>密码</td>
+        <tr md-row ng-repeat="reAuth in regAuthListCtrl.reAuths">
+            <td md-cell>{/reAuth.Name/}</td>
+            <td md-cell>{/reAuth.Username/}</td>
+            <td md-cell>******</td>
             <td md-cell>
                 <md-button class="md-icon-button" aria-label="delete"
-                           data-ng-click="networkListCtrl.deleteRegAuth()"><i class="fa fa-trash"></i>
+                           data-ng-click="regAuthListCtrl.deleteRegAuth(reAuth.Name)"><i class="fa fa-trash"></i>
                     <md-tooltip md-direction="left">删除</md-tooltip>
                 </md-button>
             </td>

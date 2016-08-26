@@ -11,15 +11,18 @@
                 template: '<ui-view/>',
                 targetState: 'list',
                 ncyBreadcrumb: {
-                    label: 'reAuth'
+                    label: 'regAuth'
                 }
             })
             .state('registryAuth.list', {
                 url: '/list',
                 templateUrl: '/src/registry-auth/list/list.html',
                 controller: 'RegistryAuthListCtrl as regAuthListCtrl',
+                resolve: {
+                    reAuths: listReAuth
+                },
                 ncyBreadcrumb: {
-                    label: 'reAuthListCtrl'
+                    label: 'reAuthList'
                 }
             })
             .state('registryAuth.create', {
@@ -27,14 +30,13 @@
                 templateUrl: '/src/registry-auth/create/create.html',
                 controller: 'RegistryAuthCreateCtrl as regAuthCreateCtrl',
                 ncyBreadcrumb: {
-                    label: 'reAuthCreateCtrl'
+                    label: 'reAuthCreate'
                 }
             });
 
         /* @ngInject */
-        function listReAuth() {
-            //TODO
+        function listReAuth(registryAuthBackend) {
+            return registryAuthBackend.listRegAuth();
         }
     }
-    
 })();
