@@ -10,6 +10,7 @@ import (
 	"github.com/Dataman-Cloud/go-component/catalog"
 	"github.com/Dataman-Cloud/go-component/license"
 	"github.com/Dataman-Cloud/go-component/registry"
+	rauth "github.com/Dataman-Cloud/go-component/registryauth"
 	"github.com/Dataman-Cloud/go-component/search"
 	"github.com/Dataman-Cloud/rolex/src/api/middlewares"
 	"github.com/Dataman-Cloud/rolex/src/plugins"
@@ -134,6 +135,17 @@ func (api *Api) ApiRouter() *gin.Engine {
 		v1.GET("/stacks/:namespace/services/:service_id/tasks/:task_id", api.InspectTask)
 		v1.GET("/stacks/:namespace/services/:service_id/cd_url", api.ServiceCDAddr)
 	}
+
+	if api.Config.FeatureEnabled("registryauth") {
+		rauth.GetHubApi().MigriateRegistryAuth()
+		rauthv1 := router.Group("/registryauth/v1", Authorization, middlewares.ListIntercept())
+		{
+			rauthv1.POST("/registryauths", api.Create)
+			rauthv1.GET("/registryauths", api.List)
+			rauthv1.DELETE("/registryauths/:rauth_name", api.Delete)
+		}
+	}
+
 	router.PUT("/api/v1/stacks/:namespace/services/:service_id/rolling_update", api.UpdateServiceImage) // skip authorization, public access
 
 	misc := router.Group("/misc/v1")
