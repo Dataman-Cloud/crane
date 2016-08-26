@@ -113,9 +113,8 @@
         }
 
 	function createAndDownload() {
-	    var blob = new Blob([self.stack], { type: 'text/plain;charset=utf-8' });
-        create()
-            .then(function(data){
+            create().then(function(data){
+	        var blob = new Blob([self.stack], { type: 'text/plain;charset=utf-8' });
                 FileSaver.saveAs(blob, self.form.Namespace + '.json');
             })
 	}
