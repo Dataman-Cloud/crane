@@ -1,0 +1,73 @@
+<form name="createRegAuth" class="form-main">
+    <div class="form-group" layout="column">
+        <label>RegAuth 名称<span class="required">*</span></label>
+        <div class="form-control">
+            <input type="text" data-ng-model="regAuthCreateCtrl.form.Name"
+                   data-required="required" name="name"
+                   data-ng-pattern="/^[A-Za-z0-9]+$/">
+        </div>
+        <div ng-messages="createRegAuth.name.$error" ng-if="createRegAuth.name.$dirty" role="alert">
+            <p class="help-text"
+               ng-message="required">
+                <small>名称不能为空</small>
+            </p>
+            <p class="help-text"
+               ng-message="pattern">
+                <small>名称必须数字或者英文</small>
+            </p>
+        </div>
+    </div>
+
+    <div class="form-group" layout="column">
+        <label>用户名
+            <small></small>
+        </label>
+        <div class="form-control">
+            <input type="text" name="UserName" data-required="required"
+                   data-ng-model="createRegAuth.form.UserName"
+                   data-ng-pattern="/^[A-Za-z0-9]+$/">
+        </div>
+        <div ng-messages="createRegAuth.UserName.$error" ng-if="createRegAuth.UserName.$dirty" role="alert">
+            <p class="help-text"
+               ng-message="required">
+                <small>名称不能为空</small>
+            </p>
+            <p class="help-text"
+               ng-message="pattern">
+                <small>名称必须数字或者英文</small>
+            </p>
+        </div>
+    </div>
+
+    <div class="form-group" layout="column">
+        <label>密码
+            <small></small>
+        </label>
+        <div class="form-control">
+            <input type="text" name="PassWord" data-required="required"
+                   data-ng-model="regAuthCreateCtrl.form.PassWord"
+                   data-ng-pattern="/^[A-Za-z0-9]+$/">
+        </div>
+        <div ng-messages="createRegAuth.PassWord.$error" ng-if="createRegAuth.PassWord.$dirty"
+             role="alert">
+            <p class="help-text"
+               ng-message="required">
+                <small>密码不能为空</small>
+            </p>
+            <p class="help-text"
+               ng-message="pattern">
+                <small>密码必须数字或者英文</small>
+            </p>
+        </div>
+    </div>
+
+    <footer class="form-buttons">
+        <md-button class="md-raised md-primary"
+                   data-ng-disabled="createRegAuth.$invalid"
+                   data-ng-click="regAuthCreateCtrl.create()">创建
+        </md-button>
+        <md-button class="md-raised"
+                   data-ng-click="rootCtrl.goBack()">取消
+        </md-button>
+    </footer>
+</form>
