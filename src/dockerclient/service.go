@@ -65,7 +65,15 @@ func (client *RolexDockerClient) CreateService(service swarm.ServiceSpec, option
 		return response, err
 	}
 
-	content, err := client.sharedHttpClient.POST(nil, client.swarmManagerHttpEndpoint+"/services/create", nil, service, nil)
+	var headers map[string][]string
+
+	if options.EncodedRegistryAuth != "" {
+		headers = map[string][]string{
+			"X-Registry-Auth": []string{options.EncodedRegistryAuth},
+		}
+	}
+
+	content, err := client.sharedHttpClient.POST(nil, client.swarmManagerHttpEndpoint+"/services/create", nil, service, headers)
 	if err != nil {
 		return response, err
 	}
@@ -192,15 +200,37 @@ func (client *RolexDockerClient) RemoveService(serviceID string) error {
 }
 
 // ServiceUpdate updates a Service.o
-// TODO attention docker update
-func (client *RolexDockerClient) UpdateService(serviceID string, version swarm.Version, service swarm.ServiceSpec, header map[string][]string) error {
+func (client *RolexDockerClient) UpdateService(serviceID string, version swarm.Version, service swarm.ServiceSpec, options types.ServiceUpdateOptions) error {
+	var headers map[string][]string
+	if options.EncodedRegistryAuth != "" {
+		headers = map[string][]string{
+			"X-Registry-Auth": []string{options.EncodedRegistryAuth},
+		}
+	}
+
 	query := url.Values{}
 	query.Set("version", strconv.FormatUint(version.Index, 10))
-	if _, err := client.sharedHttpClient.POST(nil, client.swarmManagerHttpEndpoint+"/services/"+serviceID+"/update", query, service, nil); err != nil {
+	if _, err := client.sharedHttpClient.POST(nil, client.swarmManagerHttpEndpoint+"/services/"+serviceID+"/update", query, service, headers); err != nil {
 		return err
 	}
 
 	return nil
+}
+
+func (client *RolexDockerClient) UpdateServiceAutoOption(serviceID string, version swarm.Version, service swarm.ServiceSpec) error {
+	updateOpts := types.ServiceUpdateOptions{}
+	if service.Annotations.Labels != nil {
+		if registryAuth, ok := service.Annotations.Labels[labelRegistryAuth]; ok {
+			encodeRegistryAuth, err := EncodedRegistryAuth(registryAuth)
+			if err != nil {
+				return nil
+			}
+			updateOpts.EncodedRegistryAuth = encodeRegistryAuth
+		}
+	}
+
+	return client.UpdateService(serviceID, version, service, updateOpts)
+
 }
 
 // ScaleService update service replicas
@@ -216,7 +246,7 @@ func (client *RolexDockerClient) ScaleService(serviceID string, serviceScale Ser
 	}
 	serviceMode.Replicated.Replicas = &serviceScale.NumTasks
 
-	return client.UpdateService(service.ID, service.Version, service.Spec, nil)
+	return client.UpdateServiceAutoOption(service.ID, service.Version, service.Spec)
 }
 
 // InspectServiceWithRaw returns the service information and the raw data.
@@ -246,7 +276,7 @@ func (client *RolexDockerClient) ServiceAddLabel(serviceID string, labels map[st
 		service.Spec.Labels[k] = v
 	}
 
-	return client.UpdateService(service.ID, service.Version, service.Spec, nil)
+	return client.UpdateServiceAutoOption(service.ID, service.Version, service.Spec)
 }
 
 // revoke service permissions
@@ -260,7 +290,7 @@ func (client *RolexDockerClient) ServiceRemoveLabel(serviceID string, labels []s
 		delete(service.Spec.Labels, label)
 	}
 
-	return client.UpdateService(service.ID, service.Version, service.Spec, nil)
+	return client.UpdateServiceAutoOption(service.ID, service.Version, service.Spec)
 }
 
 func (client *RolexDockerClient) getServiceNetworkNames(networkAttachmentConfigs []swarm.NetworkAttachmentConfig) []string {
@@ -297,6 +327,12 @@ func (client *RolexDockerClient) ToRolexServiceSpec(swarmService swarm.ServiceSp
 
 	if rolexServiceSpec.EndpointSpec == nil {
 		rolexServiceSpec.EndpointSpec = &swarm.EndpointSpec{}
+	}
+
+	if rolexServiceSpec.Labels != nil {
+		if registryauth, ok := rolexServiceSpec.Labels[labelRegistryAuth]; ok {
+			rolexServiceSpec.RegistryAuth = registryauth
+		}
 	}
 
 	return rolexServiceSpec
