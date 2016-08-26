@@ -687,6 +687,9 @@
                                    data-ng-click="stackCreateByFormCtrl.create()">
                             部署
                         </md-button>
+                        <md-button class="md-raised md-primary" data-ng-disabled="staticForm.$invalid"
+                                   data-ng-click="stackCreateByFormCtrl.createAndDownload()">部署并导出
+                        </md-button>
                     </footer>
                 </form>
             </md-content>
