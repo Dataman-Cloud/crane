@@ -134,6 +134,147 @@ paths:
           schema:
             $ref: '#/definitions/GeneralErrorResponse'
 
+  /nodes/{node_id}/networks:
+    post:
+      summary: 在相应节点上创建集群网络
+      description: 创建成功返回200，创建失败返回相应错误信息
+      tags:
+        - Networks
+      parameters:
+        - name: Authorization
+          in: header
+          description: 用户token
+          required: true
+          type: string
+        - name: node_id
+          in: path
+          description: 节点 id
+          required: true
+          type: string
+        - name: body
+          in: body
+          description:  创建网络相应详细信息
+          required: true
+          schema:
+            $ref: '#/definitions/CreateNetworkOptions'
+      responses:
+        200:
+          description: 创建成功返回信息
+          schema:
+            $ref: '#/definitions/CreateNetworkOptions'
+        400:
+          description: 创建参数错误
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
+        503:
+          description: 创建失败
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
+    get:
+      summary: 获取指定节点上的network
+      description: 正确返回200，失败则返回相应错误信息
+      tags:
+        - Networks
+      parameters:
+        - name: Authorization
+          in: header
+          description: 用户token
+          required: true
+          type: string
+        - name: node_id
+          in: path
+          description: 节点 id
+          required: true
+          type: string
+      responses:
+        200:
+          description: 返回所有网络信息
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/CreateNetworkOptions'
+        400:
+          description: 过滤条件不合理
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
+        503:
+          description: 获取失败
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
+    
+  /nodes/{node_id}/networks/{network_id}:
+    get:
+      summary: 获取网络详细信息
+      description: 获取成功返回200,错误返回相应信息
+      tags:
+        - Networks
+      parameters:
+        - name: Authorization
+          in: header
+          description: 用户token
+          required: true
+          type: string
+        - name: network_id
+          in: path
+          description: 网络 id
+          required: true
+          type: string
+        - name: node_id
+          in: path
+          description: 节点 id
+          required: true
+          type: string
+      responses:
+        200:
+          description: 返回所有网络信息
+          schema:
+            $ref: '#/definitions/CreateNetworkOptions'
+        503:
+          description: 获取网络信息失败
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
+    patch:
+      summary: 连接或断开网络 
+      description: 操作成功返回200，失败返回相应信息
+      tags:
+        - Networks
+      parameters:
+        - name: Authorization
+          in: header
+          description: 用户token
+          required: true
+          type: string
+        - name: network_id
+          in: path
+          description: 网络 id
+          required: true
+          type: string
+        - name: node_id
+          in: path
+          description: 节点 id
+          required: true
+          type: string
+        - name: body
+          in: body
+          description:  断开或连接网络详细参数
+          required: true
+          schema:
+            $ref: '#/definitions/NetworkConnOrDisconn'
+      responses:
+        200:
+          description: 操作成功
+          schema:
+            $ref: '#/definitions/GeneralOkResponse'
+        400:
+          description: 操作失败
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
+        500:
+          description: 操作失败
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
+    
+
   /networks:
     post:
       summary: 在manager节点上创建集群网络
@@ -204,15 +345,14 @@ paths:
           in: path
           description: 网络 id
           required: true
-          type: integer
-          format: int64
+          type: string
       responses:
         200:
           description: 删除成功
           schema:
             $ref: '#/definitions/GeneralOkResponse'
         503:
-          description: 获取网络列表失败
+          description: 删除网络失败
           schema:
             $ref: '#/definitions/GeneralErrorResponse'
     get:
@@ -230,15 +370,14 @@ paths:
           in: path
           description: 网络 id
           required: true
-          type: integer
-          format: int64
+          type: string
       responses:
         200:
           description: 返回所有网络信息
           schema:
             $ref: '#/definitions/CreateNetworkOptions'
-        400:
-          description: 获取网络列表失败
+        503:
+          description: 获取网络信息失败
           schema:
             $ref: '#/definitions/GeneralErrorResponse'
     patch:
