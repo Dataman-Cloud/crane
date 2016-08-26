@@ -145,7 +145,21 @@ gulp.task('template-min-registry', ['template-min-network'], function () {
         .pipe(gulp.dest('dist/src/'));
 });
 
-gulp.task('template-min-misc', ['template-min-registry'], function () {
+gulp.task('template-min-registryAuth', ['template-min-registry'], function () {
+    return gulp.src('src/registry-auth/**/*.html')
+        .pipe($.minifyHtml({
+            empty: true,
+            spare: true,
+            quotes: true
+        }))
+        .pipe($.angularTemplatecache('templateCacheHtmlReAuth.js', {
+            module: 'app.registryAuth',
+            root: '/src/registry-auth'
+        }))
+        .pipe(gulp.dest('dist/src/'));
+});
+
+gulp.task('template-min-misc', ['template-min-registryAuth'], function () {
     return gulp.src('src/misc/**/*.html')
         .pipe($.minifyHtml({
             empty: true,

@@ -9,6 +9,7 @@
             'app.misc',
             'app.user',
             'app.registry',
+            'app.registryAuth',
             'app.layout'
         ]);
 })();
