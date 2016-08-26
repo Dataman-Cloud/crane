@@ -8,6 +8,7 @@
             <th md-column>容器</th>
             <th md-column>创建时间</th>
             <th md-column>更新时间</th>
+            <th md-column>异常</th>
             <th md-column>操作</th>
         </tr>
         </thead>
@@ -25,6 +26,7 @@
             </td>
             <td md-cell>{/value[0].CreatedAt | date: 'yyyy-MM-dd HH:mm:ss'/}</td>
             <td md-cell>{/value[0].UpdatedAt | date: 'yyyy-MM-dd HH:mm:ss'/}</td>
+            <td md-cell></td>
             <td md-cell>
                 <i class='fa fa-plus' ng-show="value.length > 1"
                    ng-class="{'fa-plus-square-o': !value[0].isCollapsed , 'fa-minus-square-o': value[0].isCollapsed}"
@@ -44,6 +46,7 @@
             </td>
             <td md-cell>{/task.CreatedAt | date: 'yyyy-MM-dd HH:mm:ss'/}</td>
             <td md-cell>{/task.UpdatedAt | date: 'yyyy-MM-dd HH:mm:ss'/}</td>
+            <td md-cell>{/task.Status.Err/}</td>
             <td md-cell></td>
         </tr>
         </tbody>
