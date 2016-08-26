@@ -4,7 +4,7 @@
         .config(route);
 
     /* @ngInject */
-    function route($stateProvider, $locationProvider, $interpolateProvider) {
+    function route($stateProvider) {
         $stateProvider
             .state('registry', {
                 url: '/registry',
