@@ -4,9 +4,10 @@
         .controller('ServiceUpdateCtrl', ServiceUpdateCtrl);
 
     /* @ngInject */
-    function ServiceUpdateCtrl(stackCurd, $stateParams, networkBackend, $scope, service) {
+    function ServiceUpdateCtrl(stackCurd, $stateParams, networkBackend, $scope, service, registryAuthBackend) {
         var self = this;
 
+        self.service = service;
         self.serviceLabelLength = 0;
         self.showAdvanceContent =  true;
 
@@ -22,12 +23,14 @@
         function activate() {
             ///
             self.form = formatServeToForm(service);
-            loadNetworks()
+            loadNetworks();
+            loadRegAuths();
         }
 
         function formatServeToForm(service) {
             var tempForm = {
                 "Name": "",
+                "RegistryAuth": "",
                 "Labels": {},
                 "TaskTemplate": {
                     "ContainerSpec": {
@@ -239,9 +242,16 @@
         }
 
         function loadNetworks() {
-            networkBackend.listNetwork()
+            return networkBackend.listNetwork()
                 .then(function (data) {
                     self.networks = data;
+                })
+        }
+
+        function loadRegAuths() {
+            return registryAuthBackend.listRegAuth()
+                .then(function (data) {
+                    self.regAuths = data
                 })
         }
 

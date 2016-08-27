@@ -3,6 +3,10 @@
     <div flex="80" layout="row" layout-wrap>
         <div flex="30"><h5>镜像</h5></div>
         <div flex="70"><p>{/serviceDetailCtrl.service.Spec.TaskTemplate.ContainerSpec.Image/}</p></div>
+        <div flex="30"><h5>镜像所属权限</h5></div>
+        <div flex="70">
+            <p ng-class="{'no-info': !serviceDetailCtrl.service.Spec.RegistryAuth}">{/serviceDetailCtrl.service.Spec.RegistryAuth || '未配置'/}</p>
+        </div>
         <div flex="30"><h5>任务数量</h5></div>
         <div flex="70">
             <p data-ng-if="serviceConfigCtrl.service.Spec.Mode.Replicated"

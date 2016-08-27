@@ -305,6 +305,21 @@
                         </div>
 
                         <div class="form-group" layout="column">
+                            <label>选择 RegAuth</label>
+                            <div class="form-control">
+                                <md-select data-ng-model="serve.RegistryAuth" aria-label="RegAuth"
+                                           md-on-open="stackCreateByFormCtrl.loadRegAuths()">
+                                    <md-option value="" ng-selected="true">空</md-option>
+                                    <md-option
+                                            data-ng-repeat="regAuth in stackCreateByFormCtrl.regAuths"
+                                            ng-value="regAuth.Name">{/regAuth.Name/}
+                                    </md-option>
+                                </md-select>
+                            </div>
+                            <p class="text-danger help-text"></p>
+                        </div>
+
+                        <div class="form-group" layout="column">
                             <label>选择网络</label>
                             <div class="form-control">
                                 <md-select data-ng-model="serve.Networks" multiple aria-label="Networks"

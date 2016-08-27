@@ -4,10 +4,11 @@
         .controller('StackCreateByFormCtrl', StackCreateByFormCtrl);
 
     /* @ngInject */
-    function StackCreateByFormCtrl(stackCurd, networkBackend, $scope, userBackend, $rootScope) {
+    function StackCreateByFormCtrl(stackCurd, networkBackend, $scope, userBackend, $rootScope, registryAuthBackend) {
         var self = this;
         var formTemplate = {
             "Name": "",
+            "RegistryAuth": "",
             "Labels": [],
             "TaskTemplate": {
                 "ContainerSpec": {
@@ -83,6 +84,7 @@
         self.deleteConfig = deleteConfig;
         self.modeChange = modeChange;
         self.loadNetworks = loadNetworks;
+        self.loadRegAuths = loadRegAuths;
         self.listNames = listNames;
         self.listConfigByKey = listConfigByKey;
 
@@ -171,9 +173,16 @@
         }
 
         function loadNetworks() {
-            networkBackend.listNetwork()
+            return networkBackend.listNetwork()
                 .then(function (data) {
                     self.networks = data
+                })
+        }
+
+        function loadRegAuths() {
+            return registryAuthBackend.listRegAuth()
+                .then(function (data) {
+                    self.regAuths = data
                 })
         }
 
