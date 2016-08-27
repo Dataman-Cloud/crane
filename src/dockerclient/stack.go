@@ -1,6 +1,9 @@
 package dockerclient
 
 import (
+	"bytes"
+	"encoding/base64"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"sort"
@@ -10,6 +13,7 @@ import (
 	"github.com/Dataman-Cloud/go-component/utils/dmerror"
 	"github.com/Dataman-Cloud/rolex/src/dockerclient/model"
 
+	rauth "github.com/Dataman-Cloud/go-component/registryauth"
 	docker "github.com/Dataman-Cloud/go-dockerclient"
 	log "github.com/Sirupsen/logrus"
 	"github.com/docker/engine-api/types"
@@ -18,7 +22,8 @@ import (
 )
 
 const (
-	labelNamespace = "com.docker.stack.namespace"
+	labelNamespace    = "com.docker.stack.namespace"
+	labelRegistryAuth = "dm.registry.auth"
 )
 
 const (
@@ -319,6 +324,22 @@ func (client *RolexDockerClient) deployServices(services map[string]model.RolexS
 			UpdateConfig: service.UpdateConfig,
 		}
 
+		createOpts := types.ServiceCreateOptions{}
+		updateOpts := types.ServiceUpdateOptions{}
+		if service.RegistryAuth != "" {
+			registryAuth, err := EncodedRegistryAuth(service.RegistryAuth)
+			if err != nil {
+				return nil
+			}
+			createOpts.EncodedRegistryAuth = registryAuth
+			updateOpts.EncodedRegistryAuth = registryAuth
+
+			if serviceSpec.Labels == nil {
+				serviceSpec.Labels = make(map[string]string)
+			}
+
+			serviceSpec.Annotations.Labels[labelRegistryAuth] = service.RegistryAuth
+		}
 		//TODO change service WorkingDir and User
 		//cspec := &serviceSpec.TaskTemplate.ContainerSpec
 		//if service.WorkingDir != nil {
@@ -333,19 +354,37 @@ func (client *RolexDockerClient) deployServices(services map[string]model.RolexS
 			log.Infof("Updating service %s (id %s)", name, service.ID)
 
 			// docker TODO(nishanttotla): Pass headers with X-Registry-Auth
-			if err := client.UpdateService(service.ID, service.Version, serviceSpec, nil); err != nil {
+			if err := client.UpdateService(service.ID, service.Version, serviceSpec, updateOpts); err != nil {
 				return err
 			}
 		} else {
 			log.Infof("Creating service %s", name)
-			// docker TODO(nishanttotla): Pass headers with X-Registry-Auth
-			if _, err := client.CreateService(serviceSpec, types.ServiceCreateOptions{}); err != nil {
+			if _, err := client.CreateService(serviceSpec, createOpts); err != nil {
 				return err
 			}
 		}
 	}
 
 	return nil
+}
+
+func EncodedRegistryAuth(registryAuth string) (string, error) {
+	authInfo, err := rauth.GetHubApi().Get(registryAuth)
+	if err != nil {
+		return "", nil
+	}
+
+	authConfig := docker.AuthConfiguration{
+		Username: authInfo.Username,
+		Password: authInfo.Password,
+		Email:    "",
+	}
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(authConfig); err != nil {
+		return "", err
+	}
+	return base64.URLEncoding.EncodeToString(buf.Bytes()), nil
 }
 
 // get stack labels

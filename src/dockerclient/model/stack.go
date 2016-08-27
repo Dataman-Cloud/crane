@@ -25,6 +25,7 @@ type RolexServiceSpec struct {
 	UpdateConfig *swarm.UpdateConfig `json:"UpdateConfig"`
 	Networks     []string            `json:"Networks"`
 	EndpointSpec *swarm.EndpointSpec `json:"EndpointSpec"`
+	RegistryAuth string              `json:"RegistryAuth"`
 }
 
 type RolexService struct {

@@ -69,7 +69,7 @@ func (api *Api) UpdateServiceImage(ctx *gin.Context) {
 
 	service.Spec.TaskTemplate.ContainerSpec.Image = ctx.Query("image")
 
-	if err := api.GetDockerClient().UpdateService(service.ID, service.Version, service.Spec, nil); err != nil {
+	if err := api.GetDockerClient().UpdateServiceAutoOption(service.ID, service.Version, service.Spec); err != nil {
 		dmgin.HttpErrorResponse(ctx, err)
 		return
 	}
@@ -93,7 +93,7 @@ func (api *Api) UpdateService(ctx *gin.Context) {
 		return
 	}
 
-	if err := api.GetDockerClient().UpdateService(service.ID, service.Version, serviceSpec, nil); err != nil {
+	if err := api.GetDockerClient().UpdateService(service.ID, service.Version, serviceSpec, types.ServiceUpdateOptions{}); err != nil {
 		dmgin.HttpErrorResponse(ctx, err)
 		return
 	}
