@@ -136,17 +136,17 @@ func (client *RolexDockerClient) SwarmNode(ctx context.Context) (*docker.Client,
 		}
 	}
 
-	nodeClient, err := client.createNodeClient(nodeId)
-	if err != nil {
-		return nil, err
-	}
-
 	nodeUrl, err := client.NodeDaemonUrl(nodeId)
 	if err != nil {
 		return nil, err
 	}
 
 	if err := client.VerifyNodeEndpoint(nodeId, nodeUrl); err != nil {
+		return nil, err
+	}
+
+	nodeClient, err := client.createNodeClient(nodeId)
+	if err != nil {
 		return nil, err
 	}
 
