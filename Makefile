@@ -17,7 +17,7 @@ export GO15VENDOREXPERIMENT=1
 default: build
 
 build: fmt
-	 ${BUILD_OPTS} go build -ldflags "-X version.BuildTime `date -u +.%Y%m%d.%H%M%S` -X version.Version 0.1-`git rev-parse --short HEAD`" -v -o ./bin/rolex ./src/
+	 ${BUILD_OPTS} go build -ldflags "-X version.BuildTime=`date -u +.%Y%m%d.%H%M%S` -X version.Version=0.1-`git rev-parse --short HEAD`" -v -o ./bin/rolex ./src/
 
 rel: fmt
 	${BUILD_OPTS} go build -v -o ../rel/rolex ./src/

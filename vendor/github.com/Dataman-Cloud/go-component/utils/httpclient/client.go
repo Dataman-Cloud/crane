@@ -133,7 +133,7 @@ func (cli *Client) POST(ctx context.Context, requestUrl string, query url.Values
 	}
 
 	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusCreated {
-		return nil, fmt.Errorf("http response status code is %d error: %s", resp.StatusCode, string(result))
+		return nil, fmt.Errorf("%s", parseMessage(result))
 	}
 
 	return result, nil
@@ -151,7 +151,7 @@ func (cli *Client) PUT(ctx context.Context, requestUrl string, query url.Values,
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("http response status code is %d error: %s", resp.StatusCode, string(result))
+		return nil, fmt.Errorf("%s", parseMessage(result))
 	}
 
 	return result, nil
@@ -169,7 +169,7 @@ func (cli *Client) DELETE(ctx context.Context, requestUrl string, query url.Valu
 	}
 
 	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusNoContent {
-		return nil, fmt.Errorf("http response status code is %d error: %s", resp.StatusCode, string(result))
+		return nil, fmt.Errorf("%s", parseMessage(result))
 	}
 
 	return result, nil
@@ -187,7 +187,7 @@ func (cli *Client) GET(ctx context.Context, requestUrl string, query url.Values,
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("http response status code is %d error: %s", resp.StatusCode, string(result))
+		return nil, fmt.Errorf("%s", parseMessage(result))
 	}
 
 	return result, nil
@@ -205,7 +205,7 @@ func (cli *Client) PATCH(ctx context.Context, requestUrl string, query url.Value
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("http response status code is %d error: %s", resp.StatusCode, string(result))
+		return nil, fmt.Errorf("%s", parseMessage(result))
 	}
 
 	return result, nil
@@ -307,4 +307,16 @@ func encodeData(data interface{}) (*bytes.Buffer, error) {
 		}
 	}
 	return params, nil
+}
+
+func parseMessage(result []byte) string {
+	var r struct {
+		Message string `json:"message"`
+	}
+	err := json.Unmarshal(result, &r)
+	if err != nil {
+		return string(result)
+	}
+
+	return r.Message
 }
