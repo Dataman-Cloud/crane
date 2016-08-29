@@ -17,7 +17,7 @@ services:
     environment:
       - ROLEX_IP
     volumes:
-      - ./registry_storage:/var/lib/registry
+      - ./registry_storage:/storage
       - /etc/localtime:/etc/localtime
     restart: always
   rolex:
