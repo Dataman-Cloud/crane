@@ -16,5 +16,4 @@ $(docker swarm init --advertise-addr=$ROLEX_IP &>/dev/null) || {
    echo "Swarm cluster have been running!"
 }
 
-docker-compose -p rolex -f $DOCKER_COMPOSE pull
 docker-compose -p rolex -f $DOCKER_COMPOSE up -d
