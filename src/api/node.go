@@ -121,17 +121,3 @@ func (api *Api) Info(ctx *gin.Context) {
 	dmgin.HttpOkResponse(ctx, info)
 	return
 }
-
-func (api *Api) UpdateEndpoint(ctx *gin.Context) {
-	nodeId := ctx.Param("node_id")
-	endpoint := ctx.Param("endpoint")
-	if err := api.GetDockerClient().UpdateNodeEndpoint(nodeId, endpoint); err != nil {
-		log.Errorf("Update node %s endpoint  to %s got error: %s", nodeId, endpoint, err.Error())
-		dmgin.HttpErrorResponse(ctx, err)
-		return
-	}
-
-	dmgin.HttpOkResponse(ctx, "success")
-	return
-
-}

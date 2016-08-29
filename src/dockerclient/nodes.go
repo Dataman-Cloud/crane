@@ -25,6 +25,7 @@ const (
 	flagLabelAdd           = "label-add"
 	flagLabelRemove        = "label-rm"
 	flagLabelUpdate        = "label-update"
+	flagEndpointUpdate     = "endpoint-update"
 )
 
 const (
@@ -35,7 +36,7 @@ const (
 )
 
 const (
-	labelNodeEndpoint = "dm.swarm.node.endpoint"
+	labelNodeEndpoint = "dm.reserved.node.endpoint"
 )
 
 // NodeList returns the list of nodes.
@@ -111,6 +112,10 @@ func (client *RolexDockerClient) UpdateNode(nodeId string, opts model.UpdateOpti
 		}
 	case flagLabelUpdate:
 		if err := nodeUpdateLabels(spec, opts.Options); err != nil {
+			return err
+		}
+	case flagEndpointUpdate:
+		if err := client.nodeUpdateEndpoint(nodeId, spec, opts.Options); err != nil {
 			return err
 		}
 	default:
@@ -200,6 +205,32 @@ func nodeRemoveLabels(spec *swarm.NodeSpec, rawMessage []byte) error {
 	return nil
 }
 
+func (client *RolexDockerClient) nodeUpdateEndpoint(nodeId string, spec *swarm.NodeSpec, rawMessage []byte) error {
+	var endpoint string
+	if err := json.Unmarshal(rawMessage, &endpoint); err != nil {
+		return err
+	}
+
+	nodeUrl, err := parseEndpoint(endpoint)
+	if err != nil {
+		return &dmerror.DmError{
+			Code: CodeGetNodeEndpointError,
+			Err:  &rolexerror.NodeConnError{ID: nodeId, Err: fmt.Errorf("update endpoint failed: %s", err.Error())},
+		}
+	}
+
+	if err := client.VerifyNodeEndpoint(nodeId, nodeUrl); err != nil {
+		return err
+	}
+
+	if spec.Annotations.Labels == nil {
+		spec.Annotations.Labels = make(map[string]string)
+	}
+
+	spec.Annotations.Labels[labelNodeEndpoint] = endpoint
+	return nil
+}
+
 // docker info
 func (client *RolexDockerClient) Info(ctx context.Context) (*docker.DockerInfo, error) {
 	swarmNode, err := client.SwarmNode(ctx)
@@ -243,40 +274,4 @@ func parseEndpoint(endpoint string) (*url.URL, error) {
 	}
 
 	return u, nil
-}
-
-func (client *RolexDockerClient) UpdateNodeEndpoint(nodeId, endpoint string) error {
-	nodeUrl, err := parseEndpoint(endpoint)
-	if err != nil {
-		return &dmerror.DmError{
-			Code: CodeGetNodeEndpointError,
-			Err:  &rolexerror.NodeConnError{ID: nodeId, Err: fmt.Errorf("update endpoint failed: %s", err.Error())},
-		}
-	}
-
-	if err := client.VerifyNodeEndpoint(nodeId, nodeUrl); err != nil {
-		return err
-	}
-
-	node, err := client.InspectNode(nodeId)
-	if err != nil {
-		return err
-	}
-
-	spec := &node.Spec
-
-	if spec.Annotations.Labels == nil {
-		spec.Annotations.Labels = make(map[string]string)
-	}
-
-	spec.Annotations.Labels[labelNodeEndpoint] = endpoint
-	query := url.Values{}
-	query.Set("version", strconv.FormatUint(node.Version.Index, 10))
-	_, err = client.sharedHttpClient.POST(nil, client.swarmManagerHttpEndpoint+"/"+path.Join("nodes", nodeId, "update"), query, node.Spec, nil)
-	if err != nil {
-		return err
-	}
-
-	return nil
-
 }
