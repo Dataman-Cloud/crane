@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	PERMISSION_LABEL_PREFIX = "com.rolex.permissions"
+	PERMISSION_LABEL_PREFIX = "dm.reserved.permissions"
 )
 
 type Permission struct {

@@ -23,7 +23,7 @@ import (
 
 const (
 	labelNamespace    = "com.docker.stack.namespace"
-	labelRegistryAuth = "dm.registry.auth"
+	LabelRegistryAuth = "dm.reserved.registry.auth"
 )
 
 const (
@@ -338,7 +338,7 @@ func (client *RolexDockerClient) deployServices(services map[string]model.RolexS
 				serviceSpec.Labels = make(map[string]string)
 			}
 
-			serviceSpec.Annotations.Labels[labelRegistryAuth] = service.RegistryAuth
+			serviceSpec.Annotations.Labels[LabelRegistryAuth] = service.RegistryAuth
 		}
 		//TODO change service WorkingDir and User
 		//cspec := &serviceSpec.TaskTemplate.ContainerSpec
