@@ -19,7 +19,8 @@
                     "Dir": "",//目录
                     "User": "",
                     "Mounts": [],//挂载
-                    "StopGracePeriod": null //杀死容器前等待时间
+                    "StopGracePeriod": null, //杀死容器前等待时间
+                    "Args": []
                 },
                 "Resources": {
                     "Limits": {
@@ -149,6 +150,9 @@
                 },
                 Cmd: {
                     command: ''
+                },
+                Args: {
+                    arg: ''
                 }
             };
 
@@ -222,6 +226,10 @@
 
                 angular.forEach(item.TaskTemplate.ContainerSpec.Command, function (cmd, index, array) {
                     array[index] = cmd.command
+                });
+
+                angular.forEach(item.TaskTemplate.ContainerSpec.Args, function (arg, index, array) {
+                    array[index] = arg.arg
                 });
 
                 item.Labels = serveLabels;

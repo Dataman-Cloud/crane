@@ -644,7 +644,7 @@
                             <div class="sub-button">
                                 <md-button class="md-raised md-success md-small"
                                            data-ng-click="stackCreateByFormCtrl.addConfig(serve.TaskTemplate.ContainerSpec.Command, 'Cmd')">
-                                  <i class='fa fa-plus'></i>   CMD
+                                  <i class='fa fa-plus'></i>   Command
                                 </md-button>
                             </div>
                             <div data-ng-repeat="cmd in serve.TaskTemplate.ContainerSpec.Command track by $index">
@@ -666,6 +666,39 @@
                                     <p class="text-danger help-text"
                                        ng-message="pattern">
                                         <small>CMD 不能包含中文</small>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" layout="column">
+                            <label>Args</small>
+                            </label>
+                            <div class="sub-button">
+                                <md-button class="md-raised md-success md-small"
+                                           data-ng-click="stackCreateByFormCtrl.addConfig(serve.TaskTemplate.ContainerSpec.Args, 'Args')">
+                                    <i class='fa fa-plus'></i>   Args
+                                </md-button>
+                            </div>
+                            <div data-ng-repeat="arg in serve.TaskTemplate.ContainerSpec.Args track by $index">
+                                <ng-form name="argForm">
+                                    <div class="form-control sub-group" layout="row" layout-align="start center">
+                                        <input type="text" flex="40"
+                                               data-ng-model="arg.arg" data-required="required"
+                                               name="argInput">
+
+                                        <md-button class="md-icon-button md-primary" aria-label="trash"
+                                                   data-ng-click="stackCreateByFormCtrl.deleteConfig($index, serve.TaskTemplate.ContainerSpec.Args)">
+                                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                        </md-button>
+                                    </div>
+                                </ng-form>
+                                <div ng-messages="argForm.argInput.$error"
+                                     ng-if="argForm.argInput.$dirty"
+                                     role="alert">
+                                    <p class="text-danger help-text"
+                                       ng-message="pattern">
+                                        <small>Args 不能包含中文</small>
                                     </p>
                                 </div>
                             </div>

@@ -5,7 +5,8 @@
         <div flex="70"><p>{/serviceDetailCtrl.service.Spec.TaskTemplate.ContainerSpec.Image/}</p></div>
         <div flex="30"><h5>镜像所属权限</h5></div>
         <div flex="70">
-            <p ng-class="{'no-info': !serviceDetailCtrl.service.Spec.RegistryAuth}">{/serviceDetailCtrl.service.Spec.RegistryAuth || '未配置'/}</p>
+            <p ng-class="{'no-info': !serviceDetailCtrl.service.Spec.RegistryAuth}">
+                {/serviceDetailCtrl.service.Spec.RegistryAuth || '未配置'/}</p>
         </div>
         <div flex="30"><h5>任务数量</h5></div>
         <div flex="70">
@@ -273,6 +274,23 @@
 
             <tr ng-repeat="cmd in serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Command">
                 <td>{/cmd/}</td>
+            </tr>
+        </table>
+    </div>
+</section>
+
+<section layout="row" class="info-list-detail"
+         ng-show="serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Args">
+    <h2 flex="20">Args</h2>
+    <div flex="80" layout="row" layout-wrap>
+        <table cellpadding="0" cellspacing="0"
+               dm-empty-display="serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Args">
+            <tr>
+                <th>Args</th>
+            </tr>
+
+            <tr ng-repeat="arg in serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Args">
+                <td>{/arg/}</td>
             </tr>
         </table>
     </div>
