@@ -23,7 +23,7 @@ import (
 
 const (
 	labelNamespace    = "com.docker.stack.namespace"
-	LabelRegistryAuth = "dm.registry.auth"
+	LabelRegistryAuth = "dm.reserved.registry.auth"
 )
 
 const (

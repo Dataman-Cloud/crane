@@ -79,7 +79,7 @@ func (api *Api) UpdateServiceImage(ctx *gin.Context) {
 }
 
 // update single service
-// notice update service api only update servcie spec
+// notice update service api only update service spec
 // if network does not exist return error and don't add default label about stack and registry auth
 func (api *Api) UpdateService(ctx *gin.Context) {
 	var rolexServiceSpec model.RolexServiceSpec
