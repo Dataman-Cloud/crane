@@ -1,9 +1,6 @@
 package dockerclient
 
 import (
-	"bytes"
-	"encoding/base64"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"sort"
@@ -13,22 +10,11 @@ import (
 	"github.com/Dataman-Cloud/go-component/utils/dmerror"
 	"github.com/Dataman-Cloud/rolex/src/dockerclient/model"
 
-	rauth "github.com/Dataman-Cloud/go-component/registryauth"
 	docker "github.com/Dataman-Cloud/go-dockerclient"
 	log "github.com/Sirupsen/logrus"
 	"github.com/docker/engine-api/types"
 	"github.com/docker/engine-api/types/filters"
 	"github.com/docker/engine-api/types/swarm"
-)
-
-const (
-	labelNamespace    = "com.docker.stack.namespace"
-	LabelRegistryAuth = "dm.reserved.registry.auth"
-)
-
-const (
-	CodeInvalidStackName = "503-11502"
-	CodeStackNotFound    = "404-11503"
 )
 
 type Stacks []Stack
@@ -71,7 +57,7 @@ func (client *RolexDockerClient) DeployStack(bundle *model.Bundle) error {
 }
 
 // list all stack
-func (client *RolexDockerClient) ListStack() ([]Stack, error) {
+func (client *RolexDockerClient) ListStack() (Stacks, error) {
 	filter := filters.NewArgs()
 	filter.Add("label", labelNamespace)
 	services, err := client.ListServiceSpec(types.ServiceListOptions{Filter: filter})
@@ -99,7 +85,7 @@ func (client *RolexDockerClient) ListStack() ([]Stack, error) {
 		}
 	}
 
-	var stacks []Stack
+	var stacks Stacks
 	for _, stack := range stackMap {
 		stackServices, err := client.ListStackService(stack.Namespace, types.ServiceListOptions{})
 		if err == nil {
@@ -107,7 +93,7 @@ func (client *RolexDockerClient) ListStack() ([]Stack, error) {
 		}
 		stacks = append(stacks, *stack)
 	}
-	sort.Sort(Stacks(stacks))
+	sort.Sort(stacks)
 
 	return stacks, nil
 }
@@ -366,25 +352,6 @@ func (client *RolexDockerClient) deployServices(services map[string]model.RolexS
 	}
 
 	return nil
-}
-
-func EncodedRegistryAuth(registryAuth string) (string, error) {
-	authInfo, err := rauth.GetHubApi().Get(registryAuth)
-	if err != nil {
-		return "", nil
-	}
-
-	authConfig := docker.AuthConfiguration{
-		Username: authInfo.Username,
-		Password: authInfo.Password,
-		Email:    "",
-	}
-
-	var buf bytes.Buffer
-	if err := json.NewEncoder(&buf).Encode(authConfig); err != nil {
-		return "", err
-	}
-	return base64.URLEncoding.EncodeToString(buf.Bytes()), nil
 }
 
 // get stack labels

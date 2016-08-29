@@ -25,7 +25,7 @@ func (t Tasks) Less(i, j int) bool {
 }
 
 // TaskList returns the list of tasks.
-func (client *RolexDockerClient) ListTasks(options types.TaskListOptions) ([]swarm.Task, error) {
+func (client *RolexDockerClient) ListTasks(options types.TaskListOptions) (Tasks, error) {
 	query := url.Values{}
 
 	if options.Filter.Len() > 0 {
@@ -37,7 +37,7 @@ func (client *RolexDockerClient) ListTasks(options types.TaskListOptions) ([]swa
 		query.Set("filters", filterJSON)
 	}
 
-	var tasks []swarm.Task
+	var tasks Tasks
 	content, err := client.sharedHttpClient.GET(nil, client.swarmManagerHttpEndpoint+"/tasks", query, nil)
 	if err != nil {
 		return tasks, err
@@ -47,7 +47,7 @@ func (client *RolexDockerClient) ListTasks(options types.TaskListOptions) ([]swa
 		return tasks, err
 	}
 
-	sort.Sort(Tasks(tasks))
+	sort.Sort(tasks)
 
 	return tasks, nil
 }

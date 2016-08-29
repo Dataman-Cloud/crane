@@ -9,17 +9,6 @@ import (
 	"golang.org/x/net/context"
 )
 
-const (
-	defaultNetworkDriver = "overlay"
-)
-
-const (
-	CodeNetworkPredefined          = "403-11206"
-	CodeNetworkNotFound            = "404-11207"
-	CodeNetworkOrContainerNotFound = "404-11208"
-	CodeInvalidNetworkName         = "503-11209"
-)
-
 func (client *RolexDockerClient) ConnectNetwork(id string, opts docker.NetworkConnectionOptions) error {
 	return client.SwarmManager().ConnectNetwork(id, opts)
 }

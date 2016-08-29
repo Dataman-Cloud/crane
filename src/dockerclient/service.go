@@ -9,29 +9,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Dataman-Cloud/rolex/src/dockerclient/model"
-
 	log "github.com/Sirupsen/logrus"
 	"github.com/docker/engine-api/types"
 	"github.com/docker/engine-api/types/filters"
 	"github.com/docker/engine-api/types/swarm"
-)
-
-const (
-	TaskRunningState = "running"
-)
-
-const (
-	//Service error code
-	CodeInvalidServiceNanoCPUs     = "503-11404"
-	CodeInvalidServiceDelay        = "503-11405"
-	CodeInvalidServiceWindow       = "503-11406"
-	CodeInvalidServiceEndpoint     = "503-11407"
-	CodeInvalidServicePlacement    = "503-11408"
-	CodeInvalidServiceMemoryBytes  = "503-11409"
-	CodeInvalidServiceUpdateConfig = "503-11410"
-	CodeInvalidServiceSpec         = "503-11411"
-	CodeInvalidServiceName         = "503-11412"
 )
 
 var (
@@ -306,34 +287,4 @@ func (client *RolexDockerClient) getServiceNetworkNames(networkAttachmentConfigs
 	}
 
 	return networkNameList
-}
-
-// convert swarm service to bundle service
-func (client *RolexDockerClient) ToRolexServiceSpec(swarmService swarm.ServiceSpec) model.RolexServiceSpec {
-	networks := client.getServiceNetworkNames(swarmService.Networks)
-	rolexServiceSpec := model.RolexServiceSpec{
-		Name:         swarmService.Name,
-		Labels:       swarmService.Labels,
-		TaskTemplate: swarmService.TaskTemplate,
-		Mode:         swarmService.Mode,
-		Networks:     networks,
-		UpdateConfig: swarmService.UpdateConfig,
-		EndpointSpec: swarmService.EndpointSpec,
-	}
-
-	if rolexServiceSpec.UpdateConfig == nil {
-		rolexServiceSpec.UpdateConfig = &swarm.UpdateConfig{}
-	}
-
-	if rolexServiceSpec.EndpointSpec == nil {
-		rolexServiceSpec.EndpointSpec = &swarm.EndpointSpec{}
-	}
-
-	if rolexServiceSpec.Labels != nil {
-		if registryauth, ok := rolexServiceSpec.Labels[LabelRegistryAuth]; ok {
-			rolexServiceSpec.RegistryAuth = registryauth
-		}
-	}
-
-	return rolexServiceSpec
 }

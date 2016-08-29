@@ -6,11 +6,9 @@ import (
 	"net/url"
 	"path"
 	"strconv"
-	"strings"
 
 	"github.com/Dataman-Cloud/go-component/utils/dmerror"
 	"github.com/Dataman-Cloud/rolex/src/model"
-	"github.com/Dataman-Cloud/rolex/src/util/config"
 	"github.com/Dataman-Cloud/rolex/src/util/rolexerror"
 
 	docker "github.com/Dataman-Cloud/go-dockerclient"
@@ -26,17 +24,6 @@ const (
 	flagLabelRemove        = "label-rm"
 	flagLabelUpdate        = "label-update"
 	flagEndpointUpdate     = "endpoint-update"
-)
-
-const (
-	CodeErrorUpdateNodeMethod = "503-11302"
-	CodeErrorNodeRole         = "503-11303"
-	CodeErrorNodeAvailability = "503-11304"
-	CodeGetNodeInfoError      = "503-11305"
-)
-
-const (
-	labelNodeEndpoint = "dm.reserved.node.endpoint"
 )
 
 // NodeList returns the list of nodes.
@@ -255,23 +242,4 @@ func (client *RolexDockerClient) NodeDaemonUrl(nodeId string) (*url.URL, error) 
 	}
 
 	return parseEndpoint(endpoint)
-}
-
-func parseEndpoint(endpoint string) (*url.URL, error) {
-	conf := config.GetConfig()
-	if !strings.Contains(endpoint, "://") {
-		endpoint = conf.DockerEntryScheme + "://" + endpoint
-	}
-
-	u, err := url.Parse(endpoint)
-
-	if err != nil {
-		return nil, err
-	}
-
-	if !strings.Contains(u.Host, ":") {
-		u.Host = u.Host + ":" + conf.DockerEntryPort
-	}
-
-	return u, nil
 }
