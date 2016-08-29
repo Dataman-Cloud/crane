@@ -18,6 +18,7 @@
             getNodesMapping: getNodesMapping,
             drainNode: drainNode,
             activeNode: activeNode,
+            deleteNode: deleteNode,
             pauseNode: pauseNode,
             createNetwork: createNetwork,
             updateEndpoint: updateEndpoint,
@@ -122,6 +123,16 @@
                 nodeBackend.handleNode(nodeId, "availability", 'active')
                     .then(function (data) {
                         Notification.success('激活成功');
+                        $state.reload()
+                    })
+            });
+        }
+
+        function deleteNode(nodeId) {
+            confirmModal.open("是否确认删除该主机？").then(function () {
+                nodeBackend.deleteNode(nodeId)
+                    .then(function (data) {
+                        Notification.success('主机删除成功');
                         $state.reload()
                     })
             });

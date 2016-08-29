@@ -13,6 +13,7 @@
         self.drainNode = drainNode;
         self.activeNode = activeNode;
         self.pauseNode = pauseNode;
+        self.deleteNode = deleteNode;
         self.updateEndpoint = updateEndpoint;
         self.updateLabels = updateLabels;
 
@@ -32,6 +33,10 @@
 
         function pauseNode(nodeId) {
             nodeCurd.pauseNode(nodeId)
+        }
+
+        function deleteNode(nodeId) {
+            nodeCurd.deleteNode(nodeId)
         }
 
         function updateEndpoint(nodeId, env, labels) {

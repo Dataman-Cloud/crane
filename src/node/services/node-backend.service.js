@@ -9,6 +9,7 @@
         return {
             listNodes: listNodes,
             getNode: getNode,
+            deleteNode: deleteNode,
             handleNode: handleNode,
             getManagerInfo: getManagerInfo,
             createVolume: createVolume,
@@ -38,6 +39,10 @@
 
         function getNode(nodeId) {
             return gHttp.Resource('node.nodeInfo', {node_id: nodeId}).get();
+        }
+
+        function deleteNode(nodeId) {
+            return gHttp.Resource('node.node', {node_id: nodeId}).delete();
         }
 
         function getManagerInfo() {

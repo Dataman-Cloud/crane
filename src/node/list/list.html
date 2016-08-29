@@ -75,6 +75,13 @@
                                 <md-tooltip md-direction="left">暂停调度后新的任务将不再被分配到该主机，但已经发布到该主机上的任务不会受到影响</md-tooltip>
                             </md-button>
                         </md-menu-item>
+                        <md-menu-item>
+                            <md-button aria-label="delete"
+                                       data-ng-disabled="node.Status.State !== 'Down'"
+                                       data-ng-click="nodeListCtrl.deleteNode(node.ID)">删除主机
+                                <md-tooltip md-direction="left">删除主机，注意只有状态为Down的主机才能被删除</md-tooltip>
+                            </md-button>
+                        </md-menu-item>
                     </md-menu-content>
                 </md-menu>
             </td>
