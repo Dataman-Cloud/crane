@@ -127,6 +127,94 @@
                 }
             }
         },
+        "/stacks/{namespace}": {
+            "get": {
+                "summary": "查询指定应用以及应用包含所有服务的信息",
+                "description": "查询指定应用以及应用包含所有服的相关信息",
+                "tags": [
+                    "Stacks"
+                ],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "用户token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "namespace",
+                        "in": "path",
+                        "description": "应用名称",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "指定应用和所包含服务的信息",
+                        "schema": {
+                            "$ref": "#/definitions/Bundle"
+                        }
+                    },
+                    "401": {
+                        "description": "token 验证失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    },
+                    "503": {
+                        "description": "查询失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "删除指定应用",
+                "description": "删除指定应用,以及应用所包含的服务和网络",
+                "tags": [
+                    "Stacks"
+                ],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "用户token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "namespace",
+                        "in": "path",
+                        "description": "应用名称",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "指定应用和所包含服务的信息",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralOkResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "token 验证失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    },
+                    "503": {
+                        "description": "查询失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/login": {
             "post": {
                 "summary": "通过用户邮箱和密码登陆系统, 登陆成功返回token",
@@ -186,6 +274,420 @@
                     },
                     "401": {
                         "description": "登录失败, 返回相应的errorcode 和错误信息",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/nodes/{node_id}/networks": {
+            "post": {
+                "summary": "在相应节点上创建集群网络",
+                "description": "创建成功返回200，创建失败返回相应错误信息",
+                "tags": [
+                    "Networks"
+                ],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "用户token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "node_id",
+                        "in": "path",
+                        "description": "节点 id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "创建网络相应详细信息",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CreateNetworkOptions"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "创建成功返回信息",
+                        "schema": {
+                            "$ref": "#/definitions/CreateNetworkOptions"
+                        }
+                    },
+                    "400": {
+                        "description": "创建参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    },
+                    "503": {
+                        "description": "创建失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    }
+                }
+            },
+            "get": {
+                "summary": "获取指定节点上的network",
+                "description": "正确返回200，失败则返回相应错误信息",
+                "tags": [
+                    "Networks"
+                ],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "用户token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "node_id",
+                        "in": "path",
+                        "description": "节点 id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回所有网络信息",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/CreateNetworkOptions"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "过滤条件不合理",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    },
+                    "503": {
+                        "description": "获取失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/nodes/{node_id}/networks/{network_id}": {
+            "get": {
+                "summary": "获取网络详细信息",
+                "description": "获取成功返回200,错误返回相应信息",
+                "tags": [
+                    "Networks"
+                ],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "用户token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "network_id",
+                        "in": "path",
+                        "description": "网络 id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "node_id",
+                        "in": "path",
+                        "description": "节点 id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回所有网络信息",
+                        "schema": {
+                            "$ref": "#/definitions/CreateNetworkOptions"
+                        }
+                    },
+                    "503": {
+                        "description": "获取网络信息失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "summary": "连接或断开网络",
+                "description": "操作成功返回200，失败返回相应信息",
+                "tags": [
+                    "Networks"
+                ],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "用户token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "network_id",
+                        "in": "path",
+                        "description": "网络 id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "node_id",
+                        "in": "path",
+                        "description": "节点 id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "断开或连接网络详细参数",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/NetworkConnOrDisconn"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "操作成功",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralOkResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "操作失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "操作失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/networks": {
+            "post": {
+                "summary": "在manager节点上创建集群网络",
+                "description": "创建成功返回200，创建失败返回相应错误信息",
+                "tags": [
+                    "Networks"
+                ],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "用户token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "创建网络相应详细信息",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CreateNetworkOptions"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "创建成功返回信息",
+                        "schema": {
+                            "$ref": "#/definitions/CreateNetworkOptions"
+                        }
+                    },
+                    "400": {
+                        "description": "创建参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    },
+                    "503": {
+                        "description": "创建失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    }
+                }
+            },
+            "get": {
+                "summary": "获取manager节点上所有的网络",
+                "description": "或许成功返回200，或许失败返回相应信息",
+                "tags": [
+                    "Networks"
+                ],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "用户token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回所有网络信息",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/CreateNetworkOptions"
+                            }
+                        }
+                    },
+                    "503": {
+                        "description": "获取网络列表失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/networks/{network_id}": {
+            "delete": {
+                "summary": "删除manager节点集群网络",
+                "description": "删除成功返回200，失败返回相应错误信息",
+                "tags": [
+                    "Networks"
+                ],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "用户token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "network_id",
+                        "in": "path",
+                        "description": "网络 id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "删除成功",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralOkResponse"
+                        }
+                    },
+                    "503": {
+                        "description": "删除网络失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    }
+                }
+            },
+            "get": {
+                "summary": "获取网络详细信息",
+                "description": "获取成功返回200,错误返回相应信息",
+                "tags": [
+                    "Networks"
+                ],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "用户token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "network_id",
+                        "in": "path",
+                        "description": "网络 id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回所有网络信息",
+                        "schema": {
+                            "$ref": "#/definitions/CreateNetworkOptions"
+                        }
+                    },
+                    "503": {
+                        "description": "获取网络信息失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "summary": "连接或断开网络",
+                "description": "操作成功返回200，失败返回相应信息",
+                "tags": [
+                    "Networks"
+                ],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "用户token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "network_id",
+                        "in": "path",
+                        "description": "网络 id",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "断开或连接网络详细参数",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/NetworkConnOrDisconn"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "操作成功",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralOkResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "操作失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "操作失败",
                         "schema": {
                             "$ref": "#/definitions/GeneralErrorResponse"
                         }
@@ -280,7 +782,8 @@
                 "Mode",
                 "UpdateConfig",
                 "Networks",
-                "EndpointSpec"
+                "EndpointSpec",
+                "RegistryAuth"
             ],
             "properties": {
                 "Name": {
@@ -313,6 +816,10 @@
                 },
                 "EndpointSpec": {
                     "$ref": "#/definitions/EndpointSpec"
+                },
+                "RegistryAuth": {
+                    "description": "指定镜像仓库配置名称",
+                    "type": "string"
                 }
             }
         },
@@ -808,6 +1315,169 @@
                     "description": "服务预留内存资源(计划任务数*单个任务内存预留)",
                     "type": "integer",
                     "format": "int32"
+                }
+            }
+        },
+        "CreateNetworkOptions": {
+            "description": "创建网络详细配置",
+            "type": "object",
+            "required": [
+                "Name"
+            ],
+            "properties": {
+                "Name": {
+                    "type": "string",
+                    "description": "网络名称"
+                },
+                "CheckDuplicate": {
+                    "type": "boolean",
+                    "description": "检查是否有相同名字的network"
+                },
+                "Driver": {
+                    "type": "string",
+                    "description": "网络驱动"
+                },
+                "IPAM": {
+                    "type": "object",
+                    "properties": {
+                        "Driver": {
+                            "type": "string",
+                            "description": "驱动"
+                        },
+                        "Config": {
+                            "type": "array",
+                            "description": "配置",
+                            "items": {
+                                "type": "object",
+                                "description": "ipam配置",
+                                "properties": {
+                                    "Subnet": {
+                                        "type": "string",
+                                        "description": "分支网络格式段"
+                                    },
+                                    "IPRange": {
+                                        "type": "string",
+                                        "description": "从sub-range分配给容器的ip"
+                                    },
+                                    "Gateway": {
+                                        "type": "string",
+                                        "description": "网关"
+                                    },
+                                    "AuxAddress": {
+                                        "type": "object",
+                                        "description": "网络驱动辅助地址"
+                                    }
+                                }
+                            }
+                        },
+                        "Options": {
+                            "type": "object",
+                            "description": "网络驱动特定配置"
+                        },
+                        "Labels": {
+                            "type": "object",
+                            "description": "网络标签"
+                        },
+                        "Internal": {
+                            "type": "boolean",
+                            "description": "内部网络"
+                        },
+                        "EnableIPv6": {
+                            "type": "boolean",
+                            "description": "开启ipv6"
+                        }
+                    }
+                }
+            }
+        },
+        "NetworkConnOrDisconn": {
+            "type": "object",
+            "properties": {
+                "Method": {
+                    "type": "string",
+                    "description": "connect/disconnect"
+                },
+                "NetworkOptions": {
+                    "type": "object",
+                    "$ref": "#/definitions/NetworkConnectionOptions"
+                }
+            }
+        },
+        "NetworkConnectionOptions": {
+            "description": "连接网络配置",
+            "type": "object",
+            "required": [
+                "Container"
+            ],
+            "properties": {
+                "Container": {
+                    "type": "string",
+                    "description": "容器id"
+                },
+                "EndpointConfig": {
+                    "type": "object",
+                    "description": "配置",
+                    "properties": {
+                        "IPAMConfig": {
+                            "type": "object",
+                            "description": "ipam配置",
+                            "properties": {
+                                "IPv4Address": {
+                                    "type": "string",
+                                    "description": "ipv4地址"
+                                },
+                                "IPv6Address": {
+                                    "type": "string",
+                                    "description": "ipv6配置"
+                                }
+                            }
+                        },
+                        "Links": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "Aliases": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "NetworkID": {
+                            "type": "string",
+                            "description": "网络id"
+                        },
+                        "EndpointID": {
+                            "type": "string"
+                        },
+                        "Gateway": {
+                            "type": "string"
+                        },
+                        "IPAddress": {
+                            "type": "string"
+                        },
+                        "IPPrefixLen": {
+                            "type": "integer",
+                            "format": "int64"
+                        },
+                        "IPv6Gateway": {
+                            "type": "string"
+                        },
+                        "GlobalIPv6Address": {
+                            "type": "string"
+                        },
+                        "GlobalIPv6PrefixLen": {
+                            "type": "integer",
+                            "format": "int64"
+                        },
+                        "MacAddress": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "Force": {
+                    "type": "boolean"
                 }
             }
         }
