@@ -298,3 +298,21 @@ Availability: drain/active/pause
     "data": "success"
   }
 ```
+
+
+###Remove a node with status `Down`
+
+**Request update labels**
+
+```
+   curl -v -X DELETE http://localhost:5013/api/v1/nodes/$NODE_ID -H Content-Type:application/json 
+```
+
+** Response **
+
+```
+{
+  "code": 0,
+  "data": "success"
+}
+```
