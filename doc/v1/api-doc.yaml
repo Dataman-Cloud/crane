@@ -88,6 +88,66 @@ paths:
           schema:
             $ref: '#/definitions/GeneralErrorResponse'
 
+  /stacks/{namespace}:
+    get:
+      summary: 查询指定应用以及应用包含所有服务的信息
+      description: 查询指定应用以及应用包含所有服的相关信息
+      tags:
+        - Stacks
+      parameters:
+        - name: Authorization
+          in: header
+          description: 用户token
+          required: true
+          type: string
+        - name: namespace
+          in: path
+          description: 应用名称
+          required: true
+          type: string
+      responses:
+        200:
+          description: 指定应用和所包含服务的信息
+          schema:
+            $ref: '#/definitions/Bundle'
+        401:
+          description: token 验证失败
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
+        503:
+          description: 查询失败
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
+            
+    delete:
+      summary: 删除指定应用
+      description: 删除指定应用,以及应用所包含的服务和网络
+      tags:
+        - Stacks
+      parameters:
+        - name: Authorization
+          in: header
+          description: 用户token
+          required: true
+          type: string
+        - name: namespace
+          in: path
+          description: 应用名称
+          required: true
+          type: string
+      responses:
+        200:
+          description: 指定应用和所包含服务的信息
+          schema:
+            $ref: '#/definitions/GeneralOkResponse'
+        401:
+          description: token 验证失败
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
+        503:
+          description: 查询失败
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
 
   /login:
     post:
@@ -486,6 +546,7 @@ definitions:
       - UpdateConfig
       - Networks
       - EndpointSpec
+      - RegistryAuth
     properties:
       Name:
         type: string
@@ -509,6 +570,9 @@ definitions:
           type: string
       EndpointSpec:
         $ref: '#/definitions/EndpointSpec'
+      RegistryAuth:
+        description: 指定镜像仓库配置名称
+        type: string
 
   TaskSpec:
     description: 创建任务需要的静态参数
