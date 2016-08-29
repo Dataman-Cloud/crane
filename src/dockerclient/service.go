@@ -220,7 +220,7 @@ func (client *RolexDockerClient) UpdateService(serviceID string, version swarm.V
 func (client *RolexDockerClient) UpdateServiceAutoOption(serviceID string, version swarm.Version, service swarm.ServiceSpec) error {
 	updateOpts := types.ServiceUpdateOptions{}
 	if service.Annotations.Labels != nil {
-		if registryAuth, ok := service.Annotations.Labels[labelRegistryAuth]; ok {
+		if registryAuth, ok := service.Annotations.Labels[LabelRegistryAuth]; ok {
 			encodeRegistryAuth, err := EncodedRegistryAuth(registryAuth)
 			if err != nil {
 				return nil
@@ -330,7 +330,7 @@ func (client *RolexDockerClient) ToRolexServiceSpec(swarmService swarm.ServiceSp
 	}
 
 	if rolexServiceSpec.Labels != nil {
-		if registryauth, ok := rolexServiceSpec.Labels[labelRegistryAuth]; ok {
+		if registryauth, ok := rolexServiceSpec.Labels[LabelRegistryAuth]; ok {
 			rolexServiceSpec.RegistryAuth = registryauth
 		}
 	}

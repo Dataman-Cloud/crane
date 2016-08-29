@@ -78,10 +78,13 @@ func (api *Api) UpdateServiceImage(ctx *gin.Context) {
 	return
 }
 
+// update single service
+// notice update service api only update servcie spec
+// if network does not exist return error and don't add default label about stack and registry auth
 func (api *Api) UpdateService(ctx *gin.Context) {
-	var serviceSpec swarm.ServiceSpec
+	var rolexServiceSpec model.RolexServiceSpec
 
-	if err := ctx.BindJSON(&serviceSpec); err != nil {
+	if err := ctx.BindJSON(&rolexServiceSpec); err != nil {
 		rerror := dmerror.NewError(CodeUpdateServiceParamError, err.Error())
 		dmgin.HttpErrorResponse(ctx, rerror)
 		return
@@ -93,7 +96,43 @@ func (api *Api) UpdateService(ctx *gin.Context) {
 		return
 	}
 
-	if err := api.GetDockerClient().UpdateService(service.ID, service.Version, serviceSpec, types.ServiceUpdateOptions{}); err != nil {
+	netAttachConfigs := []swarm.NetworkAttachmentConfig{}
+	for _, network := range rolexServiceSpec.Networks {
+		netAttachConfigs = append(netAttachConfigs, swarm.NetworkAttachmentConfig{
+			Target:  network,
+			Aliases: []string{rolexServiceSpec.Name},
+		})
+
+	}
+
+	swarmServiceSpec := swarm.ServiceSpec{
+		Annotations: swarm.Annotations{
+			Name:   rolexServiceSpec.Name,
+			Labels: rolexServiceSpec.Labels,
+		},
+		Mode:         rolexServiceSpec.Mode,
+		TaskTemplate: rolexServiceSpec.TaskTemplate,
+		EndpointSpec: rolexServiceSpec.EndpointSpec,
+		Networks:     netAttachConfigs,
+		UpdateConfig: rolexServiceSpec.UpdateConfig,
+	}
+	updateOpts := types.ServiceUpdateOptions{}
+	if rolexServiceSpec.RegistryAuth != "" {
+		registryAuth, err := dockerclient.EncodedRegistryAuth(rolexServiceSpec.RegistryAuth)
+		if err != nil {
+			dmgin.HttpErrorResponse(ctx, err)
+			return
+		}
+		updateOpts.EncodedRegistryAuth = registryAuth
+
+		if swarmServiceSpec.Labels == nil {
+			swarmServiceSpec.Labels = make(map[string]string)
+		}
+
+		swarmServiceSpec.Annotations.Labels[dockerclient.LabelRegistryAuth] = rolexServiceSpec.RegistryAuth
+	}
+
+	if err := api.GetDockerClient().UpdateService(service.ID, service.Version, swarmServiceSpec, updateOpts); err != nil {
 		dmgin.HttpErrorResponse(ctx, err)
 		return
 	}
