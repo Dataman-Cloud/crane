@@ -116,7 +116,6 @@ BACKEND_URL = {
     },
     node: {
         nodes: 'api/v1/nodes',
-        endpoint: 'api/v1/nodes/$node_id/endpoint/$endpoint',
         nodeInfo: 'api/v1/nodes/$node_id/info',
         node: 'api/v1/nodes/$node_id',
         leader: 'api/v1/nodes/manager_info',
