@@ -4,7 +4,7 @@
         .controller('StackCreateByFormCtrl', StackCreateByFormCtrl);
 
     /* @ngInject */
-    function StackCreateByFormCtrl(stackCurd, networkBackend, $scope, userBackend, $rootScope, registryAuthBackend) {
+    function StackCreateByFormCtrl(stackCurd, networkBackend, $scope, userBackend, FileSaver, $rootScope, registryAuthBackend) {
         var self = this;
         var formTemplate = {
             "Name": "",
@@ -80,6 +80,7 @@
         self.addServe = addServe;
         self.removeServe = removeServe;
         self.create = create;
+        self.createAndDownload = createAndDownload;
         self.addConfig = addConfig;
         self.deleteConfig = deleteConfig;
         self.modeChange = modeChange;
@@ -113,7 +114,7 @@
                 self.form.Stack.Services[serve.Name] = serve
             });
 
-            stackCurd.createStack(self.form, $scope.staticForm, self.selectGroupId);
+            return stackCurd.createStack(self.form, $scope.staticForm, self.selectGroupId);
         }
 
         function addConfig(configs, typeName) {
@@ -262,5 +263,12 @@
 
             return configs
         }
+
+	function createAndDownload() {
+            create().then(function(data) {
+                var blob = new Blob([angular.toJson(self.form.Stack)], { type: 'text/plain;charset=utf-8' });
+                FileSaver.saveAs(blob, self.form.Namespace + '.json');
+            })
+	}
     }
 })();
