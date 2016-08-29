@@ -28,7 +28,7 @@
         function updateEndpoint(nodeId, env, endpoint) {
             formModal.open('/src/node/modals/form-nodeIp.html', env, {dataName: 'endpoint', initData: endpoint})
                 .then(function (endpoint) {
-                nodeBackend.updateNodeEndpoint(nodeId, endpoint).then(function (data) {
+                nodeBackend.handleNode(nodeId, "endpoint-update", endpoint).then(function (data) {
                     Notification.success('更新主机成功');
                     $state.reload()
                 });
