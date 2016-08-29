@@ -8,14 +8,6 @@
         var self = this;
 
         self.service = service;
-        self.serviceLabelLength = 0;
-        self.showStartupParameter =  true;
-        self.showTag =  true;
-        self.showResourceLimit =  true;
-        self.showFaultTolerant =  true;
-        self.showUpdatePolicy =  true;
-        self.showSchedulingStrategy =  true;
-        self.showFileMount =  true;
 
         self.modeChange = modeChange;
         self.addConfig = addConfig;
@@ -137,8 +129,8 @@
             }
 
             if (form.TaskTemplate.ContainerSpec.Mounts) {
-                angular.forEach(form.TaskTemplate.ContainerSpec.Mounts, function(mount, index){
-                    if(!mount.ReadOnly) mount.ReadOnly = false;
+                angular.forEach(form.TaskTemplate.ContainerSpec.Mounts, function (mount, index) {
+                    if (!mount.ReadOnly) mount.ReadOnly = false;
                     form.formMounts.push(mount)
                 });
             }
@@ -184,6 +176,14 @@
                     form.formEnv.push(obj)
                 });
             }
+
+            self.showStartupParameter = form.TaskTemplate.ContainerSpec.Dir || form.formCmd.length || form.formArgs.length;
+            self.showTag = true;
+            self.showResourceLimit = form.TaskTemplate.Resources.Limits.NanoCPUs || form.TaskTemplate.Resources.Limits.MemoryBytes || form.TaskTemplate.Resources.Reservations.NanoCPUs || form.TaskTemplate.Resources.Reservations.MemoryBytes;
+            self.showFaultTolerant = true;
+            self.showUpdatePolicy = true;
+            self.showSchedulingStrategy = !!form.formConstraints.length;
+            self.showFileMount = !!form.formMounts.length;
 
             form.defaultMode = Object.keys(form.Mode)[0];
             self.serviceLabelLength = form.formLabels.length;
