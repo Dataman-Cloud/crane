@@ -1,5 +1,7 @@
 <div data-ng-show="stackCreateByFormCtrl.step == 1">
-    <h1>第一步. 填写应用基本信息</h1>
+    <header id="header-main">
+        <h1>第一步. 填写应用基本信息</h1>
+    </header>
     <form name="stepOneForm" class="form-main">
         <div class="form-group" layout="column">
             <label>应用名称<span class="required">*</span>
@@ -23,18 +25,18 @@
             </div>
         </div>
         <!--<div class="form-group" layout="column">-->
-            <!--<label>选择用户组<span class="required">*</span></label>-->
-            <!--<div class="form-control">-->
-                <!--<md-select data-ng-model="stackCreateByFormCtrl.selectGroupId" aria-label="selectGroupId"-->
-                           <!--md-on-open="stackCreateByFormCtrl.loadGroups()">-->
-                    <!--<md-option value="null" ng-selected="true">空</md-option>-->
-                    <!--<md-option-->
-                            <!--data-ng-repeat="group in stackCreateByFormCtrl.groups"-->
-                            <!--ng-value="group.Id">{/group.Name/}-->
-                    <!--</md-option>-->
-                <!--</md-select>-->
-            <!--</div>-->
-            <!--<p class="help-text"></p>-->
+        <!--<label>选择用户组<span class="required">*</span></label>-->
+        <!--<div class="form-control">-->
+        <!--<md-select data-ng-model="stackCreateByFormCtrl.selectGroupId" aria-label="selectGroupId"-->
+        <!--md-on-open="stackCreateByFormCtrl.loadGroups()">-->
+        <!--<md-option value="null" ng-selected="true">空</md-option>-->
+        <!--<md-option-->
+        <!--data-ng-repeat="group in stackCreateByFormCtrl.groups"-->
+        <!--ng-value="group.Id">{/group.Name/}-->
+        <!--</md-option>-->
+        <!--</md-select>-->
+        <!--</div>-->
+        <!--<p class="help-text"></p>-->
         <!--</div>-->
         <footer class="form-buttons">
             <md-button class="md-raised" data-ng-disabled="stepOneForm.$invalid"
@@ -45,8 +47,9 @@
 </div>
 
 <div data-ng-show="stackCreateByFormCtrl.step == 2">
-    <h1>第二步. 填写服务信息</h1>
-
+    <header id="header-main">
+        <h1>第二步. 填写服务信息</h1>
+    </header>
     <md-tabs md-dynamic-height md-border-bottom md-autoselect>
         <md-tab data-ng-repeat="serve in stackCreateByFormCtrl.serveFormArray track by $index"
                 label="{/serve.Name || '新服务'/}">
@@ -93,38 +96,337 @@
                             </p>
                         </div>
                     </div>
+                    <div class="form-group" layout="column">
+                        <label>任务数量</label>
+                        <div class="form-control" layout="row" layout-align="start center">
+                            <md-radio-group data-ng-model="serve.defaultMode" layout="row" aria-label="defaultMode"
+                                            data-ng-change="stackCreateByFormCtrl.modeChange(serve)"
+                                            layout-align="start center" flex>
+                                <div flex="25">
+                                    <md-radio-button value="Replicated" class="md-primary">固定数</md-radio-button>
+                                    <input type="number" min="0" data-ng-show="serve.defaultMode === 'Replicated'"
+                                           data-ng-required="serve.defaultMode === 'Replicated'"
+                                           data-ng-model="serve.Mode.Replicated.Replicas" name="replicas">
+                                </div>
+                                <div flex="25">
+                                    <md-radio-button value="Global" class="md-primary" flex-offset="5">一节点一任务
+                                    </md-radio-button>
+                                </div>
+                            </md-radio-group>
+                        </div>
+                        <p class="text-danger help-text"></p>
+                    </div>
+                    <div class="form-group" layout="column">
+                        <label>选择网络</label>
+                        <div class="form-control">
+                            <md-select data-ng-model="serve.Networks" multiple aria-label="Networks"
+                                       md-on-open="stackCreateByFormCtrl.loadNetworks()">
+                                <md-option
+                                        data-ng-repeat="network in stackCreateByFormCtrl.networks | filter: {Driver: '!bridge'}"
+                                        ng-value="network.Name">{/network.Name/}
+                                </md-option>
+                            </md-select>
+                        </div>
+                        <p class="text-danger help-text"></p>
+                    </div>
+                    <div class="form-group" layout="column">
+                        <div class="sub-button">
+                            <md-button class="md-raised md-success md-small"
+                                       data-ng-click="stackCreateByFormCtrl.addConfig(serve.EndpointSpec.Ports, 'Ports')">
+                                <i class='fa fa-plus'></i> 添加端口映射
+                                <small>可添加多个端口映射</small>
+                            </md-button>
+                        </div>
+                        <div data-ng-repeat="port in serve.EndpointSpec.Ports track by $index">
+                            <ng-form name="portForm">
+                                <div class="form-control sub-group" layout="row" layout-align="start center">
+                                    <input flex="20" type="number" placeholder="容器端口"
+                                           data-ng-model="port.TargetPort" data-required="required"
+                                           name="TargetPort" max="65535" min="1">
+                                    <md-select ng-model="port.Protocol" data-required="required" flex="20"
+                                               aria-label="select protocol">
+                                        <md-option value="tcp">TCP</md-option>
+                                        <md-option value="udp">UDP</md-option>
+                                    </md-select>
+                                    <input flex="20" type="number" placeholder="主机端口"
+                                           data-ng-model="port.PublishedPort" data-required="required"
+                                           name="PublishedPort" max="65535" min="1">
+                                    <md-button class="md-icon-button md-primary" aria-label="trash"
+                                               data-ng-click="stackCreateByFormCtrl.deleteConfig($index, serve.EndpointSpec.Ports)">
+                                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                    </md-button>
+                                </div>
+                            </ng-form>
+                            <div ng-messages="portForm.TargetPort.$error"
+                                 ng-if="portForm.TargetPort.$dirty"
+                                 role="alert">
+                                <p class="text-danger help-text"
+                                   ng-message="max">
+                                    <small>服务端口最大不超过 65535</small>
+                                </p>
+                                <p class="text-danger help-text"
+                                   ng-message="min">
+                                    <small>服务端口最小为 1</small>
+                                </p>
+                            </div>
 
+                            <div ng-messages="portForm.PublishedPort.$error"
+                                 ng-if="portForm.PublishedPort.$dirty"
+                                 role="alert">
+                                <p class="text-danger help-text"
+                                   ng-message="max">
+                                    <small>主机端口最大不超过 65535</small>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group" layout="column">
+                        <div class="sub-button">
+                            <md-button class="md-raised md-success md-small"
+                                       data-ng-click="stackCreateByFormCtrl.addConfig(serve.TaskTemplate.ContainerSpec.Env, 'Env')">
+                                <i class='fa fa-plus'></i> 添加环境变量
+                                <small>可添加多个环境变量</small>
+                            </md-button>
+                        </div>
+                        <div data-ng-repeat="env in serve.TaskTemplate.ContainerSpec.Env track by $index">
+                            <ng-form name="envForm">
+                                <div class="form-control sub-group" layout="row" layout-align="start center">
+                                    <input flex="20" type="text" placeholder="KEY"
+                                           data-ng-model="env.key" data-required="required"
+                                           name="envKey" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/"
+                                           dm-check-include="stackCreateByFormCtrl.listConfigByKey(serve.TaskTemplate.ContainerSpec.Env, $index)">
+
+                                    <input flex="20" type="text" placeholder="VALUE"
+                                           data-ng-model="env.value" data-required="required"
+                                           name="envValue" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/">
+
+                                    <md-button class="md-icon-button md-primary" aria-label="trash"
+                                               data-ng-click="stackCreateByFormCtrl.deleteConfig($index, serve.TaskTemplate.ContainerSpec.Env)">
+                                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                    </md-button>
+                                </div>
+                            </ng-form>
+                            <div ng-messages="envForm.envKey.$error" ng-if="envForm.envKey.$dirty"
+                                 role="alert">
+                                <p class="text-danger help-text"
+                                   ng-message="pattern">
+                                    <small>环境变量 Key 值不能包含中文</small>
+                                </p>
+                                <p class="text-danger help-text"
+                                   ng-message="dmCheckInclude">
+                                    <small>环境变量 Key 值不能重复</small>
+                                </p>
+                            </div>
+
+                            <div ng-messages="envForm.envValue.$error" ng-if="envForm.envValue.$dirty"
+                                 role="alert">
+                                <p class="text-danger help-text"
+                                   ng-message="pattern">
+                                    <small>环境变量 Value 值不能包含中文</small>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                     <div class="fold-line">
-                        <a href="#" data-ng-click="serve.showAdvanceContent = !serve.showAdvanceContent">
+                        <a href="#" data-ng-click="serve.showStartupParameter = !serve.showStartupParameter">
                             <i class="fa"
-                               ng-class="{'fa-minus-square-o': serve.showAdvanceContent, 'fa-plus-square-o': !serve.showAdvanceContent}"
-                               aria-hidden="true"></i>
-                            高级设置
+                               ng-class="{'fa-minus-square-o': serve.showStartupParameter, 'fa-plus-square-o': !serve.showStartupParameter}"></i>启动参数
                         </a>
                     </div>
 
-                    <div data-ng-show="serve.showAdvanceContent">
+                    <div data-ng-show="serve.showStartupParameter">
                         <div class="form-group" layout="column">
-                            <label>任务数量</label>
-                            <div class="form-control" layout="row" layout-align="start center">
-                                <md-radio-group data-ng-model="serve.defaultMode" layout="row" aria-label="defaultMode"
-                                                data-ng-change="stackCreateByFormCtrl.modeChange(serve)"
-                                                layout-align="start center" flex>
-                                    <div flex="25">
-                                        <md-radio-button value="Replicated" class="md-primary">固定数</md-radio-button>
-                                        <input type="number" min="0" data-ng-show="serve.defaultMode === 'Replicated'"
-                                               data-ng-required="serve.defaultMode === 'Replicated'"
-                                               data-ng-model="serve.Mode.Replicated.Replicas" name="replicas">
-                                    </div>
-                                    <div flex="25">
-                                        <md-radio-button value="Global" class="md-primary" flex-offset="5">一节点一任务
-                                        </md-radio-button>
-                                    </div>
-                                </md-radio-group>
+                            <label>容器工作目录</label>
+                            <div class="form-control">
+                                <input type="text"
+                                       data-ng-model="serve.TaskTemplate.ContainerSpec.Dir" name="workdir">
                             </div>
-                            <p class="text-danger help-text"></p>
+                            <div ng-messages="staticForm.workdir.$error"
+                                 ng-if="staticForm.workdir.$dirty"
+                                 role="alert">
+                            </div>
+                        </div>
+                        <div class="form-group" layout="column">
+                            <label>命令行</small>
+                            </label>
+                            <div class="sub-button">
+                                <md-button class="md-raised md-success md-small"
+                                           data-ng-click="stackCreateByFormCtrl.addConfig(serve.TaskTemplate.ContainerSpec.Command, 'Cmd')">
+                                    <i class='fa fa-plus'></i> Command
+                                </md-button>
+                            </div>
+                            <div data-ng-repeat="cmd in serve.TaskTemplate.ContainerSpec.Command track by $index">
+                                <ng-form name="cmdForm">
+                                    <div class="form-control sub-group" layout="row" layout-align="start center">
+                                        <input type="text" placeholder="CMD" flex="40"
+                                               data-ng-model="cmd.command" data-required="required"
+                                               name="cmdInput">
+
+                                        <md-button class="md-icon-button md-primary" aria-label="trash"
+                                                   data-ng-click="stackCreateByFormCtrl.deleteConfig($index, serve.TaskTemplate.ContainerSpec.Command)">
+                                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                        </md-button>
+                                    </div>
+                                </ng-form>
+                                <div ng-messages="cmdForm.cmdInput.$error"
+                                     ng-if="cmdForm.cmdInput.$dirty"
+                                     role="alert">
+                                    <p class="text-danger help-text"
+                                       ng-message="pattern">
+                                        <small>CMD 不能包含中文</small>
+                                    </p>
+                                </div>
+                            </div>
                         </div>
 
+                        <div class="form-group" layout="column">
+                            <label>Args</small>
+                            </label>
+                            <div class="sub-button">
+                                <md-button class="md-raised md-success md-small"
+                                           data-ng-click="stackCreateByFormCtrl.addConfig(serve.TaskTemplate.ContainerSpec.Args, 'Args')">
+                                    <i class='fa fa-plus'></i> Args
+                                </md-button>
+                            </div>
+                            <div data-ng-repeat="arg in serve.TaskTemplate.ContainerSpec.Args track by $index">
+                                <ng-form name="argForm">
+                                    <div class="form-control sub-group" layout="row" layout-align="start center">
+                                        <input type="text" flex="40"
+                                               data-ng-model="arg.arg" data-required="required"
+                                               name="argInput">
+
+                                        <md-button class="md-icon-button md-primary" aria-label="trash"
+                                                   data-ng-click="stackCreateByFormCtrl.deleteConfig($index, serve.TaskTemplate.ContainerSpec.Args)">
+                                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                        </md-button>
+                                    </div>
+                                </ng-form>
+                                <div ng-messages="argForm.argInput.$error"
+                                     ng-if="argForm.argInput.$dirty"
+                                     role="alert">
+                                    <p class="text-danger help-text"
+                                       ng-message="pattern">
+                                        <small>Args 不能包含中文</small>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="fold-line">
+                        <a href="#" data-ng-click="serve.showTag = !serve.showTag">
+                            <i class="fa"
+                               ng-class="{'fa-minus-square-o': serve.showTag, 'fa-plus-square-o': !serve.showTag}"></i>标签
+                        </a>
+                    </div>
+                    <div data-ng-show="serve.showTag">
+                        <div class="form-group" layout="column">
+                            <div class="sub-button">
+                                <md-button class="md-raised md-success md-small"
+                                           data-ng-click="stackCreateByFormCtrl.addConfig(serve.Labels, 'ServeLabels')">
+                                    <i class='fa fa-plus'></i> 添加服务标签
+                                    <small>可添加多个标签</small>
+                                </md-button>
+                            </div>
+                            <div data-ng-repeat="label in serve.Labels track by $index">
+                                <ng-form name="labelForm">
+                                    <div class="form-control sub-group" layout="row" layout-align="start center">
+                                        <input flex="20" type="text" placeholder="KEY"
+                                               data-ng-model="label.key" data-required="required"
+                                               name="labelKey" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/"
+                                               dm-check-include="stackCreateByFormCtrl.listConfigByKey(serve.Labels, $index)">
+
+                                        <input flex="20" type="text" placeholder="VALUE"
+                                               data-ng-model="label.value" data-required="required"
+                                               name="labelValue" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/">
+
+                                        <md-button class="md-icon-button md-primary" aria-label="trash"
+                                                   data-ng-click="stackCreateByFormCtrl.deleteConfig($index, serve.Labels)">
+                                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                        </md-button>
+                                    </div>
+                                </ng-form>
+                                <div ng-messages="labelForm.labelKey.$error"
+                                     ng-if="labelForm.labelKey.$dirty"
+                                     role="alert">
+                                    <p class="text-danger help-text"
+                                       ng-message="pattern">
+                                        <small>标签 Key 值不能包含中文</small>
+                                    </p>
+                                    <p class="text-danger help-text"
+                                       ng-message="dmCheckInclude">
+                                        <small>标签 Key 值不能重复</small>
+                                    </p>
+                                </div>
+
+                                <div ng-messages="labelForm.labelValue.$error"
+                                     ng-if="labelForm.labelValue.$dirty"
+                                     role="alert">
+                                    <p class="text-danger help-text"
+                                       ng-message="pattern">
+                                        <small>标签 Value 值不能包含中文</small>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" layout="column">
+                            <div class="sub-button">
+                                <md-button class="md-raised md-success md-small"
+                                           data-ng-click="stackCreateByFormCtrl.addConfig(serve.TaskTemplate.ContainerSpec.Labels, 'Labels')">
+                                    <i class='fa fa-plus'></i> 添加容器标签
+                                    <small>可添加多个标签</small>
+                                </md-button>
+                            </div>
+                            <div data-ng-repeat="label in serve.TaskTemplate.ContainerSpec.Labels track by $index">
+                                <ng-form name="labelForm">
+                                    <div class="form-control sub-group" layout="row" layout-align="start center">
+                                        <input flex="20" type="text" placeholder="KEY"
+                                               data-ng-model="label.key" data-required="required"
+                                               name="labelKey" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/"
+                                               dm-check-include="stackCreateByFormCtrl.listConfigByKey(serve.TaskTemplate.ContainerSpec.Labels, $index)">
+
+                                        <input flex="20" type="text" placeholder="VALUE"
+                                               data-ng-model="label.value" data-required="required"
+                                               name="labelValue" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/">
+
+                                        <md-button class="md-icon-button md-primary" aria-label="trash"
+                                                   data-ng-click="stackCreateByFormCtrl.deleteConfig($index, serve.TaskTemplate.ContainerSpec.Labels)">
+                                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                        </md-button>
+                                    </div>
+                                </ng-form>
+                                <div ng-messages="labelForm.labelKey.$error"
+                                     ng-if="labelForm.labelKey.$dirty"
+                                     role="alert">
+                                    <p class="text-danger help-text"
+                                       ng-message="pattern">
+                                        <small>标签 Key 值不能包含中文</small>
+                                    </p>
+                                    <p class="text-danger help-text"
+                                       ng-message="dmCheckInclude">
+                                        <small>标签 Key 值不能重复</small>
+                                    </p>
+                                </div>
+
+                                <div ng-messages="labelForm.labelValue.$error"
+                                     ng-if="labelForm.labelValue.$dirty"
+                                     role="alert">
+                                    <p class="text-danger help-text"
+                                       ng-message="pattern">
+                                        <small>标签 Value 值不能包含中文</small>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="fold-line">
+                        <a href="#" data-ng-click="serve.showResourceLimit = !serve.showResourceLimit">
+                            <i class="fa"
+                               ng-class="{'fa-minus-square-o': serve.showResourceLimit, 'fa-plus-square-o': !serve.showResourceLimit}"></i>资源限制
+                        </a>
+                    </div>
+                    <div data-ng-show="serve.showResourceLimit">
                         <div class="form-group" layout="column">
                             <label>每个任务的资源限制</label>
                             <div class="form-control sub-group" layout="row" layout-align="start center">
@@ -194,41 +496,78 @@
                                 </p>
                             </div>
                         </div>
+                    </div>
 
+                    <div class="form-group" layout="column">
+                        <label>选择 RegAuth</label>
+                        <div class="form-control">
+                            <md-select data-ng-model="serve.RegistryAuth" aria-label="RegAuth"
+                                       md-on-open="stackCreateByFormCtrl.loadRegAuths()">
+                                <md-option value="" ng-selected="true">空</md-option>
+                                <md-option
+                                        data-ng-repeat="regAuth in stackCreateByFormCtrl.regAuths"
+                                        ng-value="regAuth.Name">{/regAuth.Name/}
+                                </md-option>
+                            </md-select>
+                        </div>
+                        <p class="text-danger help-text"></p>
+                    </div>
+
+                    <div class="form-group" layout="column">
+                        <label>选择网络</label>
+                        <div class="form-control">
+                            <md-select data-ng-model="serve.Networks" multiple aria-label="Networks"
+                                       md-on-open="stackCreateByFormCtrl.loadNetworks()">
+                                <md-option
+                                        data-ng-repeat="network in stackCreateByFormCtrl.networks | filter: {Driver: '!bridge'}"
+                                        ng-value="network.Name">{/network.Name/}
+                                </md-option>
+                            </md-select>
+                        </div>
+                        <p class="text-danger help-text"></p>
+                    </div>
+
+                    <div class="fold-line">
+                        <a href="#" data-ng-click="serve.showFaultTolerant = !serve.showFaultTolerant">
+                            <i class="fa"
+                               ng-class="{'fa-minus-square-o': serve.showFaultTolerant, 'fa-plus-square-o': !serve.showFaultTolerant}"></i>容错策略
+                        </a>
+                    </div>
+
+                    <div data-ng-show="serve.showFaultTolerant">
                         <div class="form-group" layout="column">
-                            <label>容错策略</label>
                             <div class="form-control" layout="row" layout-align="start center">
                                 <md-radio-group data-ng-model="serve.TaskTemplate.RestartPolicy.Condition" layout="row"
                                                 aria-label="restart-condition" flex>
                                     <div flex="25">
-                                      <md-radio-button value="any" class="md-primary">
-                                      <i class="fa fa-umbrella"></i>
-                                      <md-tooltip md-direction="top">无论任务正常或异常退出，都重启, 适合批处理或定时任务场景</md-tooltip>
-                                      退出后重启
-                                      </md-radio-button>
+                                        <md-radio-button value="any" class="md-primary">
+                                            <i class="fa fa-umbrella"></i>
+                                            <md-tooltip md-direction="top">无论任务正常或异常退出，都重启, 适合批处理或定时任务场景</md-tooltip>
+                                            退出后重启
+                                        </md-radio-button>
                                     </div>
                                     <div flex="25">
                                         <md-radio-button value="none" class="md-primary">不重启</md-radio-button>
                                     </div>
                                     <div flex="25">
-                                      <md-radio-button value="on-failure" class="md-primary">
-                                      <i class="fa fa-umbrella"></i>
-                                      <md-tooltip md-direction="top">在退出状态码(exit code)非 0 的情况下重启</md-tooltip>
-                                      失败重启
-                                      </md-radio-button>
+                                        <md-radio-button value="on-failure" class="md-primary">
+                                            <i class="fa fa-umbrella"></i>
+                                            <md-tooltip md-direction="top">在退出状态码(exit code)非 0 的情况下重启</md-tooltip>
+                                            失败重启
+                                        </md-radio-button>
                                     </div>
                                 </md-radio-group>
                             </div>
                             <div class="form-control sub-group" layout="row" layout-align="start center">
                                 <div flex="25">
-                                  <label class="sub-label">重启间隔
-                                    <small>秒</small>
-                                  </label>
-                                  <input type="number" data-ng-model="serve.TaskTemplate.RestartPolicy.Delay"
-                                  name="restartDelay" min="0">
+                                    <label class="sub-label">重启间隔
+                                        <small>秒</small>
+                                    </label>
+                                    <input type="number" data-ng-model="serve.TaskTemplate.RestartPolicy.Delay"
+                                           name="restartDelay" min="0">
                                 </div>
                                 <div flex="25">
-                                    <label class="sub-label">在?时间之内
+                                    <label class="sub-label">重启间隔时长
                                         <small>秒</small>
                                     </label>
                                     <input type="number" min="0"
@@ -236,7 +575,7 @@
                                            name="restartPolicy">
                                 </div>
                                 <div flex="25">
-                                    <label class="sub-label">最多尝试重启?次</label>
+                                    <label class="sub-label">最多尝试重启次数</label>
                                     <input type="number" min="0"
                                            data-ng-model="serve.TaskTemplate.RestartPolicy.MaxAttempts"
                                            name="restartMaxAttempts">
@@ -244,9 +583,17 @@
                             </div>
                             <p class="text-danger help-text"></p>
                         </div>
+                    </div>
 
+
+                    <div class="fold-line">
+                        <a href="#" data-ng-click="serve.showUpdatePolicy = !serve.showUpdatePolicy">
+                            <i class="fa"
+                               ng-class="{'fa-minus-square-o': serve.showUpdatePolicy, 'fa-plus-square-o': !serve.showUpdatePolicy}"></i>更新策略
+                        </a>
+                    </div>
+                    <div data-ng-show="serve.showUpdatePolicy">
                         <div class="form-group" layout="column">
-                            <label>更新策略</label>
                             <div class="form-control" layout="row" layout-align="start center">
                                 <md-radio-group data-ng-model="serve.UpdateConfig.FailureAction" layout="row"
                                                 aria-label="restart-condition" flex>
@@ -267,7 +614,7 @@
                                            data-ng-model="serve.UpdateConfig.Delay" name="updateDelay">
                                 </div>
                                 <div flex="25">
-                                    <label class="sub-label">并行更新?个任务</label>
+                                    <label class="sub-label">并行更新任务数</label>
                                     <input type="number" min="0"
                                            data-ng-model="serve.UpdateConfig.Parallelism"
                                            name="updateParallelism">
@@ -276,11 +623,11 @@
                         </div>
 
                         <div class="form-group" layout="column">
-                          <label>
-                            <i class="fa fa-umbrella"></i>
-                            <md-tooltip md-direction="top">容器将在容忍时间之后被强制杀死</md-tooltip>
-                            容器退出的容忍时间
-                          </label>
+                            <label>
+                                <i class="fa fa-umbrella"></i>
+                                <md-tooltip md-direction="top">容器将在容忍时间之后被强制杀死</md-tooltip>
+                                容器退出的容忍时间
+                            </label>
                             <div class="form-control">
                                 <input type="number"
                                        data-ng-model="serve.TaskTemplate.ContainerSpec.StopGracePeriod"
@@ -291,264 +638,22 @@
                                  role="alert">
                             </div>
                         </div>
+                    </div>
 
+
+                    <div class="fold-line">
+                        <a href="#" data-ng-click="serve.showSchedulingStrategy = !serve.showSchedulingStrategy">
+                            <i class="fa"
+                               ng-class="{'fa-minus-square-o': serve.showSchedulingStrategy, 'fa-plus-square-o': !serve.showSchedulingStrategy}"></i>调度策略
+                        </a>
+                    </div>
+                    <div data-ng-show="serve.showSchedulingStrategy">
                         <div class="form-group" layout="column">
-                            <label>容器工作目录</label>
-                            <div class="form-control">
-                                <input type="text"
-                                       data-ng-model="serve.TaskTemplate.ContainerSpec.Dir" name="workdir">
-                            </div>
-                            <div ng-messages="staticForm.workdir.$error"
-                                 ng-if="staticForm.workdir.$dirty"
-                                 role="alert">
-                            </div>
-                        </div>
-
-                        <div class="form-group" layout="column">
-                            <label>选择 RegAuth</label>
-                            <div class="form-control">
-                                <md-select data-ng-model="serve.RegistryAuth" aria-label="RegAuth"
-                                           md-on-open="stackCreateByFormCtrl.loadRegAuths()">
-                                    <md-option value="" ng-selected="true">空</md-option>
-                                    <md-option
-                                            data-ng-repeat="regAuth in stackCreateByFormCtrl.regAuths"
-                                            ng-value="regAuth.Name">{/regAuth.Name/}
-                                    </md-option>
-                                </md-select>
-                            </div>
-                            <p class="text-danger help-text"></p>
-                        </div>
-
-                        <div class="form-group" layout="column">
-                            <label>选择网络</label>
-                            <div class="form-control">
-                                <md-select data-ng-model="serve.Networks" multiple aria-label="Networks"
-                                           md-on-open="stackCreateByFormCtrl.loadNetworks()">
-                                    <md-option
-                                            data-ng-repeat="network in stackCreateByFormCtrl.networks | filter: {Driver: '!bridge'}"
-                                            ng-value="network.Name">{/network.Name/}
-                                    </md-option>
-                                </md-select>
-                            </div>
-                            <p class="text-danger help-text"></p>
-                        </div>
-
-                        <div class="form-group" layout="column">
-                            <label>端口映射
-                                <small>可添加多个端口映射</small>
-                            </label>
-                            <div class="sub-button">
-                                <md-button class="md-raised md-success md-small"
-                                           data-ng-click="stackCreateByFormCtrl.addConfig(serve.EndpointSpec.Ports, 'Ports')">
-                                  <i class='fa fa-plus'></i> 端口映射
-                                </md-button>
-                            </div>
-                            <div data-ng-repeat="port in serve.EndpointSpec.Ports track by $index">
-                                <ng-form name="portForm">
-                                    <div class="form-control sub-group" layout="row" layout-align="start center">
-                                        <input flex="20" type="number" placeholder="容器端口"
-                                               data-ng-model="port.TargetPort" data-required="required"
-                                               name="TargetPort" max="65535" min="1">
-                                        <md-select ng-model="port.Protocol" data-required="required" flex="20"
-                                                   aria-label="select protocol">
-                                            <md-option value="tcp">TCP</md-option>
-                                            <md-option value="udp">UDP</md-option>
-                                        </md-select>
-                                        <input flex="20" type="number" placeholder="主机端口"
-                                               data-ng-model="port.PublishedPort" data-required="required"
-                                               name="PublishedPort" max="65535" min="1">
-                                        <md-button class="md-icon-button md-primary" aria-label="trash"
-                                                   data-ng-click="stackCreateByFormCtrl.deleteConfig($index, serve.EndpointSpec.Ports)">
-                                            <i class="fa fa-trash-o" aria-hidden="true"></i>
-                                        </md-button>
-                                    </div>
-                                </ng-form>
-                                <div ng-messages="portForm.TargetPort.$error"
-                                     ng-if="portForm.TargetPort.$dirty"
-                                     role="alert">
-                                    <p class="text-danger help-text"
-                                       ng-message="max">
-                                        <small>服务端口最大不超过 65535</small>
-                                    </p>
-                                    <p class="text-danger help-text"
-                                       ng-message="min">
-                                        <small>服务端口最小为 1</small>
-                                    </p>
-                                </div>
-
-                                <div ng-messages="portForm.PublishedPort.$error"
-                                     ng-if="portForm.PublishedPort.$dirty"
-                                     role="alert">
-                                    <p class="text-danger help-text"
-                                       ng-message="max">
-                                        <small>主机端口最大不超过 65535</small>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group" layout="column">
-                            <label>环境变量
-                                <small>可添加多个环境变量</small>
-                            </label>
-                            <div class="sub-button">
-                                <md-button class="md-raised md-success md-small"
-                                           data-ng-click="stackCreateByFormCtrl.addConfig(serve.TaskTemplate.ContainerSpec.Env, 'Env')">
-                                   <i class='fa fa-plus'></i>  环境变量
-                                </md-button>
-                            </div>
-                            <div data-ng-repeat="env in serve.TaskTemplate.ContainerSpec.Env track by $index">
-                                <ng-form name="envForm">
-                                    <div class="form-control sub-group" layout="row" layout-align="start center">
-                                        <input flex="20" type="text" placeholder="KEY"
-                                               data-ng-model="env.key" data-required="required"
-                                               name="envKey" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/"
-                                               dm-check-include="stackCreateByFormCtrl.listConfigByKey(serve.TaskTemplate.ContainerSpec.Env, $index)">
-
-                                        <input flex="20" type="text" placeholder="VALUE"
-                                               data-ng-model="env.value" data-required="required"
-                                               name="envValue" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/">
-
-                                        <md-button class="md-icon-button md-primary" aria-label="trash"
-                                                   data-ng-click="stackCreateByFormCtrl.deleteConfig($index, serve.TaskTemplate.ContainerSpec.Env)">
-                                            <i class="fa fa-trash-o" aria-hidden="true"></i>
-                                        </md-button>
-                                    </div>
-                                </ng-form>
-                                <div ng-messages="envForm.envKey.$error" ng-if="envForm.envKey.$dirty"
-                                     role="alert">
-                                    <p class="text-danger help-text"
-                                       ng-message="pattern">
-                                        <small>环境变量 Key 值不能包含中文</small>
-                                    </p>
-                                    <p class="text-danger help-text"
-                                       ng-message="dmCheckInclude">
-                                        <small>环境变量 Key 值不能重复</small>
-                                    </p>
-                                </div>
-
-                                <div ng-messages="envForm.envValue.$error" ng-if="envForm.envValue.$dirty"
-                                     role="alert">
-                                    <p class="text-danger help-text"
-                                       ng-message="pattern">
-                                        <small>环境变量 Value 值不能包含中文</small>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group" layout="column">
-                            <label>服务标签
-                                <small>可添加多个标签</small>
-                            </label>
-                            <div class="sub-button">
-                                <md-button class="md-raised md-success md-small"
-                                           data-ng-click="stackCreateByFormCtrl.addConfig(serve.Labels, 'ServeLabels')">
-                                   <i class='fa fa-plus'></i> 服务标签
-                                </md-button>
-                            </div>
-                            <div data-ng-repeat="label in serve.Labels track by $index">
-                                <ng-form name="labelForm">
-                                    <div class="form-control sub-group" layout="row" layout-align="start center">
-                                        <input flex="20" type="text" placeholder="KEY"
-                                               data-ng-model="label.key" data-required="required"
-                                               name="labelKey" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/"
-                                               dm-check-include="stackCreateByFormCtrl.listConfigByKey(serve.Labels, $index)">
-
-                                        <input flex="20" type="text" placeholder="VALUE"
-                                               data-ng-model="label.value" data-required="required"
-                                               name="labelValue" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/">
-
-                                        <md-button class="md-icon-button md-primary" aria-label="trash"
-                                                   data-ng-click="stackCreateByFormCtrl.deleteConfig($index, serve.Labels)">
-                                            <i class="fa fa-trash-o" aria-hidden="true"></i>
-                                        </md-button>
-                                    </div>
-                                </ng-form>
-                                <div ng-messages="labelForm.labelKey.$error"
-                                     ng-if="labelForm.labelKey.$dirty"
-                                     role="alert">
-                                    <p class="text-danger help-text"
-                                       ng-message="pattern">
-                                        <small>标签 Key 值不能包含中文</small>
-                                    </p>
-                                    <p class="text-danger help-text"
-                                       ng-message="dmCheckInclude">
-                                        <small>标签 Key 值不能重复</small>
-                                    </p>
-                                </div>
-
-                                <div ng-messages="labelForm.labelValue.$error"
-                                     ng-if="labelForm.labelValue.$dirty"
-                                     role="alert">
-                                    <p class="text-danger help-text"
-                                       ng-message="pattern">
-                                        <small>标签 Value 值不能包含中文</small>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group" layout="column">
-                            <label>容器标签
-                                <small>可添加多个标签</small>
-                            </label>
-                            <div class="sub-button">
-                                <md-button class="md-raised md-success md-small"
-                                           data-ng-click="stackCreateByFormCtrl.addConfig(serve.TaskTemplate.ContainerSpec.Labels, 'Labels')">
-                                    <i class='fa fa-plus'></i> 容器标签
-                                </md-button>
-                            </div>
-                            <div data-ng-repeat="label in serve.TaskTemplate.ContainerSpec.Labels track by $index">
-                                <ng-form name="labelForm">
-                                    <div class="form-control sub-group" layout="row" layout-align="start center">
-                                        <input flex="20" type="text" placeholder="KEY"
-                                               data-ng-model="label.key" data-required="required"
-                                               name="labelKey" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/"
-                                               dm-check-include="stackCreateByFormCtrl.listConfigByKey(serve.TaskTemplate.ContainerSpec.Labels, $index)">
-
-                                        <input flex="20" type="text" placeholder="VALUE"
-                                               data-ng-model="label.value" data-required="required"
-                                               name="labelValue" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/">
-
-                                        <md-button class="md-icon-button md-primary" aria-label="trash"
-                                                   data-ng-click="stackCreateByFormCtrl.deleteConfig($index, serve.TaskTemplate.ContainerSpec.Labels)">
-                                            <i class="fa fa-trash-o" aria-hidden="true"></i>
-                                        </md-button>
-                                    </div>
-                                </ng-form>
-                                <div ng-messages="labelForm.labelKey.$error"
-                                     ng-if="labelForm.labelKey.$dirty"
-                                     role="alert">
-                                    <p class="text-danger help-text"
-                                       ng-message="pattern">
-                                        <small>标签 Key 值不能包含中文</small>
-                                    </p>
-                                    <p class="text-danger help-text"
-                                       ng-message="dmCheckInclude">
-                                        <small>标签 Key 值不能重复</small>
-                                    </p>
-                                </div>
-
-                                <div ng-messages="labelForm.labelValue.$error"
-                                     ng-if="labelForm.labelValue.$dirty"
-                                     role="alert">
-                                    <p class="text-danger help-text"
-                                       ng-message="pattern">
-                                        <small>标签 Value 值不能包含中文</small>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group" layout="column">
-                            <label>限制条件
-                                <small>可添加多个限制条件</small>
-                            </label>
                             <div class="sub-button">
                                 <md-button class="md-raised md-success md-small"
                                            data-ng-click="stackCreateByFormCtrl.addConfig(serve.TaskTemplate.Placement.Constraints, 'Constraints')">
-                                   <i class='fa fa-plus'></i>  限制条件
+                                    <i class='fa fa-plus'></i> 添加限制条件
+                                    <small>可添加多个限制条件</small>
                                 </md-button>
                             </div>
                             <div data-ng-repeat="constraint in serve.TaskTemplate.Placement.Constraints track by $index">
@@ -591,15 +696,22 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
 
+                    <div class="fold-line">
+                        <a href="#" data-ng-click="serve.showFileMount = !serve.showFileMount">
+                            <i class="fa"
+                               ng-class="{'fa-minus-square-o': serve.showFileMount, 'fa-plus-square-o': !serve.showFileMount}"></i>文件挂载
+                        </a>
+                    </div>
+
+                    <div data-ng-show="serve.showFileMount">
                         <div class="form-group" layout="column">
-                            <label>存储
-                                <small>可添加多个存储</small>
-                            </label>
                             <div class="sub-button">
                                 <md-button class="md-raised md-success md-small"
                                            data-ng-click="stackCreateByFormCtrl.addConfig(serve.TaskTemplate.ContainerSpec.Mounts, 'Mounts')">
-                                    <i class='fa fa-plus'></i> 存储
+                                    <i class='fa fa-plus'></i> 添加存储
+                                    <small>可添加多个存储</small>
                                 </md-button>
                             </div>
                             <div data-ng-repeat="mount in serve.TaskTemplate.ContainerSpec.Mounts track by $index">
@@ -633,73 +745,6 @@
                                 <div ng-messages="mountForm.Target.$error"
                                      ng-if="mountForm.Target.$dirty"
                                      role="alert">
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div class="form-group" layout="column">
-                            <label>命令行</small>
-                            </label>
-                            <div class="sub-button">
-                                <md-button class="md-raised md-success md-small"
-                                           data-ng-click="stackCreateByFormCtrl.addConfig(serve.TaskTemplate.ContainerSpec.Command, 'Cmd')">
-                                  <i class='fa fa-plus'></i>   Command
-                                </md-button>
-                            </div>
-                            <div data-ng-repeat="cmd in serve.TaskTemplate.ContainerSpec.Command track by $index">
-                                <ng-form name="cmdForm">
-                                    <div class="form-control sub-group" layout="row" layout-align="start center">
-                                        <input type="text" placeholder="CMD" flex="40"
-                                               data-ng-model="cmd.command" data-required="required"
-                                               name="cmdInput">
-
-                                        <md-button class="md-icon-button md-primary" aria-label="trash"
-                                                   data-ng-click="stackCreateByFormCtrl.deleteConfig($index, serve.TaskTemplate.ContainerSpec.Command)">
-                                            <i class="fa fa-trash-o" aria-hidden="true"></i>
-                                        </md-button>
-                                    </div>
-                                </ng-form>
-                                <div ng-messages="cmdForm.cmdInput.$error"
-                                     ng-if="cmdForm.cmdInput.$dirty"
-                                     role="alert">
-                                    <p class="text-danger help-text"
-                                       ng-message="pattern">
-                                        <small>CMD 不能包含中文</small>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group" layout="column">
-                            <label>Args</small>
-                            </label>
-                            <div class="sub-button">
-                                <md-button class="md-raised md-success md-small"
-                                           data-ng-click="stackCreateByFormCtrl.addConfig(serve.TaskTemplate.ContainerSpec.Args, 'Args')">
-                                    <i class='fa fa-plus'></i>   Args
-                                </md-button>
-                            </div>
-                            <div data-ng-repeat="arg in serve.TaskTemplate.ContainerSpec.Args track by $index">
-                                <ng-form name="argForm">
-                                    <div class="form-control sub-group" layout="row" layout-align="start center">
-                                        <input type="text" flex="40"
-                                               data-ng-model="arg.arg" data-required="required"
-                                               name="argInput">
-
-                                        <md-button class="md-icon-button md-primary" aria-label="trash"
-                                                   data-ng-click="stackCreateByFormCtrl.deleteConfig($index, serve.TaskTemplate.ContainerSpec.Args)">
-                                            <i class="fa fa-trash-o" aria-hidden="true"></i>
-                                        </md-button>
-                                    </div>
-                                </ng-form>
-                                <div ng-messages="argForm.argInput.$error"
-                                     ng-if="argForm.argInput.$dirty"
-                                     role="alert">
-                                    <p class="text-danger help-text"
-                                       ng-message="pattern">
-                                        <small>Args 不能包含中文</small>
-                                    </p>
                                 </div>
                             </div>
                         </div>

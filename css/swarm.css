@@ -49,7 +49,7 @@ h6
     margin-bottom: 12px;
 }
 a, a:visited{
-    color: #1FA2BF;
+    color: #00bdda;
     text-decoration: none;
 }
 a:hover {
@@ -61,15 +61,15 @@ a:active {
     text-decoration: underline;
 }
 ::selection {
-background:#1FA2BF; 
+background:#00bdda; 
 color:#FFF;
 }
 ::-moz-selection {
-background:#1FA2BF;
+background:#00bdda;
 color:#FFF;
 }
 ::-webkit-selection {
-background:#1FA2BF;
+background:#00bdda;
 color:#FFF;
 }  
 section {
@@ -180,7 +180,7 @@ code {
 #sidebar-main li.active a
 {
     color: #FFF;
-    border-left: 3px solid #1FA2BF;
+    border-left: 3px solid #00bdda;
     border-radius: 0;
 }
 #sidebar-main.min-aside {
@@ -202,7 +202,7 @@ code {
 #sidebar-main.min-aside li.active a
 {
     color: #FFF;
-    background-color: #1FA2BF;
+    background-color: #00bdda;
 }
 
 /* 通用顶部导航 */
@@ -376,7 +376,7 @@ input[type='password'] {
 }
 input:focus, textarea:focus {
     background-color: #3F4855;
-    border: 1px solid #1FA2BF;
+    border: 1px solid #00bdda;
     box-shadow: none;
     outline: none;
 }
@@ -422,21 +422,21 @@ md-radio-group.layout-row md-radio-button {
     margin-right: 15px;
 }
 md-radio-group.md-default-theme:not([disabled]) .md-primary .md-checked .md-off, md-radio-group:not([disabled]) .md-primary .md-checked .md-off, md-radio-group.md-default-theme:not([disabled]) .md-primary.md-checked .md-off, md-radio-group:not([disabled]) .md-primary.md-checked .md-off, md-radio-group.md-default-theme:not([disabled]).md-primary .md-checked .md-off, md-radio-group:not([disabled]).md-primary .md-checked .md-off, md-radio-group.md-default-theme:not([disabled]).md-primary.md-checked .md-off, md-radio-group:not([disabled]).md-primary.md-checked .md-off, md-radio-button.md-default-theme:not([disabled]) .md-primary .md-checked .md-off, md-radio-button:not([disabled]) .md-primary .md-checked .md-off, md-radio-button.md-default-theme:not([disabled]) .md-primary.md-checked .md-off, md-radio-button:not([disabled]) .md-primary.md-checked .md-off, md-radio-button.md-default-theme:not([disabled]).md-primary .md-checked .md-off, md-radio-button:not([disabled]).md-primary .md-checked .md-off, md-radio-button.md-default-theme:not([disabled]).md-primary.md-checked .md-off, md-radio-button:not([disabled]).md-primary.md-checked .md-off {
-    color: #1FA2BF;
-    border-color: #1FA2BF;
+    color: #00bdda;
+    border-color: #00bdda;
 }
 md-radio-group.md-default-theme:not([disabled]) .md-primary .md-on, md-radio-group:not([disabled]) .md-primary .md-on, md-radio-group.md-default-theme:not([disabled]).md-primary .md-on, md-radio-group:not([disabled]).md-primary .md-on, md-radio-button.md-default-theme:not([disabled]) .md-primary .md-on, md-radio-button:not([disabled]) .md-primary .md-on, md-radio-button.md-default-theme:not([disabled]).md-primary .md-on, md-radio-button:not([disabled]).md-primary .md-on {
-    color: #1FA2BF;
-    background-color: #1FA2BF;
+    color: #00bdda;
+    background-color: #00bdda;
 }
 md-radio-group.md-default-theme:not([disabled]) .md-primary .md-checked .md-ink-ripple, md-radio-group:not([disabled]) .md-primary .md-checked .md-ink-ripple, md-radio-group.md-default-theme:not([disabled]) .md-primary.md-checked .md-ink-ripple, md-radio-group:not([disabled]) .md-primary.md-checked .md-ink-ripple, md-radio-group.md-default-theme:not([disabled]).md-primary .md-checked .md-ink-ripple, md-radio-group:not([disabled]).md-primary .md-checked .md-ink-ripple, md-radio-group.md-default-theme:not([disabled]).md-primary.md-checked .md-ink-ripple, md-radio-group:not([disabled]).md-primary.md-checked .md-ink-ripple, md-radio-button.md-default-theme:not([disabled]) .md-primary .md-checked .md-ink-ripple, md-radio-button:not([disabled]) .md-primary .md-checked .md-ink-ripple, md-radio-button.md-default-theme:not([disabled]) .md-primary.md-checked .md-ink-ripple, md-radio-button:not([disabled]) .md-primary.md-checked .md-ink-ripple, md-radio-button.md-default-theme:not([disabled]).md-primary .md-checked .md-ink-ripple, md-radio-button:not([disabled]).md-primary .md-checked .md-ink-ripple, md-radio-button.md-default-theme:not([disabled]).md-primary.md-checked .md-ink-ripple, md-radio-button:not([disabled]).md-primary.md-checked .md-ink-ripple {
-    color: #1FA2BF;
+    color: #00bdda;
 }
 md-radio-button .md-off {
     border-color: #D3D1D5;
 }
 .md-primary.md-checked .md-label {
-    color: #1FA2BF;
+    color: #00bdda;
 }
 md-radio-button .md-label {
     color: #D3D1D5;
@@ -532,7 +532,7 @@ input:-ms-input-placeholder {
     color: #475263;
 }
 a.md-button.md-default-theme.md-primary, a.md-button.md-primary, .md-button.md-default-theme.md-primary, .md-button.md-primary {
-    color:#1FA2BF;
+    color:#00bdda;
 }
 a.md-button.md-default-theme.md-success, a.md-button.md-success, .md-button.md-default-theme.md-success, .md-button.md-success {
     color:#E8EAEC;
@@ -542,7 +542,7 @@ a.md-button.md-default-theme[disabled], a.md-button[disabled], a.md-button.md-de
     background-color: #C7CACF;
 }
 a.md-button.md-default-theme.md-primary.md-raised, a.md-button.md-primary.md-raised, a.md-button.md-default-theme.md-primary.md-fab, a.md-button.md-primary.md-fab, .md-button.md-default-theme.md-primary.md-raised, .md-button.md-primary.md-raised, .md-button.md-default-theme.md-primary.md-fab, .md-button.md-primary.md-fab {
-    background-color: #1FA2BF;
+    background-color: #00bdda;
     color: #E8EAEC;
 }
 .md-button.md-primary:hover {
@@ -575,10 +575,10 @@ md-switch {
     display: inline-flex;
 }
 md-switch.md-default-theme.md-checked.md-primary .md-thumb, md-switch.md-checked.md-primary .md-thumb {
-    background-color: #1FA2BF;
+    background-color: #00bdda;
 }
 md-switch.md-default-theme.md-checked.md-primary .md-ink-ripple, md-switch.md-checked.md-primary .md-ink-ripple {
-    color: #1FA2BF;
+    color: #00bdda;
 }
 md-switch.md-default-theme.md-checked.md-primary .md-bar, md-switch.md-checked.md-primary .md-bar {
     background-color: rgba(31,162,191,0.5);
@@ -614,12 +614,12 @@ md-tabs .md-tab:last-of-type {
     border-right: 1px solid #93929D;
 }
 md-tabs.md-default-theme .md-tab.md-active, md-tabs .md-tab.md-active, md-tabs.md-default-theme .md-tab.md-active md-icon, md-tabs .md-tab.md-active md-icon, md-tabs.md-default-theme .md-tab.md-focused, md-tabs .md-tab.md-focused, md-tabs.md-default-theme .md-tab.md-focused md-icon, md-tabs .md-tab.md-focused md-icon {
-    color: #1FA2BF;
+    color: #00bdda;
     border-bottom: 1px solid #475263;
 }
 md-tabs md-ink-bar {
-    color: #1FA2BF;
-    background: #1FA2BF;
+    color: #00bdda;
+    background: #00bdda;
 }
 md-ink-bar {
     top: 0;
@@ -863,7 +863,7 @@ md-dialog md-dialog-content {
     min-width: 300px;
 }
 md-dialog md-toolbar.md-default-theme:not(.md-menu-toolbar), md-dialog md-toolbar:not(.md-menu-toolbar) {
-    background-color: #1FA2BF!important;
+    background-color: #00bdda!important;
 }
 md-dialog md-dialog-content input[type="number"], md-dialog md-dialog-content input[type="text"] {
     width: auto;
@@ -950,7 +950,7 @@ nvd3 .nv-axislabel {
     height: 30px;
     line-height: 30px;
     text-align: center;
-    background: #1FA2BF;
+    background: #00bdda;
     color: rgba(255,255,255,0.8);
     display: block;
     font-size: 18px;
