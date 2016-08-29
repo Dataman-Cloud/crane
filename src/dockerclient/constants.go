@@ -15,7 +15,7 @@ const (
 )
 
 const (
-	labelNamespace    = "dm.reserved.stack.namespace"
+	labelNamespace    = "com.docker.stack.namespace"
 	LabelRegistryAuth = "dm.reserved.registry.auth"
 	labelNodeEndpoint = "dm.reserved.node.endpoint"
 )
