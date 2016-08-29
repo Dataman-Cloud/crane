@@ -326,6 +326,12 @@
                             "$ref": "#/definitions/GeneralErrorResponse"
                         }
                     },
+                    "401": {
+                        "description": "token 验证失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    },
                     "503": {
                         "description": "创建失败",
                         "schema": {
@@ -368,6 +374,12 @@
                     },
                     "400": {
                         "description": "过滤条件不合理",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "token 验证失败",
                         "schema": {
                             "$ref": "#/definitions/GeneralErrorResponse"
                         }
@@ -416,6 +428,12 @@
                         "description": "返回所有网络信息",
                         "schema": {
                             "$ref": "#/definitions/CreateNetworkOptions"
+                        }
+                    },
+                    "401": {
+                        "description": "token 验证失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
                         }
                     },
                     "503": {
@@ -477,6 +495,12 @@
                             "$ref": "#/definitions/GeneralErrorResponse"
                         }
                     },
+                    "401": {
+                        "description": "token 验证失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    },
                     "500": {
                         "description": "操作失败",
                         "schema": {
@@ -524,6 +548,12 @@
                             "$ref": "#/definitions/GeneralErrorResponse"
                         }
                     },
+                    "401": {
+                        "description": "token 验证失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    },
                     "503": {
                         "description": "创建失败",
                         "schema": {
@@ -555,6 +585,12 @@
                             "items": {
                                 "$ref": "#/definitions/CreateNetworkOptions"
                             }
+                        }
+                    },
+                    "401": {
+                        "description": "token 验证失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
                         }
                     },
                     "503": {
@@ -596,6 +632,12 @@
                             "$ref": "#/definitions/GeneralOkResponse"
                         }
                     },
+                    "401": {
+                        "description": "token 验证失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    },
                     "503": {
                         "description": "删除网络失败",
                         "schema": {
@@ -631,6 +673,12 @@
                         "description": "返回所有网络信息",
                         "schema": {
                             "$ref": "#/definitions/CreateNetworkOptions"
+                        }
+                    },
+                    "401": {
+                        "description": "token 验证失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
                         }
                     },
                     "503": {
@@ -686,8 +734,261 @@
                             "$ref": "#/definitions/GeneralErrorResponse"
                         }
                     },
+                    "401": {
+                        "description": "token 验证失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    },
                     "500": {
                         "description": "操作失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/nodes/{node_id}/images": {
+            "get": {
+                "summary": "获取节点上所有的镜像",
+                "description": "争取返回200，错误返回相应错误码",
+                "tags": [
+                    "Images"
+                ],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "用户token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "node_id",
+                        "in": "path",
+                        "description": "节点 id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "filter",
+                        "in": "query",
+                        "description": "过滤条件,默认{},json格式",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回所有镜像信息",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "integer",
+                                    "format": "int8",
+                                    "default": 0
+                                },
+                                "data": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/APIImages"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "过滤参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "token 验证失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "获取镜像失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/nodes/{node_id}/images/{image_id}": {
+            "get": {
+                "summary": "获取节点上所有的镜像",
+                "description": "争取返回200，错误返回相应错误码",
+                "tags": [
+                    "Images"
+                ],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "用户token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "node_id",
+                        "in": "path",
+                        "description": "节点 id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "image_id",
+                        "in": "path",
+                        "description": "镜像 id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回镜像信息",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "integer",
+                                    "format": "int8",
+                                    "default": 0
+                                },
+                                "data": {
+                                    "type": "object",
+                                    "$ref": "#/definitions/Image"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "token 验证失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "获取镜像详细信息失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "删除镜像",
+                "description": "删除成功返回200，错误返回相应错误码",
+                "tags": [
+                    "Images"
+                ],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "用户token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "node_id",
+                        "in": "path",
+                        "description": "节点 id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "image_id",
+                        "in": "path",
+                        "description": "镜像 id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralOkResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "token 验证失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "删除镜像失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/nodes/{node_id}/images/{image_id}/history": {
+            "get": {
+                "summary": "获取镜像历史记录",
+                "description": "正确返回200，错误返回相应错误码",
+                "tags": [
+                    "Images"
+                ],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "用户token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "node_id",
+                        "in": "path",
+                        "description": "节点 id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "image_id",
+                        "in": "path",
+                        "description": "镜像 id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回镜像历史",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "integer",
+                                    "format": "int8",
+                                    "default": 0
+                                },
+                                "data": {
+                                    "type": "object",
+                                    "$ref": "#/definitions/ImageHistory"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "token 验证失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "获取镜像历史失败",
                         "schema": {
                             "$ref": "#/definitions/GeneralErrorResponse"
                         }
@@ -934,96 +1235,24 @@
             }
         },
         "Mount": {
-            "description": "挂载目录参数",
-            "type": "object",
-            "required": [
-                "Type",
-                "Source",
-                "Target",
-                "ReadOnly",
-                "BindOptions",
-                "VolumeOptions"
-            ],
             "properties": {
-                "Type": {
-                    "description": "挂载类型 (bind/volume)",
+                "Name": {
                     "type": "string"
                 },
                 "Source": {
-                    "description": "主机文件路径",
                     "type": "string"
                 },
-                "Target": {
-                    "description": "容器文件路径",
+                "Destination": {
                     "type": "string"
                 },
-                "ReadOnly": {
-                    "description": "挂载到容器内部的文件是否只读",
+                "Driver": {
+                    "type": "string"
+                },
+                "Mode": {
+                    "type": "string"
+                },
+                "RW": {
                     "type": "boolean"
-                },
-                "BindOptions": {
-                    "description": "传播参数",
-                    "type": "object",
-                    "required": [
-                        "Propagation"
-                    ],
-                    "properties": {
-                        "Propagation": {
-                            "description": "文件权限",
-                            "type": "string",
-                            "enum": [
-                                "rprivate",
-                                "private",
-                                "rshared",
-                                "shared",
-                                "rslave",
-                                "slave"
-                            ]
-                        }
-                    }
-                },
-                "VolumeOptions": {
-                    "description": "挂载方式为volume时的挂载参数",
-                    "type": "object",
-                    "required": [
-                        "NoCopy",
-                        "Labels",
-                        "DriverConfig"
-                    ],
-                    "properties": {
-                        "NoCopy": {
-                            "description": "是否禁止复制",
-                            "type": "boolean"
-                        },
-                        "Labels": {
-                            "description": "挂载的标签",
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        },
-                        "DriverConfig": {
-                            "description": "挂载驱动",
-                            "type": "object",
-                            "required": [
-                                "Name",
-                                "Options"
-                            ],
-                            "properties": {
-                                "Name": {
-                                    "description": "驱动名称",
-                                    "type": "string"
-                                },
-                                "Options": {
-                                    "description": "驱动参数",
-                                    "type": "object",
-                                    "additionalProperties": {
-                                        "type": "string"
-                                    }
-                                }
-                            }
-                        }
-                    }
                 }
             }
         },
@@ -1478,6 +1707,306 @@
                 },
                 "Force": {
                     "type": "boolean"
+                }
+            }
+        },
+        "APIImages": {
+            "description": "image详细信息",
+            "type": "object",
+            "properties": {
+                "ID": {
+                    "type": "string",
+                    "description": "镜像id"
+                },
+                "RepoTages": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "description": "标签"
+                    }
+                },
+                "Created": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "Size": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "VirtualSize": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "ParentID": {
+                    "type": "string"
+                },
+                "RepoDigests": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "Labels": {
+                    "type": "object"
+                }
+            }
+        },
+        "Image": {
+            "description": "镜像详细信息",
+            "type": "object",
+            "properties": {
+                "ID": {
+                    "type": "string"
+                },
+                "RepoTags": {
+                    "type": "string"
+                },
+                "Parent": {
+                    "type": "string"
+                },
+                "Comment": {
+                    "type": "string"
+                },
+                "Created": {
+                    "type": "string"
+                },
+                "Container": {
+                    "type": "string"
+                },
+                "ContainerConfig": {
+                    "type": "object",
+                    "$ref": "#/definitions/ImageConfig"
+                },
+                "DockerVersion": {
+                    "type": "string"
+                },
+                "Author": {
+                    "type": "string"
+                },
+                "Config": {
+                    "type": "object",
+                    "$ref": "#/definitions/ImageConfig"
+                },
+                "Architecture": {
+                    "type": "string"
+                },
+                "Size": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "VirtualSize": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "RepoDigests": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "RootFS": {
+                    "type": "object",
+                    "$ref": "#/definitions/RootFS"
+                }
+            }
+        },
+        "RootFS": {
+            "properties": {
+                "Type": {
+                    "type": "string"
+                },
+                "Layers": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "ImageConfig": {
+            "type": "object",
+            "properties": {
+                "Hostname": {
+                    "type": "string"
+                },
+                "Domainname": {
+                    "type": "string"
+                },
+                "User": {
+                    "type": "string"
+                },
+                "Memory": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "MemorySwap": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "MemoryReservation": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "KernelMemory": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "CPUShares": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "CPUSet": {
+                    "type": "string"
+                },
+                "AttachStdin": {
+                    "type": "boolean"
+                },
+                "AttachStdout": {
+                    "type": "boolean"
+                },
+                "AttachStderr": {
+                    "type": "boolean"
+                },
+                "PortSpecs": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "ExposedPorts": {
+                    "type": "object"
+                },
+                "ArgsEscaped": {
+                    "type": "boolean"
+                },
+                "StopSignal": {
+                    "type": "string"
+                },
+                "Tty": {
+                    "type": "boolean"
+                },
+                "OpenStdin": {
+                    "type": "boolean"
+                },
+                "StdinOnce": {
+                    "type": "boolean"
+                },
+                "Env": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "Cmd": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "Healthcheck": {
+                    "type": "object",
+                    "$ref": "#/definitions/HealthConfig"
+                },
+                "DNS": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "Image": {
+                    "type": "string"
+                },
+                "Volumes": {
+                    "type": "string"
+                },
+                "VolumeDriver": {
+                    "type": "string"
+                },
+                "VolumesFrom": {
+                    "type": "string"
+                },
+                "WorkingDir": {
+                    "type": "string"
+                },
+                "MacAddress": {
+                    "type": "string"
+                },
+                "Entrypoint": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "NetworkDisabled": {
+                    "type": "boolean"
+                },
+                "SecurityOpts": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "OnBuild": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "Mounts": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Mount"
+                    }
+                },
+                "Labels": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "HealthConfig": {
+            "properties": {
+                "Test": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "Interval": {
+                    "type": "string"
+                },
+                "Timeout": {
+                    "type": "string"
+                },
+                "Retries": {
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        },
+        "ImageHistory": {
+            "properties": {
+                "ID": {
+                    "type": "string"
+                },
+                "Tags": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "Created": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "CreatedBy": {
+                    "type": "string"
+                },
+                "Size": {
+                    "type": "integer",
+                    "format": "int64"
                 }
             }
         }
