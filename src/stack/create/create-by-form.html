@@ -1,5 +1,5 @@
 <div data-ng-show="stackCreateByFormCtrl.step == 1">
-    <header id="header-main">
+    <header class="header-main">
         <h1>第一步. 填写应用基本信息</h1>
     </header>
     <form name="stepOneForm" class="form-main">
@@ -47,7 +47,7 @@
 </div>
 
 <div data-ng-show="stackCreateByFormCtrl.step == 2">
-    <header id="header-main">
+    <header class="header-main">
         <h1>第二步. 填写服务信息</h1>
     </header>
     <md-tabs md-dynamic-height md-border-bottom md-autoselect>
@@ -92,7 +92,7 @@
                              role="alert">
                             <p class="text-danger help-text"
                                ng-message="required">
-                                <small>名称不能为空</small>
+                                <small>镜像不能为空</small>
                             </p>
                         </div>
                     </div>

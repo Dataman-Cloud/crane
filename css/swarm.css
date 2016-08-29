@@ -61,7 +61,7 @@ a:active {
     text-decoration: underline;
 }
 ::selection {
-background:#00bdda; 
+background:#00bdda;
 color:#FFF;
 }
 ::-moz-selection {
@@ -71,7 +71,7 @@ color:#FFF;
 ::-webkit-selection {
 background:#00bdda;
 color:#FFF;
-}  
+}
 section {
     margin: 0;
 }
@@ -107,9 +107,9 @@ code {
     color: #78AD26;
 }
 .ellipsis {
-    max-width: 200px; 
-    white-space: nowrap; 
-    overflow: hidden; 
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
     text-overflow: ellipsis;
     display: inline-block;
 }
@@ -278,7 +278,26 @@ code {
     margin-left: 40px;
 }
 
-
+#container-main {
+    color: #D3D1D5;
+    padding: 25px;
+}
+#container-main .header-main {
+    margin-bottom: 30px;
+    font-size: 0;
+}
+#container-main .header-main h1 {
+    margin-bottom: 0;
+    font-size: 28px;
+}
+#container-main .header-main h1 i {
+    width: 30px;
+    margin-right: 10px;
+}
+#container-main .header-main .sub-info-main {
+    margin-top: 15px;
+    margin-left: 40px;
+}
 
 #search-main {
     position: absolute;
@@ -324,7 +343,7 @@ code {
 }
 .md-autocomplete-suggestions-container .item-metadata span, .md-autocomplete-suggestions-container .item-title span {
     color: #D3D1D5;
-    margin-left: 5px; 
+    margin-left: 5px;
     margin-right: 20px;
 }
 
@@ -399,7 +418,7 @@ md-select {
     background-color: #3F4855;
     border: 1px solid #666C71!important;
     padding: 0 0 0 15px;
-    
+
 }
 .md-select-value .md-text {
     color: #D3D1D5;
@@ -633,11 +652,11 @@ md-select-menu md-content {
     background-color: #FFF;
 }
 .info-list {
-    margin-bottom: 5px; 
+    margin-bottom: 5px;
     font-size: 0;
 }
 .info-list:last-of-type {
-    margin-bottom: 0; 
+    margin-bottom: 0;
 }
 .info-list dt, .info-list dd {
     display: inline-block;
@@ -686,7 +705,7 @@ md-select-menu md-content {
 .info-list-detail p {
     color: #D3D1D5;
     margin: 0;
-    word-wrap: break-word; 
+    word-wrap: break-word;
     word-break: normal;
 }
 
@@ -738,9 +757,9 @@ table.md-table tbody.md-body>tr.md-row, table.md-table tfoot.md-foot>tr.md-row {
     min-height: 40px;
     height: 40px;
 }
-table.md-table:not(.md-row-select) td.md-cell:first-child, 
+table.md-table:not(.md-row-select) td.md-cell:first-child,
 table.md-table:not(.md-row-select) th.md-column:first-child,
-table.md-table:not(.md-row-select) td.md-cell:nth-child(n+2):nth-last-child(n+2), 
+table.md-table:not(.md-row-select) td.md-cell:nth-child(n+2):nth-last-child(n+2),
 table.md-table:not(.md-row-select) th.md-column:nth-child(n+2):nth-last-child(n+2) {
     padding-left: 0;
     padding-right: 24px;
