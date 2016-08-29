@@ -130,6 +130,8 @@ func (api *Api) UpdateService(ctx *gin.Context) {
 		}
 
 		swarmServiceSpec.Annotations.Labels[dockerclient.LabelRegistryAuth] = rolexServiceSpec.RegistryAuth
+	} else {
+		delete(swarmServiceSpec.Annotations.Labels, dockerclient.LabelRegistryAuth)
 	}
 
 	if err := api.GetDockerClient().UpdateService(service.ID, service.Version, swarmServiceSpec, updateOpts); err != nil {

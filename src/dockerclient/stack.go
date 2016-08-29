@@ -325,7 +325,11 @@ func (client *RolexDockerClient) deployServices(services map[string]model.RolexS
 			}
 
 			serviceSpec.Annotations.Labels[LabelRegistryAuth] = service.RegistryAuth
+		} else {
+			// is safe to delete and not exist field
+			delete(serviceSpec.Annotations.Labels, LabelRegistryAuth)
 		}
+
 		//TODO change service WorkingDir and User
 		//cspec := &serviceSpec.TaskTemplate.ContainerSpec
 		//if service.WorkingDir != nil {
