@@ -41,7 +41,8 @@
                         "Dir": "",//目录
                         "User": "",
                         "Mounts": [],//挂载
-                        "StopGracePeriod": null //杀死容器前等待时间
+                        "StopGracePeriod": null, //杀死容器前等待时间
+                        "Args": []
                     },
                     "Resources": {
                         "Limits": {
@@ -93,6 +94,7 @@
             form.formConstraints = [];
             form.formEnv = [];
             form.formCmd = [];
+            form.formArgs = [];
             form.defaultMode = 'Replicated';
 
             //Unit conversion
@@ -145,6 +147,16 @@
                 });
             }
 
+            if (form.TaskTemplate.ContainerSpec.Args) {
+                angular.forEach(form.TaskTemplate.ContainerSpec.Args, function (item, index) {
+                    var obj = {
+                        arg: item
+                    };
+
+                    form.formArgs.push(obj)
+                });
+            }
+
             if (form.TaskTemplate.Placement.Constraints) {
                 angular.forEach(form.TaskTemplate.Placement.Constraints, function (item, index) {
                     var obj = {
@@ -191,6 +203,7 @@
             form.Labels = {};
             form.TaskTemplate.ContainerSpec.Labels = {};
             form.TaskTemplate.ContainerSpec.Command = [];
+            form.TaskTemplate.ContainerSpec.Args = [];
             form.TaskTemplate.ContainerSpec.Mounts = [];
             form.EndpointSpec.Ports = [];
 
@@ -224,6 +237,12 @@
                 });
             }
 
+            if (form.formArgs.length) {
+                angular.forEach(form.formArgs, function (arg, index, array) {
+                    form.TaskTemplate.ContainerSpec.Args[index] = arg.arg
+                });
+            }
+
             form.TaskTemplate.ContainerSpec.Mounts = form.formMounts;
             form.Networks = service.Spec.Networks;
             form.EndpointSpec.Ports = form.formPorts;
@@ -233,6 +252,7 @@
             delete form.formLabels;
             delete form.formContainerLabels;
             delete form.formCmd;
+            delete form.formArgs;
             delete form.formPorts;
             delete form.formNetworks;
             delete form.formMounts;
@@ -308,6 +328,9 @@
                 },
                 Cmd: {
                     command: ''
+                },
+                Args: {
+                    arg: ''
                 }
             };
 

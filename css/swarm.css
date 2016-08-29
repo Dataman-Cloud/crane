@@ -522,6 +522,7 @@ input:-ms-input-placeholder {
     box-shadow: none!important;
     border: none;
     font-size: 16px;
+    text-transform: none;
 }
 .md-button:last-of-type {
     margin: 0;
