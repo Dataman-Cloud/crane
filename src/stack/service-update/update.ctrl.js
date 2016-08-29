@@ -9,7 +9,13 @@
 
         self.service = service;
         self.serviceLabelLength = 0;
-        self.showAdvanceContent =  true;
+        self.showStartupParameter =  true;
+        self.showTag =  true;
+        self.showResourceLimit =  true;
+        self.showFaultTolerant =  true;
+        self.showUpdatePolicy =  true;
+        self.showSchedulingStrategy =  true;
+        self.showFileMount =  true;
 
         self.modeChange = modeChange;
         self.addConfig = addConfig;

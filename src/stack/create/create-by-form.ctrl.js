@@ -60,8 +60,7 @@
                 "Mode": "vip", //vip/dnsrr
                 "Ports": [] //端口
             },
-            "defaultMode": 'Replicated',
-            "showAdvanceContent": false
+            "defaultMode": 'Replicated'
         };
 
         self.step = 1;
@@ -236,7 +235,13 @@
                 item.TaskTemplate.ContainerSpec.Labels = containerLabels;
 
                 delete item.defaultMode;
-                delete item.showAdvanceContent;
+                delete item.showStartupParameter;
+                delete item.showTag;
+                delete item.showResourceLimit;
+                delete item.showFaultTolerant;
+                delete item.showSchedulingStrategy;
+                delete item.showFileMount;
+                delete item.showUpdatePolicy;
 
                 serveLabels = {};
                 containerLabels = {}
