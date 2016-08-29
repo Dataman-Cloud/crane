@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"net/url"
 	"path/filepath"
-	"time"
 
 	"github.com/Dataman-Cloud/go-component/utils/dmerror"
 	"github.com/Dataman-Cloud/rolex/src/util/config"
@@ -17,30 +16,6 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/docker/engine-api/types"
 	"golang.org/x/net/context"
-)
-
-const (
-	defaultHttpRequestTimeout = time.Second * 10
-)
-
-const (
-	API_VERSION = "1.23"
-)
-
-const (
-	//Container error code
-	CodePatchContainerParamError      = "400-11002"
-	CodePatchContainerMethodUndefined = "400-11003"
-	CodeContainerNotFound             = "404-11006"
-	CodeContainerAlreadyRunning       = "400-11007"
-	CodeContainerNotRunning           = "400-11008"
-	CodeInvalidImageName              = "503-11009"
-
-	//Go docker client error code
-	CodeConnToNodeError          = "503-11701"
-	CodeGetNodeEndpointError     = "503-11702"
-	CodeNodeEndpointIpMatchError = "503-11703"
-	CodeVerifyNodeEnpointFailed  = "503-11704"
 )
 
 type RolexDockerClient struct {

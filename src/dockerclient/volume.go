@@ -7,11 +7,6 @@ import (
 	"golang.org/x/net/context"
 )
 
-const (
-	//Volume error code
-	CodeInvalidVolumeName = "503-11602"
-)
-
 func (client *RolexDockerClient) InspectVolume(ctx context.Context, name string) (*docker.Volume, error) {
 	swarmNode, err := client.SwarmNode(ctx)
 	if err != nil {
