@@ -258,8 +258,24 @@
                      role="alert">
                 </div>
             </div>
+
             <div class="form-group" layout="column">
-                <label>选择网络</label>
+                <label>选择 RegAuth</label>
+                <div class="form-control">
+                    <md-select data-ng-model="serviceUpdateCtrl.form.RegistryAuth"
+                               aria-label="RegAuth">
+                        <md-option value="">空</md-option>
+                        <md-option data-ng-repeat="regAuth in serviceUpdateCtrl.regAuths"
+                                   ng-value="regAuth.Name"
+                                   ng-selected="regAuth.Name === serviceUpdateCtrl.service.Spec.RegistryAuth">{/regAuth.Name/}
+                        </md-option>
+                    </md-select>
+                </div>
+                <p class="text-danger help-text"></p>
+            </div>
+
+            <div class="form-group" layout="column">
+                <label>选择网络 <small>(不支持修改)</small></label>
                 <div class="form-control">
                     <md-select data-ng-model="serviceUpdateCtrl.form.formNetworks" multiple
                                aria-label="Networks" data-ng-disabled="true">

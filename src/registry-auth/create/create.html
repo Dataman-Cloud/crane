@@ -4,7 +4,7 @@
         <div class="form-control">
             <input type="text" data-ng-model="regAuthCreateCtrl.form.Name"
                    data-required="required" name="name"
-                   data-ng-pattern="/^[A-Za-z0-9]+$/">
+                   data-ng-pattern="/^[^\u4e00-\u9fa5]{0,}$/">
         </div>
         <div ng-messages="createRegAuth.name.$error" ng-if="createRegAuth.name.$dirty" role="alert">
             <p class="text-danger help-text"
@@ -13,19 +13,19 @@
             </p>
             <p class="text-danger help-text"
                ng-message="pattern">
-                <small>名称必须数字或者英文</small>
+                <small>名称不能包含中文</small>
             </p>
         </div>
     </div>
 
     <div class="form-group" layout="column">
-        <label>用户名
+        <label>用户名<span class="required">*</span>
             <small></small>
         </label>
         <div class="form-control">
             <input type="text" name="UserName" data-required="required"
                    data-ng-model="regAuthCreateCtrl.form.Username"
-                   data-ng-pattern="/^[A-Za-z0-9]+$/">
+                   data-ng-pattern="/^[^\u4e00-\u9fa5]{0,}$/">
         </div>
         <div ng-messages="createRegAuth.UserName.$error" ng-if="createRegAuth.UserName.$dirty" role="alert">
             <p class="text-danger help-text"
@@ -34,19 +34,18 @@
             </p>
             <p class="text-danger help-text"
                ng-message="pattern">
-                <small>用户名必须数字或者英文</small>
+                <small>用户名不能包含中文</small>
             </p>
         </div>
     </div>
 
     <div class="form-group" layout="column">
-        <label>密码
+        <label>密码<span class="required">*</span>
             <small></small>
         </label>
         <div class="form-control">
-            <input type="text" name="PassWord" data-required="required"
-                   data-ng-model="regAuthCreateCtrl.form.Password"
-                   data-ng-pattern="/^[A-Za-z0-9]+$/">
+            <input type=password ng-trim="false" name="PassWord" data-required="required"
+                   data-ng-model="regAuthCreateCtrl.form.Password" ng-minlength="6">
         </div>
         <div ng-messages="createRegAuth.PassWord.$error" ng-if="createRegAuth.PassWord.$dirty"
              role="alert">
@@ -55,8 +54,30 @@
                 <small>密码不能为空</small>
             </p>
             <p class="text-danger help-text"
-               ng-message="pattern">
-                <small>密码必须数字或者英文</small>
+               ng-message="minlength">
+                <small>密码至少 6 位</small>
+            </p>
+        </div>
+    </div>
+
+    <div class="form-group" layout="column">
+        <label>再次确认密码<span class="required">*</span>
+            <small></small>
+        </label>
+        <div class="form-control">
+            <input type=password ng-trim="false" name="rePassWord" data-required="required"
+                   data-ng-model="regAuthCreateCtrl.rePassWord"
+                   dm-no-equal="regAuthCreateCtrl.form.Password">
+        </div>
+        <div ng-messages="createRegAuth.rePassWord.$error" ng-if="createRegAuth.rePassWord.$dirty"
+             role="alert">
+            <p class="text-danger help-text"
+               ng-message="required">
+                <small>不能为空</small>
+            </p>
+            <p class="text-danger help-text"
+               ng-message="checkrepeat">
+                <small>密码不一致</small>
             </p>
         </div>
     </div>
