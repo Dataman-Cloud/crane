@@ -132,7 +132,7 @@
             confirmModal.open("是否确认删除该主机？").then(function () {
                 nodeBackend.deleteNode(nodeId)
                     .then(function (data) {
-                        Notification.success('激活成功');
+                        Notification.success('主机删除成功');
                         $state.reload()
                     })
             });
