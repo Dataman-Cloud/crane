@@ -10,17 +10,36 @@
                 </md-button>
             </div>
         </md-toolbar>
-        <md-dialog-content>
-            <div class="form-group">
-                <md-button class="md-icon-button" data-ng-click="formCtrl.ok('json')"
-                           aria-label="cancel">json
-                </md-button>
-                <md-button class="md-icon-button" data-ng-click="formCtrl.ok('form')"
-                           aria-label="cancel">form
-                </md-button>
-                <md-button class="md-icon-button" data-ng-click="formCtrl.ok('catalogs')"
-                           aria-label="cancel">catalogs
-                </md-button>
+        <md-dialog-content layout="row" style="width: 600px;">
+            <div flex="30">
+                <md-card data-ng-click="formCtrl.ok('json')">
+                    <md-card-title>
+                        <md-card-title-text>
+                            <i class="fa fa-code"></i>
+                            <span class="md-headline">DAB 创建</span>
+                        </md-card-title-text>
+                    </md-card-title>
+                </md-card>
+            </div>
+            <div flex="30" flex-offset="5">
+                <md-card data-ng-click="formCtrl.ok('form')">
+                    <md-card-title>
+                        <md-card-title-text>
+                            <i class="fa fa-mouse-pointer"></i>
+                            <span class="md-headline">向导创建</span>
+                        </md-card-title-text>
+                    </md-card-title>
+                </md-card>
+            </div>
+            <div flex="30" flex-offset="5">
+                <md-card data-ng-click="formCtrl.ok('catalogs')">
+                    <md-card-title>
+                        <md-card-title-text>
+                            <i class="fa fa-shopping-cart"></i>
+                            <span class="md-headline">快捷创建</span>
+                        </md-card-title-text>
+                    </md-card-title>
+                </md-card>
             </div>
         </md-dialog-content>
     </form>

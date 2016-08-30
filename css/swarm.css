@@ -158,7 +158,7 @@ code {
     margin-left: 15px;
     width: 18px;
 }
-#sidebar-main li a
+#sidebar-main li a, #sidebar-main li button
 {
     font-size: 16px;
     font-weight: bold;
@@ -173,7 +173,7 @@ code {
     color: #93929D;
     border-left: 3px solid transparent;
 }
-#sidebar-main li a:hover
+#sidebar-main li a:hover, #sidebar-main li button:hover
 {
     text-decoration: none;
     color: #fff;
@@ -187,19 +187,21 @@ code {
 }
 #sidebar-main > ul ul
 {
-    margin-left: 35px;
+    background-color: rgba(0,0,0,0.25);
+    padding: 10px 0;
 }
 #sidebar-main > ul ul a
 {
-    font-size: 14px;
+    font-size: 12px;
     height: 30px;
     line-height: 30px;
     min-height: 30px;
+    padding-left: 2px;
 }
 #sidebar-main > ul ul i
 {
-    font-size: 14px;
-    margin-right: 10px;
+    font-size: 12px;
+    margin-right: 15px;
 }
 #sidebar-main.min-aside {
     width: 42px;
@@ -222,7 +224,9 @@ code {
     color: #FFF;
     background-color: #00bdda;
 }
-
+#sidebar-main .md-button[disabled], #sidebar-main .md-button[disabled]:hover {
+    background-color: transparent!important;
+}
 /* 通用顶部导航 */
 #nav-main {
     background-color: #0C1C1B;
@@ -1034,4 +1038,17 @@ nvd3 .nv-axislabel {
 
 md-card {
     margin: 0 25px 25px 0;
+}
+md-dialog md-card {
+    margin: 0;
+    text-align: center;
+    cursor: pointer;
+}
+md-dialog md-card:hover {
+    background-color: #00bdda;
+    color: #FFF;
+}
+md-dialog md-card i{
+    font-size: 30px!important;
+    margin-bottom: 15px;
 }
