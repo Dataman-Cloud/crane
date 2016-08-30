@@ -15,7 +15,7 @@
                 returnTo = "/index.html?timestamp="+new Date().getTime();
             }
             return authBackend.login(data, form).then(function (data) {
-                $window.sessionStorage.setItem('token', data);
+                $window.localStorage .setItem('token', data);
                 $window.location.href = returnTo;
             });
         }

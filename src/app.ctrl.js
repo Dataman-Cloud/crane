@@ -29,7 +29,7 @@
         }
 
         function initUser() {
-            var token = $window.sessionStorage.getItem('token');
+            var token = $window.localStorage .getItem('token');
             if (token) {
                 gHttp.setToken(token);
                 tty.setToken(token);
