@@ -32,16 +32,7 @@ func NewRolexIndex(RolexDockerClient *dockerclient.RolexDockerClient) *RolexInde
 func (indexer *RolexIndexer) Index(store *search.DocumentStorage) {
 	if nodes, err := indexer.RolexDockerClient.ListNode(types.NodeListOptions{}); err == nil {
 		for _, node := range nodes {
-			store.Set(node.ID, search.Document{
-				ID:   node.ID,
-				Name: node.Description.Hostname,
-				Type: DOCUMENT_NODE,
-				Param: map[string]string{
-					"NodeId": node.ID,
-				},
-			})
-
-			store.Set(node.Description.Hostname, search.Document{
+			store.Set(node.ID+node.Description.Hostname, search.Document{
 				ID:   node.ID,
 				Name: node.Description.Hostname,
 				Type: DOCUMENT_NODE,
@@ -55,7 +46,7 @@ func (indexer *RolexIndexer) Index(store *search.DocumentStorage) {
 				RolexDockerClient.
 				ListNodeNetworks(backContext, docker.NetworkFilterOpts{}); err == nil {
 				for _, network := range networks {
-					store.Set(network.ID, search.Document{
+					store.Set(network.ID+network.Name+node.ID, search.Document{
 						Name: network.Name,
 						ID:   network.ID,
 						Type: DOCUMENT_NETWORK,
@@ -65,15 +56,6 @@ func (indexer *RolexIndexer) Index(store *search.DocumentStorage) {
 						},
 					})
 
-					store.Set(network.Name, search.Document{
-						Name: network.Name,
-						ID:   network.ID,
-						Type: DOCUMENT_NETWORK,
-						Param: map[string]string{
-							"NodeId":    node.ID,
-							"NetworkID": network.ID,
-						},
-					})
 				}
 			} else {
 				log.Errorf("get network error: %v", err)
@@ -117,19 +99,7 @@ func (indexer *RolexIndexer) Index(store *search.DocumentStorage) {
 				RolexDockerClient.
 				ListStackService(stack.Namespace, types.ServiceListOptions{}); err == nil {
 				for _, service := range services {
-					store.Set(service.ID,
-						search.Document{
-							ID:      service.ID,
-							Name:    stack.Namespace,
-							Type:    DOCUMENT_SERVICE,
-							GroupId: groupId,
-							Param: map[string]string{
-								"NameSpace": stack.Namespace,
-								"ServiceId": service.ID,
-							},
-						})
-
-					store.Set(service.Name,
+					store.Set(service.ID+stack.Namespace,
 						search.Document{
 							ID:      service.ID,
 							Name:    stack.Namespace,
