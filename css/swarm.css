@@ -187,8 +187,8 @@ code {
 }
 #sidebar-main > ul ul
 {
-    background-color: rgba(0,0,0,0.25);
-    padding: 10px 0;
+    padding: 0 0 10px 0;
+    background-color: rgba(0,0,0,0.15);
 }
 #sidebar-main > ul ul a
 {
@@ -196,12 +196,11 @@ code {
     height: 30px;
     line-height: 30px;
     min-height: 30px;
-    padding-left: 2px;
+    padding-left: 50px;
 }
 #sidebar-main > ul ul i
 {
-    font-size: 12px;
-    margin-right: 15px;
+    display: none;
 }
 #sidebar-main.min-aside {
     width: 42px;
@@ -211,9 +210,18 @@ code {
     -o-transition-duration: 0.5;
     overflow: hidden;
 }
+#sidebar-main.min-aside > ul ul a
+{
+    padding-left: 3px;
+    }
 #sidebar-main.min-aside li i {
     margin-left: 12px;
     margin-right: 12px;
+}
+#sidebar-main.min-aside > ul ul i {
+    display: inline-block;
+    font-size: 11px;
+    margin-right: 15px;
 }
 #sidebar-main.min-aside li a {
     min-width: auto;
