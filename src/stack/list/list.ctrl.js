@@ -8,6 +8,12 @@
     function StackListCtrl(stacks, stackCurd) {
         var self = this;
         
-        self.stacks = stacks
+        self.stacks = stacks;
+
+        self.openCreateSelect = openCreateSelect;
+
+        function openCreateSelect(ev) {
+            stackCurd.createSelect(ev)
+        }
     }
 })();

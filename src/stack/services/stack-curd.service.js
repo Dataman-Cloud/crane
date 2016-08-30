@@ -8,10 +8,11 @@
 
 
     /* @ngInject */
-    function stackCurd(stackBackend, formModal, confirmModal, Notification, $state) {
+    function stackCurd(stackBackend, formModal, confirmModal, Notification, $state, createSelectModal) {
         //////
         return {
             upServiceScale: upServiceScale,
+            createSelect: createSelect,
             deleteStack: deleteStack,
             createStack: createStack,
             updateService: updateService
@@ -25,6 +26,25 @@
                     $state.reload();
                 });
             });
+        }
+
+        function createSelect(ev) {
+            createSelectModal.open('/src/stack/modals/create-select.html', ev)
+                .then(function (data) {
+                    switch (data) {
+                        case 'json':
+                            $state.go('stack.createByJson');
+                            break;
+                        case 'form':
+                            $state.go('stack.createByForm');
+                            break;
+                        case 'catalogs':
+                            $state.go('registry.list.catalogs');
+                            break;
+                        default:
+                            $state.go('stack.createByJson');
+                    }
+                });
         }
 
         function deleteStack(ev, stackName) {

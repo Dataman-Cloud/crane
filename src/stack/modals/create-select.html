@@ -1,0 +1,28 @@
+<md-dialog aria-label="select image">
+    <form name="staticForm" class="form-main">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>选择创建方式</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="formCtrl.cancel()"
+                           aria-label="cancel">
+                    <i class="fa fa-close"></i>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="form-group">
+                <md-button class="md-icon-button" data-ng-click="formCtrl.ok('json')"
+                           aria-label="cancel">json
+                </md-button>
+                <md-button class="md-icon-button" data-ng-click="formCtrl.ok('form')"
+                           aria-label="cancel">form
+                </md-button>
+                <md-button class="md-icon-button" data-ng-click="formCtrl.ok('catalogs')"
+                           aria-label="cancel">catalogs
+                </md-button>
+            </div>
+        </md-dialog-content>
+    </form>
+</md-dialog>
+
