@@ -7,7 +7,7 @@ ROLEX_DOCKER_CERT_PATH=null
 ROLEX_DB_DSN=root:111111@tcp(rolex_db:3306)/rolex?charset=utf8&parseTime=true&loc=Local
 ROLEX_DB_DRIVER=mysql
 
-ROLEX_FEATURE_FLAGS=registry,logging,account,catalog,search,registryauth
+ROLEX_FEATURE_FLAGS=registry,logging,account,catalog,search,registryauth,license
 
 ROLEX_REGISTRY_PRIVATE_KEY_PATH=./private_key.pem
 ROLEX_REGISTRY_ADDR=http://rolex_registry:5000
