@@ -317,6 +317,7 @@ code {
 #container-main {
     color: #D3D1D5;
     padding: 25px;
+    margin-bottom: 80px;
 }
 #container-main .header-main {
     margin-bottom: 30px;
