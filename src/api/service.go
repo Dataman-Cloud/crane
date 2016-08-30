@@ -3,6 +3,7 @@ package api
 import (
 	"encoding/base64"
 	"io"
+	"strings"
 
 	"github.com/Dataman-Cloud/go-component/utils/dmerror"
 	"github.com/Dataman-Cloud/go-component/utils/dmgin"
@@ -97,10 +98,17 @@ func (api *Api) UpdateService(ctx *gin.Context) {
 	}
 
 	netAttachConfigs := []swarm.NetworkAttachmentConfig{}
+	var serviceAlias string
+	serviceAlias = rolexServiceSpec.Name
+	splitServiceNames := strings.Split(rolexServiceSpec.Name, "_")
+	if len(splitServiceNames) == 2 {
+		serviceAlias = splitServiceNames[1]
+	}
+
 	for _, network := range rolexServiceSpec.Networks {
 		netAttachConfigs = append(netAttachConfigs, swarm.NetworkAttachmentConfig{
 			Target:  network,
-			Aliases: []string{rolexServiceSpec.Name},
+			Aliases: []string{serviceAlias},
 		})
 
 	}
