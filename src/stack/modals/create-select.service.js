@@ -24,11 +24,12 @@
         }
 
         /* @ngInject */
-        function FormModalCtrl($mdDialog) {
+        function FormModalCtrl($mdDialog, $state) {
             var self = this;
 
-            self.ok = function (select) {
-                $mdDialog.hide(select);
+            self.ok = function (state) {
+                $state.go(state);
+                $mdDialog.hide();
             };
 
             self.cancel = function () {
