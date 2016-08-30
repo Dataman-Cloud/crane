@@ -1,12 +1,6 @@
 <header layout="row" id="header-main">
-    <md-button class="md-raised md-primary" flex="25" data-ui-sref="stack.createByJson"><i class="fa fa-plus"></i> DAB
-        创建
-    </md-button>
-    <md-button class="md-raised md-primary" flex="25" data-ui-sref="stack.createByForm"><i
-            class="fa fa-plus"></i> 向导创建
-    </md-button>
-    <md-button class="md-raised md-primary" flex="25" data-ui-sref="registry.list.catalogs"><i
-            class="fa fa-plus"></i> 快捷创建
+    <md-button class="md-raised md-primary" flex="100" data-ng-click="stackListCtrl.openCreateSelect($event)"><i
+            class="fa fa-stack"></i> 创建应用
     </md-button>
 </header>
 
@@ -21,8 +15,10 @@
             </header>
             <table>
                 <tr data-ng-repeat="service in stack.Services | orderBy: $index">
-                  <td><i class="fa fa-wrench" aria-hidden="true"></i> <a data-ui-sref="stack.serviceDetail({stack_name: stack.Namespace, service_id: service.ID})">{/service.Name/}</a></td>
-                  <td>{/service.NumTasksRunning/}/{/service.NumTasksTotal/}</td>
+                    <td><i class="fa fa-wrench" aria-hidden="true"></i> <a
+                            data-ui-sref="stack.serviceDetail({stack_name: stack.Namespace, service_id: service.ID})">{/service.Name/}</a>
+                    </td>
+                    <td>{/service.NumTasksRunning/}/{/service.NumTasksTotal/}</td>
                 </tr>
             </table>
             <div class="time">{/stack.Services[0].CreatedAt | date: 'yyyy-MM-dd HH:mm:ss' /}</div>

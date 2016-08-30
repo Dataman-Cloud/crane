@@ -11,7 +11,7 @@
                 template: '<ui-view/>',
                 targetState: 'list',
                 ncyBreadcrumb: {
-                    label: '仓库管理'
+                    label: '仓库认证'
                 }
             })
             .state('registryAuth.list', {
