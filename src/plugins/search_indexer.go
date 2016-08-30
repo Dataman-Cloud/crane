@@ -155,6 +155,16 @@ func (indexer *RolexIndexer) Index(store *search.DocumentStorage) {
 										"ContainerId": task.Status.ContainerStatus.ContainerID,
 									},
 								})
+							store.Set(task.Status.ContainerStatus.ContainerID,
+								search.Document{
+									ID:      task.Status.ContainerStatus.ContainerID,
+									Type:    DOCUMENT_TASK,
+									GroupId: groupId,
+									Param: map[string]string{
+										"NodeId":      task.NodeID,
+										"ContainerId": task.Status.ContainerStatus.ContainerID,
+									},
+								})
 						}
 					} else {
 						log.Errorf("get task list error: %v", err)
