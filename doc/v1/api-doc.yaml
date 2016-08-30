@@ -230,6 +230,10 @@ paths:
           description: 创建失败
           schema:
             $ref: '#/definitions/GeneralErrorResponse'
+        401:
+          description: token 验证失败
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
     get:
       summary: 获取指定节点上的network
       description: 正确返回200，失败则返回相应错误信息
@@ -259,6 +263,10 @@ paths:
             $ref: '#/definitions/GeneralErrorResponse'
         503:
           description: 获取失败
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
+        401:
+          description: token 验证失败
           schema:
             $ref: '#/definitions/GeneralErrorResponse'
     
@@ -291,6 +299,10 @@ paths:
             $ref: '#/definitions/CreateNetworkOptions'
         503:
           description: 获取网络信息失败
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
+        401:
+          description: token 验证失败
           schema:
             $ref: '#/definitions/GeneralErrorResponse'
     patch:
@@ -333,6 +345,10 @@ paths:
           description: 操作失败
           schema:
             $ref: '#/definitions/GeneralErrorResponse'
+        401:
+          description: token 验证失败
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
     
 
   /networks:
@@ -366,6 +382,10 @@ paths:
           description: 创建失败
           schema:
             $ref: '#/definitions/GeneralErrorResponse'
+        401:
+          description: token 验证失败
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
     get:
       summary: 获取manager节点上所有的网络
       description: 或许成功返回200，或许失败返回相应信息
@@ -386,6 +406,10 @@ paths:
               $ref: '#/definitions/CreateNetworkOptions'
         503:
           description: 获取网络列表失败
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
+        401:
+          description: token 验证失败
           schema:
             $ref: '#/definitions/GeneralErrorResponse'
             
@@ -415,6 +439,10 @@ paths:
           description: 删除网络失败
           schema:
             $ref: '#/definitions/GeneralErrorResponse'
+        401:
+          description: token 验证失败
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
     get:
       summary: 获取网络详细信息
       description: 获取成功返回200,错误返回相应信息
@@ -438,6 +466,10 @@ paths:
             $ref: '#/definitions/CreateNetworkOptions'
         503:
           description: 获取网络信息失败
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
+        401:
+          description: token 验证失败
           schema:
             $ref: '#/definitions/GeneralErrorResponse'
     patch:
@@ -476,7 +508,185 @@ paths:
           description: 操作失败
           schema:
             $ref: '#/definitions/GeneralErrorResponse'
-
+        401:
+          description: token 验证失败
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
+            
+  /nodes/{node_id}/images:
+    get:
+      summary: 获取节点上所有的镜像
+      description: 争取返回200，错误返回相应错误码
+      tags:
+        - Images
+      parameters:
+        - name: Authorization
+          in: header
+          description: 用户token
+          required: true
+          type: string
+        - name: node_id
+          in: path
+          description: 节点 id
+          required: true
+          type: string
+        - name: filter
+          in: query
+          description: 过滤条件,默认{},json格式
+          required: false
+          type: string
+      responses:
+        200:
+          description: 返回所有镜像信息
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int8
+                default: 0
+              data:
+                type: array
+                items:
+                  $ref: '#/definitions/APIImages'
+        500:
+          description: 获取镜像失败
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
+        400:
+          description: 过滤参数错误
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
+        401:
+          description: token 验证失败
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
+  
+  /nodes/{node_id}/images/{image_id}:
+    get:
+      summary: 获取节点上所有的镜像
+      description: 争取返回200，错误返回相应错误码
+      tags:
+        - Images
+      parameters:
+        - name: Authorization
+          in: header
+          description: 用户token
+          required: true
+          type: string
+        - name: node_id
+          in: path
+          description: 节点 id
+          required: true
+          type: string
+        - name: image_id
+          in: path
+          description: 镜像 id
+          required: true
+          type: string
+      responses:
+        200:
+          description: 返回镜像信息
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int8
+                default: 0
+              data:
+                type: object
+                $ref: '#/definitions/Image'
+        500:
+          description: 获取镜像详细信息失败
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
+        401:
+          description: token 验证失败
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
+    delete:
+      summary: 删除镜像
+      description: 删除成功返回200，错误返回相应错误码
+      tags:
+        - Images
+      parameters:
+        - name: Authorization
+          in: header
+          description: 用户token
+          required: true
+          type: string
+        - name: node_id
+          in: path
+          description: 节点 id
+          required: true
+          type: string
+        - name: image_id
+          in: path
+          description: 镜像 id
+          required: true
+          type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/GeneralOkResponse'
+        500:
+          description: 删除镜像失败
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
+        401:
+          description: token 验证失败
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
+            
+  /nodes/{node_id}/images/{image_id}/history:
+    get:
+      summary: 获取镜像历史记录 
+      description: 正确返回200，错误返回相应错误码
+      tags:
+        - Images
+      parameters:
+        - name: Authorization
+          in: header
+          description: 用户token
+          required: true
+          type: string
+        - name: node_id
+          in: path
+          description: 节点 id
+          required: true
+          type: string
+        - name: image_id
+          in: path
+          description: 镜像 id
+          required: true
+          type: string
+      responses:
+        200:
+          description: 返回镜像历史
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int8
+                default: 0
+              data:
+                type: object
+                $ref: '#/definitions/ImageHistory'
+        500:
+          description: 获取镜像历史失败
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
+        401:
+          description: token 验证失败
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
+    
+    
+    
+    
 definitions:
   GeneralOkResponse:
     type: object
@@ -1022,7 +1232,7 @@ definitions:
       NetworkOptions:
         type: object
         $ref: '#/definitions/NetworkConnectionOptions'
-        
+  
   NetworkConnectionOptions:
     description: 连接网络配置
     type: object
@@ -1077,3 +1287,228 @@ definitions:
             type: string
       Force:
         type: boolean
+        
+  APIImages:
+    description: image详细信息
+    type: object
+    properties:
+      ID:
+        type: string
+        description: 镜像id
+      RepoTages:
+        type: array
+        items:
+          type: string
+          description: 标签
+      Created:
+        type: integer
+        format: int64
+      Size:
+        type: integer
+        format: int64
+      VirtualSize:
+        type: integer
+        format: int64
+      ParentID:
+        type: string
+      RepoDigests:
+        type: array
+        items:
+          type: string
+      Labels:
+        type: object
+        
+  Image:
+    description: 镜像详细信息
+    type: object
+    properties:
+      ID:
+        type: string
+      RepoTags:
+        type: string
+      Parent:
+        type: string
+      Comment:
+        type: string
+      Created:
+        type: string
+      Container:
+        type: string
+      ContainerConfig:
+        type: object
+        $ref: '#/definitions/ImageConfig'
+      DockerVersion:
+        type: string
+      Author:
+        type: string
+      Config:
+        type: object
+        $ref: '#/definitions/ImageConfig'
+      Architecture:
+        type: string
+      Size:
+        type: integer
+        format: int64
+      VirtualSize:
+        type: integer
+        format: int64
+      RepoDigests:
+        type: array
+        items:
+          type: string
+      RootFS:
+        type: object
+        $ref: '#/definitions/RootFS'
+
+  RootFS:
+    properties:
+      Type:
+        type: string
+      Layers:
+        type: array
+        items:
+          type: string
+
+  ImageConfig:
+    type: object
+    properties:
+      Hostname:
+        type: string
+      Domainname:
+        type: string
+      User:
+        type: string
+      Memory:
+        type: integer
+        format: int64
+      MemorySwap:
+        type: integer
+        format: int64
+      MemoryReservation:
+        type: integer
+        format: int64
+      KernelMemory:
+        type: integer
+        format: int64
+      CPUShares:
+        type: integer
+        format: int64
+      CPUSet:
+        type: string
+      AttachStdin:
+        type: boolean
+      AttachStdout:
+        type: boolean
+      AttachStderr:
+        type: boolean
+      PortSpecs:
+        type: array
+        items:
+          type: string
+      ExposedPorts:
+        type: object
+      ArgsEscaped:
+        type: boolean
+      StopSignal:
+        type: string
+      Tty:
+        type: boolean
+      OpenStdin:
+        type: boolean
+      StdinOnce:
+        type: boolean
+      Env:
+        type: array
+        items:
+          type: string
+      Cmd:
+        type: array
+        items:
+          type: string
+      Healthcheck:
+        type: object
+        $ref: '#/definitions/HealthConfig'
+      DNS:
+        type: array
+        items:
+          type: string
+      Image:
+        type: string
+      Volumes:
+        type: string
+      VolumeDriver:
+        type: string
+      VolumesFrom:
+        type: string
+      WorkingDir:
+        type: string
+      MacAddress:
+        type: string
+      Entrypoint:
+        type: array
+        items:
+          type: string
+      NetworkDisabled:
+        type: boolean
+      SecurityOpts:
+        type: array
+        items:
+          type: string
+      OnBuild:
+        type: array
+        items:
+          type: string
+      Mounts: 
+        type: array
+        items:
+          $ref: '#/definitions/Mount'
+      Labels:
+        type: object
+        additionalProperties:
+          type: string
+      
+  Mount:
+    properties:
+      Name:
+        type: string
+      Source:
+        type: string
+      Destination:
+        type: string
+      Driver:
+        type: string
+      Mode:
+        type: string
+      RW:
+        type: boolean
+        
+  HealthConfig:
+    properties:
+      Test:
+        type: array
+        items:
+          type: string
+      Interval: 
+        type: string
+      Timeout:
+        type: string
+      Retries:
+        type: integer
+        format: int64
+        
+  ImageHistory:
+    properties:
+      ID:
+        type: string
+      Tags:
+        type: array
+        items:
+          type: string
+      Created:
+        type: integer
+        format: int64
+      CreatedBy:
+        type: string
+      Size:
+        type: integer
+        format: int64
