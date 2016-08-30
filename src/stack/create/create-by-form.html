@@ -554,26 +554,29 @@
                                     </div>
                                 </md-radio-group>
                             </div>
-                            <div class="form-control sub-group" layout="row" layout-align="start center">
-                                <div flex="25">
-                                    <label class="sub-label">评估间隔
-                                        <small>秒</small>
+                            <div class="form-control sub-group">
+                                <div flex="55">
+                                    <label class="sub-label">评估间隔<small>秒</small>
                                     </label>
                                     <input type="number" min="0"
                                            data-ng-model="serve.TaskTemplate.RestartPolicy.Window"
                                            name="restartPolicy">
                                       <label><em>--restart-window</em></label>
                                 </div>
-                                <div flex="25">
-                                    <label class="sub-label">重启间隔
-                                        <small>秒</small>
+                                </div>
+                                <div class="form-control sub-group">
+                                <div flex="55">
+                                    <label class="sub-label">重启间隔<small>秒</small>
                                     </label>
                                     <input type="number" data-ng-model="serve.TaskTemplate.RestartPolicy.Delay"
                                            name="restartDelay" min="0">
                                       <label><em>--restart-delay</em></label>
                                 </div>
-                                <div flex="25">
-                                    <label class="sub-label">尝试次数</label>
+                                    </div>
+                            <div class="form-control sub-group">
+                                <div flex="65">
+                                    <label class="sub-label">尝试次数<small>&nbsp;&nbsp;&nbsp;&nbsp;</small>
+                                    </label>
                                     <input type="number" min="0"
                                            data-ng-model="serve.TaskTemplate.RestartPolicy.MaxAttempts"
                                            name="restartMaxAttempts">
