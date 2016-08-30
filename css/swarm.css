@@ -226,6 +226,7 @@ code {
 }
 #sidebar-main .md-button[disabled], #sidebar-main .md-button[disabled]:hover {
     background-color: transparent!important;
+    color: #93929d!important;
 }
 /* 通用顶部导航 */
 #nav-main {
@@ -291,10 +292,22 @@ code {
 #container-main #header-main h1 {
     margin-bottom: 0;
     font-size: 28px;
+    display: inline-block;
+    position: relative;
 }
 #container-main #header-main h1 i {
     width: 30px;
     margin-right: 10px;
+}
+#container-main #header-main h1 .label-node-ip {
+    position: absolute;
+    right: -95px;
+    top: 0px;
+    font-size: 12px;
+    color: #FFF;
+    background-color: #89B832;
+    border-radius: 3px;
+    padding: 2px 3px;
 }
 #container-main #header-main .sub-info-main {
     margin-top: 15px;
@@ -312,10 +325,22 @@ code {
 #container-main .header-main h1 {
     margin-bottom: 0;
     font-size: 28px;
+    display: inline-block;
+    position: relative;
 }
 #container-main .header-main h1 i {
     width: 30px;
     margin-right: 10px;
+}
+#container-main .header-main h1 .label-node-ip {
+    position: absolute;
+    right: -95px;
+    top: 0px;
+    font-size: 12px;
+    color: #FFF;
+    background-color: #89B832;
+    border-radius: 3px;
+    padding: 2px;
 }
 #container-main .header-main .sub-info-main {
     margin-top: 15px;
@@ -816,6 +841,7 @@ table.md-table tr:hover td.md-cell {
 }
 table.md-table td.md-cell p {
     margin: 0;
+    word-break: break-all; 
 }
 table.md-table th.md-column a.help-info {
     position: relative;
