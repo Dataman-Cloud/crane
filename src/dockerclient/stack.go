@@ -259,29 +259,28 @@ func (client *RolexDockerClient) updateNetworks(networks []string, namespace str
 		if _, err := client.CreateNetwork(*createOpts); err != nil {
 			return newNetworkMap, err
 		}
-		newNetworkMap[name] = true
+		newNetworkMap[internalName] = true
 	}
 
 	return newNetworkMap, nil
 }
 
-func (client *RolexDockerClient) convertNetworks(newNetworkMap map[string]bool, namespace string, name string) []swarm.NetworkAttachmentConfig {
+func (client *RolexDockerClient) convertNetworks(newNetworkMap map[string]bool, networks []string, namespace string, name string) []swarm.NetworkAttachmentConfig {
 	nets := []swarm.NetworkAttachmentConfig{}
-	for network, isNew := range newNetworkMap {
-		if isNew {
+	for _, serviceNetwork := range networks {
+		if isNew, ok := newNetworkMap[serviceNetwork]; ok && isNew {
 			nets = append(nets, swarm.NetworkAttachmentConfig{
-				Target:  namespace + "_" + network,
+				Target:  namespace + "_" + serviceNetwork,
 				Aliases: []string{name},
 			})
 
 		} else {
 			nets = append(nets, swarm.NetworkAttachmentConfig{
-				Target:  network,
+				Target:  serviceNetwork,
 				Aliases: []string{name},
 			})
 		}
 	}
-
 	return nets
 }
 
@@ -306,7 +305,7 @@ func (client *RolexDockerClient) deployServices(services map[string]model.RolexS
 			Mode:         service.Mode,
 			TaskTemplate: service.TaskTemplate,
 			EndpointSpec: service.EndpointSpec,
-			Networks:     client.convertNetworks(newNetworkMap, namespace, internalName),
+			Networks:     client.convertNetworks(newNetworkMap, service.Networks, namespace, internalName),
 			UpdateConfig: service.UpdateConfig,
 		}
 
