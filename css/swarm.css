@@ -143,10 +143,11 @@ code {
     height: 30px;
     margin-top: 15px;
 }
-#sidebar-main ul
+#sidebar-main > ul
 {
     margin: 25px 0 40px 0;
 }
+
 #sidebar-main li {
     text-align: left;
 }
@@ -183,6 +184,22 @@ code {
     color: #FFF;
     border-left: 3px solid #00bdda;
     border-radius: 0;
+}
+#sidebar-main > ul ul
+{
+    margin-left: 35px;
+}
+#sidebar-main > ul ul a
+{
+    font-size: 14px;
+    height: 30px;
+    line-height: 30px;
+    min-height: 30px;
+}
+#sidebar-main > ul ul i
+{
+    font-size: 14px;
+    margin-right: 10px;
 }
 #sidebar-main.min-aside {
     width: 42px;
@@ -538,13 +555,18 @@ input:-ms-input-placeholder {
 /* 按钮样式 */
 .md-button {
     margin: 0 25px 0 0;
-    border-radius: 0;
+    border-radius: 3px;
     min-height: 40px;
+    line-height: 40px;
     min-width: 110px;
     box-shadow: none!important;
     border: none;
     font-size: 16px;
     text-transform: none;
+    font-weight: bold;
+}
+.md-button:hover {
+    color: #000;
 }
 .md-button:last-of-type {
     margin: 0;
@@ -590,7 +612,7 @@ a.md-button.md-default-theme.md-primary.md-raised, a.md-button.md-primary.md-rai
     color: #AFB6BC!important;
  }
 .md-primary.md-ink-ripple:hover {
-    color: #C7CACF!important;
+    color: #FFF!important;
 }
 /* switch 样式 */
 md-switch {
@@ -613,7 +635,9 @@ md-tabs-canvas {
     height: 40px;
     margin-bottom: -1px;
 }
-
+md-tabs-content-wrapper {
+    margin-top: 25px;
+}
 md-pagination-wrapper {
     height: 40px;
 }
@@ -912,6 +936,8 @@ md-dialog md-toolbar.md-default-theme:not(.md-menu-toolbar), md-dialog md-toolba
 }
 md-dialog md-dialog-content input[type="number"], md-dialog md-dialog-content input[type="text"] {
     width: auto;
+    background-color: rgba(63, 72, 85, 0.1);
+    color: #333;
 }
 md-dialog md-dialog-content label {
     color: #354052;

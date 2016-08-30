@@ -10,6 +10,9 @@
     </md-button>
 </header>
 
+<header layout="row" id="header-main">
+    <md-button class="md-raised md-primary" flex="100" data-ui-sref="showAdvanced($event)"><i class="fa fa-stack"></i> 创建应用</md-button>
+</header>
 <div layout="row" layout-wrap ng-flow-grid min-item-width="330">
     <div data-ng-repeat="stack in stackListCtrl.stacks | orderBy: 'stack.Services[0].CreatedAt'" class="flowGridItem">
         <div class="app-panel">

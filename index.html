@@ -40,27 +40,34 @@
                     <i class="fa fa-shopping-cart"></i>镜像
                 </md-button>
             </li>
-
-            <li title="主机" data-ui-sref-active="active">
-                <md-button data-ui-sref="node" data-ui-sref-opts="{inherit: false}">
-                    <i class="fa fa-server"></i>主机
+            
+            <li title="设施">
+                <md-button>
+                    <i class="fa fa fa-building"></i>设施
                 </md-button>
-            </li>
+                <ul>
+                     <li title="主机" data-ui-sref-active="active">
+                        <md-button data-ui-sref="node" data-ui-sref-opts="{inherit: false}">
+                            <i class="fa fa-server"></i>主机
+                        </md-button>
+                    </li>
 
-            <li title="网络" data-ui-sref-active="active">
-                <md-button data-ui-sref="network" data-ui-sref-opts="{inherit: false}">
-                    <i class="fa fa-sitemap"></i>网络
-                </md-button>
+                    <li title="网络" data-ui-sref-active="active">
+                        <md-button data-ui-sref="network" data-ui-sref-opts="{inherit: false}">
+                            <i class="fa fa-sitemap"></i>网络
+                        </md-button>
+                    </li>
+
+                    <li title="ReAuth" data-ui-sref-active="active">
+                        <md-button data-ui-sref="registryAuth" data-ui-sref-opts="{inherit: false}">
+                            <i class="fa fa-archive" aria-hidden="true"></i>仓库认证
+                        </md-button>
+                    </li>
+                </ul>
             </li>
 
             <li title="设置" data-ui-sref-active="active">
                 <md-button data-ui-sref="misc" data-ui-sref-opts="{inherit: false}"><i class="fa fa-cogs"></i>信息
-                </md-button>
-            </li>
-
-            <li title="ReAuth" data-ui-sref-active="active">
-                <md-button data-ui-sref="registryAuth" data-ui-sref-opts="{inherit: false}"><i
-                        class="fa fa-registered"></i>仓管
                 </md-button>
             </li>
         </ul>
