@@ -3,17 +3,12 @@
         <label>RegAuth 名称<span class="required">*</span></label>
         <div class="form-control">
             <input type="text" data-ng-model="regAuthCreateCtrl.form.Name"
-                   data-required="required" name="name"
-                   data-ng-pattern="/^[^\u4e00-\u9fa5]{0,}$/">
+                   data-required="required" name="name">
         </div>
         <div ng-messages="createRegAuth.name.$error" ng-if="createRegAuth.name.$dirty" role="alert">
             <p class="text-danger help-text"
                ng-message="required">
                 <small>名称不能为空</small>
-            </p>
-            <p class="text-danger help-text"
-               ng-message="pattern">
-                <small>名称不能包含中文</small>
             </p>
         </div>
     </div>
@@ -24,17 +19,12 @@
         </label>
         <div class="form-control">
             <input type="text" name="UserName" data-required="required"
-                   data-ng-model="regAuthCreateCtrl.form.Username"
-                   data-ng-pattern="/^[^\u4e00-\u9fa5]{0,}$/">
+                   data-ng-model="regAuthCreateCtrl.form.Username">
         </div>
         <div ng-messages="createRegAuth.UserName.$error" ng-if="createRegAuth.UserName.$dirty" role="alert">
             <p class="text-danger help-text"
                ng-message="required">
                 <small>用户名不能为空</small>
-            </p>
-            <p class="text-danger help-text"
-               ng-message="pattern">
-                <small>用户名不能包含中文</small>
             </p>
         </div>
     </div>
@@ -45,17 +35,13 @@
         </label>
         <div class="form-control">
             <input type=password ng-trim="false" name="PassWord" data-required="required"
-                   data-ng-model="regAuthCreateCtrl.form.Password" ng-minlength="6">
+                   data-ng-model="regAuthCreateCtrl.form.Password">
         </div>
         <div ng-messages="createRegAuth.PassWord.$error" ng-if="createRegAuth.PassWord.$dirty"
              role="alert">
             <p class="text-danger help-text"
                ng-message="required">
                 <small>密码不能为空</small>
-            </p>
-            <p class="text-danger help-text"
-               ng-message="minlength">
-                <small>密码至少 6 位</small>
             </p>
         </div>
     </div>

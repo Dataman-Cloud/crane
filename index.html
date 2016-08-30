@@ -59,7 +59,8 @@
             </li>
 
             <li title="ReAuth" data-ui-sref-active="active">
-                <md-button data-ui-sref="registryAuth" data-ui-sref-opts="{inherit: false}"><i class="fa fa-registered"></i>仓管
+                <md-button data-ui-sref="registryAuth" data-ui-sref-opts="{inherit: false}"><i
+                        class="fa fa-registered"></i>仓管
                 </md-button>
             </li>
         </ul>
@@ -131,8 +132,11 @@
                     <md-item-template>
                         <div>
                             <span class="item-title">
-                                <i class="fa fa-server"
-                                   ng-class="{'fa-server': item.Type === 'node' || item.Type === 'network' || item.Type === 'volume', 'fa-stack-overflow': item.Type === 'stack', 'fa-wrench': item.Type === 'service', 'fa-cube': item.Type === 'task'}"></i>
+                                <i class="fa"
+                                   ng-class="{'fa-server': item.Type === 'node',
+                                   'fa-stack-overflow': item.Type === 'stack', 'fa-wrench': item.Type === 'service',
+                                   'fa-cube': item.Type === 'task', 'fa-sitemap': item.Type === 'network',
+                                   'fa-file-archive-o': item.Type === 'volume'}"></i>
                                 <span ng-show="item.Name">Name<i>{/item.Name/}</i></span>
                             </span>
                             <span class="item-metadata">
@@ -166,7 +170,10 @@
 <div class="licence-alert" ng-if="!licenseValidFlag">
     您的序列号即将到期，请填写信息获取新的序列号。<a href="#">立即获取序列号</a>
 </div>
-<a href="http://shurenyun.mikecrm.com/FCNKya" class="feedback-btn" target="_blank"><i class="fa fa-commenting" aria-hidden="true"></i><md-tooltip md-direction="right">问题意见留言</md-tooltip></a>
+<a href="http://shurenyun.mikecrm.com/FCNKya" class="feedback-btn" target="_blank"><i class="fa fa-commenting"
+                                                                                      aria-hidden="true"></i>
+    <md-tooltip md-direction="right">问题意见留言</md-tooltip>
+</a>
 
 <!--build:js js/script.js-->
 <script src="bower_components/jquery/dist/jquery.js" type="text/javascript"></script>
