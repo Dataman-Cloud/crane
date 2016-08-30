@@ -41,7 +41,8 @@
 
             userBackend.aboutMe()
                 .then(function (data) {
-                    $rootScope.accountId = data.Id
+                    $rootScope.accountId = data.Id;
+                    $rootScope.userName = data.Email;
                 })
         }
 
@@ -49,6 +50,8 @@
             userBackend.checkLicense()
                 .then(function (data) {
                     $rootScope.licenseValidFlag = (Date.now() / 1000) < data.License;
+                }, function (res) {
+                    $rootScope.licenseValidFlag = false;
                 })
         }
 

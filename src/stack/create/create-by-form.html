@@ -52,7 +52,7 @@
     </header>
     <md-tabs md-dynamic-height md-border-bottom md-autoselect>
         <md-tab data-ng-repeat="serve in stackCreateByFormCtrl.serveFormArray track by $index"
-                label="{/serve.Name/}">
+                label="{/serve.Name || '新服务'/}">
             <md-content>
                 <form name="staticForm" class="form-main">
                     <div class="form-group" layout="column">
