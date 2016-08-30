@@ -7,7 +7,7 @@ body
     height: 100%;
 
     color: #354052;
-    background-color: #475263;
+    background-color: #252D31;
 
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
@@ -49,15 +49,15 @@ h6
     margin-bottom: 12px;
 }
 a, a:visited{
-    color: #00bdda;
+    color: #FFF; /*#00bdda;*/
     text-decoration: none;
 }
 a:hover {
-    color: #46ACC6;
+    color: #FFF;/*#46ACC6;*/
     text-decoration: underline;
 }
 a:active {
-    color: #93CCDC;
+    color: #FFF;/*#93CCDC;*/
     text-decoration: underline;
 }
 ::selection {
@@ -83,12 +83,13 @@ code {
     display: inline-block;
     padding: 10px;
     word-break: break-all;
+    max-width: 450px;
 }
 .no-info {
-    color: #5A616E!important;
+    color: #3F4855!important;
 }
 .no-info-main {
-    color: #5A616E!important;
+    color: #3F4855!important;
     padding-top: 100px;
     padding-bottom: 100px;
     font-size: 36px;
@@ -104,7 +105,7 @@ code {
     color: #E76C4C;
 }
 .text-success {
-    color: #78AD26;
+    color: #89B832;
 }
 .ellipsis {
     max-width: 200px;
@@ -159,8 +160,8 @@ code {
 #sidebar-main li a
 {
     font-size: 16px;
+    font-weight: bold;
     line-height: 42px;
-
     display: inline-block;
     padding: 0;
     height: 42px;
@@ -254,7 +255,8 @@ code {
     margin: 0 12px;
 }
 #breadcrumb-main span {
-    color: #E8EAEC;
+    color: #FFF;
+    font-weight: bold;
 }
 
 #container-main {
@@ -364,8 +366,8 @@ label small {
     color: #93929D;
 }
 input[type='text'] {
-    background-color: #3F4855;
-    border: 1px solid #666C71;
+    background-color: rgba(63,72,85,0.3);
+    border: 1px solid rgba(63,72,85,1);
     width: 580px;
     height: 40px;
     color: #D3D1D5;
@@ -374,8 +376,8 @@ input[type='text'] {
     padding-right: 15px;
 }
 input[type='number'] {
-    background-color: #3F4855;
-    border: 1px solid #666C71;
+    background-color: rgba(63,72,85,0.3);
+    border: 1px solid rgba(63,72,85,1);
     width: 100px;
     height: 40px;
     color: #D3D1D5;
@@ -384,8 +386,8 @@ input[type='number'] {
     padding-right: 5px;
 }
 input[type='password'] {
-    background-color: #3F4855;
-    border: 1px solid #666C71;
+    background-color: rgba(63,72,85,0.3);
+    border: 1px solid rgba(63,72,85,1);
     width: 580px;
     height: 40px;
     color: #D3D1D5;
@@ -400,8 +402,8 @@ input:focus, textarea:focus {
     outline: none;
 }
 textarea {
-    background-color: #3F4855;
-    border: 1px solid #666C71;
+    background-color: rgba(63,72,85,0.3);
+    border: 1px solid rgba(63,72,85,1);
     width: 580px;
     height: 120px;
     color: #D3D1D5;
@@ -519,9 +521,10 @@ input:-ms-input-placeholder {
 }
 .form-main .fold-line a i{
     margin-right: 10px;
+    width: 12px;
 }
 .form-main .fold-line a {
-    background-color: #475263;
+    background-color: #252D31;
     color: #93929D;
     display: inline-block;
     padding-right: 25px;
@@ -633,8 +636,9 @@ md-tabs .md-tab:last-of-type {
     border-right: 1px solid #93929D;
 }
 md-tabs.md-default-theme .md-tab.md-active, md-tabs .md-tab.md-active, md-tabs.md-default-theme .md-tab.md-active md-icon, md-tabs .md-tab.md-active md-icon, md-tabs.md-default-theme .md-tab.md-focused, md-tabs .md-tab.md-focused, md-tabs.md-default-theme .md-tab.md-focused md-icon, md-tabs .md-tab.md-focused md-icon {
-    color: #00bdda;
-    border-bottom: 1px solid #475263;
+    color: #FFF; /*#00bdda;*/
+    border-bottom: 1px solid #252D31;
+    font-weight: bold;
 }
 md-tabs md-ink-bar {
     color: #00bdda;
@@ -740,7 +744,7 @@ md-select-menu md-content {
 }
 
 table td li {
-    color: #D3D1D5;
+    color: #93929D;
     margin-bottom: 5px;
 }
 table td li:last-of-type {
@@ -761,26 +765,26 @@ table.md-table:not(.md-row-select) td.md-cell:first-child,
 table.md-table:not(.md-row-select) th.md-column:first-child,
 table.md-table:not(.md-row-select) td.md-cell:nth-child(n+2):nth-last-child(n+2),
 table.md-table:not(.md-row-select) th.md-column:nth-child(n+2):nth-last-child(n+2) {
-    padding-left: 0;
-    padding-right: 24px;
+    padding-left: 6px;
+    padding-right: 18px;
 }
 table.md-table td.md-cell.md-numeric, table.md-table th.md-column.md-numeric {
     text-align: left;
 }
 table.md-table th.md-column {
-    color: #93929D;
-    border-bottom: 2px solid #5A616E;
+    color: #5A616E;
+    border-bottom: 2px solid rgba(63,72,85,0.5);
 }
 table.md-table td.md-cell {
     font-size: 14px;
-    color: #D3D1D5;
-    border-bottom: 1px solid #5A616E;
+    color: #93929D;
+    border-bottom: 1px solid rgba(63,72,85,0.5);
     border-top: 0;
     padding-top: 5px!important;
     padding-bottom: 5px!important;
 }
 table.md-table tr:hover td.md-cell {
-    background-color: #5A616E;
+    background-color: rgba(63,72,85,0.5);
 }
 table.md-table td.md-cell p {
     margin: 0;
@@ -821,23 +825,45 @@ table.md-table td.md-cell .md-icon-button {
     text-align: center;
 }
 .app-panel {
-    background-color: #E8EAEC;
-    padding: 15px;
+    background-color: rgba(211,209,213,0.1);
+    padding: 15px 15px 25px 15px;
     margin-right: 25px;
     margin-bottom: 25px;
     color: #93929D;
+    position: relative;
+    border-radius: 3px;
+}
+.app-panel:hover {
+    background-color: rgba(211,209,213,0.15);
+}
+.app-panel .time{
+    right: 10px;
+    bottom: 5px;
+    font-size: 11px;
+    position: absolute;
+    color: #252d31;
 }
 .app-panel h1 {
     color: #252D31;
-    margin-bottom: 5px;
-}
-.app-panel ul {
-    margin-bottom: 25px;
+    margin-bottom: 15px;
+    font-size: 24px;
 }
 .app-panel td, .app-panel th {
     text-align: left;
-    padding-bottom: 10px;
-    padding-right: 30px;
+    padding-bottom: 0;
+    padding-right: 15px;
+}
+.app-panel td i {
+    font-size: 12px;
+    margin-right: 5px;
+}
+.app-panel td a {
+    color: #93929D;
+}
+.app-panel a:hover {
+    background-color: rgba(211,209,213,0.15);
+    color: #FFF;
+    text-decoration: none;
 }
 
 article {
@@ -969,17 +995,15 @@ nvd3 .nv-axislabel {
     height: 30px;
     line-height: 30px;
     text-align: center;
-    background: #00bdda;
-    color: rgba(255,255,255,0.8);
+    color: rgba(0,189,218,0.8);
     display: block;
-    font-size: 18px;
+    font-size: 24px;
     position: absolute;
     left: 15px;
-    bottom: 70px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    bottom: 60px;
 }
 .feedback-btn:hover {
-    color: #FFF;
+    color: rgba(0,189,218,1);
 }
 
 md-card {

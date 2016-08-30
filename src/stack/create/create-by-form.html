@@ -150,7 +150,6 @@
                             <md-button class="md-raised md-success md-small"
                                        data-ng-click="stackCreateByFormCtrl.addConfig(serve.EndpointSpec.Ports, 'Ports')">
                                 <i class='fa fa-plus'></i> 添加端口映射
-                                <small>可添加多个端口映射</small>
                             </md-button>
                         </div>
                         <div data-ng-repeat="port in serve.EndpointSpec.Ports track by $index">
@@ -202,7 +201,6 @@
                             <md-button class="md-raised md-success md-small"
                                        data-ng-click="stackCreateByFormCtrl.addConfig(serve.TaskTemplate.ContainerSpec.Env, 'Env')">
                                 <i class='fa fa-plus'></i> 添加环境变量
-                                <small>可添加多个环境变量</small>
                             </md-button>
                         </div>
                         <div data-ng-repeat="env in serve.TaskTemplate.ContainerSpec.Env track by $index">
@@ -247,7 +245,7 @@
                     <div class="fold-line">
                         <a href="#" data-ng-click="serve.showStartupParameter = !serve.showStartupParameter">
                             <i class="fa"
-                               ng-class="{'fa-minus-square-o': serve.showStartupParameter, 'fa-plus-square-o': !serve.showStartupParameter}"></i>启动参数
+                               ng-class="{'fa-chevron-down': serve.showStartupParameter, 'fa-chevron-right': !serve.showStartupParameter}"></i>启动参数
                         </a>
                     </div>
 
@@ -332,7 +330,7 @@
                     <div class="fold-line">
                         <a href="#" data-ng-click="serve.showTag = !serve.showTag">
                             <i class="fa"
-                               ng-class="{'fa-minus-square-o': serve.showTag, 'fa-plus-square-o': !serve.showTag}"></i>标签
+                               ng-class="{'fa-chevron-down': serve.showTag, 'fa-chevron-right': !serve.showTag}"></i>标签
                         </a>
                     </div>
                     <div data-ng-show="serve.showTag">
@@ -341,7 +339,6 @@
                                 <md-button class="md-raised md-success md-small"
                                            data-ng-click="stackCreateByFormCtrl.addConfig(serve.Labels, 'ServeLabels')">
                                     <i class='fa fa-plus'></i> 添加服务标签
-                                    <small>可添加多个标签</small>
                                 </md-button>
                             </div>
                             <div data-ng-repeat="label in serve.Labels track by $index">
@@ -391,7 +388,6 @@
                                 <md-button class="md-raised md-success md-small"
                                            data-ng-click="stackCreateByFormCtrl.addConfig(serve.TaskTemplate.ContainerSpec.Labels, 'Labels')">
                                     <i class='fa fa-plus'></i> 添加容器标签
-                                    <small>可添加多个标签</small>
                                 </md-button>
                             </div>
                             <div data-ng-repeat="label in serve.TaskTemplate.ContainerSpec.Labels track by $index">
@@ -439,7 +435,7 @@
                     <div class="fold-line">
                         <a href="#" data-ng-click="serve.showResourceLimit = !serve.showResourceLimit">
                             <i class="fa"
-                               ng-class="{'fa-minus-square-o': serve.showResourceLimit, 'fa-plus-square-o': !serve.showResourceLimit}"></i>资源限制
+                               ng-class="{'fa-chevron-down': serve.showResourceLimit, 'fa-chevron-right': !serve.showResourceLimit}"></i>资源限制
                         </a>
                     </div>
                     <div data-ng-show="serve.showResourceLimit">
@@ -517,7 +513,7 @@
                     <div class="fold-line">
                         <a href="#" data-ng-click="serve.showFaultTolerant = !serve.showFaultTolerant">
                             <i class="fa"
-                               ng-class="{'fa-minus-square-o': serve.showFaultTolerant, 'fa-plus-square-o': !serve.showFaultTolerant}"></i>容错策略
+                               ng-class="{'fa-chevron-down': serve.showFaultTolerant, 'fa-chevron-right': !serve.showFaultTolerant}"></i>容错策略
                         </a>
                     </div>
 
@@ -575,7 +571,7 @@
                     <div class="fold-line">
                         <a href="#" data-ng-click="serve.showUpdatePolicy = !serve.showUpdatePolicy">
                             <i class="fa"
-                               ng-class="{'fa-minus-square-o': serve.showUpdatePolicy, 'fa-plus-square-o': !serve.showUpdatePolicy}"></i>更新策略
+                               ng-class="{'fa-chevron-down': serve.showUpdatePolicy, 'fa-chevron-right': !serve.showUpdatePolicy}"></i>更新策略
                         </a>
                     </div>
                     <div data-ng-show="serve.showUpdatePolicy">
@@ -630,7 +626,7 @@
                     <div class="fold-line">
                         <a href="#" data-ng-click="serve.showSchedulingStrategy = !serve.showSchedulingStrategy">
                             <i class="fa"
-                               ng-class="{'fa-minus-square-o': serve.showSchedulingStrategy, 'fa-plus-square-o': !serve.showSchedulingStrategy}"></i>调度策略
+                               ng-class="{'fa-chevron-down': serve.showSchedulingStrategy, 'fa-chevron-right': !serve.showSchedulingStrategy}"></i>调度策略
                         </a>
                     </div>
                     <div data-ng-show="serve.showSchedulingStrategy">
@@ -687,7 +683,7 @@
                     <div class="fold-line">
                         <a href="#" data-ng-click="serve.showFileMount = !serve.showFileMount">
                             <i class="fa"
-                               ng-class="{'fa-minus-square-o': serve.showFileMount, 'fa-plus-square-o': !serve.showFileMount}"></i>文件挂载
+                               ng-class="{'fa-chevron-down': serve.showFileMount, 'fa-chevron-right': !serve.showFileMount}"></i>文件挂载
                         </a>
                     </div>
 
@@ -697,7 +693,6 @@
                                 <md-button class="md-raised md-success md-small"
                                            data-ng-click="stackCreateByFormCtrl.addConfig(serve.TaskTemplate.ContainerSpec.Mounts, 'Mounts')">
                                     <i class='fa fa-plus'></i> 添加存储
-                                    <small>可添加多个存储</small>
                                 </md-button>
                             </div>
                             <div data-ng-repeat="mount in serve.TaskTemplate.ContainerSpec.Mounts track by $index">
