@@ -75,7 +75,7 @@
         }
 
         function redirectLogin(isReturn) {
-            $window.localStorage .clear();
+            $window.localStorage.clear();
             var href = HOME_URL + "?timestamp=" + new Date().getTime();
             if (isReturn) {
                 href += '&return_to=' + encodeURIComponent($window.location.href);
