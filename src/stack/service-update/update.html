@@ -48,7 +48,8 @@
                                 data-ng-change="serviceUpdateCtrl.modeChange()"
                                 layout-align="start center" flex>
                     <div flex="25">
-                        <md-radio-button value="Replicated" class="md-primary" data-ng-disabled="true">固定数  <em>replicated</em> </md-radio-button>
+                        <md-radio-button value="Replicated" class="md-primary" data-ng-disabled="true">固定数 <em>replicated</em>
+                        </md-radio-button>
                         <input type="number" min="0"
                                data-ng-show="serviceUpdateCtrl.form.defaultMode === 'Replicated'"
                                data-ng-required="serviceUpdateCtrl.form.defaultMode === 'Replicated'"
@@ -66,7 +67,9 @@
 
 
         <div class="form-group" layout="column">
-            <label>选择网络<em> --network </em> <small>(不支持修改)</small> </label>
+            <label>选择网络<em> --network </em>
+                <small>(不支持修改)</small>
+            </label>
             <div class="form-control">
                 <md-select data-ng-model="serviceUpdateCtrl.form.formNetworks" multiple
                            aria-label="Networks" data-ng-disabled="true">
@@ -99,8 +102,9 @@
             <div class="sub-button">
                 <md-button class="md-raised md-success md-small"
                            data-ng-click="serviceUpdateCtrl.addConfig(serviceUpdateCtrl.form.formPorts, 'Ports')">
-                    <i class='fa fa-plus'></i>添加端口映射 <label > <em>--publish</em> </label> <small>可添加多个端口映射</small>
+                    <i class='fa fa-plus'></i>添加端口映射
                 </md-button>
+                <label> <em>--publish</em> </label>
             </div>
             <div data-ng-repeat="port in serviceUpdateCtrl.form.formPorts track by $index">
                 <ng-form name="portForm">
@@ -150,8 +154,9 @@
             <div class="sub-button">
                 <md-button class="md-raised md-success md-small"
                            data-ng-click="serviceUpdateCtrl.addConfig(serviceUpdateCtrl.form.formEnv, 'Env')">
-                    <i class='fa fa-plus'></i>添加环境变量 <label > <em>--env</em> </label> <small>可添加多个环境变量</small>
+                    <i class='fa fa-plus'></i>添加环境变量
                 </md-button>
+                <label> <em>--env</em> </label>
             </div>
             <div data-ng-repeat="env in serviceUpdateCtrl.form.formEnv track by $index">
                 <ng-form name="envForm">
@@ -246,11 +251,11 @@
             </div>
 
             <div class="form-group" layout="column">
-                <label>Args args</label>
+                <label>参数 args</label>
                 <div class="sub-button">
                     <md-button class="md-raised md-success md-small"
                                data-ng-click="serviceUpdateCtrl.addConfig(serviceUpdateCtrl.form.formArgs, 'Args')">
-                        <i class='fa fa-plus'></i>添加 Args
+                        <i class='fa fa-plus'></i>Args
                     </md-button>
                 </div>
                 <div data-ng-repeat="arg in serviceUpdateCtrl.form.formArgs track by $index">
@@ -290,8 +295,9 @@
                 <div class="sub-button">
                     <md-button class="md-raised md-success md-small"
                                data-ng-click="serviceUpdateCtrl.addConfig(serviceUpdateCtrl.form.formLabels, 'ServeLabels')">
-                        <i class='fa fa-plus'></i>添加服务标签 <label for=""><em>--label</em></label> <small>可添加多个标签</small>
+                        <i class='fa fa-plus'></i>添加服务标签
                     </md-button>
+                    <label><em>--label</em></label>
                 </div>
                 <div data-ng-repeat="label in serviceUpdateCtrl.form.formLabels track by $index">
                     <ng-form name="labelForm">
@@ -341,8 +347,9 @@
                 <div class="sub-button">
                     <md-button class="md-raised md-success md-small"
                                data-ng-click="serviceUpdateCtrl.addConfig(serviceUpdateCtrl.form.formContainerLabels, 'Labels')">
-                        <i class='fa fa-plus'></i>添加容器标签 <label for=""><em>--container-label</em></label> <small>可添加多个标签</small>
+                        <i class='fa fa-plus'></i>添加容器标签
                     </md-button>
+                    <label><em>--container-label</em></label>
                 </div>
                 <div data-ng-repeat="label in serviceUpdateCtrl.form.formContainerLabels track by $index">
                     <ng-form name="labelForm">
@@ -404,7 +411,7 @@
                         <input type="number"
                                data-ng-model="serviceUpdateCtrl.form.TaskTemplate.Resources.Limits.NanoCPUs"
                                name="limitCpu" min="0.01">
-                         <label><em>--limit-cpu</em></label>
+                        <label><em>--limit-cpu</em></label>
                     </div>
                     <div flex="25">
                         <label class="sub-label">内存
@@ -442,7 +449,7 @@
                         <input type="number"
                                data-ng-model="serviceUpdateCtrl.form.TaskTemplate.Resources.Reservations.NanoCPUs"
                                name="ReservationsCpu" min="0.01">
-                         <label><em>--reserve-cpu</em></label>
+                        <label><em>--reserve-cpu</em></label>
                     </div>
                     <div flex="25">
                         <label class="sub-label">内存
@@ -451,7 +458,7 @@
                         <input type="number"
                                data-ng-model="serviceUpdateCtrl.form.TaskTemplate.Resources.Reservations.MemoryBytes"
                                name="ReservationsMem" min="4">
-                         <label><em>--reserve-cpu</em></label>
+                        <label><em>--reserve-cpu</em></label>
                     </div>
                 </div>
                 <div ng-messages="staticForm.ReservationsCpu.$error"
@@ -492,11 +499,11 @@
                                 <md-tooltip md-direction="top">无论任务正常或异常退出，都重启, 适合批处理或定时任务场景</md-tooltip>
                                 退出
                             </md-radio-button>
-                             <label><em>any</em></label>
+                            <label><em>any</em></label>
                         </div>
                         <div flex="25">
                             <md-radio-button value="none" class="md-primary">不重启</md-radio-button>
-                             <label><em>none</em></label>
+                            <label><em>none</em></label>
                         </div>
                         <div flex="25">
                             <md-radio-button value="on-failure" class="md-primary">
@@ -504,11 +511,11 @@
                                 <md-tooltip md-direction="top">在退出状态码(exit code)非 0 的情况下重启</md-tooltip>
                                 失败
                             </md-radio-button>
-                             <label><em>on-failure</em></label>
+                            <label><em>on-failure</em></label>
                         </div>
                     </md-radio-group>
                 </div>
-                <div class="form-control sub-group" layout="row" layout-align="start center">
+                <div class="form-control sub-group">
                     <div flex="55">
                         <label class="sub-label">评估间隔
                             <small>秒</small>
@@ -518,6 +525,9 @@
                                name="restartMaxAttempts">
                         <label><em>--restart-window</em></label>
                     </div>
+                </div>
+
+                <div class="form-control sub-group">
                     <div flex="55">
                         <label class="sub-label">重启间隔
                             <small>秒</small>
@@ -527,13 +537,16 @@
                                name="restartDelay" min="0">
                         <label><em>--restart-delay</em></label>
                     </div>
+                </div>
+                <div class="form-control sub-group">
                     <div flex="65">
-                        <label class="sub-label">尝试次数<small>&nbsp;&nbsp;&nbsp;&nbsp;</small>
+                        <label class="sub-label">尝试次数
+                            <small>&nbsp;&nbsp;&nbsp;&nbsp;</small>
                         </label>
                         <input type="number" min="0"
                                data-ng-model="serviceUpdateCtrl.form.TaskTemplate.RestartPolicy.MaxAttempts"
                                name="restartMaxAttempts">
-                         <label><em>--restart-max-attempts</em></label>
+                        <label><em>--restart-max-attempts</em></label>
                     </div>
                 </div>
             </div>
@@ -581,126 +594,124 @@
                 </div>
             </div>
 
-        <div class="fold-line">
-            <a href="#"
-               data-ng-click="serviceUpdateCtrl.showSchedulingStrategy = !serviceUpdateCtrl.showSchedulingStrategy">
-                <i class="fa"
-                   ng-class="{'fa-minus-square-o': serviceUpdateCtrl.showSchedulingStrategy, 'fa-plus-square-o': !serviceUpdateCtrl.showSchedulingStrategy}"></i>调度策略
-            </a>
-        </div>
+            <div class="fold-line">
+                <a href="#"
+                   data-ng-click="serviceUpdateCtrl.showSchedulingStrategy = !serviceUpdateCtrl.showSchedulingStrategy">
+                    <i class="fa"
+                       ng-class="{'fa-minus-square-o': serviceUpdateCtrl.showSchedulingStrategy, 'fa-plus-square-o': !serviceUpdateCtrl.showSchedulingStrategy}"></i>调度策略
+                </a>
+            </div>
 
-        <div data-ng-show="serviceUpdateCtrl.showSchedulingStrategy">
-            <div class="form-group" layout="column">
-                <div class="sub-button">
-                    <md-button class="md-raised md-success md-small"
-                               data-ng-click="serviceUpdateCtrl.addConfig(serviceUpdateCtrl.form.formConstraints, 'Constraints')">
-                        <i class='fa fa-plus'></i>添加限制条件
-                        <small>可添加多个限制条件</small>
-                    </md-button>
-                </div>
-                <div data-ng-repeat="constraint in serviceUpdateCtrl.form.formConstraints track by $index">
-                    <ng-form name="constraintForm">
-                        <div class="form-control sub-group" layout="row" layout-align="start center">
-                            <input type="text" placeholder="node.labels.ssd" flex="20"
-                                   data-ng-model="constraint.key" data-required="required"
-                                   name="constraintKey" minlength="2"
-                                   dm-check-include="serviceUpdateCtrl.listConfigByKey(serviceUpdateCtrl.form.formConstraints, $index)">
-
-                            <input type="text" placeholder="yes" flex="20"
-                                   data-ng-model="constraint.value" data-required="required"
-                                   name="constraintValue">
-
-                            <md-button class="md-icon-button md-primary" aria-label="trash"
-                                       data-ng-click="serviceUpdateCtrl.deleteConfig($index, serviceUpdateCtrl.form.formConstraints)">
-                                <i class="fa fa-trash-o" aria-hidden="true"></i>
-                            </md-button>
-                        </div>
-                    </ng-form>
-                    <div ng-messages="constraintForm.constraintKey.$error"
-                         ng-if="constraintForm.constraintKey.$dirty"
-                         role="alert">
-                        <p class="text-danger help-text"
-                           ng-message="pattern">
-                            <small>KEY 不能包含中文</small>
-                        </p>
-                        <p class="text-danger help-text"
-                           ng-message="dmCheckInclude">
-                            <small>KEY 不能重复</small>
-                        </p>
-                        <p class="text-danger help-text"
-                           ng-message="minlength">
-                            <small>KEY 长度不少于 2</small>
-                        </p>
+            <div data-ng-show="serviceUpdateCtrl.showSchedulingStrategy">
+                <div class="form-group" layout="column">
+                    <div class="sub-button">
+                        <md-button class="md-raised md-success md-small"
+                                   data-ng-click="serviceUpdateCtrl.addConfig(serviceUpdateCtrl.form.formConstraints, 'Constraints')">
+                            <i class='fa fa-plus'></i>添加限制条件
+                        </md-button>
                     </div>
-                    <div ng-messages="constraintForm.constraintValue.$error"
-                         ng-if="constraintForm.constraintValue.$dirty"
-                         role="alert">
-                        <p class="text-danger help-text"
-                           ng-message="pattern">
-                            <small>VALUE 不能包含中文</small>
-                        </p>
+                    <div data-ng-repeat="constraint in serviceUpdateCtrl.form.formConstraints track by $index">
+                        <ng-form name="constraintForm">
+                            <div class="form-control sub-group" layout="row" layout-align="start center">
+                                <input type="text" placeholder="node.labels.ssd" flex="20"
+                                       data-ng-model="constraint.key" data-required="required"
+                                       name="constraintKey" minlength="2"
+                                       dm-check-include="serviceUpdateCtrl.listConfigByKey(serviceUpdateCtrl.form.formConstraints, $index)">
+
+                                <input type="text" placeholder="yes" flex="20"
+                                       data-ng-model="constraint.value" data-required="required"
+                                       name="constraintValue">
+
+                                <md-button class="md-icon-button md-primary" aria-label="trash"
+                                           data-ng-click="serviceUpdateCtrl.deleteConfig($index, serviceUpdateCtrl.form.formConstraints)">
+                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                </md-button>
+                            </div>
+                        </ng-form>
+                        <div ng-messages="constraintForm.constraintKey.$error"
+                             ng-if="constraintForm.constraintKey.$dirty"
+                             role="alert">
+                            <p class="text-danger help-text"
+                               ng-message="pattern">
+                                <small>KEY 不能包含中文</small>
+                            </p>
+                            <p class="text-danger help-text"
+                               ng-message="dmCheckInclude">
+                                <small>KEY 不能重复</small>
+                            </p>
+                            <p class="text-danger help-text"
+                               ng-message="minlength">
+                                <small>KEY 长度不少于 2</small>
+                            </p>
+                        </div>
+                        <div ng-messages="constraintForm.constraintValue.$error"
+                             ng-if="constraintForm.constraintValue.$dirty"
+                             role="alert">
+                            <p class="text-danger help-text"
+                               ng-message="pattern">
+                                <small>VALUE 不能包含中文</small>
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="fold-line">
-            <a href="#" data-ng-click="serviceUpdateCtrl.showFileMount = !serviceUpdateCtrl.showFileMount">
-                <i class="fa"
-                   ng-class="{'fa-minus-square-o': serviceUpdateCtrl.showFileMount, 'fa-plus-square-o': !serviceUpdateCtrl.showFileMount}"></i>文件挂载
-            </a>
-        </div>
+            <div class="fold-line">
+                <a href="#" data-ng-click="serviceUpdateCtrl.showFileMount = !serviceUpdateCtrl.showFileMount">
+                    <i class="fa"
+                       ng-class="{'fa-minus-square-o': serviceUpdateCtrl.showFileMount, 'fa-plus-square-o': !serviceUpdateCtrl.showFileMount}"></i>文件挂载
+                </a>
+            </div>
 
-        <div data-ng-show="serviceUpdateCtrl.showFileMount">
-            <div class="form-group" layout="column">
-                <div class="sub-button">
-                    <md-button class="md-raised md-success md-small"
-                               data-ng-click="serviceUpdateCtrl.addConfig(serviceUpdateCtrl.form.formMounts, 'Mounts')">
-                        <i class='fa fa-plus'></i>添加存储
-                        <small>可添加多个存储</small>
-                    </md-button>
-                </div>
-                <div data-ng-repeat="mount in serviceUpdateCtrl.form.formMounts track by $index">
-                    <ng-form name="mountForm">
-                        <div class="form-control sub-group" layout="row" layout-align="start center">
-                            <input type="text" placeholder="Source" flex="20"
-                                   data-ng-model="mount.Source" data-required="required"
-                                   name="Source" max="65535" min="1">
-
-                            <md-select ng-model="mount.ReadOnly" data-required="required" flex="20"
-                                       aria-label="select mount">
-                                <md-option ng-value="true">只读</md-option>
-                                <md-option ng-value="false">读写</md-option>
-                            </md-select>
-
-                            <input type="text" placeholder="Target" flex="20"
-                                   data-ng-model="mount.Target" data-required="required"
-                                   name="Target" max="65535" min="1">
-
-                            <md-button class="md-icon-button md-primary" aria-label="trash"
-                                       data-ng-click="serviceUpdateCtrl.deleteConfig($index, serviceUpdateCtrl.form.formMounts)">
-                                <i class="fa fa-trash-o" aria-hidden="true"></i>
-                            </md-button>
-                        </div>
-                    </ng-form>
-                    <div ng-messages="mountForm.Source.$error"
-                         ng-if="mountForm.Source.$dirty"
-                         role="alert">
+            <div data-ng-show="serviceUpdateCtrl.showFileMount">
+                <div class="form-group" layout="column">
+                    <div class="sub-button">
+                        <md-button class="md-raised md-success md-small"
+                                   data-ng-click="serviceUpdateCtrl.addConfig(serviceUpdateCtrl.form.formMounts, 'Mounts')">
+                            <i class='fa fa-plus'></i>添加存储
+                        </md-button>
                     </div>
+                    <div data-ng-repeat="mount in serviceUpdateCtrl.form.formMounts track by $index">
+                        <ng-form name="mountForm">
+                            <div class="form-control sub-group" layout="row" layout-align="start center">
+                                <input type="text" placeholder="Source" flex="20"
+                                       data-ng-model="mount.Source" data-required="required"
+                                       name="Source" max="65535" min="1">
 
-                    <div ng-messages="mountForm.Target.$error"
-                         ng-if="mountForm.Target.$dirty"
-                         role="alert">
+                                <md-select ng-model="mount.ReadOnly" data-required="required" flex="20"
+                                           aria-label="select mount">
+                                    <md-option ng-value="true">只读</md-option>
+                                    <md-option ng-value="false">读写</md-option>
+                                </md-select>
+
+                                <input type="text" placeholder="Target" flex="20"
+                                       data-ng-model="mount.Target" data-required="required"
+                                       name="Target" max="65535" min="1">
+
+                                <md-button class="md-icon-button md-primary" aria-label="trash"
+                                           data-ng-click="serviceUpdateCtrl.deleteConfig($index, serviceUpdateCtrl.form.formMounts)">
+                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                </md-button>
+                            </div>
+                        </ng-form>
+                        <div ng-messages="mountForm.Source.$error"
+                             ng-if="mountForm.Source.$dirty"
+                             role="alert">
+                        </div>
+
+                        <div ng-messages="mountForm.Target.$error"
+                             ng-if="mountForm.Target.$dirty"
+                             role="alert">
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <footer class="form-buttons">
-            <md-button class="md-raised md-primary" data-ng-disabled="staticForm.$invalid"
-                       data-ng-click="serviceUpdateCtrl.create()">
-                更新
-            </md-button>
-        </footer>
+            <footer class="form-buttons">
+                <md-button class="md-raised md-primary" data-ng-disabled="staticForm.$invalid"
+                           data-ng-click="serviceUpdateCtrl.create()">
+                    更新
+                </md-button>
+            </footer>
     </form>
 </md-content>

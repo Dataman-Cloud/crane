@@ -56,7 +56,7 @@
             <md-content>
                 <form name="staticForm" class="form-main">
                     <div class="form-group" layout="column">
-                      <label>名称 <em>--name</em><span class="required">*</span>
+                        <label>名称 <em>--name</em><span class="required">*</span>
                             <small></small>
                         </label>
                         <div class="form-control">
@@ -82,7 +82,7 @@
                         </div>
                     </div>
                     <div class="form-group" layout="column">
-                      <label>镜像 <em>image</em><span class="required">*</span></label>
+                        <label>镜像 <em>image</em><span class="required">*</span></label>
                         <div class="form-control">
                             <input type="text"
                                    data-ng-model="serve.TaskTemplate.ContainerSpec.Image"
@@ -97,19 +97,21 @@
                         </div>
                     </div>
                     <div class="form-group" layout="column">
-                      <label>服务模式 <em>--mode</em></label>
+                        <label>服务模式 <em>--mode</em></label>
                         <div class="form-control" layout="row" layout-align="start center">
                             <md-radio-group data-ng-model="serve.defaultMode" layout="row" aria-label="defaultMode"
                                             data-ng-change="stackCreateByFormCtrl.modeChange(serve)"
                                             layout-align="start center" flex>
                                 <div flex="25">
-                                  <md-radio-button value="Replicated" class="md-primary">固定数 <em>replicated</em></md-radio-button>
+                                    <md-radio-button value="Replicated" class="md-primary">固定数 <em>replicated</em>
+                                    </md-radio-button>
                                     <input type="number" min="0" data-ng-show="serve.defaultMode === 'Replicated'"
                                            data-ng-required="serve.defaultMode === 'Replicated'"
                                            data-ng-model="serve.Mode.Replicated.Replicas" name="replicas">
                                 </div>
                                 <div flex="25">
-                                  <md-radio-button value="Global" class="md-primary" flex-offset="5">一节点一任务 <em>global</em>
+                                    <md-radio-button value="Global" class="md-primary" flex-offset="5">一节点一任务
+                                        <em>global</em>
                                     </md-radio-button>
                                 </div>
                             </md-radio-group>
@@ -118,7 +120,7 @@
                     </div>
 
                     <div class="form-group" layout="column">
-                      <label>选择网络 <em> --network </em></label>
+                        <label>选择网络 <em> --network </em></label>
                         <div class="form-control">
                             <md-select data-ng-model="serve.Networks" multiple aria-label="Networks"
                                        md-on-open="stackCreateByFormCtrl.loadNetworks()">
@@ -150,9 +152,9 @@
                         <div class="sub-button">
                             <md-button class="md-raised md-success md-small"
                                        data-ng-click="stackCreateByFormCtrl.addConfig(serve.EndpointSpec.Ports, 'Ports')">
-                              <i class='fa fa-plus'></i> 添加端口映射 
+                                <i class='fa fa-plus'></i> 添加端口映射
                             </md-button>
-                            <label > <em>--publish</em> </label>
+                            <label> <em>--publish</em> </label>
                         </div>
                         <div data-ng-repeat="port in serve.EndpointSpec.Ports track by $index">
                             <ng-form name="portForm">
@@ -204,7 +206,7 @@
                                        data-ng-click="stackCreateByFormCtrl.addConfig(serve.TaskTemplate.ContainerSpec.Env, 'Env')">
                                 <i class='fa fa-plus'></i> 添加环境变量
                             </md-button>
-                            <label > <em>--env</em> </label>
+                            <label> <em>--env</em> </label>
                         </div>
                         <div data-ng-repeat="env in serve.TaskTemplate.ContainerSpec.Env track by $index">
                             <ng-form name="envForm">
@@ -453,7 +455,7 @@
                                     </label>
                                     <input type="number" name="limitCpu" min="0.01"
                                            data-ng-model="serve.TaskTemplate.Resources.Limits.NanoCPUs">
-                                <label><em>--limit-cpu</em></label>
+                                    <label><em>--limit-cpu</em></label>
                                 </div>
                                 <div flex="25">
                                     <label class="sub-label">内存
@@ -461,7 +463,7 @@
                                     </label>
                                     <input type="number" name="limitMem" min="4"
                                            data-ng-model="serve.TaskTemplate.Resources.Limits.MemoryBytes">
-                                <label><em>--limit-memory</em></label>
+                                    <label><em>--limit-memory</em></label>
                                 </div>
                             </div>
                             <div ng-messages="staticForm.limitCpu.$error" ng-if="staticForm.limitCpu.$dirty"
@@ -489,7 +491,7 @@
                                     </label>
                                     <input type="number" name="ReservationsCpu" min="0.01"
                                            data-ng-model="serve.TaskTemplate.Resources.Reservations.NanoCPUs">
-                                <label><em>--reserve-cpu</em></label>
+                                    <label><em>--reserve-cpu</em></label>
                                 </div>
                                 <div flex="25">
                                     <label class="sub-label">内存
@@ -497,7 +499,7 @@
                                     </label>
                                     <input type="number" name="ReservationsMem" min=4
                                            data-ng-model="serve.TaskTemplate.Resources.Reservations.MemoryBytes">
-                                <label><em>--reserve-mem</em></label>
+                                    <label><em>--reserve-mem</em></label>
                                 </div>
                             </div>
                             <div ng-messages="staticForm.ReservationsCpu.$error"
@@ -538,11 +540,11 @@
                                             <md-tooltip md-direction="top">无论任务正常或异常退出，都重启, 适合批处理或定时任务场景</md-tooltip>
                                             退出
                                         </md-radio-button>
-                                      <label><em>any</em></label>
+                                        <label><em>any</em></label>
                                     </div>
                                     <div flex="25">
                                         <md-radio-button value="none" class="md-primary">从不</md-radio-button>
-                                      <label><em>none</em></label>
+                                        <label><em>none</em></label>
                                     </div>
                                     <div flex="25">
                                         <md-radio-button value="on-failure" class="md-primary">
@@ -550,37 +552,40 @@
                                             <md-tooltip md-direction="top">在退出状态码(exit code)非 0 的情况下重启</md-tooltip>
                                             失败
                                         </md-radio-button>
-                                      <label><em>on-failure</em></label>
+                                        <label><em>on-failure</em></label>
                                     </div>
                                 </md-radio-group>
                             </div>
                             <div class="form-control sub-group">
                                 <div flex="55">
-                                    <label class="sub-label">评估间隔<small>秒</small>
+                                    <label class="sub-label">评估间隔
+                                        <small>秒</small>
                                     </label>
                                     <input type="number" min="0"
                                            data-ng-model="serve.TaskTemplate.RestartPolicy.Window"
                                            name="restartPolicy">
-                                      <label><em>--restart-window</em></label>
+                                    <label><em>--restart-window</em></label>
                                 </div>
-                                </div>
-                                <div class="form-control sub-group">
+                            </div>
+                            <div class="form-control sub-group">
                                 <div flex="55">
-                                    <label class="sub-label">重启间隔<small>秒</small>
+                                    <label class="sub-label">重启间隔
+                                        <small>秒</small>
                                     </label>
                                     <input type="number" data-ng-model="serve.TaskTemplate.RestartPolicy.Delay"
                                            name="restartDelay" min="0">
-                                      <label><em>--restart-delay</em></label>
+                                    <label><em>--restart-delay</em></label>
                                 </div>
-                                    </div>
+                            </div>
                             <div class="form-control sub-group">
                                 <div flex="65">
-                                    <label class="sub-label">尝试次数<small>&nbsp;&nbsp;&nbsp;&nbsp;</small>
+                                    <label class="sub-label">尝试次数
+                                        <small>&nbsp;&nbsp;&nbsp;&nbsp;</small>
                                     </label>
                                     <input type="number" min="0"
                                            data-ng-model="serve.TaskTemplate.RestartPolicy.MaxAttempts"
                                            name="restartMaxAttempts">
-                                      <label><em>--restart-max-attempts</em></label>
+                                    <label><em>--restart-max-attempts</em></label>
                                 </div>
                             </div>
                             <p class="text-danger help-text"></p>
@@ -616,14 +621,14 @@
                                     </label>
                                     <input type="number" min="0"
                                            data-ng-model="serve.UpdateConfig.Delay" name="updateDelay">
-                                        <label> <em>--update-delay</em></label>
+                                    <label> <em>--update-delay</em></label>
                                 </div>
                                 <div flex="33">
                                     <label class="sub-label">并行数</label>
                                     <input type="number" min="0"
                                            data-ng-model="serve.UpdateConfig.Parallelism"
                                            name="updateParallelism">
-                                        <label> <em>--update-parallelism</em></label>
+                                    <label> <em>--update-parallelism</em></label>
                                 </div>
                             </div>
                         </div>
@@ -643,7 +648,6 @@
                                 <md-button class="md-raised md-success md-small"
                                            data-ng-click="stackCreateByFormCtrl.addConfig(serve.TaskTemplate.Placement.Constraints, 'Constraints')">
                                     <i class='fa fa-plus'></i> 添加限制条件
-                                    <small>可添加多个限制条件</small>
                                 </md-button>
                             </div>
                             <div data-ng-repeat="constraint in serve.TaskTemplate.Placement.Constraints track by $index">
