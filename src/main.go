@@ -80,5 +80,4 @@ func alive() {
 	if err != nil {
 		return
 	}
-	defer resp.Body.Close()
 }
