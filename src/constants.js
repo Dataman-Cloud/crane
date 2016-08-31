@@ -96,6 +96,7 @@ CODE_MESSAGE = {
     15002: '获取应用目录列表失败',
     16001: '获取 License 失败',
     16002: '激活 License 失败',
+    16003: '无激活码,请激活',
     17001: '增加仓库认证参数错误',
     17002: '仓库认证已存在',
     17003: '删除仓库认证参数错误',
@@ -103,7 +104,7 @@ CODE_MESSAGE = {
 };
 
 NODE_CONN_ERROR_CODE = [11701, 11702, 11703, 11704];
-NODE_ENDPOINT_LABEL = "dm.reserved.node.endpoint"
+NODE_ENDPOINT_LABEL = "dm.reserved.node.endpoint";
 
 SHOW_ERROR_MESSAGE = [10001];
 

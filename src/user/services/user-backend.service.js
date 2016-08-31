@@ -27,7 +27,7 @@
         }
 
         function checkLicense() {
-            return gHttp.Resource('license.license').get();
+            return gHttp.Resource('license.license').get({ignoreCodes: [16003]});
         }
 
         function registerLicense(license) {
