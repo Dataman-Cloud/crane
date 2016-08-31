@@ -258,6 +258,7 @@ func (api *Api) StatsContainer(ctx *gin.Context) {
 			if !clientClosed {
 				ssEvent.Data = data
 				ssEvent.Render(w)
+				w.Flush()
 			}
 		case err := <-chnErr:
 			log.Errorf("Stats container of %s stop with error: %s", cId, err)
