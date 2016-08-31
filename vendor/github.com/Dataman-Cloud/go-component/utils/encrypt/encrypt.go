@@ -12,12 +12,12 @@ func encodeBase64(b []byte) string {
 	return base64.StdEncoding.EncodeToString(b)
 }
 
-func decodeBase64(s string) []byte {
+func decodeBase64(s string) ([]byte, error) {
 	data, err := base64.StdEncoding.DecodeString(s)
 	if err != nil {
-		panic(err)
+		return data, err
 	}
-	return data
+	return data, nil
 }
 
 func Encrypt(key, text string) (string, error) {
@@ -37,7 +37,10 @@ func Decrypt(key, text string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	ciphertext := decodeBase64(text)
+	ciphertext, err := decodeBase64(text)
+	if err != nil {
+		return "", err
+	}
 	cfb := cipher.NewCFBEncrypter(block, iv)
 	plaintext := make([]byte, len(ciphertext))
 	cfb.XORKeyStream(plaintext, ciphertext)
