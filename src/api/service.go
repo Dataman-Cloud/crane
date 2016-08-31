@@ -305,6 +305,7 @@ func (api *Api) StatsService(ctx *gin.Context) {
 			if !clientClosed {
 				ssEvent.Data = data
 				ssEvent.Render(w)
+				w.Flush()
 			}
 		case err := <-chnErr:
 			if statsStopErr, ok := err.(*rolexerror.ContainerStatsStopError); ok {
