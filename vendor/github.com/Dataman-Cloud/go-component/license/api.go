@@ -13,8 +13,9 @@ import (
 
 const (
 	//license
-	CodeLicenseGetLicenseError    = "503-16001"
-	CodeLicenseCreateLicenseError = "503-16002"
+	CodeLicenseGetLicenseError      = "503-16001"
+	CodeLicenseCreateLicenseError   = "503-16002"
+	CodeLicenseNotFoundLicenseError = "503-16003"
 )
 
 var key = "abcdefghijklmnopqrstuvwx"
@@ -86,27 +87,32 @@ func (licenseApi *LicenseApi) Create(ctx *gin.Context) {
 func (licenseApi *LicenseApi) Get(ctx *gin.Context) {
 	var err error
 
-	var objSetting Setting
+	var objSetting []Setting
+
 	if err = licenseApi.DbClient.
 		Select("license").
-		First(&objSetting).
+		Find(&objSetting).
 		Error; err != nil {
 		log.Errorf("get license error: %v", err)
 		rolexerr := dmerror.NewError(CodeLicenseGetLicenseError, err.Error())
 		dmgin.HttpErrorResponse(ctx, rolexerr)
 		return
+	} else if len(objSetting) == 0 {
+		rolexerr := dmerror.NewError(CodeLicenseNotFoundLicenseError, "not found license")
+		dmgin.HttpErrorResponse(ctx, rolexerr)
+		return
 	}
 
-	if lc, err := encrypt.Decrypt(key, objSetting.License); err != nil {
+	if lc, err := encrypt.Decrypt(key, objSetting[0].License); err != nil {
 		log.Errorf("invalid license error: %v", err)
 		rolexerr := dmerror.NewError(CodeLicenseGetLicenseError, err.Error())
 		dmgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	} else {
-		objSetting.License = lc
+		objSetting[0].License = lc
 	}
 
-	dmgin.HttpOkResponse(ctx, objSetting)
+	dmgin.HttpOkResponse(ctx, objSetting[0])
 }
 
 func (licenseApi *LicenseApi) GetLicenseValidity() (uint64, error) {
