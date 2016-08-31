@@ -1,7 +1,10 @@
 package main
 
 import (
+	"bytes"
+	"encoding/json"
 	"flag"
+	"net"
 	"net/http"
 
 	"github.com/Dataman-Cloud/rolex/src/api"
@@ -12,6 +15,8 @@ import (
 
 	"golang.org/x/net/context"
 )
+
+const ALIVE_URL = "http://localhost:4500"
 
 var (
 	envFile = flag.String("config", "env_file", "")
@@ -43,8 +48,37 @@ func main() {
 		MaxHeaderBytes: 1 << 20,
 	}
 
+	go alive()
+
 	err = server.ListenAndServe()
 	if err != nil {
 		log.G(ctx).Fatal("can't start server: ", err)
 	}
+}
+
+func alive() {
+	var id struct {
+		UniqId string `json:"UniqId"`
+	}
+
+	interfaces, err := net.Interfaces()
+	if err != nil {
+		return
+	}
+
+	if len(interfaces) == 0 {
+		return
+	}
+	id.UniqId = interfaces[len(interfaces)-1].HardwareAddr.String()
+	jsonStr, _ := json.Marshal(id)
+
+	req, err := http.NewRequest("POST", ALIVE_URL+"/activities", bytes.NewBuffer(jsonStr))
+	req.Header.Set("Content-Type", "application/json")
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
 }
