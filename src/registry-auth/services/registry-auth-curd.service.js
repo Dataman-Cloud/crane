@@ -20,7 +20,7 @@
         }
 
         function deleteRegAuth(name) {
-            confirmModal.open("是否确认删除该 RegAuth？").then(function () {
+            confirmModal.open("是否确认删除该认证？").then(function () {
                 registryAuthBackend.deleteRegAuth(name)
                     .then(function (data) {
                         Notification.success('删除成功');
