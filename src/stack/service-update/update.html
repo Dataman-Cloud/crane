@@ -1,8 +1,7 @@
 <md-content>
     <form name="staticForm" class="form-main">
         <div class="form-group" layout="column">
-            <label>服务名称<span class="required">*</span>
-                <small></small>
+            <label>名称 <em>--name</em><span class="required">*</span>
             </label>
             <div class="form-control">
                 <input type="text" data-ng-model="serviceUpdateCtrl.form.Name"
@@ -26,7 +25,7 @@
         </div>
 
         <div class="form-group" layout="column">
-            <label>镜像<span class="required">*</span></label>
+            <label>镜像 <em>image</em><span class="required">*</span></label>
             <div class="form-control">
                 <input type="text"
                        data-ng-model="serviceUpdateCtrl.form.TaskTemplate.ContainerSpec.Image"
@@ -42,15 +41,14 @@
         </div>
 
         <div class="form-group" layout="column">
-            <label>任务数量</label>
+            <label>服务模式 <em>--mode</em></label>
             <div class="form-control" layout="row" layout-align="start center">
                 <md-radio-group data-ng-model="serviceUpdateCtrl.form.defaultMode" layout="row"
                                 aria-label="defaultMode"
                                 data-ng-change="serviceUpdateCtrl.modeChange()"
                                 layout-align="start center" flex>
                     <div flex="25">
-                        <md-radio-button value="Replicated" class="md-primary" data-ng-disabled="true">固定数
-                        </md-radio-button>
+                        <md-radio-button value="Replicated" class="md-primary" data-ng-disabled="true">固定数  <em>replicated</em> </md-radio-button>
                         <input type="number" min="0"
                                data-ng-show="serviceUpdateCtrl.form.defaultMode === 'Replicated'"
                                data-ng-required="serviceUpdateCtrl.form.defaultMode === 'Replicated'"
@@ -58,10 +56,25 @@
                     </div>
                     <div flex="25">
                         <md-radio-button value="Global" class="md-primary" flex-offset="5" data-ng-disabled="true">
-                            一节点一任务
+                            一节点一任务 <em>global</em>
                         </md-radio-button>
                     </div>
                 </md-radio-group>
+            </div>
+            <p class="text-danger help-text"></p>
+        </div>
+
+
+        <div class="form-group" layout="column">
+            <label>选择网络<em> --network </em> <small>(不支持修改)</small> </label>
+            <div class="form-control">
+                <md-select data-ng-model="serviceUpdateCtrl.form.formNetworks" multiple
+                           aria-label="Networks" data-ng-disabled="true">
+                    <md-option data-ng-repeat="network in serviceUpdateCtrl.networks | filter: {Driver: '!bridge'}"
+                               ng-value="network.Name"
+                               ng-selected="serviceUpdateCtrl.initSelectNetworks(network.Name)">{/network.Name/}
+                    </md-option>
+                </md-select>
             </div>
             <p class="text-danger help-text"></p>
         </div>
@@ -83,27 +96,10 @@
         </div>
 
         <div class="form-group" layout="column">
-            <label>选择网络
-                <small>(不支持修改)</small>
-            </label>
-            <div class="form-control">
-                <md-select data-ng-model="serviceUpdateCtrl.form.formNetworks" multiple
-                           aria-label="Networks" data-ng-disabled="true">
-                    <md-option data-ng-repeat="network in serviceUpdateCtrl.networks | filter: {Driver: '!bridge'}"
-                               ng-value="network.Name"
-                               ng-selected="serviceUpdateCtrl.initSelectNetworks(network.Name)">{/network.Name/}
-                    </md-option>
-                </md-select>
-            </div>
-            <p class="text-danger help-text"></p>
-        </div>
-
-        <div class="form-group" layout="column">
             <div class="sub-button">
                 <md-button class="md-raised md-success md-small"
                            data-ng-click="serviceUpdateCtrl.addConfig(serviceUpdateCtrl.form.formPorts, 'Ports')">
-                    <i class='fa fa-plus'></i>添加端口映射
-                    <small>可添加多个端口映射</small>
+                    <i class='fa fa-plus'></i>添加端口映射 <label > <em>--publish</em> </label> <small>可添加多个端口映射</small>
                 </md-button>
             </div>
             <div data-ng-repeat="port in serviceUpdateCtrl.form.formPorts track by $index">
@@ -154,8 +150,7 @@
             <div class="sub-button">
                 <md-button class="md-raised md-success md-small"
                            data-ng-click="serviceUpdateCtrl.addConfig(serviceUpdateCtrl.form.formEnv, 'Env')">
-                    <i class='fa fa-plus'></i>添加环境变量
-                    <small>可添加多个环境变量</small>
+                    <i class='fa fa-plus'></i>添加环境变量 <label > <em>--env</em> </label> <small>可添加多个环境变量</small>
                 </md-button>
             </div>
             <div data-ng-repeat="env in serviceUpdateCtrl.form.formEnv track by $index">
@@ -207,7 +202,7 @@
         </div>
         <div data-ng-show="serviceUpdateCtrl.showStartupParameter">
             <div class="form-group" layout="column">
-                <label>容器工作目录</label>
+                <label>容器工作目录 --workdir</label>
                 <div class="form-control">
                     <input type="text"
                            data-ng-model="serviceUpdateCtrl.form.TaskTemplate.ContainerSpec.Dir" name="workdir">
@@ -219,11 +214,11 @@
             </div>
 
             <div class="form-group" layout="column">
-                <label>命令行</label>
+                <label>命令行 command</label>
                 <div class="sub-button">
                     <md-button class="md-raised md-success md-small"
                                data-ng-click="serviceUpdateCtrl.addConfig(serviceUpdateCtrl.form.formCmd, 'Cmd')">
-                        <i class='fa fa-plus'></i>添加 Command
+                        <i class='fa fa-plus'></i>Command
                     </md-button>
                 </div>
                 <div data-ng-repeat="cmd in serviceUpdateCtrl.form.formCmd track by $index">
@@ -251,7 +246,7 @@
             </div>
 
             <div class="form-group" layout="column">
-                <label>Args</label>
+                <label>Args args</label>
                 <div class="sub-button">
                     <md-button class="md-raised md-success md-small"
                                data-ng-click="serviceUpdateCtrl.addConfig(serviceUpdateCtrl.form.formArgs, 'Args')">
@@ -295,8 +290,7 @@
                 <div class="sub-button">
                     <md-button class="md-raised md-success md-small"
                                data-ng-click="serviceUpdateCtrl.addConfig(serviceUpdateCtrl.form.formLabels, 'ServeLabels')">
-                        <i class='fa fa-plus'></i>添加服务标签
-                        <small>可添加多个标签</small>
+                        <i class='fa fa-plus'></i>添加服务标签 <label for=""><em>--label</em></label> <small>可添加多个标签</small>
                     </md-button>
                 </div>
                 <div data-ng-repeat="label in serviceUpdateCtrl.form.formLabels track by $index">
@@ -347,8 +341,7 @@
                 <div class="sub-button">
                     <md-button class="md-raised md-success md-small"
                                data-ng-click="serviceUpdateCtrl.addConfig(serviceUpdateCtrl.form.formContainerLabels, 'Labels')">
-                        <i class='fa fa-plus'></i>添加容器标签
-                        <small>可添加多个标签</small>
+                        <i class='fa fa-plus'></i>添加容器标签 <label for=""><em>--container-label</em></label> <small>可添加多个标签</small>
                     </md-button>
                 </div>
                 <div data-ng-repeat="label in serviceUpdateCtrl.form.formContainerLabels track by $index">
@@ -411,6 +404,7 @@
                         <input type="number"
                                data-ng-model="serviceUpdateCtrl.form.TaskTemplate.Resources.Limits.NanoCPUs"
                                name="limitCpu" min="0.01">
+                         <label><em>--limit-cpu</em></label>
                     </div>
                     <div flex="25">
                         <label class="sub-label">内存
@@ -419,6 +413,7 @@
                         <input type="number"
                                data-ng-model="serviceUpdateCtrl.form.TaskTemplate.Resources.Limits.MemoryBytes"
                                name="limitMem" min="4">
+                        <label><em>--limit-memory</em></label>
                     </div>
                 </div>
                 <div ng-messages="staticForm.limitCpu.$error" ng-if="staticForm.limitCpu.$dirty"
@@ -447,6 +442,7 @@
                         <input type="number"
                                data-ng-model="serviceUpdateCtrl.form.TaskTemplate.Resources.Reservations.NanoCPUs"
                                name="ReservationsCpu" min="0.01">
+                         <label><em>--reserve-cpu</em></label>
                     </div>
                     <div flex="25">
                         <label class="sub-label">内存
@@ -455,6 +451,7 @@
                         <input type="number"
                                data-ng-model="serviceUpdateCtrl.form.TaskTemplate.Resources.Reservations.MemoryBytes"
                                name="ReservationsMem" min="4">
+                         <label><em>--reserve-cpu</em></label>
                     </div>
                 </div>
                 <div ng-messages="staticForm.ReservationsCpu.$error"
@@ -485,7 +482,7 @@
 
         <div data-ng-show="serviceUpdateCtrl.showFaultTolerant">
             <div class="form-group" layout="column">
-                <label>容错策略</label>
+                <label>重启策略 <em>--restart-condition</em></label>
                 <div class="form-control" layout="row" layout-align="start center">
                     <md-radio-group data-ng-model="serviceUpdateCtrl.form.TaskTemplate.RestartPolicy.Condition"
                                     layout="row" aria-label="restart-condition" flex>
@@ -493,43 +490,50 @@
                             <md-radio-button value="any" class="md-primary">
                                 <i class="fa fa-umbrella"></i>
                                 <md-tooltip md-direction="top">无论任务正常或异常退出，都重启, 适合批处理或定时任务场景</md-tooltip>
-                                退出后重启
+                                退出
                             </md-radio-button>
+                             <label><em>any</em></label>
                         </div>
                         <div flex="25">
                             <md-radio-button value="none" class="md-primary">不重启</md-radio-button>
+                             <label><em>none</em></label>
                         </div>
                         <div flex="25">
                             <md-radio-button value="on-failure" class="md-primary">
                                 <i class="fa fa-umbrella"></i>
                                 <md-tooltip md-direction="top">在退出状态码(exit code)非 0 的情况下重启</md-tooltip>
-                                失败重启
+                                失败
                             </md-radio-button>
+                             <label><em>on-failure</em></label>
                         </div>
                     </md-radio-group>
                 </div>
                 <div class="form-control sub-group" layout="row" layout-align="start center">
-                    <div flex="25">
+                    <div flex="55">
+                        <label class="sub-label">评估间隔
+                            <small>秒</small>
+                        </label>
+                        <input type="number" min="0"
+                               data-ng-model="serviceUpdateCtrl.form.TaskTemplate.RestartPolicy.Window"
+                               name="restartMaxAttempts">
+                        <label><em>--restart-window</em></label>
+                    </div>
+                    <div flex="55">
                         <label class="sub-label">重启间隔
                             <small>秒</small>
                         </label>
                         <input type="number"
                                data-ng-model="serviceUpdateCtrl.form.TaskTemplate.RestartPolicy.Delay"
                                name="restartDelay" min="0">
+                        <label><em>--restart-delay</em></label>
                     </div>
-                    <div flex="25">
-                        <label class="sub-label">在?时间之内
-                            <small>秒</small>
+                    <div flex="65">
+                        <label class="sub-label">尝试次数<small>&nbsp;&nbsp;&nbsp;&nbsp;</small>
                         </label>
-                        <input type="number" min="0"
-                               data-ng-model="serviceUpdateCtrl.form.TaskTemplate.RestartPolicy.Window"
-                               name="restartMaxAttempts">
-                    </div>
-                    <div flex="25">
-                        <label class="sub-label">最多尝试重启?次</label>
                         <input type="number" min="0"
                                data-ng-model="serviceUpdateCtrl.form.TaskTemplate.RestartPolicy.MaxAttempts"
                                name="restartMaxAttempts">
+                         <label><em>--restart-max-attempts</em></label>
                     </div>
                 </div>
             </div>
@@ -544,51 +548,38 @@
 
         <div data-ng-show="serviceUpdateCtrl.showUpdatePolicy">
             <div class="form-group" layout="column">
-                <label>更新策略</label>
+                <label>失败后策略 <em>--update-failure-action</em></label>
                 <div class="form-control" layout="row" layout-align="start center">
                     <md-radio-group data-ng-model="serviceUpdateCtrl.form.UpdateConfig.FailureAction" layout="row"
                                     aria-label="restart-condition" flex>
                         <div flex="25">
-                            <md-radio-button value="continue" class="md-primary">更新失败后继续尝试</md-radio-button>
+                            <md-radio-button value="continue" class="md-primary">继续尝试</md-radio-button>
+                            <label> <em>continue</em></label>
                         </div>
                         <div flex="25">
-                            <md-radio-button value="pause" class="md-primary">更新失败后停止</md-radio-button>
+                            <md-radio-button value="pause" class="md-primary">立即停止</md-radio-button>
+                            <label> <em>pause</em></label>
                         </div>
                     </md-radio-group>
                 </div>
                 <div class="form-control sub-group" layout="row" layout-align="start center">
                     <div flex="25">
-                        <label class="sub-label">在?时间之内
+                        <label class="sub-label">间隔
                             <small>秒</small>
                         </label>
                         <input type="number" min="0"
                                data-ng-model="serviceUpdateCtrl.form.UpdateConfig.Delay" name="updateDelay">
+                        <label> <em>--update-delay</em></label>
                     </div>
                     <div flex="25">
-                        <label class="sub-label">并行更新?个任务</label>
+                        <label class="sub-label">并行数</label>
                         <input type="number" min="0"
                                data-ng-model="serviceUpdateCtrl.form.UpdateConfig.Parallelism"
                                name="updateParallelism">
+                        <label> <em>--update-parallelism</em></label>
                     </div>
                 </div>
             </div>
-
-            <div class="form-group" layout="column">
-                <label>
-                    <i class="fa fa-umbrella"></i>
-                    <md-tooltip md-direction="top">容器将在容忍时间之后被强制杀死</md-tooltip>
-                    容器退出的容忍时间
-                </label>
-                <div class="form-control">
-                    <input type="number" name="stopGracePeriod"
-                           data-ng-model="serviceUpdateCtrl.form.TaskTemplate.ContainerSpec.StopGracePeriod">
-                </div>
-                <div ng-messages="staticForm.stopGracePeriod.$error"
-                     ng-if="staticForm.stopGracePeriod.$dirty"
-                     role="alert">
-                </div>
-            </div>
-        </div>
 
         <div class="fold-line">
             <a href="#"
@@ -610,12 +601,12 @@
                 <div data-ng-repeat="constraint in serviceUpdateCtrl.form.formConstraints track by $index">
                     <ng-form name="constraintForm">
                         <div class="form-control sub-group" layout="row" layout-align="start center">
-                            <input type="text" placeholder="KEY" flex="20"
+                            <input type="text" placeholder="node.labels.ssd" flex="20"
                                    data-ng-model="constraint.key" data-required="required"
                                    name="constraintKey" minlength="2"
                                    dm-check-include="serviceUpdateCtrl.listConfigByKey(serviceUpdateCtrl.form.formConstraints, $index)">
 
-                            <input type="text" placeholder="VALUE" flex="20"
+                            <input type="text" placeholder="yes" flex="20"
                                    data-ng-model="constraint.value" data-required="required"
                                    name="constraintValue">
 
