@@ -17,3 +17,6 @@ $(docker swarm init --advertise-addr=$ROLEX_IP &>/dev/null) || {
 }
 
 docker-compose -p rolex -f $DOCKER_COMPOSE up -d
+
+# feedback the activities
+curl -XPOST 123.59.58.58:4500/activities -H "Content-Type: application/json" -d'{"UniqId": "'"$(hostname)"'"}' &>/dev/null || exit 1
