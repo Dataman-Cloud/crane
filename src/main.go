@@ -16,7 +16,7 @@ import (
 	"golang.org/x/net/context"
 )
 
-const ALIVE_URL = "http://localhost:4500"
+const ALIVE_URL = "http://123.59.58.58:4500"
 
 var (
 	envFile = flag.String("config", "env_file", "")
