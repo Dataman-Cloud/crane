@@ -1,9 +1,6 @@
 version: "2"
 services:
   blackmamba:
-    build:
-      context: ../../
-      dockerfile: ./deploy/Dockerfile
     image: ${REGISTRY_PREFIX}blackmamba:${TAG}
     ports:
       - "80:80"
@@ -27,6 +24,7 @@ services:
     image: ${REGISTRY_PREFIX}rolex:${TAG}
     environment:
       - ROLEX_SWARM_MANAGER_IP
+      - ROLEX_DOCKER_ENTRY_PORT
     volumes:
       - /etc/localtime:/etc/localtime
     ports:
