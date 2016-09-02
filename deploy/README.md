@@ -1,10 +1,9 @@
 Deploy guide
 =============
 
-1. 安装 docker>=1.12
-2. 安装 docker-compose
-3. 请参考下面 Release 目录启动具体版本
-4. 通过浏览器访问 http://$ROLEX_IP 即可，用户名：admin@admin.com 密码：adminadmin
+1. 请确保docker安装版本 >=1.12, 并确保docker正常运行.(如何安装和配置docker请参考https://docs.docker.com/engine/installation/)
+2. 请确保docker-compose已经正确安装.(如何安装docker-compose请参考https://docs.docker.com/compose/install/)
+4. 安装成功后通过浏览器访问 http://$IP 即可，默认用户名：admin@admin.com 密码：adminadmin
 
 
 ## Release
