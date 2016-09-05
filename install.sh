@@ -3,13 +3,13 @@
 set -o errtrace
 set -o errexit
 
-CRANER_TAR_URL=http://ocrqkagax.bkt.clouddn.com/craner.tar.gz
+CRANE_TAR_URL=http://ocrqkagax.bkt.clouddn.com/crane.tar.gz
 
 # setup latest release tag
-CRANER_RELEASE=$1
-if [ -z $CRANER_RELEASE ]
+CRANE_RELEASE=$1
+if [ -z $CRANE_RELEASE ]
 then
-  CRANER_RELEASE=v1.0.3
+  CRANE_RELEASE=v1.0.3
 fi
 
 # make sure curl command exists
@@ -23,10 +23,10 @@ then
 fi
 
 # download
-curl -sSL  ${CRANER_TAR_URL} | tar xvzf -
+curl -sSL  ${CRANE_TAR_URL} | tar xvzf -
 
-echo "Enter IP address that your want bind Craner service [ENTER]"
+echo "Enter IP address that your want bind Crane service [ENTER]"
 read listener_ip
 
-cd craner && ROLEX_IP=${listener_ip} VERSION=${CRANER_RELEASE} ./deploy.sh
+cd crane && ROLEX_IP=${listener_ip} VERSION=${CRANE_RELEASE} ./deploy.sh
 cd -
