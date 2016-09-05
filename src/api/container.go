@@ -222,7 +222,7 @@ func (api *Api) LogsContainer(ctx *gin.Context) {
 func (api *Api) StatsContainer(ctx *gin.Context) {
 	rolexContext, _ := ctx.Get("rolexContext")
 
-	chnMsg := make(chan *model.ContainerStat)
+	chnMsg := make(chan *model.RolexContainerStat)
 	defer close(chnMsg)
 	chnDone := make(chan bool)
 	defer close(chnDone)

@@ -240,7 +240,7 @@ func (client *RolexDockerClient) StatsContainer(ctx context.Context, opts model.
 		chnError <- swarNode.Stats(statOpts)
 	}()
 
-	containerStat := &model.ContainerStat{
+	containerStat := &model.RolexContainerStat{
 		NodeId:      container.Config.Labels["com.docker.swarm.node.id"],
 		ServiceId:   container.Config.Labels["com.docker.swarm.service.id"],
 		ServiceName: container.Config.Labels["com.docker.swarm.service.name"],
@@ -249,13 +249,44 @@ func (client *RolexDockerClient) StatsContainer(ctx context.Context, opts model.
 		ContainerId: container.ID,
 	}
 
+	var stats [2]*docker.Stats
+	var rRate, sRate uint64
 	for {
 		select {
 		case streamErr := <-chnError:
 			return &rolexerror.ContainerStatsStopError{ID: cId, Err: streamErr}
 		case stat := <-opts.Stats:
-			containerStat.Stat = stat
+			stats[0], stats[1] = stats[1], stat
+			rRate, sRate = CalcNetworkRate(stats)
+			containerStat.Stat, containerStat.ReceiveRate, containerStat.SendRate = stat, rRate, sRate
 			opts.RolexContainerStats <- containerStat
 		}
 	}
+}
+
+// calculate network receive and send rate
+func CalcNetworkRate(stats [2]*docker.Stats) (rRate, sRate uint64) {
+	if stats[0] == nil || stats[1] == nil {
+		return
+	}
+
+	duration := uint64(stats[1].Read.Sub(stats[0].Read).Nanoseconds())
+	if duration <= 0 {
+		return
+	}
+
+	var rLastTotal, sLastTotal, rCurentTotal, sCurentTotal uint64
+	for _, network := range stats[0].Networks {
+		rLastTotal += network.RxBytes
+		sLastTotal += network.TxBytes
+	}
+
+	for _, network := range stats[1].Networks {
+		rCurentTotal += network.RxBytes
+		sCurentTotal += network.TxBytes
+	}
+
+	rRate = (rCurentTotal - rLastTotal) * 1e9 / duration
+	sRate = (sCurentTotal - sLastTotal) * 1e9 / duration
+	return
 }
