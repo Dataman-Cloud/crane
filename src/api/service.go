@@ -265,7 +265,7 @@ func (api *Api) StatsService(ctx *gin.Context) {
 		return
 	}
 
-	chnMsg := make(chan *model.ContainerStat, 1)
+	chnMsg := make(chan *model.RolexContainerStat, 1)
 	defer close(chnMsg)
 	chnErr := make(chan error, 1)
 	defer close(chnErr)

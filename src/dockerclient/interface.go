@@ -28,7 +28,7 @@ type DockerClientInterface interface {
 	ListContainers(opts docker.ListContainersOptions) ([]docker.APIContainers, error)
 	RemoveContainer(opts docker.RemoveContainerOptions) error
 	LogsContainer(nodeId, containerId string, message chan string)
-	StatsContainer(nodeId, containerId string, stats chan *model.ContainerStat)
+	StatsContainer(nodeId, containerId string, stats chan *model.RolexContainerStat)
 
 	ConnectNetwork(id string, opts docker.NetworkConnectionOptions) error
 	CreateNetwork(opts docker.CreateNetworkOptions) (*docker.Network, error)
