@@ -55,15 +55,15 @@
 
             Options.prototype.pushData = function (data, cpuApi, memApi, networkApi) {
                 var stats = angular.fromJson(data);
-                var data = stats.Stat;
+                var containerStat = stats.Stat;
                 var serialName = "";
                 if (this.serialKey) {
                     serialName = stats[this.serialKey];
                 }
-                var x = new Date(data.read).getTime();
-                this._pushCpuData(serialName, x, data, cpuApi);
-                this._pushMemData(serialName, x, data, memApi);
-                this._pushNetworkData(serialName, x, data, networkApi);
+                var x = new Date(containerStat.read).getTime();
+                this._pushCpuData(serialName, x, containerStat, cpuApi);
+                this._pushMemData(serialName, x, containerStat, memApi);
+                this._pushNetworkData(serialName, x, stats, networkApi);
             };
 
             Options.prototype._pushCpuData = function (serialName, x, data, cpuApi) {
@@ -93,19 +93,14 @@
             };
 
             Options.prototype._pushNetworkData = function (serialName, x, data, networkApi) {
-
                 chartUtil.pushData(this.networkData, serialName + '接收', {
                         x: x,
-                        y: Math.sum(data.networks, function (network) {
-                            return network.rx_bytes
-                        })
+                        y: data.ReceiveRate
                     },
                     $rootScope.STATS_POINT_NUM);
                 chartUtil.pushData(this.networkData, serialName + '发送', {
                         x: x,
-                        y: Math.sum(data.networks, function (network) {
-                            return network.tx_bytes
-                        })
+                        y: data.SendRate
                     },
                     $rootScope.STATS_POINT_NUM);
                 networkApi.update();
