@@ -9,7 +9,7 @@ CRANE_TAR_URL=http://ocrqkagax.bkt.clouddn.com/crane.tar.gz
 CRANE_RELEASE=$1
 if [ -z $CRANE_RELEASE ]
 then
-  CRANE_RELEASE=v1.0.3
+  CRANE_RELEASE=v1.0.4
 fi
 
 # make sure curl command exists
