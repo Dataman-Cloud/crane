@@ -11,6 +11,6 @@ docker-compose -p rolex -f deploy/docker-compose.yml rm -f
 
 # remove the deprecated image: rolex:$TAG , and triger build action again
 # have to rm the image specially to avoid mysql/registry build.
-docker rmi -f rolex:$TAG
+docker rmi -f ${REGISTRY_PREFIX}rolex:$TAG
 
 docker-compose -p rolex -f deploy/docker-compose.yml up -d
