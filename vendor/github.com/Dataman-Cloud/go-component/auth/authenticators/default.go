@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/Dataman-Cloud/go-component/auth"
+	"github.com/Dataman-Cloud/go-component/utils/dmerror"
 	"github.com/Dataman-Cloud/go-component/utils/model"
 	"github.com/Dataman-Cloud/rolex/src/util/config"
 )
@@ -46,16 +47,20 @@ func (d *Default) ModificationAllowed() bool {
 	return false
 }
 
-func (d *Default) Login(a *auth.Account) (token string, err error) {
+func (d *Default) Login(a *auth.Account) (string, error) {
 	for _, acc := range d.GetDefaultAccounts() {
-		if a.Password == acc.Password && a.Email == acc.Email {
-			a.LoginAt = time.Now()
-			a.ID = acc.ID
-			return auth.GenToken(a), nil
+		if a.Email == acc.Email {
+			if a.Password == acc.Password {
+				a.LoginAt = time.Now()
+				a.ID = acc.ID
+				return auth.GenToken(a), nil
+			} else {
+				return "", dmerror.NewError(auth.CodeAccountLoginFailedPasswordNotValidError, "Invalid Password")
+			}
 		}
 	}
 
-	return "", auth.ErrLoginFailed
+	return "", dmerror.NewError(auth.CodeAccountLoginFailedEmailNotValidError, "Invalid Email")
 }
 
 func (d *Default) Accounts(listOptions model.ListOptions) (auths *[]auth.Account, err error) {
