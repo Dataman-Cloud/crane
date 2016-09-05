@@ -14,7 +14,7 @@
             <div class="form-group">
                 <label>任务个数</label>
                 <div class="form-control">
-                    <input type="number" class="form-input" name="scale" aria-label="scale" data-ng-model="formCtrl.scale" data-required min="0">
+                    <input type="number" class="form-input" name="scale" aria-label="scale" data-ng-model="formCtrl.scale" data-required min="0" md-autofocus>
                     <div ng-messages="staticForm.scale.$error" ng-if="staticForm.scale.$dirty" role="alert">
                         <p class="help-info text-danger" ng-message="required">任务数不能为空</p>
                         <p class="help-info text-danger" ng-message="min">任务数量不能是负数</p>

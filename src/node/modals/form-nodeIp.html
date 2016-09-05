@@ -15,7 +15,7 @@
             <p>为了获取主机详情信息，需要在该主机上开启 Docker Daemon TCP Socket 服务。</p>
             <p>Docker TCP Socket 地址</p>
             <input type="text" name="endpoint" aria-label="endpoint" placeholder="http://192.168.59.105:2375"
-                   data-ng-model="formCtrl.endpoint" data-required="required">
+                   data-ng-model="formCtrl.endpoint" data-required="required" md-autofocus>
             <div ng-messages="staticForm.endpoint.$error" ng-if="staticForm.endpoint.$dirty" role="alert">
                 <p class="help-info text-danger" ng-message="required"><small>地址不能为空</small></p>
             </div>

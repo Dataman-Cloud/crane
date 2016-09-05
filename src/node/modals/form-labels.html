@@ -20,7 +20,7 @@
             <div data-ng-repeat="label in formCtrl.labels track by $index" class="form-group">
                 <ng-form name="labelForm">
                     <div class="form-control" layout="row" layout-align="start center">
-                        <input flex="40" type="text" placeholder="KEY" data-ng-model="label.key"
+                        <input flex="40" type="text" placeholder="KEY" data-ng-model="label.key" md-autofocus
                                data-required="required" name="labelKey" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/"
                                dm-check-include="formCtrl.checkRepeatKey($index)">
                         <input flex="40" flex-offset="5" type="text" placeholder="VALUE" data-ng-model="label.value"
