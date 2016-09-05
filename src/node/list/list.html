@@ -23,11 +23,13 @@
         <tbody md-body>
         <tr md-row ng-repeat="node in nodeListCtrl.nodes">
             <td md-cell>
-                <a data-ui-sref="node.detail({node_id: node.ID})">{/node.ID | limitTo: ID_LIMIT_LENGTH/}</a>
+                <p ng-show="node.Status.State === 'down'">{/node.ID | limitTo: ID_LIMIT_LENGTH/}</p>
+                <a data-ui-sref="node.detail({node_id: node.ID})" ng-hide="node.Status.State === 'down'">{/node.ID | limitTo: ID_LIMIT_LENGTH/}</a>
                 <md-tooltip md-direction="top">{/node.ID/}</md-tooltip>
             </td>
             <td md-cell>
-                <a data-ui-sref="node.detail({node_id: node.ID})">{/node.Description.Hostname/}</a>
+                <p ng-show="node.Status.State === 'down'">{/node.Description.Hostname/}</p>
+                <a data-ui-sref="node.detail({node_id: node.ID})" ng-hide="node.Status.State === 'down'">{/node.Description.Hostname/}</a>
             </td>
             <td md-cell>{/NODE_ROLE[node.Spec.Role]/} <i class="fa fa-anchor text-success" data-ng-if="node.ManagerStatus.Leader"></i></td>
             <td md-cell>{/NODE_AVAILABILITY[node.Spec.Availability]/}</td>
