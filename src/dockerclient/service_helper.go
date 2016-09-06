@@ -3,10 +3,13 @@ package dockerclient
 import (
 	"fmt"
 	"regexp"
+	"strconv"
 
 	"github.com/Dataman-Cloud/go-component/utils/dmerror"
+	"github.com/Dataman-Cloud/rolex/src/util/rolexerror"
 
 	distreference "github.com/docker/distribution/reference"
+	"github.com/docker/engine-api/types"
 	"github.com/docker/engine-api/types/swarm"
 	"github.com/docker/swarmkit/manager/scheduler"
 	"github.com/docker/swarmkit/protobuf/ptypes"
@@ -204,4 +207,77 @@ func validateImageName(imageName string) error {
 		return dmerror.NewError(CodeInvalidImageName, err.Error())
 	}
 	return nil
+}
+
+// checkPortConflicts does a best effort to find if the passed in spec has port
+// conflicts with existing services.
+// `serviceID string` is the service ID of the spec in service update. If
+// `serviceID` is not "", then conflicts check will be skipped against this
+// check before create service `serviceId` is ""
+func (client *RolexDockerClient) checkPortConflicts(reqPorts map[string]bool, serviceId string, existingServices []swarm.Service) error {
+	for _, existingService := range existingServices {
+		if serviceId != "" && serviceId == existingService.ID {
+			continue
+		}
+
+		if existingService.Spec.EndpointSpec != nil {
+			for _, pc := range existingService.Spec.EndpointSpec.Ports {
+				portConflict := PortConflictToString(pc)
+				if reqPorts[portConflict] {
+					namespace := GetServicesNamespace(existingService.Spec)
+					portConflictErr := &rolexerror.ServicePortConflictError{
+						Name:          existingService.Spec.Name,
+						Namespace:     namespace,
+						PublishedPort: portConflict,
+					}
+					return &dmerror.DmError{Code: CodeGetServicePortConflictError, Err: portConflictErr}
+				}
+			}
+		}
+
+		for _, pc := range existingService.Endpoint.Ports {
+			portConflict := PortConflictToString(pc)
+			if reqPorts[portConflict] {
+				namespace := GetServicesNamespace(existingService.Spec)
+				portConflictErr := &rolexerror.ServicePortConflictError{
+					Name:          existingService.Spec.Name,
+					Namespace:     namespace,
+					PublishedPort: portConflict,
+				}
+				return &dmerror.DmError{Code: CodeGetServicePortConflictError, Err: portConflictErr}
+			}
+		}
+
+	}
+
+	return nil
+}
+
+func PortConflictToString(pc swarm.PortConfig) string {
+	port := strconv.FormatUint(uint64(pc.PublishedPort), 10)
+	return port + "/" + string(pc.Protocol)
+}
+
+func (client *RolexDockerClient) CheckServicePortConflicts(spec *swarm.ServiceSpec, serviceId string) error {
+	if spec.EndpointSpec == nil {
+		return nil
+	}
+
+	reqPorts := make(map[string]bool)
+	for _, pc := range spec.EndpointSpec.Ports {
+		if pc.PublishedPort > 0 {
+			reqPorts[PortConflictToString(pc)] = true
+		}
+	}
+
+	if len(reqPorts) == 0 {
+		return nil
+	}
+
+	existingServices, err := client.ListServiceSpec(types.ServiceListOptions{})
+	if err != nil {
+		return err
+	}
+
+	return client.checkPortConflicts(reqPorts, serviceId, existingServices)
 }

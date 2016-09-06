@@ -82,3 +82,11 @@ func parseEndpoint(endpoint string) (*url.URL, error) {
 
 	return u, nil
 }
+
+func GetServicesNamespace(spec swarm.ServiceSpec) string {
+	if spec.Annotations.Labels == nil {
+		return ""
+	}
+
+	return spec.Annotations.Labels[labelNamespace]
+}
