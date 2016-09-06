@@ -42,10 +42,6 @@ type ServiceScale struct {
 // ServiceCreate creates a new Service.
 func (client *RolexDockerClient) CreateService(service swarm.ServiceSpec, options types.ServiceCreateOptions) (types.ServiceCreateResponse, error) {
 	var response types.ServiceCreateResponse
-	if err := validateServiceSpec(&service); err != nil {
-		return response, err
-	}
-
 	var headers map[string][]string
 
 	if options.EncodedRegistryAuth != "" {
