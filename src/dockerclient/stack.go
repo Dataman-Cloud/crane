@@ -60,18 +60,18 @@ func (client *RolexDockerClient) DeployStack(bundle *model.Bundle) error {
 // created the network by the default param(network driver --overlay)
 func (client *RolexDockerClient) PretreatmentStack(bundle model.Bundle) (map[string]bool, error) {
 	// create network map and convert to slice for distinct network
-	networkSet := make(map[string]bool)
+	networkMap := make(map[string]bool)
 
-	// all the publiseh port in the stack
+	// all the publish port in the stack
 	publishedPortMap := make(map[string]bool)
 
 	for _, serviceSpec := range bundle.Stack.Services {
-		if err := validateRolexServiceSpec(&serviceSpec); err != nil {
+		if err := ValidateRolexServiceSpec(&serviceSpec); err != nil {
 			return nil, err
 		}
 
 		for _, network := range serviceSpec.Networks {
-			networkSet[network] = true
+			networkMap[network] = true
 		}
 
 		for _, pc := range serviceSpec.EndpointSpec.Ports {
@@ -105,7 +105,7 @@ func (client *RolexDockerClient) PretreatmentStack(bundle model.Bundle) (map[str
 	}
 
 	// check if all network used by stack was exist, if not create it
-	newNetworkMap, err := client.updateNetworks(networkSet, bundle.Namespace)
+	newNetworkMap, err := client.updateNetworks(networkMap, bundle.Namespace)
 	if err != nil {
 		return nil, err
 	}

@@ -91,7 +91,18 @@ func (api *Api) UpdateService(ctx *gin.Context) {
 		return
 	}
 
-	service, err := api.GetDockerClient().InspectServiceWithRaw(ctx.Param("service_id"))
+	serviceId := ctx.Param("service_id")
+	if err := dockerclient.ValidateRolexServiceSpec(&rolexServiceSpec); err != nil {
+		dmgin.HttpErrorResponse(ctx, err)
+		return
+	}
+
+	if err := api.GetDockerClient().CheckServicePortConflicts(&rolexServiceSpec, serviceId); err != nil {
+		dmgin.HttpErrorResponse(ctx, err)
+		return
+	}
+
+	service, err := api.GetDockerClient().InspectServiceWithRaw(serviceId)
 	if err != nil {
 		dmgin.HttpErrorResponse(ctx, err)
 		return

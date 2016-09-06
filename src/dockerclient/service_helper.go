@@ -169,7 +169,7 @@ func validateEndpointSpec(epSpec *swarm.EndpointSpec) error {
 	return nil
 }
 
-func validateRolexServiceSpec(spec *model.RolexServiceSpec) error {
+func ValidateRolexServiceSpec(spec *model.RolexServiceSpec) error {
 	if spec == nil {
 		return dmerror.NewError(CodeInvalidServiceSpec, "service spec must not null")
 	}
@@ -263,7 +263,7 @@ func PortConflictToString(pc swarm.PortConfig) string {
 	return port + "/" + string(pc.Protocol)
 }
 
-func (client *RolexDockerClient) CheckServicePortConflicts(spec *swarm.ServiceSpec, serviceId string) error {
+func (client *RolexDockerClient) CheckServicePortConflicts(spec *model.RolexServiceSpec, serviceId string) error {
 	if spec.EndpointSpec == nil {
 		return nil
 	}
