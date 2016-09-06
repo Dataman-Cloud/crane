@@ -69,7 +69,8 @@ func (indexer *RolexIndexer) Index(store *search.DocumentStorage) {
 						Name: volume.Name,
 						Type: DOCUMENT_VOLUME,
 						Param: map[string]string{
-							"NodeId": node.ID,
+							"NodeId":     node.ID,
+							"VolumeName": volume.Name,
 						},
 					})
 				}
