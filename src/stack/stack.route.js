@@ -18,7 +18,7 @@
                 template: '<ui-view/>',
                 targetState: 'list',
                 ncyBreadcrumb: {
-                    label: '应用'
+                    label: '项目'
                 }
             })
             .state('stack.list', {
@@ -29,7 +29,7 @@
                     stacks: listStacks
                 },
                 ncyBreadcrumb: {
-                    label: '应用列表'
+                    label: '项目列表'
                 }
             })
             .state('stack.createByJson', {
@@ -37,7 +37,7 @@
                 templateUrl: '/src/stack/create/create-by-Json.html',
                 controller: 'StackCreateByJsonCtrl as stackCreateByJsonCtrl',
                 ncyBreadcrumb: {
-                    label: '增加应用'
+                    label: '增加项目'
                 }
             })
             .state('stack.createByForm', {
@@ -45,7 +45,7 @@
                 templateUrl: '/src/stack/create/create-by-form.html',
                 controller: 'StackCreateByFormCtrl as stackCreateByFormCtrl',
                 ncyBreadcrumb: {
-                    label: '增加应用'
+                    label: '增加项目'
                 }
             })
             .state('stack.serviceUpdate', {
@@ -68,7 +68,7 @@
                     stack: getStack
                 },
                 ncyBreadcrumb: {
-                    label: '应用详情'
+                    label: '项目详情'
                 }
             })
             .state('stack.detail.service', {

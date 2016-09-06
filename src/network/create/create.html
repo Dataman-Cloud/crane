@@ -141,12 +141,10 @@
     </div>
 
     <footer class="form-buttons">
-        <md-button class="md-raised md-primary"
+        <md-button id="network-create" class="md-raised md-primary"
                    data-ng-disabled="createNetwork.$invalid"
                    data-ng-click="networkCreateCtrl.create()">创建
         </md-button>
-        <md-button class="md-raised"
-                   data-ng-click="rootCtrl.goBack()">取消
-        </md-button>
+        <md-button id="network-create-cancel" data-ng-click="rootCtrl.goBack()">取消</md-button>
     </footer>
 </form>

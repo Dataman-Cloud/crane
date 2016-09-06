@@ -1,6 +1,6 @@
 <form name="staticForm" class="form-main">
     <div class="form-group" layout="column">
-        <label>应用名称<span class="required">*</span>
+        <label>项目名称<span class="required">*</span>
             <small></small>
         </label>
         <div class="form-control">
@@ -93,6 +93,6 @@
                    data-ng-disabled="staticForm.$invalid || stackCreateByJsonCtrl.errorInfo.stack"
                    data-ng-click="stackCreateByJsonCtrl.createAndDownload()">部署并导出
         </md-button>
-        <md-button class="md-raised" data-ng-click="rootCtrl.goBack()">取 消</md-button>
+        <md-button data-ng-click="rootCtrl.goBack()">取 消</md-button>
     </footer>
 </form>

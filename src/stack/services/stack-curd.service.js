@@ -33,7 +33,7 @@
         }
 
         function deleteStack(ev, stackName) {
-            confirmModal.open("应用删除后将无法恢复，确认要删除？", ev).then(function () {
+            confirmModal.open("项目删除后将无法恢复，确认要删除？", ev).then(function () {
                 stackBackend.deleteStack(stackName)
                     .then(function (data) {
                         $state.go('stack.list', undefined, {reload: true});
@@ -44,7 +44,7 @@
         function createStack(formData, form, groupId) {
             return stackBackend.createStack(formData, form, groupId)
                 .then(function (data) {
-                    Notification.success('应用开始部署，部署时间依赖镜像拉取时间，请稍后');
+                    Notification.success('项目开始部署，部署时间依赖镜像拉取时间，请稍后');
                     $state.go('stack.detail.service', {stack_name: formData.Namespace})
                 })
         }

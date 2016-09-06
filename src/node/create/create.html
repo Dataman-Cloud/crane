@@ -14,6 +14,8 @@
         <md-button class="md-raised md-primary" data-ng-click="nodeCreateCtrl.buildCmd(); nodeCreateCtrl.step = 'two'"
                    data-ng-disabled="addNode.$invalid">下一步
         </md-button>
+
+        <md-button data-ng-click="rootCtrl.goBack()">取 消</md-button>
     </footer>
 </form>
 
@@ -46,7 +48,8 @@
         </div>
     </div>
     <footer class="form-buttons">
-        <md-button class="md-raised" data-ng-click="nodeCreateCtrl.step = 'one'">上一步</md-button>
+        <md-button data-ng-click="nodeCreateCtrl.step = 'one'">上一步</md-button>
+        <md-button data-ng-click="rootCtrl.goBack()">取 消</md-button>
         <md-button class="md-raised md-primary" data-ng-click="$state.go('node.list')">完成</md-button>
     </footer>
 </form>
