@@ -123,7 +123,7 @@
                         break;
                     case 'volume':
                         //go to volume list
-                        $state.go('node.detail.volume', {node_id: item.Param.NodeId});
+                        $state.go('node.volumeDetail', {node_id: item.Param.NodeId, volume_name: item.Param.VolumeName});
                         break;
                 }
             }

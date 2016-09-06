@@ -223,6 +223,28 @@
                 ncyBreadcrumb: {
                     skip: true
                 }
+            })
+            .state('node.volumeDetail', {
+                url: '/volumeDetail/:node_id/:volume_name',
+                templateUrl: '/src/node/volume-detail/detail.html',
+                controller: 'NodeVolumeDetailCtrl as nodeVolumeDetailCtrl',
+                targetState: 'config',
+                resolve: {
+                    volume: getVolume
+                },
+                ncyBreadcrumb: {
+                    label: '存储详情',
+                    parent: 'node.detail'
+                }
+
+            })
+            .state('node.volumeDetail.config', {
+                url: '/config',
+                templateUrl: '/src/node/volume-detail/config.html',
+                controller: 'NodeVolumeConfigCtrl as nodeVolumeConfigCtrl',
+                ncyBreadcrumb: {
+                    skip: true
+                }
             });
 
         /* @ngInject */
@@ -284,6 +306,11 @@
                 deferred.reject();
                 return deferred.promise;
             });
+        }
+
+        /* @ngInject */
+        function getVolume(nodeBackend, $stateParams) {
+            return nodeBackend.getVolume($stateParams.node_id, $stateParams.volume_name)
         }
 
         /* @ngInject */

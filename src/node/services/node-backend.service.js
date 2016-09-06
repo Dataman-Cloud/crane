@@ -14,6 +14,7 @@
             getManagerInfo: getManagerInfo,
             createVolume: createVolume,
             listVolumes: listVolumes,
+            getVolume: getVolume,
             deleteVolume: deleteVolume,
             listImages: listImages,
             getImage: getImage,
@@ -55,6 +56,11 @@
 
         function listVolumes(nodeId) {
             return gHttp.Resource('node.volumes', {node_id: nodeId}).get();
+        }
+
+        function getVolume(nodeId, name) {
+            //name == id, so use name to replace id
+            return gHttp.Resource('node.volume', {node_id: nodeId, volume_id: name}).get();
         }
 
         function deleteVolume(nodeId, name) {

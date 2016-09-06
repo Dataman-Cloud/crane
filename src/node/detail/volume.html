@@ -11,9 +11,11 @@
         <tbody md-body>
         <tr md-row ng-repeat="volume in nodeVolumeCtrl.volumes">
             <td md-cell>
-                <p class="ellipsis">{/volume.Name | limitTo: ID_LIMIT_LENGTH/}
+                <a class="ellipsis" id="{/volume.Name/}"
+                   data-ui-sref="node.volumeDetail({node_id: $stateParams.node_id, volume_name: volume.Name})">
+                    {/volume.Name | limitTo: ID_LIMIT_LENGTH/}
                     <md-tooltip md-direction="top">{/volume.Name/}</md-tooltip>
-                </p>
+                </a>
             </td>
             <td md-cell>{/VOL_DRIVER[volume.Driver]/}</td>
             <td md-cell>
@@ -22,7 +24,7 @@
                 </p>
             </td>
             <td md-cell>
-                <md-button class="md-icon-button" aria-label="delete"
+                <md-button id="delete-volume{/$index/}" class="md-icon-button" aria-label="delete"
                            data-ng-click="nodeVolumeCtrl.deleteVolume(volume.Name)"><i class="fa fa-trash"/>
                     <md-tooltip md-direction="left">删除储存卷</md-tooltip>
                 </md-button>
