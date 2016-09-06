@@ -342,7 +342,6 @@ func (client *RolexDockerClient) deployServices(services map[string]model.RolexS
 		if service, exists := existingServiceMap[name]; exists {
 			log.Infof("Updating service %s (id %s)", name, service.ID)
 
-			// docker TODO(nishanttotla): Pass headers with X-Registry-Auth
 			if err := client.UpdateService(service.ID, service.Version, serviceSpec, updateOpts); err != nil {
 				return err
 			}

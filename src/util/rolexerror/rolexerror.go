@@ -39,3 +39,18 @@ func (e *NodeConnError) Error() string {
 
 	return e.ID + " : " + e.Endpoint + " conn error"
 }
+
+type ServicePortConflictError struct {
+	Name          string
+	Namespace     string
+	PublishedPort string
+	Err           error
+}
+
+func (e *ServicePortConflictError) Error() string {
+	if e.Err != nil {
+		return e.Err.Error()
+	}
+
+	return e.Namespace + ":" + e.Name + " has been published port: " + e.PublishedPort
+}

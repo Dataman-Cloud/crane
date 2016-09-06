@@ -22,15 +22,16 @@ const (
 
 const (
 	//Service error code
-	CodeInvalidServiceNanoCPUs     = "503-11404"
-	CodeInvalidServiceDelay        = "503-11405"
-	CodeInvalidServiceWindow       = "503-11406"
-	CodeInvalidServiceEndpoint     = "503-11407"
-	CodeInvalidServicePlacement    = "503-11408"
-	CodeInvalidServiceMemoryBytes  = "503-11409"
-	CodeInvalidServiceUpdateConfig = "503-11410"
-	CodeInvalidServiceSpec         = "503-11411"
-	CodeInvalidServiceName         = "503-11412"
+	CodeInvalidServiceNanoCPUs      = "503-11404"
+	CodeInvalidServiceDelay         = "503-11405"
+	CodeInvalidServiceWindow        = "503-11406"
+	CodeInvalidServiceEndpoint      = "503-11407"
+	CodeInvalidServicePlacement     = "503-11408"
+	CodeInvalidServiceMemoryBytes   = "503-11409"
+	CodeInvalidServiceUpdateConfig  = "503-11410"
+	CodeInvalidServiceSpec          = "503-11411"
+	CodeInvalidServiceName          = "503-11412"
+	CodeGetServicePortConflictError = "503-11413"
 
 	// stack error code
 	CodeInvalidStackName = "503-11502"
