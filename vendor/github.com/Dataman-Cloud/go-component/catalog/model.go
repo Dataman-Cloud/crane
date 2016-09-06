@@ -1,16 +1,22 @@
 package catalog
 
 import (
+	"encoding/base64"
 	"io/ioutil"
+	"net/http"
 	"path/filepath"
 )
 
 type Catalog struct {
+	ID          uint64 `json:"Id"`
 	Name        string `json:"Name"`
-	Bundle      string `json:"Bundle"`
-	Icon        string `json:"Icon"`
-	Readme      string `json:"Readme"`
-	Description string `json:"Description"`
+	Bundle      string `json:"Bundle" gorm:"size:65532"`
+	Readme      string `json:"Readme" gorm:"size:65532"`
+	Description string `json:"Description" gorm:"size:65532"`
+	IconData    string `json:"IconData" gorm:"size:65532"`
+	IconType    string `json:"IconType"`
+	UserId      uint64 `json:"UserId"`
+	Type        uint8  `json:"Type"`
 }
 
 func CatalogFromPath(path string) (*Catalog, error) {
@@ -29,12 +35,18 @@ func CatalogFromPath(path string) (*Catalog, error) {
 		return nil, err
 	}
 
+	f, err := ioutil.ReadFile(filepath.Join(path, filepath.Base(path)+".png"))
+	if err != nil {
+		return nil, err
+	}
+
 	catalog := &Catalog{
 		Name:        filepath.Base(path),
 		Bundle:      string(bundle),
 		Readme:      string(readme),
 		Description: string(description),
-		Icon:        "/catalog/v1/icons" + "/" + filepath.Base(path) + "/" + filepath.Base(path) + ".png",
+		IconData:    base64.StdEncoding.EncodeToString(f),
+		IconType:    http.DetectContentType(f),
 	}
 	return catalog, nil
 }

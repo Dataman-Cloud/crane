@@ -62,7 +62,8 @@ func (api *Api) ApiRouter() *gin.Engine {
 	}
 
 	if api.Config.FeatureEnabled("catalog") {
-		c := &catalog.CatalogApi{CatalogPath: api.Config.CatalogPath}
+		c := catalog.NewCatalog(api.Config.CatalogPath)
+		c.MigriateTable()
 		c.RegisterApiForCatalog(router, Authorization)
 	}
 
