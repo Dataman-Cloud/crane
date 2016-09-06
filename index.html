@@ -30,36 +30,37 @@
         </a>
         <ul>
             <li title="应用" data-ui-sref-active="active">
-                <md-button data-ui-sref="stack" data-ui-sref-opts="{reload: true, inherit: false}">
+                <md-button data-ui-sref="stack" data-ui-sref-opts="{reload: true, inherit: false}" id="index-stack">
                     <i class="fa fa-stack-overflow"></i>应用
                 </md-button>
             </li>
 
             <li title="镜像" data-ui-sref-active="active">
-                <md-button data-ui-sref="registry" data-ui-sref-opts="{inherit: false}">
+                <md-button data-ui-sref="registry" data-ui-sref-opts="{inherit: false}" id="index-registry">
                     <i class="fa fa-shopping-cart"></i>镜像
                 </md-button>
             </li>
-            
+
             <li title="设施">
-                <md-button ng-disabled="true" >
+                <md-button ng-disabled="true">
                     <i class="fa fa fa-building"></i>设施
                 </md-button>
                 <ul>
-                     <li title="主机" data-ui-sref-active="active">
-                        <md-button data-ui-sref="node" data-ui-sref-opts="{inherit: false}">
+                    <li title="主机" data-ui-sref-active="active">
+                        <md-button data-ui-sref="node" data-ui-sref-opts="{inherit: false}" id="index-node">
                             <i class="fa fa-server"></i>主机
                         </md-button>
                     </li>
 
                     <li title="网络" data-ui-sref-active="active">
-                        <md-button data-ui-sref="network" data-ui-sref-opts="{inherit: false}">
+                        <md-button data-ui-sref="network" data-ui-sref-opts="{inherit: false}" id="index-network">
                             <i class="fa fa-sitemap"></i>网络
                         </md-button>
                     </li>
 
                     <li title="ReAuth" data-ui-sref-active="active">
-                        <md-button data-ui-sref="registryAuth" data-ui-sref-opts="{inherit: false}">
+                        <md-button data-ui-sref="registryAuth" data-ui-sref-opts="{inherit: false}"
+                                   id="index-registryAuth">
                             <i class="fa fa-archive" aria-hidden="true"></i>仓库认证
                         </md-button>
                     </li>
@@ -67,7 +68,8 @@
             </li>
 
             <li title="设置" data-ui-sref-active="active">
-                <md-button data-ui-sref="misc" data-ui-sref-opts="{inherit: false}"><i class="fa fa-cogs"></i>信息
+                <md-button data-ui-sref="misc" data-ui-sref-opts="{inherit: false}" id="index-misc"><i
+                        class="fa fa-cogs"></i>信息
                 </md-button>
             </li>
         </ul>
@@ -86,7 +88,8 @@
 
             <md-toolbar flex="none">
                 <div class="md-toolbar-tools">
-                    <md-button class="md-icon-button" aria-label="Search" ng-click="rootCtrl.openSearch()">
+                    <md-button class="md-icon-button" aria-label="Search" ng-click="rootCtrl.openSearch()"
+                               id="index-openSearch">
                         <i class="fa fa-search"></i>
                     </md-button>
                     <!--
@@ -96,19 +99,20 @@
                     </md-button>
                     -->
                     <md-menu>
-                        <md-button class="md-icon-button" aria-label="More" ng-click="$mdOpenMenu($event)">
+                        <md-button class="md-icon-button" aria-label="More" ng-click="$mdOpenMenu($event)"
+                                   id="index-menu">
                             <i class="fa fa-user"></i>
                         </md-button>
                         <md-menu-content>
                             <md-menu-item dm-display-components="license">
-                                <md-button data-ng-click="rootCtrl.regLicense($event)">
+                                <md-button data-ng-click="rootCtrl.regLicense($event)" id="index-license">
                                     <md-icon md-svg-src="pics/ic_fingerprint_black_24px.svg"
                                              aria-label="ic_power_settings"></md-icon>
                                     激活
                                 </md-button>
                             </md-menu-item>
                             <md-menu-item>
-                                <md-button data-ng-click="rootCtrl.logout()">
+                                <md-button data-ng-click="rootCtrl.logout()" id="index-logout">
                                     <md-icon md-svg-src="pics/ic_power_settings.svg"
                                              aria-label="ic_power_settings"></md-icon>
                                     {/'LOGOUT' | translate /}
@@ -175,10 +179,11 @@
 </div>
 
 <div class="licence-alert" ng-if="!licenseValidFlag">
-    您的序列号即将到期，请填写信息获取新的序列号。<a href="http://shurenyun.mikecrm.com/FTzYAr" target="_blank">立即获取序列号</a>
+    您的序列号即将到期，请填写信息获取新的序列号。
+    <a href="http://shurenyun.mikecrm.com/FTzYAr" target="_blank" id="index-get-licence">立即获取序列号</a>
 </div>
-<a href="http://shurenyun.mikecrm.com/FCNKya" class="feedback-btn" target="_blank"><i class="fa fa-commenting"
-                                                                                      aria-hidden="true"></i>
+<a href="http://shurenyun.mikecrm.com/FCNKya" class="feedback-btn" target="_blank" id="index-mikecrm">
+    <i class="fa fa-commenting" aria-hidden="true"></i>
     <md-tooltip md-direction="right">问题意见留言</md-tooltip>
 </a>
 

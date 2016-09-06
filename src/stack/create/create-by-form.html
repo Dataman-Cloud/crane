@@ -8,7 +8,7 @@
                 <small></small>
             </label>
             <div class="form-control">
-                <input type="text" data-ng-model="stackCreateByFormCtrl.form.Namespace"
+                <input id="createByForm-Namespace" type="text" data-ng-model="stackCreateByFormCtrl.form.Namespace"
                        data-required="required" name="Name"
                        data-ng-pattern="/^[A-Za-z0-9]+$/">
             </div>
@@ -24,22 +24,8 @@
                 </p>
             </div>
         </div>
-        <!--<div class="form-group" layout="column">-->
-        <!--<label>选择用户组<span class="required">*</span></label>-->
-        <!--<div class="form-control">-->
-        <!--<md-select data-ng-model="stackCreateByFormCtrl.selectGroupId" aria-label="selectGroupId"-->
-        <!--md-on-open="stackCreateByFormCtrl.loadGroups()">-->
-        <!--<md-option value="null" ng-selected="true">空</md-option>-->
-        <!--<md-option-->
-        <!--data-ng-repeat="group in stackCreateByFormCtrl.groups"-->
-        <!--ng-value="group.Id">{/group.Name/}-->
-        <!--</md-option>-->
-        <!--</md-select>-->
-        <!--</div>-->
-        <!--<p class="help-text"></p>-->
-        <!--</div>-->
         <footer class="form-buttons">
-            <md-button class="md-raised" data-ng-disabled="stepOneForm.$invalid"
+            <md-button id="next" class="md-raised" data-ng-disabled="stepOneForm.$invalid"
                        data-ng-click="stackCreateByFormCtrl.step = 2">下一步
             </md-button>
         </footer>
@@ -52,15 +38,15 @@
     </header>
     <md-tabs md-dynamic-height md-border-bottom md-autoselect>
         <md-tab data-ng-repeat="serve in stackCreateByFormCtrl.serveFormArray track by $index"
-                label="{/serve.Name || '新服务'/}">
+                label="{/serve.Name || '新服务'/}" id="serve{/$index/}">
             <md-content>
-                <form name="staticForm" class="form-main">
+                <form id="staticForm{/$index/}" name="staticForm" class="form-main">
                     <div class="form-group" layout="column">
                         <label>名称 <em>--name</em><span class="required">*</span>
                             <small></small>
                         </label>
                         <div class="form-control">
-                            <input type="text" data-ng-model="serve.Name"
+                            <input id="service{/$index/}-Name" type="text" data-ng-model="serve.Name"
                                    data-required="required" name="name"
                                    data-ng-pattern="/^[A-Za-z0-9]+$/"
                                    dm-check-include="stackCreateByFormCtrl.listNames($index)">
@@ -84,7 +70,7 @@
                     <div class="form-group" layout="column">
                         <label>镜像 <em>image</em><span class="required">*</span></label>
                         <div class="form-control">
-                            <input type="text"
+                            <input id="service{/$index/}-Image" type="text"
                                    data-ng-model="serve.TaskTemplate.ContainerSpec.Image"
                                    data-required="required" name="Image">
                         </div>
@@ -99,13 +85,15 @@
                     <div class="form-group" layout="column">
                         <label>服务模式 <em>--mode</em></label>
                         <div class="form-control" layout="row" layout-align="start center">
-                            <md-radio-group data-ng-model="serve.defaultMode" layout="row" aria-label="defaultMode"
+                            <md-radio-group id="service{/$index/}-Mode" data-ng-model="serve.defaultMode" layout="row"
+                                            aria-label="defaultMode"
                                             data-ng-change="stackCreateByFormCtrl.modeChange(serve)"
                                             layout-align="start center" flex>
                                 <div flex="25">
                                     <md-radio-button value="Replicated" class="md-primary">固定数 <em>replicated</em>
                                     </md-radio-button>
-                                    <input type="number" min="0" data-ng-show="serve.defaultMode === 'Replicated'"
+                                    <input id="service{/$index/}-Replicas" type="number" min="0"
+                                           data-ng-show="serve.defaultMode === 'Replicated'"
                                            data-ng-required="serve.defaultMode === 'Replicated'"
                                            data-ng-model="serve.Mode.Replicated.Replicas" name="replicas">
                                 </div>
@@ -122,7 +110,8 @@
                     <div class="form-group" layout="column">
                         <label>选择网络 <em>--network</em></label>
                         <div class="form-control">
-                            <md-select data-ng-model="serve.Networks" multiple aria-label="Networks"
+                            <md-select id="service{/$index/}-Networks" data-ng-model="serve.Networks" multiple
+                                       aria-label="Networks"
                                        md-on-open="stackCreateByFormCtrl.loadNetworks()">
                                 <md-option
                                         data-ng-repeat="network in stackCreateByFormCtrl.networks | filter: {Driver: '!bridge'}"
@@ -134,9 +123,10 @@
                     </div>
 
                     <div class="form-group" layout="column">
-                      <label>仓库认证标识 <em>--RegistryAuth</em></label>
+                        <label>仓库认证标识 <em>--RegistryAuth</em></label>
                         <div class="form-control">
-                            <md-select data-ng-model="serve.RegistryAuth" aria-label="RegAuth"
+                            <md-select id="service{/$index/}-RegistryAuth" data-ng-model="serve.RegistryAuth"
+                                       aria-label="RegAuth"
                                        md-on-open="stackCreateByFormCtrl.loadRegAuths()">
                                 <md-option value="" ng-selected="true">空</md-option>
                                 <md-option
@@ -150,14 +140,14 @@
 
                     <div class="form-group" layout="column">
                         <div class="sub-button">
-                            <md-button class="md-raised md-success md-small"
+                            <md-button id="service{/$index/}-AddPorts" class="md-raised md-success md-small"
                                        data-ng-click="stackCreateByFormCtrl.addConfig(serve.EndpointSpec.Ports, 'Ports')">
                                 <i class='fa fa-plus'></i> 添加端口映射
                             </md-button>
                             <label> <em>--publish</em> </label>
                         </div>
                         <div data-ng-repeat="port in serve.EndpointSpec.Ports track by $index">
-                            <ng-form name="portForm">
+                            <ng-form id="portForm{/$index/}" name="portForm">
                                 <div class="form-control sub-group" layout="row" layout-align="start center">
                                     <input flex="20" type="number" placeholder="容器端口"
                                            data-ng-model="port.TargetPort" data-required="required"
@@ -202,14 +192,14 @@
 
                     <div class="form-group" layout="column">
                         <div class="sub-button">
-                            <md-button class="md-raised md-success md-small"
+                            <md-button id="service{/$index/}-AddEnv" class="md-raised md-success md-small"
                                        data-ng-click="stackCreateByFormCtrl.addConfig(serve.TaskTemplate.ContainerSpec.Env, 'Env')">
                                 <i class='fa fa-plus'></i> 添加环境变量
                             </md-button>
                             <label> <em>--env</em> </label>
                         </div>
                         <div data-ng-repeat="env in serve.TaskTemplate.ContainerSpec.Env track by $index">
-                            <ng-form name="envForm">
+                            <ng-form id="envForm{/$index/}" name="envForm">
                                 <div class="form-control sub-group" layout="row" layout-align="start center">
                                     <input flex="20" type="text" placeholder="KEY"
                                            data-ng-model="env.key" data-required="required"
@@ -258,7 +248,7 @@
                         <div class="form-group" layout="column">
                             <label>容器工作目录 --workdir</label>
                             <div class="form-control">
-                                <input type="text"
+                                <input id="service{/$index/}-Dir" type="text"
                                        data-ng-model="serve.TaskTemplate.ContainerSpec.Dir" name="workdir">
                             </div>
                             <div ng-messages="staticForm.workdir.$error"
@@ -270,13 +260,13 @@
                             <label>命令行 command</small>
                             </label>
                             <div class="sub-button">
-                                <md-button class="md-raised md-success md-small"
+                                <md-button id="service{/$index/}-AddCmd" class="md-raised md-success md-small"
                                            data-ng-click="stackCreateByFormCtrl.addConfig(serve.TaskTemplate.ContainerSpec.Command, 'Cmd')">
                                     <i class='fa fa-plus'></i> Command
                                 </md-button>
                             </div>
                             <div data-ng-repeat="cmd in serve.TaskTemplate.ContainerSpec.Command track by $index">
-                                <ng-form name="cmdForm">
+                                <ng-form id="cmdForm{/$index/}" name="cmdForm">
                                     <div class="form-control sub-group" layout="row" layout-align="start center">
                                         <input type="text" placeholder="CMD" flex="40"
                                                data-ng-model="cmd.command" data-required="required"
@@ -303,13 +293,13 @@
                             <label>参数 args</small>
                             </label>
                             <div class="sub-button">
-                                <md-button class="md-raised md-success md-small"
+                                <md-button id="service{/$index/}-AddArgs" class="md-raised md-success md-small"
                                            data-ng-click="stackCreateByFormCtrl.addConfig(serve.TaskTemplate.ContainerSpec.Args, 'Args')">
                                     <i class='fa fa-plus'></i> Args
                                 </md-button>
                             </div>
                             <div data-ng-repeat="arg in serve.TaskTemplate.ContainerSpec.Args track by $index">
-                                <ng-form name="argForm">
+                                <ng-form id="argForm{/$index/}" name="argForm">
                                     <div class="form-control sub-group" layout="row" layout-align="start center">
                                         <input type="text" flex="40"
                                                data-ng-model="arg.arg" data-required="required"
@@ -341,14 +331,14 @@
                     <div data-ng-show="serve.showTag">
                         <div class="form-group" layout="column">
                             <div class="sub-button">
-                                <md-button class="md-raised md-success md-small"
+                                <md-button id="service{/$index/}-AddServeLabels" class="md-raised md-success md-small"
                                            data-ng-click="stackCreateByFormCtrl.addConfig(serve.Labels, 'ServeLabels')">
                                     <i class='fa fa-plus'></i> 添加服务标签
                                 </md-button>
-                                <label for=""><em>--label</em></label>
+                                <label><em>--label</em></label>
                             </div>
                             <div data-ng-repeat="label in serve.Labels track by $index">
-                                <ng-form name="labelForm">
+                                <ng-form id="serveLabels{/$index/}" name="labelForm">
                                     <div class="form-control sub-group" layout="row" layout-align="start center">
                                         <input flex="20" type="text" placeholder="KEY"
                                                data-ng-model="label.key" data-required="required"
@@ -391,14 +381,14 @@
 
                         <div class="form-group" layout="column">
                             <div class="sub-button">
-                                <md-button class="md-raised md-success md-small"
+                                <md-button id="service{/$index/}-AddLabels" class="md-raised md-success md-small"
                                            data-ng-click="stackCreateByFormCtrl.addConfig(serve.TaskTemplate.ContainerSpec.Labels, 'Labels')">
                                     <i class='fa fa-plus'></i> 添加容器标签
                                 </md-button>
-                                <label for=""><em>--container-label</em></label>
+                                <label><em>--container-label</em></label>
                             </div>
                             <div data-ng-repeat="label in serve.TaskTemplate.ContainerSpec.Labels track by $index">
-                                <ng-form name="labelForm">
+                                <ng-form id="labelForm{/$index/}" name="labelForm">
                                     <div class="form-control sub-group" layout="row" layout-align="start center">
                                         <input flex="20" type="text" placeholder="KEY"
                                                data-ng-model="label.key" data-required="required"
@@ -453,7 +443,7 @@
                                     <label class="sub-label">CPU
                                         <small>核</small>
                                     </label>
-                                    <input type="number" name="limitCpu" min="0.01"
+                                    <input id="service{/$index/}-LimitsCPUs" type="number" name="limitCpu" min="0.01"
                                            data-ng-model="serve.TaskTemplate.Resources.Limits.NanoCPUs">
                                     <label><em>--limit-cpu</em></label>
                                 </div>
@@ -461,7 +451,7 @@
                                     <label class="sub-label">内存
                                         <small>MB</small>
                                     </label>
-                                    <input type="number" name="limitMem" min="4"
+                                    <input id="service{/$index/}-LimitsMemory" type="number" name="limitMem" min="4"
                                            data-ng-model="serve.TaskTemplate.Resources.Limits.MemoryBytes">
                                     <label><em>--limit-memory</em></label>
                                 </div>
@@ -489,7 +479,8 @@
                                     <label class="sub-label">CPU
                                         <small>核</small>
                                     </label>
-                                    <input type="number" name="ReservationsCpu" min="0.01"
+                                    <input id="service{/$index/}-ReservationsCPU" type="number" name="ReservationsCpu"
+                                           min="0.01"
                                            data-ng-model="serve.TaskTemplate.Resources.Reservations.NanoCPUs">
                                     <label><em>--reserve-cpu</em></label>
                                 </div>
@@ -497,7 +488,8 @@
                                     <label class="sub-label">内存
                                         <small>MB</small>
                                     </label>
-                                    <input type="number" name="ReservationsMem" min=4
+                                    <input id="service{/$index/}-ReservationsMemory" type="number"
+                                           name="ReservationsMem" min=4
                                            data-ng-model="serve.TaskTemplate.Resources.Reservations.MemoryBytes">
                                     <label><em>--reserve-mem</em></label>
                                 </div>
@@ -532,7 +524,8 @@
                         <div class="form-group" layout="column">
                             <label>重启策略 <em>--restart-condition</em></label>
                             <div class="form-control" layout="row" layout-align="start center">
-                                <md-radio-group data-ng-model="serve.TaskTemplate.RestartPolicy.Condition" layout="row"
+                                <md-radio-group id="service{/$index/}-Condition"
+                                                data-ng-model="serve.TaskTemplate.RestartPolicy.Condition" layout="row"
                                                 aria-label="restart-condition" flex>
                                     <div flex="25">
                                         <md-radio-button value="any" class="md-primary">
@@ -561,7 +554,7 @@
                                     <label class="sub-label">评估间隔
                                         <small>秒</small>
                                     </label>
-                                    <input type="number" min="0"
+                                    <input id="service{/$index/}-Window" type="number" min="0"
                                            data-ng-model="serve.TaskTemplate.RestartPolicy.Window"
                                            name="restartPolicy">
                                     <label><em>--restart-window</em></label>
@@ -572,7 +565,8 @@
                                     <label class="sub-label">重启间隔
                                         <small>秒</small>
                                     </label>
-                                    <input type="number" data-ng-model="serve.TaskTemplate.RestartPolicy.Delay"
+                                    <input id="service{/$index/}-Delay" type="number"
+                                           data-ng-model="serve.TaskTemplate.RestartPolicy.Delay"
                                            name="restartDelay" min="0">
                                     <label><em>--restart-delay</em></label>
                                 </div>
@@ -582,7 +576,7 @@
                                     <label class="sub-label">尝试次数
                                         <small>&nbsp;&nbsp;&nbsp;&nbsp;</small>
                                     </label>
-                                    <input type="number" min="0"
+                                    <input id="service{/$index/}-MaxAttempts" type="number" min="0"
                                            data-ng-model="serve.TaskTemplate.RestartPolicy.MaxAttempts"
                                            name="restartMaxAttempts">
                                     <label><em>--restart-max-attempts</em></label>
@@ -602,7 +596,8 @@
                         <div class="form-group" layout="column">
                             <label>失败后策略 <em>--update-failure-action</em></label>
                             <div class="form-control" layout="row" layout-align="start center">
-                                <md-radio-group data-ng-model="serve.UpdateConfig.FailureAction" layout="row"
+                                <md-radio-group id="service{/$index/}-FailureAction"
+                                                data-ng-model="serve.UpdateConfig.FailureAction" layout="row"
                                                 aria-label="restart-condition" flex>
                                     <div flex="33">
                                         <md-radio-button value="continue" class="md-primary">继续尝试</md-radio-button>
@@ -619,13 +614,13 @@
                                     <label class="sub-label">间隔
                                         <small>秒</small>
                                     </label>
-                                    <input type="number" min="0"
+                                    <input id="service{/$index/}-updateDelay" type="number" min="0"
                                            data-ng-model="serve.UpdateConfig.Delay" name="updateDelay">
                                     <label> <em>--update-delay</em></label>
                                 </div>
                                 <div flex="33">
                                     <label class="sub-label">并行数</label>
-                                    <input type="number" min="0"
+                                    <input id="service{/$index/}-Parallelism" type="number" min="0"
                                            data-ng-model="serve.UpdateConfig.Parallelism"
                                            name="updateParallelism">
                                     <label> <em>--update-parallelism</em></label>
@@ -645,13 +640,13 @@
                     <div data-ng-show="serve.showSchedulingStrategy">
                         <div class="form-group" layout="column">
                             <div class="sub-button">
-                                <md-button class="md-raised md-success md-small"
+                                <md-button id="service{/$index/}-AddConstraints" class="md-raised md-success md-small"
                                            data-ng-click="stackCreateByFormCtrl.addConfig(serve.TaskTemplate.Placement.Constraints, 'Constraints')">
                                     <i class='fa fa-plus'></i> 添加限制条件
                                 </md-button>
                             </div>
                             <div data-ng-repeat="constraint in serve.TaskTemplate.Placement.Constraints track by $index">
-                                <ng-form name="constraintForm">
+                                <ng-form id="constraintForm{/$index/}" name="constraintForm">
                                     <div class="form-control sub-group" layout="row" layout-align="start center">
                                         <input flex="20" type="text" placeholder="node.labels.ssd"
                                                data-ng-model="constraint.key" data-required="required"
@@ -702,13 +697,13 @@
                     <div data-ng-show="serve.showFileMount">
                         <div class="form-group" layout="column">
                             <div class="sub-button">
-                                <md-button class="md-raised md-success md-small"
+                                <md-button id="service{/$index/}-AddMounts" class="md-raised md-success md-small"
                                            data-ng-click="stackCreateByFormCtrl.addConfig(serve.TaskTemplate.ContainerSpec.Mounts, 'Mounts')">
                                     <i class='fa fa-plus'></i> 添加存储
                                 </md-button>
                             </div>
                             <div data-ng-repeat="mount in serve.TaskTemplate.ContainerSpec.Mounts track by $index">
-                                <ng-form name="mountForm">
+                                <ng-form id="mountForm{/$index/}" name="mountForm">
                                     <div class="form-control sub-group" layout="row" layout-align="start center">
                                         <input flex="20" type="text" placeholder="Source"
                                                data-ng-model="mount.Source" data-required="required"
@@ -744,21 +739,23 @@
                     </div>
 
                     <footer class="form-buttons">
-                        <md-button class="md-raised"
+                        <md-button id="pre{/$index/}" class="md-raised"
                                    data-ng-click="stackCreateByFormCtrl.step = 1">上一步
                         </md-button>
-                        <md-button class="md-raised" data-ng-disabled="staticForm.$invalid"
+                        <md-button id="addServe{/$index/}" class="md-raised" data-ng-disabled="staticForm.$invalid"
                                    data-ng-click="stackCreateByFormCtrl.addServe()">继续添加
                         </md-button>
-                        <md-button class="md-raised"
+                        <md-button id="removeServe{/$index/}" class="md-raised"
                                    data-ng-if="!$first"
                                    data-ng-click="stackCreateByFormCtrl.removeServe($index)">删除服务
                         </md-button>
-                        <md-button class="md-raised md-primary" data-ng-disabled="staticForm.$invalid"
+                        <md-button id="create{/$index/}" class="md-raised md-primary"
+                                   data-ng-disabled="staticForm.$invalid"
                                    data-ng-click="stackCreateByFormCtrl.create()">
                             部署
                         </md-button>
-                        <md-button class="md-raised md-primary" data-ng-disabled="staticForm.$invalid"
+                        <md-button id="createAndDownload{/$index/}" class="md-raised md-primary"
+                                   data-ng-disabled="staticForm.$invalid"
                                    data-ng-click="stackCreateByFormCtrl.createAndDownload()">部署并导出
                         </md-button>
                     </footer>
