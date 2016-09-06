@@ -58,7 +58,7 @@ func (indexer *RolexIndexer) Index(store *search.DocumentStorage) {
 
 				}
 			} else {
-				log.Errorf("get network error: %v", err)
+				log.Warnf("get network error: %v", err)
 			}
 
 			if volumes, err := indexer.
@@ -74,11 +74,11 @@ func (indexer *RolexIndexer) Index(store *search.DocumentStorage) {
 					})
 				}
 			} else {
-				log.Errorf("get volume error: %v", err)
+				log.Warnf("get volume error: %v", err)
 			}
 		}
 	} else {
-		log.Errorf("get node list error: %v", err)
+		log.Warnf("get node list error: %v", err)
 	}
 
 	if stacks, err := indexer.RolexDockerClient.ListStack(); err == nil {
@@ -137,15 +137,15 @@ func (indexer *RolexIndexer) Index(store *search.DocumentStorage) {
 								})
 						}
 					} else {
-						log.Errorf("get task list error: %v", err)
+						log.Warnf("get task list error: %v", err)
 					}
 				}
 			} else {
-				log.Errorf("get service error: %v", err)
+				log.Warnf("get service error: %v", err)
 			}
 
 		}
 	} else {
-		log.Errorf("get stack list error: %v", err)
+		log.Warnf("get stack list error: %v", err)
 	}
 }
