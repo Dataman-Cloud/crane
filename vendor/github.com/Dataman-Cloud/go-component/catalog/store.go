@@ -37,3 +37,7 @@ func (catalogApi *CatalogApi) Get(catalogId uint64) (Catalog, error) {
 	err := catalogApi.DbClient.Where("id = ?", catalogId).First(&catalog).Error
 	return catalog, err
 }
+
+func (catalogApi *CatalogApi) Delete(catalogId uint64) error {
+	return catalogApi.DbClient.Delete(&Catalog{ID: catalogId}).Error
+}
