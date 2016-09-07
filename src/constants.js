@@ -161,7 +161,7 @@ BACKEND_URL = {
         image: 'registry/v1/manifests/$tag/$repository',
         publicity: 'registry/v1/$namespace/$image/publicity',
         catalogs: 'catalog/v1/catalogs',
-        catalog: 'catalog/v1/catalogs/$catalog_name'
+        catalog: 'catalog/v1/catalogs/$catalog_id'
     },
     registryauth: {
         registryauths: 'registryauth/v1/registryauths',

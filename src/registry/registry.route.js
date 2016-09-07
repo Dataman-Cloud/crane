@@ -34,7 +34,7 @@
                 }
             })
             .state('registry.catalogDetail', {
-                url: '/catalogDetail/:catalog_name',
+                url: '/catalogDetail/:catalog_id',
                 templateUrl: '/src/registry/catalog-detail/detail.html',
                 controller: 'CatalogDetailCtrl as catalogDetailCtrl',
                 ncyBreadcrumb: {
@@ -98,13 +98,13 @@
         function listMineRepositories(registryBackend) {
             return registryBackend.listMineRepositories();
         }
-            
+
         /* @ngInject */
         function listPublicRepositories(registryBackend) {
             return registryBackend.listPublicRepositories();
         }
-        
-            
+
+
         /* @ngInject */
         function getImage(registryBackend, $stateParams) {
             return registryBackend.getImage($stateParams.repository, $stateParams.tag);
@@ -117,8 +117,8 @@
 
         /* @ngInject */
         function getCatalog(registryBackend, $stateParams) {
-            return registryBackend.getCatalog($stateParams.catalog_name);
+            return registryBackend.getCatalog($stateParams.catalog_id);
         }
     }
-    
+
 })();

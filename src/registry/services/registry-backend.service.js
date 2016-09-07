@@ -38,8 +38,8 @@
             return gHttp.Resource('registry.catalogs').get();
         }
 
-        function getCatalog(catalogName) {
-            return gHttp.Resource('registry.catalog', {catalog_name: catalogName}).get();
+        function getCatalog(catalogId) {
+            return gHttp.Resource('registry.catalog', {catalog_id: catalogId}).get();
         }
 
         function deleteImage(repository, tag) {
@@ -47,13 +47,13 @@
         }
 
         function hideImage(namespace, image) {
-          var data = { "Publicity": 0 };
-          return gHttp.Resource('registry.publicity', {namespace: namespace, image: image}).patch(data);
+            var data = {"Publicity": 0};
+            return gHttp.Resource('registry.publicity', {namespace: namespace, image: image}).patch(data);
         }
 
         function publicImage(namespace, image) {
-          var data = { "Publicity": 1 };
-          return gHttp.Resource('registry.publicity', {namespace: namespace, image: image}).patch(data);
+            var data = {"Publicity": 1};
+            return gHttp.Resource('registry.publicity', {namespace: namespace, image: image}).patch(data);
         }
     }
 })();
