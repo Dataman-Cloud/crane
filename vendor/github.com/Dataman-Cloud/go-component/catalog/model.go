@@ -2,6 +2,7 @@ package catalog
 
 import (
 	"encoding/base64"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"path/filepath"
@@ -45,8 +46,7 @@ func CatalogFromPath(path string) (*Catalog, error) {
 		Bundle:      string(bundle),
 		Readme:      string(readme),
 		Description: string(description),
-		IconData:    base64.StdEncoding.EncodeToString(f),
-		IconType:    http.DetectContentType(f),
+		IconData:    fmt.Sprintf("data:%s;base64,%s", http.DetectContentType(f), base64.StdEncoding.EncodeToString(f)),
 	}
 	return catalog, nil
 }
