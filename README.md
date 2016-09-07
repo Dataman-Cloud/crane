@@ -43,7 +43,7 @@ TODO: Let's deploy the demo.
 ### Option 2: Latest or development from docker build
 
   ```bash
-  CRANE_IP=192.168.59.105 ./build-and-start.sh
+  CRANE_IP=192.168.59.105 ./bin/build-and-start.sh
   ```
 
 CRANE_IP is the ip address(don't use 0.0.0.0 because we are using container in network bridge mode) of the running Crane host which is the swarm manager also.
