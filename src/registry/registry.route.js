@@ -38,7 +38,7 @@
                 templateUrl: '/src/registry/catalog-detail/detail.html',
                 controller: 'CatalogDetailCtrl as catalogDetailCtrl',
                 ncyBreadcrumb: {
-                    label: '应用部署'
+                    label: '项目部署'
                 },
                 resolve: {
                     catalog: getCatalog

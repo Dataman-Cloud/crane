@@ -1,10 +1,10 @@
 <div data-ng-show="stackCreateByFormCtrl.step == 1">
     <header class="header-main">
-        <h1>第一步. 给您的应用起个名字</h1>
+        <h1>第一步. 给您的项目起个名字</h1>
     </header>
     <form name="stepOneForm" class="form-main">
         <div class="form-group" layout="column">
-            <label>应用名称<span class="required">*</span>
+            <label>项目名称<span class="required">*</span>
                 <small></small>
             </label>
             <div class="form-control">
@@ -25,9 +25,10 @@
             </div>
         </div>
         <footer class="form-buttons">
-            <md-button id="next" class="md-raised" data-ng-disabled="stepOneForm.$invalid"
+            <md-button id="next" class="md-raised md-primary" data-ng-disabled="stepOneForm.$invalid"
                        data-ng-click="stackCreateByFormCtrl.step = 2">下一步
             </md-button>
+            <md-button data-ng-click="rootCtrl.goBack()">取 消</md-button>
         </footer>
     </form>
 </div>
@@ -739,9 +740,10 @@
                     </div>
 
                     <footer class="form-buttons">
-                        <md-button id="pre{/$index/}" class="md-raised"
+                        <md-button id="pre{/$index/}"
                                    data-ng-click="stackCreateByFormCtrl.step = 1">上一步
                         </md-button>
+
                         <md-button id="addServe{/$index/}" class="md-raised" data-ng-disabled="staticForm.$invalid"
                                    data-ng-click="stackCreateByFormCtrl.addServe()">继续添加
                         </md-button>

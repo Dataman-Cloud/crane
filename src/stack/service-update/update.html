@@ -83,7 +83,7 @@
         </div>
 
         <div class="form-group" layout="column">
-          <label>仓库认证标识 <em>--RegistryAuth</em></label>
+            <label>仓库认证标识 <em>--RegistryAuth</em></label>
             <div class="form-control">
                 <md-select data-ng-model="serviceUpdateCtrl.form.RegistryAuth"
                            aria-label="RegAuth">
@@ -708,10 +708,16 @@
             </div>
 
             <footer class="form-buttons">
-                <md-button class="md-raised md-primary" data-ng-disabled="staticForm.$invalid"
+                <md-button id="service-update" class="md-raised md-primary" data-ng-disabled="staticForm.$invalid"
                            data-ng-click="serviceUpdateCtrl.create()">
                     更新
                 </md-button>
+
+                <md-button id="service-update-cancel"
+                           data-ng-click="rootCtrl.goBack()">
+                    取消
+                </md-button>
             </footer>
+        </div>
     </form>
 </md-content>

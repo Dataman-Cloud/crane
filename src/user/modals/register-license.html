@@ -14,7 +14,7 @@
             <div class="form-group">
                 <label>序列号</label>
                 <div class="form-control">
-                    <input type="text" class="form-input" name="serialNum" aria-label="serialNum" data-ng-model="formCtrl.serialNum" data-required>
+                    <input type="text" class="form-input" name="serialNum" aria-label="serialNum" data-ng-model="formCtrl.serialNum" data-required md-autofocus>
                     <div ng-messages="staticForm.serialNum.$error" ng-if="staticForm.serialNum.$dirty" role="alert">
                         <p class="help-info text-danger" ng-message="required">序列号不能为空</p>
                     </div>
