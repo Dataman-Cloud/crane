@@ -4,6 +4,7 @@ import (
 	"encoding/base64"
 	"io"
 	"strings"
+	"time"
 
 	"github.com/Dataman-Cloud/go-component/utils/dmerror"
 	"github.com/Dataman-Cloud/go-component/utils/dmgin"
@@ -304,20 +305,23 @@ func (api *Api) StatsService(ctx *gin.Context) {
 	clientGone := w.CloseNotify()
 	clientClosed := false
 
+	var data *model.RolexContainerStat
+	reportTicker := time.Tick(time.Second * 3)
 	for {
 		select {
+		case <-reportTicker:
+			if !clientClosed {
+				ssEvent.Data = data
+				ssEvent.Render(w)
+				w.Flush()
+			}
 		case <-clientGone:
 			clientClosed = true
 			log.Infof("Stats stream of service %s closed by client", serviceId)
 			for _, statOpts := range statsOptionsMap {
 				statOpts.Done <- true
 			}
-		case data := <-chnMsg:
-			if !clientClosed {
-				ssEvent.Data = data
-				ssEvent.Render(w)
-				w.Flush()
-			}
+		case data = <-chnMsg:
 		case err := <-chnErr:
 			if statsStopErr, ok := err.(*rolexerror.ContainerStatsStopError); ok {
 				containerId := statsStopErr.ID
