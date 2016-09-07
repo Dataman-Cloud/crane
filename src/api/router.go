@@ -8,12 +8,12 @@ import (
 	chains "github.com/Dataman-Cloud/go-component/auth/middlewares"
 	"github.com/Dataman-Cloud/go-component/auth/token_store"
 	"github.com/Dataman-Cloud/go-component/catalog"
-	"github.com/Dataman-Cloud/go-component/license"
 	"github.com/Dataman-Cloud/go-component/registry"
 	rauth "github.com/Dataman-Cloud/go-component/registryauth"
 	"github.com/Dataman-Cloud/go-component/search"
 	"github.com/Dataman-Cloud/rolex/src/api/middlewares"
 	"github.com/Dataman-Cloud/rolex/src/plugins"
+	"github.com/Dataman-Cloud/rolex/src/plugins/apiplugin"
 	"github.com/Dataman-Cloud/rolex/src/util/log"
 
 	"github.com/Sirupsen/logrus"
@@ -74,9 +74,11 @@ func (api *Api) ApiRouter() *gin.Engine {
 		s.RegisterApiForSearch(router, Authorization)
 	}
 
-	if api.Config.FeatureEnabled("license") {
-		l := &license.LicenseApi{}
-		l.RegisterApiForLicense(router, Authorization)
+	if api.Config.FeatureEnabled(apiplugin.License) {
+		licensePlugin, ok := apiplugin.ApiPlugins[apiplugin.License]
+		if ok && licensePlugin.Instance != nil {
+			licensePlugin.Instance.ApiRegister(router, Authorization)
+		}
 	}
 
 	v1 := router.Group("/api/v1", Authorization, middlewares.ListIntercept())

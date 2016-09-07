@@ -6,22 +6,18 @@ import (
 
 	"github.com/Dataman-Cloud/rolex/src/api"
 	"github.com/Dataman-Cloud/rolex/src/dockerclient"
+	_ "github.com/Dataman-Cloud/rolex/src/plugins"
 	"github.com/Dataman-Cloud/rolex/src/util/config"
-	//"github.com/Dataman-Cloud/rolex/src/util/db"
 	log "github.com/Dataman-Cloud/rolex/src/util/log"
 
 	"golang.org/x/net/context"
-)
-
-var (
-	envFile = flag.String("config", "env_file", "")
 )
 
 func main() {
 	flag.Parse()
 
 	ctx := context.Background()
-	conf := config.InitConfig(*envFile)
+	conf := config.GetConfig()
 
 	//db.InitDB()
 
