@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"github.com/Dataman-Cloud/go-component/utils/dmerror"
+	"github.com/Dataman-Cloud/rolex/src/dockerclient/model"
 	"github.com/Dataman-Cloud/rolex/src/util/rolexerror"
 
 	distreference "github.com/docker/distribution/reference"
@@ -168,19 +169,23 @@ func validateEndpointSpec(epSpec *swarm.EndpointSpec) error {
 	return nil
 }
 
-func validateServiceSpec(spec *swarm.ServiceSpec) error {
+func ValidateRolexServiceSpec(spec *model.RolexServiceSpec) error {
 	if spec == nil {
 		return dmerror.NewError(CodeInvalidServiceSpec, "service spec must not null")
 	}
-	if err := validateAnnotations(spec.Annotations); err != nil {
+
+	if err := validateName(spec.Name); err != nil {
 		return err
 	}
+
 	if err := validateTask(spec.TaskTemplate); err != nil {
 		return err
 	}
+
 	if err := validateUpdate(spec.UpdateConfig); err != nil {
 		return err
 	}
+
 	if err := validateEndpointSpec(spec.EndpointSpec); err != nil {
 		return err
 	}
@@ -191,10 +196,10 @@ func validateServiceSpec(spec *swarm.ServiceSpec) error {
 	return nil
 }
 
-func validateAnnotations(m swarm.Annotations) error {
-	if m.Name == "" {
+func validateName(name string) error {
+	if name == "" {
 		return dmerror.NewError(CodeInvalidServiceName, "meta: name must be provided")
-	} else if !isValidName.MatchString(m.Name) {
+	} else if !isValidName.MatchString(name) {
 		// if the name doesn't match the regex
 		return dmerror.NewError(CodeInvalidServiceName, "invalid name, only [a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]")
 	}
@@ -214,7 +219,7 @@ func validateImageName(imageName string) error {
 // `serviceID string` is the service ID of the spec in service update. If
 // `serviceID` is not "", then conflicts check will be skipped against this
 // check before create service `serviceId` is ""
-func (client *RolexDockerClient) checkPortConflicts(reqPorts map[string]bool, serviceId string, existingServices []swarm.Service) error {
+func checkPortConflicts(reqPorts map[string]bool, serviceId string, existingServices []swarm.Service) error {
 	for _, existingService := range existingServices {
 		if serviceId != "" && serviceId == existingService.ID {
 			continue
@@ -258,7 +263,7 @@ func PortConflictToString(pc swarm.PortConfig) string {
 	return port + "/" + string(pc.Protocol)
 }
 
-func (client *RolexDockerClient) CheckServicePortConflicts(spec *swarm.ServiceSpec, serviceId string) error {
+func (client *RolexDockerClient) CheckServicePortConflicts(spec *model.RolexServiceSpec, serviceId string) error {
 	if spec.EndpointSpec == nil {
 		return nil
 	}
@@ -279,5 +284,5 @@ func (client *RolexDockerClient) CheckServicePortConflicts(spec *swarm.ServiceSp
 		return err
 	}
 
-	return client.checkPortConflicts(reqPorts, serviceId, existingServices)
+	return checkPortConflicts(reqPorts, serviceId, existingServices)
 }

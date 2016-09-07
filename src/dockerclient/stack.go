@@ -9,6 +9,7 @@ import (
 
 	"github.com/Dataman-Cloud/go-component/utils/dmerror"
 	"github.com/Dataman-Cloud/rolex/src/dockerclient/model"
+	"github.com/Dataman-Cloud/rolex/src/util/rolexerror"
 
 	docker "github.com/Dataman-Cloud/go-dockerclient"
 	log "github.com/Sirupsen/logrus"
@@ -46,14 +47,73 @@ func (client *RolexDockerClient) DeployStack(bundle *model.Bundle) error {
 		return dmerror.NewError(CodeInvalidStackName, "invalid name, only [a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]")
 	}
 
-	networks := client.getUniqueNetworkNames(bundle.Stack.Services)
-
-	newNetworkMap, err := client.updateNetworks(networks, bundle.Namespace)
+	newNetworkMap, err := client.PretreatmentStack(*bundle)
 	if err != nil {
 		return err
 	}
 
 	return client.deployServices(bundle.Stack.Services, bundle.Namespace, newNetworkMap)
+}
+
+// before deploy stack we must verify all service spec params and check port conflict
+// aslo we need check networks used by all of the servcie if the network is not existed
+// created the network by the default param(network driver --overlay)
+func (client *RolexDockerClient) PretreatmentStack(bundle model.Bundle) (map[string]bool, error) {
+	// create network map and convert to slice for distinct network
+	networkMap := make(map[string]bool)
+
+	// all the publish port in the stack
+	publishedPortMap := make(map[string]bool)
+
+	for _, serviceSpec := range bundle.Stack.Services {
+		if err := ValidateRolexServiceSpec(&serviceSpec); err != nil {
+			return nil, err
+		}
+
+		for _, network := range serviceSpec.Networks {
+			networkMap[network] = true
+		}
+
+		if serviceSpec.EndpointSpec != nil {
+			for _, pc := range serviceSpec.EndpointSpec.Ports {
+				if pc.PublishedPort > 0 {
+					portConflictStr := PortConflictToString(pc)
+					// have two service publish the same port
+					if _, ok := publishedPortMap[portConflictStr]; ok {
+						portConflictErr := &rolexerror.ServicePortConflictError{
+							Name:          serviceSpec.Name,
+							Namespace:     bundle.Namespace,
+							PublishedPort: portConflictStr,
+						}
+						return nil, &dmerror.DmError{Code: CodeGetServicePortConflictError, Err: portConflictErr}
+					}
+
+					publishedPortMap[portConflictStr] = true
+				}
+			}
+		}
+	}
+
+	// check stack need publish port is conflicted with exist services
+	if len(publishedPortMap) > 0 {
+		existingServices, err := client.ListServiceSpec(types.ServiceListOptions{})
+		if err != nil {
+			return nil, err
+		}
+
+		if err := checkPortConflicts(publishedPortMap, "", existingServices); err != nil {
+			return nil, err
+		}
+	}
+
+	// check if all network used by stack was exist, if not create it
+	newNetworkMap, err := client.updateNetworks(networkMap, bundle.Namespace)
+	if err != nil {
+		return nil, err
+	}
+
+	return newNetworkMap, nil
+
 }
 
 // list all stack
@@ -211,24 +271,7 @@ func (client *RolexDockerClient) GetStackGroup(namespace string) (uint64, error)
 	return 0, errors.New("can't found stack groupid")
 }
 
-func (client *RolexDockerClient) getUniqueNetworkNames(services map[string]model.RolexServiceSpec) []string {
-	networkSet := make(map[string]bool)
-
-	for _, service := range services {
-		for _, network := range service.Networks {
-			networkSet[network] = true
-		}
-	}
-
-	networks := []string{}
-	for network := range networkSet {
-		networks = append(networks, network)
-	}
-
-	return networks
-}
-
-func (client *RolexDockerClient) updateNetworks(networks []string, namespace string) (map[string]bool, error) {
+func (client *RolexDockerClient) updateNetworks(networks map[string]bool, namespace string) (map[string]bool, error) {
 	existingNetworks, err := client.ListNetworks(docker.NetworkFilterOpts{})
 	if err != nil {
 		return nil, err
@@ -247,7 +290,7 @@ func (client *RolexDockerClient) updateNetworks(networks []string, namespace str
 	}
 
 	newNetworkMap := make(map[string]bool)
-	for _, internalName := range networks {
+	for internalName := range networks {
 		if _, exists := existingNetworkMap[internalName]; exists {
 			newNetworkMap[internalName] = false
 			continue
