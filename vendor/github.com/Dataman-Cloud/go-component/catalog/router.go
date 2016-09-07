@@ -25,7 +25,10 @@ func (catalogApi *CatalogApi) RegisterApiForCatalog(router *gin.Engine, middlewa
 	catalogV1 := router.Group("/catalog/v1", middlewares...)
 	{
 		catalogV1.GET("/catalogs", catalogApi.ListCatalog)
+		catalogV1.POST("/catalogs", catalogApi.CreateCatalog)
 		catalogV1.GET("/catalogs/:catalog_id", catalogApi.GetCatalog)
+		catalogV1.DELETE("/catalogs/:catalog_id", catalogApi.DeleteCatalog)
+		catalogV1.PATCH("/catalogs/:catalog_id", catalogApi.UpdateCatalog)
 	}
 
 	catalogApi.LoadCatalog()
@@ -39,8 +42,8 @@ func (catalogApi *CatalogApi) LoadCatalog() {
 	}
 
 	for _, catalog := range catalogs {
-		catalog.UserId = 0
-		catalog.Type = 0
+		catalog.UserId = CATALOG_SYSTEM_DEFAULT
+		catalog.Type = CATALOG_SYSTEM_DEFAULT
 		catalogApi.Save(catalog)
 	}
 }

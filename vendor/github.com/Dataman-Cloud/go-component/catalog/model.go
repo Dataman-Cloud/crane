@@ -2,9 +2,11 @@ package catalog
 
 import (
 	"encoding/base64"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"path/filepath"
 )
 
@@ -15,9 +17,21 @@ type Catalog struct {
 	Readme      string `json:"Readme" gorm:"size:65532"`
 	Description string `json:"Description" gorm:"size:65532"`
 	IconData    string `json:"IconData" gorm:"size:65532"`
-	IconType    string `json:"IconType"`
 	UserId      uint64 `json:"UserId"`
 	Type        uint8  `json:"Type"`
+}
+
+const (
+	ICON_SIZE    = 1024 * 1024 * 1024
+	ICON_DEFAULT = "img/default.png"
+)
+
+const (
+	CATALOG_SYSTEM_DEFAULT = 0
+)
+
+type Size interface {
+	Size() int64
 }
 
 func CatalogFromPath(path string) (*Catalog, error) {
@@ -37,6 +51,12 @@ func CatalogFromPath(path string) (*Catalog, error) {
 	}
 
 	f, err := ioutil.ReadFile(filepath.Join(path, filepath.Base(path)+".png"))
+	if fs, err := os.Stat(filepath.Join(path, filepath.Base(path)+".png")); err != nil {
+		return nil, err
+	} else if fs.Size() > ICON_SIZE {
+		return nil, errors.New("icon size too big")
+	}
+
 	if err != nil {
 		return nil, err
 	}
@@ -69,4 +89,30 @@ func AllCatalogFromPath(path string) ([]*Catalog, error) {
 	}
 
 	return catalogs, nil
+}
+
+func ImageHandle(request *http.Request) (string, error) {
+	var buf []byte
+	var err error
+
+	icon, _, err := request.FormFile("icon")
+	if err != nil {
+		if buf, err = ioutil.ReadFile(ICON_DEFAULT); err != nil {
+			return "", err
+		}
+		return "", nil
+	} else {
+		if fileSize, ok := icon.(Size); !ok || fileSize.Size() > ICON_SIZE {
+			return "", errors.New("invalid image")
+		}
+
+		buf, err = ioutil.ReadAll(icon)
+		if err != nil {
+			return "", err
+		}
+	}
+
+	return fmt.Sprintf("data:%s;base64,%s",
+		http.DetectContentType(buf),
+		base64.StdEncoding.EncodeToString(buf)), nil
 }
