@@ -595,7 +595,6 @@ paths:
                 format: int8
                 default: 0
               data:
-                type: object
                 $ref: '#/definitions/Image'
         500:
           description: 获取镜像详细信息失败
@@ -673,7 +672,6 @@ paths:
                 format: int8
                 default: 0
               data:
-                type: object
                 $ref: '#/definitions/ImageHistory'
         500:
           description: 获取镜像历史失败
@@ -894,7 +892,6 @@ definitions:
       BindOptions:
         description: 挂载方式为bind时的参数
         type: object
-        description: 传播参数
         required:
           - Propagation
         properties:
@@ -948,10 +945,8 @@ definitions:
       - Reservations
     properties:
       Limits:
-        description: 任务的资源限制
         $ref: '#/definitions/Resources'
       Reservations:
-        description: 任务的资源预留
         $ref: '#/definitions/Resources'
 
   Resources:
@@ -1230,7 +1225,6 @@ definitions:
         type: string
         description: connect/disconnect
       NetworkOptions:
-        type: object
         $ref: '#/definitions/NetworkConnectionOptions'
   
   NetworkConnectionOptions:
@@ -1335,14 +1329,12 @@ definitions:
       Container:
         type: string
       ContainerConfig:
-        type: object
         $ref: '#/definitions/ImageConfig'
       DockerVersion:
         type: string
       Author:
         type: string
       Config:
-        type: object
         $ref: '#/definitions/ImageConfig'
       Architecture:
         type: string
@@ -1357,7 +1349,6 @@ definitions:
         items:
           type: string
       RootFS:
-        type: object
         $ref: '#/definitions/RootFS'
 
   RootFS:
@@ -1426,7 +1417,6 @@ definitions:
         items:
           type: string
       Healthcheck:
-        type: object
         $ref: '#/definitions/HealthConfig'
       DNS:
         type: array
@@ -1467,21 +1457,6 @@ definitions:
         additionalProperties:
           type: string
       
-  Mount:
-    properties:
-      Name:
-        type: string
-      Source:
-        type: string
-      Destination:
-        type: string
-      Driver:
-        type: string
-      Mode:
-        type: string
-      RW:
-        type: boolean
-        
   HealthConfig:
     properties:
       Test:

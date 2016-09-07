@@ -862,7 +862,6 @@
                                     "default": 0
                                 },
                                 "data": {
-                                    "type": "object",
                                     "$ref": "#/definitions/Image"
                                 }
                             }
@@ -975,7 +974,6 @@
                                     "default": 0
                                 },
                                 "data": {
-                                    "type": "object",
                                     "$ref": "#/definitions/ImageHistory"
                                 }
                             }
@@ -1235,24 +1233,96 @@
             }
         },
         "Mount": {
+            "description": "挂载目录参数",
+            "type": "object",
+            "required": [
+                "Type",
+                "Source",
+                "Target",
+                "ReadOnly",
+                "BindOptions",
+                "VolumeOptions"
+            ],
             "properties": {
-                "Name": {
+                "Type": {
+                    "description": "挂载类型 (bind/volume)",
                     "type": "string"
                 },
                 "Source": {
+                    "description": "主机文件路径",
                     "type": "string"
                 },
-                "Destination": {
+                "Target": {
+                    "description": "容器文件路径",
                     "type": "string"
                 },
-                "Driver": {
-                    "type": "string"
-                },
-                "Mode": {
-                    "type": "string"
-                },
-                "RW": {
+                "ReadOnly": {
+                    "description": "挂载到容器内部的文件是否只读",
                     "type": "boolean"
+                },
+                "BindOptions": {
+                    "description": "挂载方式为bind时的参数",
+                    "type": "object",
+                    "required": [
+                        "Propagation"
+                    ],
+                    "properties": {
+                        "Propagation": {
+                            "description": "文件权限",
+                            "type": "string",
+                            "enum": [
+                                "rprivate",
+                                "private",
+                                "rshared",
+                                "shared",
+                                "rslave",
+                                "slave"
+                            ]
+                        }
+                    }
+                },
+                "VolumeOptions": {
+                    "description": "挂载方式为volume时的挂载参数",
+                    "type": "object",
+                    "required": [
+                        "NoCopy",
+                        "Labels",
+                        "DriverConfig"
+                    ],
+                    "properties": {
+                        "NoCopy": {
+                            "description": "是否禁止复制",
+                            "type": "boolean"
+                        },
+                        "Labels": {
+                            "description": "挂载的标签",
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        },
+                        "DriverConfig": {
+                            "description": "挂载驱动",
+                            "type": "object",
+                            "required": [
+                                "Name",
+                                "Options"
+                            ],
+                            "properties": {
+                                "Name": {
+                                    "description": "驱动名称",
+                                    "type": "string"
+                                },
+                                "Options": {
+                                    "description": "驱动参数",
+                                    "type": "object",
+                                    "additionalProperties": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         },
@@ -1265,11 +1335,9 @@
             ],
             "properties": {
                 "Limits": {
-                    "description": "任务的资源限制",
                     "$ref": "#/definitions/Resources"
                 },
                 "Reservations": {
-                    "description": "任务的资源预留",
                     "$ref": "#/definitions/Resources"
                 }
             }
@@ -1627,7 +1695,6 @@
                     "description": "connect/disconnect"
                 },
                 "NetworkOptions": {
-                    "type": "object",
                     "$ref": "#/definitions/NetworkConnectionOptions"
                 }
             }
@@ -1774,7 +1841,6 @@
                     "type": "string"
                 },
                 "ContainerConfig": {
-                    "type": "object",
                     "$ref": "#/definitions/ImageConfig"
                 },
                 "DockerVersion": {
@@ -1784,7 +1850,6 @@
                     "type": "string"
                 },
                 "Config": {
-                    "type": "object",
                     "$ref": "#/definitions/ImageConfig"
                 },
                 "Architecture": {
@@ -1805,7 +1870,6 @@
                     }
                 },
                 "RootFS": {
-                    "type": "object",
                     "$ref": "#/definitions/RootFS"
                 }
             }
@@ -1904,7 +1968,6 @@
                     }
                 },
                 "Healthcheck": {
-                    "type": "object",
                     "$ref": "#/definitions/HealthConfig"
                 },
                 "DNS": {
