@@ -74,20 +74,22 @@ func (client *RolexDockerClient) PretreatmentStack(bundle model.Bundle) (map[str
 			networkMap[network] = true
 		}
 
-		for _, pc := range serviceSpec.EndpointSpec.Ports {
-			if pc.PublishedPort > 0 {
-				portConflictStr := PortConflictToString(pc)
-				// have two service publish the same port
-				if _, ok := publishedPortMap[portConflictStr]; ok {
-					portConflictErr := &rolexerror.ServicePortConflictError{
-						Name:          serviceSpec.Name,
-						Namespace:     bundle.Namespace,
-						PublishedPort: portConflictStr,
+		if serviceSpec.EndpointSpec != nil {
+			for _, pc := range serviceSpec.EndpointSpec.Ports {
+				if pc.PublishedPort > 0 {
+					portConflictStr := PortConflictToString(pc)
+					// have two service publish the same port
+					if _, ok := publishedPortMap[portConflictStr]; ok {
+						portConflictErr := &rolexerror.ServicePortConflictError{
+							Name:          serviceSpec.Name,
+							Namespace:     bundle.Namespace,
+							PublishedPort: portConflictStr,
+						}
+						return nil, &dmerror.DmError{Code: CodeGetServicePortConflictError, Err: portConflictErr}
 					}
-					return nil, &dmerror.DmError{Code: CodeGetServicePortConflictError, Err: portConflictErr}
-				}
 
-				publishedPortMap[portConflictStr] = true
+					publishedPortMap[portConflictStr] = true
+				}
 			}
 		}
 	}
