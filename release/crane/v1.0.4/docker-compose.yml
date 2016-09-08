@@ -1,0 +1,40 @@
+version: "2"
+services:
+  blackmamba:
+    image: ${REGISTRY_PREFIX}blackmamba:${TAG}
+    ports:
+      - "80:80"
+    volumes:
+      - /etc/localtime:/etc/localtime
+    links:
+      - crane
+    restart: always
+  crane_registry:
+    image: ${REGISTRY_PREFIX}registry:crane${TAG}
+    ports:
+      - "5000:5000"
+      - "5001:5001"
+    environment:
+      - CRANE_IP
+    volumes:
+      - ./registry_storage:/var/lib/registry
+      - /etc/localtime:/etc/localtime
+    restart: always
+  crane:
+    image: ${REGISTRY_PREFIX}crane:${TAG}
+    environment:
+      - CRANE_SWARM_MANAGER_IP
+      - CRANE_DOCKER_ENTRY_PORT
+    volumes:
+      - /etc/localtime:/etc/localtime
+    ports:
+      - "5013:5013"
+    restart: always
+  crane_db:
+    image: ${REGISTRY_PREFIX}mysql:crane${TAG}
+    environment:
+      - MYSQL_ROOT_PASSWORD=111111
+    volumes:
+      - ./mysql_storage:/var/lib/mysql
+      - /etc/localtime:/etc/localtime
+    restart: always
