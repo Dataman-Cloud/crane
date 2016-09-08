@@ -1,7 +1,6 @@
-package plugins
+package search
 
 import (
-	"github.com/Dataman-Cloud/go-component/search"
 	"github.com/Dataman-Cloud/rolex/src/dockerclient"
 
 	docker "github.com/Dataman-Cloud/go-dockerclient"
@@ -20,7 +19,7 @@ const (
 )
 
 type RolexIndexer struct {
-	search.Indexer
+	Indexer
 
 	RolexDockerClient *dockerclient.RolexDockerClient
 }
@@ -29,10 +28,10 @@ func NewRolexIndex(RolexDockerClient *dockerclient.RolexDockerClient) *RolexInde
 	return &RolexIndexer{RolexDockerClient: RolexDockerClient}
 }
 
-func (indexer *RolexIndexer) Index(store *search.DocumentStorage) {
+func (indexer *RolexIndexer) Index(store *DocumentStorage) {
 	if nodes, err := indexer.RolexDockerClient.ListNode(types.NodeListOptions{}); err == nil {
 		for _, node := range nodes {
-			store.Set(node.ID+node.Description.Hostname, search.Document{
+			store.Set(node.ID+node.Description.Hostname, Document{
 				ID:   node.ID,
 				Name: node.Description.Hostname,
 				Type: DOCUMENT_NODE,
@@ -46,7 +45,7 @@ func (indexer *RolexIndexer) Index(store *search.DocumentStorage) {
 				RolexDockerClient.
 				ListNodeNetworks(backContext, docker.NetworkFilterOpts{}); err == nil {
 				for _, network := range networks {
-					store.Set(network.ID+network.Name+node.ID, search.Document{
+					store.Set(network.ID+network.Name+node.ID, Document{
 						Name: network.Name,
 						ID:   network.ID,
 						Type: DOCUMENT_NETWORK,
@@ -65,7 +64,7 @@ func (indexer *RolexIndexer) Index(store *search.DocumentStorage) {
 				RolexDockerClient.
 				ListVolumes(backContext, docker.ListVolumesOptions{}); err == nil {
 				for _, volume := range volumes {
-					store.Set(volume.Name, search.Document{
+					store.Set(volume.Name, Document{
 						Name: volume.Name,
 						Type: DOCUMENT_VOLUME,
 						Param: map[string]string{
@@ -87,7 +86,7 @@ func (indexer *RolexIndexer) Index(store *search.DocumentStorage) {
 			//groupId, _ := indexer.RolexDockerClient.GetStackGroup(stack.Namespace)
 			groupId := uint64(1)
 
-			store.Set(stack.Namespace, search.Document{
+			store.Set(stack.Namespace, Document{
 				ID:      stack.Namespace,
 				Type:    DOCUMENT_STACK,
 				GroupId: groupId,
@@ -101,7 +100,7 @@ func (indexer *RolexIndexer) Index(store *search.DocumentStorage) {
 				ListStackService(stack.Namespace, types.ServiceListOptions{}); err == nil {
 				for _, service := range services {
 					store.Set(service.ID+stack.Namespace,
-						search.Document{
+						Document{
 							ID:      service.ID,
 							Name:    stack.Namespace,
 							Type:    DOCUMENT_SERVICE,
@@ -117,7 +116,7 @@ func (indexer *RolexIndexer) Index(store *search.DocumentStorage) {
 						ListTasks(types.TaskListOptions{}); err == nil {
 						for _, task := range tasks {
 							store.Set(task.ID,
-								search.Document{
+								Document{
 									ID:      task.ID,
 									Type:    DOCUMENT_TASK,
 									GroupId: groupId,
@@ -127,7 +126,7 @@ func (indexer *RolexIndexer) Index(store *search.DocumentStorage) {
 									},
 								})
 							store.Set(task.Status.ContainerStatus.ContainerID,
-								search.Document{
+								Document{
 									ID:      task.Status.ContainerStatus.ContainerID,
 									Type:    DOCUMENT_TASK,
 									GroupId: groupId,

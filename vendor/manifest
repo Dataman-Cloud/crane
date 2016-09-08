@@ -227,7 +227,7 @@
 			"notests": true
 		},
 		{
-			"importpath": "github.com/Dataman-Cloud/go-component/auth",
+			"importpath": "github.com/Dataman-Cloud/rolex/src/plugins/auth",
 			"repository": "https://github.com/Dataman-Cloud/go-component",
 			"vcs": "git",
 			"revision": "dc43dc1443a01aef53aeb19af48a64bf53e73842",
@@ -236,7 +236,7 @@
 			"notests": true
 		},
 		{
-			"importpath": "github.com/Dataman-Cloud/go-component/catalog",
+			"importpath": "github.com/Dataman-Cloud/rolex/src/plugins/catalog",
 			"repository": "https://github.com/Dataman-Cloud/go-component",
 			"vcs": "git",
 			"revision": "265afa633186340e13fd7ad843942f48ce87cbac",
@@ -245,7 +245,7 @@
 			"notests": true
 		},
 		{
-			"importpath": "github.com/Dataman-Cloud/go-component/license",
+			"importpath": "github.com/Dataman-Cloud/rolex/src/plugins/license",
 			"repository": "https://github.com/Dataman-Cloud/go-component",
 			"vcs": "git",
 			"revision": "4347499e442bd7c4ef690d90ac6038bda3dfbabc",
@@ -254,7 +254,7 @@
 			"notests": true
 		},
 		{
-			"importpath": "github.com/Dataman-Cloud/go-component/registry",
+			"importpath": "github.com/Dataman-Cloud/rolex/src/plugins/registry",
 			"repository": "https://github.com/Dataman-Cloud/go-component",
 			"vcs": "git",
 			"revision": "265afa633186340e13fd7ad843942f48ce87cbac",
@@ -263,7 +263,7 @@
 			"notests": true
 		},
 		{
-			"importpath": "github.com/Dataman-Cloud/go-component/search",
+			"importpath": "github.com/Dataman-Cloud/rolex/src/plugins/search",
 			"repository": "https://github.com/Dataman-Cloud/go-component",
 			"vcs": "git",
 			"revision": "265afa633186340e13fd7ad843942f48ce87cbac",

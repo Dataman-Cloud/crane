@@ -3,7 +3,7 @@ package token_store
 import (
 	"time"
 
-	"github.com/Dataman-Cloud/go-component/auth"
+	"github.com/Dataman-Cloud/rolex/src/plugins/auth"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"

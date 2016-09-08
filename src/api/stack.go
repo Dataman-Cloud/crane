@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"strconv"
 
-	"github.com/Dataman-Cloud/go-component/auth"
 	"github.com/Dataman-Cloud/rolex/src/dockerclient/model"
+	"github.com/Dataman-Cloud/rolex/src/plugins/auth"
 	"github.com/Dataman-Cloud/rolex/src/utils/dmgin"
 	"github.com/Dataman-Cloud/rolex/src/utils/rolexerror"
 

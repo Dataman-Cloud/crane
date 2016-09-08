@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Dataman-Cloud/go-component/auth"
+	"github.com/Dataman-Cloud/rolex/src/plugins/auth"
 
 	"github.com/docker/distribution/registry/auth/token"
 	"github.com/docker/libtrust"

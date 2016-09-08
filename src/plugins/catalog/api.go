@@ -3,8 +3,8 @@ package catalog
 import (
 	"strconv"
 
-	"github.com/Dataman-Cloud/rolex/src/utils/rolexerror"
 	"github.com/Dataman-Cloud/rolex/src/utils/dmgin"
+	"github.com/Dataman-Cloud/rolex/src/utils/rolexerror"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"

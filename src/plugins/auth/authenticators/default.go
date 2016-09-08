@@ -3,10 +3,10 @@ package authenticators
 import (
 	"time"
 
-	"github.com/Dataman-Cloud/go-component/auth"
-	"github.com/Dataman-Cloud/rolex/src/utils/rolexerror"
-	"github.com/Dataman-Cloud/rolex/src/utils/model"
+	"github.com/Dataman-Cloud/rolex/src/plugins/auth"
 	"github.com/Dataman-Cloud/rolex/src/utils/config"
+	"github.com/Dataman-Cloud/rolex/src/utils/model"
+	"github.com/Dataman-Cloud/rolex/src/utils/rolexerror"
 )
 
 type Default struct {
