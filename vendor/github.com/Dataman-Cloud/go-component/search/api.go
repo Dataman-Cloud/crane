@@ -3,8 +3,8 @@ package search
 import (
 	"sort"
 
-	"github.com/Dataman-Cloud/go-component/utils/dmerror"
-	"github.com/Dataman-Cloud/go-component/utils/dmgin"
+	"github.com/Dataman-Cloud/rolex/src/utils/rolexerror"
+	"github.com/Dataman-Cloud/rolex/src/utils/dmgin"
 
 	"github.com/gin-gonic/gin"
 	"github.com/renstrom/fuzzysearch/fuzzy"
@@ -22,7 +22,7 @@ const (
 func (searchApi *SearchApi) Search(ctx *gin.Context) {
 	query := ctx.Query("keyword")
 	if query == "" {
-		rerror := dmerror.NewError(CodeInvalidSearchKeywords, "invalid search keywords")
+		rerror := rolexerror.NewError(CodeInvalidSearchKeywords, "invalid search keywords")
 		dmgin.HttpErrorResponse(ctx, rerror)
 		return
 	}

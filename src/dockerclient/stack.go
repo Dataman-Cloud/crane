@@ -7,9 +7,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/Dataman-Cloud/go-component/utils/dmerror"
 	"github.com/Dataman-Cloud/rolex/src/dockerclient/model"
-	"github.com/Dataman-Cloud/rolex/src/util/rolexerror"
+	"github.com/Dataman-Cloud/rolex/src/utils/rolexerror"
 
 	docker "github.com/Dataman-Cloud/go-dockerclient"
 	log "github.com/Sirupsen/logrus"
@@ -44,7 +43,7 @@ type Stack struct {
 // deploy a new stack
 func (client *RolexDockerClient) DeployStack(bundle *model.Bundle) error {
 	if bundle.Namespace == "" || !isValidName.MatchString(bundle.Namespace) {
-		return dmerror.NewError(CodeInvalidStackName, "invalid name, only [a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]")
+		return rolexerror.NewError(CodeInvalidStackName, "invalid name, only [a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]")
 	}
 
 	newNetworkMap, err := client.PretreatmentStack(*bundle)
@@ -85,7 +84,7 @@ func (client *RolexDockerClient) PretreatmentStack(bundle model.Bundle) (map[str
 							Namespace:     bundle.Namespace,
 							PublishedPort: portConflictStr,
 						}
-						return nil, &dmerror.DmError{Code: CodeGetServicePortConflictError, Err: portConflictErr}
+						return nil, &rolexerror.DmError{Code: CodeGetServicePortConflictError, Err: portConflictErr}
 					}
 
 					publishedPortMap[portConflictStr] = true
@@ -216,7 +215,7 @@ func (client *RolexDockerClient) RemoveStack(namespace string) error {
 	}
 
 	if len(services) == 0 && len(networks) == 0 {
-		return dmerror.NewError(CodeStackNotFound, fmt.Sprintf("stack %s not found", namespace))
+		return rolexerror.NewError(CodeStackNotFound, fmt.Sprintf("stack %s not found", namespace))
 	}
 
 	return nil

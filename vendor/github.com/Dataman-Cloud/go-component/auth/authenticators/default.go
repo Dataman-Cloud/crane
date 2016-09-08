@@ -4,9 +4,9 @@ import (
 	"time"
 
 	"github.com/Dataman-Cloud/go-component/auth"
-	"github.com/Dataman-Cloud/go-component/utils/dmerror"
-	"github.com/Dataman-Cloud/go-component/utils/model"
-	"github.com/Dataman-Cloud/rolex/src/util/config"
+	"github.com/Dataman-Cloud/rolex/src/utils/rolexerror"
+	"github.com/Dataman-Cloud/rolex/src/utils/model"
+	"github.com/Dataman-Cloud/rolex/src/utils/config"
 )
 
 type Default struct {
@@ -55,12 +55,12 @@ func (d *Default) Login(a *auth.Account) (string, error) {
 				a.ID = acc.ID
 				return auth.GenToken(a), nil
 			} else {
-				return "", dmerror.NewError(auth.CodeAccountLoginFailedPasswordNotValidError, "Invalid Password")
+				return "", rolexerror.NewError(auth.CodeAccountLoginFailedPasswordNotValidError, "Invalid Password")
 			}
 		}
 	}
 
-	return "", dmerror.NewError(auth.CodeAccountLoginFailedEmailNotValidError, "Invalid Email")
+	return "", rolexerror.NewError(auth.CodeAccountLoginFailedEmailNotValidError, "Invalid Email")
 }
 
 func (d *Default) Accounts(listOptions model.ListOptions) (auths *[]auth.Account, err error) {

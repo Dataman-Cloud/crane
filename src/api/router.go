@@ -14,7 +14,7 @@ import (
 	"github.com/Dataman-Cloud/rolex/src/api/middlewares"
 	"github.com/Dataman-Cloud/rolex/src/plugins"
 	"github.com/Dataman-Cloud/rolex/src/plugins/apiplugin"
-	"github.com/Dataman-Cloud/rolex/src/util/log"
+	"github.com/Dataman-Cloud/rolex/src/utils/log"
 
 	"github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"

@@ -7,12 +7,11 @@ import (
 	"net/url"
 	"path/filepath"
 
-	"github.com/Dataman-Cloud/go-component/utils/dmerror"
-	"github.com/Dataman-Cloud/rolex/src/util/config"
-	"github.com/Dataman-Cloud/rolex/src/util/rolexerror"
+	"github.com/Dataman-Cloud/rolex/src/utils/config"
+	"github.com/Dataman-Cloud/rolex/src/utils/rolexerror"
 
-	"github.com/Dataman-Cloud/go-component/utils/httpclient"
 	docker "github.com/Dataman-Cloud/go-dockerclient"
+	"github.com/Dataman-Cloud/rolex/src/utils/httpclient"
 	log "github.com/Sirupsen/logrus"
 	"github.com/docker/engine-api/types"
 	"golang.org/x/net/context"
@@ -87,7 +86,7 @@ func (client *RolexDockerClient) createNodeClient(nodeId string) (*docker.Client
 	}
 
 	if err != nil {
-		return nil, &dmerror.DmError{
+		return nil, &rolexerror.DmError{
 			Code: CodeConnToNodeError,
 			Err:  &rolexerror.NodeConnError{ID: nodeId, Endpoint: endpoint, Err: err},
 		}
@@ -101,7 +100,7 @@ func (client *RolexDockerClient) createNodeClient(nodeId string) (*docker.Client
 func (client *RolexDockerClient) SwarmNode(ctx context.Context) (*docker.Client, error) {
 	nodeId, ok := ctx.Value("node_id").(string)
 	if !ok {
-		return nil, &dmerror.DmError{
+		return nil, &rolexerror.DmError{
 			Code: CodeConnToNodeError,
 			Err: &rolexerror.NodeConnError{
 				ID:       nodeId,
@@ -130,7 +129,7 @@ func (client *RolexDockerClient) SwarmNode(ctx context.Context) (*docker.Client,
 
 func (client *RolexDockerClient) VerifyNodeEndpoint(nodeId string, nodeUrl *url.URL) error {
 	if nodeUrl == nil {
-		return &dmerror.DmError{
+		return &rolexerror.DmError{
 			Code: CodeGetNodeEndpointError,
 			Err:  &rolexerror.NodeConnError{ID: nodeId, Err: fmt.Errorf("verify endpoint failed: empty node url")},
 		}
@@ -144,28 +143,28 @@ func (client *RolexDockerClient) VerifyNodeEndpoint(nodeId string, nodeUrl *url.
 	endpoint := nodeUrl.String()
 	content, err := client.sharedHttpClient.GET(nil, endpoint+"/info", url.Values{}, nil)
 	if err != nil {
-		return &dmerror.DmError{
+		return &rolexerror.DmError{
 			Code: CodeVerifyNodeEnpointFailed,
 			Err:  &rolexerror.NodeConnError{ID: nodeId, Endpoint: endpoint, Err: fmt.Errorf("verify endpoint failed: %s", err.Error())},
 		}
 	}
 
 	if err := json.Unmarshal(content, &nodeInfo); err != nil {
-		return &dmerror.DmError{
+		return &rolexerror.DmError{
 			Code: CodeVerifyNodeEnpointFailed,
 			Err:  &rolexerror.NodeConnError{ID: nodeId, Endpoint: endpoint, Err: fmt.Errorf("verify endpoint failed: %s", err.Error())},
 		}
 	}
 
 	if err != nil {
-		return &dmerror.DmError{
+		return &rolexerror.DmError{
 			Code: CodeConnToNodeError,
 			Err:  &rolexerror.NodeConnError{ID: nodeId, Endpoint: endpoint, Err: err},
 		}
 	}
 
 	if nodeId != nodeInfo.Swarm.NodeID {
-		return &dmerror.DmError{
+		return &rolexerror.DmError{
 			Code: CodeNodeEndpointIpMatchError,
 			Err:  &rolexerror.NodeConnError{ID: nodeId, Endpoint: endpoint, Err: fmt.Errorf("node id not matched endpoint")},
 		}
@@ -202,15 +201,15 @@ func ToRolexError(err error) error {
 	var detailError error
 	switch err.(type) {
 	case *docker.NoSuchContainer:
-		detailError = dmerror.NewError(CodeContainerNotFound, err.Error())
+		detailError = rolexerror.NewError(CodeContainerNotFound, err.Error())
 	case *docker.NoSuchNetwork:
-		detailError = dmerror.NewError(CodeNetworkNotFound, err.Error())
+		detailError = rolexerror.NewError(CodeNetworkNotFound, err.Error())
 	case *docker.NoSuchNetworkOrContainer:
-		detailError = dmerror.NewError(CodeNetworkOrContainerNotFound, err.Error())
+		detailError = rolexerror.NewError(CodeNetworkOrContainerNotFound, err.Error())
 	case *docker.ContainerAlreadyRunning:
-		detailError = dmerror.NewError(CodeContainerAlreadyRunning, err.Error())
+		detailError = rolexerror.NewError(CodeContainerAlreadyRunning, err.Error())
 	case *docker.ContainerNotRunning:
-		detailError = dmerror.NewError(CodeContainerNotRunning, err.Error())
+		detailError = rolexerror.NewError(CodeContainerNotRunning, err.Error())
 	default:
 		detailError = err
 	}

@@ -1,7 +1,7 @@
 package license
 
 import (
-	"github.com/Dataman-Cloud/go-component/utils/db"
+	"github.com/Dataman-Cloud/rolex/src/utils/db"
 	"github.com/Dataman-Cloud/rolex/src/plugins/apiplugin"
 
 	"github.com/gin-gonic/gin"

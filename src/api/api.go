@@ -2,7 +2,7 @@ package api
 
 import (
 	"github.com/Dataman-Cloud/rolex/src/dockerclient"
-	"github.com/Dataman-Cloud/rolex/src/util/config"
+	"github.com/Dataman-Cloud/rolex/src/utils/config"
 )
 
 type Api struct {

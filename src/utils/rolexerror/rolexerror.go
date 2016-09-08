@@ -1,6 +1,11 @@
 package rolexerror
 
+import "errors"
+
 const (
+	// Default ok code
+	CodeOk = 0
+
 	//Default error code
 	CodeUndefined = "503-10001"
 
@@ -12,6 +17,22 @@ const (
 	CodeErrorNodeAvailability = "503-11304"
 	CodeGetNodeInfoError      = "503-11305"
 )
+
+type DmError struct {
+	Code string `json:"Code"`
+	Err  error  `json:"Err"`
+}
+
+func NewError(code string, message string) error {
+	return &DmError{
+		Code: code,
+		Err:  errors.New(message),
+	}
+}
+
+func (e *DmError) Error() string {
+	return e.Err.Error()
+}
 
 type ContainerStatsStopError struct {
 	ID  string

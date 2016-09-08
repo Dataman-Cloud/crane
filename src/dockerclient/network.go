@@ -3,7 +3,7 @@ package dockerclient
 import (
 	"strings"
 
-	"github.com/Dataman-Cloud/go-component/utils/dmerror"
+	"github.com/Dataman-Cloud/rolex/src/utils/rolexerror"
 
 	docker "github.com/Dataman-Cloud/go-dockerclient"
 	"golang.org/x/net/context"
@@ -15,7 +15,7 @@ func (client *RolexDockerClient) ConnectNetwork(id string, opts docker.NetworkCo
 
 func (client *RolexDockerClient) CreateNetwork(opts docker.CreateNetworkOptions) (*docker.Network, error) {
 	if opts.Name == "" || !isValidName.MatchString(opts.Name) {
-		return nil, dmerror.NewError(CodeInvalidNetworkName, "invalid name, only [a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9] are allowed")
+		return nil, rolexerror.NewError(CodeInvalidNetworkName, "invalid name, only [a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9] are allowed")
 	}
 
 	return client.SwarmManager().CreateNetwork(opts)
@@ -37,7 +37,7 @@ func (client *RolexDockerClient) RemoveNetwork(id string) error {
 	err := client.SwarmManager().RemoveNetwork(id)
 	if err != nil {
 		if strings.Contains(err.Error(), "API error (403)") {
-			return dmerror.NewError(CodeNetworkPredefined, err.Error())
+			return rolexerror.NewError(CodeNetworkPredefined, err.Error())
 		} else {
 			return err
 		}

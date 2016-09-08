@@ -7,9 +7,9 @@ import (
 	"strconv"
 
 	"github.com/Dataman-Cloud/go-component/auth"
-	"github.com/Dataman-Cloud/go-component/utils/db"
-	"github.com/Dataman-Cloud/go-component/utils/dmerror"
-	"github.com/Dataman-Cloud/go-component/utils/model"
+	"github.com/Dataman-Cloud/rolex/src/utils/db"
+	"github.com/Dataman-Cloud/rolex/src/utils/rolexerror"
+	"github.com/Dataman-Cloud/rolex/src/utils/model"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
@@ -45,9 +45,9 @@ func (db *DbAuthenicator) Login(a *auth.Account) (string, error) {
 		Select("id, title, email, phone, login_at, password").
 		Where("email = ?", a.Email).
 		First(&account).Error; err != nil {
-		return "", dmerror.NewError(auth.CodeAccountLoginFailedEmailNotValidError, err.Error())
+		return "", rolexerror.NewError(auth.CodeAccountLoginFailedEmailNotValidError, err.Error())
 	} else if account.Password != db.EncryptPassword(a.Password) {
-		return "", dmerror.NewError(auth.CodeAccountLoginFailedPasswordNotValidError, "Invalid Password")
+		return "", rolexerror.NewError(auth.CodeAccountLoginFailedPasswordNotValidError, "Invalid Password")
 	}
 
 	a.ID = account.ID

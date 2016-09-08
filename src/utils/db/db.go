@@ -1,7 +1,7 @@
 package db
 
 import (
-	"github.com/Dataman-Cloud/rolex/src/util/config"
+	"github.com/Dataman-Cloud/rolex/src/utils/config"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/jinzhu/gorm"

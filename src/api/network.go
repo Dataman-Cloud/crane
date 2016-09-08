@@ -3,8 +3,8 @@ package api
 import (
 	"encoding/json"
 
-	"github.com/Dataman-Cloud/go-component/utils/dmerror"
-	"github.com/Dataman-Cloud/go-component/utils/dmgin"
+	"github.com/Dataman-Cloud/rolex/src/utils/dmgin"
+	"github.com/Dataman-Cloud/rolex/src/utils/rolexerror"
 
 	docker "github.com/Dataman-Cloud/go-dockerclient"
 	log "github.com/Sirupsen/logrus"
@@ -35,7 +35,7 @@ func (api *Api) ConnectNetwork(ctx *gin.Context) {
 
 	if err := ctx.BindJSON(&connectNetworkRequest); err != nil {
 		log.Errorf("connect network request body parse json error: %v", err)
-		rerror := dmerror.NewError(CodeConnectNetworkParamError, err.Error())
+		rerror := rolexerror.NewError(CodeConnectNetworkParamError, err.Error())
 		dmgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
@@ -48,7 +48,7 @@ func (api *Api) ConnectNetwork(ctx *gin.Context) {
 	case NETWORK_DISCONNECT:
 		err = api.GetDockerClient().DisconnectNetwork(networkID, connectNetworkRequest.NetworkOptions)
 	default:
-		err = dmerror.NewError(CodeConnectNetworkMethodError, connectNetworkRequest.Method)
+		err = rolexerror.NewError(CodeConnectNetworkMethodError, connectNetworkRequest.Method)
 	}
 
 	if err != nil {
@@ -66,7 +66,7 @@ func (api *Api) CreateNetwork(ctx *gin.Context) {
 
 	if err := ctx.BindJSON(&netWorkOption); err != nil {
 		log.Error("create network request body parse json error: ", err)
-		rerror := dmerror.NewError(CodeCreateNetworkParamError, err.Error())
+		rerror := rolexerror.NewError(CodeCreateNetworkParamError, err.Error())
 		dmgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
@@ -86,7 +86,7 @@ func (api *Api) InspectNetwork(ctx *gin.Context) {
 	network, err := api.GetDockerClient().InspectNetwork(ctx.Param("network_id"))
 	if err != nil {
 		log.Error("inspect network error: ", err)
-		rerror := dmerror.NewError(CodeInspectNetworkParamError, err.Error())
+		rerror := rolexerror.NewError(CodeInspectNetworkParamError, err.Error())
 		dmgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
@@ -101,7 +101,7 @@ func (api *Api) ListNetworks(ctx *gin.Context) {
 	fp := ctx.DefaultQuery("filters", "{\"driver\": {\"overlay\": true}}")
 	if err := json.Unmarshal([]byte(fp), &filter); err != nil {
 		log.Error("list network request body parse json error: ", err)
-		rerror := dmerror.NewError(CodeListNetworkParamError, err.Error())
+		rerror := rolexerror.NewError(CodeListNetworkParamError, err.Error())
 		dmgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
@@ -132,7 +132,7 @@ func (api *Api) ConnectNodeNetwork(ctx *gin.Context) {
 	var connectNetworkRequest ConnectNetworkRequest
 	if err := ctx.BindJSON(&connectNetworkRequest); err != nil {
 		log.Errorf("connect network request body parse json error: %v", err)
-		rerror := dmerror.NewError(CodeConnectNetworkParamError, err.Error())
+		rerror := rolexerror.NewError(CodeConnectNetworkParamError, err.Error())
 		dmgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
@@ -147,7 +147,7 @@ func (api *Api) ConnectNodeNetwork(ctx *gin.Context) {
 	case NETWORK_DISCONNECT:
 		err = api.GetDockerClient().DisconnectNodeNetwork(rolexContext.(context.Context), networkID, connectNetworkRequest.NetworkOptions)
 	default:
-		err = dmerror.NewError(CodeConnectNetworkMethodError, method)
+		err = rolexerror.NewError(CodeConnectNetworkMethodError, method)
 	}
 
 	if err != nil {
@@ -183,7 +183,7 @@ func (api *Api) ListNodeNetworks(ctx *gin.Context) {
 	fp := ctx.DefaultQuery("filters", "{}")
 	if err := json.Unmarshal([]byte(fp), &filters); err != nil {
 		log.Error("list network request body parse json error: ", err)
-		rerror := dmerror.NewError(CodeListNetworkParamError, err.Error())
+		rerror := rolexerror.NewError(CodeListNetworkParamError, err.Error())
 		dmgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
@@ -205,7 +205,7 @@ func (api *Api) CreateNodeNetwork(ctx *gin.Context) {
 
 	if err := ctx.BindJSON(&netWorkOption); err != nil {
 		log.Error("create node network request body parse json error: ", err)
-		rerror := dmerror.NewError(CodeCreateNetworkParamError, err.Error())
+		rerror := rolexerror.NewError(CodeCreateNetworkParamError, err.Error())
 		dmgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
