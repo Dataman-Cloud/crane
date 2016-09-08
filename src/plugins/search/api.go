@@ -3,8 +3,8 @@ package search
 import (
 	"sort"
 
+	"github.com/Dataman-Cloud/crane/src/utils/cranerror"
 	"github.com/Dataman-Cloud/crane/src/utils/dmgin"
-	"github.com/Dataman-Cloud/crane/src/utils/rolexerror"
 
 	"github.com/gin-gonic/gin"
 	"github.com/renstrom/fuzzysearch/fuzzy"
@@ -22,7 +22,7 @@ const (
 func (searchApi *SearchApi) Search(ctx *gin.Context) {
 	query := ctx.Query("keyword")
 	if query == "" {
-		rerror := rolexerror.NewError(CodeInvalidSearchKeywords, "invalid search keywords")
+		rerror := cranerror.NewError(CodeInvalidSearchKeywords, "invalid search keywords")
 		dmgin.HttpErrorResponse(ctx, rerror)
 		return
 	}

@@ -8,7 +8,7 @@ import (
 	"strings"
 
 	"github.com/Dataman-Cloud/crane/src/dockerclient/model"
-	"github.com/Dataman-Cloud/crane/src/utils/rolexerror"
+	"github.com/Dataman-Cloud/crane/src/utils/cranerror"
 
 	docker "github.com/Dataman-Cloud/go-dockerclient"
 	log "github.com/Sirupsen/logrus"
@@ -41,9 +41,9 @@ type Stack struct {
 }
 
 // deploy a new stack
-func (client *RolexDockerClient) DeployStack(bundle *model.Bundle) error {
+func (client *CraneDockerClient) DeployStack(bundle *model.Bundle) error {
 	if bundle.Namespace == "" || !isValidName.MatchString(bundle.Namespace) {
-		return rolexerror.NewError(CodeInvalidStackName, "invalid name, only [a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]")
+		return cranerror.NewError(CodeInvalidStackName, "invalid name, only [a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]")
 	}
 
 	newNetworkMap, err := client.PretreatmentStack(*bundle)
@@ -57,7 +57,7 @@ func (client *RolexDockerClient) DeployStack(bundle *model.Bundle) error {
 // before deploy stack we must verify all service spec params and check port conflict
 // aslo we need check networks used by all of the servcie if the network is not existed
 // created the network by the default param(network driver --overlay)
-func (client *RolexDockerClient) PretreatmentStack(bundle model.Bundle) (map[string]bool, error) {
+func (client *CraneDockerClient) PretreatmentStack(bundle model.Bundle) (map[string]bool, error) {
 	// create network map and convert to slice for distinct network
 	networkMap := make(map[string]bool)
 
@@ -65,7 +65,7 @@ func (client *RolexDockerClient) PretreatmentStack(bundle model.Bundle) (map[str
 	publishedPortMap := make(map[string]bool)
 
 	for _, serviceSpec := range bundle.Stack.Services {
-		if err := ValidateRolexServiceSpec(&serviceSpec); err != nil {
+		if err := ValidateCraneServiceSpec(&serviceSpec); err != nil {
 			return nil, err
 		}
 
@@ -79,12 +79,12 @@ func (client *RolexDockerClient) PretreatmentStack(bundle model.Bundle) (map[str
 					portConflictStr := PortConflictToString(pc)
 					// have two service publish the same port
 					if _, ok := publishedPortMap[portConflictStr]; ok {
-						portConflictErr := &rolexerror.ServicePortConflictError{
+						portConflictErr := &cranerror.ServicePortConflictError{
 							Name:          serviceSpec.Name,
 							Namespace:     bundle.Namespace,
 							PublishedPort: portConflictStr,
 						}
-						return nil, &rolexerror.DmError{Code: CodeGetServicePortConflictError, Err: portConflictErr}
+						return nil, &cranerror.DmError{Code: CodeGetServicePortConflictError, Err: portConflictErr}
 					}
 
 					publishedPortMap[portConflictStr] = true
@@ -116,7 +116,7 @@ func (client *RolexDockerClient) PretreatmentStack(bundle model.Bundle) (map[str
 }
 
 // list all stack
-func (client *RolexDockerClient) ListStack() (Stacks, error) {
+func (client *CraneDockerClient) ListStack() (Stacks, error) {
 	filter := filters.NewArgs()
 	filter.Add("label", labelNamespace)
 	services, err := client.ListServiceSpec(types.ServiceListOptions{Filter: filter})
@@ -158,7 +158,7 @@ func (client *RolexDockerClient) ListStack() (Stacks, error) {
 }
 
 // ListStackServices return list of service staus and core config in stack
-func (client *RolexDockerClient) ListStackService(namespace string, opts types.ServiceListOptions) ([]ServiceStatus, error) {
+func (client *CraneDockerClient) ListStackService(namespace string, opts types.ServiceListOptions) ([]ServiceStatus, error) {
 	services, err := client.FilterServiceByStack(namespace, opts)
 	if err != nil {
 		return nil, err
@@ -168,15 +168,15 @@ func (client *RolexDockerClient) ListStackService(namespace string, opts types.S
 }
 
 // Inspect stack get stack info
-func (client *RolexDockerClient) InspectStack(namespace string) (*model.Bundle, error) {
+func (client *CraneDockerClient) InspectStack(namespace string) (*model.Bundle, error) {
 	services, err := client.FilterServiceByStack(namespace, types.ServiceListOptions{})
 	if err != nil {
 		return nil, err
 	}
 
-	stackServices := make(map[string]model.RolexServiceSpec)
+	stackServices := make(map[string]model.CraneServiceSpec)
 	for _, swarmService := range services {
-		stackServices[swarmService.Spec.Name] = client.ToRolexServiceSpec(swarmService.Spec)
+		stackServices[swarmService.Spec.Name] = client.ToCraneServiceSpec(swarmService.Spec)
 	}
 
 	return &model.Bundle{
@@ -189,7 +189,7 @@ func (client *RolexDockerClient) InspectStack(namespace string) (*model.Bundle, 
 }
 
 // remove all service and network in the stack
-func (client *RolexDockerClient) RemoveStack(namespace string) error {
+func (client *CraneDockerClient) RemoveStack(namespace string) error {
 	services, err := client.FilterServiceByStack(namespace, types.ServiceListOptions{})
 	if err != nil {
 		return err
@@ -215,14 +215,14 @@ func (client *RolexDockerClient) RemoveStack(namespace string) error {
 	}
 
 	if len(services) == 0 && len(networks) == 0 {
-		return rolexerror.NewError(CodeStackNotFound, fmt.Sprintf("stack %s not found", namespace))
+		return cranerror.NewError(CodeStackNotFound, fmt.Sprintf("stack %s not found", namespace))
 	}
 
 	return nil
 }
 
 // filter service by stack name
-func (client *RolexDockerClient) FilterServiceByStack(namespace string, opts types.ServiceListOptions) ([]swarm.Service, error) {
+func (client *CraneDockerClient) FilterServiceByStack(namespace string, opts types.ServiceListOptions) ([]swarm.Service, error) {
 	if opts.Filter.Len() == 0 {
 		opts.Filter = filters.NewArgs()
 	}
@@ -251,7 +251,7 @@ func (client *RolexDockerClient) FilterServiceByStack(namespace string, opts typ
 	return stackServices, nil
 }
 
-func (client *RolexDockerClient) GetStackGroup(namespace string) (uint64, error) {
+func (client *CraneDockerClient) GetStackGroup(namespace string) (uint64, error) {
 	bundle, err := client.InspectStack(namespace)
 	if err != nil {
 		return 0, err
@@ -259,7 +259,7 @@ func (client *RolexDockerClient) GetStackGroup(namespace string) (uint64, error)
 
 	for _, service := range bundle.Stack.Services {
 		for k, _ := range service.Labels {
-			if strings.HasPrefix(k, "com.rolex.permissions") {
+			if strings.HasPrefix(k, "com.crane.permissions") {
 				groupId, err := strconv.ParseUint(strings.Split(k, ".")[3], 10, 64)
 				if err == nil {
 					return groupId, nil
@@ -270,7 +270,7 @@ func (client *RolexDockerClient) GetStackGroup(namespace string) (uint64, error)
 	return 0, errors.New("can't found stack groupid")
 }
 
-func (client *RolexDockerClient) updateNetworks(networks map[string]bool, namespace string) (map[string]bool, error) {
+func (client *CraneDockerClient) updateNetworks(networks map[string]bool, namespace string) (map[string]bool, error) {
 	existingNetworks, err := client.ListNetworks(docker.NetworkFilterOpts{})
 	if err != nil {
 		return nil, err
@@ -307,7 +307,7 @@ func (client *RolexDockerClient) updateNetworks(networks map[string]bool, namesp
 	return newNetworkMap, nil
 }
 
-func (client *RolexDockerClient) convertNetworks(newNetworkMap map[string]bool, networks []string, namespace string, name string) []swarm.NetworkAttachmentConfig {
+func (client *CraneDockerClient) convertNetworks(newNetworkMap map[string]bool, networks []string, namespace string, name string) []swarm.NetworkAttachmentConfig {
 	nets := []swarm.NetworkAttachmentConfig{}
 	for _, serviceNetwork := range networks {
 		if isNew, ok := newNetworkMap[serviceNetwork]; ok && isNew {
@@ -326,7 +326,7 @@ func (client *RolexDockerClient) convertNetworks(newNetworkMap map[string]bool, 
 	return nets
 }
 
-func (client *RolexDockerClient) deployServices(services map[string]model.RolexServiceSpec, namespace string, newNetworkMap map[string]bool) error {
+func (client *CraneDockerClient) deployServices(services map[string]model.CraneServiceSpec, namespace string, newNetworkMap map[string]bool) error {
 	existingServices, err := client.filterStackServices(namespace)
 	if err != nil {
 		return err
@@ -399,7 +399,7 @@ func (client *RolexDockerClient) deployServices(services map[string]model.RolexS
 }
 
 // get stack labels
-func (client *RolexDockerClient) getStackLabels(namespace string, labels map[string]string) map[string]string {
+func (client *CraneDockerClient) getStackLabels(namespace string, labels map[string]string) map[string]string {
 	if labels == nil {
 		labels = make(map[string]string)
 	}
@@ -409,19 +409,19 @@ func (client *RolexDockerClient) getStackLabels(namespace string, labels map[str
 }
 
 // split joint stack filter
-func (client *RolexDockerClient) getStackFilter(namespace string) filters.Args {
+func (client *CraneDockerClient) getStackFilter(namespace string) filters.Args {
 	filter := filters.NewArgs()
 	filter.Add("label", labelNamespace+"="+namespace)
 	return filter
 }
 
 // get service by default stack labels
-func (client *RolexDockerClient) filterStackServices(namespace string) ([]swarm.Service, error) {
+func (client *CraneDockerClient) filterStackServices(namespace string) ([]swarm.Service, error) {
 	return client.ListServiceSpec(types.ServiceListOptions{Filter: client.getStackFilter(namespace)})
 }
 
 // get network by default filter
-func (client *RolexDockerClient) filterStackNetwork(namespace string) ([]docker.Network, error) {
+func (client *CraneDockerClient) filterStackNetwork(namespace string) ([]docker.Network, error) {
 	filter := docker.NetworkFilterOpts{"label": map[string]bool{labelNamespace: true}}
 	networks, err := client.ListNetworks(filter)
 	if err != nil {

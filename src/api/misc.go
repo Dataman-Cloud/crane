@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"runtime"
 
+	"github.com/Dataman-Cloud/crane/src/utils/cranerror"
 	"github.com/Dataman-Cloud/crane/src/utils/dmgin"
-	"github.com/Dataman-Cloud/crane/src/utils/rolexerror"
 	"github.com/Dataman-Cloud/crane/src/version"
 
 	log "github.com/Sirupsen/logrus"
@@ -20,7 +20,7 @@ const (
 	CodeGetConfigError = "503-11901"
 )
 
-type RolexConfigResponse struct {
+type CraneConfigResponse struct {
 	Version      string      `json:"Version"`
 	BuildTime    string      `json:"Build"`
 	FeatureFlags []string    `json:"FeatureFlags"`
@@ -28,8 +28,8 @@ type RolexConfigResponse struct {
 	NumGoroutine int
 }
 
-func (api *Api) RolexConfig(ctx *gin.Context) {
-	config := &RolexConfigResponse{}
+func (api *Api) CraneConfig(ctx *gin.Context) {
+	config := &CraneConfigResponse{}
 	config.Version = version.Version
 	config.BuildTime = version.BuildTime
 	config.FeatureFlags = api.GetConfig().FeatureFlags
@@ -40,7 +40,7 @@ func (api *Api) RolexConfig(ctx *gin.Context) {
 
 	if err != nil {
 		log.Errorf("InspectSwarm got error: %s", err.Error())
-		rerror := rolexerror.NewError(CodeGetConfigError, err.Error())
+		rerror := cranerror.NewError(CodeGetConfigError, err.Error())
 		dmgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
@@ -57,7 +57,7 @@ func (api *Api) HealthCheck(ctx *gin.Context) {
 		return
 	}
 
-	var rolexContext context.Context
+	var craneContext context.Context
 	backgroundContext := context.Background()
 
 	for _, node := range nodes {
@@ -65,8 +65,8 @@ func (api *Api) HealthCheck(ctx *gin.Context) {
 			continue
 		}
 
-		rolexContext = context.WithValue(backgroundContext, "node_id", node.ID)
-		_, err = api.GetDockerClient().SwarmNode(rolexContext)
+		craneContext = context.WithValue(backgroundContext, "node_id", node.ID)
+		_, err = api.GetDockerClient().SwarmNode(craneContext)
 		if err != nil {
 			dmgin.HttpErrorResponse(ctx, err)
 			return

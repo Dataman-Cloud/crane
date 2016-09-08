@@ -82,10 +82,10 @@ type Bundle struct {
 // Correspondence docker daemon type BundleFile
 type BundleService struct {
 	Version  string                  `json:"Version"`
-	Services map[string]RolexService `json:"Services"`
+	Services map[string]CraneService `json:"Services"`
 }
 
-type RolexService struct {
+type CraneService struct {
 	Name         string              `json:"Name"`
 	Labels       map[string]string   `json:"Labels"`
 	TaskTemplate swarm.TaskSpec      `json:"TaskTemplate"`
@@ -96,7 +96,7 @@ type RolexService struct {
 }
 ```
 
-[RolexService](https://docs.docker.com/engine/reference/api/docker_remote_api_v1.24/#/create-a-service)
+[CraneService](https://docs.docker.com/engine/reference/api/docker_remote_api_v1.24/#/create-a-service)
 
 
 ###ListStack

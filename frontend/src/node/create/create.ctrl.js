@@ -22,7 +22,7 @@
         }
 
         function buildCmd() {
-            var miscConfig = miscBackend.rolexConfig()
+            var miscConfig = miscBackend.craneConfig()
                 .then(function(data){
                     self.workerToken = data.SwarmInfo.JoinTokens.Worker;
             });

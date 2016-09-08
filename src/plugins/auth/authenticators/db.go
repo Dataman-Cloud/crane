@@ -7,9 +7,9 @@ import (
 	"strconv"
 
 	"github.com/Dataman-Cloud/crane/src/plugins/auth"
+	"github.com/Dataman-Cloud/crane/src/utils/cranerror"
 	"github.com/Dataman-Cloud/crane/src/utils/db"
 	"github.com/Dataman-Cloud/crane/src/utils/model"
-	"github.com/Dataman-Cloud/crane/src/utils/rolexerror"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
@@ -45,9 +45,9 @@ func (db *DbAuthenicator) Login(a *auth.Account) (string, error) {
 		Select("id, title, email, phone, login_at, password").
 		Where("email = ?", a.Email).
 		First(&account).Error; err != nil {
-		return "", rolexerror.NewError(auth.CodeAccountLoginFailedEmailNotValidError, err.Error())
+		return "", cranerror.NewError(auth.CodeAccountLoginFailedEmailNotValidError, err.Error())
 	} else if account.Password != db.EncryptPassword(a.Password) {
-		return "", rolexerror.NewError(auth.CodeAccountLoginFailedPasswordNotValidError, "Invalid Password")
+		return "", cranerror.NewError(auth.CodeAccountLoginFailedPasswordNotValidError, "Invalid Password")
 	}
 
 	a.ID = account.ID
@@ -267,6 +267,6 @@ func (db *DbAuthenicator) AccountGroups(listOptions model.ListOptions) (*[]auth.
 }
 
 func (db *DbAuthenicator) EncryptPassword(password string) string {
-	pw := fmt.Sprintf("dataman-rolex%xdataman-rolex", md5.Sum([]byte(password)))
+	pw := fmt.Sprintf("dataman-crane%xdataman-crane", md5.Sum([]byte(password)))
 	return fmt.Sprintf("%x", md5.Sum([]byte(pw)))
 }

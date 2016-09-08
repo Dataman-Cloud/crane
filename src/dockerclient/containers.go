@@ -5,14 +5,14 @@ import (
 	"io"
 
 	"github.com/Dataman-Cloud/crane/src/dockerclient/model"
-	"github.com/Dataman-Cloud/crane/src/utils/rolexerror"
+	"github.com/Dataman-Cloud/crane/src/utils/cranerror"
 
 	docker "github.com/Dataman-Cloud/go-dockerclient"
 	log "github.com/Sirupsen/logrus"
 	"golang.org/x/net/context"
 )
 
-func (client *RolexDockerClient) ListContainers(ctx context.Context, opts docker.ListContainersOptions) ([]docker.APIContainers, error) {
+func (client *CraneDockerClient) ListContainers(ctx context.Context, opts docker.ListContainersOptions) ([]docker.APIContainers, error) {
 	swarmNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return nil, err
@@ -20,7 +20,7 @@ func (client *RolexDockerClient) ListContainers(ctx context.Context, opts docker
 	return swarmNode.ListContainers(opts)
 }
 
-func (client *RolexDockerClient) InspectContainer(ctx context.Context, id string) (*docker.Container, error) {
+func (client *CraneDockerClient) InspectContainer(ctx context.Context, id string) (*docker.Container, error) {
 	swarmNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return nil, err
@@ -28,13 +28,13 @@ func (client *RolexDockerClient) InspectContainer(ctx context.Context, id string
 
 	container, err := swarmNode.InspectContainer(id)
 	if err != nil {
-		err = ToRolexError(err)
+		err = ToCraneError(err)
 	}
 
 	return container, err
 }
 
-func (client *RolexDockerClient) RemoveContainer(ctx context.Context, opts docker.RemoveContainerOptions) error {
+func (client *CraneDockerClient) RemoveContainer(ctx context.Context, opts docker.RemoveContainerOptions) error {
 	swarmNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return err
@@ -42,13 +42,13 @@ func (client *RolexDockerClient) RemoveContainer(ctx context.Context, opts docke
 
 	err = swarmNode.RemoveContainer(opts)
 	if err != nil {
-		err = ToRolexError(err)
+		err = ToCraneError(err)
 	}
 
 	return err
 }
 
-func (client *RolexDockerClient) KillContainer(ctx context.Context, opts docker.KillContainerOptions) error {
+func (client *CraneDockerClient) KillContainer(ctx context.Context, opts docker.KillContainerOptions) error {
 	swarmNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return err
@@ -56,13 +56,13 @@ func (client *RolexDockerClient) KillContainer(ctx context.Context, opts docker.
 
 	err = swarmNode.KillContainer(opts)
 	if err != nil {
-		err = ToRolexError(err)
+		err = ToCraneError(err)
 	}
 
 	return err
 }
 
-func (client *RolexDockerClient) RenameContainer(ctx context.Context, opts docker.RenameContainerOptions) error {
+func (client *CraneDockerClient) RenameContainer(ctx context.Context, opts docker.RenameContainerOptions) error {
 	swarmNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return err
@@ -70,13 +70,13 @@ func (client *RolexDockerClient) RenameContainer(ctx context.Context, opts docke
 
 	err = swarmNode.RenameContainer(opts)
 	if err != nil {
-		err = ToRolexError(err)
+		err = ToCraneError(err)
 	}
 
 	return err
 }
 
-func (client *RolexDockerClient) DiffContainer(ctx context.Context, containerID string) ([]docker.Change, error) {
+func (client *CraneDockerClient) DiffContainer(ctx context.Context, containerID string) ([]docker.Change, error) {
 	swarmNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return nil, err
@@ -84,13 +84,13 @@ func (client *RolexDockerClient) DiffContainer(ctx context.Context, containerID 
 
 	changes, err := swarmNode.ContainerChanges(containerID)
 	if err != nil {
-		err = ToRolexError(err)
+		err = ToCraneError(err)
 	}
 
 	return changes, err
 }
 
-func (client *RolexDockerClient) StopContainer(ctx context.Context, containerId string, timeout uint) error {
+func (client *CraneDockerClient) StopContainer(ctx context.Context, containerId string, timeout uint) error {
 	swarmNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return err
@@ -98,13 +98,13 @@ func (client *RolexDockerClient) StopContainer(ctx context.Context, containerId 
 
 	err = swarmNode.StopContainer(containerId, timeout)
 	if err != nil {
-		err = ToRolexError(err)
+		err = ToCraneError(err)
 	}
 
 	return err
 }
 
-func (client *RolexDockerClient) StartContainer(ctx context.Context, containerID string, hostconfig *docker.HostConfig) error {
+func (client *CraneDockerClient) StartContainer(ctx context.Context, containerID string, hostconfig *docker.HostConfig) error {
 	swarmNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return err
@@ -112,13 +112,13 @@ func (client *RolexDockerClient) StartContainer(ctx context.Context, containerID
 
 	err = swarmNode.StartContainer(containerID, hostconfig)
 	if err != nil {
-		err = ToRolexError(err)
+		err = ToCraneError(err)
 	}
 
 	return err
 }
 
-func (client *RolexDockerClient) RestartContainer(ctx context.Context, containerId string, timeout uint) error {
+func (client *CraneDockerClient) RestartContainer(ctx context.Context, containerId string, timeout uint) error {
 	swarmNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return err
@@ -126,13 +126,13 @@ func (client *RolexDockerClient) RestartContainer(ctx context.Context, container
 
 	err = swarmNode.RestartContainer(containerId, timeout)
 	if err != nil {
-		err = ToRolexError(err)
+		err = ToCraneError(err)
 	}
 
 	return err
 }
 
-func (client *RolexDockerClient) PauseContainer(ctx context.Context, containerID string) error {
+func (client *CraneDockerClient) PauseContainer(ctx context.Context, containerID string) error {
 	swarmNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return err
@@ -140,13 +140,13 @@ func (client *RolexDockerClient) PauseContainer(ctx context.Context, containerID
 
 	err = swarmNode.PauseContainer(containerID)
 	if err != nil {
-		err = ToRolexError(err)
+		err = ToCraneError(err)
 	}
 
 	return err
 }
 
-func (client *RolexDockerClient) UnpauseContainer(ctx context.Context, containerID string) error {
+func (client *CraneDockerClient) UnpauseContainer(ctx context.Context, containerID string) error {
 	swarNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return err
@@ -154,13 +154,13 @@ func (client *RolexDockerClient) UnpauseContainer(ctx context.Context, container
 
 	err = swarNode.UnpauseContainer(containerID)
 	if err != nil {
-		err = ToRolexError(err)
+		err = ToCraneError(err)
 	}
 
 	return err
 }
 
-func (client *RolexDockerClient) ResizeContainerTTY(ctx context.Context, containerID string, height, width int) error {
+func (client *CraneDockerClient) ResizeContainerTTY(ctx context.Context, containerID string, height, width int) error {
 	swarNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return err
@@ -168,7 +168,7 @@ func (client *RolexDockerClient) ResizeContainerTTY(ctx context.Context, contain
 	return swarNode.ResizeContainerTTY(containerID, height, width)
 }
 
-func (client *RolexDockerClient) LogsContainer(ctx context.Context, containerId string, message chan string) {
+func (client *CraneDockerClient) LogsContainer(ctx context.Context, containerId string, message chan string) {
 	swarNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		log.Error("read container log error: ", err)
@@ -215,7 +215,7 @@ func logReader(input *io.PipeReader, message chan string) {
 	}
 }
 
-func (client *RolexDockerClient) StatsContainer(ctx context.Context, opts model.ContainerStatOptions) error {
+func (client *CraneDockerClient) StatsContainer(ctx context.Context, opts model.ContainerStatOptions) error {
 	swarNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return err
@@ -240,7 +240,7 @@ func (client *RolexDockerClient) StatsContainer(ctx context.Context, opts model.
 		chnError <- swarNode.Stats(statOpts)
 	}()
 
-	containerStat := &model.RolexContainerStat{
+	containerStat := &model.CraneContainerStat{
 		NodeId:      container.Config.Labels["com.docker.swarm.node.id"],
 		ServiceId:   container.Config.Labels["com.docker.swarm.service.id"],
 		ServiceName: container.Config.Labels["com.docker.swarm.service.name"],
@@ -254,12 +254,12 @@ func (client *RolexDockerClient) StatsContainer(ctx context.Context, opts model.
 	for {
 		select {
 		case streamErr := <-chnError:
-			return &rolexerror.ContainerStatsStopError{ID: cId, Err: streamErr}
+			return &cranerror.ContainerStatsStopError{ID: cId, Err: streamErr}
 		case stat := <-opts.Stats:
 			stats[0], stats[1] = stats[1], stat
 			rRate, sRate = CalcNetworkRate(stats)
 			containerStat.Stat, containerStat.ReceiveRate, containerStat.SendRate = stat, rRate, sRate
-			opts.RolexContainerStats <- containerStat
+			opts.CraneContainerStats <- containerStat
 		}
 	}
 }

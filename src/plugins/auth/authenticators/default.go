@@ -5,8 +5,8 @@ import (
 
 	"github.com/Dataman-Cloud/crane/src/plugins/auth"
 	"github.com/Dataman-Cloud/crane/src/utils/config"
+	"github.com/Dataman-Cloud/crane/src/utils/cranerror"
 	"github.com/Dataman-Cloud/crane/src/utils/model"
-	"github.com/Dataman-Cloud/crane/src/utils/rolexerror"
 )
 
 type Default struct {
@@ -55,12 +55,12 @@ func (d *Default) Login(a *auth.Account) (string, error) {
 				a.ID = acc.ID
 				return auth.GenToken(a), nil
 			} else {
-				return "", rolexerror.NewError(auth.CodeAccountLoginFailedPasswordNotValidError, "Invalid Password")
+				return "", cranerror.NewError(auth.CodeAccountLoginFailedPasswordNotValidError, "Invalid Password")
 			}
 		}
 	}
 
-	return "", rolexerror.NewError(auth.CodeAccountLoginFailedEmailNotValidError, "Invalid Email")
+	return "", cranerror.NewError(auth.CodeAccountLoginFailedEmailNotValidError, "Invalid Email")
 }
 
 func (d *Default) Accounts(listOptions model.ListOptions) (auths *[]auth.Account, err error) {

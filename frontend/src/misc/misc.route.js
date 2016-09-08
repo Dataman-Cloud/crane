@@ -16,10 +16,10 @@
             })
             .state('misc.config', {
                 url: '/config',
-                templateUrl: '/src/misc/rolexconfig/rolexconfig.html',
+                templateUrl: '/src/misc/craneconfig/craneconfig.html',
                 controller: 'MiscConfigCtrl as miscConfigCtrl',
                 resolve: {
-                    rolexconfig: getConfig
+                    craneconfig: getConfig
                 },
                 ncyBreadcrumb: {
                     skip: true
@@ -28,7 +28,7 @@
 
         /* @ngInject */
         function getConfig(miscBackend) {
-            return miscBackend.rolexConfig()
+            return miscBackend.craneConfig()
         }
     }
 })();

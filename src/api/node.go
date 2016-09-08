@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 
 	"github.com/Dataman-Cloud/crane/src/model"
+	"github.com/Dataman-Cloud/crane/src/utils/cranerror"
 	"github.com/Dataman-Cloud/crane/src/utils/dmgin"
-	"github.com/Dataman-Cloud/crane/src/utils/rolexerror"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/docker/engine-api/types"
@@ -81,7 +81,7 @@ func (api *Api) UpdateNode(ctx *gin.Context) {
 			log.Errorf("Unexpected type at by type %v. Expected %s but received %s.",
 				jsonErr.Offset, jsonErr.Type, jsonErr.Value)
 		}
-		rerror := rolexerror.NewError(CodeUpdateNodeParamError, err.Error())
+		rerror := cranerror.NewError(CodeUpdateNodeParamError, err.Error())
 		dmgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
@@ -110,8 +110,8 @@ func (api *Api) RemoveNode(ctx *gin.Context) {
 }
 
 func (api *Api) Info(ctx *gin.Context) {
-	rolexContext, _ := ctx.Get("rolexContext")
-	info, err := api.GetDockerClient().Info(rolexContext.(context.Context))
+	craneContext, _ := ctx.Get("craneContext")
+	info, err := api.GetDockerClient().Info(craneContext.(context.Context))
 	if err != nil {
 		log.Error("Get node info got error: ", err)
 		dmgin.HttpErrorResponse(ctx, err)

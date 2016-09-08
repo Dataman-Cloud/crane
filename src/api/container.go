@@ -7,8 +7,8 @@ import (
 	"strings"
 
 	"github.com/Dataman-Cloud/crane/src/dockerclient/model"
+	"github.com/Dataman-Cloud/crane/src/utils/cranerror"
 	"github.com/Dataman-Cloud/crane/src/utils/dmgin"
-	"github.com/Dataman-Cloud/crane/src/utils/rolexerror"
 
 	docker "github.com/Dataman-Cloud/go-dockerclient"
 	log "github.com/Sirupsen/logrus"
@@ -42,9 +42,9 @@ const (
 )
 
 func (api *Api) InspectContainer(ctx *gin.Context) {
-	rolexContext, _ := ctx.Get("rolexContext")
+	craneContext, _ := ctx.Get("craneContext")
 	cId := ctx.Param("container_id")
-	container, err := api.GetDockerClient().InspectContainer(rolexContext.(context.Context), cId)
+	container, err := api.GetDockerClient().InspectContainer(craneContext.(context.Context), cId)
 	if err != nil {
 		log.Errorf("InspectContainer of containerId %s got error: %s", cId, err.Error())
 		dmgin.HttpErrorResponse(ctx, err)
@@ -59,7 +59,7 @@ func (api *Api) ListContainers(ctx *gin.Context) {
 	all, err := strconv.ParseBool(ctx.DefaultQuery("all", "true"))
 	if err != nil {
 		log.Error("Parse param all of list container got error: ", err)
-		rerror := rolexerror.NewError(CodeListContainerParamError, err.Error())
+		rerror := cranerror.NewError(CodeListContainerParamError, err.Error())
 		dmgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
@@ -67,7 +67,7 @@ func (api *Api) ListContainers(ctx *gin.Context) {
 	size, err := strconv.ParseBool(ctx.DefaultQuery("size", "false"))
 	if err != nil {
 		log.Error("Parse param size of list container got error: ", err)
-		rerror := rolexerror.NewError(CodeListContainerParamError, err.Error())
+		rerror := cranerror.NewError(CodeListContainerParamError, err.Error())
 		dmgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
@@ -75,7 +75,7 @@ func (api *Api) ListContainers(ctx *gin.Context) {
 	limitValue, err := strconv.ParseInt(ctx.DefaultQuery("limit", "0"), 10, 64)
 	if err != nil {
 		log.Error("Parse param all of limit container got error: ", err)
-		rerror := rolexerror.NewError(CodeListContainerParamError, err.Error())
+		rerror := cranerror.NewError(CodeListContainerParamError, err.Error())
 		dmgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
@@ -85,7 +85,7 @@ func (api *Api) ListContainers(ctx *gin.Context) {
 	queryFilters := ctx.DefaultQuery("filters", "{}")
 	if err := json.Unmarshal([]byte(queryFilters), &filters); err != nil {
 		log.Error("Unmarshal list container filters got error: ", err)
-		rerror := rolexerror.NewError(CodeListContainerParamError, err.Error())
+		rerror := cranerror.NewError(CodeListContainerParamError, err.Error())
 		dmgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
@@ -99,8 +99,8 @@ func (api *Api) ListContainers(ctx *gin.Context) {
 		Filters: filters,
 	}
 
-	rolexContext, _ := ctx.Get("rolexContext")
-	containers, err := api.GetDockerClient().ListContainers(rolexContext.(context.Context), listOpts)
+	craneContext, _ := ctx.Get("craneContext")
+	containers, err := api.GetDockerClient().ListContainers(craneContext.(context.Context), listOpts)
 	if err != nil {
 		log.Error("ListContainers got error: ", err)
 		dmgin.HttpErrorResponse(ctx, err)
@@ -112,10 +112,10 @@ func (api *Api) ListContainers(ctx *gin.Context) {
 }
 
 func (api *Api) PatchContainer(ctx *gin.Context) {
-	rolexContext, _ := ctx.Get("rolexContext")
+	craneContext, _ := ctx.Get("craneContext")
 	var containerRequest ContainerRequest
 	if err := ctx.BindJSON(&containerRequest); err != nil {
-		rerror := rolexerror.NewError(CodePatchContainerParamError, err.Error())
+		rerror := cranerror.NewError(CodePatchContainerParamError, err.Error())
 		dmgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
@@ -129,21 +129,21 @@ func (api *Api) PatchContainer(ctx *gin.Context) {
 			Name: containerRequest.Name,
 			ID:   cId,
 		}
-		err = api.GetDockerClient().RenameContainer(rolexContext.(context.Context), opts)
+		err = api.GetDockerClient().RenameContainer(craneContext.(context.Context), opts)
 	case "stop":
-		err = api.GetDockerClient().StopContainer(rolexContext.(context.Context), cId, CONTAINER_STOP_TIMEOUT)
+		err = api.GetDockerClient().StopContainer(craneContext.(context.Context), cId, CONTAINER_STOP_TIMEOUT)
 	case "start":
-		err = api.GetDockerClient().StartContainer(rolexContext.(context.Context), cId, nil)
+		err = api.GetDockerClient().StartContainer(craneContext.(context.Context), cId, nil)
 	case "restart":
-		err = api.GetDockerClient().RestartContainer(rolexContext.(context.Context), cId, CONTAINER_STOP_TIMEOUT)
+		err = api.GetDockerClient().RestartContainer(craneContext.(context.Context), cId, CONTAINER_STOP_TIMEOUT)
 	case "pause":
-		err = api.GetDockerClient().PauseContainer(rolexContext.(context.Context), cId)
+		err = api.GetDockerClient().PauseContainer(craneContext.(context.Context), cId)
 	case "unpause":
-		err = api.GetDockerClient().UnpauseContainer(rolexContext.(context.Context), cId)
+		err = api.GetDockerClient().UnpauseContainer(craneContext.(context.Context), cId)
 	case "resizetty":
-		err = api.GetDockerClient().ResizeContainerTTY(rolexContext.(context.Context), cId, containerRequest.Height, containerRequest.Width)
+		err = api.GetDockerClient().ResizeContainerTTY(craneContext.(context.Context), cId, containerRequest.Height, containerRequest.Width)
 	default:
-		err = rolexerror.NewError(CodePatchContainerMethodUndefined, containerRequest.Method)
+		err = cranerror.NewError(CodePatchContainerMethodUndefined, containerRequest.Method)
 	}
 
 	if err != nil {
@@ -157,10 +157,10 @@ func (api *Api) PatchContainer(ctx *gin.Context) {
 }
 
 func (api *Api) DeleteContainer(ctx *gin.Context) {
-	rolexContext, _ := ctx.Get("rolexContext")
+	craneContext, _ := ctx.Get("craneContext")
 	var containerRequest ContainerRequest
 	if err := ctx.BindJSON(&containerRequest); err != nil {
-		rerror := rolexerror.NewError(CodeDeleteContainerParamError, err.Error())
+		rerror := cranerror.NewError(CodeDeleteContainerParamError, err.Error())
 		dmgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
@@ -170,12 +170,12 @@ func (api *Api) DeleteContainer(ctx *gin.Context) {
 	cId := ctx.Param("container_id")
 	if method == CONTAINER_RM {
 		opts := docker.RemoveContainerOptions{ID: cId, Force: true}
-		err = api.GetDockerClient().RemoveContainer(rolexContext.(context.Context), opts)
+		err = api.GetDockerClient().RemoveContainer(craneContext.(context.Context), opts)
 	} else if method == CONTAINER_KILL {
 		opts := docker.KillContainerOptions{ID: cId}
-		err = api.GetDockerClient().KillContainer(rolexContext.(context.Context), opts)
+		err = api.GetDockerClient().KillContainer(craneContext.(context.Context), opts)
 	} else {
-		err = rolexerror.NewError(CodeDeleteContainerMethodUndefined, containerRequest.Method)
+		err = cranerror.NewError(CodeDeleteContainerMethodUndefined, containerRequest.Method)
 	}
 
 	if err != nil {
@@ -189,9 +189,9 @@ func (api *Api) DeleteContainer(ctx *gin.Context) {
 }
 
 func (api *Api) DiffContainer(ctx *gin.Context) {
-	rolexContext, _ := ctx.Get("rolexContext")
+	craneContext, _ := ctx.Get("craneContext")
 	cId := ctx.Param("container_id")
-	changes, err := api.GetDockerClient().DiffContainer(rolexContext.(context.Context), cId)
+	changes, err := api.GetDockerClient().DiffContainer(craneContext.(context.Context), cId)
 	if err != nil {
 		log.Errorf("Diff container of %s got error: %s", cId, err.Error())
 		dmgin.HttpErrorResponse(ctx, err)
@@ -203,12 +203,12 @@ func (api *Api) DiffContainer(ctx *gin.Context) {
 }
 
 func (api *Api) LogsContainer(ctx *gin.Context) {
-	rolexContext, _ := ctx.Get("rolexContext")
+	craneContext, _ := ctx.Get("craneContext")
 	message := make(chan string)
 
 	defer close(message)
 
-	go api.GetDockerClient().LogsContainer(rolexContext.(context.Context), ctx.Param("container_id"), message)
+	go api.GetDockerClient().LogsContainer(craneContext.(context.Context), ctx.Param("container_id"), message)
 
 	ctx.Stream(func(w io.Writer) bool {
 		sse.Event{
@@ -220,9 +220,9 @@ func (api *Api) LogsContainer(ctx *gin.Context) {
 }
 
 func (api *Api) StatsContainer(ctx *gin.Context) {
-	rolexContext, _ := ctx.Get("rolexContext")
+	craneContext, _ := ctx.Get("craneContext")
 
-	chnMsg := make(chan *model.RolexContainerStat)
+	chnMsg := make(chan *model.CraneContainerStat)
 	defer close(chnMsg)
 	chnDone := make(chan bool)
 	defer close(chnDone)
@@ -237,11 +237,11 @@ func (api *Api) StatsContainer(ctx *gin.Context) {
 		Stats:               chnContainerStats,
 		Stream:              true,
 		Done:                chnDone,
-		RolexContainerStats: chnMsg,
+		CraneContainerStats: chnMsg,
 	}
 
 	go func() {
-		chnErr <- api.GetDockerClient().StatsContainer(rolexContext.(context.Context), opts)
+		chnErr <- api.GetDockerClient().StatsContainer(craneContext.(context.Context), opts)
 	}()
 
 	ssEvent := &sse.Event{Event: "container-stats"}

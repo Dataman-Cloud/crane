@@ -9,9 +9,9 @@ import (
 
 	"github.com/Dataman-Cloud/crane/src/plugins/auth"
 	"github.com/Dataman-Cloud/crane/src/plugins/auth/authenticators"
+	"github.com/Dataman-Cloud/crane/src/utils/cranerror"
 	"github.com/Dataman-Cloud/crane/src/utils/db"
 	"github.com/Dataman-Cloud/crane/src/utils/dmgin"
-	"github.com/Dataman-Cloud/crane/src/utils/rolexerror"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/docker/distribution/manifest/schema1"
@@ -127,8 +127,8 @@ func (registry *Registry) TagList(ctx *gin.Context) {
 	var tags []*Tag
 	err := registry.DbClient.Where("namespace = ? AND image = ?", ctx.Param("namespace"), ctx.Param("image")).Find(&tags).Error
 	if err != nil {
-		rolexerr := rolexerror.NewError(CodeRegistryTagsListError, err.Error())
-		dmgin.HttpErrorResponse(ctx, rolexerr)
+		craneerr := cranerror.NewError(CodeRegistryTagsListError, err.Error())
+		dmgin.HttpErrorResponse(ctx, craneerr)
 		return
 	}
 
@@ -150,16 +150,16 @@ func (registry *Registry) GetManifests(ctx *gin.Context) {
 
 	resp, _, err := registry.RegistryAPIGet(fmt.Sprintf("%s/%s/manifests/%s", ctx.Param("namespace"), ctx.Param("image"), ctx.Param("reference")), account.Email)
 	if err != nil {
-		rolexerr := rolexerror.NewError(CodeRegistryGetManifestError, err.Error())
-		dmgin.HttpErrorResponse(ctx, rolexerr)
+		craneerr := cranerror.NewError(CodeRegistryGetManifestError, err.Error())
+		dmgin.HttpErrorResponse(ctx, craneerr)
 		return
 	}
 
 	var manifest schema1.Manifest
 	err = json.Unmarshal(resp, &manifest)
 	if err != nil {
-		rolexerr := rolexerror.NewError(CodeRegistryManifestParseError, err.Error())
-		dmgin.HttpErrorResponse(ctx, rolexerr)
+		craneerr := cranerror.NewError(CodeRegistryManifestParseError, err.Error())
+		dmgin.HttpErrorResponse(ctx, craneerr)
 		return
 	}
 
@@ -176,7 +176,7 @@ func (registry *Registry) DeleteManifests(ctx *gin.Context) {
 
 	_, _, err := registry.RegistryAPIDeleteSchemaV2(fmt.Sprintf("%s/%s/manifests/%s", ctx.Param("namespace"), ctx.Param("image"), ctx.Param("reference")), account.Email)
 	if err != nil {
-		err := rolexerror.NewError(CodeRegistryManifestDeleteError, err.Error())
+		err := cranerror.NewError(CodeRegistryManifestDeleteError, err.Error())
 		dmgin.HttpErrorResponse(ctx, err)
 		return
 	}
@@ -202,8 +202,8 @@ func (registry *Registry) MineRepositories(ctx *gin.Context) {
 		err = registry.DbClient.Where("namespace = ?", RegistryNamespaceForAccount(account)).Order("created_at DESC").Find(&images).Error
 	}
 	if err != nil {
-		rolexerr := rolexerror.NewError(CodeRegistryCatalogListError, err.Error())
-		dmgin.HttpErrorResponse(ctx, rolexerr)
+		craneerr := cranerror.NewError(CodeRegistryCatalogListError, err.Error())
+		dmgin.HttpErrorResponse(ctx, craneerr)
 		return
 	}
 
@@ -225,8 +225,8 @@ func (registry *Registry) PublicRepositories(ctx *gin.Context) {
 		err = registry.DbClient.Where("Publicity = 1").Order("created_at DESC").Find(&images).Error
 	}
 	if err != nil {
-		rolexerr := rolexerror.NewError(CodeRegistryCatalogListError, err.Error())
-		dmgin.HttpErrorResponse(ctx, rolexerr)
+		craneerr := cranerror.NewError(CodeRegistryCatalogListError, err.Error())
+		dmgin.HttpErrorResponse(ctx, craneerr)
 		return
 	}
 
@@ -251,8 +251,8 @@ func (registry *Registry) ImagePublicity(ctx *gin.Context) {
 			log.Error("Unexpected type at by type %v. Expected %s but received %s.",
 				jsonErr.Offset, jsonErr.Type, jsonErr.Value)
 		}
-		rolexerr := rolexerror.NewError(CodeRegistryImagePublicityParamError, err.Error())
-		dmgin.HttpErrorResponse(ctx, rolexerr)
+		craneerr := cranerror.NewError(CodeRegistryImagePublicityParamError, err.Error())
+		dmgin.HttpErrorResponse(ctx, craneerr)
 		return
 	}
 
@@ -260,8 +260,8 @@ func (registry *Registry) ImagePublicity(ctx *gin.Context) {
 	registry.DbClient.Where("namespace = ? AND image = ? ", ctx.Param("namespace"), ctx.Param("image")).Find(&image)
 	err := registry.DbClient.Model(&image).UpdateColumn("Publicity", param.Publicity).Error
 	if err != nil {
-		rolexerr := rolexerror.NewError(CodeRegistryImagePublicityUpdateError, err.Error())
-		dmgin.HttpErrorResponse(ctx, rolexerr)
+		craneerr := cranerror.NewError(CodeRegistryImagePublicityUpdateError, err.Error())
+		dmgin.HttpErrorResponse(ctx, craneerr)
 		return
 	}
 

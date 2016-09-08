@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 
 	"github.com/Dataman-Cloud/crane/src/utils/config"
-	"github.com/Dataman-Cloud/crane/src/utils/rolexerror"
+	"github.com/Dataman-Cloud/crane/src/utils/cranerror"
 
 	"github.com/Dataman-Cloud/crane/src/utils/httpclient"
 	docker "github.com/Dataman-Cloud/go-dockerclient"
@@ -17,7 +17,7 @@ import (
 	"golang.org/x/net/context"
 )
 
-type RolexDockerClient struct {
+type CraneDockerClient struct {
 	DockerClientInterface
 
 	// client connect to swarm cluster manager
@@ -32,12 +32,12 @@ type RolexDockerClient struct {
 	config *config.Config
 }
 
-// initialize rolex docker client
-func NewRolexDockerClient(config *config.Config) (*RolexDockerClient, error) {
+// initialize crane docker client
+func NewCraneDockerClient(config *config.Config) (*CraneDockerClient, error) {
 	var err error
 
 	swarmManagerEntry := config.DockerEntryScheme + "://" + config.SwarmManagerIP + ":" + config.DockerEntryPort
-	client := &RolexDockerClient{
+	client := &CraneDockerClient{
 		config: config,
 
 		swarmManagerHttpEndpoint: swarmManagerEntry,
@@ -66,12 +66,12 @@ func NewRolexDockerClient(config *config.Config) (*RolexDockerClient, error) {
 }
 
 // return swarm docker client
-func (client *RolexDockerClient) SwarmManager() *docker.Client {
+func (client *CraneDockerClient) SwarmManager() *docker.Client {
 	return client.swarmManager
 }
 
 // create a daemon docker client base on host id stored in ctx
-func (client *RolexDockerClient) createNodeClient(nodeId string) (*docker.Client, error) {
+func (client *CraneDockerClient) createNodeClient(nodeId string) (*docker.Client, error) {
 	var swarmNode *docker.Client
 	nodeUrl, err := client.NodeDaemonUrl(nodeId)
 	if err != nil {
@@ -86,9 +86,9 @@ func (client *RolexDockerClient) createNodeClient(nodeId string) (*docker.Client
 	}
 
 	if err != nil {
-		return nil, &rolexerror.DmError{
+		return nil, &cranerror.DmError{
 			Code: CodeConnToNodeError,
-			Err:  &rolexerror.NodeConnError{ID: nodeId, Endpoint: endpoint, Err: err},
+			Err:  &cranerror.NodeConnError{ID: nodeId, Endpoint: endpoint, Err: err},
 		}
 	}
 
@@ -97,12 +97,12 @@ func (client *RolexDockerClient) createNodeClient(nodeId string) (*docker.Client
 
 // create node client: form manager node got endpoint by node label and verify node id
 // by get docker info form httpclient
-func (client *RolexDockerClient) SwarmNode(ctx context.Context) (*docker.Client, error) {
+func (client *CraneDockerClient) SwarmNode(ctx context.Context) (*docker.Client, error) {
 	nodeId, ok := ctx.Value("node_id").(string)
 	if !ok {
-		return nil, &rolexerror.DmError{
+		return nil, &cranerror.DmError{
 			Code: CodeConnToNodeError,
-			Err: &rolexerror.NodeConnError{
+			Err: &cranerror.NodeConnError{
 				ID:       nodeId,
 				Endpoint: "",
 				Err:      fmt.Errorf("parse node id  failed"),
@@ -127,11 +127,11 @@ func (client *RolexDockerClient) SwarmNode(ctx context.Context) (*docker.Client,
 	return nodeClient, nil
 }
 
-func (client *RolexDockerClient) VerifyNodeEndpoint(nodeId string, nodeUrl *url.URL) error {
+func (client *CraneDockerClient) VerifyNodeEndpoint(nodeId string, nodeUrl *url.URL) error {
 	if nodeUrl == nil {
-		return &rolexerror.DmError{
+		return &cranerror.DmError{
 			Code: CodeGetNodeEndpointError,
-			Err:  &rolexerror.NodeConnError{ID: nodeId, Err: fmt.Errorf("verify endpoint failed: empty node url")},
+			Err:  &cranerror.NodeConnError{ID: nodeId, Err: fmt.Errorf("verify endpoint failed: empty node url")},
 		}
 	}
 	var nodeInfo types.Info
@@ -143,47 +143,47 @@ func (client *RolexDockerClient) VerifyNodeEndpoint(nodeId string, nodeUrl *url.
 	endpoint := nodeUrl.String()
 	content, err := client.sharedHttpClient.GET(nil, endpoint+"/info", url.Values{}, nil)
 	if err != nil {
-		return &rolexerror.DmError{
+		return &cranerror.DmError{
 			Code: CodeVerifyNodeEnpointFailed,
-			Err:  &rolexerror.NodeConnError{ID: nodeId, Endpoint: endpoint, Err: fmt.Errorf("verify endpoint failed: %s", err.Error())},
+			Err:  &cranerror.NodeConnError{ID: nodeId, Endpoint: endpoint, Err: fmt.Errorf("verify endpoint failed: %s", err.Error())},
 		}
 	}
 
 	if err := json.Unmarshal(content, &nodeInfo); err != nil {
-		return &rolexerror.DmError{
+		return &cranerror.DmError{
 			Code: CodeVerifyNodeEnpointFailed,
-			Err:  &rolexerror.NodeConnError{ID: nodeId, Endpoint: endpoint, Err: fmt.Errorf("verify endpoint failed: %s", err.Error())},
+			Err:  &cranerror.NodeConnError{ID: nodeId, Endpoint: endpoint, Err: fmt.Errorf("verify endpoint failed: %s", err.Error())},
 		}
 	}
 
 	if err != nil {
-		return &rolexerror.DmError{
+		return &cranerror.DmError{
 			Code: CodeConnToNodeError,
-			Err:  &rolexerror.NodeConnError{ID: nodeId, Endpoint: endpoint, Err: err},
+			Err:  &cranerror.NodeConnError{ID: nodeId, Endpoint: endpoint, Err: err},
 		}
 	}
 
 	if nodeId != nodeInfo.Swarm.NodeID {
-		return &rolexerror.DmError{
+		return &cranerror.DmError{
 			Code: CodeNodeEndpointIpMatchError,
-			Err:  &rolexerror.NodeConnError{ID: nodeId, Endpoint: endpoint, Err: fmt.Errorf("node id not matched endpoint")},
+			Err:  &cranerror.NodeConnError{ID: nodeId, Endpoint: endpoint, Err: fmt.Errorf("node id not matched endpoint")},
 		}
 	}
 
 	return nil
 }
 
-func (client *RolexDockerClient) NewGoDockerClientTls(endpoint string, apiVersion string) (*docker.Client, error) {
+func (client *CraneDockerClient) NewGoDockerClientTls(endpoint string, apiVersion string) (*docker.Client, error) {
 	tlsCaCert, tlsCert, tlsKey := SharedClientCertFiles(client.config)
 	return docker.NewVersionedTLSClient(endpoint, tlsCert, tlsKey, tlsCaCert, apiVersion)
 }
 
-func (client *RolexDockerClient) NewHttpClient() (*httpclient.Client, error) {
+func (client *CraneDockerClient) NewHttpClient() (*httpclient.Client, error) {
 	httpClient := &http.Client{Timeout: defaultHttpRequestTimeout}
 	return httpclient.NewClient(httpClient, nil)
 }
 
-func (client *RolexDockerClient) NewHttpClientTls() (*httpclient.Client, error) {
+func (client *CraneDockerClient) NewHttpClientTls() (*httpclient.Client, error) {
 	tlsCaCert, tlsCert, tlsKey := SharedClientCertFiles(client.config)
 	httpClient := &http.Client{Timeout: defaultHttpRequestTimeout}
 	return httpclient.NewTLSClient(tlsCaCert, tlsCert, tlsKey, httpClient, nil)
@@ -197,19 +197,19 @@ func SharedClientCertFiles(config *config.Config) (string, string, string) {
 	return tlsCaCert, tlsCert, tlsKey
 }
 
-func ToRolexError(err error) error {
+func ToCraneError(err error) error {
 	var detailError error
 	switch err.(type) {
 	case *docker.NoSuchContainer:
-		detailError = rolexerror.NewError(CodeContainerNotFound, err.Error())
+		detailError = cranerror.NewError(CodeContainerNotFound, err.Error())
 	case *docker.NoSuchNetwork:
-		detailError = rolexerror.NewError(CodeNetworkNotFound, err.Error())
+		detailError = cranerror.NewError(CodeNetworkNotFound, err.Error())
 	case *docker.NoSuchNetworkOrContainer:
-		detailError = rolexerror.NewError(CodeNetworkOrContainerNotFound, err.Error())
+		detailError = cranerror.NewError(CodeNetworkOrContainerNotFound, err.Error())
 	case *docker.ContainerAlreadyRunning:
-		detailError = rolexerror.NewError(CodeContainerAlreadyRunning, err.Error())
+		detailError = cranerror.NewError(CodeContainerAlreadyRunning, err.Error())
 	case *docker.ContainerNotRunning:
-		detailError = rolexerror.NewError(CodeContainerNotRunning, err.Error())
+		detailError = cranerror.NewError(CodeContainerNotRunning, err.Error())
 	default:
 		detailError = err
 	}

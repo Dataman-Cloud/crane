@@ -4,13 +4,13 @@ ROLEX_DOCKER_TLS_VERIFY=false
 ROLEX_DOCKER_ENTRY_PORT=2375
 ROLEX_DOCKER_CERT_PATH=null
 
-ROLEX_DB_DSN=root:111111@tcp(rolex_db:3306)/rolex?charset=utf8&parseTime=true&loc=Local
+ROLEX_DB_DSN=root:111111@tcp(crane_db:3306)/crane?charset=utf8&parseTime=true&loc=Local
 ROLEX_DB_DRIVER=mysql
 
 ROLEX_FEATURE_FLAGS=registry,account,catalog,search,registryauth,license
 
 ROLEX_REGISTRY_PRIVATE_KEY_PATH=./private_key.pem
-ROLEX_REGISTRY_ADDR=http://rolex_registry:5000
+ROLEX_REGISTRY_ADDR=http://crane_registry:5000
 
 ROLEX_ACCOUNT_TOKEN_STORE=default
 ROLEX_ACCOUNT_AUTHENTICATOR=default

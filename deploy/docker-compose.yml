@@ -1,33 +1,33 @@
 version: "2"
 services:
-  rolex_registry:
+  crane_registry:
     build:
       context: ../doc/registry
       dockerfile: ./Dockerfile
-    image: ${REGISTRY_PREFIX}registry:rolex${TAG}
+    image: ${REGISTRY_PREFIX}registry:crane${TAG}
     environment:
       - ROLEX_IP
     volumes:
       - ./registry_storage:/storage
     restart: always
-  rolex:
+  crane:
     build:
       context: ../
       dockerfile: ./deploy/Dockerfile
-    image: ${REGISTRY_PREFIX}rolex:${TAG}
+    image: ${REGISTRY_PREFIX}crane:${TAG}
     environment:
       - ROLEX_SWARM_MANAGER_IP
     links:
-      - rolex_registry
-      - rolex_db  
+      - crane_registry
+      - crane_db  
     ports:
-      - "5013:5013"
+       - "5013:5013"
     restart: always
-  rolex_db:
+  crane_db:
     build:
       context: ./mysql
       dockerfile: ./Dockerfile
-    image: ${REGISTRY_PREFIX}mysql:rolex${TAG}
+    image: ${REGISTRY_PREFIX}mysql:crane${TAG}
     environment:
       - MYSQL_ROOT_PASSWORD=111111
     volumes:

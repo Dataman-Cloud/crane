@@ -7,10 +7,10 @@
     /* @ngInject */
     function miscBackend(gHttp) {
         return {
-          rolexConfig: rolexConfig
+          craneConfig: craneConfig
         };
 
-        function rolexConfig() {
+        function craneConfig() {
             return gHttp.Resource('misc.config').get();
         }
     }

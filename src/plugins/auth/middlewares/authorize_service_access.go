@@ -32,7 +32,7 @@ func AuthorizeServiceAccess(a *auth.AccountApi) func(permissionRequired auth.Per
 			}
 
 			if len(ctx.Param("service_id")) > 0 { // for single service request
-				service, err := a.RolexDockerClient.InspectServiceWithRaw(ctx.Param("service_id"))
+				service, err := a.CraneDockerClient.InspectServiceWithRaw(ctx.Param("service_id"))
 				if err != nil {
 					ctx.Abort()
 					return
@@ -44,7 +44,7 @@ func AuthorizeServiceAccess(a *auth.AccountApi) func(permissionRequired auth.Per
 				}
 			} else { // for list services request
 				authpass := false
-				groupId, err := a.RolexDockerClient.GetStackGroup(ctx.Param("namespace"))
+				groupId, err := a.CraneDockerClient.GetStackGroup(ctx.Param("namespace"))
 				if err != nil {
 					ctx.Abort()
 					return

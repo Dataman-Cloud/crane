@@ -103,8 +103,8 @@
     "Version": "1.0.0",
     "Build": "2015-08-01 UTC",
     "FeatureFlags": "registry,logging",
-    "RolexSecret": "rolex",
-    "RolexCaHash": "sha256:8db604f91547c53b63f1ac6bb1b23e4d9c4d1dae3eefc46a813a9bf6d65e2c69"
+    "CraneSecret": "crane",
+    "CraneCaHash": "sha256:8db604f91547c53b63f1ac6bb1b23e4d9c4d1dae3eefc46a813a9bf6d65e2c69"
 
   }
 }

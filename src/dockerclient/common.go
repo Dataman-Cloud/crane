@@ -16,9 +16,9 @@ import (
 )
 
 // convert swarm service to bundle service
-func (client *RolexDockerClient) ToRolexServiceSpec(swarmService swarm.ServiceSpec) model.RolexServiceSpec {
+func (client *CraneDockerClient) ToCraneServiceSpec(swarmService swarm.ServiceSpec) model.CraneServiceSpec {
 	networks := client.getServiceNetworkNames(swarmService.Networks)
-	rolexServiceSpec := model.RolexServiceSpec{
+	craneServiceSpec := model.CraneServiceSpec{
 		Name:         swarmService.Name,
 		Labels:       swarmService.Labels,
 		TaskTemplate: swarmService.TaskTemplate,
@@ -28,21 +28,21 @@ func (client *RolexDockerClient) ToRolexServiceSpec(swarmService swarm.ServiceSp
 		EndpointSpec: swarmService.EndpointSpec,
 	}
 
-	if rolexServiceSpec.UpdateConfig == nil {
-		rolexServiceSpec.UpdateConfig = &swarm.UpdateConfig{}
+	if craneServiceSpec.UpdateConfig == nil {
+		craneServiceSpec.UpdateConfig = &swarm.UpdateConfig{}
 	}
 
-	if rolexServiceSpec.EndpointSpec == nil {
-		rolexServiceSpec.EndpointSpec = &swarm.EndpointSpec{}
+	if craneServiceSpec.EndpointSpec == nil {
+		craneServiceSpec.EndpointSpec = &swarm.EndpointSpec{}
 	}
 
-	if rolexServiceSpec.Labels != nil {
-		if registryauth, ok := rolexServiceSpec.Labels[LabelRegistryAuth]; ok {
-			rolexServiceSpec.RegistryAuth = registryauth
+	if craneServiceSpec.Labels != nil {
+		if registryauth, ok := craneServiceSpec.Labels[LabelRegistryAuth]; ok {
+			craneServiceSpec.RegistryAuth = registryauth
 		}
 	}
 
-	return rolexServiceSpec
+	return craneServiceSpec
 }
 
 func EncodedRegistryAuth(registryAuth string) (string, error) {

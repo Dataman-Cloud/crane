@@ -19,7 +19,7 @@ Crane, maintained by dataman-cloud, is a docker container control plane based on
 
 ## Quick Start
 
-你可以用下面方式快速启动一个 Rolex 环境
+你可以用下面方式快速启动一个 Crane 环境
 
 执行命令
 
@@ -62,7 +62,7 @@ Crane, maintained by dataman-cloud, is a docker container control plane based on
 - reviewer(别的 developer) 每天需要拿出部分时间 review 他人的 PR， 发现问题就及时在 PR 里面 comment。
 - developer 需要对 reviewer 的 comment 作出解释，或者提交新的 commit 去改进它。 后者你需要向 PR 里追加 commit。
 - reviewer 如果对 developer 的 PR 无异议， 他会在 PR 的 comment 里面回复 +1.
-- 按当前的 developer 数量来说， Rolex 的 PR 得到2个 +1该 PR 就可以被 merge 到 master branch。
+- 按当前的 developer 数量来说， Crane 的 PR 得到2个 +1该 PR 就可以被 merge 到 master branch。
 - 负责相关模块的 merge 操作， PR 被 merge 后，原branch A 就会被删除。
 
 

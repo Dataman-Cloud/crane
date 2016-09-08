@@ -7,10 +7,10 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime
     links:
-      - rolex
+      - crane
     restart: always
-  rolex_registry:
-    image: ${REGISTRY_PREFIX}registry:rolex${TAG}
+  crane_registry:
+    image: ${REGISTRY_PREFIX}registry:crane${TAG}
     ports:
       - "5000:5000"
       - "5001:5001"
@@ -20,8 +20,8 @@ services:
       - ./registry_storage:/var/lib/registry
       - /etc/localtime:/etc/localtime
     restart: always
-  rolex:
-    image: ${REGISTRY_PREFIX}rolex:${TAG}
+  crane:
+    image: ${REGISTRY_PREFIX}crane:${TAG}
     environment:
       - ROLEX_SWARM_MANAGER_IP
       - ROLEX_DOCKER_ENTRY_PORT
@@ -30,8 +30,8 @@ services:
     ports:
       - "5013:5013"
     restart: always
-  rolex_db:
-    image: ${REGISTRY_PREFIX}mysql:rolex${TAG}
+  crane_db:
+    image: ${REGISTRY_PREFIX}mysql:crane${TAG}
     environment:
       - MYSQL_ROOT_PASSWORD=111111
     ports:

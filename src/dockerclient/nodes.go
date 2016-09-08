@@ -8,7 +8,7 @@ import (
 	"strconv"
 
 	"github.com/Dataman-Cloud/crane/src/model"
-	"github.com/Dataman-Cloud/crane/src/utils/rolexerror"
+	"github.com/Dataman-Cloud/crane/src/utils/cranerror"
 
 	docker "github.com/Dataman-Cloud/go-dockerclient"
 	"github.com/docker/engine-api/types"
@@ -26,7 +26,7 @@ const (
 )
 
 // NodeList returns the list of nodes.
-func (client *RolexDockerClient) ListNode(opts types.NodeListOptions) ([]swarm.Node, error) {
+func (client *CraneDockerClient) ListNode(opts types.NodeListOptions) ([]swarm.Node, error) {
 	var nodes []swarm.Node
 
 	content, err := client.sharedHttpClient.GET(nil, client.swarmManagerHttpEndpoint+"/nodes", nil, nil)
@@ -42,7 +42,7 @@ func (client *RolexDockerClient) ListNode(opts types.NodeListOptions) ([]swarm.N
 }
 
 // Inspect node returns the single node.
-func (client *RolexDockerClient) InspectNode(nodeId string) (swarm.Node, error) {
+func (client *CraneDockerClient) InspectNode(nodeId string) (swarm.Node, error) {
 	var node swarm.Node
 
 	content, err := client.sharedHttpClient.GET(nil, client.swarmManagerHttpEndpoint+"/"+path.Join("nodes", nodeId), nil, nil)
@@ -58,7 +58,7 @@ func (client *RolexDockerClient) InspectNode(nodeId string) (swarm.Node, error) 
 }
 
 // Remove a single node
-func (client *RolexDockerClient) RemoveNode(nodeId string) error {
+func (client *CraneDockerClient) RemoveNode(nodeId string) error {
 	_, err := client.sharedHttpClient.DELETE(nil, client.swarmManagerHttpEndpoint+"/"+path.Join("nodes", nodeId), nil, nil)
 	if err != nil {
 		return err
@@ -68,7 +68,7 @@ func (client *RolexDockerClient) RemoveNode(nodeId string) error {
 }
 
 // Update a single node
-func (client *RolexDockerClient) UpdateNode(nodeId string, opts model.UpdateOptions) error {
+func (client *CraneDockerClient) UpdateNode(nodeId string, opts model.UpdateOptions) error {
 	node, err := client.InspectNode(nodeId)
 	if err != nil {
 		return err
@@ -105,7 +105,7 @@ func (client *RolexDockerClient) UpdateNode(nodeId string, opts model.UpdateOpti
 			return err
 		}
 	default:
-		return rolexerror.NewError(CodeErrorUpdateNodeMethod, fmt.Sprintf("Invalid update node method %s", opts.Method))
+		return cranerror.NewError(CodeErrorUpdateNodeMethod, fmt.Sprintf("Invalid update node method %s", opts.Method))
 	}
 
 	query := url.Values{}
@@ -128,7 +128,7 @@ func nodeRole(rawMessage []byte) (swarm.NodeRole, error) {
 	if role != swarm.NodeRoleWorker && role != swarm.NodeRoleManager {
 		errMsg := fmt.Sprintf("node role only support %s/%s but got %s",
 			swarm.NodeRoleWorker, swarm.NodeRoleManager, role)
-		err = rolexerror.NewError(CodeErrorNodeRole, errMsg)
+		err = cranerror.NewError(CodeErrorNodeRole, errMsg)
 	}
 
 	return role, err
@@ -144,7 +144,7 @@ func nodeAvailability(rawMessage []byte) (swarm.NodeAvailability, error) {
 	if availability != swarm.NodeAvailabilityActive && availability != swarm.NodeAvailabilityPause && availability != swarm.NodeAvailabilityDrain {
 		errMsg := fmt.Sprintf("node availability only support %s/%s/%s, but got %s",
 			swarm.NodeAvailabilityActive, swarm.NodeAvailabilityPause, swarm.NodeAvailabilityDrain, availability)
-		err = rolexerror.NewError(CodeErrorNodeAvailability, errMsg)
+		err = cranerror.NewError(CodeErrorNodeAvailability, errMsg)
 	}
 
 	return availability, err
@@ -191,7 +191,7 @@ func nodeRemoveLabels(spec *swarm.NodeSpec, rawMessage []byte) error {
 	return nil
 }
 
-func (client *RolexDockerClient) nodeUpdateEndpoint(nodeId string, spec *swarm.NodeSpec, rawMessage []byte) error {
+func (client *CraneDockerClient) nodeUpdateEndpoint(nodeId string, spec *swarm.NodeSpec, rawMessage []byte) error {
 	var endpoint string
 	if err := json.Unmarshal(rawMessage, &endpoint); err != nil {
 		return err
@@ -199,9 +199,9 @@ func (client *RolexDockerClient) nodeUpdateEndpoint(nodeId string, spec *swarm.N
 
 	nodeUrl, err := parseEndpoint(endpoint)
 	if err != nil {
-		return &rolexerror.DmError{
+		return &cranerror.DmError{
 			Code: CodeGetNodeEndpointError,
-			Err:  &rolexerror.NodeConnError{ID: nodeId, Err: fmt.Errorf("update endpoint failed: %s", err.Error())},
+			Err:  &cranerror.NodeConnError{ID: nodeId, Err: fmt.Errorf("update endpoint failed: %s", err.Error())},
 		}
 	}
 
@@ -218,7 +218,7 @@ func (client *RolexDockerClient) nodeUpdateEndpoint(nodeId string, spec *swarm.N
 }
 
 // docker info
-func (client *RolexDockerClient) Info(ctx context.Context) (*docker.DockerInfo, error) {
+func (client *CraneDockerClient) Info(ctx context.Context) (*docker.DockerInfo, error) {
 	swarmNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return nil, err
@@ -226,18 +226,18 @@ func (client *RolexDockerClient) Info(ctx context.Context) (*docker.DockerInfo, 
 	return swarmNode.Info()
 }
 
-func (client *RolexDockerClient) NodeDaemonUrl(nodeId string) (*url.URL, error) {
+func (client *CraneDockerClient) NodeDaemonUrl(nodeId string) (*url.URL, error) {
 	node, err := client.InspectNode(nodeId)
-	var nodeConnErr *rolexerror.NodeConnError
+	var nodeConnErr *cranerror.NodeConnError
 	if err != nil {
-		nodeConnErr = &rolexerror.NodeConnError{ID: nodeId, Endpoint: "", Err: err}
-		return nil, &rolexerror.DmError{Code: CodeGetNodeEndpointError, Err: nodeConnErr}
+		nodeConnErr = &cranerror.NodeConnError{ID: nodeId, Endpoint: "", Err: err}
+		return nil, &cranerror.DmError{Code: CodeGetNodeEndpointError, Err: nodeConnErr}
 	}
 
 	endpoint, ok := node.Spec.Annotations.Labels[labelNodeEndpoint]
 	if !ok {
-		nodeConnErr = &rolexerror.NodeConnError{ID: nodeId, Endpoint: endpoint, Err: err}
-		return nil, &rolexerror.DmError{Code: CodeGetNodeEndpointError, Err: nodeConnErr}
+		nodeConnErr = &cranerror.NodeConnError{ID: nodeId, Endpoint: endpoint, Err: err}
+		return nil, &cranerror.DmError{Code: CodeGetNodeEndpointError, Err: nodeConnErr}
 	}
 
 	return parseEndpoint(endpoint)

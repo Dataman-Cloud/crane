@@ -5,15 +5,15 @@ import (
 	"golang.org/x/net/context"
 )
 
-func RolexApiContext() gin.HandlerFunc {
+func CraneApiContext() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		var rolexContext context.Context
+		var craneContext context.Context
 		backgroundContext := context.Background()
 
 		if len(ctx.Param("node_id")) > 0 {
-			rolexContext = context.WithValue(backgroundContext, "node_id", ctx.Param("node_id"))
+			craneContext = context.WithValue(backgroundContext, "node_id", ctx.Param("node_id"))
 		}
 
-		ctx.Set("rolexContext", rolexContext)
+		ctx.Set("craneContext", craneContext)
 	}
 }

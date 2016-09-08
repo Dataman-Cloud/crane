@@ -21,7 +21,7 @@ func main() {
 
 	//db.InitDB()
 
-	client, err := dockerclient.NewRolexDockerClient(conf)
+	client, err := dockerclient.NewCraneDockerClient(conf)
 	if err != nil {
 		log.G(ctx).Fatal(err)
 	}
@@ -34,7 +34,7 @@ func main() {
 	ctx = log.WithLogger(ctx, log.G(ctx).WithField("module", "main"))
 
 	server := &http.Server{
-		Addr:           conf.RolexAddr,
+		Addr:           conf.CraneAddr,
 		Handler:        api.ApiRouter(),
 		MaxHeaderBytes: 1 << 20,
 	}
