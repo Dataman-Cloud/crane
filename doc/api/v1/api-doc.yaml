@@ -681,10 +681,161 @@ paths:
           description: token 验证失败
           schema:
             $ref: '#/definitions/GeneralErrorResponse'
-    
-    
-    
-    
+
+  /nodes:
+    get:
+      summary: 获取主机列表
+      description: 正确返回200，错误返回相应错误码
+      tags:
+        - Nodes
+      parameters:
+        - name: Authorization
+          in: header
+          description: 用户token
+          required: true
+          type: string
+      responses:
+        200:
+          description: 返回主机列表
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int8
+                default: 0
+              data:
+                type: array
+                items:
+                  $ref: '#/definitions/Node'
+        500:
+          description: 获取主机列表失败
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
+        401:
+          description: token 验证失败
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
+
+  /nodes/{node_id}/info:
+    get:
+      summary: 获取主机信息
+      description: 正确返回200，错误返回相应错误码
+      tags:
+        - Nodes
+      parameters:
+        - name: Authorization
+          in: header
+          description: 用户token
+          required: true
+          type: string
+        - name: node_id
+          in: path
+          description: 节点 id
+          required: true
+          type: string
+      responses:
+        200:
+          description: 返回主机信息
+          schema:
+            $ref: '#/definitions/NodeInfo'
+        500:
+          description: 获取主机信息失败
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
+        401:
+          description: token 验证失败
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
+
+  /node/{node_id}:
+    patch:
+      summary: 更改主机可用状态/修改主机标签/删除主机标签/更新主机地址
+      description: 操作成功返回200，失败返回相应信息
+      tags:
+        - Nodes
+      parameters:
+        - name: Authorization
+          in: header
+          description: 用户token
+          required: true
+          type: string
+        - name: node_id
+          in: path
+          description: 节点 id
+          required: true
+          type: string
+        - name: body
+          in: body
+          description: 更改主机详细参数
+          required: true
+          schema:
+            type: object
+            properties:
+              Method:
+                type: string
+                enum:
+                - availability
+                - label-update
+                - label-rm
+                - endpoint-update
+              Options:
+                description: "Method是availability时, 值为drain/active/pause; Method是label-update时, 值的格式为{label_key: label_value}; Method是label-rm时, 值的格式为[label_id]; Method是endpoint-update时, 值为\"[ip]:[port]\""
+      responses:
+        200:
+          description: 操作成功
+          schema:
+            $ref: '#/definitions/GeneralOkResponse'
+        400:
+          description: 操作失败
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
+        500:
+          description: 操作失败
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
+        401:
+          description: token 验证失败
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
+
+    delete:
+      summary: 删除主机
+      description: 操作成功返回200，失败返回相应信息
+      tags:
+        - Nodes
+      parameters:
+        - name: Authorization
+          in: header
+          description: 用户token
+          required: true
+          type: string
+        - name: node_id
+          in: path
+          description: 节点 id
+          required: true
+          type: string
+      responses:
+        200:
+          description: 操作成功
+          schema:
+            $ref: '#/definitions/GeneralOkResponse'
+        400:
+          description: 操作失败
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
+        500:
+          description: 操作失败
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
+        401:
+          description: token 验证失败
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
+
+
+
+
 definitions:
   GeneralOkResponse:
     type: object
@@ -1217,7 +1368,7 @@ definitions:
           EnableIPv6:
             type: boolean
             description: 开启ipv6
-        
+
   NetworkConnOrDisconn:
     type: object
     properties:
@@ -1226,7 +1377,7 @@ definitions:
         description: connect/disconnect
       NetworkOptions:
         $ref: '#/definitions/NetworkConnectionOptions'
-  
+
   NetworkConnectionOptions:
     description: 连接网络配置
     type: object
@@ -1272,7 +1423,7 @@ definitions:
             format: int64
           IPv6Gateway:
             type: string
-          GlobalIPv6Address: 
+          GlobalIPv6Address:
             type: string
           GlobalIPv6PrefixLen:
             type: integer
@@ -1281,7 +1432,7 @@ definitions:
             type: string
       Force:
         type: boolean
-        
+
   APIImages:
     description: image详细信息
     type: object
@@ -1311,7 +1462,7 @@ definitions:
           type: string
       Labels:
         type: object
-        
+
   Image:
     description: 镜像详细信息
     type: object
@@ -1448,7 +1599,7 @@ definitions:
         type: array
         items:
           type: string
-      Mounts: 
+      Mounts:
         type: array
         items:
           $ref: '#/definitions/Mount'
@@ -1456,21 +1607,21 @@ definitions:
         type: object
         additionalProperties:
           type: string
-      
+
   HealthConfig:
     properties:
       Test:
         type: array
         items:
           type: string
-      Interval: 
+      Interval:
         type: string
       Timeout:
         type: string
       Retries:
         type: integer
         format: int64
-        
+
   ImageHistory:
     properties:
       ID:
@@ -1487,3 +1638,305 @@ definitions:
       Size:
         type: integer
         format: int64
+
+  Node:
+    type: object
+    properties:
+      ID:
+        description: 主机ID
+        type: string
+      CreatedAt:
+        description: 创建时间
+        type: string
+      Description:
+        type: object
+        properties:
+          Engine:
+            description: docker信息
+            type: object
+            properties:
+              EngineVersion:
+                type: string
+              Plugins:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    Name:
+                      type: string
+                    Type:
+                      type: string
+          Hostname:
+            description: 主机名
+            type: string
+          Platform:
+            description: 操作系统信息
+            type: object
+            properties:
+              Architectrue:
+                type: string
+              OS:
+                type: string
+          Resouces:
+            description: 硬件信息
+            type: object
+            properties:
+              MemoryBytes:
+                type: integer
+                format: int64
+              NanoCPUs:
+                type: integer
+                format: int64
+      ManagerStatus:
+        type: object
+        properties:
+          Addr:
+            description: manager的ip和port
+            type: string
+          Leader:
+            description: 是否为leader
+            type: boolean
+          Reachability:
+            description: 是否可达
+            type: string
+      Spec:
+        type: object
+        properties:
+          Availability:
+            description: 是否可用
+            type: string
+          Labels:
+            description: 标签
+            type: object
+          Role:
+            description: 角色
+            type: string
+      Status:
+        description: 状态
+        type: object
+        properties:
+          State:
+            type: string
+      UpdatedAt:
+        description: 更新时间
+        type: string
+      Version:
+        description: 版本
+        type: object
+        properties:
+          Index:
+            type: integer
+            format: int64
+
+  NodeInfo:
+    type: object
+    properties:
+      Architecture:
+        description: 系统架构
+        type: string
+      BridgeNfIp6tables:
+        type: boolean
+      BridgeNfIptables:
+        type: boolean
+      CPUSet:
+        type: boolean
+      CPUShares:
+        type: boolean
+      CgroupDriver:
+        type: string
+      ClusterAdvertise:
+        type: string
+      ClusterStore:
+        type: string
+      Containers:
+        description: 主机上的container总数
+        type: integer
+        format: int64
+      ContainersPaused:
+        description: 主机上暂停的container数量
+        type: integer
+        format: int64
+      ContainersRunning:
+        description: 主机上运行的container数量
+        type: integer
+        format: int64
+      ContainersStopped:
+        description: 主机上停止的container数量
+        type: integer
+        format: int64
+      CpuCfsPeriod:
+        type: boolean
+      CpuCfsQuota:
+        type: boolean
+      Debug:
+        type: boolean
+      DockerRootDir:
+        description: docker的根目录
+        type: string
+      Driver:
+        type: string
+      DriverStatus:
+        type: array
+        items:
+          type: string
+      ExecutionDriver:
+        type: string
+      ExperimentalBuild:
+        type: boolean
+      HttpProxy:
+        type: string
+      HttpsProxy:
+        type: string
+      ID:
+        description: id
+        type: string
+      IPv4Forwarding:
+        type: boolean
+      Images:
+        description: 主机上的image总数
+        type: integer
+        format: int64
+      IndexServerAddress:
+        type: string
+      KernelMemory:
+        type: boolean
+      KernelVersion:
+        description: 内核版本
+        type: string
+      Labels:
+        type: object
+      LoggingDriver:
+        type: string
+      MemTotal:
+        description: 内存总量
+        type: integer
+        format: int64
+      MemoryLimit:
+        type: boolean
+      NCPU:
+        description: cpu数量
+        type: integer
+        format: int64
+      NEventsListener:
+        type: integer
+        format: int64
+      NFd:
+        type: integer
+        format: int64
+      NGoroutines:
+        type: integer
+        format: int64
+      Name:
+        description: 主机名
+        type: string
+      NoProxy:
+        type: string
+      OSType:
+        type: string
+      OomKillDisable:
+        type: boolean
+      OperatingSystem:
+        type: string
+      Plugins:
+        description: 插件信息
+        type: object
+      ServerVersion:
+        description: docker版本
+        type: string
+      SwapLimit:
+        type: boolean
+      Swarm:
+        type: object
+        properties:
+          Cluster:
+            description: 集群信息
+            type: object
+            properties:
+              ID:
+                type: string
+              CreatedAt:
+                type: string
+              Spec:
+                type: object
+                properties:
+                  CAConfig:
+                    type: object
+                    properties:
+                      NodeCertExpiry:
+                        type: integer
+                        format: int64
+                  Dispatcher:
+                    type: object
+                    properties:
+                      HeartbeatPeriod:
+                        type: integer
+                        format: int64
+                  Name:
+                    type: string
+                  Orchestration:
+                    type: object
+                    properties:
+                      TaskHistoryRetentionLimit:
+                        type: integer
+                        format: int64
+                  Raft:
+                    type: object
+                    properties:
+                      ElectionTick:
+                        type: integer
+                        format: int64
+                      HeartbeatTick:
+                        type: integer
+                        format: int64
+                      LogEntriesForSlowFollowers:
+                        type: integer
+                        format: int64
+                      SnapshotInterval:
+                        type: integer
+                        format: int64
+                  TaskDefaults:
+                    type: object
+              UpdatedAt:
+                type: string
+              Version:
+                type: object
+                properties:
+                  Index:
+                    type: integer
+                    format: int64
+          ControlAvailable:
+            type: boolean
+          Error:
+            type: string
+          LocalNodeState:
+            type: string
+          Managers:
+            description: 管理数
+            type: integer
+            format: int64
+          NodeAddr:
+            description: 主机ip
+            type: string
+          NodeId:
+            description: 主机id
+            type: string
+          Nodes:
+            description: 主机数
+            type: integer
+            format: int64
+          RemoteManagers:
+            description: 所有manager信息
+            type: array
+            items:
+              type: object
+              properties:
+                Addr:
+                  type: string
+                NodeID:
+                  type: string
+      SystemStatus:
+        type: string
+      SystemTime:
+        description: 系统时间
+        type: string
+
