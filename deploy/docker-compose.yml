@@ -5,9 +5,6 @@ services:
       context: ../doc/registry
       dockerfile: ./Dockerfile
     image: ${REGISTRY_PREFIX}registry:rolex${TAG}
-    ports:
-      - "5000:5000"
-      - "5001:5001"
     environment:
       - ROLEX_IP
     volumes:
@@ -20,6 +17,9 @@ services:
     image: ${REGISTRY_PREFIX}rolex:${TAG}
     environment:
       - ROLEX_SWARM_MANAGER_IP
+    links:
+      - rolex_registry
+      - rolex_db  
     ports:
       - "5013:5013"
     restart: always
@@ -30,8 +30,6 @@ services:
     image: ${REGISTRY_PREFIX}mysql:rolex${TAG}
     environment:
       - MYSQL_ROOT_PASSWORD=111111
-    ports:
-      - "3306:3306"
     volumes:
       - ./mysql_storage:/var/lib/mysql
     restart: always
