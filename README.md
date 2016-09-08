@@ -1,4 +1,21 @@
-# Rolex Go for Dataman-inc
+# Crane
+
+[Crane](doc/img/crane-logo.png)
+
+Crane, maintained by dataman-cloud, is a docker container control plane based on docker built-in swarm.
+
+## Features
+
+  * **Application stack**:
+  * **Registry**:
+  * **Node operation**:
+  * **Overlay network management**:
+  * **Private registry authorization**:
+    * [应用](get-started/stack.md)
+    * [镜像](get-started/registry.md)
+    * [主机](get-started/node.md)
+    * [网络](get-started/network.md)
+    * [仓库认证](get-started/registry-auth.md)
 
 ## Quick Start
 
