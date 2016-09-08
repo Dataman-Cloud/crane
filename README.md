@@ -1,6 +1,6 @@
 # Crane
 
-[Crane](doc/img/crane-logo.png)
+![Crane](doc/img/crane-logo.png)
 
 Crane, maintained by dataman-cloud, is a docker container control plane based on docker built-in swarm.
 
