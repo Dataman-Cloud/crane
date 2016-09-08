@@ -1,0 +1,15 @@
+<header layout="row" layout-align="end start" id="header-main">
+    <div flex="none">
+        <md-button class="md-raised md-primary md-button md-small" aria-label="如何创建镜像" data-ui-sref='registry.createNote'>
+            <i class="fa fa-question" aria-hidden="true"></i> 如何创建镜像
+        </md-button>
+    </div>
+</header>
+<md-content>
+    <md-tabs md-dynamic-height md-border-bottom>
+        <md-tab label="项目模板" dm-tab-sref="registry.list.catalogs"></md-tab>
+        <md-tab label="公有镜像" dm-tab-sref="registry.list.public"></md-tab>
+        <md-tab label="我的镜像" dm-tab-sref="registry.list.mine"></md-tab>
+    </md-tabs>
+    <md-content data-ui-view></md-content>
+</md-content>

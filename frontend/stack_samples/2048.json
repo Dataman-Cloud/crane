@@ -1,0 +1,30 @@
+{
+    "Services": {
+        "2048": {
+            "Name": "2048",
+            "Labels": {
+                "name": "2048"
+            },
+            "TaskTemplate": {
+                "ContainerSpec": {
+                    "Image": "blackicebird/2048"
+                }
+            },
+            "Networks": [
+                "ingress"
+                ],
+            "EndpointSpec": {
+                "Mode": "vip",
+                "Ports": [
+                {
+                    "Name": "pbport",
+                    "Protocol": "tcp",
+                    "TargetPort": 80,
+                    "PublishedPort": 8000
+                }
+                ]
+            }
+        }
+    },
+    "Version": "1"
+}

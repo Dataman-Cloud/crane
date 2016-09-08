@@ -1,0 +1,30 @@
+<div class="main-content app-layout">
+    <section layout="row" class="info-list-detail">
+        <h2 flex="20">基本信息</h2>
+        <div flex="80" layout="row" layout-wrap>
+            <div flex="30"><h5>Version</h5></div>
+            <div flex="70"><p>{/miscConfigCtrl.rolexconfig.Version/}</p></div>
+            <div flex="30"><h5>Build</h5></div>
+            <div flex="70"><p>{/miscConfigCtrl.rolexconfig.Build/}</p></div>
+            <div flex="30"><h5>FeatureFlags</h5></div>
+            <div flex="70"><p ng-class="{'no-info': !miscConfigCtrl.rolexconfig.FeatureFlags}">
+                {/miscConfigCtrl.rolexconfig.FeatureFlags || '未配置'/}</p></div>
+        </div>
+    </section>
+
+    <section layout="row" class="info-list-detail">
+        <h2 flex="20">集群信息</h2>
+        <div flex="80" layout="row" layout-wrap>
+            <div flex="30"><h5>集群名称</h5></div>
+            <div flex="70"><p>{/miscConfigCtrl.rolexconfig.SwarmInfo.Spec.Name/}</p></div>
+            <div flex="30"><h5>管理节点 Token</h5></div>
+            <div flex="70"><p>{/miscConfigCtrl.rolexconfig.SwarmInfo.JoinTokens.Manager/}</p></div>
+            <div flex="30"><h5>工作节点 Token</h5></div>
+            <div flex="70"><p>{/miscConfigCtrl.rolexconfig.SwarmInfo.JoinTokens.Worker/}</p></div>
+            <div flex="30"><h5>更新时间</h5></div>
+            <div flex="70"><p>{/miscConfigCtrl.rolexconfig.SwarmInfo.UpdatedAt | date: 'yyyy-MM-dd HH:mm:ss'/}</p></div>
+            <div flex="30"><h5>创建时间</h5></div>
+            <div flex="70"><p>{/miscConfigCtrl.rolexconfig.SwarmInfo.CreatedAt | date: 'yyyy-MM-dd HH:mm:ss'/}</p></div>
+        </div>
+    </section>
+</div>

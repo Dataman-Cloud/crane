@@ -1,0 +1,23 @@
+<div layout="row" layout-wrap ng-flow-grid min-item-width="300">
+    <div data-ng-repeat="catalog in repositorieListCatalogCtrl.catalogs" class="flowGridItem">
+        <md-card>
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline">{/catalog.Name/}</span>
+                    <span class="md-subhead">{/catalog.Description/}</span>
+                </md-card-title-text>
+                <md-card-title-media>
+                    <div class="md-media-sm card-media">
+                        <img class="md-card-image" alt="image" ng-src="{/catalog.IconData/}">
+                    </div>
+                </md-card-title-media>
+            </md-card-title>
+            <md-card-actions layout="row" layout-align="end center">
+                <md-button class="md-raised md-primary" data-ui-sref="registry.catalogDetail({catalog_id: catalog.Id})">
+                    部署
+                </md-button>
+            </md-card-actions>
+        </md-card>
+    </div>
+</div>
+

@@ -1,0 +1,23 @@
+<div layout="row" layout-algin="space-around start" layout-wrap>
+    <div flex="50">
+        <div class="chart-panel">
+            <nvd3 options="nodeContainerStatsCtrl.chartOptions.cpuOptions"
+                  data="nodeContainerStatsCtrl.chartOptions.cpuData" api="nodeContainerStatsCtrl.cpuChartApi"
+                  config="{deepWatchData: false, deepWatchOptions:false}"></nvd3>
+        </div>
+    </div>
+    <div flex="50">
+        <div class="chart-panel">
+            <nvd3 options="nodeContainerStatsCtrl.chartOptions.memOptions"
+                  data="nodeContainerStatsCtrl.chartOptions.memData" api="nodeContainerStatsCtrl.memChartApi"
+                  config="{deepWatchData: false, deepWatchOptions:false}"></nvd3>
+        </div>
+    </div>
+    <div flex="50">
+        <div class="chart-panel">
+            <nvd3 options="nodeContainerStatsCtrl.chartOptions.networkOptions"
+                  data="nodeContainerStatsCtrl.chartOptions.networkData" api="nodeContainerStatsCtrl.networkChartApi"
+                  config="{deepWatchData: false, deepWatchOptions:false}"></nvd3>
+        </div>
+    </div>
+</div>

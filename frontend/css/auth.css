@@ -1,0 +1,112 @@
+/* 登录注册样式 */
+/* 重置系统默认样式 */
+body {
+    background-color: #f3f5f7;
+    color: #3D3D3D;
+    font-family: 'PingHei', 'PingFang SC', 'Helvetica Neue', 'Helvetica', 'STHeitiSC-Light', 'Arial', sans-serif;
+    font-weight: 400;
+    font-size: 12px;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizelegibility;
+}
+body, html {
+    height: 100%;
+}
+ul, li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+/* 登录页面新样式 */
+
+.login {
+    background: #b1b8c0 url(../pics/bg-login-02.jpg) no-repeat;
+    background-size: 100% 100%;
+    background-size: cover;
+    position: relative;
+    text-align: center;
+    height: 100%;
+    min-height: 720px;
+    padding-top: 80px;
+}
+.login .logo {
+    background-color: #FFF;
+    border-radius: 30px;
+    height: 60px;
+    width: 60px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.login .logo img {
+    margin-top: 12px;
+}
+.login .login-panel {
+    background-color: #000;
+    border-radius: 3px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.4);
+    height: 410px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 280px;
+}
+.login .login-panel header {
+    background-color: #00bdda;
+    border-radius: 3px 3px 0 0;
+    height: 130px;
+    padding-top: 25px;
+    margin-bottom: 30px;
+}
+.login .login-panel header h1 {
+    color: #FFF;
+    font-size: 13px;
+    font-weight: bold;
+}
+.login .login-panel .form-group{
+    width: 240px;
+    margin-left: 20px;
+    margin-bottom: 15px;
+}
+.login .login-panel label {
+    color: #6d7582;
+    display: block;
+    font-size: 12px;
+    text-align: left;
+    margin-bottom: 5px;
+}
+.login .login-panel input {
+    border: 1px solid #6d7582;
+    background-color: #000;
+    color: #FFF;
+    height: 37px;
+    line-height: 37px;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 100%;
+}
+input:-webkit-autofill {
+    background-color: #000!important;
+    border: 1px solid #6d7582!important;
+    color: #FFF!important;
+}
+.login .login-panel .btn-login {
+    background-color: #00bdda;
+    border: none;
+    color: #FFF;
+    font-weight: bold;
+    height: 37px;
+    width: 100%;
+}
+.login .login-panel a {
+    color: #00bdda;
+
+}
+
+
+
