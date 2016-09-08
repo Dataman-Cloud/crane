@@ -25,6 +25,10 @@ const (
 	CodeCatalogForbiddenOperation = "403-15038"
 )
 
+const (
+	CATALOG_SYSTEM_DEFAULT = 0
+)
+
 type CatalogApi struct {
 	CatalogPath string
 	DbClient    *gorm.DB
@@ -79,6 +83,12 @@ func (catalogApi *CatalogApi) CreateCatalog(ctx *gin.Context) {
 		catalog.IconData = iconData
 	}
 
+	if catalog.Bundle == "" {
+		rolexerr := dmerror.NewError(CodeCatalogInvalidParam, "invalid bundle")
+		dmgin.HttpErrorResponse(ctx, rolexerr)
+		return
+	}
+
 	catalogApi.Save(&catalog)
 	dmgin.HttpOkResponse(ctx, catalog)
 }
@@ -88,6 +98,19 @@ func (catalogApi *CatalogApi) DeleteCatalog(ctx *gin.Context) {
 	if err != nil {
 		log.Error("invalid catalog_id")
 		rolexerr := dmerror.NewError(CodeCatalogInvalidCatalogId, err.Error())
+		dmgin.HttpErrorResponse(ctx, rolexerr)
+		return
+	}
+
+	cl, err := catalogApi.Get(catalogId)
+	if err != nil {
+		rolexerr := dmerror.NewError(CodeCatalogInvalidParam, err.Error())
+		dmgin.HttpErrorResponse(ctx, rolexerr)
+		return
+	}
+
+	if cl.Type == CATALOG_SYSTEM_DEFAULT {
+		rolexerr := dmerror.NewError(CodeCatalogForbiddenOperation, "forbid update system default")
 		dmgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	}
@@ -111,6 +134,12 @@ func (catalogApi *CatalogApi) UpdateCatalog(ctx *gin.Context) {
 		return
 	}
 
+	if catalog.Bundle == "" {
+		rolexerr := dmerror.NewError(CodeCatalogInvalidParam, "invalid bundle")
+		dmgin.HttpErrorResponse(ctx, rolexerr)
+		return
+	}
+
 	catalogId, err := strconv.ParseUint(ctx.Param("catalog_id"), 10, 64)
 	if err != nil {
 		log.Error("invalid catalog_id")
@@ -127,7 +156,7 @@ func (catalogApi *CatalogApi) UpdateCatalog(ctx *gin.Context) {
 	}
 
 	if cl.Type == CATALOG_SYSTEM_DEFAULT {
-		rolexerr := dmerror.NewError(CodeCatalogForbiddenOperation, err.Error())
+		rolexerr := dmerror.NewError(CodeCatalogForbiddenOperation, "forbid update system default")
 		dmgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	}
