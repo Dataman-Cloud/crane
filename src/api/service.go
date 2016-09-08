@@ -7,8 +7,8 @@ import (
 
 	"github.com/Dataman-Cloud/crane/src/dockerclient"
 	"github.com/Dataman-Cloud/crane/src/dockerclient/model"
+	"github.com/Dataman-Cloud/crane/src/utils/cranerror"
 	"github.com/Dataman-Cloud/crane/src/utils/dmgin"
-	"github.com/Dataman-Cloud/crane/src/utils/rolexerror"
 
 	docker "github.com/Dataman-Cloud/go-dockerclient"
 	log "github.com/Sirupsen/logrus"
@@ -82,21 +82,21 @@ func (api *Api) UpdateServiceImage(ctx *gin.Context) {
 // notice update service api only update service spec
 // if network does not exist return error and don't add default label about stack and registry auth
 func (api *Api) UpdateService(ctx *gin.Context) {
-	var rolexServiceSpec model.RolexServiceSpec
+	var craneServiceSpec model.CraneServiceSpec
 
-	if err := ctx.BindJSON(&rolexServiceSpec); err != nil {
-		rerror := rolexerror.NewError(CodeUpdateServiceParamError, err.Error())
+	if err := ctx.BindJSON(&craneServiceSpec); err != nil {
+		rerror := cranerror.NewError(CodeUpdateServiceParamError, err.Error())
 		dmgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
 
 	serviceId := ctx.Param("service_id")
-	if err := dockerclient.ValidateRolexServiceSpec(&rolexServiceSpec); err != nil {
+	if err := dockerclient.ValidateCraneServiceSpec(&craneServiceSpec); err != nil {
 		dmgin.HttpErrorResponse(ctx, err)
 		return
 	}
 
-	if err := api.GetDockerClient().CheckServicePortConflicts(&rolexServiceSpec, serviceId); err != nil {
+	if err := api.GetDockerClient().CheckServicePortConflicts(&craneServiceSpec, serviceId); err != nil {
 		dmgin.HttpErrorResponse(ctx, err)
 		return
 	}
@@ -109,13 +109,13 @@ func (api *Api) UpdateService(ctx *gin.Context) {
 
 	netAttachConfigs := []swarm.NetworkAttachmentConfig{}
 	var serviceAlias string
-	serviceAlias = rolexServiceSpec.Name
-	splitServiceNames := strings.Split(rolexServiceSpec.Name, "_")
+	serviceAlias = craneServiceSpec.Name
+	splitServiceNames := strings.Split(craneServiceSpec.Name, "_")
 	if len(splitServiceNames) == 2 {
 		serviceAlias = splitServiceNames[1]
 	}
 
-	for _, network := range rolexServiceSpec.Networks {
+	for _, network := range craneServiceSpec.Networks {
 		netAttachConfigs = append(netAttachConfigs, swarm.NetworkAttachmentConfig{
 			Target:  network,
 			Aliases: []string{serviceAlias},
@@ -125,18 +125,18 @@ func (api *Api) UpdateService(ctx *gin.Context) {
 
 	swarmServiceSpec := swarm.ServiceSpec{
 		Annotations: swarm.Annotations{
-			Name:   rolexServiceSpec.Name,
-			Labels: rolexServiceSpec.Labels,
+			Name:   craneServiceSpec.Name,
+			Labels: craneServiceSpec.Labels,
 		},
-		Mode:         rolexServiceSpec.Mode,
-		TaskTemplate: rolexServiceSpec.TaskTemplate,
-		EndpointSpec: rolexServiceSpec.EndpointSpec,
+		Mode:         craneServiceSpec.Mode,
+		TaskTemplate: craneServiceSpec.TaskTemplate,
+		EndpointSpec: craneServiceSpec.EndpointSpec,
 		Networks:     netAttachConfigs,
-		UpdateConfig: rolexServiceSpec.UpdateConfig,
+		UpdateConfig: craneServiceSpec.UpdateConfig,
 	}
 	updateOpts := types.ServiceUpdateOptions{}
-	if rolexServiceSpec.RegistryAuth != "" {
-		registryAuth, err := dockerclient.EncodedRegistryAuth(rolexServiceSpec.RegistryAuth)
+	if craneServiceSpec.RegistryAuth != "" {
+		registryAuth, err := dockerclient.EncodedRegistryAuth(craneServiceSpec.RegistryAuth)
 		if err != nil {
 			dmgin.HttpErrorResponse(ctx, err)
 			return
@@ -147,7 +147,7 @@ func (api *Api) UpdateService(ctx *gin.Context) {
 			swarmServiceSpec.Labels = make(map[string]string)
 		}
 
-		swarmServiceSpec.Annotations.Labels[dockerclient.LabelRegistryAuth] = rolexServiceSpec.RegistryAuth
+		swarmServiceSpec.Annotations.Labels[dockerclient.LabelRegistryAuth] = craneServiceSpec.RegistryAuth
 	} else {
 		delete(swarmServiceSpec.Annotations.Labels, dockerclient.LabelRegistryAuth)
 	}
@@ -169,14 +169,14 @@ func (api *Api) InspectService(ctx *gin.Context) {
 		return
 	}
 
-	rolexService := model.RolexService{
+	craneService := model.CraneService{
 		ID:           service.ID,
 		Meta:         service.Meta,
-		Spec:         api.GetDockerClient().ToRolexServiceSpec(service.Spec),
+		Spec:         api.GetDockerClient().ToCraneServiceSpec(service.Spec),
 		Endpoint:     service.Endpoint,
 		UpdateStatus: service.UpdateStatus,
 	}
-	dmgin.HttpOkResponse(ctx, rolexService)
+	dmgin.HttpOkResponse(ctx, craneService)
 	return
 }
 
@@ -185,7 +185,7 @@ func (api *Api) CreateService(ctx *gin.Context) {
 	var service swarm.ServiceSpec
 	if err := ctx.BindJSON(&service); err != nil {
 		log.Error("CreateService invalied request body: ", err)
-		rerror := rolexerror.NewError(CodeCreateServiceParamError, err.Error())
+		rerror := cranerror.NewError(CodeCreateServiceParamError, err.Error())
 		dmgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
@@ -218,7 +218,7 @@ func (api *Api) ScaleService(ctx *gin.Context) {
 	var serviceScale dockerclient.ServiceScale
 	if err := ctx.BindJSON(&serviceScale); err != nil {
 		log.Errorf("Scale service %s got error: %s", serviceId, err.Error())
-		rerror := rolexerror.NewError(CodeScaleServiceParamError, err.Error())
+		rerror := cranerror.NewError(CodeScaleServiceParamError, err.Error())
 		dmgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
@@ -243,7 +243,7 @@ func (api *Api) LogsService(ctx *gin.Context) {
 	tasks, err := api.GetDockerClient().ListTasks(types.TaskListOptions{Filter: taskFilter})
 	if err != nil {
 		log.Errorf("ListTasks of service %s got error: %s", serviceId, err.Error())
-		rerror := rolexerror.NewError(CodeListTaskParamError, err.Error())
+		rerror := cranerror.NewError(CodeListTaskParamError, err.Error())
 		dmgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
@@ -270,12 +270,12 @@ func (api *Api) StatsService(ctx *gin.Context) {
 	tasks, err := api.GetDockerClient().ListTasks(types.TaskListOptions{Filter: taskFilter})
 	if err != nil {
 		log.Errorf("ListTasks of service %s got error: %s", serviceId, err.Error())
-		rerror := rolexerror.NewError(CodeListTaskParamError, err.Error())
+		rerror := cranerror.NewError(CodeListTaskParamError, err.Error())
 		dmgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
 
-	chnMsg := make(chan *model.RolexContainerStat, 1)
+	chnMsg := make(chan *model.CraneContainerStat, 1)
 	defer close(chnMsg)
 	chnErr := make(chan error, 1)
 	defer close(chnErr)
@@ -289,7 +289,7 @@ func (api *Api) StatsService(ctx *gin.Context) {
 		statsContext := context.WithValue(context.Background(), "node_id", task.NodeID)
 		opts := createStatOption()
 		opts.ID = task.Status.ContainerStatus.ContainerID
-		opts.RolexContainerStats = chnMsg
+		opts.CraneContainerStats = chnMsg
 
 		statsOptionsMap[opts.ID] = *opts
 
@@ -318,7 +318,7 @@ func (api *Api) StatsService(ctx *gin.Context) {
 				w.Flush()
 			}
 		case err := <-chnErr:
-			if statsStopErr, ok := err.(*rolexerror.ContainerStatsStopError); ok {
+			if statsStopErr, ok := err.(*cranerror.ContainerStatsStopError); ok {
 				containerId := statsStopErr.ID
 				log.Infof("Stats stream of container %s stop with error: %s", containerId, statsStopErr.Error())
 				if statOpts, ok := statsOptionsMap[containerId]; ok {

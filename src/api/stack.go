@@ -6,8 +6,8 @@ import (
 
 	"github.com/Dataman-Cloud/crane/src/dockerclient/model"
 	"github.com/Dataman-Cloud/crane/src/plugins/auth"
+	"github.com/Dataman-Cloud/crane/src/utils/cranerror"
 	"github.com/Dataman-Cloud/crane/src/utils/dmgin"
-	"github.com/Dataman-Cloud/crane/src/utils/rolexerror"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/docker/engine-api/types"
@@ -38,7 +38,7 @@ func (api *Api) CreateStack(ctx *gin.Context) {
 				jsonErr.Offset, jsonErr.Type, jsonErr.Value)
 		}
 
-		rerror := rolexerror.NewError(CodeCreateStackParamError, err.Error())
+		rerror := cranerror.NewError(CodeCreateStackParamError, err.Error())
 		dmgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
@@ -49,7 +49,7 @@ func (api *Api) CreateStack(ctx *gin.Context) {
 		gId, err := strconv.ParseUint(groupId, 10, 64)
 		if err != nil || gId < 0 {
 			log.Error("CreateStack invalid group_id")
-			rerror := rolexerror.NewError(CodeInvalidGroupId, "invalid group id")
+			rerror := cranerror.NewError(CodeInvalidGroupId, "invalid group id")
 			dmgin.HttpErrorResponse(ctx, rerror)
 			return
 		}

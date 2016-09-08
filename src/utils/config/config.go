@@ -14,7 +14,7 @@ const (
 )
 
 type Config struct {
-	RolexAddr         string   `env:"ROLEX_ADDR", required:"true"`
+	CraneAddr         string   `env:"ROLEX_ADDR", required:"true"`
 	SwarmManagerIP    string   `env:"ROLEX_SWARM_MANAGER_IP", required:"true"`
 	DockerEntryScheme string   `required:"false"`
 	DockerEntryPort   string   `env:"ROLEX_DOCKER_ENTRY_PORT", required:"false"`

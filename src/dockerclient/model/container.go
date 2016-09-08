@@ -6,7 +6,7 @@ import (
 	docker "github.com/Dataman-Cloud/go-dockerclient"
 )
 
-type RolexContainerStat struct {
+type CraneContainerStat struct {
 	NodeId      string
 	ServiceId   string
 	ServiceName string
@@ -25,5 +25,5 @@ type ContainerStatOptions struct {
 	Timeout             time.Duration
 	Done                chan bool
 	InactivityTimeout   time.Duration
-	RolexContainerStats chan *RolexContainerStat
+	CraneContainerStats chan *CraneContainerStat
 }

@@ -17,10 +17,10 @@ export GO15VENDOREXPERIMENT=1
 default: build
 
 build: fmt
-	 ${BUILD_OPTS} go build -ldflags "-X github.com/Dataman-Cloud/crane/src/version.BuildTime=`date -u +%Y-%m-%d:%H-%M-%S` -X github.com/Dataman-Cloud/crane/src/version.Version 1.0.0-`git rev-parse --short HEAD`" -v -o ./bin/rolex ./src/
+	 ${BUILD_OPTS} go build -ldflags "-X github.com/Dataman-Cloud/crane/src/version.BuildTime=`date -u +%Y-%m-%d:%H-%M-%S` -X github.com/Dataman-Cloud/crane/src/version.Version 1.0.0-`git rev-parse --short HEAD`" -v -o ./bin/crane ./src/
 
 rel: fmt
-	${BUILD_OPTS} go build -v -o ../rel/rolex ./src/
+	${BUILD_OPTS} go build -v -o ../rel/crane ./src/
 
 doc:
 	godoc -http=:6060 -index
@@ -35,7 +35,7 @@ lint:
 	golint ./src/
 
 run: build
-	./bin/rolex
+	./bin/crane
 
 test:
 	go test -cover=true ./src/...

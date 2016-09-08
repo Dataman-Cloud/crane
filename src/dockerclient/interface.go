@@ -28,7 +28,7 @@ type DockerClientInterface interface {
 	ListContainers(opts docker.ListContainersOptions) ([]docker.APIContainers, error)
 	RemoveContainer(opts docker.RemoveContainerOptions) error
 	LogsContainer(nodeId, containerId string, message chan string)
-	StatsContainer(nodeId, containerId string, stats chan *model.RolexContainerStat)
+	StatsContainer(nodeId, containerId string, stats chan *model.CraneContainerStat)
 
 	ConnectNetwork(id string, opts docker.NetworkConnectionOptions) error
 	CreateNetwork(opts docker.CreateNetworkOptions) (*docker.Network, error)
@@ -58,7 +58,7 @@ type DockerClientInterface interface {
 	InspectStack(namespace string) (*model.Bundle, error)
 	RemoveStack(namespace string) error
 	FilterServiceByStack(namespace string, opts types.ServiceListOptions) ([]swarm.Service, error)
-	ToRolexServiceSpec(swarmService swarm.ServiceSpec) model.RolexServiceSpec
+	ToCraneServiceSpec(swarmService swarm.ServiceSpec) model.CraneServiceSpec
 	GetStackGroup(namespace string) (uint64, error)
 
 	CreateService(service swarm.ServiceSpec, options types.ServiceCreateOptions) (types.ServiceCreateResponse, error)

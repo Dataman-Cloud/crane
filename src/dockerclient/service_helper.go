@@ -6,7 +6,7 @@ import (
 	"strconv"
 
 	"github.com/Dataman-Cloud/crane/src/dockerclient/model"
-	"github.com/Dataman-Cloud/crane/src/utils/rolexerror"
+	"github.com/Dataman-Cloud/crane/src/utils/cranerror"
 
 	distreference "github.com/docker/distribution/reference"
 	"github.com/docker/engine-api/types"
@@ -25,12 +25,12 @@ func validateResources(r *swarm.Resources) error {
 	var errMsg string
 	if r.NanoCPUs != 0 && r.NanoCPUs < 1e6 {
 		errMsg = fmt.Sprintf("invalid cpu value %g: Must be at least %g", float64(r.NanoCPUs)/1e9, 1e6/1e9)
-		return rolexerror.NewError(CodeInvalidServiceNanoCPUs, errMsg)
+		return cranerror.NewError(CodeInvalidServiceNanoCPUs, errMsg)
 	}
 
 	if r.MemoryBytes != 0 && r.MemoryBytes < 4*1024*1024 {
 		errMsg = fmt.Sprintf("invalid memory value %d: Must be at least 4MiB", r.MemoryBytes)
-		return rolexerror.NewError(CodeInvalidServiceMemoryBytes, errMsg)
+		return cranerror.NewError(CodeInvalidServiceMemoryBytes, errMsg)
 	}
 	return nil
 }
@@ -57,22 +57,22 @@ func validateRestartPolicy(rp *swarm.RestartPolicy) error {
 	if rp.Delay != nil {
 		delay, err := ptypes.Duration(ptypes.DurationProto(*rp.Delay))
 		if err != nil {
-			return rolexerror.NewError(CodeInvalidServiceDelay, err.Error())
+			return cranerror.NewError(CodeInvalidServiceDelay, err.Error())
 		}
 		if delay < 0 {
 			errMsg = "TaskSpec: restart-delay cannot be negative"
-			return rolexerror.NewError(CodeInvalidServiceDelay, errMsg)
+			return cranerror.NewError(CodeInvalidServiceDelay, errMsg)
 		}
 	}
 
 	if rp.Window != nil {
 		win, err := ptypes.Duration(ptypes.DurationProto(*rp.Window))
 		if err != nil {
-			return rolexerror.NewError(CodeInvalidServiceWindow, err.Error())
+			return cranerror.NewError(CodeInvalidServiceWindow, err.Error())
 		}
 		if win < 0 {
 			errMsg = "TaskSpec: restart-window cannot be negative"
-			return rolexerror.NewError(CodeInvalidServiceWindow, errMsg)
+			return cranerror.NewError(CodeInvalidServiceWindow, errMsg)
 		}
 	}
 
@@ -85,7 +85,7 @@ func validatePlacement(placement *swarm.Placement) error {
 	}
 	_, err := scheduler.ParseExprs(placement.Constraints)
 	if err != nil {
-		return rolexerror.NewError(CodeInvalidServicePlacement, err.Error())
+		return cranerror.NewError(CodeInvalidServicePlacement, err.Error())
 	}
 
 	return nil
@@ -98,11 +98,11 @@ func validateUpdate(uc *swarm.UpdateConfig) error {
 
 	delay, err := ptypes.Duration(ptypes.DurationProto(uc.Delay))
 	if err != nil {
-		return rolexerror.NewError(CodeInvalidServiceDelay, err.Error())
+		return cranerror.NewError(CodeInvalidServiceDelay, err.Error())
 	}
 
 	if delay < 0 {
-		return rolexerror.NewError(CodeInvalidServiceUpdateConfig, "TaskSpec: update-delay cannot be negative")
+		return cranerror.NewError(CodeInvalidServiceUpdateConfig, "TaskSpec: update-delay cannot be negative")
 	}
 
 	return nil
@@ -153,13 +153,13 @@ func validateEndpointSpec(epSpec *swarm.EndpointSpec) error {
 	}
 
 	if len(epSpec.Ports) > 0 && epSpec.Mode == swarm.ResolutionModeDNSRR {
-		return rolexerror.NewError(CodeInvalidServiceEndpoint, "EndpointSpec: ports can't be used with dnsrr mode")
+		return cranerror.NewError(CodeInvalidServiceEndpoint, "EndpointSpec: ports can't be used with dnsrr mode")
 	}
 
 	portSet := make(map[swarm.PortConfig]struct{})
 	for _, port := range epSpec.Ports {
 		if _, ok := portSet[port]; ok {
-			return rolexerror.NewError(CodeInvalidServiceEndpoint, "EndpointSpec: duplicate ports provided")
+			return cranerror.NewError(CodeInvalidServiceEndpoint, "EndpointSpec: duplicate ports provided")
 		}
 
 		portSet[port] = struct{}{}
@@ -168,9 +168,9 @@ func validateEndpointSpec(epSpec *swarm.EndpointSpec) error {
 	return nil
 }
 
-func ValidateRolexServiceSpec(spec *model.RolexServiceSpec) error {
+func ValidateCraneServiceSpec(spec *model.CraneServiceSpec) error {
 	if spec == nil {
-		return rolexerror.NewError(CodeInvalidServiceSpec, "service spec must not null")
+		return cranerror.NewError(CodeInvalidServiceSpec, "service spec must not null")
 	}
 
 	if err := validateName(spec.Name); err != nil {
@@ -197,10 +197,10 @@ func ValidateRolexServiceSpec(spec *model.RolexServiceSpec) error {
 
 func validateName(name string) error {
 	if name == "" {
-		return rolexerror.NewError(CodeInvalidServiceName, "meta: name must be provided")
+		return cranerror.NewError(CodeInvalidServiceName, "meta: name must be provided")
 	} else if !isValidName.MatchString(name) {
 		// if the name doesn't match the regex
-		return rolexerror.NewError(CodeInvalidServiceName, "invalid name, only [a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]")
+		return cranerror.NewError(CodeInvalidServiceName, "invalid name, only [a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]")
 	}
 	return nil
 }
@@ -208,7 +208,7 @@ func validateName(name string) error {
 func validateImageName(imageName string) error {
 	_, err := distreference.ParseNamed(imageName)
 	if err != nil {
-		return rolexerror.NewError(CodeInvalidImageName, err.Error())
+		return cranerror.NewError(CodeInvalidImageName, err.Error())
 	}
 	return nil
 }
@@ -229,12 +229,12 @@ func checkPortConflicts(reqPorts map[string]bool, serviceId string, existingServ
 				portConflict := PortConflictToString(pc)
 				if reqPorts[portConflict] {
 					namespace := GetServicesNamespace(existingService.Spec)
-					portConflictErr := &rolexerror.ServicePortConflictError{
+					portConflictErr := &cranerror.ServicePortConflictError{
 						Name:          existingService.Spec.Name,
 						Namespace:     namespace,
 						PublishedPort: portConflict,
 					}
-					return &rolexerror.DmError{Code: CodeGetServicePortConflictError, Err: portConflictErr}
+					return &cranerror.DmError{Code: CodeGetServicePortConflictError, Err: portConflictErr}
 				}
 			}
 		}
@@ -243,12 +243,12 @@ func checkPortConflicts(reqPorts map[string]bool, serviceId string, existingServ
 			portConflict := PortConflictToString(pc)
 			if reqPorts[portConflict] {
 				namespace := GetServicesNamespace(existingService.Spec)
-				portConflictErr := &rolexerror.ServicePortConflictError{
+				portConflictErr := &cranerror.ServicePortConflictError{
 					Name:          existingService.Spec.Name,
 					Namespace:     namespace,
 					PublishedPort: portConflict,
 				}
-				return &rolexerror.DmError{Code: CodeGetServicePortConflictError, Err: portConflictErr}
+				return &cranerror.DmError{Code: CodeGetServicePortConflictError, Err: portConflictErr}
 			}
 		}
 
@@ -262,7 +262,7 @@ func PortConflictToString(pc swarm.PortConfig) string {
 	return port + "/" + string(pc.Protocol)
 }
 
-func (client *RolexDockerClient) CheckServicePortConflicts(spec *model.RolexServiceSpec, serviceId string) error {
+func (client *CraneDockerClient) CheckServicePortConflicts(spec *model.CraneServiceSpec, serviceId string) error {
 	if spec.EndpointSpec == nil {
 		return nil
 	}

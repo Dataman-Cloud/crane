@@ -8,7 +8,7 @@ import (
 )
 
 // Inspect swarm cluster returns the swarm info
-func (client *RolexDockerClient) InspectSwarm() (swarm.Swarm, error) {
+func (client *CraneDockerClient) InspectSwarm() (swarm.Swarm, error) {
 	var swarmInfo swarm.Swarm
 
 	content, err := client.sharedHttpClient.GET(nil, client.swarmManagerHttpEndpoint+"/swarm", nil, nil)
@@ -24,12 +24,12 @@ func (client *RolexDockerClient) InspectSwarm() (swarm.Swarm, error) {
 }
 
 // ping to test swarmManager connection
-func (client *RolexDockerClient) Ping() error {
+func (client *CraneDockerClient) Ping() error {
 	return client.swarmManager.Ping()
 }
 
 // Get Manager information, equal to client cmd `docker info` on the manager node
-func (client *RolexDockerClient) ManagerInfo() (types.Info, error) {
+func (client *CraneDockerClient) ManagerInfo() (types.Info, error) {
 	var systemInfo types.Info
 
 	content, err := client.sharedHttpClient.GET(nil, client.swarmManagerHttpEndpoint+"/info", nil, nil)

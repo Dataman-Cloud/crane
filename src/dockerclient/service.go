@@ -40,7 +40,7 @@ type ServiceScale struct {
 }
 
 // ServiceCreate creates a new Service.
-func (client *RolexDockerClient) CreateService(service swarm.ServiceSpec, options types.ServiceCreateOptions) (types.ServiceCreateResponse, error) {
+func (client *CraneDockerClient) CreateService(service swarm.ServiceSpec, options types.ServiceCreateOptions) (types.ServiceCreateResponse, error) {
 	var response types.ServiceCreateResponse
 	var headers map[string][]string
 
@@ -63,7 +63,7 @@ func (client *RolexDockerClient) CreateService(service swarm.ServiceSpec, option
 }
 
 // ServiceList returns the list of services config
-func (client *RolexDockerClient) ListServiceSpec(options types.ServiceListOptions) ([]swarm.Service, error) {
+func (client *CraneDockerClient) ListServiceSpec(options types.ServiceListOptions) ([]swarm.Service, error) {
 	var services []swarm.Service
 	query := url.Values{}
 	if options.Filter.Len() > 0 {
@@ -88,7 +88,7 @@ func (client *RolexDockerClient) ListServiceSpec(options types.ServiceListOption
 }
 
 // ListService return the list of service staus and core config
-func (client *RolexDockerClient) ListService(options types.ServiceListOptions) ([]ServiceStatus, error) {
+func (client *CraneDockerClient) ListService(options types.ServiceListOptions) ([]ServiceStatus, error) {
 	services, err := client.ListServiceSpec(options)
 	if err != nil {
 		return nil, err
@@ -98,7 +98,7 @@ func (client *RolexDockerClient) ListService(options types.ServiceListOptions) (
 }
 
 // GetServicesStatus list services running status
-func (client *RolexDockerClient) GetServicesStatus(services []swarm.Service) ([]ServiceStatus, error) {
+func (client *CraneDockerClient) GetServicesStatus(services []swarm.Service) ([]ServiceStatus, error) {
 	var servicesSt []ServiceStatus
 
 	taskFilter := filters.NewArgs()
@@ -171,13 +171,13 @@ func (client *RolexDockerClient) GetServicesStatus(services []swarm.Service) ([]
 }
 
 // ServiceRemove kills and removes a service.
-func (client *RolexDockerClient) RemoveService(serviceID string) error {
+func (client *CraneDockerClient) RemoveService(serviceID string) error {
 	_, err := client.sharedHttpClient.DELETE(nil, client.swarmManagerHttpEndpoint+"/services/"+serviceID, nil, nil)
 	return err
 }
 
 // ServiceUpdate updates a Service.o
-func (client *RolexDockerClient) UpdateService(serviceID string, version swarm.Version, service swarm.ServiceSpec, options types.ServiceUpdateOptions) error {
+func (client *CraneDockerClient) UpdateService(serviceID string, version swarm.Version, service swarm.ServiceSpec, options types.ServiceUpdateOptions) error {
 	var headers map[string][]string
 	if options.EncodedRegistryAuth != "" {
 		headers = map[string][]string{
@@ -194,7 +194,7 @@ func (client *RolexDockerClient) UpdateService(serviceID string, version swarm.V
 	return nil
 }
 
-func (client *RolexDockerClient) UpdateServiceAutoOption(serviceID string, version swarm.Version, service swarm.ServiceSpec) error {
+func (client *CraneDockerClient) UpdateServiceAutoOption(serviceID string, version swarm.Version, service swarm.ServiceSpec) error {
 	updateOpts := types.ServiceUpdateOptions{}
 	if service.Annotations.Labels != nil {
 		if registryAuth, ok := service.Annotations.Labels[LabelRegistryAuth]; ok {
@@ -211,7 +211,7 @@ func (client *RolexDockerClient) UpdateServiceAutoOption(serviceID string, versi
 }
 
 // ScaleService update service replicas
-func (client *RolexDockerClient) ScaleService(serviceID string, serviceScale ServiceScale) error {
+func (client *CraneDockerClient) ScaleService(serviceID string, serviceScale ServiceScale) error {
 	service, err := client.InspectServiceWithRaw(serviceID)
 	if err != nil {
 		return err
@@ -227,7 +227,7 @@ func (client *RolexDockerClient) ScaleService(serviceID string, serviceScale Ser
 }
 
 // InspectServiceWithRaw returns the service information and the raw data.
-func (client *RolexDockerClient) InspectServiceWithRaw(serviceID string) (swarm.Service, error) {
+func (client *CraneDockerClient) InspectServiceWithRaw(serviceID string) (swarm.Service, error) {
 	var service swarm.Service
 
 	content, err := client.sharedHttpClient.GET(nil, client.swarmManagerHttpEndpoint+"/services/"+serviceID, nil, nil)
@@ -243,7 +243,7 @@ func (client *RolexDockerClient) InspectServiceWithRaw(serviceID string) (swarm.
 }
 
 // grant service permissions
-func (client *RolexDockerClient) ServiceAddLabel(serviceID string, labels map[string]string) error {
+func (client *CraneDockerClient) ServiceAddLabel(serviceID string, labels map[string]string) error {
 	service, err := client.InspectServiceWithRaw(serviceID)
 	if err != nil {
 		return err
@@ -257,7 +257,7 @@ func (client *RolexDockerClient) ServiceAddLabel(serviceID string, labels map[st
 }
 
 // revoke service permissions
-func (client *RolexDockerClient) ServiceRemoveLabel(serviceID string, labels []string) error {
+func (client *CraneDockerClient) ServiceRemoveLabel(serviceID string, labels []string) error {
 	service, err := client.InspectServiceWithRaw(serviceID)
 	if err != nil {
 		return err
@@ -270,7 +270,7 @@ func (client *RolexDockerClient) ServiceRemoveLabel(serviceID string, labels []s
 	return client.UpdateServiceAutoOption(service.ID, service.Version, service.Spec)
 }
 
-func (client *RolexDockerClient) getServiceNetworkNames(networkAttachmentConfigs []swarm.NetworkAttachmentConfig) []string {
+func (client *CraneDockerClient) getServiceNetworkNames(networkAttachmentConfigs []swarm.NetworkAttachmentConfig) []string {
 	networkNameList := []string{}
 	for _, networkAttachmentConfig := range networkAttachmentConfigs {
 		networkInfo, err := client.InspectNetwork(networkAttachmentConfig.Target)

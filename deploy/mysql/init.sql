@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 5.7.14, for Linux (x86_64)
 --
--- Host: localhost    Database: rolex
+-- Host: localhost    Database: crane
 -- ------------------------------------------------------
 -- Server version	5.7.14
 
@@ -16,12 +16,12 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Current Database: `rolex`
+-- Current Database: `crane`
 --
 
-CREATE DATABASE /*!32312 IF NOT EXISTS*/ `rolex` /*!40100 DEFAULT CHARACTER SET latin1 */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `crane` /*!40100 DEFAULT CHARACTER SET latin1 */;
 
-USE `rolex`;
+USE `crane`;
 DROP TABLE IF EXISTS `catalogs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -49,7 +49,7 @@ INSERT INTO `catalogs` VALUES (1,'2048','{\n    \"Services\": {\n        \"2048\
 UNLOCK TABLES;
 
 --
--- Dumping routines for database 'rolex'
+-- Dumping routines for database 'crane'
 --
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

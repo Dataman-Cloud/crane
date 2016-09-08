@@ -60,7 +60,7 @@
         }
 
         function listComponent() {
-            miscBackend.rolexConfig()
+            miscBackend.craneConfig()
                 .then(function (data) {
                     $rootScope.componentList = data.FeatureFlags;
 

@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/Dataman-Cloud/crane/src/utils/rolexerror"
+	"github.com/Dataman-Cloud/crane/src/utils/cranerror"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
@@ -43,7 +43,7 @@ func HttpUpdateResponse(ctx *gin.Context, err error, data interface{}) {
 func HttpErrorResponse(ctx *gin.Context, err error) {
 	log.Errorf("[%s] %s GOT error: %s", ctx.Request.Method, ctx.Request.URL.Path, err.Error())
 
-	rerror, ok := err.(*rolexerror.DmError)
+	rerror, ok := err.(*cranerror.DmError)
 	if !ok {
 		ctx.JSON(http.StatusServiceUnavailable, gin.H{"code": CodeUndefined, "data": err, "message": err.Error(), "source": "docker"})
 		return
@@ -57,6 +57,6 @@ func HttpErrorResponse(ctx *gin.Context, err error) {
 		httpCode, _ = strconv.Atoi(codes[0])
 		errCode, _ = strconv.Atoi(codes[1])
 	}
-	ctx.JSON(httpCode, gin.H{"code": errCode, "data": rerror.Err, "message": rerror.Err.Error(), "source": "rolex"})
+	ctx.JSON(httpCode, gin.H{"code": errCode, "data": rerror.Err, "message": rerror.Err.Error(), "source": "crane"})
 	return
 }

@@ -22,7 +22,7 @@ _testmain.go
 *.exe
 *.test
 *.prof
-/bin/rolex
+/bin/crane
 bin/nohup.out
 mysql_storage
 registry_storage

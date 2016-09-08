@@ -26,14 +26,14 @@ func (api *Api) ApiRouter() *gin.Engine {
 
 	router.Use(log.Ginrus(logrus.StandardLogger(), time.RFC3339, true), gin.Recovery())
 	router.Use(middlewares.OptionHandler())
-	router.Use(middlewares.RolexApiContext())
+	router.Use(middlewares.CraneApiContext())
 
 	router.GET("/", func(c *gin.Context) {
 		c.String(200, "pass")
 	})
 
 	if api.Config.FeatureEnabled("account") {
-		a := &auth.AccountApi{Config: api.Config, RolexDockerClient: api.Client}
+		a := &auth.AccountApi{Config: api.Config, CraneDockerClient: api.Client}
 		if api.Config.AccountTokenStore == "default" {
 			a.TokenStore = token_store.NewDefaultStore()
 		} else if api.Config.AccountTokenStore == "cookie_store" {
@@ -68,7 +68,7 @@ func (api *Api) ApiRouter() *gin.Engine {
 
 	if api.Config.FeatureEnabled("search") {
 		s := &search.SearchApi{
-			Indexer: search.NewRolexIndex(api.Client),
+			Indexer: search.NewCraneIndex(api.Client),
 		}
 		s.RegisterApiForSearch(router, Authorization)
 	}
@@ -153,7 +153,7 @@ func (api *Api) ApiRouter() *gin.Engine {
 	misc := router.Group("/misc/v1")
 	{
 		misc.GET("/help", api.Help(router))
-		misc.GET("/config", api.RolexConfig)
+		misc.GET("/config", api.CraneConfig)
 		misc.GET("/health", api.HealthCheck)
 	}
 

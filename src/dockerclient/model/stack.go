@@ -14,10 +14,10 @@ type Bundle struct {
 // Correspondence docker daemon type BundleFile
 type BundleService struct {
 	Version  string                      `json:"Version"`
-	Services map[string]RolexServiceSpec `json:"Services"`
+	Services map[string]CraneServiceSpec `json:"Services"`
 }
 
-type RolexServiceSpec struct {
+type CraneServiceSpec struct {
 	Name         string              `json:"Name"`
 	Labels       map[string]string   `json:"Labels"`
 	TaskTemplate swarm.TaskSpec      `json:"TaskTemplate"`
@@ -28,10 +28,10 @@ type RolexServiceSpec struct {
 	RegistryAuth string              `json:"RegistryAuth"`
 }
 
-type RolexService struct {
+type CraneService struct {
 	ID string `json:"ID"`
 	swarm.Meta
-	Spec         RolexServiceSpec   `json:"Spec"`
+	Spec         CraneServiceSpec   `json:"Spec"`
 	Endpoint     swarm.Endpoint     `json:"Endpoint"`
 	UpdateStatus swarm.UpdateStatus `json:"UpdateStatus"`
 }

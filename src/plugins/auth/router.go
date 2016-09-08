@@ -10,7 +10,7 @@ type AccountApi struct {
 	Config            *config.Config
 	Authenticator     Authenticator
 	TokenStore        TokenStore
-	RolexDockerClient *dockerclient.RolexDockerClient
+	CraneDockerClient *dockerclient.CraneDockerClient
 }
 
 func (account *AccountApi) RegisterApiForAccount(router *gin.Engine,

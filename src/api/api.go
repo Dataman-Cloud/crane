@@ -6,11 +6,11 @@ import (
 )
 
 type Api struct {
-	Client *dockerclient.RolexDockerClient
+	Client *dockerclient.CraneDockerClient
 	Config *config.Config
 }
 
-func (api *Api) GetDockerClient() *dockerclient.RolexDockerClient {
+func (api *Api) GetDockerClient() *dockerclient.CraneDockerClient {
 	return api.Client
 }
 

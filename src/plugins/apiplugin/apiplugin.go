@@ -4,14 +4,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type RolexApi interface {
+type CraneApi interface {
 	ApiRegister(router *gin.Engine, middlewares ...gin.HandlerFunc)
 }
 
 type ApiPlugin struct {
 	Name         string
 	Dependencies []string
-	Instance     RolexApi
+	Instance     CraneApi
 }
 
 var ApiPlugins map[string]*ApiPlugin

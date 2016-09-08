@@ -18,18 +18,18 @@ const (
 	DOCUMENT_VOLUME  = "volume"
 )
 
-type RolexIndexer struct {
+type CraneIndexer struct {
 	Indexer
 
-	RolexDockerClient *dockerclient.RolexDockerClient
+	CraneDockerClient *dockerclient.CraneDockerClient
 }
 
-func NewRolexIndex(RolexDockerClient *dockerclient.RolexDockerClient) *RolexIndexer {
-	return &RolexIndexer{RolexDockerClient: RolexDockerClient}
+func NewCraneIndex(CraneDockerClient *dockerclient.CraneDockerClient) *CraneIndexer {
+	return &CraneIndexer{CraneDockerClient: CraneDockerClient}
 }
 
-func (indexer *RolexIndexer) Index(store *DocumentStorage) {
-	if nodes, err := indexer.RolexDockerClient.ListNode(types.NodeListOptions{}); err == nil {
+func (indexer *CraneIndexer) Index(store *DocumentStorage) {
+	if nodes, err := indexer.CraneDockerClient.ListNode(types.NodeListOptions{}); err == nil {
 		for _, node := range nodes {
 			store.Set(node.ID+node.Description.Hostname, Document{
 				ID:   node.ID,
@@ -42,7 +42,7 @@ func (indexer *RolexIndexer) Index(store *DocumentStorage) {
 
 			backContext := context.WithValue(context.Background(), "node_id", node.ID)
 			if networks, err := indexer.
-				RolexDockerClient.
+				CraneDockerClient.
 				ListNodeNetworks(backContext, docker.NetworkFilterOpts{}); err == nil {
 				for _, network := range networks {
 					store.Set(network.ID+network.Name+node.ID, Document{
@@ -61,7 +61,7 @@ func (indexer *RolexIndexer) Index(store *DocumentStorage) {
 			}
 
 			if volumes, err := indexer.
-				RolexDockerClient.
+				CraneDockerClient.
 				ListVolumes(backContext, docker.ListVolumesOptions{}); err == nil {
 				for _, volume := range volumes {
 					store.Set(volume.Name, Document{
@@ -81,9 +81,9 @@ func (indexer *RolexIndexer) Index(store *DocumentStorage) {
 		log.Warnf("get node list error: %v", err)
 	}
 
-	if stacks, err := indexer.RolexDockerClient.ListStack(); err == nil {
+	if stacks, err := indexer.CraneDockerClient.ListStack(); err == nil {
 		for _, stack := range stacks {
-			//groupId, _ := indexer.RolexDockerClient.GetStackGroup(stack.Namespace)
+			//groupId, _ := indexer.CraneDockerClient.GetStackGroup(stack.Namespace)
 			groupId := uint64(1)
 
 			store.Set(stack.Namespace, Document{
@@ -96,7 +96,7 @@ func (indexer *RolexIndexer) Index(store *DocumentStorage) {
 			})
 
 			if services, err := indexer.
-				RolexDockerClient.
+				CraneDockerClient.
 				ListStackService(stack.Namespace, types.ServiceListOptions{}); err == nil {
 				for _, service := range services {
 					store.Set(service.ID+stack.Namespace,
@@ -112,7 +112,7 @@ func (indexer *RolexIndexer) Index(store *DocumentStorage) {
 						})
 
 					if tasks, err := indexer.
-						RolexDockerClient.
+						CraneDockerClient.
 						ListTasks(types.TaskListOptions{}); err == nil {
 						for _, task := range tasks {
 							store.Set(task.ID,

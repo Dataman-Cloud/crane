@@ -25,7 +25,7 @@ auth:
 
 notifications:
   endpoints:
-      - name: rolex
+      - name: crane
         disabled: false
         url: http://ROLEX_IP:ROLEX_PORT/registry/v1/notifications
         timeout: 500

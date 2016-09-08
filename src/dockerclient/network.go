@@ -3,41 +3,41 @@ package dockerclient
 import (
 	"strings"
 
-	"github.com/Dataman-Cloud/crane/src/utils/rolexerror"
+	"github.com/Dataman-Cloud/crane/src/utils/cranerror"
 
 	docker "github.com/Dataman-Cloud/go-dockerclient"
 	"golang.org/x/net/context"
 )
 
-func (client *RolexDockerClient) ConnectNetwork(id string, opts docker.NetworkConnectionOptions) error {
+func (client *CraneDockerClient) ConnectNetwork(id string, opts docker.NetworkConnectionOptions) error {
 	return client.SwarmManager().ConnectNetwork(id, opts)
 }
 
-func (client *RolexDockerClient) CreateNetwork(opts docker.CreateNetworkOptions) (*docker.Network, error) {
+func (client *CraneDockerClient) CreateNetwork(opts docker.CreateNetworkOptions) (*docker.Network, error) {
 	if opts.Name == "" || !isValidName.MatchString(opts.Name) {
-		return nil, rolexerror.NewError(CodeInvalidNetworkName, "invalid name, only [a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9] are allowed")
+		return nil, cranerror.NewError(CodeInvalidNetworkName, "invalid name, only [a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9] are allowed")
 	}
 
 	return client.SwarmManager().CreateNetwork(opts)
 }
 
-func (client *RolexDockerClient) DisconnectNetwork(id string, opts docker.NetworkConnectionOptions) error {
+func (client *CraneDockerClient) DisconnectNetwork(id string, opts docker.NetworkConnectionOptions) error {
 	return client.SwarmManager().DisconnectNetwork(id, opts)
 }
 
-func (client *RolexDockerClient) InspectNetwork(id string) (*docker.Network, error) {
+func (client *CraneDockerClient) InspectNetwork(id string) (*docker.Network, error) {
 	return client.SwarmManager().NetworkInfo(id)
 }
 
-func (client *RolexDockerClient) ListNetworks(opts docker.NetworkFilterOpts) ([]docker.Network, error) {
+func (client *CraneDockerClient) ListNetworks(opts docker.NetworkFilterOpts) ([]docker.Network, error) {
 	return client.SwarmManager().FilteredListNetworks(opts)
 }
 
-func (client *RolexDockerClient) RemoveNetwork(id string) error {
+func (client *CraneDockerClient) RemoveNetwork(id string) error {
 	err := client.SwarmManager().RemoveNetwork(id)
 	if err != nil {
 		if strings.Contains(err.Error(), "API error (403)") {
-			return rolexerror.NewError(CodeNetworkPredefined, err.Error())
+			return cranerror.NewError(CodeNetworkPredefined, err.Error())
 		} else {
 			return err
 		}
@@ -46,7 +46,7 @@ func (client *RolexDockerClient) RemoveNetwork(id string) error {
 	return nil
 }
 
-func (client *RolexDockerClient) ConnectNodeNetwork(ctx context.Context, networkID string, opts docker.NetworkConnectionOptions) error {
+func (client *CraneDockerClient) ConnectNodeNetwork(ctx context.Context, networkID string, opts docker.NetworkConnectionOptions) error {
 	swarmNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return err
@@ -54,13 +54,13 @@ func (client *RolexDockerClient) ConnectNodeNetwork(ctx context.Context, network
 
 	err = swarmNode.ConnectNetwork(networkID, opts)
 	if err != nil {
-		err = ToRolexError(err)
+		err = ToCraneError(err)
 	}
 
 	return err
 }
 
-func (client *RolexDockerClient) DisconnectNodeNetwork(ctx context.Context, networkID string, opts docker.NetworkConnectionOptions) error {
+func (client *CraneDockerClient) DisconnectNodeNetwork(ctx context.Context, networkID string, opts docker.NetworkConnectionOptions) error {
 	swarmNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return err
@@ -68,13 +68,13 @@ func (client *RolexDockerClient) DisconnectNodeNetwork(ctx context.Context, netw
 
 	err = swarmNode.DisconnectNetwork(networkID, opts)
 	if err != nil {
-		err = ToRolexError(err)
+		err = ToCraneError(err)
 	}
 
 	return err
 }
 
-func (client *RolexDockerClient) InspectNodeNetwork(ctx context.Context, networkID string) (*docker.Network, error) {
+func (client *CraneDockerClient) InspectNodeNetwork(ctx context.Context, networkID string) (*docker.Network, error) {
 	swarmNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return nil, err
@@ -82,13 +82,13 @@ func (client *RolexDockerClient) InspectNodeNetwork(ctx context.Context, network
 
 	network, err := swarmNode.NetworkInfo(networkID)
 	if err != nil {
-		err = ToRolexError(err)
+		err = ToCraneError(err)
 	}
 
 	return network, err
 }
 
-func (client *RolexDockerClient) ListNodeNetworks(ctx context.Context, opts docker.NetworkFilterOpts) ([]docker.Network, error) {
+func (client *CraneDockerClient) ListNodeNetworks(ctx context.Context, opts docker.NetworkFilterOpts) ([]docker.Network, error) {
 	swarmNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return nil, err
@@ -96,7 +96,7 @@ func (client *RolexDockerClient) ListNodeNetworks(ctx context.Context, opts dock
 	return swarmNode.FilteredListNetworks(opts)
 }
 
-func (client *RolexDockerClient) CreateNodeNetwork(ctx context.Context, opts docker.CreateNetworkOptions) (*docker.Network, error) {
+func (client *CraneDockerClient) CreateNodeNetwork(ctx context.Context, opts docker.CreateNetworkOptions) (*docker.Network, error) {
 	swarmNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return nil, err
