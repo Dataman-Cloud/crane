@@ -4,9 +4,9 @@ import (
 	"strconv"
 
 	"github.com/Dataman-Cloud/go-component/auth"
-	"github.com/Dataman-Cloud/go-component/utils/dmerror"
-	"github.com/Dataman-Cloud/go-component/utils/dmgin"
-	"github.com/Dataman-Cloud/go-component/utils/model"
+	"github.com/Dataman-Cloud/rolex/src/utils/rolexerror"
+	"github.com/Dataman-Cloud/rolex/src/utils/dmgin"
+	"github.com/Dataman-Cloud/rolex/src/utils/model"
 
 	"github.com/gin-gonic/gin"
 )
@@ -22,14 +22,14 @@ func Authorization(a *auth.AccountApi) gin.HandlerFunc {
 		}
 
 		if len(ctx.Request.Header.Get("Authorization")) == 0 {
-			dmgin.HttpErrorResponse(ctx, dmerror.NewError(auth.CodeAccountTokenInvalidError, "Invalid Authorization"))
+			dmgin.HttpErrorResponse(ctx, rolexerror.NewError(auth.CodeAccountTokenInvalidError, "Invalid Authorization"))
 			ctx.Abort()
 			return
 		}
 
 		value, err := a.TokenStore.Get(ctx, ctx.Request.Header.Get("Authorization"))
 		if err != nil {
-			dmgin.HttpErrorResponse(ctx, dmerror.NewError(auth.CodeAccountTokenInvalidError, "Invalid Authorization"))
+			dmgin.HttpErrorResponse(ctx, rolexerror.NewError(auth.CodeAccountTokenInvalidError, "Invalid Authorization"))
 			ctx.Abort()
 			return
 		}
@@ -38,7 +38,7 @@ func Authorization(a *auth.AccountApi) gin.HandlerFunc {
 
 		acc, err := a.Authenticator.Account(accountId)
 		if err != nil {
-			dmgin.HttpErrorResponse(ctx, dmerror.NewError(auth.CodeAccountTokenInvalidError, "Invalid Authorization"))
+			dmgin.HttpErrorResponse(ctx, rolexerror.NewError(auth.CodeAccountTokenInvalidError, "Invalid Authorization"))
 			ctx.Abort()
 			return
 		}
@@ -50,7 +50,7 @@ func Authorization(a *auth.AccountApi) gin.HandlerFunc {
 				"account_id": accountId,
 			},
 		}); err != nil {
-			dmgin.HttpErrorResponse(ctx, dmerror.NewError(auth.CodeAccountTokenInvalidError, "Invalid Authorization"))
+			dmgin.HttpErrorResponse(ctx, rolexerror.NewError(auth.CodeAccountTokenInvalidError, "Invalid Authorization"))
 			ctx.Abort()
 			return
 		} else {

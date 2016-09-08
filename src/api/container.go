@@ -6,9 +6,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/Dataman-Cloud/go-component/utils/dmerror"
-	"github.com/Dataman-Cloud/go-component/utils/dmgin"
 	"github.com/Dataman-Cloud/rolex/src/dockerclient/model"
+	"github.com/Dataman-Cloud/rolex/src/utils/dmgin"
+	"github.com/Dataman-Cloud/rolex/src/utils/rolexerror"
 
 	docker "github.com/Dataman-Cloud/go-dockerclient"
 	log "github.com/Sirupsen/logrus"
@@ -59,7 +59,7 @@ func (api *Api) ListContainers(ctx *gin.Context) {
 	all, err := strconv.ParseBool(ctx.DefaultQuery("all", "true"))
 	if err != nil {
 		log.Error("Parse param all of list container got error: ", err)
-		rerror := dmerror.NewError(CodeListContainerParamError, err.Error())
+		rerror := rolexerror.NewError(CodeListContainerParamError, err.Error())
 		dmgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
@@ -67,7 +67,7 @@ func (api *Api) ListContainers(ctx *gin.Context) {
 	size, err := strconv.ParseBool(ctx.DefaultQuery("size", "false"))
 	if err != nil {
 		log.Error("Parse param size of list container got error: ", err)
-		rerror := dmerror.NewError(CodeListContainerParamError, err.Error())
+		rerror := rolexerror.NewError(CodeListContainerParamError, err.Error())
 		dmgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
@@ -75,7 +75,7 @@ func (api *Api) ListContainers(ctx *gin.Context) {
 	limitValue, err := strconv.ParseInt(ctx.DefaultQuery("limit", "0"), 10, 64)
 	if err != nil {
 		log.Error("Parse param all of limit container got error: ", err)
-		rerror := dmerror.NewError(CodeListContainerParamError, err.Error())
+		rerror := rolexerror.NewError(CodeListContainerParamError, err.Error())
 		dmgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
@@ -85,7 +85,7 @@ func (api *Api) ListContainers(ctx *gin.Context) {
 	queryFilters := ctx.DefaultQuery("filters", "{}")
 	if err := json.Unmarshal([]byte(queryFilters), &filters); err != nil {
 		log.Error("Unmarshal list container filters got error: ", err)
-		rerror := dmerror.NewError(CodeListContainerParamError, err.Error())
+		rerror := rolexerror.NewError(CodeListContainerParamError, err.Error())
 		dmgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
@@ -115,7 +115,7 @@ func (api *Api) PatchContainer(ctx *gin.Context) {
 	rolexContext, _ := ctx.Get("rolexContext")
 	var containerRequest ContainerRequest
 	if err := ctx.BindJSON(&containerRequest); err != nil {
-		rerror := dmerror.NewError(CodePatchContainerParamError, err.Error())
+		rerror := rolexerror.NewError(CodePatchContainerParamError, err.Error())
 		dmgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
@@ -143,7 +143,7 @@ func (api *Api) PatchContainer(ctx *gin.Context) {
 	case "resizetty":
 		err = api.GetDockerClient().ResizeContainerTTY(rolexContext.(context.Context), cId, containerRequest.Height, containerRequest.Width)
 	default:
-		err = dmerror.NewError(CodePatchContainerMethodUndefined, containerRequest.Method)
+		err = rolexerror.NewError(CodePatchContainerMethodUndefined, containerRequest.Method)
 	}
 
 	if err != nil {
@@ -160,7 +160,7 @@ func (api *Api) DeleteContainer(ctx *gin.Context) {
 	rolexContext, _ := ctx.Get("rolexContext")
 	var containerRequest ContainerRequest
 	if err := ctx.BindJSON(&containerRequest); err != nil {
-		rerror := dmerror.NewError(CodeDeleteContainerParamError, err.Error())
+		rerror := rolexerror.NewError(CodeDeleteContainerParamError, err.Error())
 		dmgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
@@ -175,7 +175,7 @@ func (api *Api) DeleteContainer(ctx *gin.Context) {
 		opts := docker.KillContainerOptions{ID: cId}
 		err = api.GetDockerClient().KillContainer(rolexContext.(context.Context), opts)
 	} else {
-		err = dmerror.NewError(CodeDeleteContainerMethodUndefined, containerRequest.Method)
+		err = rolexerror.NewError(CodeDeleteContainerMethodUndefined, containerRequest.Method)
 	}
 
 	if err != nil {

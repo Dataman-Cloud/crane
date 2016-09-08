@@ -7,8 +7,8 @@ import (
 	"github.com/Dataman-Cloud/rolex/src/api"
 	"github.com/Dataman-Cloud/rolex/src/dockerclient"
 	_ "github.com/Dataman-Cloud/rolex/src/plugins"
-	"github.com/Dataman-Cloud/rolex/src/util/config"
-	log "github.com/Dataman-Cloud/rolex/src/util/log"
+	"github.com/Dataman-Cloud/rolex/src/utils/config"
+	log "github.com/Dataman-Cloud/rolex/src/utils/log"
 
 	"golang.org/x/net/context"
 )

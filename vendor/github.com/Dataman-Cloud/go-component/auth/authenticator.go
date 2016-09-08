@@ -1,7 +1,7 @@
 package auth
 
 import (
-	"github.com/Dataman-Cloud/go-component/utils/model"
+	"github.com/Dataman-Cloud/rolex/src/utils/model"
 )
 
 type Authenticator interface {

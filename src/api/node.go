@@ -3,9 +3,9 @@ package api
 import (
 	"encoding/json"
 
-	"github.com/Dataman-Cloud/go-component/utils/dmerror"
-	"github.com/Dataman-Cloud/go-component/utils/dmgin"
 	"github.com/Dataman-Cloud/rolex/src/model"
+	"github.com/Dataman-Cloud/rolex/src/utils/dmgin"
+	"github.com/Dataman-Cloud/rolex/src/utils/rolexerror"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/docker/engine-api/types"
@@ -81,7 +81,7 @@ func (api *Api) UpdateNode(ctx *gin.Context) {
 			log.Errorf("Unexpected type at by type %v. Expected %s but received %s.",
 				jsonErr.Offset, jsonErr.Type, jsonErr.Value)
 		}
-		rerror := dmerror.NewError(CodeUpdateNodeParamError, err.Error())
+		rerror := rolexerror.NewError(CodeUpdateNodeParamError, err.Error())
 		dmgin.HttpErrorResponse(ctx, rerror)
 		return
 	}

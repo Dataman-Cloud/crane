@@ -9,9 +9,9 @@ import (
 
 	"github.com/Dataman-Cloud/go-component/auth"
 	"github.com/Dataman-Cloud/go-component/auth/authenticators"
-	"github.com/Dataman-Cloud/go-component/utils/db"
-	"github.com/Dataman-Cloud/go-component/utils/dmerror"
-	"github.com/Dataman-Cloud/go-component/utils/dmgin"
+	"github.com/Dataman-Cloud/rolex/src/utils/db"
+	"github.com/Dataman-Cloud/rolex/src/utils/rolexerror"
+	"github.com/Dataman-Cloud/rolex/src/utils/dmgin"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/docker/distribution/manifest/schema1"
@@ -127,7 +127,7 @@ func (registry *Registry) TagList(ctx *gin.Context) {
 	var tags []*Tag
 	err := registry.DbClient.Where("namespace = ? AND image = ?", ctx.Param("namespace"), ctx.Param("image")).Find(&tags).Error
 	if err != nil {
-		rolexerr := dmerror.NewError(CodeRegistryTagsListError, err.Error())
+		rolexerr := rolexerror.NewError(CodeRegistryTagsListError, err.Error())
 		dmgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	}
@@ -150,7 +150,7 @@ func (registry *Registry) GetManifests(ctx *gin.Context) {
 
 	resp, _, err := registry.RegistryAPIGet(fmt.Sprintf("%s/%s/manifests/%s", ctx.Param("namespace"), ctx.Param("image"), ctx.Param("reference")), account.Email)
 	if err != nil {
-		rolexerr := dmerror.NewError(CodeRegistryGetManifestError, err.Error())
+		rolexerr := rolexerror.NewError(CodeRegistryGetManifestError, err.Error())
 		dmgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	}
@@ -158,7 +158,7 @@ func (registry *Registry) GetManifests(ctx *gin.Context) {
 	var manifest schema1.Manifest
 	err = json.Unmarshal(resp, &manifest)
 	if err != nil {
-		rolexerr := dmerror.NewError(CodeRegistryManifestParseError, err.Error())
+		rolexerr := rolexerror.NewError(CodeRegistryManifestParseError, err.Error())
 		dmgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	}
@@ -176,7 +176,7 @@ func (registry *Registry) DeleteManifests(ctx *gin.Context) {
 
 	_, _, err := registry.RegistryAPIDeleteSchemaV2(fmt.Sprintf("%s/%s/manifests/%s", ctx.Param("namespace"), ctx.Param("image"), ctx.Param("reference")), account.Email)
 	if err != nil {
-		err := dmerror.NewError(CodeRegistryManifestDeleteError, err.Error())
+		err := rolexerror.NewError(CodeRegistryManifestDeleteError, err.Error())
 		dmgin.HttpErrorResponse(ctx, err)
 		return
 	}
@@ -202,7 +202,7 @@ func (registry *Registry) MineRepositories(ctx *gin.Context) {
 		err = registry.DbClient.Where("namespace = ?", RegistryNamespaceForAccount(account)).Order("created_at DESC").Find(&images).Error
 	}
 	if err != nil {
-		rolexerr := dmerror.NewError(CodeRegistryCatalogListError, err.Error())
+		rolexerr := rolexerror.NewError(CodeRegistryCatalogListError, err.Error())
 		dmgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	}
@@ -225,7 +225,7 @@ func (registry *Registry) PublicRepositories(ctx *gin.Context) {
 		err = registry.DbClient.Where("Publicity = 1").Order("created_at DESC").Find(&images).Error
 	}
 	if err != nil {
-		rolexerr := dmerror.NewError(CodeRegistryCatalogListError, err.Error())
+		rolexerr := rolexerror.NewError(CodeRegistryCatalogListError, err.Error())
 		dmgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	}
@@ -251,7 +251,7 @@ func (registry *Registry) ImagePublicity(ctx *gin.Context) {
 			log.Error("Unexpected type at by type %v. Expected %s but received %s.",
 				jsonErr.Offset, jsonErr.Type, jsonErr.Value)
 		}
-		rolexerr := dmerror.NewError(CodeRegistryImagePublicityParamError, err.Error())
+		rolexerr := rolexerror.NewError(CodeRegistryImagePublicityParamError, err.Error())
 		dmgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	}
@@ -260,7 +260,7 @@ func (registry *Registry) ImagePublicity(ctx *gin.Context) {
 	registry.DbClient.Where("namespace = ? AND image = ? ", ctx.Param("namespace"), ctx.Param("image")).Find(&image)
 	err := registry.DbClient.Model(&image).UpdateColumn("Publicity", param.Publicity).Error
 	if err != nil {
-		rolexerr := dmerror.NewError(CodeRegistryImagePublicityUpdateError, err.Error())
+		rolexerr := rolexerror.NewError(CodeRegistryImagePublicityUpdateError, err.Error())
 		dmgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	}

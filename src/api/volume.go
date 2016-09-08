@@ -1,8 +1,8 @@
 package api
 
 import (
-	"github.com/Dataman-Cloud/go-component/utils/dmerror"
-	"github.com/Dataman-Cloud/go-component/utils/dmgin"
+	"github.com/Dataman-Cloud/rolex/src/utils/dmgin"
+	"github.com/Dataman-Cloud/rolex/src/utils/rolexerror"
 
 	docker "github.com/Dataman-Cloud/go-dockerclient"
 	log "github.com/Sirupsen/logrus"
@@ -48,7 +48,7 @@ func (api *Api) CreateVolume(ctx *gin.Context) {
 
 	if err := ctx.BindJSON(&opts); err != nil {
 		log.Errorf("create volume request body parse json error: %v", err)
-		rerror := dmerror.NewError(CodeCreateVolumeParamError, err.Error())
+		rerror := rolexerror.NewError(CodeCreateVolumeParamError, err.Error())
 		dmgin.HttpErrorResponse(ctx, rerror)
 		return
 	}

@@ -5,9 +5,9 @@ import (
 	"strconv"
 
 	"github.com/Dataman-Cloud/go-component/auth"
-	"github.com/Dataman-Cloud/go-component/utils/dmerror"
-	"github.com/Dataman-Cloud/go-component/utils/dmgin"
 	"github.com/Dataman-Cloud/rolex/src/dockerclient/model"
+	"github.com/Dataman-Cloud/rolex/src/utils/dmgin"
+	"github.com/Dataman-Cloud/rolex/src/utils/rolexerror"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/docker/engine-api/types"
@@ -38,7 +38,7 @@ func (api *Api) CreateStack(ctx *gin.Context) {
 				jsonErr.Offset, jsonErr.Type, jsonErr.Value)
 		}
 
-		rerror := dmerror.NewError(CodeCreateStackParamError, err.Error())
+		rerror := rolexerror.NewError(CodeCreateStackParamError, err.Error())
 		dmgin.HttpErrorResponse(ctx, rerror)
 		return
 	}
@@ -49,7 +49,7 @@ func (api *Api) CreateStack(ctx *gin.Context) {
 		gId, err := strconv.ParseUint(groupId, 10, 64)
 		if err != nil || gId < 0 {
 			log.Error("CreateStack invalid group_id")
-			rerror := dmerror.NewError(CodeInvalidGroupId, "invalid group id")
+			rerror := rolexerror.NewError(CodeInvalidGroupId, "invalid group id")
 			dmgin.HttpErrorResponse(ctx, rerror)
 			return
 		}

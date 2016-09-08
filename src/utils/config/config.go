@@ -4,9 +4,8 @@ import (
 	"flag"
 	"os"
 
-	"github.com/Dataman-Cloud/rolex/src/util"
+	"github.com/Dataman-Cloud/rolex/src/utils"
 
-	dmConfig "github.com/Dataman-Cloud/go-component/utils/config"
 	log "github.com/Sirupsen/logrus"
 )
 
@@ -42,7 +41,7 @@ type Config struct {
 }
 
 func (c *Config) FeatureEnabled(feature string) bool {
-	return util.StringInSlice(feature, c.FeatureFlags)
+	return utils.StringInSlice(feature, c.FeatureFlags)
 }
 
 var config Config
@@ -53,9 +52,9 @@ func GetConfig() *Config {
 
 func init() {
 	envFile := flag.String("config", "env_file", "")
-	dmConfig.LoadEnvFile(*envFile)
+	LoadEnvFile(*envFile)
 
-	if err := dmConfig.LoadConfig(&config); err != nil {
+	if err := LoadConfig(&config); err != nil {
 		log.Error("LoadConfig got error: ", err)
 		os.Exit(1)
 	}

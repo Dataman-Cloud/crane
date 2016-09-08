@@ -3,10 +3,10 @@ package license
 import (
 	"strconv"
 
-	"github.com/Dataman-Cloud/go-component/utils/dmerror"
-	"github.com/Dataman-Cloud/go-component/utils/dmgin"
+	"github.com/Dataman-Cloud/rolex/src/utils/rolexerror"
+	"github.com/Dataman-Cloud/rolex/src/utils/dmgin"
 
-	"github.com/Dataman-Cloud/go-component/utils/encrypt"
+	"github.com/Dataman-Cloud/rolex/src/utils/encrypt"
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
 )
@@ -30,20 +30,20 @@ func (licenseApi *LicenseApi) Create(ctx *gin.Context) {
 	var setting Setting
 	if err = ctx.BindJSON(&setting); err != nil {
 		log.Errorf("invalid data error: %v", err)
-		rolexerr := dmerror.NewError(CodeLicenseCreateLicenseError, err.Error())
+		rolexerr := rolexerror.NewError(CodeLicenseCreateLicenseError, err.Error())
 		dmgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	}
 
 	if sk, err := encrypt.Decrypt(key, setting.License); err != nil {
 		log.Errorf("invalid license error: %v", err)
-		rolexerr := dmerror.NewError(CodeLicenseCreateLicenseError, err.Error())
+		rolexerr := rolexerror.NewError(CodeLicenseCreateLicenseError, err.Error())
 		dmgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	} else {
 		if _, err = strconv.ParseUint(sk, 10, 64); err != nil {
 			log.Errorf("invalid license error: %v", err)
-			rolexerr := dmerror.NewError(CodeLicenseCreateLicenseError, err.Error())
+			rolexerr := rolexerror.NewError(CodeLicenseCreateLicenseError, err.Error())
 			dmgin.HttpErrorResponse(ctx, rolexerr)
 			return
 		}
@@ -61,7 +61,7 @@ func (licenseApi *LicenseApi) Create(ctx *gin.Context) {
 			Save(&objSetting).
 			Error; err != nil {
 			log.Errorf("update license error: %v", err)
-			rolexerr := dmerror.NewError(CodeLicenseCreateLicenseError, err.Error())
+			rolexerr := rolexerror.NewError(CodeLicenseCreateLicenseError, err.Error())
 			dmgin.HttpErrorResponse(ctx, rolexerr)
 			return
 		}
@@ -76,7 +76,7 @@ func (licenseApi *LicenseApi) Create(ctx *gin.Context) {
 		Update(&objSetting).
 		Error; err != nil {
 		log.Errorf("update license error: %v", err)
-		rolexerr := dmerror.NewError(CodeLicenseCreateLicenseError, err.Error())
+		rolexerr := rolexerror.NewError(CodeLicenseCreateLicenseError, err.Error())
 		dmgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	}
@@ -94,18 +94,18 @@ func (licenseApi *LicenseApi) Get(ctx *gin.Context) {
 		Find(&objSetting).
 		Error; err != nil {
 		log.Errorf("get license error: %v", err)
-		rolexerr := dmerror.NewError(CodeLicenseGetLicenseError, err.Error())
+		rolexerr := rolexerror.NewError(CodeLicenseGetLicenseError, err.Error())
 		dmgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	} else if len(objSetting) == 0 {
-		rolexerr := dmerror.NewError(CodeLicenseNotFoundLicenseError, "not found license")
+		rolexerr := rolexerror.NewError(CodeLicenseNotFoundLicenseError, "not found license")
 		dmgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	}
 
 	if lc, err := encrypt.Decrypt(key, objSetting[0].License); err != nil {
 		log.Errorf("invalid license error: %v", err)
-		rolexerr := dmerror.NewError(CodeLicenseGetLicenseError, err.Error())
+		rolexerr := rolexerror.NewError(CodeLicenseGetLicenseError, err.Error())
 		dmgin.HttpErrorResponse(ctx, rolexerr)
 		return
 	} else {

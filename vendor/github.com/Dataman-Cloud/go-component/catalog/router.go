@@ -1,7 +1,7 @@
 package catalog
 
 import (
-	"github.com/Dataman-Cloud/go-component/utils/db"
+	"github.com/Dataman-Cloud/rolex/src/utils/db"
 
 	"github.com/gin-gonic/gin"
 )

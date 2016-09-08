@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/Dataman-Cloud/go-component/utils/dmerror"
+	"github.com/Dataman-Cloud/rolex/src/utils/rolexerror"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
@@ -43,7 +43,7 @@ func HttpUpdateResponse(ctx *gin.Context, err error, data interface{}) {
 func HttpErrorResponse(ctx *gin.Context, err error) {
 	log.Errorf("[%s] %s GOT error: %s", ctx.Request.Method, ctx.Request.URL.Path, err.Error())
 
-	rerror, ok := err.(*dmerror.DmError)
+	rerror, ok := err.(*rolexerror.DmError)
 	if !ok {
 		ctx.JSON(http.StatusServiceUnavailable, gin.H{"code": CodeUndefined, "data": err, "message": err.Error(), "source": "docker"})
 		return
