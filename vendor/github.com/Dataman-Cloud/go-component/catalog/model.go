@@ -6,8 +6,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"os"
-	"path/filepath"
 )
 
 type Catalog struct {
@@ -26,69 +24,8 @@ const (
 	ICON_DEFAULT = "img/default.png"
 )
 
-const (
-	CATALOG_SYSTEM_DEFAULT = 0
-)
-
 type Size interface {
 	Size() int64
-}
-
-func CatalogFromPath(path string) (*Catalog, error) {
-	bundle, err := ioutil.ReadFile(filepath.Join(path, "bundle.json"))
-	if err != nil {
-		return nil, err
-	}
-
-	readme, err := ioutil.ReadFile(filepath.Join(path, "readme.md"))
-	if err != nil {
-		return nil, err
-	}
-
-	description, err := ioutil.ReadFile(filepath.Join(path, "description"))
-	if err != nil {
-		return nil, err
-	}
-
-	f, err := ioutil.ReadFile(filepath.Join(path, filepath.Base(path)+".png"))
-	if fs, err := os.Stat(filepath.Join(path, filepath.Base(path)+".png")); err != nil {
-		return nil, err
-	} else if fs.Size() > ICON_SIZE {
-		return nil, errors.New("icon size too big")
-	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	catalog := &Catalog{
-		Name:        filepath.Base(path),
-		Bundle:      string(bundle),
-		Readme:      string(readme),
-		Description: string(description),
-		IconData:    fmt.Sprintf("data:%s;base64,%s", http.DetectContentType(f), base64.StdEncoding.EncodeToString(f)),
-	}
-	return catalog, nil
-}
-
-func AllCatalogFromPath(path string) ([]*Catalog, error) {
-	catalogs := make([]*Catalog, 0)
-	files, err := ioutil.ReadDir(path)
-	if err != nil {
-		return catalogs, err
-	}
-
-	for _, file := range files {
-		if file.IsDir() {
-			catalog, err := CatalogFromPath(filepath.Join(path, file.Name()))
-			if err != nil {
-				return catalogs, err
-			}
-			catalogs = append(catalogs, catalog)
-		}
-	}
-
-	return catalogs, nil
 }
 
 func ImageHandle(request *http.Request) (string, error) {
