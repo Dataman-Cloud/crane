@@ -1,0 +1,19 @@
+<header id="header-main">
+    <h1>如何添加镜像</h1>
+</header>
+
+<p>
+    <code>
+        docker login {/DOCKER_REGISTRY_URL/} -u{/userName/} -pYOUR_PASSWORD
+    </code>
+</p>
+
+<p>
+    <code>
+        docker push {/DOCKER_REGISTRY_URL/}{/userName.substring(0, userName.indexOf('@'))/}/IMAGE_NAME
+    </code>
+</p>
+
+<p>
+    注意： push/pull 镜像之前确保 docker daemon 启动参数 --insecure-registry=REGISTRY_IP:5000
+</p>

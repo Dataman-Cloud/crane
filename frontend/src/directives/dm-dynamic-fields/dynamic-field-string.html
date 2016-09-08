@@ -1,0 +1,28 @@
+<ng-form name="dyTextForm">
+    <label class="form-label form-control-static"><span class="text-danger" data-ng-show="fieldData.required">*</span>
+        {/fieldData.label/}</label>
+
+    <input type="text" class="ember-view ember-text-field" ng-model="fieldData.default" name="{/fieldData.variable/}"
+           ng-required="fieldData.required" dynamic-vali="fieldData.validations"/>
+
+    <p data-ng-if="dyTextForm[fieldData.variable].$valid" class="help-block help-info-bottom">
+        {/fieldData.description/}
+    </p>
+
+    <p data-ng-if="dyTextForm[fieldData.variable].$error.dyRange" class="help-info-bottom error-info">
+        端口范围不符合规定
+    </p>
+
+    <p data-ng-if="dyTextForm[fieldData.variable].$error.dyPattern" class="help-info-bottom error-info">
+        正则表达式未通过
+    </p>
+
+    <p data-ng-if="dyTextForm[fieldData.variable].$error.dyLength" class="help-info-bottom error-info">
+        输入长度不符合规范
+    </p>
+
+    <p data-ng-if="dyTextForm[fieldData.variable].$error.dyEmail" class="help-info-bottom error-info">
+        请输入正确邮箱格式
+    </p>
+
+</ng-form>

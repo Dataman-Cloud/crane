@@ -1,0 +1,70 @@
+{
+  "name": "blackmamba",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dataman-Cloud/blackmamba.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Dataman-Cloud/blackmamba/issues"
+  },
+  "homepage": "https://github.com/Dataman-Cloud/blackmamba#readme",
+  "dependencies": {
+    "gulp": "3.9.0",
+    "gulp-angular-filesort": "~1.1.1",
+    "gulp-angular-templatecache": "~1.6.0",
+    "gulp-clean": "0.3.1",
+    "gulp-concat": "2.6.0",
+    "gulp-htmlmin": "1.1.4",
+    "gulp-inject": "~1.3.1",
+    "gulp-minify-css": "1.2.1",
+    "gulp-minify-html": "~1.0.3",
+    "gulp-ng-annotate": "^2.0.0",
+    "gulp-rename": "1.2.2",
+    "gulp-rev-all": "0.8.18",
+    "gulp-uglify": "1.4.0",
+    "gulp-useref": "3.1.0",
+    "gulp-util": "3.0.6",
+    "gulp-load-plugins": "~0.10.0",
+    "gulp-jshint": "~2.0.1",
+    "main-bower-files": "~2.9.0",
+    "del": "~2.0.2"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-angular-filesort": "~1.1.1",
+    "gulp-clean": "0.3.1",
+    "gulp-concat": "2.6.0",
+    "gulp-connect": "^4.2.0",
+    "gulp-htmlmin": "1.1.4",
+    "gulp-if": "1.2.5",
+    "gulp-jshint": "^2.0.1",
+    "gulp-load-plugins": "~0.10.0",
+    "gulp-minify-css": "1.2.1",
+    "gulp-rename": "1.2.2",
+    "gulp-rev-all": "0.8.18",
+    "gulp-rev-hash": "0.0.2",
+    "gulp-uglify": "1.4.0",
+    "gulp-useref": "3.1.0",
+    "gulp-util": "3.0.6",
+    "jasmine": "^2.3.2",
+    "jshint": "^2.9.2",
+    "jshint-stylish": "^2.0.1",
+    "karma": "^0.13.15",
+    "karma-chrome-launcher": "^0.2.2",
+    "karma-jasmine": "^0.3.6",
+    "main-bower-files": "~2.9.0",
+    "protractor": "^3.0.0",
+    "del": "~2.0.2"
+  },
+  "scripts": {
+    "test": "karma start karma.conf.js",
+    "test-single": "karma start karma.conf.js --single-run",
+    "update-webdriver": "webdriver-manager update",
+    "start": "http-server -a 127.0.0.1 -p 9876 -c-1"
+  }
+}

@@ -1,0 +1,43 @@
+<md-table-container>
+    <table md-table>
+        <thead md-head>
+        <tr md-row>
+            <th md-column>ID</th>
+            <th md-column>名称</th>
+            <th md-column>大小</th>
+            <th md-column>创建时间</th>
+            <th md-column>操作</th>
+        </tr>
+        </thead>
+        <tbody md-body>
+        <tr md-row ng-repeat="image in nodeImageCtrl.images">
+            <td md-cell>
+                <a class="ellipsis"
+                   data-ui-sref="node.imageDetail({node_id: $stateParams.node_id, image_id: image.Id})">{/image.Id |
+                    limitTo: ID_LIMIT_LENGTH/}
+                    <md-tooltip md-direction="top">{/image.Id/}</md-tooltip>
+                </a>
+            </td>
+            <td md-cell>
+                <ul>
+                    <li ng-repeat="tag in image.RepoTags">
+                        <a class="ellipsis"
+                           data-ui-sref="node.imageDetail({node_id: $stateParams.node_id, image_id: image.Id})">{/tag/}
+                            <md-tooltip md-direction="top">{/tag/}</md-tooltip>
+                        </a>
+                    </li>
+                </ul>
+            </td>
+            <td md-cell>{/image.Size | size/}</td>
+            <td md-cell>{/image.Created * 1000| date: 'yyyy-MM-dd HH:mm:ss'/}</td>
+            <td md-cell>
+                <md-button class="md-icon-button" aria-label="delete"
+                           data-ng-click="nodeImageCtrl.deleteImage($stateParams.node_id, image.Id)">
+                    <i class="fa fa-trash"></i>
+                    <md-tooltip md-direction="left">删除镜像</md-tooltip>
+                </md-button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</md-table-container>

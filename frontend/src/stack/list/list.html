@@ -1,0 +1,32 @@
+<header layout="row" id="header-main">
+    <md-button id="stack-create" class="md-raised md-primary" flex="100"
+               data-ng-click="stackListCtrl.openCreateSelect($event)">
+        <i class="fa fa-stack"></i> 创建项目
+    </md-button>
+</header>
+
+<div layout="row" layout-wrap ng-flow-grid min-item-width="330" id="stack-list">
+    <div data-ng-repeat="stack in stackListCtrl.stacks | orderBy: 'stack.Services[0].CreatedAt'" class="flowGridItem"
+         id="stack{/$index/}">
+        <div class="app-panel">
+            <header>
+                <h1>
+                    <a id="stack{/$index/}-name" data-ui-sref="stack.detail({stack_name: stack.Namespace})">{/stack.Namespace/}</a>
+                </h1>
+            </header>
+            <table>
+                <tr data-ng-repeat="service in stack.Services | orderBy: $index"
+                    id="{/stack.Namespace/}-services">
+                    <td>
+                        <i class="fa fa-wrench" aria-hidden="true"></i>
+                        <a id="{/stack.Namespace/}-{/service.Name/}"
+                           data-ui-sref="stack.serviceDetail({stack_name: stack.Namespace, service_id: service.ID})">{/service.Name/}</a>
+                    </td>
+                    <td>{/service.NumTasksRunning/}/{/service.NumTasksTotal/}</td>
+                </tr>
+            </table>
+            <div class="time">{/stack.Services[0].CreatedAt | date: 'yyyy-MM-dd HH:mm:ss' /}</div>
+        </div>
+    </div>
+</div>
+    

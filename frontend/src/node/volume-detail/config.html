@@ -1,0 +1,26 @@
+<section layout="row" class="info-list-detail">
+    <h2 flex="20">基本信息</h2>
+    <div flex="80" layout="row" layout-wrap>
+        <div flex="30"><h5>驱动</h5></div>
+        <div flex="70"><p>{/nodeVolumeConfigCtrl.volume.Driver/}</p></div>
+        <div flex="30"><h5>挂载点</h5></div>
+        <div flex="70"><p>{/nodeVolumeConfigCtrl.volume.Mountpoint/}</p></div>
+    </div>
+</section>
+
+<section layout="row" class="info-list-detail">
+    <h2 flex="20">标签</h2>
+    <div flex="80" layout="row" layout-wrap>
+        <table cellpadding="0" cellspacing="0" dm-empty-display="nodeVolumeConfigCtrl.volume.Labels">
+            <tr>
+                <th>KEY</th>
+                <th>VALUE</th>
+            </tr>
+
+            <tr ng-repeat="(key, value)  in  nodeVolumeConfigCtrl.volume.Labels">
+                <td>{/key/}</td>
+                <td>{/value/}</td>
+            </tr>
+        </table>
+    </div>
+</section>

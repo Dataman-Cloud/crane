@@ -1,0 +1,42 @@
+<div class="login">
+    <div class="login-panel">
+        <header>
+            <div class="logo"><img src="/pics/logo-shurenyun-ico-blue.svg"></div>
+            <h1>Log in to shurenyun</h1>
+        </header>
+        <form name="staticForm" data-ng-submit="loginCtrl.login()">
+            <div class="form-group">
+                <label>uesr name</label>
+                <input type="text" placeholder="Email" data-required="required"
+                       name="Email"
+                       ng-model="loginCtrl.form.Email">
+                <div class="prompt-box" style="display: block;"
+                     data-ng-show="staticForm.Email.$error.required && staticForm.Email.$dirty">
+                    <div class="arrow"></div>
+                    <span>请填写用户名</span>
+                </div>
+            <span class="ico" data-ng-show="staticForm.Email.$invalid && staticForm.Email.$dirty"><i
+                    class="fa fa-exclamation-circle"></i></span>
+            </div>
+
+            <div class="form-group">
+                <label>password</label>
+                <input type="password" placeholder="密码" data-required="required"
+                       name="password"
+                       ng-model="loginCtrl.form.Password">
+                <div class="prompt-box" style="display: block;"
+                     data-ng-show="staticForm.password.$error.required && staticForm.password.$dirty">
+                    <div class="arrow"></div>
+                    <span>请输入密码</span>
+                </div>
+            <span class="ico" data-ng-show="staticForm.password.$invalid && staticForm.password.$dirty"><i
+                    class="fa fa-exclamation-circle"></i></span>
+            </div>
+
+            <div class="form-group">
+                <button class="btn-login" type="submit" id="login-btn-login">LOGIN</button>
+            </div>
+            <a href="#">Don't remember your password?</a>
+        </form>
+    </div>
+</div>

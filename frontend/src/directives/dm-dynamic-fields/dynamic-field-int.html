@@ -1,0 +1,21 @@
+<ng-form name="dyIntForm">
+    <label class="form-label form-control-static"><span class="text-danger" data-ng-show="fieldData.required">*</span>
+        {/fieldData.label/}</label>
+
+    <input type="number" class="ember-view ember-text-field form-control" ng-model="fieldData.default"
+           name="{/fieldData.variable/}"
+           ng-required="fieldData.required" dynamic-vali="fieldData.validations"/>
+
+    <p data-ng-if="dyIntForm[fieldData.variable].$error.dyRange" class="help-info-bottom error-info">
+        端口范围不符合规定
+    </p>
+
+    <p data-ng-if="dyIntForm[fieldData.variable].$error.dyPattern" class="help-info-bottom error-info">
+        正则表达式未通过
+    </p>
+
+    <p data-ng-if="dyIntForm[fieldData.variable].$valid" class="help-block help-info-bottom">
+        {/fieldData.description/}
+    </p>
+</ng-form>
+

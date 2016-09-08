@@ -1,0 +1,30 @@
+<md-dialog aria-label="select image">
+    <form name="staticForm" class="form-main">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>添加序列号</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="formCtrl.cancel()"
+                           aria-label="cancel">
+                    <i class="fa fa-close"></i>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="form-group">
+                <label>序列号</label>
+                <div class="form-control">
+                    <input type="text" class="form-input" name="serialNum" aria-label="serialNum" data-ng-model="formCtrl.serialNum" data-required md-autofocus>
+                    <div ng-messages="staticForm.serialNum.$error" ng-if="staticForm.serialNum.$dirty" role="alert">
+                        <p class="help-info text-danger" ng-message="required">序列号不能为空</p>
+                    </div>
+                </div>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <md-button ng-click="formCtrl.cancel()" aria-label="cancel">取消</md-button>
+            <md-button data-ng-disabled="staticForm.$invalid" data-ng-click="formCtrl.ok()" aria-label="ok" class="md-primary">注册</md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>
+

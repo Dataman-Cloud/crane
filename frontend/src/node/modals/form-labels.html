@@ -1,0 +1,53 @@
+<md-dialog aria-label="select image">
+    <form name="staticForm" class="form-main">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>主机标签</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="formCtrl.cancel()" aria-label="cancel">
+                    <i class="fa fa-close"></i>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="form-group">
+                <div class="sub-button">
+                    <md-button class="md-raised md-success md-small" data-ng-click="formCtrl.add()">
+                        添加主机标签
+                    </md-button>
+                </div>
+            </div>
+            <div data-ng-repeat="label in formCtrl.labels track by $index" class="form-group">
+                <ng-form name="labelForm">
+                    <div class="form-control" layout="row" layout-align="start center">
+                        <input flex="40" type="text" placeholder="KEY" data-ng-model="label.key" md-autofocus
+                               data-required="required" name="labelKey" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/"
+                               dm-check-include="formCtrl.checkRepeatKey($index)">
+                        <input flex="40" flex-offset="5" type="text" placeholder="VALUE" data-ng-model="label.value"
+                               data-required="required" name="labelValue" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/">
+                        <div flex-offset="5">
+                            <md-button class="md-icon-button md-primary" aria-label="trash"
+                                       data-ng-click="formCtrl.delete($index)">
+                                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                            </md-button>
+                        </div>
+                    </div>
+                </ng-form>
+                <div ng-messages="labelForm.labelKey.$error" ng-if="labelForm.labelKey.$dirty" role="alert">
+                    <p class="help-info text-danger" ng-message="pattern">主机标签 Key 值不能包含中文</p>
+                    <p class="help-info text-danger" ng-message="dmCheckInclude">主机标签 Key 值不能重复</p>
+                </div>
+                <div ng-messages="labelForm.labelValue.$error" ng-if="labelForm.labelValue.$dirty" role="alert">
+                    <p class="help-info text-danger" ng-message="pattern">主机标签 Value 值不能包含中文</p>
+                </div>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <md-button ng-click="formCtrl.cancel()" aria-label="cancel">取消</md-button>
+            <md-button data-ng-disabled="staticForm.$invalid" data-ng-click="formCtrl.ok()" aria-label="ok"
+                       class="md-primary">确认
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>
+

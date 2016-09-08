@@ -1,0 +1,8 @@
+<label class="form-label form-control-static"><span class="text-danger" data-ng-show="fieldData.required">*</span>
+    {/fieldData.label/}</label>
+
+<textarea class="ember-view ember-text-area form-control" ng-model="fieldData.default"
+          ng-required="fieldData.required">
+</textarea>
+
+<p class="help-block">{/fieldData.description/}</p>

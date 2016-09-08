@@ -1,0 +1,8 @@
+<div class="log-panel" id="serviceLog">
+    <ul class="list-unstyled">
+        <li data-ng-repeat='log in serviceLogCtrl.logs track by $index'>
+            <p ng-bind-html="log"></p>
+        </li>
+    </ul>
+    <div data-ng-if='serviceLogCtrl.logs.length <= 0' class="no-info">无日志信息</div>
+</div>

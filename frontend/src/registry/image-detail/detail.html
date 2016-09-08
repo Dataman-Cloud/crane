@@ -1,0 +1,39 @@
+<div class="main-container app-layout">
+    <section class="main-section">
+        <header layout="row" layout-align="start start">
+            <div class="info" flex="95" layout="column">
+                <h2>{/registryImageCtrl.image.name/}:{/registryImageCtrl.image.tag/}</h2>
+                <dl layout="row" layout-wrap layout-align="start end">
+                    <dt flex="none">架构</dt>
+                    <dd flex="none">{/registryImageCtrl.image.architecture/}</dd>
+                    <dt flex="none">Schema版本</dt>
+                    <dd flex="none">{/registryImageCtrl.image.schemaVersion/}</dd>
+                </dl>
+            </div>
+            <div layout-align="end center" class="operation">
+                <md-fab-speed-dial md-open="false" md-direction="left"
+                                   class="md-scale">
+                    <md-fab-trigger>
+                        <md-button aria-label="menu" class="md-fab md-mini">
+                            <md-tooltip md-direction="top">更多操作</md-tooltip>
+                            <i class="fa fa-ellipsis-h"></i>
+                        </md-button>
+                    </md-fab-trigger>
+                    <md-fab-actions>
+                        <md-button aria-label="start" class="md-fab md-raised md-mini"
+                                   data-ng-click="registryImageCtrl.deleteImage($event)">
+                            <md-tooltip md-direction="top">删除</md-tooltip>
+                            <i class="fa fa-trash"></i>
+                        </md-button>
+                    </md-fab-actions>
+                </md-fab-speed-dial>
+            </div>
+        </header>
+        <md-content>
+            <md-tabs md-dynamic-height md-border-bottom>
+                <md-tab label="历史" dm-tab-sref="registry.imageDetail.history"></md-tab>
+            </md-tabs>
+            <md-content class="md-padding main-tab-content" ui-view>
+            </md-content>
+    </section>
+</div>

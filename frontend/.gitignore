@@ -1,0 +1,15 @@
+*.mdb
+*.ldb
+*.sln
+*.config
+*.idea
+.DS_Store
+.rolex.json
+
+Debug/
+node_modules/
+bower_components/
+dist/
+mysql_storage
+registry_storage
+crane.tar.gz

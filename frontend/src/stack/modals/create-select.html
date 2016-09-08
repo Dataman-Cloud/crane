@@ -1,0 +1,47 @@
+<md-dialog aria-label="select image">
+    <form name="staticForm" class="form-main">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>选择创建方式</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="formCtrl.cancel()"
+                           aria-label="cancel">
+                    <i class="fa fa-close"></i>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content layout="row" style="width: 600px;">
+            <div flex="30">
+                <md-card data-ng-click="formCtrl.ok('stack.createByJson')">
+                    <md-card-title>
+                        <md-card-title-text>
+                            <i class="fa fa-code"></i>
+                            <span class="md-headline">DAB 创建</span>
+                        </md-card-title-text>
+                    </md-card-title>
+                </md-card>
+            </div>
+            <div flex="30" flex-offset="5">
+                <md-card data-ng-click="formCtrl.ok('stack.createByForm')">
+                    <md-card-title>
+                        <md-card-title-text>
+                            <i class="fa fa-mouse-pointer"></i>
+                            <span class="md-headline">向导创建</span>
+                        </md-card-title-text>
+                    </md-card-title>
+                </md-card>
+            </div>
+            <div flex="30" flex-offset="5">
+                <md-card data-ng-click="formCtrl.ok('registry.list.catalogs')">
+                    <md-card-title>
+                        <md-card-title-text>
+                            <i class="fa fa-shopping-cart"></i>
+                            <span class="md-headline">快捷创建</span>
+                        </md-card-title-text>
+                    </md-card-title>
+                </md-card>
+            </div>
+        </md-dialog-content>
+    </form>
+</md-dialog>
+

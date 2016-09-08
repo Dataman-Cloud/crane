@@ -1,0 +1,78 @@
+<form name="createRegAuth" class="form-main">
+    <div class="form-group" layout="column">
+        <label>认证标识<span class="required">*</span></label>
+        <div class="form-control">
+            <input type="text" data-ng-model="regAuthCreateCtrl.form.Name"
+                   data-required="required" name="name">
+        </div>
+        <div ng-messages="createRegAuth.name.$error" ng-if="createRegAuth.name.$dirty" role="alert">
+            <p class="text-danger help-text"
+               ng-message="required">
+                <small>名称不能为空</small>
+            </p>
+        </div>
+    </div>
+
+    <div class="form-group" layout="column">
+        <label>用户名<span class="required">*</span>
+            <small></small>
+        </label>
+        <div class="form-control">
+            <input type="text" name="UserName" data-required="required"
+                   data-ng-model="regAuthCreateCtrl.form.Username">
+        </div>
+        <div ng-messages="createRegAuth.UserName.$error" ng-if="createRegAuth.UserName.$dirty" role="alert">
+            <p class="text-danger help-text"
+               ng-message="required">
+                <small>用户名不能为空</small>
+            </p>
+        </div>
+    </div>
+
+    <div class="form-group" layout="column">
+        <label>密码<span class="required">*</span>
+            <small></small>
+        </label>
+        <div class="form-control">
+            <input type=password ng-trim="false" name="PassWord" data-required="required"
+                   data-ng-model="regAuthCreateCtrl.form.Password">
+        </div>
+        <div ng-messages="createRegAuth.PassWord.$error" ng-if="createRegAuth.PassWord.$dirty"
+             role="alert">
+            <p class="text-danger help-text"
+               ng-message="required">
+                <small>密码不能为空</small>
+            </p>
+        </div>
+    </div>
+
+    <div class="form-group" layout="column">
+        <label>再次确认密码<span class="required">*</span>
+            <small></small>
+        </label>
+        <div class="form-control">
+            <input type=password ng-trim="false" name="rePassWord" data-required="required"
+                   data-ng-model="regAuthCreateCtrl.rePassWord"
+                   dm-no-equal="regAuthCreateCtrl.form.Password">
+        </div>
+        <div ng-messages="createRegAuth.rePassWord.$error" ng-if="createRegAuth.rePassWord.$dirty"
+             role="alert">
+            <p class="text-danger help-text"
+               ng-message="required">
+                <small>不能为空</small>
+            </p>
+            <p class="text-danger help-text"
+               ng-message="checkrepeat">
+                <small>密码不一致</small>
+            </p>
+        </div>
+    </div>
+
+    <footer class="form-buttons">
+        <md-button class="md-raised md-primary"
+                   data-ng-disabled="createRegAuth.$invalid"
+                   data-ng-click="regAuthCreateCtrl.create()">创建
+        </md-button>
+        <md-button data-ng-click="rootCtrl.goBack()">取消</md-button>
+    </footer>
+</form>

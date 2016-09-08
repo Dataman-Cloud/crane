@@ -1,0 +1,88 @@
+{
+    "Services": {
+        "mysql": {
+        "Name": "mysql",
+            "Labels": {
+                "name": "mysql"
+            },
+            "TaskTemplate": {
+                "ContainerSpec": {
+                    "Image": "mysql",
+                    "Labels": {
+                        "name": "mysql"
+                    },
+                    "Env": [
+                        "MYSQL_ROOT_PASSWORD=111111"
+                        ],
+                    "User": "root"
+                },
+                "RestartPolicy": {
+                    "Condition": "none",
+                    "Delay": 3000000000,
+                    "MaxAttempts": 1,
+                    "Window": 3000000000
+                },
+                "LogDriver": {
+                    "Name": "json-file"
+                }
+            },
+            "Mode": {
+                "Replicated": {
+                    "Replicas": 1
+                }
+            },
+            "UpdateConfig": null,
+            "Networks": [
+                "ingress"
+                ],
+            "EndpointSpec": {
+                "Mode": "vip"
+            }
+        },
+        "mywebsql": {
+            "Name": "mywebsql",
+            "Labels": {
+                "mywebsql": "mywebsql"
+            },
+            "TaskTemplate": {
+                "ContainerSpec": {
+                    "Image": "quantumobject/docker-mywebsql",
+                    "Labels": {
+                        "name": "mywebsql"
+                    },
+                    "User": "root"
+                },
+                "RestartPolicy": {
+                    "Condition": "none",
+                    "Delay": 3000000000,
+                    "MaxAttempts": 1,
+                    "Window": 3000000000
+                },
+                "LogDriver": {
+                    "Name": "json-file"
+                }
+            },
+            "Mode": {
+                "Replicated": {
+                    "Replicas": 1
+                }
+            },
+            "UpdateConfig": null,
+            "Networks": [
+                "ingress"
+                ],
+            "EndpointSpec": {
+                "Mode": "vip",
+                "Ports": [
+                {
+                    "Name": "testport",
+                    "Protocol": "tcp",
+                    "TargetPort": 80,
+                    "PublishedPort": 8000
+                }
+                ]
+            }
+        }
+    },
+    "Version": "1"
+}
