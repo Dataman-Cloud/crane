@@ -3,8 +3,8 @@ package license
 import (
 	"strconv"
 
-	"github.com/Dataman-Cloud/rolex/src/utils/rolexerror"
 	"github.com/Dataman-Cloud/rolex/src/utils/dmgin"
+	"github.com/Dataman-Cloud/rolex/src/utils/rolexerror"
 
 	"github.com/Dataman-Cloud/rolex/src/utils/encrypt"
 	log "github.com/Sirupsen/logrus"

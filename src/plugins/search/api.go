@@ -3,8 +3,8 @@ package search
 import (
 	"sort"
 
-	"github.com/Dataman-Cloud/rolex/src/utils/rolexerror"
 	"github.com/Dataman-Cloud/rolex/src/utils/dmgin"
+	"github.com/Dataman-Cloud/rolex/src/utils/rolexerror"
 
 	"github.com/gin-gonic/gin"
 	"github.com/renstrom/fuzzysearch/fuzzy"

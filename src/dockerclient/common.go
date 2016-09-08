@@ -11,8 +11,8 @@ import (
 	"github.com/Dataman-Cloud/rolex/src/utils/config"
 	"github.com/docker/engine-api/types/swarm"
 
-	rauth "github.com/Dataman-Cloud/go-component/registryauth"
 	docker "github.com/Dataman-Cloud/go-dockerclient"
+	rauth "github.com/Dataman-Cloud/rolex/src/plugins/registryauth"
 )
 
 // convert swarm service to bundle service

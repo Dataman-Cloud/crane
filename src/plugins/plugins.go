@@ -1,5 +1,5 @@
 package plugins
 
 import (
-	_ "github.com/Dataman-Cloud/go-component/license"
+	_ "github.com/Dataman-Cloud/rolex/src/plugins/license"
 )

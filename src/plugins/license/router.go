@@ -1,8 +1,8 @@
 package license
 
 import (
-	"github.com/Dataman-Cloud/rolex/src/utils/db"
 	"github.com/Dataman-Cloud/rolex/src/plugins/apiplugin"
+	"github.com/Dataman-Cloud/rolex/src/utils/db"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"

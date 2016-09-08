@@ -3,17 +3,16 @@ package api
 import (
 	"time"
 
-	"github.com/Dataman-Cloud/go-component/auth"
-	"github.com/Dataman-Cloud/go-component/auth/authenticators"
-	chains "github.com/Dataman-Cloud/go-component/auth/middlewares"
-	"github.com/Dataman-Cloud/go-component/auth/token_store"
-	"github.com/Dataman-Cloud/go-component/catalog"
-	"github.com/Dataman-Cloud/go-component/registry"
-	rauth "github.com/Dataman-Cloud/go-component/registryauth"
-	"github.com/Dataman-Cloud/go-component/search"
 	"github.com/Dataman-Cloud/rolex/src/api/middlewares"
-	"github.com/Dataman-Cloud/rolex/src/plugins"
 	"github.com/Dataman-Cloud/rolex/src/plugins/apiplugin"
+	"github.com/Dataman-Cloud/rolex/src/plugins/auth"
+	"github.com/Dataman-Cloud/rolex/src/plugins/auth/authenticators"
+	chains "github.com/Dataman-Cloud/rolex/src/plugins/auth/middlewares"
+	"github.com/Dataman-Cloud/rolex/src/plugins/auth/token_store"
+	"github.com/Dataman-Cloud/rolex/src/plugins/catalog"
+	"github.com/Dataman-Cloud/rolex/src/plugins/registry"
+	rauth "github.com/Dataman-Cloud/rolex/src/plugins/registryauth"
+	"github.com/Dataman-Cloud/rolex/src/plugins/search"
 	"github.com/Dataman-Cloud/rolex/src/utils/log"
 
 	"github.com/Sirupsen/logrus"
@@ -69,7 +68,7 @@ func (api *Api) ApiRouter() *gin.Engine {
 
 	if api.Config.FeatureEnabled("search") {
 		s := &search.SearchApi{
-			Indexer: plugins.NewRolexIndex(api.Client),
+			Indexer: search.NewRolexIndex(api.Client),
 		}
 		s.RegisterApiForSearch(router, Authorization)
 	}
