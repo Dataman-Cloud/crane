@@ -1,10 +1,10 @@
 package api
 
 import (
-	"github.com/Dataman-Cloud/rolex/src/plugins/auth"
-	rauth "github.com/Dataman-Cloud/rolex/src/plugins/registryauth"
-	"github.com/Dataman-Cloud/rolex/src/utils/dmgin"
-	"github.com/Dataman-Cloud/rolex/src/utils/rolexerror"
+	"github.com/Dataman-Cloud/crane/src/plugins/auth"
+	rauth "github.com/Dataman-Cloud/crane/src/plugins/registryauth"
+	"github.com/Dataman-Cloud/crane/src/utils/dmgin"
+	"github.com/Dataman-Cloud/crane/src/utils/rolexerror"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"

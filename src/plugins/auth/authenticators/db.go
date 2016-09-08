@@ -6,10 +6,10 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/Dataman-Cloud/rolex/src/plugins/auth"
-	"github.com/Dataman-Cloud/rolex/src/utils/db"
-	"github.com/Dataman-Cloud/rolex/src/utils/model"
-	"github.com/Dataman-Cloud/rolex/src/utils/rolexerror"
+	"github.com/Dataman-Cloud/crane/src/plugins/auth"
+	"github.com/Dataman-Cloud/crane/src/utils/db"
+	"github.com/Dataman-Cloud/crane/src/utils/model"
+	"github.com/Dataman-Cloud/crane/src/utils/rolexerror"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"

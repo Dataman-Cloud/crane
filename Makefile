@@ -17,7 +17,7 @@ export GO15VENDOREXPERIMENT=1
 default: build
 
 build: fmt
-	 ${BUILD_OPTS} go build -ldflags "-X github.com/Dataman-Cloud/rolex/src/version.BuildTime=`date -u +%Y-%m-%d:%H-%M-%S` -X github.com/Dataman-Cloud/rolex/src/version.Version 1.0.0-`git rev-parse --short HEAD`" -v -o ./bin/rolex ./src/
+	 ${BUILD_OPTS} go build -ldflags "-X github.com/Dataman-Cloud/crane/src/version.BuildTime=`date -u +%Y-%m-%d:%H-%M-%S` -X github.com/Dataman-Cloud/crane/src/version.Version 1.0.0-`git rev-parse --short HEAD`" -v -o ./bin/rolex ./src/
 
 rel: fmt
 	${BUILD_OPTS} go build -v -o ../rel/rolex ./src/

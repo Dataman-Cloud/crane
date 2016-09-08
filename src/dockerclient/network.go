@@ -3,7 +3,7 @@ package dockerclient
 import (
 	"strings"
 
-	"github.com/Dataman-Cloud/rolex/src/utils/rolexerror"
+	"github.com/Dataman-Cloud/crane/src/utils/rolexerror"
 
 	docker "github.com/Dataman-Cloud/go-dockerclient"
 	"golang.org/x/net/context"

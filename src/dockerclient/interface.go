@@ -3,8 +3,8 @@ package dockerclient
 import (
 	"net/url"
 
-	"github.com/Dataman-Cloud/rolex/src/dockerclient/model"
-	opt "github.com/Dataman-Cloud/rolex/src/model"
+	"github.com/Dataman-Cloud/crane/src/dockerclient/model"
+	opt "github.com/Dataman-Cloud/crane/src/model"
 
 	docker "github.com/Dataman-Cloud/go-dockerclient"
 	"github.com/docker/engine-api/types"

@@ -7,8 +7,8 @@ import (
 	"path"
 	"strconv"
 
-	"github.com/Dataman-Cloud/rolex/src/model"
-	"github.com/Dataman-Cloud/rolex/src/utils/rolexerror"
+	"github.com/Dataman-Cloud/crane/src/model"
+	"github.com/Dataman-Cloud/crane/src/utils/rolexerror"
 
 	docker "github.com/Dataman-Cloud/go-dockerclient"
 	"github.com/docker/engine-api/types"

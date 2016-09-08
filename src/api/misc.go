@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"runtime"
 
-	"github.com/Dataman-Cloud/rolex/src/utils/dmgin"
-	"github.com/Dataman-Cloud/rolex/src/utils/rolexerror"
-	"github.com/Dataman-Cloud/rolex/src/version"
+	"github.com/Dataman-Cloud/crane/src/utils/dmgin"
+	"github.com/Dataman-Cloud/crane/src/utils/rolexerror"
+	"github.com/Dataman-Cloud/crane/src/version"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/docker/engine-api/types"
