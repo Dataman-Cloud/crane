@@ -1,6 +1,7 @@
 package config
 
 import (
+	"flag"
 	"os"
 
 	"github.com/Dataman-Cloud/rolex/src/util"
@@ -50,8 +51,9 @@ func GetConfig() *Config {
 	return &config
 }
 
-func InitConfig(envFile string) *Config {
-	dmConfig.LoadEnvFile(envFile)
+func init() {
+	envFile := flag.String("config", "env_file", "")
+	dmConfig.LoadEnvFile(*envFile)
 
 	if err := dmConfig.LoadConfig(&config); err != nil {
 		log.Error("LoadConfig got error: ", err)
@@ -66,5 +68,5 @@ func InitConfig(envFile string) *Config {
 		config.DockerEntryScheme = "http"
 	}
 
-	return &config
+	return
 }
