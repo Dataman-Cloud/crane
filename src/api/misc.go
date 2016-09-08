@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"runtime"
 
-	"github.com/Dataman-Cloud/go-component/utils/dmerror"
-	"github.com/Dataman-Cloud/go-component/utils/dmgin"
+	"github.com/Dataman-Cloud/rolex/src/utils/dmgin"
+	"github.com/Dataman-Cloud/rolex/src/utils/rolexerror"
 	"github.com/Dataman-Cloud/rolex/src/version"
 
 	log "github.com/Sirupsen/logrus"
@@ -40,7 +40,7 @@ func (api *Api) RolexConfig(ctx *gin.Context) {
 
 	if err != nil {
 		log.Errorf("InspectSwarm got error: %s", err.Error())
-		rerror := dmerror.NewError(CodeGetConfigError, err.Error())
+		rerror := rolexerror.NewError(CodeGetConfigError, err.Error())
 		dmgin.HttpErrorResponse(ctx, rerror)
 		return
 	}

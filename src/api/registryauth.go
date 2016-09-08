@@ -1,10 +1,10 @@
 package api
 
 import (
-	"github.com/Dataman-Cloud/go-component/auth"
-	rauth "github.com/Dataman-Cloud/go-component/registryauth"
-	"github.com/Dataman-Cloud/go-component/utils/dmerror"
-	"github.com/Dataman-Cloud/go-component/utils/dmgin"
+	"github.com/Dataman-Cloud/rolex/src/plugins/auth"
+	rauth "github.com/Dataman-Cloud/rolex/src/plugins/registryauth"
+	"github.com/Dataman-Cloud/rolex/src/utils/dmgin"
+	"github.com/Dataman-Cloud/rolex/src/utils/rolexerror"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
@@ -21,14 +21,14 @@ func (api *Api) Create(ctx *gin.Context) {
 	account, ok := ctx.Get("account")
 	if !ok {
 		log.Error("get registryAuths invalid user")
-		dmgin.HttpErrorResponse(ctx, dmerror.NewError(CodeRegistryAuthInvalidUserError, "invalid user"))
+		dmgin.HttpErrorResponse(ctx, rolexerror.NewError(CodeRegistryAuthInvalidUserError, "invalid user"))
 		return
 	}
 
 	var registryAuth rauth.RegistryAuth
 	if err := ctx.BindJSON(&registryAuth); err != nil {
 		log.Errorf("create registryAuth param error: %v", err)
-		dmgin.HttpErrorResponse(ctx, dmerror.NewError(CodeCreateRegistryAuthParamError, err.Error()))
+		dmgin.HttpErrorResponse(ctx, rolexerror.NewError(CodeCreateRegistryAuthParamError, err.Error()))
 		return
 	}
 
@@ -39,7 +39,7 @@ func (api *Api) Create(ctx *gin.Context) {
 	}
 
 	if len(rs) > 0 {
-		dmgin.HttpErrorResponse(ctx, dmerror.NewError(CodeGetRegistryAuthExistError, "registryAuth exists"))
+		dmgin.HttpErrorResponse(ctx, rolexerror.NewError(CodeGetRegistryAuthExistError, "registryAuth exists"))
 		return
 	}
 
@@ -57,7 +57,7 @@ func (api *Api) List(ctx *gin.Context) {
 	account, ok := ctx.Get("account")
 	if !ok {
 		log.Error("get registryAuths invalid user")
-		dmgin.HttpErrorResponse(ctx, dmerror.NewError(CodeRegistryAuthInvalidUserError, "invalid user"))
+		dmgin.HttpErrorResponse(ctx, rolexerror.NewError(CodeRegistryAuthInvalidUserError, "invalid user"))
 		return
 	}
 
@@ -75,14 +75,14 @@ func (api *Api) Delete(ctx *gin.Context) {
 	account, ok := ctx.Get("account")
 	if !ok {
 		log.Error("delete registryAuth invalid user")
-		dmgin.HttpErrorResponse(ctx, dmerror.NewError(CodeRegistryAuthInvalidUserError, "invalid user"))
+		dmgin.HttpErrorResponse(ctx, rolexerror.NewError(CodeRegistryAuthInvalidUserError, "invalid user"))
 		return
 	}
 
 	name := ctx.Param("rauth_name")
 	if name == "" {
 		log.Errorf("get registryAuth name invalid")
-		dmgin.HttpErrorResponse(ctx, dmerror.NewError(CodeDeleteRegistryAuthParamError, "registryAuth name invalid"))
+		dmgin.HttpErrorResponse(ctx, rolexerror.NewError(CodeDeleteRegistryAuthParamError, "registryAuth name invalid"))
 		return
 	}
 
