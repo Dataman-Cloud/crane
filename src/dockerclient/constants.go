@@ -16,8 +16,8 @@ const (
 
 const (
 	labelNamespace    = "com.docker.stack.namespace"
-	LabelRegistryAuth = "dm.reserved.registry.auth"
-	labelNodeEndpoint = "dm.reserved.node.endpoint"
+	LabelRegistryAuth = "crane.reserved.registry.auth"
+	labelNodeEndpoint = "crane.reserved.node.endpoint"
 )
 
 const (
