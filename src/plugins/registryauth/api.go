@@ -1,7 +1,7 @@
 package registryauth
 
 import (
-	"github.com/Dataman-Cloud/rolex/src/utils/db"
+	"github.com/Dataman-Cloud/crane/src/utils/db"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"

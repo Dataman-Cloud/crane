@@ -1,7 +1,7 @@
 package authenticators
 
 import (
-	"github.com/Dataman-Cloud/rolex/src/plugins/auth"
+	"github.com/Dataman-Cloud/crane/src/plugins/auth"
 )
 
 type Ldap struct {

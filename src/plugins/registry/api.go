@@ -7,11 +7,11 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/Dataman-Cloud/rolex/src/plugins/auth"
-	"github.com/Dataman-Cloud/rolex/src/plugins/auth/authenticators"
-	"github.com/Dataman-Cloud/rolex/src/utils/db"
-	"github.com/Dataman-Cloud/rolex/src/utils/dmgin"
-	"github.com/Dataman-Cloud/rolex/src/utils/rolexerror"
+	"github.com/Dataman-Cloud/crane/src/plugins/auth"
+	"github.com/Dataman-Cloud/crane/src/plugins/auth/authenticators"
+	"github.com/Dataman-Cloud/crane/src/utils/db"
+	"github.com/Dataman-Cloud/crane/src/utils/dmgin"
+	"github.com/Dataman-Cloud/crane/src/utils/rolexerror"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/docker/distribution/manifest/schema1"

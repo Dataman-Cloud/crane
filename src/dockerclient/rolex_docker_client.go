@@ -7,11 +7,11 @@ import (
 	"net/url"
 	"path/filepath"
 
-	"github.com/Dataman-Cloud/rolex/src/utils/config"
-	"github.com/Dataman-Cloud/rolex/src/utils/rolexerror"
+	"github.com/Dataman-Cloud/crane/src/utils/config"
+	"github.com/Dataman-Cloud/crane/src/utils/rolexerror"
 
+	"github.com/Dataman-Cloud/crane/src/utils/httpclient"
 	docker "github.com/Dataman-Cloud/go-dockerclient"
-	"github.com/Dataman-Cloud/rolex/src/utils/httpclient"
 	log "github.com/Sirupsen/logrus"
 	"github.com/docker/engine-api/types"
 	"golang.org/x/net/context"

@@ -3,7 +3,7 @@ package middlewares
 import (
 	"strconv"
 
-	"github.com/Dataman-Cloud/rolex/src/utils/model"
+	"github.com/Dataman-Cloud/crane/src/utils/model"
 
 	"github.com/gin-gonic/gin"
 )

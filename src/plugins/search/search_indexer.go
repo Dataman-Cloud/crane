@@ -1,7 +1,7 @@
 package search
 
 import (
-	"github.com/Dataman-Cloud/rolex/src/dockerclient"
+	"github.com/Dataman-Cloud/crane/src/dockerclient"
 
 	docker "github.com/Dataman-Cloud/go-dockerclient"
 	log "github.com/Sirupsen/logrus"

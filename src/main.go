@@ -4,11 +4,11 @@ import (
 	"flag"
 	"net/http"
 
-	"github.com/Dataman-Cloud/rolex/src/api"
-	"github.com/Dataman-Cloud/rolex/src/dockerclient"
-	_ "github.com/Dataman-Cloud/rolex/src/plugins"
-	"github.com/Dataman-Cloud/rolex/src/utils/config"
-	log "github.com/Dataman-Cloud/rolex/src/utils/log"
+	"github.com/Dataman-Cloud/crane/src/api"
+	"github.com/Dataman-Cloud/crane/src/dockerclient"
+	_ "github.com/Dataman-Cloud/crane/src/plugins"
+	"github.com/Dataman-Cloud/crane/src/utils/config"
+	log "github.com/Dataman-Cloud/crane/src/utils/log"
 
 	"golang.org/x/net/context"
 )

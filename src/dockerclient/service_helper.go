@@ -5,8 +5,8 @@ import (
 	"regexp"
 	"strconv"
 
-	"github.com/Dataman-Cloud/rolex/src/dockerclient/model"
-	"github.com/Dataman-Cloud/rolex/src/utils/rolexerror"
+	"github.com/Dataman-Cloud/crane/src/dockerclient/model"
+	"github.com/Dataman-Cloud/crane/src/utils/rolexerror"
 
 	distreference "github.com/docker/distribution/reference"
 	"github.com/docker/engine-api/types"
