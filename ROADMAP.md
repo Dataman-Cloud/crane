@@ -14,14 +14,14 @@ Please open an issue to track any initiative on the roadmap of Crane. We will co
 
 ---
 
-## *. Dashboard Page
+## 1. Dashboard Page
 
 Involve dashboard page to display cluster overview info. User will get alert and resource usage from the dashboard page ASAP.
 
-## *. High Availability
+## 2. High Availability
 
 Support multi-nodes deployment for high availability, scalability and load-balancing purposes.
 
-## *. Event stream
+## 3. Event Stream
 
 User will get operation events on frontend in time.
