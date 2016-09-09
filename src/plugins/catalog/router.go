@@ -1,15 +1,13 @@
 package catalog
 
 import (
-	"github.com/Dataman-Cloud/crane/src/utils/db"
-
 	"github.com/gin-gonic/gin"
+	"github.com/jinzhu/gorm"
 )
 
-func NewCatalog(catalogPath string) *CatalogApi {
+func NewCatalog(db *gorm.DB) *CatalogApi {
 	return &CatalogApi{
-		CatalogPath: catalogPath,
-		DbClient:    db.DB(),
+		DbClient: db,
 	}
 }
 
