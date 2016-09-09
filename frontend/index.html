@@ -35,7 +35,7 @@
                 </md-button>
             </li>
 
-            <li title="镜像" data-ui-sref-active="active">
+            <li title="镜像" data-ui-sref-active="active" dm-display-components="registry">
                 <md-button data-ui-sref="registry" data-ui-sref-opts="{inherit: false}" id="index-registry">
                     <i class="fa fa-shopping-cart"></i>镜像
                 </md-button>
@@ -58,7 +58,7 @@
                         </md-button>
                     </li>
 
-                    <li title="ReAuth" data-ui-sref-active="active">
+                    <li title="ReAuth" data-ui-sref-active="active" dm-display-components="registryauth">
                         <md-button data-ui-sref="registryAuth" data-ui-sref-opts="{inherit: false}"
                                    id="index-registryAuth">
                             <i class="fa fa-archive" aria-hidden="true"></i>仓库认证
@@ -89,7 +89,7 @@
             <md-toolbar flex="none">
                 <div class="md-toolbar-tools">
                     <md-button class="md-icon-button" aria-label="Search" ng-click="rootCtrl.openSearch()"
-                               id="index-openSearch">
+                               id="index-openSearch" dm-display-components="search">
                         <i class="fa fa-search"></i>
                     </md-button>
                     <!--
@@ -366,6 +366,7 @@
 <script src="src/directives/dm-empty-display.directive.js" type="text/javascript"></script>
 <script src="src/directives/dm-display-components.directive.js" type="text/javascript"></script>
 <script src="src/directives/dm-doc-link.directive.js" type="text/javascript"></script>
+<script src="src/directives/dm-focus-input.directive.js" type="text/javascript"></script>
 <!--endbuild-->
 
 

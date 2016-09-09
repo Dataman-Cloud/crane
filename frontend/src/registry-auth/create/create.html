@@ -2,7 +2,7 @@
     <div class="form-group" layout="column">
         <label>认证标识<span class="required">*</span></label>
         <div class="form-control">
-            <input type="text" data-ng-model="regAuthCreateCtrl.form.Name"
+            <input type="text" data-ng-model="regAuthCreateCtrl.form.Name" focus-me
                    data-required="required" name="name">
         </div>
         <div ng-messages="createRegAuth.name.$error" ng-if="createRegAuth.name.$dirty" role="alert">

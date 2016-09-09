@@ -113,7 +113,7 @@
             '未配置'/}</p>
         </div>
         <div flex="30">
-            <h5>在?时间之内
+            <h5>评估间隔
                 <small>秒</small>
             </h5>
         </div>
@@ -122,7 +122,7 @@
                 {/serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.Window / Math.pow(10, 9) || '未配置'/}
             </p>
         </div>
-        <div flex="30"><h5>最多尝试重启?次</h5></div>
+        <div flex="30"><h5>尝试次数</h5></div>
         <div flex="70">
             <p ng-class="{'no-info': !serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.MaxAttempts}">
                 {/serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.MaxAttempts || '未配置'/}
@@ -138,13 +138,13 @@
         <div flex="70"><p>{/serviceConfigCtrl.service.Spec.UpdateConfig.FailureAction === 'continue' ? '继续尝试' :
             '停止尝试'/}</p></div>
         <div flex="30">
-            <h5>在?时间内
+            <h5>间隔
                 <small>秒</small>
             </h5>
         </div>
         <div flex="70"><p ng-class="{'no-info': !serviceConfigCtrl.service.Spec.UpdateConfig.Delay}">
             {/serviceConfigCtrl.service.Spec.UpdateConfig.Delay / Math.pow(10, 9) || '未配置'/}</p></div>
-        <div flex="30"><h5>并行更新?个任务</h5></div>
+        <div flex="30"><h5>并行数</h5></div>
         <div flex="70"><p ng-class="{'no-info': !serviceConfigCtrl.service.Spec.UpdateConfig.Parallelism}">
             {/serviceConfigCtrl.service.Spec.UpdateConfig.Parallelism || '未配置'/}</p></div>
     </div>
