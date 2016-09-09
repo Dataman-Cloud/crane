@@ -18,3 +18,18 @@ func TestWithLogger(t *testing.T) {
 	loggerWithinCtx := GetLogger(ctx)
 	assert.NotNil(t, loggerWithinCtx)
 }
+
+func TestGetLogger(t *testing.T) {
+	ctx := WithLogger(context.Background(), L)
+	if entry := GetLogger(ctx); entry == L {
+		t.Log("pass")
+	} else {
+		t.Error("faild")
+	}
+
+	if entry := GetLogger(context.Background()); entry != L {
+		t.Error("faild")
+	} else {
+		t.Log("pass")
+	}
+}
