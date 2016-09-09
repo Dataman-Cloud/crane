@@ -43,7 +43,7 @@ func Update(ctx *gin.Context, err error, data interface{}) {
 func Error(ctx *gin.Context, err error) {
 	log.Errorf("[%s] %s GOT error: %s", ctx.Request.Method, ctx.Request.URL.Path, err.Error())
 
-	rerror, ok := err.(*cranerror.DmError)
+	rerror, ok := err.(*cranerror.CraneError)
 	if !ok {
 		ctx.JSON(http.StatusServiceUnavailable, gin.H{"code": CodeUndefined, "data": err, "message": err.Error(), "source": "docker"})
 		return

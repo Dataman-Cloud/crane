@@ -234,7 +234,7 @@ func checkPortConflicts(reqPorts map[string]bool, serviceId string, existingServ
 						Namespace:     namespace,
 						PublishedPort: portConflict,
 					}
-					return &cranerror.DmError{Code: CodeGetServicePortConflictError, Err: portConflictErr}
+					return &cranerror.CraneError{Code: CodeGetServicePortConflictError, Err: portConflictErr}
 				}
 			}
 		}
@@ -248,7 +248,7 @@ func checkPortConflicts(reqPorts map[string]bool, serviceId string, existingServ
 					Namespace:     namespace,
 					PublishedPort: portConflict,
 				}
-				return &cranerror.DmError{Code: CodeGetServicePortConflictError, Err: portConflictErr}
+				return &cranerror.CraneError{Code: CodeGetServicePortConflictError, Err: portConflictErr}
 			}
 		}
 
