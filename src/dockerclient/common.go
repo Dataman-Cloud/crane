@@ -8,10 +8,10 @@ import (
 	"strings"
 
 	"github.com/Dataman-Cloud/crane/src/dockerclient/model"
+	rauth "github.com/Dataman-Cloud/crane/src/plugins/registryauth"
 	"github.com/Dataman-Cloud/crane/src/utils/config"
 	"github.com/docker/engine-api/types/swarm"
 
-	rauth "github.com/Dataman-Cloud/crane/src/plugins/registryauth"
 	docker "github.com/Dataman-Cloud/go-dockerclient"
 )
 
