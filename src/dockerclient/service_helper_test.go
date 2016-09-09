@@ -25,73 +25,151 @@ func TestValidateResources(t *testing.T) {
 }
 
 func TestValidateResourceRequirements(t *testing.T) {
-	if err := validateResourceRequirements(&swarm.ResourceRequirements{}); err != nil {
-		t.Error("faild")
-	} else {
-		t.Log("pass")
-	}
+	err := validateResourceRequirements(&swarm.ResourceRequirements{})
+	assert.Nil(t, err)
 
-	if err := validateResourceRequirements(&swarm.ResourceRequirements{
-		Limits:       &swarm.Resources{},
-		Reservations: &swarm.Resources{},
-	}); err != nil {
-		t.Error("faild")
-	} else {
-		t.Log("pass")
-	}
+	err = validateResourceRequirements(&swarm.ResourceRequirements{
+		Limits: &swarm.Resources{
+			NanoCPUs: 1e5,
+		},
+	})
+	assert.NotNil(t, err)
+
+	err = validateResourceRequirements(&swarm.ResourceRequirements{
+		Limits: &swarm.Resources{
+			MemoryBytes: 3 * 1024 * 1024,
+		},
+	})
+	assert.NotNil(t, err)
+
+	err = validateResourceRequirements(&swarm.ResourceRequirements{
+		Reservations: &swarm.Resources{
+			NanoCPUs: 1e5,
+		},
+	})
+	assert.NotNil(t, err)
+
+	err = validateResourceRequirements(&swarm.ResourceRequirements{
+		Reservations: &swarm.Resources{
+			MemoryBytes: 3 * 1024 * 1024,
+		},
+	})
+	assert.NotNil(t, err)
 }
 
 func TestValidateRestartPolicy(t *testing.T) {
 	s := time.Duration(time.Second * 10)
-	if err := validateRestartPolicy(&swarm.RestartPolicy{
+	err := validateRestartPolicy(&swarm.RestartPolicy{
 		Delay:  &s,
 		Window: &s,
-	}); err != nil {
-		t.Error(err)
-	} else {
-		t.Log("pass")
-	}
+	})
+	assert.Nil(t, err)
+
+	s = time.Duration(-time.Second * 10)
+	err = validateRestartPolicy(&swarm.RestartPolicy{
+		Delay: &s,
+	})
+	assert.NotNil(t, err)
+
+	s = time.Duration(-time.Second * 10)
+	err = validateRestartPolicy(&swarm.RestartPolicy{
+		Window: &s,
+	})
+	assert.NotNil(t, err)
 }
 
 func TestValidatePlacement(t *testing.T) {
-	if err := validatePlacement(&swarm.Placement{
+	err := validatePlacement(&swarm.Placement{
 		Constraints: []string{"node==1"},
-	}); err != nil {
-		t.Error(err)
-	} else {
-		t.Log("pass")
-	}
+	})
+	assert.Nil(t, err)
+
+	err = validatePlacement(&swarm.Placement{
+		Constraints: []string{"node=1"},
+	})
+	assert.NotNil(t, err)
 }
 
 func TestValidateUpdate(t *testing.T) {
 	s := time.Duration(time.Second * 10)
-	if err := validateUpdate(&swarm.UpdateConfig{
+	err := validateUpdate(&swarm.UpdateConfig{
 		Delay: s,
-	}); err != nil {
-		t.Error(err)
-	} else {
-		t.Log("pass")
-	}
+	})
+	assert.Nil(t, err)
+
+	s = time.Duration(-time.Second * 10)
+	err = validateUpdate(&swarm.UpdateConfig{
+		Delay: s,
+	})
+	assert.NotNil(t, err)
 }
 
 func TestValidateTask(t *testing.T) {
-	if err := validateTask(swarm.TaskSpec{}); err != nil {
-		t.Error(err)
-	} else {
-		t.Log("pass")
-	}
+	err := validateTask(swarm.TaskSpec{})
+	assert.Nil(t, err)
+
+	err = validateTask(swarm.TaskSpec{
+		Resources: &swarm.ResourceRequirements{
+			Limits: &swarm.Resources{
+				NanoCPUs: 1e5,
+			},
+		},
+	})
+	assert.NotNil(t, err)
+
+	s := time.Duration(-time.Second * 10)
+	err = validateTask(swarm.TaskSpec{
+		RestartPolicy: &swarm.RestartPolicy{
+			Delay: &s,
+		},
+	})
+	assert.NotNil(t, err)
+
+	err = validateTask(swarm.TaskSpec{
+		Placement: &swarm.Placement{
+			Constraints: []string{"node=1"},
+		},
+	})
+	assert.NotNil(t, err)
 }
 
 func TestValidateEndpointSpec(t *testing.T) {
-	if err := validateEndpointSpec(&swarm.EndpointSpec{}); err != nil {
-		t.Error(err)
-	} else {
-		t.Log("pass")
-	}
+	err := validateEndpointSpec(&swarm.EndpointSpec{})
+	assert.Nil(t, err)
+
+	err = validateEndpointSpec(&swarm.EndpointSpec{
+		Mode: swarm.ResolutionModeDNSRR,
+		Ports: []swarm.PortConfig{swarm.PortConfig{
+			Name:          "test",
+			Protocol:      swarm.PortConfigProtocolTCP,
+			TargetPort:    uint32(8080),
+			PublishedPort: uint32(8080),
+		}},
+	})
+	assert.NotNil(t, err)
+
+	err = validateEndpointSpec(&swarm.EndpointSpec{
+		Mode: swarm.ResolutionModeDNSRR,
+		Ports: []swarm.PortConfig{
+			swarm.PortConfig{
+				Name:          "test",
+				Protocol:      swarm.PortConfigProtocolTCP,
+				TargetPort:    uint32(8080),
+				PublishedPort: uint32(8080),
+			},
+			swarm.PortConfig{
+				Name:          "test1",
+				Protocol:      swarm.PortConfigProtocolTCP,
+				TargetPort:    uint32(8080),
+				PublishedPort: uint32(8080),
+			},
+		},
+	})
+	assert.NotNil(t, err)
 }
 
 func TestValidateCraneServiceSpec(t *testing.T) {
-	if err := ValidateCraneServiceSpec(&model.CraneServiceSpec{
+	err := ValidateCraneServiceSpec(&model.CraneServiceSpec{
 		Name: "test",
 		TaskTemplate: swarm.TaskSpec{
 			ContainerSpec: swarm.ContainerSpec{
@@ -100,49 +178,129 @@ func TestValidateCraneServiceSpec(t *testing.T) {
 		},
 		UpdateConfig: &swarm.UpdateConfig{},
 		EndpointSpec: &swarm.EndpointSpec{},
-	}); err != nil {
-		t.Error(err)
-	} else {
-		t.Log("pass")
-	}
+	})
+	assert.Nil(t, err)
+
+	err = ValidateCraneServiceSpec(&model.CraneServiceSpec{
+		Name:         "t==-//?",
+		TaskTemplate: swarm.TaskSpec{},
+		UpdateConfig: &swarm.UpdateConfig{},
+		EndpointSpec: &swarm.EndpointSpec{},
+	})
+	assert.NotNil(t, err)
+
+	s := time.Duration(-time.Second * 10)
+	err = ValidateCraneServiceSpec(&model.CraneServiceSpec{
+		Name: "test",
+		TaskTemplate: swarm.TaskSpec{
+			RestartPolicy: &swarm.RestartPolicy{
+				Delay: &s,
+			},
+		},
+		UpdateConfig: &swarm.UpdateConfig{},
+		EndpointSpec: &swarm.EndpointSpec{},
+	})
+	assert.NotNil(t, err)
+
+	err = ValidateCraneServiceSpec(&model.CraneServiceSpec{
+		Name: "test",
+		UpdateConfig: &swarm.UpdateConfig{
+			Delay: s,
+		},
+		EndpointSpec: &swarm.EndpointSpec{},
+	})
+	assert.NotNil(t, err)
+
+	err = ValidateCraneServiceSpec(&model.CraneServiceSpec{
+		Name: "test",
+		EndpointSpec: &swarm.EndpointSpec{
+			Mode: swarm.ResolutionModeDNSRR,
+			Ports: []swarm.PortConfig{swarm.PortConfig{
+				Name:          "test",
+				Protocol:      swarm.PortConfigProtocolTCP,
+				TargetPort:    uint32(8080),
+				PublishedPort: uint32(8080),
+			}},
+		},
+	})
+	assert.NotNil(t, err)
+
+	err = ValidateCraneServiceSpec(&model.CraneServiceSpec{
+		Name: "test",
+		TaskTemplate: swarm.TaskSpec{
+			ContainerSpec: swarm.ContainerSpec{
+				Image: "sdfg-=-asd",
+			},
+		},
+	})
+	assert.NotNil(t, err)
 }
 
 func TestValidateName(t *testing.T) {
-	if err := validateName("testname"); err != nil {
-		t.Error(err)
-	} else {
-		t.Log("pass")
-	}
+	err := validateName("testname")
+	assert.Nil(t, err)
+
+	err = validateName("")
+	assert.NotNil(t, err)
+
+	err = validateName("-=-sdfg")
+	assert.NotNil(t, err)
 }
 
 func TestValidateImageName(t *testing.T) {
-	if err := validateImageName("testimage:latest"); err != nil {
-		t.Error(err)
-	} else {
-		t.Log("pass")
-	}
+	err := validateImageName("testimage:latest")
+	assert.Nil(t, err)
+
+	err = validateImageName("-=-sdfg")
+	assert.NotNil(t, err)
 }
 
 func TestCheckPortConflicts(t *testing.T) {
-	reqPorts := map[string]bool{
-		"test": true,
-	}
-	service := swarm.Service{
-		ID: "test",
-		Spec: swarm.ServiceSpec{
-			EndpointSpec: &swarm.EndpointSpec{
+	err := checkPortConflicts(map[string]bool{"test": true}, "test", []swarm.Service{
+		swarm.Service{
+			ID: "test1",
+			Spec: swarm.ServiceSpec{
+				EndpointSpec: &swarm.EndpointSpec{
+					Ports: []swarm.PortConfig{swarm.PortConfig{
+						Protocol:      swarm.PortConfigProtocolTCP,
+						TargetPort:    uint32(8080),
+						PublishedPort: uint32(8080),
+					}},
+				},
+			},
+		},
+	})
+	assert.Nil(t, err)
+
+	err = checkPortConflicts(map[string]bool{"8080/tcp": true}, "", []swarm.Service{
+		swarm.Service{
+			ID: "test1",
+			Spec: swarm.ServiceSpec{
+				EndpointSpec: &swarm.EndpointSpec{
+					Ports: []swarm.PortConfig{swarm.PortConfig{
+						Protocol:      swarm.PortConfigProtocolTCP,
+						TargetPort:    uint32(8080),
+						PublishedPort: uint32(8080),
+					}},
+				},
+			},
+		},
+	})
+	assert.NotNil(t, err)
+
+	err = checkPortConflicts(map[string]bool{"8080/tcp": true}, "", []swarm.Service{
+		swarm.Service{
+			ID: "test1",
+			Endpoint: swarm.Endpoint{
 				Ports: []swarm.PortConfig{swarm.PortConfig{
-					TargetPort:    8080,
-					PublishedPort: 8080,
+					Protocol:      swarm.PortConfigProtocolTCP,
+					TargetPort:    uint32(8080),
+					PublishedPort: uint32(8080),
 				}},
 			},
 		},
-	}
-	if err := checkPortConflicts(reqPorts, "test", []swarm.Service{service}); err != nil {
-		t.Error(err)
-	} else {
-		t.Log("pass")
-	}
+	})
+	assert.NotNil(t, err)
 }
 
 func TestPortConflictToString(t *testing.T) {
