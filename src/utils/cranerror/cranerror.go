@@ -18,19 +18,19 @@ const (
 	CodeGetNodeInfoError      = "503-11305"
 )
 
-type DmError struct {
+type CraneError struct {
 	Code string `json:"Code"`
 	Err  error  `json:"Err"`
 }
 
 func NewError(code string, message string) error {
-	return &DmError{
+	return &CraneError{
 		Code: code,
 		Err:  errors.New(message),
 	}
 }
 
-func (e *DmError) Error() string {
+func (e *CraneError) Error() string {
 	return e.Err.Error()
 }
 

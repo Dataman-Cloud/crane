@@ -84,7 +84,7 @@ func (client *CraneDockerClient) PretreatmentStack(bundle model.Bundle) (map[str
 							Namespace:     bundle.Namespace,
 							PublishedPort: portConflictStr,
 						}
-						return nil, &cranerror.DmError{Code: CodeGetServicePortConflictError, Err: portConflictErr}
+						return nil, &cranerror.CraneError{Code: CodeGetServicePortConflictError, Err: portConflictErr}
 					}
 
 					publishedPortMap[portConflictStr] = true

@@ -86,7 +86,7 @@ func (client *CraneDockerClient) createNodeClient(nodeId string) (*docker.Client
 	}
 
 	if err != nil {
-		return nil, &cranerror.DmError{
+		return nil, &cranerror.CraneError{
 			Code: CodeConnToNodeError,
 			Err:  &cranerror.NodeConnError{ID: nodeId, Endpoint: endpoint, Err: err},
 		}
@@ -100,7 +100,7 @@ func (client *CraneDockerClient) createNodeClient(nodeId string) (*docker.Client
 func (client *CraneDockerClient) SwarmNode(ctx context.Context) (*docker.Client, error) {
 	nodeId, ok := ctx.Value("node_id").(string)
 	if !ok {
-		return nil, &cranerror.DmError{
+		return nil, &cranerror.CraneError{
 			Code: CodeConnToNodeError,
 			Err: &cranerror.NodeConnError{
 				ID:       nodeId,
@@ -129,7 +129,7 @@ func (client *CraneDockerClient) SwarmNode(ctx context.Context) (*docker.Client,
 
 func (client *CraneDockerClient) VerifyNodeEndpoint(nodeId string, nodeUrl *url.URL) error {
 	if nodeUrl == nil {
-		return &cranerror.DmError{
+		return &cranerror.CraneError{
 			Code: CodeGetNodeEndpointError,
 			Err:  &cranerror.NodeConnError{ID: nodeId, Err: fmt.Errorf("verify endpoint failed: empty node url")},
 		}
@@ -143,28 +143,28 @@ func (client *CraneDockerClient) VerifyNodeEndpoint(nodeId string, nodeUrl *url.
 	endpoint := nodeUrl.String()
 	content, err := client.sharedHttpClient.GET(nil, endpoint+"/info", url.Values{}, nil)
 	if err != nil {
-		return &cranerror.DmError{
+		return &cranerror.CraneError{
 			Code: CodeVerifyNodeEnpointFailed,
 			Err:  &cranerror.NodeConnError{ID: nodeId, Endpoint: endpoint, Err: fmt.Errorf("verify endpoint failed: %s", err.Error())},
 		}
 	}
 
 	if err := json.Unmarshal(content, &nodeInfo); err != nil {
-		return &cranerror.DmError{
+		return &cranerror.CraneError{
 			Code: CodeVerifyNodeEnpointFailed,
 			Err:  &cranerror.NodeConnError{ID: nodeId, Endpoint: endpoint, Err: fmt.Errorf("verify endpoint failed: %s", err.Error())},
 		}
 	}
 
 	if err != nil {
-		return &cranerror.DmError{
+		return &cranerror.CraneError{
 			Code: CodeConnToNodeError,
 			Err:  &cranerror.NodeConnError{ID: nodeId, Endpoint: endpoint, Err: err},
 		}
 	}
 
 	if nodeId != nodeInfo.Swarm.NodeID {
-		return &cranerror.DmError{
+		return &cranerror.CraneError{
 			Code: CodeNodeEndpointIpMatchError,
 			Err:  &cranerror.NodeConnError{ID: nodeId, Endpoint: endpoint, Err: fmt.Errorf("node id not matched endpoint")},
 		}

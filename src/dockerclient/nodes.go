@@ -199,7 +199,7 @@ func (client *CraneDockerClient) nodeUpdateEndpoint(nodeId string, spec *swarm.N
 
 	nodeUrl, err := parseEndpoint(endpoint)
 	if err != nil {
-		return &cranerror.DmError{
+		return &cranerror.CraneError{
 			Code: CodeGetNodeEndpointError,
 			Err:  &cranerror.NodeConnError{ID: nodeId, Err: fmt.Errorf("update endpoint failed: %s", err.Error())},
 		}
@@ -231,13 +231,13 @@ func (client *CraneDockerClient) NodeDaemonUrl(nodeId string) (*url.URL, error) 
 	var nodeConnErr *cranerror.NodeConnError
 	if err != nil {
 		nodeConnErr = &cranerror.NodeConnError{ID: nodeId, Endpoint: "", Err: err}
-		return nil, &cranerror.DmError{Code: CodeGetNodeEndpointError, Err: nodeConnErr}
+		return nil, &cranerror.CraneError{Code: CodeGetNodeEndpointError, Err: nodeConnErr}
 	}
 
 	endpoint, ok := node.Spec.Annotations.Labels[labelNodeEndpoint]
 	if !ok {
 		nodeConnErr = &cranerror.NodeConnError{ID: nodeId, Endpoint: endpoint, Err: err}
-		return nil, &cranerror.DmError{Code: CodeGetNodeEndpointError, Err: nodeConnErr}
+		return nil, &cranerror.CraneError{Code: CodeGetNodeEndpointError, Err: nodeConnErr}
 	}
 
 	return parseEndpoint(endpoint)
