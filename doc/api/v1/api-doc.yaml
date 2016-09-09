@@ -738,7 +738,14 @@ paths:
         200:
           description: 返回主机信息
           schema:
-            $ref: '#/definitions/NodeInfo'
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int8
+                default: 0
+              data:
+                $ref: '#/definitions/NodeInfo'
         500:
           description: 获取主机信息失败
           schema:
@@ -833,8 +840,224 @@ paths:
           schema:
             $ref: '#/definitions/GeneralErrorResponse'
 
+  /nodes/{node_id}/containers/{container_id}/terminal:
+    get:
+      summary: 容器终端websocket连接
+      description: 操作成功返回101，失败返回相应信息
+      tags:
+        - Containers
+      parameters:
+        - name: Authorization
+          in: header
+          description: 用户token
+          required: true
+          type: string
+        - name: node_id
+          in: path
+          description: 节点 id
+          required: true
+          type: string
+        - name: container_id
+          in: path
+          description: 容器 id
+          required: true
+          type: string
+      responses:
+        101:
+          description: 成功连接
+        400:
+          description: 操作失败
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
+        500:
+          description: 操作失败
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
+        401:
+          description: token 验证失败
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
 
+  /nodes/{node_id}/containers:
+    get:
+      summary: 获取主机的容器列表
+      description: 正确返回200，错误返回相应错误码
+      tags:
+        - Nodes
+      parameters:
+        - name: Authorization
+          in: header
+          description: 用户token
+          required: true
+          type: string
+        - name: node_id
+          in: path
+          description: 节点 id
+          required: true
+          type: string
+      responses:
+        200:
+          description: 返回主机的容器列表
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int8
+                default: 0
+              data:
+                type: array
+                items:
+                  $ref: '#/definitions/Container'
+        500:
+          description: 获取主机的容器列表失败
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
+        401:
+          description: token 验证失败
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
 
+  /nodes/{node_id}/containers/{container_id}:
+    get:
+      summary: 获取容器信息
+      description: 获取成功返回200，失败返回相应信息
+      tags:
+        - Containers
+      parameters:
+        - name: Authorization
+          in: header
+          description: 用户token
+          required: true
+          type: string
+        - name: node_id
+          in: path
+          description: 节点 id
+          required: true
+          type: string
+        - name: container_id
+          in: path
+          description: 容器 id
+          required: true
+          type: string
+      responses:
+        200:
+          description: 返回容器信息
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int8
+                default: 0
+              data:
+                $ref: '#/definitions/ContainerInfo'
+        400:
+          description: 获取失败
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
+        500:
+          description: 获取失败
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
+        401:
+          description: token 验证失败
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
+    delete:
+      summary: 删除指定容器
+      description: 删除成功返回200，失败返回相应信息
+      tags:
+        - Containers
+      parameters:
+        - name: Authorization
+          in: header
+          description: 用户token
+          required: true
+          type: string
+        - name: node_id
+          in: path
+          description: 节点 id
+          required: true
+          type: string
+        - name: container_id
+          in: path
+          description: 容器 id
+          required: true
+          type: string
+      responses:
+        200:
+          description: 删除成功
+          schema:
+            $ref: '#/definitions/GeneralOkResponse'
+        400:
+          description: 删除失败
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
+        500:
+          description: 删除失败
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
+        401:
+          description: token 验证失败
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
+
+  /nodes/{node_id}/containers/{container_id}/diff:
+    get:
+      summary: 获取容器变更信息
+      description: 获取成功返回200，失败返回相应信息
+      tags:
+        - Containers
+      parameters:
+        - name: Authorization
+          in: header
+          description: 用户token
+          required: true
+          type: string
+        - name: node_id
+          in: path
+          description: 节点 id
+          required: true
+          type: string
+        - name: container_id
+          in: path
+          description: 容器 id
+          required: true
+          type: string
+      responses:
+        200:
+          description: 返回容器变更信息
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int8
+                default: 0
+              data:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    Kind:
+                      description: "类型,0为修改,1为添加"
+                      type: integer
+                    Path:
+                      description: 路径
+                      type: string
+        400:
+          description: 获取失败
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
+        500:
+          description: 获取失败
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
+        401:
+          description: token 验证失败
+          schema:
+            $ref: '#/definitions/GeneralErrorResponse'
 
 definitions:
   GeneralOkResponse:
@@ -1940,3 +2163,189 @@ definitions:
         description: 系统时间
         type: string
 
+  Container:
+    type: object
+    properties:
+      Command:
+        description: 容器的command
+        type: string
+      Created:
+        description: 容器创建的时间戳
+        type: integer
+        format: int64
+      Id:
+        description: 容器id
+        type: string
+      Image:
+        description: 容器使用的镜像名称
+        type: string
+      Labels:
+        description: 容器标签
+        type: object
+      Mounts:
+        type: array
+        items:
+          type: object
+          properties:
+            Destination:
+              description: 容器路径
+              type: string
+            Driver:
+              description: 驱动
+              type: string
+            Name:
+              description: 名称
+              type: string
+            RW:
+              description: 读写
+              type: boolean
+            Source:
+              description: 主机路径
+              type: string
+      Names:
+        type: array
+        items:
+          description: 容器名称
+          type: string
+      NetworkSettings:
+        type: object
+        properties:
+          Networks:
+            description: 网络信息
+            type: object
+      Ports:
+        type: array
+        items:
+          type: object
+          properties:
+            IP:
+              description: IP
+              type: string
+            PrivatePort:
+              description: 内部端口
+              type: integer
+              format: int64
+            PublicPort:
+              description: 公共端口
+              type: integer
+              format: int64
+            Type:
+              description: 类型,tcp或其他
+              type: string
+      State:
+        description: 状态
+        type: string
+      Status:
+        description: 运行时间
+        type: string
+
+  ContainerInfo:
+    type: object
+    properties:
+      Args:
+        description: 参数列表
+        type: array
+        items:
+          type: string
+      Config:
+        type: object
+        properties:
+          Cmd:
+            description: 启动命令
+            type: array
+            items:
+              type: string
+          Entrypoint:
+            description: 入口路径
+            type: object
+          Env:
+            description: 环境变量
+            type: array
+            items:
+              type: string
+          ExposedPorts:
+            description: 暴露端口
+            type: object
+          Hostname:
+            description: 主机名
+            type: string
+          Image:
+            description: 镜像名称
+            type: string
+          Labels:
+            description: 标签
+            type: object
+      Created:
+        description: 创建时间
+        type: string
+      Driver:
+        description: 驱动
+        type: string
+      GraphDriver:
+        description: 图标驱动
+        type: object
+        properties:
+          Data:
+            description: 驱动数据
+            type: object
+          Name:
+            description: 驱动名称
+            type: string
+      HostConfig:
+        description: 主机配置
+        type: object
+      HostnamePath:
+        description: hostname文件路径
+        type: string
+      HostsPath:
+        description: hosts文件路径
+        type: string
+      Id:
+        description: id
+        type: string
+      Image:
+        description: 镜像id
+        type: string
+      LogPath:
+        description: log文件路径
+        type: string
+      Name:
+        description: 容器名称
+        type: string
+      NetworkSettings:
+        type: object
+        properties:
+          Networks:
+            description: 网络信息
+            type: object
+          Ports:
+            description: 端口信息
+            type: object
+          SandboxKey:
+            description: 沙盒key
+            type: string
+      Path:
+        description: 路径
+        type: string
+      ResolvConfPath:
+        description: resolv.conf文件路径
+        type: string
+      State:
+        type: object
+        properties:
+          FinishedAt:
+            description: 完成时间
+            type: string
+          PID:
+            description: PID
+            type: integer
+            format: int64
+          Running:
+            description: 是否运行
+            type: boolean
+          StartedAt:
+            description: 开始时间
+            type: string
+          Status:
+            description: 状态
+            type: string
