@@ -250,6 +250,15 @@
 			"path": "/raft/raftpb"
 		},
 		{
+			"importpath": "github.com/davecgh/go-spew/spew",
+			"repository": "https://github.com/davecgh/go-spew",
+			"vcs": "git",
+			"revision": "6d212800a42e8ab5c146b8ace3490ee17e5225f9",
+			"branch": "master",
+			"path": "/spew",
+			"notests": true
+		},
+		{
 			"importpath": "github.com/denisenkom/go-mssqldb",
 			"repository": "https://github.com/denisenkom/go-mssqldb",
 			"vcs": "",
@@ -1273,28 +1282,12 @@
 			"path": "/fuzzy"
 		},
 		{
-			"importpath": "github.com/stretchr/testify/assert",
+			"importpath": "github.com/stretchr/testify",
 			"repository": "https://github.com/stretchr/testify",
-			"vcs": "",
+			"vcs": "git",
 			"revision": "d77da356e56a7428ad25149ca77381849a6a5232",
 			"branch": "master",
-			"path": "/assert"
-		},
-		{
-			"importpath": "github.com/stretchr/testify/vendor/github.com/davecgh/go-spew/spew",
-			"repository": "https://github.com/stretchr/testify",
-			"vcs": "",
-			"revision": "d77da356e56a7428ad25149ca77381849a6a5232",
-			"branch": "master",
-			"path": "vendor/github.com/davecgh/go-spew/spew"
-		},
-		{
-			"importpath": "github.com/stretchr/testify/vendor/github.com/pmezard/go-difflib/difflib",
-			"repository": "https://github.com/stretchr/testify",
-			"vcs": "",
-			"revision": "d77da356e56a7428ad25149ca77381849a6a5232",
-			"branch": "master",
-			"path": "vendor/github.com/pmezard/go-difflib/difflib"
+			"notests": true
 		},
 		{
 			"importpath": "github.com/yudai/umutex",
