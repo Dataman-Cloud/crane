@@ -1,4 +1,4 @@
-package dmgin
+package httpresponse
 
 import (
 	"net/http"
@@ -17,30 +17,30 @@ const (
 )
 
 // RHttprespnse retrun none error code 200
-func HttpOkResponse(ctx *gin.Context, data interface{}) {
+func Ok(ctx *gin.Context, data interface{}) {
 	ctx.JSON(http.StatusOK, gin.H{"code": CodeOk, "data": data})
 	return
 }
 
 // RHttprespnse retrun none error code 201
-func HttpCreateResponse(ctx *gin.Context, data interface{}) {
+func Create(ctx *gin.Context, data interface{}) {
 	ctx.JSON(http.StatusCreated, gin.H{"code": CodeOk, "data": data})
 	return
 }
 
 // RHttprespnse retrun none error code 204
-func HttpDeleteResponse(ctx *gin.Context, data interface{}) {
+func Delete(ctx *gin.Context, data interface{}) {
 	ctx.JSON(http.StatusNoContent, gin.H{"code": CodeOk, "data": data})
 	return
 }
 
 // RHttprespnse retrun none error code 202
-func HttpUpdateResponse(ctx *gin.Context, err error, data interface{}) {
+func Update(ctx *gin.Context, err error, data interface{}) {
 	ctx.JSON(http.StatusAccepted, gin.H{"code": CodeOk, "data": data})
 	return
 }
 
-func HttpErrorResponse(ctx *gin.Context, err error) {
+func Error(ctx *gin.Context, err error) {
 	log.Errorf("[%s] %s GOT error: %s", ctx.Request.Method, ctx.Request.URL.Path, err.Error())
 
 	rerror, ok := err.(*cranerror.DmError)

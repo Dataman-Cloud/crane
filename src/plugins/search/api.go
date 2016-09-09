@@ -4,7 +4,7 @@ import (
 	"sort"
 
 	"github.com/Dataman-Cloud/crane/src/utils/cranerror"
-	"github.com/Dataman-Cloud/crane/src/utils/dmgin"
+	"github.com/Dataman-Cloud/crane/src/utils/httpresponse"
 
 	"github.com/gin-gonic/gin"
 	"github.com/renstrom/fuzzysearch/fuzzy"
@@ -23,7 +23,7 @@ func (searchApi *SearchApi) Search(ctx *gin.Context) {
 	query := ctx.Query("keyword")
 	if query == "" {
 		rerror := cranerror.NewError(CodeInvalidSearchKeywords, "invalid search keywords")
-		dmgin.HttpErrorResponse(ctx, rerror)
+		httpresponse.Error(ctx, rerror)
 		return
 	}
 
@@ -40,5 +40,5 @@ func (searchApi *SearchApi) Search(ctx *gin.Context) {
 			results = append(results, searchApi.Store.Get(index.Target))
 		}
 	}
-	dmgin.HttpOkResponse(ctx, results)
+	httpresponse.Ok(ctx, results)
 }

@@ -4,7 +4,7 @@ import (
 	"strconv"
 
 	"github.com/Dataman-Cloud/crane/src/utils/cranerror"
-	"github.com/Dataman-Cloud/crane/src/utils/dmgin"
+	"github.com/Dataman-Cloud/crane/src/utils/httpresponse"
 
 	"github.com/Dataman-Cloud/crane/src/utils/encrypt"
 	log "github.com/Sirupsen/logrus"
@@ -31,20 +31,20 @@ func (licenseApi *LicenseApi) Create(ctx *gin.Context) {
 	if err = ctx.BindJSON(&setting); err != nil {
 		log.Errorf("invalid data error: %v", err)
 		craneerr := cranerror.NewError(CodeLicenseCreateLicenseError, err.Error())
-		dmgin.HttpErrorResponse(ctx, craneerr)
+		httpresponse.Error(ctx, craneerr)
 		return
 	}
 
 	if sk, err := encrypt.Decrypt(key, setting.License); err != nil {
 		log.Errorf("invalid license error: %v", err)
 		craneerr := cranerror.NewError(CodeLicenseCreateLicenseError, err.Error())
-		dmgin.HttpErrorResponse(ctx, craneerr)
+		httpresponse.Error(ctx, craneerr)
 		return
 	} else {
 		if _, err = strconv.ParseUint(sk, 10, 64); err != nil {
 			log.Errorf("invalid license error: %v", err)
 			craneerr := cranerror.NewError(CodeLicenseCreateLicenseError, err.Error())
-			dmgin.HttpErrorResponse(ctx, craneerr)
+			httpresponse.Error(ctx, craneerr)
 			return
 		}
 	}
@@ -62,10 +62,10 @@ func (licenseApi *LicenseApi) Create(ctx *gin.Context) {
 			Error; err != nil {
 			log.Errorf("update license error: %v", err)
 			craneerr := cranerror.NewError(CodeLicenseCreateLicenseError, err.Error())
-			dmgin.HttpErrorResponse(ctx, craneerr)
+			httpresponse.Error(ctx, craneerr)
 			return
 		}
-		dmgin.HttpOkResponse(ctx, "update license success")
+		httpresponse.Ok(ctx, "update license success")
 		return
 	}
 
@@ -77,11 +77,11 @@ func (licenseApi *LicenseApi) Create(ctx *gin.Context) {
 		Error; err != nil {
 		log.Errorf("update license error: %v", err)
 		craneerr := cranerror.NewError(CodeLicenseCreateLicenseError, err.Error())
-		dmgin.HttpErrorResponse(ctx, craneerr)
+		httpresponse.Error(ctx, craneerr)
 		return
 	}
 
-	dmgin.HttpOkResponse(ctx, "update license success")
+	httpresponse.Ok(ctx, "update license success")
 }
 
 func (licenseApi *LicenseApi) Get(ctx *gin.Context) {
@@ -95,24 +95,24 @@ func (licenseApi *LicenseApi) Get(ctx *gin.Context) {
 		Error; err != nil {
 		log.Errorf("get license error: %v", err)
 		craneerr := cranerror.NewError(CodeLicenseGetLicenseError, err.Error())
-		dmgin.HttpErrorResponse(ctx, craneerr)
+		httpresponse.Error(ctx, craneerr)
 		return
 	} else if len(objSetting) == 0 {
 		craneerr := cranerror.NewError(CodeLicenseNotFoundLicenseError, "not found license")
-		dmgin.HttpErrorResponse(ctx, craneerr)
+		httpresponse.Error(ctx, craneerr)
 		return
 	}
 
 	if lc, err := encrypt.Decrypt(key, objSetting[0].License); err != nil {
 		log.Errorf("invalid license error: %v", err)
 		craneerr := cranerror.NewError(CodeLicenseGetLicenseError, err.Error())
-		dmgin.HttpErrorResponse(ctx, craneerr)
+		httpresponse.Error(ctx, craneerr)
 		return
 	} else {
 		objSetting[0].License = lc
 	}
 
-	dmgin.HttpOkResponse(ctx, objSetting[0])
+	httpresponse.Ok(ctx, objSetting[0])
 }
 
 func (licenseApi *LicenseApi) GetLicenseValidity() (uint64, error) {

@@ -5,7 +5,7 @@ import (
 
 	"github.com/Dataman-Cloud/crane/src/plugins/auth"
 	"github.com/Dataman-Cloud/crane/src/utils/cranerror"
-	"github.com/Dataman-Cloud/crane/src/utils/dmgin"
+	"github.com/Dataman-Cloud/crane/src/utils/httpresponse"
 	"github.com/Dataman-Cloud/crane/src/utils/model"
 
 	"github.com/gin-gonic/gin"
@@ -22,14 +22,14 @@ func Authorization(a *auth.AccountApi) gin.HandlerFunc {
 		}
 
 		if len(ctx.Request.Header.Get("Authorization")) == 0 {
-			dmgin.HttpErrorResponse(ctx, cranerror.NewError(auth.CodeAccountTokenInvalidError, "Invalid Authorization"))
+			httpresponse.Error(ctx, cranerror.NewError(auth.CodeAccountTokenInvalidError, "Invalid Authorization"))
 			ctx.Abort()
 			return
 		}
 
 		value, err := a.TokenStore.Get(ctx, ctx.Request.Header.Get("Authorization"))
 		if err != nil {
-			dmgin.HttpErrorResponse(ctx, cranerror.NewError(auth.CodeAccountTokenInvalidError, "Invalid Authorization"))
+			httpresponse.Error(ctx, cranerror.NewError(auth.CodeAccountTokenInvalidError, "Invalid Authorization"))
 			ctx.Abort()
 			return
 		}
@@ -38,7 +38,7 @@ func Authorization(a *auth.AccountApi) gin.HandlerFunc {
 
 		acc, err := a.Authenticator.Account(accountId)
 		if err != nil {
-			dmgin.HttpErrorResponse(ctx, cranerror.NewError(auth.CodeAccountTokenInvalidError, "Invalid Authorization"))
+			httpresponse.Error(ctx, cranerror.NewError(auth.CodeAccountTokenInvalidError, "Invalid Authorization"))
 			ctx.Abort()
 			return
 		}
@@ -50,7 +50,7 @@ func Authorization(a *auth.AccountApi) gin.HandlerFunc {
 				"account_id": accountId,
 			},
 		}); err != nil {
-			dmgin.HttpErrorResponse(ctx, cranerror.NewError(auth.CodeAccountTokenInvalidError, "Invalid Authorization"))
+			httpresponse.Error(ctx, cranerror.NewError(auth.CodeAccountTokenInvalidError, "Invalid Authorization"))
 			ctx.Abort()
 			return
 		} else {
