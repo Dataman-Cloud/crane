@@ -8,7 +8,7 @@ import (
 
 	"github.com/Dataman-Cloud/crane/src/dockerclient/model"
 	"github.com/Dataman-Cloud/crane/src/utils/cranerror"
-	"github.com/Dataman-Cloud/crane/src/utils/dmgin"
+	"github.com/Dataman-Cloud/crane/src/utils/httpresponse"
 
 	docker "github.com/Dataman-Cloud/go-dockerclient"
 	log "github.com/Sirupsen/logrus"
@@ -47,11 +47,11 @@ func (api *Api) InspectContainer(ctx *gin.Context) {
 	container, err := api.GetDockerClient().InspectContainer(craneContext.(context.Context), cId)
 	if err != nil {
 		log.Errorf("InspectContainer of containerId %s got error: %s", cId, err.Error())
-		dmgin.HttpErrorResponse(ctx, err)
+		httpresponse.Error(ctx, err)
 		return
 	}
 
-	dmgin.HttpOkResponse(ctx, container)
+	httpresponse.Ok(ctx, container)
 	return
 }
 
@@ -60,7 +60,7 @@ func (api *Api) ListContainers(ctx *gin.Context) {
 	if err != nil {
 		log.Error("Parse param all of list container got error: ", err)
 		rerror := cranerror.NewError(CodeListContainerParamError, err.Error())
-		dmgin.HttpErrorResponse(ctx, rerror)
+		httpresponse.Error(ctx, rerror)
 		return
 	}
 
@@ -68,7 +68,7 @@ func (api *Api) ListContainers(ctx *gin.Context) {
 	if err != nil {
 		log.Error("Parse param size of list container got error: ", err)
 		rerror := cranerror.NewError(CodeListContainerParamError, err.Error())
-		dmgin.HttpErrorResponse(ctx, rerror)
+		httpresponse.Error(ctx, rerror)
 		return
 	}
 
@@ -76,7 +76,7 @@ func (api *Api) ListContainers(ctx *gin.Context) {
 	if err != nil {
 		log.Error("Parse param all of limit container got error: ", err)
 		rerror := cranerror.NewError(CodeListContainerParamError, err.Error())
-		dmgin.HttpErrorResponse(ctx, rerror)
+		httpresponse.Error(ctx, rerror)
 		return
 	}
 	limit := int(limitValue)
@@ -86,7 +86,7 @@ func (api *Api) ListContainers(ctx *gin.Context) {
 	if err := json.Unmarshal([]byte(queryFilters), &filters); err != nil {
 		log.Error("Unmarshal list container filters got error: ", err)
 		rerror := cranerror.NewError(CodeListContainerParamError, err.Error())
-		dmgin.HttpErrorResponse(ctx, rerror)
+		httpresponse.Error(ctx, rerror)
 		return
 	}
 
@@ -103,11 +103,11 @@ func (api *Api) ListContainers(ctx *gin.Context) {
 	containers, err := api.GetDockerClient().ListContainers(craneContext.(context.Context), listOpts)
 	if err != nil {
 		log.Error("ListContainers got error: ", err)
-		dmgin.HttpErrorResponse(ctx, err)
+		httpresponse.Error(ctx, err)
 		return
 	}
 
-	dmgin.HttpOkResponse(ctx, containers)
+	httpresponse.Ok(ctx, containers)
 	return
 }
 
@@ -116,7 +116,7 @@ func (api *Api) PatchContainer(ctx *gin.Context) {
 	var containerRequest ContainerRequest
 	if err := ctx.BindJSON(&containerRequest); err != nil {
 		rerror := cranerror.NewError(CodePatchContainerParamError, err.Error())
-		dmgin.HttpErrorResponse(ctx, rerror)
+		httpresponse.Error(ctx, rerror)
 		return
 	}
 
@@ -148,11 +148,11 @@ func (api *Api) PatchContainer(ctx *gin.Context) {
 
 	if err != nil {
 		log.Errorf("%s container of %s got error: %s", method, cId, err.Error())
-		dmgin.HttpErrorResponse(ctx, err)
+		httpresponse.Error(ctx, err)
 		return
 	}
 
-	dmgin.HttpOkResponse(ctx, "success")
+	httpresponse.Ok(ctx, "success")
 	return
 }
 
@@ -161,7 +161,7 @@ func (api *Api) DeleteContainer(ctx *gin.Context) {
 	var containerRequest ContainerRequest
 	if err := ctx.BindJSON(&containerRequest); err != nil {
 		rerror := cranerror.NewError(CodeDeleteContainerParamError, err.Error())
-		dmgin.HttpErrorResponse(ctx, rerror)
+		httpresponse.Error(ctx, rerror)
 		return
 	}
 
@@ -180,11 +180,11 @@ func (api *Api) DeleteContainer(ctx *gin.Context) {
 
 	if err != nil {
 		log.Errorf("%s container of %s got error %s", method, cId, err.Error())
-		dmgin.HttpErrorResponse(ctx, err)
+		httpresponse.Error(ctx, err)
 		return
 	}
 
-	dmgin.HttpOkResponse(ctx, "success")
+	httpresponse.Ok(ctx, "success")
 	return
 }
 
@@ -194,11 +194,11 @@ func (api *Api) DiffContainer(ctx *gin.Context) {
 	changes, err := api.GetDockerClient().DiffContainer(craneContext.(context.Context), cId)
 	if err != nil {
 		log.Errorf("Diff container of %s got error: %s", cId, err.Error())
-		dmgin.HttpErrorResponse(ctx, err)
+		httpresponse.Error(ctx, err)
 		return
 	}
 
-	dmgin.HttpOkResponse(ctx, changes)
+	httpresponse.Ok(ctx, changes)
 	return
 }
 

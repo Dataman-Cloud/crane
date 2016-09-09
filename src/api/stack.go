@@ -7,7 +7,7 @@ import (
 	"github.com/Dataman-Cloud/crane/src/dockerclient/model"
 	"github.com/Dataman-Cloud/crane/src/plugins/auth"
 	"github.com/Dataman-Cloud/crane/src/utils/cranerror"
-	"github.com/Dataman-Cloud/crane/src/utils/dmgin"
+	"github.com/Dataman-Cloud/crane/src/utils/httpresponse"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/docker/engine-api/types"
@@ -39,7 +39,7 @@ func (api *Api) CreateStack(ctx *gin.Context) {
 		}
 
 		rerror := cranerror.NewError(CodeCreateStackParamError, err.Error())
-		dmgin.HttpErrorResponse(ctx, rerror)
+		httpresponse.Error(ctx, rerror)
 		return
 	}
 
@@ -50,7 +50,7 @@ func (api *Api) CreateStack(ctx *gin.Context) {
 		if err != nil || gId < 0 {
 			log.Error("CreateStack invalid group_id")
 			rerror := cranerror.NewError(CodeInvalidGroupId, "invalid group id")
-			dmgin.HttpErrorResponse(ctx, rerror)
+			httpresponse.Error(ctx, rerror)
 			return
 		}
 
@@ -69,11 +69,11 @@ func (api *Api) CreateStack(ctx *gin.Context) {
 
 	if err := api.GetDockerClient().DeployStack(&stackBundle); err != nil {
 		log.Error("Stack deploy got error: ", err)
-		dmgin.HttpErrorResponse(ctx, err)
+		httpresponse.Error(ctx, err)
 		return
 	}
 
-	dmgin.HttpOkResponse(ctx, "success")
+	httpresponse.Ok(ctx, "success")
 	return
 }
 
@@ -81,11 +81,11 @@ func (api *Api) ListStack(ctx *gin.Context) {
 	stacks, err := api.GetDockerClient().ListStack()
 	if err != nil {
 		log.Error("Stack deploy got error: ", err)
-		dmgin.HttpErrorResponse(ctx, err)
+		httpresponse.Error(ctx, err)
 		return
 	}
 
-	dmgin.HttpOkResponse(ctx, stacks)
+	httpresponse.Ok(ctx, stacks)
 	return
 }
 
@@ -95,11 +95,11 @@ func (api *Api) InspectStack(ctx *gin.Context) {
 	bundle, err := api.GetDockerClient().InspectStack(namespace)
 	if err != nil {
 		log.Error("InspectStack got error: ", err)
-		dmgin.HttpErrorResponse(ctx, err)
+		httpresponse.Error(ctx, err)
 		return
 	}
 
-	dmgin.HttpOkResponse(ctx, bundle)
+	httpresponse.Ok(ctx, bundle)
 	return
 }
 
@@ -119,11 +119,11 @@ func (api *Api) ListStackService(ctx *gin.Context) {
 	servicesStatus, err := api.GetDockerClient().ListStackService(namespace, opts)
 	if err != nil {
 		log.Error("ListStackService got error: ", err)
-		dmgin.HttpErrorResponse(ctx, err)
+		httpresponse.Error(ctx, err)
 		return
 	}
 
-	dmgin.HttpOkResponse(ctx, servicesStatus)
+	httpresponse.Ok(ctx, servicesStatus)
 	return
 }
 
@@ -131,10 +131,10 @@ func (api *Api) RemoveStack(ctx *gin.Context) {
 	namespace := ctx.Param("namespace")
 	if err := api.GetDockerClient().RemoveStack(namespace); err != nil {
 		log.Error("Remove stack got error: ", err)
-		dmgin.HttpErrorResponse(ctx, err)
+		httpresponse.Error(ctx, err)
 		return
 	}
 
-	dmgin.HttpOkResponse(ctx, "success")
+	httpresponse.Ok(ctx, "success")
 	return
 }

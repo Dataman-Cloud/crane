@@ -4,7 +4,7 @@ import (
 	"strconv"
 
 	"github.com/Dataman-Cloud/crane/src/utils/cranerror"
-	"github.com/Dataman-Cloud/crane/src/utils/dmgin"
+	"github.com/Dataman-Cloud/crane/src/utils/httpresponse"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
@@ -38,7 +38,7 @@ func (catalogApi *CatalogApi) GetCatalog(ctx *gin.Context) {
 	catalogId, err := strconv.ParseUint(ctx.Param("catalog_id"), 10, 64)
 	if err != nil {
 		craneerr := cranerror.NewError(CodeCatalogInvalidCatalogId, err.Error())
-		dmgin.HttpErrorResponse(ctx, craneerr)
+		httpresponse.Error(ctx, craneerr)
 		return
 	}
 
@@ -46,11 +46,11 @@ func (catalogApi *CatalogApi) GetCatalog(ctx *gin.Context) {
 	if err != nil {
 		log.Errorf("get catalog error: %v", err)
 		craneerr := cranerror.NewError(CodeCatalogGetCatalogError, err.Error())
-		dmgin.HttpErrorResponse(ctx, craneerr)
+		httpresponse.Error(ctx, craneerr)
 		return
 	}
 
-	dmgin.HttpOkResponse(ctx, catalog)
+	httpresponse.Ok(ctx, catalog)
 }
 
 func (catalogApi *CatalogApi) ListCatalog(ctx *gin.Context) {
@@ -59,11 +59,11 @@ func (catalogApi *CatalogApi) ListCatalog(ctx *gin.Context) {
 	if err != nil {
 		log.Errorf("get catalog list error: %v", err)
 		craneerr := cranerror.NewError(CodeCatalogInvalidUser, err.Error())
-		dmgin.HttpErrorResponse(ctx, craneerr)
+		httpresponse.Error(ctx, craneerr)
 		return
 	}
 
-	dmgin.HttpOkResponse(ctx, catalogs)
+	httpresponse.Ok(ctx, catalogs)
 }
 
 func (catalogApi *CatalogApi) CreateCatalog(ctx *gin.Context) {
@@ -71,13 +71,13 @@ func (catalogApi *CatalogApi) CreateCatalog(ctx *gin.Context) {
 	if err := ctx.BindJSON(&catalog); err != nil {
 		log.Errorf("invalid param error: %v", err)
 		craneerr := cranerror.NewError(CodeCatalogInvalidParam, err.Error())
-		dmgin.HttpErrorResponse(ctx, craneerr)
+		httpresponse.Error(ctx, craneerr)
 		return
 	}
 
 	if iconData, err := ImageHandle(ctx.Request); err != nil {
 		craneerr := cranerror.NewError(CodeCatalogInvalidIcon, err.Error())
-		dmgin.HttpErrorResponse(ctx, craneerr)
+		httpresponse.Error(ctx, craneerr)
 		return
 	} else {
 		catalog.IconData = iconData
@@ -85,12 +85,12 @@ func (catalogApi *CatalogApi) CreateCatalog(ctx *gin.Context) {
 
 	if catalog.Bundle == "" {
 		craneerr := cranerror.NewError(CodeCatalogInvalidParam, "invalid bundle")
-		dmgin.HttpErrorResponse(ctx, craneerr)
+		httpresponse.Error(ctx, craneerr)
 		return
 	}
 
 	catalogApi.Save(&catalog)
-	dmgin.HttpOkResponse(ctx, catalog)
+	httpresponse.Ok(ctx, catalog)
 }
 
 func (catalogApi *CatalogApi) DeleteCatalog(ctx *gin.Context) {
@@ -98,31 +98,31 @@ func (catalogApi *CatalogApi) DeleteCatalog(ctx *gin.Context) {
 	if err != nil {
 		log.Error("invalid catalog_id")
 		craneerr := cranerror.NewError(CodeCatalogInvalidCatalogId, err.Error())
-		dmgin.HttpErrorResponse(ctx, craneerr)
+		httpresponse.Error(ctx, craneerr)
 		return
 	}
 
 	cl, err := catalogApi.Get(catalogId)
 	if err != nil {
 		craneerr := cranerror.NewError(CodeCatalogInvalidParam, err.Error())
-		dmgin.HttpErrorResponse(ctx, craneerr)
+		httpresponse.Error(ctx, craneerr)
 		return
 	}
 
 	if cl.Type == CATALOG_SYSTEM_DEFAULT {
 		craneerr := cranerror.NewError(CodeCatalogForbiddenOperation, "forbid update system default")
-		dmgin.HttpErrorResponse(ctx, craneerr)
+		httpresponse.Error(ctx, craneerr)
 		return
 	}
 
 	if err = catalogApi.Delete(catalogId); err != nil {
 		log.Errorf("delete catalog error: %v", err)
 		craneerr := cranerror.NewError(CodeCatalogDeleteFaild, err.Error())
-		dmgin.HttpErrorResponse(ctx, craneerr)
+		httpresponse.Error(ctx, craneerr)
 		return
 	}
 
-	dmgin.HttpOkResponse(ctx, "delete success")
+	httpresponse.Ok(ctx, "delete success")
 }
 
 func (catalogApi *CatalogApi) UpdateCatalog(ctx *gin.Context) {
@@ -130,13 +130,13 @@ func (catalogApi *CatalogApi) UpdateCatalog(ctx *gin.Context) {
 	if err := ctx.BindJSON(&catalog); err != nil {
 		log.Errorf("invalid param error: %v", err)
 		craneerr := cranerror.NewError(CodeCatalogInvalidParam, err.Error())
-		dmgin.HttpErrorResponse(ctx, craneerr)
+		httpresponse.Error(ctx, craneerr)
 		return
 	}
 
 	if catalog.Bundle == "" {
 		craneerr := cranerror.NewError(CodeCatalogInvalidParam, "invalid bundle")
-		dmgin.HttpErrorResponse(ctx, craneerr)
+		httpresponse.Error(ctx, craneerr)
 		return
 	}
 
@@ -144,26 +144,26 @@ func (catalogApi *CatalogApi) UpdateCatalog(ctx *gin.Context) {
 	if err != nil {
 		log.Error("invalid catalog_id")
 		craneerr := cranerror.NewError(CodeCatalogInvalidCatalogId, err.Error())
-		dmgin.HttpErrorResponse(ctx, craneerr)
+		httpresponse.Error(ctx, craneerr)
 		return
 	}
 
 	cl, err := catalogApi.Get(catalogId)
 	if err != nil {
 		craneerr := cranerror.NewError(CodeCatalogInvalidParam, err.Error())
-		dmgin.HttpErrorResponse(ctx, craneerr)
+		httpresponse.Error(ctx, craneerr)
 		return
 	}
 
 	if cl.Type == CATALOG_SYSTEM_DEFAULT {
 		craneerr := cranerror.NewError(CodeCatalogForbiddenOperation, "forbid update system default")
-		dmgin.HttpErrorResponse(ctx, craneerr)
+		httpresponse.Error(ctx, craneerr)
 		return
 	}
 
 	if iconData, err := ImageHandle(ctx.Request); err != nil {
 		craneerr := cranerror.NewError(CodeCatalogInvalidIcon, err.Error())
-		dmgin.HttpErrorResponse(ctx, craneerr)
+		httpresponse.Error(ctx, craneerr)
 		return
 	} else if iconData == "" {
 		catalog.IconData = cl.IconData
@@ -179,5 +179,5 @@ func (catalogApi *CatalogApi) UpdateCatalog(ctx *gin.Context) {
 	catalog.UserId = cl.UserId
 	catalog.Type = cl.Type
 
-	dmgin.HttpOkResponse(ctx, "update success")
+	httpresponse.Ok(ctx, "update success")
 }

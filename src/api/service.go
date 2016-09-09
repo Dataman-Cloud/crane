@@ -8,7 +8,7 @@ import (
 	"github.com/Dataman-Cloud/crane/src/dockerclient"
 	"github.com/Dataman-Cloud/crane/src/dockerclient/model"
 	"github.com/Dataman-Cloud/crane/src/utils/cranerror"
-	"github.com/Dataman-Cloud/crane/src/utils/dmgin"
+	"github.com/Dataman-Cloud/crane/src/utils/httpresponse"
 
 	docker "github.com/Dataman-Cloud/go-dockerclient"
 	log "github.com/Sirupsen/logrus"
@@ -50,31 +50,31 @@ func encryptServiceId(serviceId string) string {
 }
 
 func (api *Api) ServiceCDAddr(ctx *gin.Context) {
-	dmgin.HttpOkResponse(ctx, encryptServiceId(ctx.Param("service_id")))
+	httpresponse.Ok(ctx, encryptServiceId(ctx.Param("service_id")))
 }
 
 func (api *Api) UpdateServiceImage(ctx *gin.Context) {
 	encryptedServicId := ctx.Param("service_id")
 	serviceId, err := decryptServiceId(encryptedServicId)
 	if err != nil {
-		dmgin.HttpErrorResponse(ctx, err)
+		httpresponse.Error(ctx, err)
 		return
 	}
 
 	service, err := api.GetDockerClient().InspectServiceWithRaw(serviceId)
 	if err != nil {
-		dmgin.HttpErrorResponse(ctx, err)
+		httpresponse.Error(ctx, err)
 		return
 	}
 
 	service.Spec.TaskTemplate.ContainerSpec.Image = ctx.Query("image")
 
 	if err := api.GetDockerClient().UpdateServiceAutoOption(service.ID, service.Version, service.Spec); err != nil {
-		dmgin.HttpErrorResponse(ctx, err)
+		httpresponse.Error(ctx, err)
 		return
 	}
 
-	dmgin.HttpOkResponse(ctx, "success")
+	httpresponse.Ok(ctx, "success")
 	return
 }
 
@@ -86,24 +86,24 @@ func (api *Api) UpdateService(ctx *gin.Context) {
 
 	if err := ctx.BindJSON(&craneServiceSpec); err != nil {
 		rerror := cranerror.NewError(CodeUpdateServiceParamError, err.Error())
-		dmgin.HttpErrorResponse(ctx, rerror)
+		httpresponse.Error(ctx, rerror)
 		return
 	}
 
 	serviceId := ctx.Param("service_id")
 	if err := dockerclient.ValidateCraneServiceSpec(&craneServiceSpec); err != nil {
-		dmgin.HttpErrorResponse(ctx, err)
+		httpresponse.Error(ctx, err)
 		return
 	}
 
 	if err := api.GetDockerClient().CheckServicePortConflicts(&craneServiceSpec, serviceId); err != nil {
-		dmgin.HttpErrorResponse(ctx, err)
+		httpresponse.Error(ctx, err)
 		return
 	}
 
 	service, err := api.GetDockerClient().InspectServiceWithRaw(serviceId)
 	if err != nil {
-		dmgin.HttpErrorResponse(ctx, err)
+		httpresponse.Error(ctx, err)
 		return
 	}
 
@@ -138,7 +138,7 @@ func (api *Api) UpdateService(ctx *gin.Context) {
 	if craneServiceSpec.RegistryAuth != "" {
 		registryAuth, err := dockerclient.EncodedRegistryAuth(craneServiceSpec.RegistryAuth)
 		if err != nil {
-			dmgin.HttpErrorResponse(ctx, err)
+			httpresponse.Error(ctx, err)
 			return
 		}
 		updateOpts.EncodedRegistryAuth = registryAuth
@@ -153,11 +153,11 @@ func (api *Api) UpdateService(ctx *gin.Context) {
 	}
 
 	if err := api.GetDockerClient().UpdateService(service.ID, service.Version, swarmServiceSpec, updateOpts); err != nil {
-		dmgin.HttpErrorResponse(ctx, err)
+		httpresponse.Error(ctx, err)
 		return
 	}
 
-	dmgin.HttpOkResponse(ctx, "success")
+	httpresponse.Ok(ctx, "success")
 	return
 }
 
@@ -165,7 +165,7 @@ func (api *Api) InspectService(ctx *gin.Context) {
 	service, err := api.GetDockerClient().InspectServiceWithRaw(ctx.Param("service_id"))
 	if err != nil {
 		log.Errorf("inspect service error: %v", err)
-		dmgin.HttpErrorResponse(ctx, err)
+		httpresponse.Error(ctx, err)
 		return
 	}
 
@@ -176,7 +176,7 @@ func (api *Api) InspectService(ctx *gin.Context) {
 		Endpoint:     service.Endpoint,
 		UpdateStatus: service.UpdateStatus,
 	}
-	dmgin.HttpOkResponse(ctx, craneService)
+	httpresponse.Ok(ctx, craneService)
 	return
 }
 
@@ -186,18 +186,18 @@ func (api *Api) CreateService(ctx *gin.Context) {
 	if err := ctx.BindJSON(&service); err != nil {
 		log.Error("CreateService invalied request body: ", err)
 		rerror := cranerror.NewError(CodeCreateServiceParamError, err.Error())
-		dmgin.HttpErrorResponse(ctx, rerror)
+		httpresponse.Error(ctx, rerror)
 		return
 	}
 
 	response, err := api.GetDockerClient().CreateService(service, types.ServiceCreateOptions{})
 	if err != nil {
 		log.Error("CreateService got error: ", err)
-		dmgin.HttpErrorResponse(ctx, err)
+		httpresponse.Error(ctx, err)
 		return
 	}
 
-	dmgin.HttpOkResponse(ctx, response)
+	httpresponse.Ok(ctx, response)
 	return
 }
 
@@ -205,11 +205,11 @@ func (api *Api) RemoveService(ctx *gin.Context) {
 	serviceId := ctx.Param("id")
 	if err := api.GetDockerClient().RemoveService(serviceId); err != nil {
 		log.Errorf("Remove service %s got error: %s", serviceId, err.Error())
-		dmgin.HttpErrorResponse(ctx, err)
+		httpresponse.Error(ctx, err)
 		return
 	}
 
-	dmgin.HttpOkResponse(ctx, "success")
+	httpresponse.Ok(ctx, "success")
 	return
 }
 
@@ -219,17 +219,17 @@ func (api *Api) ScaleService(ctx *gin.Context) {
 	if err := ctx.BindJSON(&serviceScale); err != nil {
 		log.Errorf("Scale service %s got error: %s", serviceId, err.Error())
 		rerror := cranerror.NewError(CodeScaleServiceParamError, err.Error())
-		dmgin.HttpErrorResponse(ctx, rerror)
+		httpresponse.Error(ctx, rerror)
 		return
 	}
 
 	if err := api.GetDockerClient().ScaleService(serviceId, serviceScale); err != nil {
 		log.Errorf("Scale service %s got error: %s", serviceId, err.Error())
-		dmgin.HttpErrorResponse(ctx, err)
+		httpresponse.Error(ctx, err)
 		return
 	}
 
-	dmgin.HttpOkResponse(ctx, "success")
+	httpresponse.Ok(ctx, "success")
 	return
 }
 
@@ -244,7 +244,7 @@ func (api *Api) LogsService(ctx *gin.Context) {
 	if err != nil {
 		log.Errorf("ListTasks of service %s got error: %s", serviceId, err.Error())
 		rerror := cranerror.NewError(CodeListTaskParamError, err.Error())
-		dmgin.HttpErrorResponse(ctx, rerror)
+		httpresponse.Error(ctx, rerror)
 		return
 	}
 
@@ -271,7 +271,7 @@ func (api *Api) StatsService(ctx *gin.Context) {
 	if err != nil {
 		log.Errorf("ListTasks of service %s got error: %s", serviceId, err.Error())
 		rerror := cranerror.NewError(CodeListTaskParamError, err.Error())
-		dmgin.HttpErrorResponse(ctx, rerror)
+		httpresponse.Error(ctx, rerror)
 		return
 	}
 

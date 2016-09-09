@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/Dataman-Cloud/crane/src/utils/cranerror"
-	"github.com/Dataman-Cloud/crane/src/utils/dmgin"
+	"github.com/Dataman-Cloud/crane/src/utils/httpresponse"
 
 	docker "github.com/Dataman-Cloud/go-dockerclient"
 	log "github.com/Sirupsen/logrus"
@@ -36,7 +36,7 @@ func (api *Api) ConnectNetwork(ctx *gin.Context) {
 	if err := ctx.BindJSON(&connectNetworkRequest); err != nil {
 		log.Errorf("connect network request body parse json error: %v", err)
 		rerror := cranerror.NewError(CodeConnectNetworkParamError, err.Error())
-		dmgin.HttpErrorResponse(ctx, rerror)
+		httpresponse.Error(ctx, rerror)
 		return
 	}
 
@@ -53,11 +53,11 @@ func (api *Api) ConnectNetwork(ctx *gin.Context) {
 
 	if err != nil {
 		log.Errorf("disconnect to network %s got error: %s", networkID, err.Error())
-		dmgin.HttpErrorResponse(ctx, err)
+		httpresponse.Error(ctx, err)
 		return
 	}
 
-	dmgin.HttpOkResponse(ctx, "success")
+	httpresponse.Ok(ctx, "success")
 	return
 }
 
@@ -67,18 +67,18 @@ func (api *Api) CreateNetwork(ctx *gin.Context) {
 	if err := ctx.BindJSON(&netWorkOption); err != nil {
 		log.Error("create network request body parse json error: ", err)
 		rerror := cranerror.NewError(CodeCreateNetworkParamError, err.Error())
-		dmgin.HttpErrorResponse(ctx, rerror)
+		httpresponse.Error(ctx, rerror)
 		return
 	}
 
 	network, err := api.GetDockerClient().CreateNetwork(netWorkOption)
 	if err != nil {
 		log.Error("create network error: ", err)
-		dmgin.HttpErrorResponse(ctx, err)
+		httpresponse.Error(ctx, err)
 		return
 	}
 
-	dmgin.HttpOkResponse(ctx, network)
+	httpresponse.Ok(ctx, network)
 	return
 }
 
@@ -87,11 +87,11 @@ func (api *Api) InspectNetwork(ctx *gin.Context) {
 	if err != nil {
 		log.Error("inspect network error: ", err)
 		rerror := cranerror.NewError(CodeInspectNetworkParamError, err.Error())
-		dmgin.HttpErrorResponse(ctx, rerror)
+		httpresponse.Error(ctx, rerror)
 		return
 	}
 
-	dmgin.HttpOkResponse(ctx, network)
+	httpresponse.Ok(ctx, network)
 	return
 }
 
@@ -102,28 +102,28 @@ func (api *Api) ListNetworks(ctx *gin.Context) {
 	if err := json.Unmarshal([]byte(fp), &filter); err != nil {
 		log.Error("list network request body parse json error: ", err)
 		rerror := cranerror.NewError(CodeListNetworkParamError, err.Error())
-		dmgin.HttpErrorResponse(ctx, rerror)
+		httpresponse.Error(ctx, rerror)
 		return
 	}
 
 	networks, err := api.GetDockerClient().ListNetworks(filter)
 	if err != nil {
 		log.Error("list network get network list error: ", err)
-		dmgin.HttpErrorResponse(ctx, err)
+		httpresponse.Error(ctx, err)
 		return
 	}
 
-	dmgin.HttpOkResponse(ctx, networks)
+	httpresponse.Ok(ctx, networks)
 	return
 }
 
 func (api *Api) RemoveNetwork(ctx *gin.Context) {
 	if err := api.GetDockerClient().RemoveNetwork(ctx.Param("network_id")); err != nil {
-		dmgin.HttpErrorResponse(ctx, err)
+		httpresponse.Error(ctx, err)
 		return
 	}
 
-	dmgin.HttpOkResponse(ctx, "remove succsee")
+	httpresponse.Ok(ctx, "remove succsee")
 	return
 }
 
@@ -133,7 +133,7 @@ func (api *Api) ConnectNodeNetwork(ctx *gin.Context) {
 	if err := ctx.BindJSON(&connectNetworkRequest); err != nil {
 		log.Errorf("connect network request body parse json error: %v", err)
 		rerror := cranerror.NewError(CodeConnectNetworkParamError, err.Error())
-		dmgin.HttpErrorResponse(ctx, rerror)
+		httpresponse.Error(ctx, rerror)
 		return
 	}
 
@@ -152,11 +152,11 @@ func (api *Api) ConnectNodeNetwork(ctx *gin.Context) {
 
 	if err != nil {
 		log.Errorf("%s to node: %s network %s got error: %s", method, nodeID, networkID, err.Error())
-		dmgin.HttpErrorResponse(ctx, err)
+		httpresponse.Error(ctx, err)
 		return
 	}
 
-	dmgin.HttpOkResponse(ctx, "success")
+	httpresponse.Ok(ctx, "success")
 	return
 }
 
@@ -167,11 +167,11 @@ func (api *Api) InspectNodeNetwork(ctx *gin.Context) {
 	network, err := api.GetDockerClient().InspectNodeNetwork(craneContext.(context.Context), networkID)
 	if err != nil {
 		log.Errorf("inspect network of node: %s networkid: %s got error: %s", nodeID, networkID, err)
-		dmgin.HttpErrorResponse(ctx, err)
+		httpresponse.Error(ctx, err)
 		return
 	}
 
-	dmgin.HttpOkResponse(ctx, network)
+	httpresponse.Ok(ctx, network)
 	return
 }
 
@@ -184,18 +184,18 @@ func (api *Api) ListNodeNetworks(ctx *gin.Context) {
 	if err := json.Unmarshal([]byte(fp), &filters); err != nil {
 		log.Error("list network request body parse json error: ", err)
 		rerror := cranerror.NewError(CodeListNetworkParamError, err.Error())
-		dmgin.HttpErrorResponse(ctx, rerror)
+		httpresponse.Error(ctx, rerror)
 		return
 	}
 
 	networks, err := api.GetDockerClient().ListNodeNetworks(craneContext.(context.Context), filters)
 	if err != nil {
 		log.Errorf("list network get network of %s got error: %s", nodeID, err)
-		dmgin.HttpErrorResponse(ctx, err)
+		httpresponse.Error(ctx, err)
 		return
 	}
 
-	dmgin.HttpOkResponse(ctx, networks)
+	httpresponse.Ok(ctx, networks)
 	return
 }
 
@@ -206,17 +206,17 @@ func (api *Api) CreateNodeNetwork(ctx *gin.Context) {
 	if err := ctx.BindJSON(&netWorkOption); err != nil {
 		log.Error("create node network request body parse json error: ", err)
 		rerror := cranerror.NewError(CodeCreateNetworkParamError, err.Error())
-		dmgin.HttpErrorResponse(ctx, rerror)
+		httpresponse.Error(ctx, rerror)
 		return
 	}
 
 	network, err := api.GetDockerClient().CreateNodeNetwork(craneContext.(context.Context), netWorkOption)
 	if err != nil {
 		log.Error("create network error: ", err)
-		dmgin.HttpErrorResponse(ctx, err)
+		httpresponse.Error(ctx, err)
 		return
 	}
 
-	dmgin.HttpOkResponse(ctx, network)
+	httpresponse.Ok(ctx, network)
 	return
 }

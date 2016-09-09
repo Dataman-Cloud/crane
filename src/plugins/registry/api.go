@@ -11,7 +11,7 @@ import (
 	"github.com/Dataman-Cloud/crane/src/plugins/auth/authenticators"
 	"github.com/Dataman-Cloud/crane/src/utils/cranerror"
 	"github.com/Dataman-Cloud/crane/src/utils/db"
-	"github.com/Dataman-Cloud/crane/src/utils/dmgin"
+	"github.com/Dataman-Cloud/crane/src/utils/httpresponse"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/docker/distribution/manifest/schema1"
@@ -128,7 +128,7 @@ func (registry *Registry) TagList(ctx *gin.Context) {
 	err := registry.DbClient.Where("namespace = ? AND image = ?", ctx.Param("namespace"), ctx.Param("image")).Find(&tags).Error
 	if err != nil {
 		craneerr := cranerror.NewError(CodeRegistryTagsListError, err.Error())
-		dmgin.HttpErrorResponse(ctx, craneerr)
+		httpresponse.Error(ctx, craneerr)
 		return
 	}
 
@@ -137,7 +137,7 @@ func (registry *Registry) TagList(ctx *gin.Context) {
 		registry.DbClient.Model(&ImageAccess{}).Where("namespace = ? AND image = ? AND digest = ? AND action='push'", tag.Namespace, tag.Image, tag.Digest).Count(&tag.PushCount)
 	}
 
-	dmgin.HttpOkResponse(ctx, tags)
+	httpresponse.Ok(ctx, tags)
 }
 
 func (registry *Registry) GetManifests(ctx *gin.Context) {
@@ -151,7 +151,7 @@ func (registry *Registry) GetManifests(ctx *gin.Context) {
 	resp, _, err := registry.RegistryAPIGet(fmt.Sprintf("%s/%s/manifests/%s", ctx.Param("namespace"), ctx.Param("image"), ctx.Param("reference")), account.Email)
 	if err != nil {
 		craneerr := cranerror.NewError(CodeRegistryGetManifestError, err.Error())
-		dmgin.HttpErrorResponse(ctx, craneerr)
+		httpresponse.Error(ctx, craneerr)
 		return
 	}
 
@@ -159,11 +159,11 @@ func (registry *Registry) GetManifests(ctx *gin.Context) {
 	err = json.Unmarshal(resp, &manifest)
 	if err != nil {
 		craneerr := cranerror.NewError(CodeRegistryManifestParseError, err.Error())
-		dmgin.HttpErrorResponse(ctx, craneerr)
+		httpresponse.Error(ctx, craneerr)
 		return
 	}
 
-	dmgin.HttpOkResponse(ctx, manifest)
+	httpresponse.Ok(ctx, manifest)
 }
 
 func (registry *Registry) DeleteManifests(ctx *gin.Context) {
@@ -177,11 +177,11 @@ func (registry *Registry) DeleteManifests(ctx *gin.Context) {
 	_, _, err := registry.RegistryAPIDeleteSchemaV2(fmt.Sprintf("%s/%s/manifests/%s", ctx.Param("namespace"), ctx.Param("image"), ctx.Param("reference")), account.Email)
 	if err != nil {
 		err := cranerror.NewError(CodeRegistryManifestDeleteError, err.Error())
-		dmgin.HttpErrorResponse(ctx, err)
+		httpresponse.Error(ctx, err)
 		return
 	}
 
-	dmgin.HttpOkResponse(ctx, "success")
+	httpresponse.Ok(ctx, "success")
 }
 
 func (registry *Registry) MineRepositories(ctx *gin.Context) {
@@ -203,7 +203,7 @@ func (registry *Registry) MineRepositories(ctx *gin.Context) {
 	}
 	if err != nil {
 		craneerr := cranerror.NewError(CodeRegistryCatalogListError, err.Error())
-		dmgin.HttpErrorResponse(ctx, craneerr)
+		httpresponse.Error(ctx, craneerr)
 		return
 	}
 
@@ -212,7 +212,7 @@ func (registry *Registry) MineRepositories(ctx *gin.Context) {
 		registry.DbClient.Model(&ImageAccess{}).Where("namespace = ? AND image = ? AND action='push'", image.Namespace, image.Image).Count(&image.PushCount)
 	}
 
-	dmgin.HttpOkResponse(ctx, images)
+	httpresponse.Ok(ctx, images)
 }
 
 func (registry *Registry) PublicRepositories(ctx *gin.Context) {
@@ -226,7 +226,7 @@ func (registry *Registry) PublicRepositories(ctx *gin.Context) {
 	}
 	if err != nil {
 		craneerr := cranerror.NewError(CodeRegistryCatalogListError, err.Error())
-		dmgin.HttpErrorResponse(ctx, craneerr)
+		httpresponse.Error(ctx, craneerr)
 		return
 	}
 
@@ -235,7 +235,7 @@ func (registry *Registry) PublicRepositories(ctx *gin.Context) {
 		registry.DbClient.Model(&ImageAccess{}).Where("namespace = ? AND image = ? AND action='push'", image.Namespace, image.Image).Count(&image.PushCount)
 	}
 
-	dmgin.HttpOkResponse(ctx, images)
+	httpresponse.Ok(ctx, images)
 }
 
 func (registry *Registry) ImagePublicity(ctx *gin.Context) {
@@ -252,7 +252,7 @@ func (registry *Registry) ImagePublicity(ctx *gin.Context) {
 				jsonErr.Offset, jsonErr.Type, jsonErr.Value)
 		}
 		craneerr := cranerror.NewError(CodeRegistryImagePublicityParamError, err.Error())
-		dmgin.HttpErrorResponse(ctx, craneerr)
+		httpresponse.Error(ctx, craneerr)
 		return
 	}
 
@@ -261,11 +261,11 @@ func (registry *Registry) ImagePublicity(ctx *gin.Context) {
 	err := registry.DbClient.Model(&image).UpdateColumn("Publicity", param.Publicity).Error
 	if err != nil {
 		craneerr := cranerror.NewError(CodeRegistryImagePublicityUpdateError, err.Error())
-		dmgin.HttpErrorResponse(ctx, craneerr)
+		httpresponse.Error(ctx, craneerr)
 		return
 	}
 
-	dmgin.HttpOkResponse(ctx, "success")
+	httpresponse.Ok(ctx, "success")
 }
 
 func (registry *Registry) HandleNotification(n Event) {

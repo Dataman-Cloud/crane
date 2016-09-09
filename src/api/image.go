@@ -5,7 +5,7 @@ import (
 	"strconv"
 
 	"github.com/Dataman-Cloud/crane/src/utils/cranerror"
-	"github.com/Dataman-Cloud/crane/src/utils/dmgin"
+	"github.com/Dataman-Cloud/crane/src/utils/httpresponse"
 
 	docker "github.com/Dataman-Cloud/go-dockerclient"
 	log "github.com/Sirupsen/logrus"
@@ -24,7 +24,7 @@ func (api *Api) ListImages(ctx *gin.Context) {
 	if err != nil {
 		log.Error("Parse param all of list images got error: ", err)
 		rerror := cranerror.NewError(CodeListImageParamError, err.Error())
-		dmgin.HttpErrorResponse(ctx, rerror)
+		httpresponse.Error(ctx, rerror)
 		return
 	}
 
@@ -32,7 +32,7 @@ func (api *Api) ListImages(ctx *gin.Context) {
 	if err != nil {
 		log.Error("Parse param digests of list images got error: ", err)
 		rerror := cranerror.NewError(CodeListImageParamError, err.Error())
-		dmgin.HttpErrorResponse(ctx, rerror)
+		httpresponse.Error(ctx, rerror)
 		return
 	}
 
@@ -41,7 +41,7 @@ func (api *Api) ListImages(ctx *gin.Context) {
 	if err := json.Unmarshal([]byte(queryFilters), &filters); err != nil {
 		log.Error("Unmarshal list images filters got error: ", err)
 		rerror := cranerror.NewError(CodeListImageParamError, err.Error())
-		dmgin.HttpErrorResponse(ctx, rerror)
+		httpresponse.Error(ctx, rerror)
 		return
 	}
 
@@ -55,11 +55,11 @@ func (api *Api) ListImages(ctx *gin.Context) {
 	images, err := api.GetDockerClient().ListImages(craneContext.(context.Context), opts)
 	if err != nil {
 		log.Error("List images got error: ", err)
-		dmgin.HttpErrorResponse(ctx, err)
+		httpresponse.Error(ctx, err)
 		return
 	}
 
-	dmgin.HttpOkResponse(ctx, images)
+	httpresponse.Ok(ctx, images)
 	return
 }
 
@@ -68,11 +68,11 @@ func (api *Api) InspectImage(ctx *gin.Context) {
 	image, err := api.GetDockerClient().InspectImage(craneContext.(context.Context), ctx.Param("image_id"))
 	if err != nil {
 		log.Error("InspectNetwork got error: ", err)
-		dmgin.HttpErrorResponse(ctx, err)
+		httpresponse.Error(ctx, err)
 		return
 	}
 
-	dmgin.HttpOkResponse(ctx, image)
+	httpresponse.Ok(ctx, image)
 	return
 }
 
@@ -81,11 +81,11 @@ func (api *Api) ImageHistory(ctx *gin.Context) {
 	historys, err := api.GetDockerClient().ImageHistory(craneContext.(context.Context), ctx.Param("image_id"))
 	if err != nil {
 		log.Error("Get ImageHistory got error: ", err)
-		dmgin.HttpErrorResponse(ctx, err)
+		httpresponse.Error(ctx, err)
 		return
 	}
 
-	dmgin.HttpOkResponse(ctx, historys)
+	httpresponse.Ok(ctx, historys)
 	return
 }
 
@@ -95,10 +95,10 @@ func (api *Api) RemoveImage(ctx *gin.Context) {
 	imageID := ctx.Param("image_id")
 	if err := api.GetDockerClient().RemoveImage(craneContext.(context.Context), imageID); err != nil {
 		log.Error("RemoveImage got error: ", err)
-		dmgin.HttpErrorResponse(ctx, err)
+		httpresponse.Error(ctx, err)
 		return
 	}
 
-	dmgin.HttpOkResponse(ctx, "success")
+	httpresponse.Ok(ctx, "success")
 	return
 }

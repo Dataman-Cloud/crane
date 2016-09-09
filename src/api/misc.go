@@ -5,7 +5,7 @@ import (
 	"runtime"
 
 	"github.com/Dataman-Cloud/crane/src/utils/cranerror"
-	"github.com/Dataman-Cloud/crane/src/utils/dmgin"
+	"github.com/Dataman-Cloud/crane/src/utils/httpresponse"
 	"github.com/Dataman-Cloud/crane/src/version"
 
 	log "github.com/Sirupsen/logrus"
@@ -41,11 +41,11 @@ func (api *Api) CraneConfig(ctx *gin.Context) {
 	if err != nil {
 		log.Errorf("InspectSwarm got error: %s", err.Error())
 		rerror := cranerror.NewError(CodeGetConfigError, err.Error())
-		dmgin.HttpErrorResponse(ctx, rerror)
+		httpresponse.Error(ctx, rerror)
 		return
 	}
 
-	dmgin.HttpOkResponse(ctx, config)
+	httpresponse.Ok(ctx, config)
 	return
 }
 
@@ -53,7 +53,7 @@ func (api *Api) HealthCheck(ctx *gin.Context) {
 	// node docker client check
 	nodes, err := api.GetDockerClient().ListNode(types.NodeListOptions{})
 	if err != nil {
-		dmgin.HttpErrorResponse(ctx, err)
+		httpresponse.Error(ctx, err)
 		return
 	}
 
@@ -68,12 +68,12 @@ func (api *Api) HealthCheck(ctx *gin.Context) {
 		craneContext = context.WithValue(backgroundContext, "node_id", node.ID)
 		_, err = api.GetDockerClient().SwarmNode(craneContext)
 		if err != nil {
-			dmgin.HttpErrorResponse(ctx, err)
+			httpresponse.Error(ctx, err)
 			return
 		}
 	}
 
-	dmgin.HttpOkResponse(ctx, "success")
+	httpresponse.Ok(ctx, "success")
 	return
 }
 
