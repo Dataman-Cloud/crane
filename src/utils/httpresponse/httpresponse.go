@@ -43,20 +43,31 @@ func Update(ctx *gin.Context, err error, data interface{}) {
 func Error(ctx *gin.Context, err error) {
 	log.Errorf("[%s] %s GOT error: %s", ctx.Request.Method, ctx.Request.URL.Path, err.Error())
 
-	rerror, ok := err.(*cranerror.CraneError)
+	rerror, ok := extractCraneError(err)
 	if !ok {
 		ctx.JSON(http.StatusServiceUnavailable, gin.H{"code": CodeUndefined, "data": err, "message": err.Error(), "source": "docker"})
 		return
 	}
 
-	httpCode := http.StatusServiceUnavailable
-	errCode := CodeUndefined
+	httpCode, errCode := parseHttpCodeAndErrCode(rerror.Code)
+	ctx.JSON(httpCode, gin.H{"code": errCode, "data": rerror.Err, "message": rerror.Err.Error(), "source": "crane"})
+	return
+}
 
-	codes := strings.Split(rerror.Code, "-")
+func extractCraneError(err error) (*cranerror.CraneError, bool) {
+	cranerror, ok := err.(*cranerror.CraneError)
+	return cranerror, ok
+}
+
+func parseHttpCodeAndErrCode(codeString string) (httpCode, errCode int) {
+	httpCode = http.StatusServiceUnavailable
+	errCode = CodeUndefined
+
+	codes := strings.Split(codeString, "-")
 	if len(codes) == 2 {
 		httpCode, _ = strconv.Atoi(codes[0])
 		errCode, _ = strconv.Atoi(codes[1])
 	}
-	ctx.JSON(httpCode, gin.H{"code": errCode, "data": rerror.Err, "message": rerror.Err.Error(), "source": "crane"})
-	return
+
+	return httpCode, errCode
 }
