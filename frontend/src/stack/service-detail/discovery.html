@@ -2,7 +2,7 @@
     <h2 flex="20">IP:Port</h2>
     <div flex="80" layout="row" layout-wrap dm-empty-display="serviceDiscoveryCtrl.service.Spec.EndpointSpec.Ports">
         <ul ng-repeat="port in serviceDiscoveryCtrl.service.Spec.EndpointSpec.Ports">
-            <li ng-repeat="node in serviceDiscoveryCtrl.nodes"><a data-ng-if='node.Spec.Labels["dm.reserved.node.endpoint"]' ng-href="http://{/node.Spec.Labels['dm.reserved.node.endpoint'] | ip/}:{/port.PublishedPort/}"  target='_blank'> {/node.Spec.Labels['dm.reserved.node.endpoint'] | ip/}:{/port.PublishedPort/}</a></li>
+            <li ng-repeat="node in serviceDiscoveryCtrl.nodes"><a data-ng-if='node.Spec.Labels["crane.reserved.node.endpoint"]' ng-href="http://{/node.Spec.Labels['crane.reserved.node.endpoint'] | ip/}:{/port.PublishedPort/}"  target='_blank'> {/node.Spec.Labels['crane.reserved.node.endpoint'] | ip/}:{/port.PublishedPort/}</a></li>
         </ul>   
     </div>
 </section>

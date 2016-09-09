@@ -19,7 +19,7 @@
                     var servers = [];
                     angular.forEach(self.nodes, function (node, index) {
                         if (node.Spec.Labels != undefined) {
-                            var endpoint = node.Spec.Labels["dm.reserved.node.endpoint"];
+                            var endpoint = node.Spec.Labels["crane.reserved.node.endpoint"];
                             if (endpoint != undefined) {
                                 servers.push("server " + $filter('ip')(endpoint) + ":" + port.PublishedPort + ";");
                             }
@@ -46,7 +46,7 @@
                     var servers = [];
                     angular.forEach(self.nodes, function (node, index) {
                         if (node.Spec.Labels != undefined) {
-                            var endpoint = node.Spec.Labels["dm.reserved.node.endpoint"];
+                            var endpoint = node.Spec.Labels["crane.reserved.node.endpoint"];
                             if (endpoint != undefined) {
                                 servers.push("server " + "app-" + $filter('ip')(endpoint) + '-' + port.PublishedPort +
                                     ' ' + $filter('ip')(endpoint) + ":" + port.PublishedPort);

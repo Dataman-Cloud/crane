@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	PERMISSION_LABEL_PREFIX = "dm.reserved.permissions"
+	PERMISSION_LABEL_PREFIX = "crane.reserved.permissions"
 )
 
 type Permission struct {
