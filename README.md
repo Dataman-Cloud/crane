@@ -1,6 +1,8 @@
 # Crane
 
 [![Join the chat at https://gitter.im/Dataman-Cloud/crane](https://badges.gitter.im/Dataman-Cloud/crane.svg)](https://gitter.im/Dataman-Cloud/crane?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Build Status](https://travis-ci.org/Dataman-Cloud/crane.svg?branch=master)](https://travis-ci.org/Dataman-Cloud/crane)
+
 
 ![Crane](doc/img/crane-logo-black.png)
 
@@ -28,8 +30,11 @@ TODO: Let's deploy the demo.
 
 * docker>=1.12 [how to install](https://docs.docker.com/engine/installation/)
 * docker-compose>=1.8.0 [how to install](https://docs.docker.com/compose/install/)
+* Enable the Docker tcp Socket on port: 2375 [how to config](https://docs.docker.com/engine/reference/commandline/dockerd/#/daemon-socket-option)
+* Start ntp service
+* You'd better `setenforce 0`
 
-### Option 1: Stable in one line
+### Option 1: Stable version in one line
 
   ```bash
   bash -c "$(curl http://ocrqkagax.bkt.clouddn.com/install.sh)" -s v1.0.4
