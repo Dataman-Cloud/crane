@@ -6,7 +6,7 @@ Here is providing a high-level description of desired features which is gathered
 
 ## How to help?
 
-Discussion on the roadmap can take place in threads under [Issues](). Please open or comment on an issue if you want to provide suggestions and feedback to an item in the roadmap. You'd better review the roadmap before file a issue to avoid potential duplicated effort.
+Discussion on the roadmap can take place in threads under [Issues](https://github.com/Dataman-Cloud/crane/issues). Please open or comment on an issue if you want to provide suggestions and feedback to an item in the roadmap. You'd better review the roadmap before file a issue to avoid potential duplicated effort.
 
 ## How to add an item to the roadmap?
 
@@ -14,14 +14,14 @@ Please open an issue to track any initiative on the roadmap of Crane. We will co
 
 ---
 
-## *. Dashboard Page
+## 1. Dashboard Page
 
 Involve dashboard page to display cluster overview info. User will get alert and resource usage from the dashboard page ASAP.
 
-## *. High Availability
+## 2. High Availability
 
 Support multi-nodes deployment for high availability, scalability and load-balancing purposes.
 
-## *. Event stream
+## 3. Event Stream
 
 User will get operation events on frontend in time.

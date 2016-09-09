@@ -101,7 +101,7 @@ docker_tcp_open_required()
             echo "********************************************************"
             exit 1
         }
-        echo "Docker TCP Socket $DOCKER_TCP_SOCKET opened."
+        echo "Docker TCP Socket $DOCKER_TCP_SOCKET opened...DONE"
 }
 
 iptables_docker_rules() {
@@ -174,7 +174,7 @@ ntp_is_enabled_on_centos_or_rhel()
                 printf "\033[41mERROR:\033[0m NTP is unsynchronised, Please confirm your ntp status before continue.\n"
                 exit 1
             }
-        echo "NTP service status seems good."
+        echo "NTP service status seems good...DONE"
     else
         printf "\033[41mERROR:\033[0m Cannot find the command ntpstat, Please enable the NTP service on your node.\n"
         printf "You can run  yum install -y ntp && systemctl start ntpd && systemctl enable ntpd && systemctl disable chronyd \n"
@@ -192,7 +192,7 @@ ntp_is_enabled_on_ubuntu()
                 printf "\033[41mERROR:\033[0m NTP is unsynchronised, Please confirm your ntp status before continue.\n"
                 exit 1
             }
-        echo "NTP service status seems good."
+        echo "NTP service status seems good...DONE"
     else
         printf "\033[41mERROR:\033[0m Cannot find the command ntpstat, Please enable the NTP service on your node.\n"
         exit 1
