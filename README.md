@@ -5,7 +5,7 @@
 ![Crane](doc/img/crane-logo-black.png)
 
 
-Crane, maintained by [dataman-cloud](https://github.com/Dataman-Cloud), is a docker control panel based on latest docker release. Besides swarm features, Crane implements some badly needed functionalities by enterprise user, such as private registries authentation, ACL and application DAB(distributed application bundle) sharing. The smart fuzzy search function give user quickly access to the desired page. Crane can help storing registry auth pair, from where you can choose a predefined registry auth pair when deploing a DAB, without the need to docker login when access private image. Crane can also help sharing your private images with your coworkers by simplely clicking the *public* button during image management.
+Crane, maintained by [dataman-cloud](https://github.com/Dataman-Cloud), is a docker control panel based on latest docker release. Besides swarm features, Crane implements some badly needed functionalities by enterprise user, such as private registries authentation, ACL and application DAB(distributed application bundle) sharing. The smart fuzzy search function give user quickly access to the desired page. Crane can help storing registry auth pair, from where you can choose a predefined registry auth pair when deploying a DAB, without the need to docker login when access private image. Crane can also help sharing your private images with your coworkers easily.
 
 ## Features
 
