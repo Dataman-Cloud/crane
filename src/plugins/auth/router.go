@@ -34,7 +34,7 @@ func (account *AccountApi) RegisterApiForAccount(router *gin.Engine,
 		accountV1.PATCH("/groups", account.UpdateGroup)
 		accountV1.GET("/groups/:group_id", account.GetGroup)
 		accountV1.DELETE("/groups/:group_id", account.DeleteGroup)
-		accountV1.POST("/account/v1/accounts", account.CreateAccount)
+		accountV1.POST("/groups/:group_id/account", account.CreateAccount)
 		accountV1.GET("/groups/:group_id/accounts", account.GetGroup)
 	}
 
