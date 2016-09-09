@@ -19,14 +19,29 @@ func DB() *gorm.DB {
 }
 
 func InitDB() {
-	var err error
 	conf := config.GetConfig()
-	log.Infof("connecting mysql uri: %s", conf.DbDSN)
 
-	db, err = gorm.Open(conf.DbDriver, conf.DbDSN)
+	err := initDb(conf.DbDriver, conf.DbDSN)
 	if err != nil {
-		log.Fatalf("init mysql error: %v", err)
+		log.Fatal("init %s error: %v", conf.DbDriver, conf.DbDSN)
 	}
+
+	configDb()
+}
+
+func initDb(driver, dsn string) error {
+	var err error
+	log.Infof("connecting %s uri: %s", driver, dsn)
+
+	db, err = gorm.Open(driver, dsn)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func configDb() {
 	db.DB().SetMaxIdleConns(5)
 	db.DB().SetMaxOpenConns(50)
 	db.SetLogger(log.StandardLogger())
