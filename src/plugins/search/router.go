@@ -16,7 +16,7 @@ type DocumentStorage struct {
 	Store map[string]Document
 }
 
-func NewDocumentStoreage() *DocumentStorage {
+func NewDocumentStorage() *DocumentStorage {
 	return &DocumentStorage{Store: make(map[string]Document)}
 }
 
@@ -25,7 +25,7 @@ func (storage *DocumentStorage) Empty() {
 }
 
 func (storage *DocumentStorage) Copy() *DocumentStorage {
-	copied := NewDocumentStoreage()
+	copied := NewDocumentStorage()
 	for k, v := range storage.Store {
 		copied.Store[k] = v
 	}
@@ -82,11 +82,11 @@ func (searchApi *SearchApi) IndexData() {
 			}
 		}()
 
-		searchApi.PrefetchStore = NewDocumentStoreage()
-		searchApi.Store = NewDocumentStoreage()
+		searchApi.PrefetchStore = NewDocumentStorage()
+		searchApi.Store = NewDocumentStorage()
 
 		for {
-			searchApi.PrefetchStore = NewDocumentStoreage()
+			searchApi.PrefetchStore = NewDocumentStorage()
 			searchApi.Indexer.Index(searchApi.PrefetchStore)
 
 			searchApi.Index = searchApi.PrefetchStore.Indices()
