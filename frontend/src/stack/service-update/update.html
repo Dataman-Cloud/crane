@@ -27,7 +27,7 @@
         <div class="form-group" layout="column">
             <label>镜像 <em>image</em><span class="required">*</span></label>
             <div class="form-control">
-                <input type="text"
+                <input type="text" focus-me
                        data-ng-model="serviceUpdateCtrl.form.TaskTemplate.ContainerSpec.Image"
                        data-required="required" name="Image">
             </div>
@@ -82,7 +82,7 @@
             <p class="text-danger help-text"></p>
         </div>
 
-        <div class="form-group" layout="column">
+        <div class="form-group" layout="column" dm-display-components="registryauth">
             <label>仓库认证标识 <em>--RegistryAuth</em></label>
             <div class="form-control">
                 <md-select data-ng-model="serviceUpdateCtrl.form.RegistryAuth"
