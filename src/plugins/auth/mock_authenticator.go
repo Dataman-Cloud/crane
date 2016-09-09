@@ -4,9 +4,12 @@ import (
 	"github.com/Dataman-Cloud/crane/src/utils/model"
 )
 
-var AuthError error
-var AccountError error
-var CreateAccountError error
+var (
+	AuthError          error
+	AccountError       error
+	CreateAccountError error
+	AccountsError      error
+)
 
 type MockAuthenticator struct {
 	Authenticator
@@ -57,7 +60,7 @@ func (d *MockAuthenticator) AccountGroups(account model.ListOptions) (*[]Group, 
 }
 
 func (d *MockAuthenticator) Accounts(listOptions model.ListOptions) (auths *[]Account, err error) {
-	return nil, AuthError
+	return nil, AccountsError
 }
 
 func (d *MockAuthenticator) Account(id interface{}) (*Account, error) {
