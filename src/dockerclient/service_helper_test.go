@@ -4,6 +4,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Dataman-Cloud/crane/src/dockerclient/model"
+
 	"github.com/docker/engine-api/types/swarm"
 )
 
@@ -65,6 +67,55 @@ func TestValidateUpdate(t *testing.T) {
 	if err := validateUpdate(&swarm.UpdateConfig{
 		Delay: s,
 	}); err != nil {
+		t.Error(err)
+	} else {
+		t.Log("pass")
+	}
+}
+
+func TestValidateTask(t *testing.T) {
+	if err := validateTask(swarm.TaskSpec{}); err != nil {
+		t.Error(err)
+	} else {
+		t.Log("pass")
+	}
+}
+
+func TestValidateEndpointSpec(t *testing.T) {
+	if err := validateEndpointSpec(&swarm.EndpointSpec{}); err != nil {
+		t.Error(err)
+	} else {
+		t.Log("pass")
+	}
+}
+
+func TestValidateCraneServiceSpec(t *testing.T) {
+	if err := ValidateCraneServiceSpec(&model.CraneServiceSpec{
+		Name: "test",
+		TaskTemplate: swarm.TaskSpec{
+			ContainerSpec: swarm.ContainerSpec{
+				Image: "testimage:latest",
+			},
+		},
+		UpdateConfig: &swarm.UpdateConfig{},
+		EndpointSpec: &swarm.EndpointSpec{},
+	}); err != nil {
+		t.Error(err)
+	} else {
+		t.Log("pass")
+	}
+}
+
+func TestValidateName(t *testing.T) {
+	if err := validateName("testname"); err != nil {
+		t.Error(err)
+	} else {
+		t.Log("pass")
+	}
+}
+
+func TestValidateImageName(t *testing.T) {
+	if err := validateImageName("testimage:latest"); err != nil {
 		t.Error(err)
 	} else {
 		t.Log("pass")
