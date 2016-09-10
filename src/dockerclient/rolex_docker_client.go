@@ -9,8 +9,8 @@ import (
 
 	"github.com/Dataman-Cloud/crane/src/utils/config"
 	"github.com/Dataman-Cloud/crane/src/utils/cranerror"
-
 	"github.com/Dataman-Cloud/crane/src/utils/httpclient"
+
 	docker "github.com/Dataman-Cloud/go-dockerclient"
 	log "github.com/Sirupsen/logrus"
 	"github.com/docker/engine-api/types"

@@ -4,9 +4,9 @@ import (
 	"strconv"
 
 	"github.com/Dataman-Cloud/crane/src/utils/cranerror"
+	"github.com/Dataman-Cloud/crane/src/utils/encrypt"
 	"github.com/Dataman-Cloud/crane/src/utils/httpresponse"
 
-	"github.com/Dataman-Cloud/crane/src/utils/encrypt"
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
 )
