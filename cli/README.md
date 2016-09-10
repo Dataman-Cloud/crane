@@ -24,19 +24,19 @@ Crane Client
 #### sample 1
 
 ```
-./crane-cli.py create_stack -G1 -ncli -f ../stack_samples/wordpress.json
+./crane-cli.py create_stack -G1 -ncli -f ../frontend/stack_samples/wordpress.json
 ```
 
 #### sample 2
 
 ```
-./crane-cli.py create_stack -G1 -ncli_mysql_web -f ../stack_samples/mysql_display.json
+./crane-cli.py create_stack -G1 -ncli_mysql_web -f ../frontend/stack_samples/mysql_display.json
 ```
 
 #### sample 3
 
 ```
-./crane-cli.py create_stack -G1 -ncli_2048 -f ../stack_samples/2048.json
+./crane-cli.py create_stack -G1 -ncli_2048 -f ../frontend/stack_samples/2048.json
 ```
 
 ### list stack
