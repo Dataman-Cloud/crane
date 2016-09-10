@@ -7,11 +7,6 @@ export TAG=`git log --pretty=format:'%h' -n 1`
 export CRANE_SWARM_MANAGER_IP=$CRANE_IP
 export REGISTRY_PREFIX=""
 
-=======
-export TAG=1.0
-export CRANE_SWARM_MANAGER_IP=$CRANE_IP
-export REGISTRY_PREFIX=demoregistry.dataman-inc.com/library/
-
 docker-compose -p crane -f deploy/docker-compose.yml stop
 docker-compose -p crane -f deploy/docker-compose.yml rm -f
 docker-compose -p crane -f deploy/docker-compose.yml up -d
