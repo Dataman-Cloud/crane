@@ -1,5 +1,17 @@
 version: "2"
 services:
+  blackmamba:
+    build:
+      context: ../frontend
+      dockerfile: ./Dockerfile
+    image: ${REGISTRY_PREFIX}blackmamba:${TAG}
+    ports:
+      - "80:80"
+    volumes:
+      - /etc/localtime:/etc/localtime
+    links:
+      - crane
+    restart: always
   crane_registry:
     build:
       context: ../doc/registry

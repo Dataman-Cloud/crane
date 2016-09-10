@@ -34,8 +34,6 @@ services:
     image: ${REGISTRY_PREFIX}mysql:crane${TAG}
     environment:
       - MYSQL_ROOT_PASSWORD=111111
-    ports:
-      - "3306:3306"
     volumes:
       - ./mysql_storage:/var/lib/mysql
       - /etc/localtime:/etc/localtime
