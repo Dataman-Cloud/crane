@@ -44,7 +44,7 @@ func NewCraneDockerClient(config *config.Config) (*CraneDockerClient, error) {
 	}
 
 	if config.DockerTlsVerify {
-		client.swarmManager, err = client.NewGoDockerClientTls(swarmManagerEntry, API_VERSION)
+		client.swarmManager, err = NewGoDockerClientTls(swarmManagerEntry, API_VERSION, config)
 		client.sharedHttpClient, err = NewHttpClientTls(config)
 	} else {
 		client.swarmManager, err = docker.NewVersionedClient(swarmManagerEntry, API_VERSION)
@@ -80,7 +80,7 @@ func (client *CraneDockerClient) createNodeClient(nodeId string) (*docker.Client
 
 	endpoint := nodeUrl.String()
 	if nodeUrl.Scheme == "https" {
-		swarmNode, err = client.NewGoDockerClientTls(endpoint, API_VERSION)
+		swarmNode, err = NewGoDockerClientTls(endpoint, API_VERSION, client.config)
 	} else {
 		swarmNode, err = docker.NewVersionedClient(endpoint, API_VERSION)
 	}
@@ -173,8 +173,8 @@ func (client *CraneDockerClient) VerifyNodeEndpoint(nodeId string, nodeUrl *url.
 	return nil
 }
 
-func (client *CraneDockerClient) NewGoDockerClientTls(endpoint string, apiVersion string) (*docker.Client, error) {
-	tlsCaCert, tlsCert, tlsKey := SharedClientCertFiles(client.config)
+func NewGoDockerClientTls(endpoint string, apiVersion string, config *config.Config) (*docker.Client, error) {
+	tlsCaCert, tlsCert, tlsKey := SharedClientCertFiles(config)
 	return docker.NewVersionedTLSClient(endpoint, tlsCert, tlsKey, tlsCaCert, apiVersion)
 }
 
