@@ -17,7 +17,7 @@ import (
 
 // convert swarm service to bundle service
 func (client *CraneDockerClient) ToCraneServiceSpec(swarmService swarm.ServiceSpec) model.CraneServiceSpec {
-	networks := client.getServiceNetworkNames(swarmService.Networks)
+	networks := client.GetServiceNetworkNames(swarmService.Networks)
 	craneServiceSpec := model.CraneServiceSpec{
 		Name:         swarmService.Name,
 		Labels:       swarmService.Labels,
