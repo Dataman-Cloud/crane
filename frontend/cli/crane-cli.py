@@ -9,7 +9,7 @@ import json
 import argparse
 import sys
 
-ROLEX_API_URL = '192.168.59.105'
+CRANE_API_URL = '192.168.59.105'
 CONFIG_FILE = '.crane.json'
 
 __author__ = "weitao zhou"
@@ -37,13 +37,13 @@ def login(args):
         "Password": args.password
     }
     json_user_info = json.dumps(user_info)
-    connection = httplib.HTTPConnection(ROLEX_API_URL)
+    connection = httplib.HTTPConnection(CRANE_API_URL)
     connection.request('POST','/account/v1/login', json_user_info, headers)
     response = connection.getresponse()
     try:
         resp_body = json.loads(response.read().decode())
     except ValueError:
-        print("Failed to login url: " + ROLEX_API_URL)
+        print("Failed to login url: " + CRANE_API_URL)
         sys.exit(1)
 
     if resp_body.get('code', -1) != 0:
@@ -61,7 +61,7 @@ def login(args):
 
 def about_me(args):
     headers = _get_access_header()
-    connection = httplib.HTTPConnection(ROLEX_API_URL)
+    connection = httplib.HTTPConnection(CRANE_API_URL)
     # test for transfer session over url query
     #connection.request('GET','/account/v1/aboutme?Authorization='+headers.get('Authorization')+'&Cookie='+urllib.quote(headers.get("Cookie", "")), '', {'Content-type': 'application/json'})
     connection.request('GET','/account/v1/aboutme', '', headers)
@@ -72,7 +72,7 @@ def about_me(args):
 
 def logout(args):
     headers = _get_access_header()
-    connection = httplib.HTTPConnection(ROLEX_API_URL)
+    connection = httplib.HTTPConnection(CRANE_API_URL)
     connection.request('POST','/account/v1/logout', '', headers)
     connection.close()
 
@@ -81,7 +81,7 @@ def logout(args):
 
 def get_mygroups(args):
     headers = _get_access_header()
-    connection = httplib.HTTPConnection(ROLEX_API_URL)
+    connection = httplib.HTTPConnection(CRANE_API_URL)
     connection.request('GET','/account/v1/accounts/' + args.uid + '/groups', '', headers)
     response = connection.getresponse()
     resp_body = json.loads(response.read().decode())
@@ -94,7 +94,7 @@ def get_mygroups(args):
 ###############################################
 def list_stack(args):
     headers = _get_access_header()
-    connection = httplib.HTTPConnection(ROLEX_API_URL)
+    connection = httplib.HTTPConnection(CRANE_API_URL)
     connection.request('GET','/api/v1/stacks', '', headers)
     response = connection.getresponse()
     try:
@@ -107,7 +107,7 @@ def list_stack(args):
 
 def create_stack(args):
     headers = _get_access_header()
-    connection = httplib.HTTPConnection(ROLEX_API_URL)
+    connection = httplib.HTTPConnection(CRANE_API_URL)
     try:
         request_body = {
             "Stack": json.loads(args.file.read()),
@@ -129,7 +129,7 @@ def create_stack(args):
 
 def list_stack_services(args):
     headers = _get_access_header()
-    connection = httplib.HTTPConnection(ROLEX_API_URL)
+    connection = httplib.HTTPConnection(CRANE_API_URL)
     connection.request('GET','/api/v1/stacks/' + args.stack_name + '/services', '', headers)
     response = connection.getresponse()
     try:
@@ -142,7 +142,7 @@ def list_stack_services(args):
 
 def scale_service(args):
     headers = _get_access_header()
-    connection = httplib.HTTPConnection(ROLEX_API_URL)
+    connection = httplib.HTTPConnection(CRANE_API_URL)
     request_body = {
         "Scale": args.amount
     }
@@ -168,7 +168,7 @@ def update_stack():
 ###############################################
 def list_networks(args):
     headers = _get_access_header()
-    connection = httplib.HTTPConnection(ROLEX_API_URL)
+    connection = httplib.HTTPConnection(CRANE_API_URL)
     connection.request('GET','/api/v1/networks', '', headers)
     response = connection.getresponse()
     resp_body = json.loads(response.read().decode())

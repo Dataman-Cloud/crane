@@ -14,28 +14,30 @@ const (
 )
 
 type Config struct {
-	CraneAddr         string   `env:"ROLEX_ADDR", required:"true"`
-	SwarmManagerIP    string   `env:"ROLEX_SWARM_MANAGER_IP", required:"true"`
+	CraneAddr         string   `env:"CRANE_ADDR", required:"true"`
+	SwarmManagerIP    string   `env:"CRANE_SWARM_MANAGER_IP", required:"true"`
 	DockerEntryScheme string   `required:"false"`
-	DockerEntryPort   string   `env:"ROLEX_DOCKER_ENTRY_PORT", required:"false"`
-	DockerTlsVerify   bool     `env:"ROLEX_DOCKER_TLS_VERIFY", required:"true"`
-	DockerCertPath    string   `env:"ROLEX_DOCKER_CERT_PATH", required:"true"`
-	DbDriver          string   `env:"ROLEX_DB_DRIVER", required:"true"`
-	DbDSN             string   `env:"ROLEX_DB_DSN", required:"true"`
-	FeatureFlags      []string `env:"ROLEX_FEATURE_FLAGS", required:"true"`
+	DockerEntryPort   string   `env:"CRANE_DOCKER_ENTRY_PORT", required:"false"`
+	DockerTlsVerify   bool     `env:"CRANE_DOCKER_TLS_VERIFY", required:"true"`
+	DockerCertPath    string   `env:"CRANE_DOCKER_CERT_PATH", required:"true"`
+	DbDriver          string   `env:"CRANE_DB_DRIVER", required:"true"`
+	DbDSN             string   `env:"CRANE_DB_DSN", required:"true"`
+	FeatureFlags      []string `env:"CRANE_FEATURE_FLAGS", required:"true"`
 
 	// registry
-	RegistryPrivateKeyPath string `env:"ROLEX_REGISTRY_PRIVATE_KEY_PATH", required:"true"`
-	RegistryAddr           string `env:"ROLEX_REGISTRY_ADDR", required:"true"`
+	RegistryPrivateKeyPath string `env:"CRANE_REGISTRY_PRIVATE_KEY_PATH", required:"true"`
+	RegistryAddr           string `env:"CRANE_REGISTRY_ADDR", required:"true"`
 
 	// account
-	AccountAuthenticator string `env:"ROLEX_ACCOUNT_AUTHENTICATOR", required:"false"`
-	AccountTokenStore    string `env:"ROLEX_ACCOUNT_TOKEN_STORE", required:"false"`
+	AccountAuthenticator string `env:"CRANE_ACCOUNT_AUTHENTICATOR", required:"false"`
+	AccountTokenStore    string `env:"CRANE_ACCOUNT_TOKEN_STORE", required:"false"`
 
-	AccountEmailDefault    string `env:"ROLEX_ACCOUNT_EMAIL_DEFAULT", required:"false"`
-	AccountPasswordDefault string `env:"ROLEX_ACCOUNT_PASSWORD_DEFAULT", required:"false"`
+	AccountEmailDefault    string `env:"CRANE_ACCOUNT_EMAIL_DEFAULT", required:"false"`
+	AccountPasswordDefault string `env:"CRANE_ACCOUNT_PASSWORD_DEFAULT", required:"false"`
 
-	SearchLoadDataInterval uint16 `env:"ROLEX_SEARCH_LOAD_DATA_INTERVAL", required:"false"`
+	CatalogPath string `env:"CRANE_CATALOG_PATH", required:"false"`
+
+	SearchLoadDataInterval uint16 `env:"CRANE_SEARCH_LOAD_DATA_INTERVAL", required:"false"`
 }
 
 func (c *Config) FeatureEnabled(feature string) bool {
