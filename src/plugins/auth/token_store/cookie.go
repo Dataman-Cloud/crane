@@ -14,7 +14,7 @@ import (
 )
 
 const (
-	ROLEX_SESSION_KEY = "ROLEX_SESSION_KEY"
+	CRANE_SESSION_KEY = "CRANE_SESSION_KEY"
 )
 
 var (
@@ -35,7 +35,7 @@ func (d *Cookie) Set(ctx *gin.Context, token, accountId string, expiredAt time.T
 	cookieValue := fmt.Sprintf("%s:%s", token[0:10], accountId)
 	value, _ := encrypt.Encrypt(key, cookieValue)
 	http.SetCookie(ctx.Writer, &http.Cookie{
-		Name:    ROLEX_SESSION_KEY,
+		Name:    CRANE_SESSION_KEY,
 		Value:   value,
 		Expires: time.Now().Add(auth.SESSION_DURATION),
 	})
@@ -47,7 +47,7 @@ func (d *Cookie) Get(ctx *gin.Context, token string) (string, error) {
 	var cookie *http.Cookie
 	var err error
 
-	if cookie, err = ctx.Request.Cookie(ROLEX_SESSION_KEY); err != nil {
+	if cookie, err = ctx.Request.Cookie(CRANE_SESSION_KEY); err != nil {
 		return "", ErrCookieNotExist
 	}
 
@@ -57,7 +57,7 @@ func (d *Cookie) Get(ctx *gin.Context, token string) (string, error) {
 
 func (d *Cookie) Del(ctx *gin.Context, token string) error {
 	http.SetCookie(ctx.Writer, &http.Cookie{
-		Name:    ROLEX_SESSION_KEY,
+		Name:    CRANE_SESSION_KEY,
 		Value:   "",
 		Expires: time.Now().Add(auth.SESSION_DURATION),
 	})
