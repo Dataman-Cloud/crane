@@ -28,5 +28,5 @@ curl -sSL  ${CRANE_TAR_URL} | tar xvzf -
 echo "Enter IP address that your want bind Crane service [ENTER]"
 read listener_ip
 
-cd crane && ROLEX_IP=${listener_ip} VERSION=${CRANE_RELEASE} ./deploy.sh
+cd crane && CRANE_IP=${listener_ip} VERSION=${CRANE_RELEASE} ./deploy.sh
 cd -

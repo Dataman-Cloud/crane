@@ -23,7 +23,7 @@ func TestNew(t *testing.T) {
 	assert.Equal(t, client.Options.TitleFormat, SubProtocol+"TTY - {{ .Command }} ({{ .Hostname }})")
 	assert.False(t, client.Options.EnableCustomTitle)
 	assert.False(t, client.Options.EnableReconnect)
-	assert.Equal(t, client.Options.EnableReconnect, 10)
+	assert.Equal(t, client.Options.ReconnectTime, 10)
 	assert.False(t, client.Options.Once)
 	assert.Equal(t, client.Options.CloseSignal, 1)
 }
