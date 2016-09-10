@@ -36,3 +36,27 @@ func TestCopy(t *testing.T) {
 	copidDS := ds.Copy()
 	assert.Equal(t, copidDS.Store["document"], testDocument, "should be equal")
 }
+
+func TestIndices(t *testing.T) {
+	ds := NewDocumentStorage()
+	ds.Store = map[string]Document{
+		"document": testDocument,
+	}
+	indicesDS := ds.Indices()
+	assert.Equal(t, indicesDS, []string{"document"})
+}
+
+func TestSet(t *testing.T) {
+	ds := NewDocumentStorage()
+	ds.Set("test", testDocument)
+	assert.Equal(t, ds.Store["test"], testDocument)
+}
+
+func TestGet(t *testing.T) {
+	ds := NewDocumentStorage()
+	ds.Store = map[string]Document{
+		"document": testDocument,
+	}
+	dc := ds.Get("document")
+	assert.Equal(t, dc, &testDocument)
+}

@@ -23,3 +23,9 @@ func TestExtractCraneError(t *testing.T) {
 	assert.True(t, ok)
 	assert.NotNil(t, c)
 }
+
+func TestParseHttpCodeAndErrCode(t *testing.T) {
+	hCode, errCode := parseHttpCodeAndErrCode("400-10000")
+	assert.Equal(t, hCode, 400)
+	assert.Equal(t, errCode, 10000)
+}
