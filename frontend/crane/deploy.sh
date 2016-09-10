@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export ROLEX_SWARM_MANAGER_IP=$ROLEX_IP
+export CRANE_SWARM_MANAGER_IP=$CRANE_IP
 export TAG=${VERSION:-1.0}
 export DOCKER_COMPOSE=${VERSION:-.}/docker-compose.yml
 export NODE_INIT=${VERSION:-../misc-tools}/node-init.sh
@@ -12,7 +12,7 @@ $NODE_INIT || exit 1
 
 # swarm init
 echo "Trying to init swarm cluster"
-$(docker swarm init --advertise-addr=$ROLEX_IP &>/dev/null) || {
+$(docker swarm init --advertise-addr=$CRANE_IP &>/dev/null) || {
    echo "Swarm cluster have been running!"
 }
 

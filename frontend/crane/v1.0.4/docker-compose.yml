@@ -15,7 +15,7 @@ services:
       - "5000:5000"
       - "5001:5001"
     environment:
-      - ROLEX_IP
+      - CRANE_IP
     volumes:
       - ./registry_storage:/var/lib/registry
       - /etc/localtime:/etc/localtime
@@ -23,8 +23,8 @@ services:
   crane:
     image: ${REGISTRY_PREFIX}crane:${TAG}
     environment:
-      - ROLEX_SWARM_MANAGER_IP
-      - ROLEX_DOCKER_ENTRY_PORT
+      - CRANE_SWARM_MANAGER_IP
+      - CRANE_DOCKER_ENTRY_PORT
     volumes:
       - /etc/localtime:/etc/localtime
     ports:

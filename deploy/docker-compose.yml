@@ -6,7 +6,7 @@ services:
       dockerfile: ./Dockerfile
     image: ${REGISTRY_PREFIX}registry:crane${TAG}
     environment:
-      - ROLEX_IP
+      - CRANE_IP
     volumes:
       - ./registry_storage:/storage
     restart: always
@@ -16,7 +16,7 @@ services:
       dockerfile: ./deploy/Dockerfile
     image: ${REGISTRY_PREFIX}crane:${TAG}
     environment:
-      - ROLEX_SWARM_MANAGER_IP
+      - CRANE_SWARM_MANAGER_IP
     links:
       - crane_registry
       - crane_db  
