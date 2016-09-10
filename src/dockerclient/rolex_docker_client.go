@@ -45,10 +45,10 @@ func NewCraneDockerClient(config *config.Config) (*CraneDockerClient, error) {
 
 	if config.DockerTlsVerify {
 		client.swarmManager, err = client.NewGoDockerClientTls(swarmManagerEntry, API_VERSION)
-		client.sharedHttpClient, err = client.NewHttpClientTls()
+		client.sharedHttpClient, err = NewHttpClientTls(config)
 	} else {
 		client.swarmManager, err = docker.NewVersionedClient(swarmManagerEntry, API_VERSION)
-		client.sharedHttpClient, err = client.NewHttpClient()
+		client.sharedHttpClient, err = NewHttpClient()
 	}
 
 	if err != nil {
@@ -178,13 +178,13 @@ func (client *CraneDockerClient) NewGoDockerClientTls(endpoint string, apiVersio
 	return docker.NewVersionedTLSClient(endpoint, tlsCert, tlsKey, tlsCaCert, apiVersion)
 }
 
-func (client *CraneDockerClient) NewHttpClient() (*httpclient.Client, error) {
+func NewHttpClient() (*httpclient.Client, error) {
 	httpClient := &http.Client{Timeout: defaultHttpRequestTimeout}
 	return httpclient.NewClient(httpClient, nil)
 }
 
-func (client *CraneDockerClient) NewHttpClientTls() (*httpclient.Client, error) {
-	tlsCaCert, tlsCert, tlsKey := SharedClientCertFiles(client.config)
+func NewHttpClientTls(config *config.Config) (*httpclient.Client, error) {
+	tlsCaCert, tlsCert, tlsKey := SharedClientCertFiles(config)
 	httpClient := &http.Client{Timeout: defaultHttpRequestTimeout}
 	return httpclient.NewTLSClient(tlsCaCert, tlsCert, tlsKey, httpClient, nil)
 }
