@@ -9,13 +9,13 @@ Deploy guide
 ## Release
 
 ### v1.0.0rc4
-3. 启动环境 `ROLEX_IP=X.X.X.X VERSION=v1.0.0rc4 ./deploy.sh`
+3. 启动环境 `CRANE_IP=X.X.X.X VERSION=v1.0.0rc4 ./deploy.sh`
 
 ### v1.0.0rc3
-3. 启动环境 `ROLEX_IP=X.X.X.X VERSION=v1.0.0rc3 ./deploy.sh`
+3. 启动环境 `CRANE_IP=X.X.X.X VERSION=v1.0.0rc3 ./deploy.sh`
 
 ### v1.0.0rc2
-3. 启动环境 `ROLEX_IP=X.X.X.X VERSION=v1.0.0rc2 ./deploy.sh`
+3. 启动环境 `CRANE_IP=X.X.X.X VERSION=v1.0.0rc2 ./deploy.sh`
 
 ### v1.0.0rc1
-3. 启动环境 `ROLEX_IP=X.X.X.X VERSION=v1.0.0rc1 ./deploy.sh`
+3. 启动环境 `CRANE_IP=X.X.X.X VERSION=v1.0.0rc1 ./deploy.sh`

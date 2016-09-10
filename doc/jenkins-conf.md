@@ -5,7 +5,7 @@
   ```bash
   /bin/sh -xe jenkins-job.sh
 
-  ROLEX_IP=$IP ./build-and-start.sh
+  CRANE_IP=$IP ./build-and-start.sh
   sleep 20
   cd api_test&&./run.sh
   ```
