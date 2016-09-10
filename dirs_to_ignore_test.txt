@@ -1,3 +1,0 @@
-./src/plugins
-./src/plugins/tty/test
-./src/plugins/tty/test/js
