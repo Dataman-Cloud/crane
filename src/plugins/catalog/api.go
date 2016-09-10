@@ -15,10 +15,10 @@ import (
 
 const (
 	//Catalog
-	CodeCatalogGetCatalogError    = "503-15031"
+	CodeCatalogGetCatalogError    = "404-15031"
 	CodeCatalogListCatalogError   = "503-15032"
 	CodeCatalogInvalidUser        = "401-15033"
-	CodeCatalogInvalidCatalogId   = "403-15034"
+	CodeCatalogInvalidCatalogId   = "400-15034"
 	CodeCatalogInvalidParam       = "400-15035"
 	CodeCatalogInvalidIcon        = "400-15036"
 	CodeCatalogDeleteFaild        = "503-15037"
