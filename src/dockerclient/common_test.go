@@ -1,11 +1,49 @@
 package dockerclient
 
 import (
+	"net/http"
+	"net/http/httptest"
 	"testing"
 
 	"github.com/docker/engine-api/types/swarm"
 	"github.com/stretchr/testify/assert"
 )
+
+func TestToCraneServiceSpec(t *testing.T) {
+	body := `
+	{
+	        "Name": "none",
+	        "Id": "1836d62be355e36050913f118835bd1fd6be10638e799ccaf5ea76bc6820ced2",
+	        "Scope": "local",
+	        "Driver": "null",
+	        "EnableIPv6": false,
+	        "IPAM": {
+                        "Driver": "default",
+	                "Options": null,
+	                "Config": []
+                 },
+                "Internal": false,
+                "Containers": {},
+                "Options": {},
+	        "Labels": {}
+	 }`
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.Write([]byte(body))
+	}))
+
+	defer server.Close()
+
+	httpClient, err := NewHttpClient()
+	assert.Nil(t, err)
+
+	client := &CraneDockerClient{
+		sharedHttpClient: httpClient,
+	}
+
+	craneServiceSpe := client.ToCraneServiceSpec(swarm.ServiceSpec{})
+	assert.NotNil(t, craneServiceSpe)
+}
 
 func TestParseEndpoint(t *testing.T) {
 	_, err := parseEndpoint("localhost:2375")

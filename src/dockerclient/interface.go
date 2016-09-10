@@ -71,4 +71,5 @@ type DockerClientInterface interface {
 	InspectServiceWithRaw(serviceID string) (swarm.Service, error)
 	ServiceAddLabel(serviceID string, labels map[string]string) error
 	ServiceRemoveLabel(serviceID string, labels []string) error
+	GetServiceNetworkNames(networkAttachmentConfigs []swarm.NetworkAttachmentConfig) []string
 }

@@ -270,7 +270,7 @@ func (client *CraneDockerClient) ServiceRemoveLabel(serviceID string, labels []s
 	return client.UpdateServiceAutoOption(service.ID, service.Version, service.Spec)
 }
 
-func (client *CraneDockerClient) getServiceNetworkNames(networkAttachmentConfigs []swarm.NetworkAttachmentConfig) []string {
+func (client *CraneDockerClient) GetServiceNetworkNames(networkAttachmentConfigs []swarm.NetworkAttachmentConfig) []string {
 	networkNameList := []string{}
 	for _, networkAttachmentConfig := range networkAttachmentConfigs {
 		networkInfo, err := client.InspectNetwork(networkAttachmentConfig.Target)
