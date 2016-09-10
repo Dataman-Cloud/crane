@@ -35,8 +35,6 @@ type Config struct {
 	AccountEmailDefault    string `env:"ROLEX_ACCOUNT_EMAIL_DEFAULT", required:"false"`
 	AccountPasswordDefault string `env:"ROLEX_ACCOUNT_PASSWORD_DEFAULT", required:"false"`
 
-	CatalogPath string `env:"ROLEX_CATALOG_PATH", required:"false"`
-
 	SearchLoadDataInterval uint16 `env:"ROLEX_SEARCH_LOAD_DATA_INTERVAL", required:"false"`
 }
 

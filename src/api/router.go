@@ -13,6 +13,7 @@ import (
 	"github.com/Dataman-Cloud/crane/src/plugins/registry"
 	rauth "github.com/Dataman-Cloud/crane/src/plugins/registryauth"
 	"github.com/Dataman-Cloud/crane/src/plugins/search"
+	"github.com/Dataman-Cloud/crane/src/utils/db"
 	"github.com/Dataman-Cloud/crane/src/utils/log"
 
 	"github.com/Sirupsen/logrus"
@@ -61,7 +62,7 @@ func (api *Api) ApiRouter() *gin.Engine {
 	}
 
 	if api.Config.FeatureEnabled("catalog") {
-		c := catalog.NewCatalog(api.Config.CatalogPath)
+		c := catalog.NewCatalog(db.DB())
 		c.MigriateTable()
 		c.RegisterApiForCatalog(router, Authorization)
 	}
