@@ -11,6 +11,7 @@ import (
 	"testing"
 
 	"github.com/Dataman-Cloud/crane/src/utils/cranerror"
+	"github.com/Dataman-Cloud/crane/src/utils/model"
 
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
@@ -43,13 +44,25 @@ func startHttpServer() *httptest.Server {
 	accountApi := AccountApi{
 		Authenticator: NewMockAuthenticator(),
 	}
-
 	v1 := router.Group("/account/v1")
 	{
 		v1.POST("/groups/:group_id/account", accountApi.CreateAccount)
+		v1.GET("/accounts/:account_id", accountApi.GetAccount)
+		v1.GET("/accounts", SetListOptions, accountApi.ListAccounts)
+
 	}
 
 	return httptest.NewServer(router)
+}
+
+func SetListOptions(ctx *gin.Context) {
+	options := model.ListOptions{
+		Offset: 1,
+		Limit:  1,
+	}
+
+	ctx.Set("listOptions", options)
+	ctx.Next()
 }
 
 func TestCreateAccount(t *testing.T) {
@@ -132,4 +145,50 @@ func parseError(errorCode string) (int, int) {
 	}
 
 	return httpCode, errCode
+}
+
+func TestGetAccount(t *testing.T) {
+	// normal test case
+	req, _ := http.NewRequest("GET", baseUrl+"/account/v1/accounts/1", nil)
+	resp, _ := http.DefaultClient.Do(req)
+	assert.Equal(t, resp.StatusCode, http.StatusOK, "should be equal")
+
+	// createAccount error test case
+	AccountError = cranerror.NewError(CodeAccountGetAccountNotFoundError, "get account error")
+	defer func() {
+		AccountError = nil
+	}()
+	req, _ = http.NewRequest("GET", baseUrl+"/account/v1/accounts/1", nil)
+	resp, _ = http.DefaultClient.Do(req)
+	b, _ := ioutil.ReadAll(resp.Body)
+
+	var response ResponseBody
+	json.Unmarshal(b, &response)
+
+	httpCode, errCode := parseError(CodeAccountGetAccountNotFoundError)
+	assert.Equal(t, response.Code, errCode, "should be equal")
+	assert.Equal(t, resp.StatusCode, httpCode, "should be equal")
+}
+
+func TestListAccount(t *testing.T) {
+	// normal test case
+	req, _ := http.NewRequest("GET", baseUrl+"/account/v1/accounts", nil)
+	resp, _ := http.DefaultClient.Do(req)
+	assert.Equal(t, resp.StatusCode, http.StatusOK, "should be equal")
+
+	// createAccount error test case
+	AccountsError = cranerror.NewError(CodeAccountGetAccountNotFoundError, "list account error")
+	defer func() {
+		AccountsError = nil
+	}()
+	req, _ = http.NewRequest("GET", baseUrl+"/account/v1/accounts", nil)
+	resp, _ = http.DefaultClient.Do(req)
+	b, _ := ioutil.ReadAll(resp.Body)
+
+	var response ResponseBody
+	json.Unmarshal(b, &response)
+
+	httpCode, errCode := parseError(CodeAccountGetAccountNotFoundError)
+	assert.Equal(t, response.Code, errCode, "should be equal")
+	assert.Equal(t, resp.StatusCode, httpCode, "should be equal")
 }
