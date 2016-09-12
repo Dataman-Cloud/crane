@@ -174,7 +174,6 @@ func (catalogApi *CatalogApi) UpdateCatalog(ctx *gin.Context) {
 	catalog.ID = cl.ID
 	catalog.Name = cl.Name
 	catalog.Bundle = cl.Bundle
-	catalog.Readme = cl.Readme
 	catalog.Description = cl.Description
 	catalog.UserId = cl.UserId
 	catalog.Type = cl.Type
