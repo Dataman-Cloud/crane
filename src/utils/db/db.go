@@ -23,7 +23,7 @@ func InitDB() {
 
 	err := initDb(conf.DbDriver, conf.DbDSN)
 	if err != nil {
-		log.Fatal("init %s error: %v", conf.DbDriver, conf.DbDSN)
+		log.Fatalf("init %s error: %v", conf.DbDriver, conf.DbDSN)
 	}
 
 	configDb()

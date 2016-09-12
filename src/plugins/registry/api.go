@@ -106,9 +106,9 @@ func (registry *Registry) Notifications(ctx *gin.Context) {
 	if err := ctx.BindJSON(&notification); err != nil {
 		switch jsonErr := err.(type) {
 		case *json.SyntaxError:
-			log.Error("Notification JSON syntax error at byte %v: %s", jsonErr.Offset, jsonErr.Error())
+			log.Errorf("Notification JSON syntax error at byte %v: %s", jsonErr.Offset, jsonErr.Error())
 		case *json.UnmarshalTypeError:
-			log.Error("Unexpected type at by type %v. Expected %s but received %s.",
+			log.Errorf("Unexpected type at by type %v. Expected %s but received %s.",
 				jsonErr.Offset, jsonErr.Type, jsonErr.Value)
 		}
 	}
@@ -246,9 +246,9 @@ func (registry *Registry) ImagePublicity(ctx *gin.Context) {
 	if err := ctx.BindJSON(&param); err != nil {
 		switch jsonErr := err.(type) {
 		case *json.SyntaxError:
-			log.Error("Notification JSON syntax error at byte %v: %s", jsonErr.Offset, jsonErr.Error())
+			log.Errorf("Notification JSON syntax error at byte %v: %s", jsonErr.Offset, jsonErr.Error())
 		case *json.UnmarshalTypeError:
-			log.Error("Unexpected type at by type %v. Expected %s but received %s.",
+			log.Errorf("Unexpected type at by type %v. Expected %s but received %s.",
 				jsonErr.Offset, jsonErr.Type, jsonErr.Value)
 		}
 		craneerr := cranerror.NewError(CodeRegistryImagePublicityParamError, err.Error())
