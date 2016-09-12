@@ -70,3 +70,53 @@ curl -XDELETE localhost:2375/catalog/v1/catalog/mysql
 }
 
 ```
+
+GET `/catalog/v1/catalogs`
+
+**Request:**
+
+```
+curl -XGET localhost:5013/catalog/v1/catalogs
+```
+
+POST `/catalogs/v1/catalogs`
+
+**Request:**
+
+```
+curl -XPOST localhost:5013/catalog/v1/catalogs -d `
+{
+	"Name":"",
+	"Bundle":"",
+	"Description":""
+}
+`
+```
+
+GET `/catalog/v1/catalogs/:catalog_id`
+
+```
+curl -XGET localhost:5013/catalog/v1/catalogs/:catalog_id
+'
+```
+
+PATCH `/catalogs/v1/catalogs/:catalog_id`
+
+**Request:**
+
+```
+curl -XPOST localhost:5013/catalog/v1/catalogs -d `
+{
+	"Name":"",
+	"Bundle":"",
+	"Description":""
+}
+`
+```
+
+DELETE `/catalog/v1/catalogs/:catalog_id`
+
+```
+curl -XDELETE localhost:5013/catalog/v1/catalogs/:catalog_id
+```
+
