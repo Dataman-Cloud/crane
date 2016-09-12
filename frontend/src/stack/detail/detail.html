@@ -7,6 +7,9 @@
 		<md-button id="delete-stack" class="md-button md-primary md-small md-raised" data-ng-click="stackDetailCtrl.deleteStack($event)" aria-label="删除项目">
             <i class="fa fa-trash" aria-hidden="true"></i> 删除项目
         </md-button>
+		<md-button id="add-catalog" class="md-button md-primary md-small md-raised" data-ui-sref="registry.createCatalog({stack_name: $stateParams.stack_name})" aria-label="添加至模板">
+            <i class="fa fa-plus" aria-hidden="true"></i> 添加至模板
+        </md-button>
 	</div>
 </header>
 <md-tabs md-dynamic-height md-border-bottom>

@@ -44,6 +44,17 @@
                     catalog: getCatalog
                 }
             })
+            .state('registry.createCatalog', {
+                url: '/createCatalog/:stack_name',
+                templateUrl: '/src/registry/create-catalog/create.html',
+                controller: 'CreateCatalog as createCatalog',
+                ncyBreadcrumb: {
+                    label: '创建项目模板'
+                },
+                resolve: {
+                    stack: getStack
+                }
+            })
             .state('registry.list.public', {
                 url: '/public',
                 templateUrl: '/src/registry/list/public.html',
@@ -88,7 +99,7 @@
             })
             .state('registry.createNote', {
                 url: '/createNote',
-                templateUrl: '/src/registry/create-note/note.html',
+                templateUrl: '/src/registry/create-image-note/note.html',
                 ncyBreadcrumb: {
                     label: '如何创建镜像'
                 }
@@ -118,6 +129,11 @@
         /* @ngInject */
         function getCatalog(registryBackend, $stateParams) {
             return registryBackend.getCatalog($stateParams.catalog_id);
+        }
+
+        /*@ngInject*/
+        function getStack(stackBackend, $stateParams) {
+            return stackBackend.getStack($stateParams.stack_name);
         }
     }
 
