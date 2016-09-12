@@ -72,11 +72,6 @@
                     x: x,
                     y: this._getCpuUsageRate(data)
                 }, $rootScope.STATS_POINT_NUM);
-                if (chartUtil.updateForceY(this.cpuOptions.chart, this.cpuData, 0, 1.2, 1, 100)) {
-                    cpuApi.refresh();
-                } else {
-                    cpuApi.update();
-                }
             };
 
             Options.prototype._pushMemData = function (serialName, x, data, memApi) {
@@ -85,11 +80,6 @@
                     x: x, y: data.memory_stats.usage / data.memory_stats.limit * 100,
                     total: data.memory_stats.limit, use: data.memory_stats.usage
                 }, $rootScope.STATS_POINT_NUM);
-                if (chartUtil.updateForceY(this.memOptions.chart, this.memData, 0, 1.2, 1, 100)) {
-                    memApi.refresh();
-                } else {
-                    memApi.update();
-                }
             };
 
             Options.prototype._pushNetworkData = function (serialName, x, data, networkApi) {
@@ -103,7 +93,6 @@
                         y: data.SendRate
                     },
                     $rootScope.STATS_POINT_NUM);
-                networkApi.update();
             };
 
             Options.prototype._getCpuUsageRate = function (data) {
@@ -115,6 +104,22 @@
                     cpuPercent = (cpuDelta / systemDelta) * data.cpu_stats.cpu_usage.percpu_usage.length * 100;
                 }
                 return cpuPercent
+            };
+
+            Options.prototype.flushCharts = function (cpuApi, memApi, networkApi) {
+                if (chartUtil.updateForceY(this.cpuOptions.chart, this.cpuData, 0, 1.2, 1, 100)) {
+                    cpuApi.refresh();
+                } else {
+                    cpuApi.update();
+                }
+
+                if (chartUtil.updateForceY(this.memOptions.chart, this.memData, 0, 1.2, 1, 100)) {
+                    memApi.refresh();
+                } else {
+                    memApi.update();
+                }
+
+                networkApi.update();
             };
 
             return Options;

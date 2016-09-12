@@ -4,10 +4,11 @@
         .controller('NodeContainerStatsCtrl', NodeContainerStatsCtrl);
 
     /* @ngInject */
-    function NodeContainerStatsCtrl(stream, $stateParams, $scope, statsChart) {
+    function NodeContainerStatsCtrl(stream, $stateParams, $scope, statsChart, $interval) {
         var self = this;
+        var stopTime;
         
-        self.stats = []
+        self.stats = [];
         self.chartOptions = statsChart.Options();
         activate();
         
@@ -21,10 +22,17 @@
                 self.chartOptions.pushData(event.data, self.cpuChartApi, self.memChartApi, self.networkChartApi);
             });
             stream.start();
+
+            stopTime = $interval(flushCharts, 5000);
             
             $scope.$on('$destroy', function () {
                 stream.stop();
+                $interval.cancel(stopTime)
             });
+        }
+
+        function flushCharts() {
+            self.chartOptions.flushCharts(self.cpuChartApi, self.memChartApi, self.networkChartApi);
         }
     }
 })();
