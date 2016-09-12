@@ -9,7 +9,7 @@
 
         self.catalog = catalog;
         self.stack = self.catalog.Bundle || "";
-        self.markdown = self.catalog.Readme;
+        self.description = self.catalog.Description || "";
 
         self.stackName = '';
         self.groups = [];

@@ -86,5 +86,7 @@
 
         $rootScope.ID_LIMIT_LENGTH = 12;
 
+        $rootScope.IMAGE_MAX_SIZE = 102400;
+
     }
 })();

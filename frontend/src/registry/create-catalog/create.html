@@ -34,9 +34,18 @@
         </p>
 
     </div>
+
+    <div layout="row" layout-align="space-between start" style="width: 580px;">
+        <div flex="none">
+            <img class="thumb" ng-src="{/createCatalog.imageData/}" height="200" width="200" alt="添加项目图片..."/>
+            <input type='file' class="ng-hide" ng-model-instant
+                   onchange="angular.element(this).scope().createCatalog.imageUpload(this.files)"/>
+            <md-button trigger-prev-click class="md-small md-primary"><i class="fa fa-upload"></i> 从文件中读取
+        </div>
+    </div>
     <footer class="form-buttons">
         <md-button class="md-raised md-primary"
-                   data-ng-disabled="staticForm.$invalid || createCatalog.errorInfo.stack"
+                   data-ng-disabled="staticForm.$invalid || createCatalog.errorInfo.stack || createCatalog.imageSize > IMAGE_MAX_SIZE"
                    data-ng-click="createCatalog.create()">部署
         </md-button>
         <md-button data-ng-click="rootCtrl.goBack()">取 消</md-button>

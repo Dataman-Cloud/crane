@@ -45,7 +45,7 @@
                 }
             })
             .state('registry.createCatalog', {
-                url: '/createCatalog/:stack_name',
+                url: '/createCatalog?stack_name',
                 templateUrl: '/src/registry/create-catalog/create.html',
                 controller: 'CreateCatalog as createCatalog',
                 ncyBreadcrumb: {
@@ -133,7 +133,11 @@
 
         /*@ngInject*/
         function getStack(stackBackend, $stateParams) {
-            return stackBackend.getStack($stateParams.stack_name);
+            if($stateParams.stack_name){
+                return stackBackend.getStack($stateParams.stack_name);
+            }else {
+                return ""
+            }
         }
     }
 

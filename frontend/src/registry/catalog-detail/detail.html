@@ -17,25 +17,6 @@
                 </div>
             </div>
 
-            <!--<div class="form-group" layout="column">
-                <label>选择用户组
-                    <small></small>
-                </label>
-                <div class="form-control">
-                    <div class="form-control">
-                        <md-select data-ng-model="catalogDetailCtrl.selectGroupId"
-                                   aria-label="selectGroupId"
-                                   md-on-open="catalogDetailCtrl.loadGroups()">
-                            <md-option value="null" ng-selected="true">空</md-option>
-                            <md-option
-                                    data-ng-repeat="group in catalogDetailCtrl.groups"
-                                    ng-value="group.Id">{/group.Name/}
-                            </md-option>
-                        </md-select>
-                    </div>
-                </div>
-            </div>-->
-
             <div class="form-group" layout="column">
                 <label dm-doc-link='https://blog.docker.com/2016/06/docker-app-bundle/'>DAB<span
                         class="required">*</span></label>
@@ -73,11 +54,10 @@
 
     <md-tab label="详情">
         <md-content class="main-tab-content">
-            <div class="alert alert-warning text-center" data-ng-if="!catalogDetailCtrl.markdown">
+            <div class="alert alert-warning text-center" data-ng-if="!catalogDetailCtrl.description">
                 暂无详情
             </div>
-            <article marked="catalogDetailCtrl.markdown">
-            </article>
+            <div>{/catalogDetailCtrl.description/}</div>
         </md-content>
     </md-tab>
 </md-tabs>
