@@ -1,5 +1,6 @@
 #!/bin/bash
 
+docker run -it --rm -v $(pwd)/frontend:/data digitallyseamless/nodejs-bower-grunt:5 bower install
 docker run -it --rm -w /go/src/github.com/Dataman-Cloud/crane -v $(pwd):/go/src/github.com/Dataman-Cloud/crane golang:1.5.4 make
 curl https://get.docker.com/builds/Linux/x86_64/docker-latest.tgz | tar xzv
 
