@@ -5,6 +5,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/Dataman-Cloud/crane/src/dockerclient"
 	"github.com/Dataman-Cloud/crane/src/dockerclient/model"
 	"github.com/Dataman-Cloud/crane/src/utils/cranerror"
 	"github.com/Dataman-Cloud/crane/src/utils/httpresponse"
@@ -213,7 +214,7 @@ func (api *Api) LogsContainer(ctx *gin.Context) {
 	for {
 		select {
 		case data := <-message:
-			ctx.SSEvent("container-logs", data)
+			ctx.SSEvent(dockerclient.SseTypeContainerLogs, data)
 			w.Flush()
 		case <-clientGone:
 			return
@@ -257,7 +258,7 @@ func (api *Api) StatsContainer(ctx *gin.Context) {
 			chnDone <- true
 		case data := <-chnMsg:
 			if !clientClosed {
-				ctx.SSEvent("container-stats", data)
+				ctx.SSEvent(dockerclient.SseTypeContainerStats, data)
 				w.Flush()
 			}
 		case err := <-chnErr:

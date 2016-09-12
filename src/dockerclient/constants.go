@@ -20,6 +20,14 @@ const (
 	labelNodeEndpoint = "crane.reserved.node.endpoint"
 )
 
+// sse event type
+const (
+	SseTypeContainerLogs  = "container-logs"
+	SseTypeContainerStats = "container-stats"
+	SseTypeServiceLogs    = "service-logs"
+	SseTypeServiceStats   = "service-stats"
+)
+
 const (
 	//Service error code
 	CodeInvalidServiceNanoCPUs      = "503-11404"
