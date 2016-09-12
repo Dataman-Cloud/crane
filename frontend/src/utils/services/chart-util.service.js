@@ -45,6 +45,7 @@
                         return d.y;
                     },
                     useInteractiveGuideline: true,
+                    showLegend: false,
                     xAxis: {
                         axisLabel: '时间',
                         tickFormat: function (d) {
@@ -78,7 +79,7 @@
                             }
                         }
                         return colors[i];
-                    },
+                    }
                 },
                 title: {
                     enable: true
