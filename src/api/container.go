@@ -2,10 +2,10 @@ package api
 
 import (
 	"encoding/json"
-	"io"
 	"strconv"
 	"strings"
 
+	"github.com/Dataman-Cloud/crane/src/dockerclient"
 	"github.com/Dataman-Cloud/crane/src/dockerclient/model"
 	"github.com/Dataman-Cloud/crane/src/utils/cranerror"
 	"github.com/Dataman-Cloud/crane/src/utils/httpresponse"
@@ -13,7 +13,6 @@ import (
 	docker "github.com/Dataman-Cloud/go-dockerclient"
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
-	"github.com/manucorporat/sse"
 	"golang.org/x/net/context"
 )
 
@@ -210,13 +209,17 @@ func (api *Api) LogsContainer(ctx *gin.Context) {
 
 	go api.GetDockerClient().LogsContainer(craneContext.(context.Context), ctx.Param("container_id"), message)
 
-	ctx.Stream(func(w io.Writer) bool {
-		sse.Event{
-			Event: "container-logs",
-			Data:  <-message,
-		}.Render(ctx.Writer)
-		return true
-	})
+	w := ctx.Writer
+	clientGone := w.CloseNotify()
+	for {
+		select {
+		case data := <-message:
+			ctx.SSEvent(dockerclient.SseTypeContainerLogs, data)
+			w.Flush()
+		case <-clientGone:
+			return
+		}
+	}
 }
 
 func (api *Api) StatsContainer(ctx *gin.Context) {
@@ -244,7 +247,6 @@ func (api *Api) StatsContainer(ctx *gin.Context) {
 		chnErr <- api.GetDockerClient().StatsContainer(craneContext.(context.Context), opts)
 	}()
 
-	ssEvent := &sse.Event{Event: "container-stats"}
 	w := ctx.Writer
 	clientGone := w.CloseNotify()
 	var clientClosed bool = false
@@ -256,8 +258,7 @@ func (api *Api) StatsContainer(ctx *gin.Context) {
 			chnDone <- true
 		case data := <-chnMsg:
 			if !clientClosed {
-				ssEvent.Data = data
-				ssEvent.Render(w)
+				ctx.SSEvent(dockerclient.SseTypeContainerStats, data)
 				w.Flush()
 			}
 		case err := <-chnErr:

@@ -1249,9 +1249,10 @@
 		{
 			"importpath": "github.com/manucorporat/sse",
 			"repository": "https://github.com/manucorporat/sse",
-			"vcs": "",
+			"vcs": "git",
 			"revision": "ee05b128a739a0fb76c7ebd3ae4810c1de808d6d",
-			"branch": "master"
+			"branch": "master",
+			"notests": true
 		},
 		{
 			"importpath": "github.com/manucorporat/stats",
