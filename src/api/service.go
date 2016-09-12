@@ -2,7 +2,6 @@ package api
 
 import (
 	"encoding/base64"
-	"io"
 	"strings"
 
 	"github.com/Dataman-Cloud/crane/src/dockerclient"
@@ -16,7 +15,6 @@ import (
 	"github.com/docker/engine-api/types/filters"
 	"github.com/docker/engine-api/types/swarm"
 	"github.com/gin-gonic/gin"
-	"github.com/manucorporat/sse"
 	"golang.org/x/net/context"
 )
 
@@ -253,13 +251,17 @@ func (api *Api) LogsService(ctx *gin.Context) {
 		go api.GetDockerClient().LogsContainer(logContext, task.Status.ContainerStatus.ContainerID, message)
 	}
 
-	ctx.Stream(func(w io.Writer) bool {
-		sse.Event{
-			Event: "service-logs",
-			Data:  <-message,
-		}.Render(ctx.Writer)
-		return true
-	})
+	w := ctx.Writer
+	clientGone := w.CloseNotify()
+	for {
+		select {
+		case data := <-message:
+			ctx.SSEvent("service-logs", data)
+			w.Flush()
+		case <-clientGone:
+			return
+		}
+	}
 }
 
 func (api *Api) StatsService(ctx *gin.Context) {
@@ -298,11 +300,9 @@ func (api *Api) StatsService(ctx *gin.Context) {
 		}(statsContext, *opts)
 	}
 
-	ssEvent := &sse.Event{Event: "service-stats"}
 	w := ctx.Writer
 	clientGone := w.CloseNotify()
 	clientClosed := false
-
 	for {
 		select {
 		case <-clientGone:
@@ -313,8 +313,7 @@ func (api *Api) StatsService(ctx *gin.Context) {
 			}
 		case data := <-chnMsg:
 			if !clientClosed {
-				ssEvent.Data = data
-				ssEvent.Render(w)
+				ctx.SSEvent("service-stats", data)
 				w.Flush()
 			}
 		case err := <-chnErr:
