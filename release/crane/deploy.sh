@@ -1,5 +1,8 @@
 #!/bin/bash
 
+set -o errtrace
+set -o errexit
+
 export CRANE_SWARM_MANAGER_IP=$CRANE_IP
 export TAG=${VERSION:-1.0}
 export DOCKER_COMPOSE=${VERSION:-.}/docker-compose.yml

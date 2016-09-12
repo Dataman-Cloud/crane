@@ -1,6 +1,7 @@
 #!/bin/sh
 
-set -e
+set -o errtrace
+set -o errexit
 
 # Maintainer: weitao zhou <wtzhou@dataman-inc.com>
 
