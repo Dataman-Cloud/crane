@@ -12,7 +12,6 @@ type Catalog struct {
 	ID          uint64 `json:"Id"`
 	Name        string `json:"Name"`
 	Bundle      string `json:"Bundle" gorm:"size:65532"`
-	Readme      string `json:"Readme" gorm:"size:65532"`
 	Description string `json:"Description" gorm:"size:65532"`
 	IconData    string `json:"IconData" gorm:"size:65532"`
 	UserId      uint64 `json:"UserId"`

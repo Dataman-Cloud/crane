@@ -32,7 +32,6 @@ func MockCatalog() *Catalog {
 		ID:          1,
 		Name:        "catalog-name",
 		Bundle:      "bundle",
-		Readme:      "readme",
 		Description: "Description",
 		IconData:    "IconData",
 		UserId:      1,
