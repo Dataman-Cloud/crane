@@ -11,14 +11,14 @@ Crane, maintained by [dataman-cloud](https://github.com/Dataman-Cloud), is a doc
 
 ## Features
 
-  * **Swarm features**: Portal every feature of swarm almost. Crane has highlighted the common swarm functions and improved the user experience through the friendly frontend.
-  * **Stack templates management**: User can save the running stack as a template, then, others will deploy the template as soon as possible.
-  * **Image management**: The private image pushed by the user can be publiced to others.
+  * **Swarm features**: Portal every feature of swarm almost. Crane has highlighted the common swarm functions and improved the user experiences through the friendly frontend.
+  * **Stack templates management**: User can save a running stack as a template, by which others can deploy repeatly.
+  * **Image management**: The private image owned by user can be publiced to others.
   * **Fuzzy search**: A in-memory index maintained by the backend serves the function.
-  * **Node operation**: Crane is showing the detail infos about node such as kernel version, docker info, docker images or containers in the given node and so on.
-  * **Overlay network management**: The overlay network CRUD.
-  * **Private registries authentation**: User can save his/her private registry username and password to Crane, then, the to-be-deployed stack can use the registry-auth to pull private registry images.
-  * **Webssh**: Command 'docker exec' is the magic.
+  * **Node operation**: Crane details about a node such as kernel version, docker info, docker images and also containers running on the node.
+  * **Network Management**: The overlay network CRUD.
+  * **Registries Authentation Managment**: You can save your private registry username/password pair to Crane, with which a to-be-deployed stack with restricted image access can attach.
+  * **Webssh**: Command 'docker exec' is the magic behind it.
 
 ## Demo
 
@@ -56,7 +56,7 @@ TODO: Let's deploy the demo.
 
 CRANE_IP is the ip address(don't use 0.0.0.0 because we are using container in network bridge mode) of the running Crane host which is the swarm manager also.
 
-## How to use it
+## Usage
 
 Browser http://$CRANE_IP , 
 
@@ -65,23 +65,23 @@ Browser http://$CRANE_IP ,
 
 Please click [Crane User Guide in Chinese](https://dataman.gitbooks.io/crane/content/) for more details.
 
-## Convention
+## Conventions
 
 ### repo branch
-  * [master](https://github.com/Dataman-Cloud/crane/tree/master): development branch in active. PR will be merged into this `master` branch.
-  * [release](https://github.com/Dataman-Cloud/crane/tree/release): Released version control. Tagged commits or hotfix PR will be pushed here. Maintained by the repo owners.
+  * [master](https://github.com/Dataman-Cloud/crane/tree/master):  actively moving foward. PR will be merged into this `master` branch.
+  * [release](https://github.com/Dataman-Cloud/crane/tree/release): Released versions. Tagged commits or hotfix PR will be pushed here. Maintained by the repo owners.
 
-## TroubleShooting
+## Trouble-shooting
 
 ## Community
 
 [![Gitter](https://badges.gitter.im/Dataman-Cloud/crane.svg)](https://gitter.im/Dataman-Cloud/crane?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
-wechat group: 数人云Crane技术交流群
+Wechat group: 数人云Crane技术交流群
 
 ## Contribution
 
-Both pull-request or issue are welcomed from the community.
+Both pull-requests or issues are welcomed from the community.
 
 ## License
 
