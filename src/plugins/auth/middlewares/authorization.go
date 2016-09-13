@@ -11,7 +11,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Authorization(a *auth.AccountApi) gin.HandlerFunc {
+func Authorization(tokenStore auth.TokenStore, authenticator auth.Authenticator) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		if len(ctx.Query("Authorization")) != 0 {
 			ctx.Request.Header.Set("Authorization", ctx.Query("Authorization"))
@@ -27,7 +27,7 @@ func Authorization(a *auth.AccountApi) gin.HandlerFunc {
 			return
 		}
 
-		value, err := a.TokenStore.Get(ctx, ctx.Request.Header.Get("Authorization"))
+		value, err := tokenStore.Get(ctx, ctx.Request.Header.Get("Authorization"))
 		if err != nil {
 			httpresponse.Error(ctx, cranerror.NewError(auth.CodeAccountTokenInvalidError, "Invalid Authorization"))
 			ctx.Abort()
@@ -36,7 +36,7 @@ func Authorization(a *auth.AccountApi) gin.HandlerFunc {
 
 		accountId, _ := strconv.ParseUint(value, 10, 64)
 
-		acc, err := a.Authenticator.Account(accountId)
+		acc, err := authenticator.Account(accountId)
 		if err != nil {
 			httpresponse.Error(ctx, cranerror.NewError(auth.CodeAccountTokenInvalidError, "Invalid Authorization"))
 			ctx.Abort()
@@ -45,7 +45,7 @@ func Authorization(a *auth.AccountApi) gin.HandlerFunc {
 
 		ctx.Set("account", auth.ReferenceToValue(acc))
 
-		if groups, err := a.Authenticator.AccountGroups(model.ListOptions{
+		if groups, err := authenticator.AccountGroups(model.ListOptions{
 			Filter: map[string]interface{}{
 				"account_id": accountId,
 			},

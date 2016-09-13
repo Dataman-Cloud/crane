@@ -1,7 +1,11 @@
-package auth
+package api
 
 import (
 	"github.com/Dataman-Cloud/crane/src/dockerclient"
+	"github.com/Dataman-Cloud/crane/src/plugins/auth"
+	"github.com/Dataman-Cloud/crane/src/plugins/auth/authenticators"
+	chains "github.com/Dataman-Cloud/crane/src/plugins/auth/middlewares"
+	"github.com/Dataman-Cloud/crane/src/plugins/auth/token_store"
 	"github.com/Dataman-Cloud/crane/src/utils/config"
 
 	"github.com/gin-gonic/gin"
@@ -9,16 +13,31 @@ import (
 
 type AccountApi struct {
 	Config            *config.Config
-	Authenticator     Authenticator
-	TokenStore        TokenStore
+	Authenticator     auth.Authenticator
+	TokenStore        auth.TokenStore
 	CraneDockerClient *dockerclient.CraneDockerClient
+	Authorization     gin.HandlerFunc
 }
 
-func (account *AccountApi) RegisterApiForAccount(router *gin.Engine,
-	authorizeMiddlwares map[string](func(permissionRequired Permission) gin.HandlerFunc),
-	middlewares ...gin.HandlerFunc) {
+func (account *AccountApi) ApiRegister(router *gin.Engine, middlewares ...gin.HandlerFunc) {
+	if account.Config.AccountTokenStore == "default" {
+		account.TokenStore = token_store.NewDefaultStore()
+	} else if account.Config.AccountTokenStore == "cookie_store" {
+		account.TokenStore = token_store.NewCookieStore()
+	}
+
+	if account.Config.AccountAuthenticator == "default" {
+		account.Authenticator = authenticators.NewDefaultAuthenticator()
+	} else if account.Config.AccountAuthenticator == "db" {
+		account.Authenticator = authenticators.NewDBAuthenticator()
+	}
+
+	account.Authorization = chains.Authorization(account.TokenStore, account.Authenticator)
+	AuthorizeServiceAccess := chains.AuthorizeServiceAccess()
+
 	accountV1 := router.Group("/account/v1")
 	{
+		accountV1.Use(account.Authorization)
 		accountV1.Use(middlewares...)
 		accountV1.GET("/aboutme", account.GetAccountInfo)
 		accountV1.GET("/accounts/:account_id", account.GetAccount)
@@ -44,11 +63,9 @@ func (account *AccountApi) RegisterApiForAccount(router *gin.Engine,
 	serviceV1 := router.Group("/api/v1/")
 	{
 		serviceV1.Use(middlewares...)
-		serviceV1.POST("services/:service_id/permissions",
-			authorizeMiddlwares["AuthorizeServiceAccess"](PermAdmin),
+		serviceV1.POST("services/:service_id/permissions", AuthorizeServiceAccess(auth.PermAdmin),
 			account.GrantServicePermission)
-		serviceV1.DELETE("services/:service_id/permissions/:permission_id",
-			authorizeMiddlwares["AuthorizeServiceAccess"](PermAdmin),
+		serviceV1.DELETE("services/:service_id/permissions/:permission_id", AuthorizeServiceAccess(auth.PermAdmin),
 			account.RevokeServicePermission)
 	}
 }
