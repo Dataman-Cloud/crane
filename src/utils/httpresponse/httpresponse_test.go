@@ -217,7 +217,6 @@ func TestSSEventCustomError(t *testing.T) {
 	assert.Equal(t, w.Code, http.StatusOK)
 
 	assert.NotNil(t, w.Body.String())
-	t.Log(w.Body.String())
 	assert.Equal(t, strings.Replace(w.Body.String(), " ", "", -1), strings.Replace("event:test\ndata:{\"code\":11111,\"data\":{},\"message\":\"custom error\",\"source\":\"crane\"}\n\n", " ", "", -1))
 }
 

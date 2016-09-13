@@ -1,4 +1,4 @@
-package auth
+package api
 
 import (
 	"encoding/json"
@@ -10,6 +10,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/Dataman-Cloud/crane/src/plugins/auth"
 	"github.com/Dataman-Cloud/crane/src/utils/cranerror"
 	"github.com/Dataman-Cloud/crane/src/utils/model"
 
@@ -42,7 +43,7 @@ func TestMain(m *testing.M) {
 func startHttpServer() *httptest.Server {
 	router := gin.New()
 	accountApi := AccountApi{
-		Authenticator: NewMockAuthenticator(),
+		Authenticator: auth.NewMockAuthenticator(),
 	}
 	v1 := router.Group("/account/v1")
 	{
@@ -89,7 +90,7 @@ func TestCreateAccount(t *testing.T) {
 	var response ResponseBody
 	json.Unmarshal(b, &response)
 
-	httpCode, errCode := parseError(CodeAccountCreateParamError)
+	httpCode, errCode := parseError(auth.CodeAccountCreateParamError)
 
 	assert.Equal(t, response.Code, errCode, "should be equal")
 	assert.Equal(t, resp.StatusCode, httpCode, "should be equal")
@@ -102,7 +103,7 @@ func TestCreateAccount(t *testing.T) {
 	b, _ = ioutil.ReadAll(resp.Body)
 	json.Unmarshal(b, &response)
 
-	httpCode, errCode = parseError(CodeAccountCreateParamError)
+	httpCode, errCode = parseError(auth.CodeAccountCreateParamError)
 
 	assert.Equal(t, response.Code, errCode, "should be equal")
 	assert.Equal(t, resp.StatusCode, httpCode, "should be equal")
@@ -113,22 +114,22 @@ func TestCreateAccount(t *testing.T) {
 	b, _ = ioutil.ReadAll(resp.Body)
 	json.Unmarshal(b, &response)
 
-	httpCode, errCode = parseError(CodeAccountCreateParamError)
+	httpCode, errCode = parseError(auth.CodeAccountCreateParamError)
 
 	assert.Equal(t, response.Code, errCode, "should be equal")
 	assert.Equal(t, resp.StatusCode, httpCode, "should be equal")
 
 	// createAccount error test case
-	CreateAccountError = cranerror.NewError(CodeAccountCreateAuthenticatorError, "create account error")
+	auth.CreateAccountError = cranerror.NewError(auth.CodeAccountCreateAuthenticatorError, "create account error")
 	defer func() {
-		CreateAccountError = nil
+		auth.CreateAccountError = nil
 	}()
 	req, _ = http.NewRequest("POST", baseUrl+"/account/v1/groups/1/account", strings.NewReader(requestBody))
 	resp, _ = http.DefaultClient.Do(req)
 	b, _ = ioutil.ReadAll(resp.Body)
 	json.Unmarshal(b, &response)
 
-	httpCode, errCode = parseError(CodeAccountCreateAuthenticatorError)
+	httpCode, errCode = parseError(auth.CodeAccountCreateAuthenticatorError)
 
 	assert.Equal(t, response.Code, errCode, "should be equal")
 	assert.Equal(t, resp.StatusCode, httpCode, "should be equal")
@@ -154,9 +155,9 @@ func TestGetAccount(t *testing.T) {
 	assert.Equal(t, resp.StatusCode, http.StatusOK, "should be equal")
 
 	// createAccount error test case
-	AccountError = cranerror.NewError(CodeAccountGetAccountNotFoundError, "get account error")
+	auth.AccountError = cranerror.NewError(auth.CodeAccountGetAccountNotFoundError, "get account error")
 	defer func() {
-		AccountError = nil
+		auth.AccountError = nil
 	}()
 	req, _ = http.NewRequest("GET", baseUrl+"/account/v1/accounts/1", nil)
 	resp, _ = http.DefaultClient.Do(req)
@@ -165,7 +166,7 @@ func TestGetAccount(t *testing.T) {
 	var response ResponseBody
 	json.Unmarshal(b, &response)
 
-	httpCode, errCode := parseError(CodeAccountGetAccountNotFoundError)
+	httpCode, errCode := parseError(auth.CodeAccountGetAccountNotFoundError)
 	assert.Equal(t, response.Code, errCode, "should be equal")
 	assert.Equal(t, resp.StatusCode, httpCode, "should be equal")
 }
@@ -177,9 +178,9 @@ func TestListAccount(t *testing.T) {
 	assert.Equal(t, resp.StatusCode, http.StatusOK, "should be equal")
 
 	// createAccount error test case
-	AccountsError = cranerror.NewError(CodeAccountGetAccountNotFoundError, "list account error")
+	auth.AccountsError = cranerror.NewError(auth.CodeAccountGetAccountNotFoundError, "list account error")
 	defer func() {
-		AccountsError = nil
+		auth.AccountsError = nil
 	}()
 	req, _ = http.NewRequest("GET", baseUrl+"/account/v1/accounts", nil)
 	resp, _ = http.DefaultClient.Do(req)
@@ -188,7 +189,7 @@ func TestListAccount(t *testing.T) {
 	var response ResponseBody
 	json.Unmarshal(b, &response)
 
-	httpCode, errCode := parseError(CodeAccountGetAccountNotFoundError)
+	httpCode, errCode := parseError(auth.CodeAccountGetAccountNotFoundError)
 	assert.Equal(t, response.Code, errCode, "should be equal")
 	assert.Equal(t, resp.StatusCode, httpCode, "should be equal")
 }

@@ -6,9 +6,7 @@ import (
 	"github.com/Dataman-Cloud/crane/src/api/middlewares"
 	"github.com/Dataman-Cloud/crane/src/plugins/apiplugin"
 	"github.com/Dataman-Cloud/crane/src/plugins/auth"
-	"github.com/Dataman-Cloud/crane/src/plugins/auth/authenticators"
-	chains "github.com/Dataman-Cloud/crane/src/plugins/auth/middlewares"
-	"github.com/Dataman-Cloud/crane/src/plugins/auth/token_store"
+	authApi "github.com/Dataman-Cloud/crane/src/plugins/auth/api"
 	"github.com/Dataman-Cloud/crane/src/plugins/catalog"
 	"github.com/Dataman-Cloud/crane/src/plugins/registry"
 	rauth "github.com/Dataman-Cloud/crane/src/plugins/registryauth"
@@ -34,26 +32,9 @@ func (api *Api) ApiRouter() *gin.Engine {
 	})
 
 	if api.Config.FeatureEnabled("account") {
-		a := &auth.AccountApi{Config: api.Config, CraneDockerClient: api.Client}
-		if api.Config.AccountTokenStore == "default" {
-			a.TokenStore = token_store.NewDefaultStore()
-		} else if api.Config.AccountTokenStore == "cookie_store" {
-			a.TokenStore = token_store.NewCookieStore()
-		}
-
-		if api.Config.AccountAuthenticator == "default" {
-			a.Authenticator = authenticators.NewDefaultAuthenticator()
-		} else if api.Config.AccountAuthenticator == "db" {
-			a.Authenticator = authenticators.NewDBAuthenticator()
-		}
-
-		Authorization = chains.Authorization(a)
-		AuthorizeServiceAccess = chains.AuthorizeServiceAccess(a)
-
-		// account mode, Authorization enabled
-		authorizeMiddlewares := make(map[string](func(permissionRequired auth.Permission) gin.HandlerFunc), 0)
-		authorizeMiddlewares["AuthorizeServiceAccess"] = AuthorizeServiceAccess
-		a.RegisterApiForAccount(router, authorizeMiddlewares, chains.Authorization(a), middlewares.ListIntercept())
+		a := &authApi.AccountApi{Config: api.Config, CraneDockerClient: api.Client}
+		a.ApiRegister(router, middlewares.ListIntercept())
+		Authorization = a.Authorization
 	}
 
 	if api.Config.FeatureEnabled("registry") {

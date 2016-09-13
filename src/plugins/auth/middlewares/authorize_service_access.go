@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func AuthorizeServiceAccess(a *auth.AccountApi) func(permissionRequired auth.Permission) gin.HandlerFunc {
+func AuthorizeServiceAccess() func(permissionRequired auth.Permission) gin.HandlerFunc {
 	return func(permissionRequired auth.Permission) gin.HandlerFunc {
 		permissionRequired = permissionRequired.Normalize()
 
