@@ -4,7 +4,7 @@
             <md-card-title>
                 <md-card-title-text>
                     <span class="md-headline">{/catalog.Name/}</span>
-                    <span class="md-subhead">{/catalog.Description/}</span>
+                    <span class="md-subhead">{/catalog.Description | limitTo: 25/}</span>
                 </md-card-title-text>
                 <md-card-title-media>
                     <div class="md-media-sm card-media">
@@ -13,9 +13,31 @@
                 </md-card-title-media>
             </md-card-title>
             <md-card-actions layout="row" layout-align="end center">
-                <md-button class="md-raised md-primary" data-ui-sref="registry.catalogDetail({catalog_id: catalog.Id})">
-                    部署
-                </md-button>
+                <md-menu>
+                    <md-button class="md-icon-button" aria-label="More" ng-click="$mdOpenMenu($event)">
+                        <i class="fa fa-ellipsis-h"></i>
+                    </md-button>
+
+                    <md-menu-content width="2">
+                        <md-menu-item>
+                            <md-button aria-label="update"
+                                       data-ui-sref="registry.catalogDetail({catalog_id: catalog.Id})">
+                                <i class="fa fa-refresh" aria-hidden="true"></i> 部署
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button aria-label="update" data-ui-sref="registry.updateCatalog({catalog_id: catalog.Id})">
+                                <i class="fa fa-refresh" aria-hidden="true"></i> 更新
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button aria-label="scale"
+                                       data-ng-click="repositorieListCatalogCtrl.deleteCatalog(catalog.Id)">
+                                <i class="fa fa-trash" aria-hidden="true"></i> 删除
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
             </md-card-actions>
         </md-card>
     </div>

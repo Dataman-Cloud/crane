@@ -47,12 +47,29 @@
             .state('registry.createCatalog', {
                 url: '/createCatalog?stack_name',
                 templateUrl: '/src/registry/create-catalog/create.html',
-                controller: 'CreateCatalog as createCatalog',
+                controller: 'CreateUpdateCatalog as createUpdateCatalog',
                 ncyBreadcrumb: {
                     label: '创建项目模板'
                 },
                 resolve: {
-                    stack: getStack
+                    stack: getStack,
+                    target: function () {
+                        return 'create'
+                    }
+                }
+            })
+            .state('registry.updateCatalog', {
+                url: '/updateCatalog/:catalog_id',
+                templateUrl: '/src/registry/create-catalog/create.html',
+                controller: 'CreateUpdateCatalog as createUpdateCatalog',
+                ncyBreadcrumb: {
+                    label: '更新项目模板'
+                },
+                resolve: {
+                    stack: getCatalog,
+                    target: function () {
+                        return 'update'
+                    }
                 }
             })
             .state('registry.list.public', {

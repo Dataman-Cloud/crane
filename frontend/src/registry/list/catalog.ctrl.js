@@ -4,11 +4,16 @@
         .controller('RepositorieListCatalogCtrl', RepositorieListCatalogCtrl);
 
     /* @ngInject */
-    function RepositorieListCatalogCtrl(catalogs) {
+    function RepositorieListCatalogCtrl(catalogs, registryCurd) {
         var self = this;
 
-        self.apiBase = BACKEND_URL_BASE.defaultBase;
         self.catalogs = catalogs;
+
+        self.deleteCatalog = deleteCatalog;
+
+        function deleteCatalog(id) {
+            registryCurd.deleteCatalog(id)
+        }
 
     }
 })();

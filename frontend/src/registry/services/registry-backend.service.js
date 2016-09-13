@@ -13,6 +13,8 @@
             getImage: getImage,
             listCatalogs: listCatalogs,
             getCatalog: getCatalog,
+            createCatalog: createCatalog,
+            deleteCatalog: deleteCatalog,
             deleteImage: deleteImage,
             hideImage: hideImage,
             publicImage: publicImage
@@ -40,6 +42,14 @@
 
         function getCatalog(catalogId) {
             return gHttp.Resource('registry.catalog', {catalog_id: catalogId}).get();
+        }
+
+        function createCatalog(data, form) {
+            return gHttp.Resource('registry.catalogs').post(data, {form: form});
+        }
+
+        function deleteCatalog(catalogId) {
+            return gHttp.Resource('registry.catalog', {catalog_id: catalogId}).delete();
         }
 
         function deleteImage(repository, tag) {

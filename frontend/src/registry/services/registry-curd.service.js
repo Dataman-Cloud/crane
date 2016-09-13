@@ -5,16 +5,18 @@
 
 
     /* @ngInject */
-    function registryCurd(registryBackend, confirmModal, $rootScope, utils, $state) {
+    function registryCurd(registryBackend, confirmModal, $rootScope, utils, $state, Notification) {
         //////
         return {
             deleteImage: deleteImage,
             isPublicRepository: isPublicRepository,
             hideImage: hideImage,
             publicImage: publicImage,
-            isMyRepository: isMyRepository
+            isMyRepository: isMyRepository,
+            createCatalog: createCatalog,
+            deleteCatalog: deleteCatalog
         };
-        
+
         function deleteImage(repository, tag, ev) {
             confirmModal.open("是否确认删除镜像？", ev).then(function () {
                 if (isPublicRepository(repository)) {
@@ -22,19 +24,15 @@
                 } else {
                     $state.go('registry.list.mine', {open: repository}, {reload: true});
                 }
-//                registryBackend.deleteImage(repository, tag)
-//                    .then(function (data) {
-//                        Notification.success('删除成功');
-//                    })
             });
         }
-        
+
         function isPublicRepository(repository) {
             return utils.startWith(repository, 'library/');
         }
-        
+
         function isMyRepository(repository) {
-            return utils.startWith(repository, $rootScope.accountId+'/')
+            return utils.startWith(repository, $rootScope.accountId + '/')
         }
 
         function publicImage(namespace, image) {
@@ -43,6 +41,23 @@
 
         function hideImage(namespace, image) {
             registryBackend.hideImage(namespace, image)
+        }
+
+        function createCatalog(data, form) {
+            registryBackend.createCatalog(data, form)
+                .then(function (data) {
+                    $state.go('registry.list.catalogs', null, {reload: true});
+                })
+        }
+
+        function deleteCatalog(catalogId, ev) {
+            confirmModal.open("是否确认删除该项目模板？", ev).then(function () {
+                registryBackend.deleteCatalog(catalogId)
+                    .then(function (data) {
+                        Notification.success('删除成功');
+                        $state.go('registry.list.catalogs', null, {reload: true});
+                    })
+            });
         }
     }
 })();

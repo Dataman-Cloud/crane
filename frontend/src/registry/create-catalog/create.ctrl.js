@@ -1,14 +1,30 @@
 (function () {
     'use strict';
     angular.module('app.registry')
-        .controller('CreateCatalog', CreateCatalog);
+        .controller('CreateUpdateCatalog', CreateUpdateCatalog);
 
     /* @ngInject */
-    function CreateCatalog(stack, $timeout, $scope, Notification, $rootScope) {
+    function CreateUpdateCatalog(stack, $timeout, $scope, Notification, $rootScope, registryCurd, target) {
         var self = this;
 
-        self.form = stack;
+        self.target = target;
         self.imageSize = 0;
+
+        if (target === 'create') {
+            self.form = {
+                Name: '',
+                Bundle: angular.toJson(stack.Stack, '\t') || ""
+            };
+        } else {
+            self.form = {
+                Name: stack.Name || '',
+                Bundle: stack.Bundle || '',
+                Description: stack.Description || ''
+            };
+
+            self.image = stack.IconData || ''
+        }
+
 
         self.refreshCodeMirror = false;
         self.editorOptions = {
@@ -32,12 +48,12 @@
 
         self.stackChange = stackChange;
         self.imageUpload = imageUpload;
+        self.create = create;
+        self.update = update;
 
         activate();
 
         function activate() {
-            self.stack = angular.toJson(stack.Stack, '\t') || "";
-
             // cload timeout is 10, set long for it;
             var timeoutPromise = $timeout(function () {
                 self.refreshCodeMirror = true;
@@ -57,7 +73,7 @@
 
         function stackValidate() {
             try {
-                JSON.parse(self.stack)
+                JSON.parse(self.form.Bundle)
             } catch (err) {
                 self.errorInfo.stack = 'JSON 格式有误';
             }
@@ -66,17 +82,25 @@
         function imageUpload(files) {
             var file = files[0]; //FileList object
             self.imageSize = file.size;
-            if(self.imageSize > $rootScope.IMAGE_MAX_SIZE){
+            if (self.imageSize > $rootScope.IMAGE_MAX_SIZE) {
                 Notification.warning('图片过大，请选择小于 1M 的图片');
             }
             var reader = new FileReader();
             reader.onload = (function (theFile) {
                 return function (e) {
-                    self.imageData = e.target.result;
+                    self.image = e.target.result;
                     $scope.$digest();
                 };
             })(file);
-            reader.readAsDataURL(file);
+            reader.readAsDataURL(file)
+        }
+
+        function create() {
+            registryCurd.createCatalog(self.form, $scope.staticForm)
+        }
+
+        function update() {
+            //TODO
         }
     }
 })();
