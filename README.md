@@ -36,8 +36,16 @@ TODO: Let's deploy the demo.
 
 ### Option 1: Stable version in one line
 
+#### For Chinese guys (pull images from catalog.shurenyun.com):
+
   ```bash
-  bash -c "$(curl http://ocrqkagax.bkt.clouddn.com/install.sh)" -s v1.0.4
+  cd release && ./install.sh v1.0.4
+  ```
+
+#### For others (pull images from hub.docker.com):
+
+  ```bash
+  cd release && ./install.sh v1.0.4 2breakfast/
   ```
 
 ### Option 2: Latest or development from docker build
