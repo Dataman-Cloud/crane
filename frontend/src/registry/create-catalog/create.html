@@ -17,14 +17,14 @@
         <label dm-doc-link='https://blog.docker.com/2016/06/docker-app-bundle/'>DAB<span
                 class="required">*</span></label>
         <div class="form-control">
-            <textarea data-ng-model="createUpdateCatalog.form.Bundle" data-required="required" name="Stack"
+            <textarea data-ng-model="createUpdateCatalog.form.Bundle" data-required="required" name="Bundle"
                       ui-codemirror
                       ui-codemirror-opts="createUpdateCatalog.editorOptions"
                       ui-refresh="createUpdateCatalog.refreshCodeMirror"
                       data-ng-change="createUpdateCatalog.stackChange()"></textarea>
         </div>
 
-        <div ng-messages="staticForm.Stack.$error" ng-if="staticForm.Stack.$dirty" role="alert">
+        <div ng-messages="staticForm.Bundle.$error" ng-if="staticForm.Bundle.$dirty" role="alert">
             <p class="text-danger help-text"
                ng-message="required">
                 <small>不能为空</small>

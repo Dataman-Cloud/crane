@@ -14,7 +14,8 @@
             publicImage: publicImage,
             isMyRepository: isMyRepository,
             createCatalog: createCatalog,
-            deleteCatalog: deleteCatalog
+            deleteCatalog: deleteCatalog,
+            updateCatalog: updateCatalog
         };
 
         function deleteImage(repository, tag, ev) {
@@ -58,6 +59,14 @@
                         $state.go('registry.list.catalogs', null, {reload: true});
                     })
             });
+        }
+
+        function updateCatalog(catalogId, data) {
+            registryBackend.updateCatalog(catalogId, data)
+                .then(function (data) {
+                    Notification.success('更新成功');
+                    $state.go('registry.list.catalogs', null, {reload: true});
+                })
         }
     }
 })();

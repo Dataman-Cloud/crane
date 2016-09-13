@@ -4,7 +4,7 @@
         .controller('CreateUpdateCatalog', CreateUpdateCatalog);
 
     /* @ngInject */
-    function CreateUpdateCatalog(stack, $timeout, $scope, Notification, $rootScope, registryCurd, target) {
+    function CreateUpdateCatalog(stack, $timeout, $scope, Notification, $rootScope, registryCurd, target, $stateParams) {
         var self = this;
 
         self.target = target;
@@ -100,7 +100,7 @@
         }
 
         function update() {
-            //TODO
+            registryCurd.updateCatalog($stateParams.catalog_id, self.form);
         }
     }
 })();
