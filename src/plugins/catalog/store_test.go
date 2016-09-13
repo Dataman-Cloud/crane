@@ -34,7 +34,7 @@ func MockCatalog() *Catalog {
 		Bundle:      "bundle",
 		Description: "Description",
 		IconData:    "IconData",
-		UserId:      1,
+		AccountId:   1,
 		Type:        1,
 	}
 }
@@ -48,7 +48,7 @@ func TestCatalogSave(t *testing.T) {
 		panic(err)
 	}
 
-	assert.Error(t, catalogApi.Save(MockCatalog()))
+	assert.Nil(t, catalogApi.Save(MockCatalog()))
 }
 
 func TestCatalogList(t *testing.T) {
@@ -96,4 +96,16 @@ func TestCatalogDelete(t *testing.T) {
 
 	err = catalogApi.Delete(c.ID)
 	assert.Nil(t, err)
+}
+
+func TestCatalogUpdate(t *testing.T) {
+	fakeDb := SetupDB()
+	defer TearDownDB(fakeDb)
+	catalogApi := CatalogApi{DbClient: fakeDb.Db}
+	err := fakeDb.Db.Create(MockCatalog()).Error
+	if err != nil {
+		panic(err)
+	}
+
+	assert.Nil(t, catalogApi.Update(MockCatalog()))
 }

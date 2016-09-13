@@ -120,6 +120,6 @@ func TestCreateCatalogOK(t *testing.T) {
 	w := httptest.NewRecorder()
 	r, _ := http.NewRequest("POST", "/test", strings.NewReader("FOOBAR"))
 	router.ServeHTTP(w, r)
-	assert.Equal(t, 400, w.Code)
-	assert.Equal(t, 15035, ParseErrorCode(w.Body).Code)
+	assert.Equal(t, 401, w.Code)
+	assert.Equal(t, 15033, ParseErrorCode(w.Body).Code)
 }

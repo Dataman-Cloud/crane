@@ -14,13 +14,12 @@ type Catalog struct {
 	Bundle      string `json:"Bundle" gorm:"size:65532"`
 	Description string `json:"Description" gorm:"size:65532"`
 	IconData    string `json:"IconData" gorm:"size:65532"`
-	UserId      uint64 `json:"UserId"`
+	AccountId   uint64 `json:"AccountId"`
 	Type        uint8  `json:"Type"`
 }
 
 const (
-	ICON_SIZE    = 1024 * 1024 * 1024
-	ICON_DEFAULT = "img/default.png"
+	ICON_SIZE = 1024 * 1024 * 1024
 )
 
 type Size interface {
@@ -33,9 +32,6 @@ func ImageHandle(request *http.Request) (string, error) {
 
 	icon, _, err := request.FormFile("icon")
 	if err != nil {
-		if buf, err = ioutil.ReadFile(ICON_DEFAULT); err != nil {
-			return "", err
-		}
 		return "", nil
 	} else {
 		if fileSize, ok := icon.(Size); !ok || fileSize.Size() > ICON_SIZE {
