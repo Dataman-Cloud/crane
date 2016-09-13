@@ -35,7 +35,7 @@ func Delete(ctx *gin.Context, data interface{}) {
 }
 
 // RHttprespnse retrun none error code 202
-func Update(ctx *gin.Context, err error, data interface{}) {
+func Update(ctx *gin.Context, data interface{}) {
 	ctx.JSON(http.StatusAccepted, gin.H{"code": CodeOk, "data": data})
 	return
 }
@@ -70,4 +70,26 @@ func parseHttpCodeAndErrCode(codeString string) (httpCode, errCode int) {
 	}
 
 	return httpCode, errCode
+}
+
+func SSEventOk(ctx *gin.Context, namespace string, data interface{}) {
+	ctx.SSEvent(namespace, gin.H{"code": CodeOk, "data": data})
+	ctx.Writer.Flush()
+	return
+}
+
+func SSEventError(ctx *gin.Context, namespace string, err error) {
+	log.Errorf("[%s] %s GOT error: %s", ctx.Request.Method, ctx.Request.URL.Path, err.Error())
+
+	rerror, ok := extractCraneError(err)
+	if !ok {
+		ctx.SSEvent(namespace, gin.H{"code": CodeUndefined, "data": err, "message": err.Error(), "source": "docker"})
+		ctx.Writer.Flush()
+		return
+	}
+
+	_, errCode := parseHttpCodeAndErrCode(rerror.Code)
+	ctx.SSEvent(namespace, gin.H{"code": errCode, "data": rerror.Err, "message": rerror.Err.Error(), "source": "crane"})
+	ctx.Writer.Flush()
+	return
 }
