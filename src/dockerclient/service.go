@@ -32,6 +32,8 @@ type ServiceStatus struct {
 	LimitMems       int64     `json:"LimitMems"`
 	ReserveCpus     int64     `json:"ReserveCpus"`
 	ReserveMems     int64     `json:"ReserveMems"`
+	IPs             []string  `json:"IPs"`
+	Ports           []uint32  `json:"Ports"`
 }
 
 // scale a service request
@@ -100,6 +102,8 @@ func (client *CraneDockerClient) ListService(options types.ServiceListOptions) (
 // GetServicesStatus list services running status
 func (client *CraneDockerClient) GetServicesStatus(services []swarm.Service) ([]ServiceStatus, error) {
 	var servicesSt []ServiceStatus
+	var ips []string
+	var ports []uint32
 
 	taskFilter := filters.NewArgs()
 	for _, service := range services {
@@ -118,6 +122,7 @@ func (client *CraneDockerClient) GetServicesStatus(services []swarm.Service) ([]
 
 	activeNodes := make(map[string]struct{})
 	for _, node := range nodes {
+		ips = append(ips, node.Spec.Labels["crane.reserved.node.endpoint"])
 		if node.Status.State == swarm.NodeStateReady {
 			activeNodes[node.ID] = struct{}{}
 		}
@@ -149,6 +154,12 @@ func (client *CraneDockerClient) GetServicesStatus(services []swarm.Service) ([]
 			reserveMems = int64(taskTotal) * service.Spec.TaskTemplate.Resources.Reservations.MemoryBytes
 		}
 
+		if service.Spec.EndpointSpec != nil {
+			for _, port := range service.Spec.EndpointSpec.Ports {
+				ports = append(ports, port.PublishedPort)
+			}
+		}
+
 		serviceSt := ServiceStatus{
 			ID:              service.ID,
 			Name:            service.Spec.Name,
@@ -162,6 +173,8 @@ func (client *CraneDockerClient) GetServicesStatus(services []swarm.Service) ([]
 			LimitMems:       limitMems,
 			ReserveCpus:     reserveCpus,
 			ReserveMems:     reserveMems,
+			IPs:             ips,
+			Ports:           ports,
 		}
 
 		servicesSt = append(servicesSt, serviceSt)
