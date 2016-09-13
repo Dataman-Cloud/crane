@@ -12,6 +12,9 @@ then
   CRANE_RELEASE=v1.0.4
 fi
 
+# setup registry prefix
+REGISTRY_PREFIX=$2
+
 # make sure curl command exists
 if ! command -v curl
 then
@@ -28,5 +31,5 @@ curl -sSL  ${CRANE_TAR_URL} | tar xvzf -
 echo "Enter IP address that your want bind Crane service [ENTER]"
 read listener_ip
 
-cd crane && CRANE_IP=${listener_ip} VERSION=${CRANE_RELEASE} ./deploy.sh
+cd crane && CRANE_IP=${listener_ip} VERSION=${CRANE_RELEASE} REGISTRY_PREFIX=${REGISTRY_PREFIX} ./deploy.sh
 cd -
