@@ -1093,7 +1093,7 @@
 		{
 			"importpath": "github.com/gin-gonic/gin",
 			"repository": "https://github.com/gin-gonic/gin",
-			"vcs": "",
+			"vcs": "git",
 			"revision": "f931d1ea80ae95a6fc739213cdd9399bd2967fb6",
 			"branch": "develop"
 		},
