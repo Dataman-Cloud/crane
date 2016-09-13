@@ -5,7 +5,7 @@
 
 
     /* @ngInject */
-    function registryBackend(gHttp) {
+    function registryBackend(gHttp, $http, utils, $window) {
         return {
             listPublicRepositories: listPublicRepositories,
             listMineRepositories: listMineRepositories,
@@ -46,7 +46,7 @@
         }
 
         function createCatalog(data, form) {
-            return gHttp.Resource('registry.catalogs').post(data, {form: form});
+            return gHttp.Resource('registry.catalogs').post(data, {'form': form, upload: true});
         }
 
         function deleteCatalog(catalogId) {
@@ -54,7 +54,7 @@
         }
 
         function updateCatalog(catalogId, data) {
-            return gHttp.Resource('registry.catalog', {catalog_id: catalogId}).patch(data);
+            return gHttp.Resource('registry.catalog', {catalog_id: catalogId}).patch(data, {upload: true});
         }
 
         function deleteImage(repository, tag) {

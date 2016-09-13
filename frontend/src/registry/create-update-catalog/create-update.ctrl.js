@@ -22,7 +22,7 @@
                 Description: stack.Description || ''
             };
 
-            self.image = stack.IconData || ''
+            self.imageUrl = stack.IconData || ''
         }
 
 
@@ -50,6 +50,7 @@
         self.imageUpload = imageUpload;
         self.create = create;
         self.update = update;
+        self.deploy = deploy;
 
         activate();
 
@@ -80,27 +81,46 @@
         }
 
         function imageUpload(files) {
-            var file = files[0]; //FileList object
-            self.imageSize = file.size;
+            self.image = files[0]; //FileList object
+            self.imageSize = files[0].size;
             if (self.imageSize > $rootScope.IMAGE_MAX_SIZE) {
                 Notification.warning('图片过大，请选择小于 1M 的图片');
             }
             var reader = new FileReader();
             reader.onload = (function (theFile) {
                 return function (e) {
-                    self.image = e.target.result;
+                    self.imageUrl = e.target.result;
                     $scope.$digest();
                 };
-            })(file);
-            reader.readAsDataURL(file)
+            })(self.image);
+            reader.readAsDataURL(self.image)
         }
 
         function create() {
-            registryCurd.createCatalog(self.form, $scope.staticForm)
+            var formData = new FormData();
+            formData.append("Name", self.form.Name);
+            formData.append("Bundle", self.form.Bundle);
+            if(self.form.Description)formData.append("Description", self.form.Description);
+            if(self.imageSize)formData.append("icon", self.image);
+            registryCurd.createCatalog(formData, $scope.staticForm)
         }
 
         function update() {
             registryCurd.updateCatalog($stateParams.catalog_id, self.form);
+        }
+
+        function deploy(type) {
+            var formData = new FormData();
+            formData.append("Name", self.form.Name);
+            formData.append("Bundle", self.form.Bundle);
+            if(self.form.Description)formData.append("Description", self.form.Description);
+            if(self.imageSize)formData.append("icon", self.image);
+
+            if(type === 'create'){
+                registryCurd.createCatalog(formData, $scope.staticForm)
+            }else {
+                registryCurd.updateCatalog($stateParams.catalog_id, formData);
+            }
         }
     }
 })();

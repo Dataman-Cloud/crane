@@ -45,21 +45,23 @@
 
     <div layout="row" layout-align="space-between start" style="width: 580px;">
         <div flex="none">
-            <img class="thumb" ng-src="{/createUpdateCatalog.image/}" height="200" width="200" alt="添加项目图片..."/>
+            <img class="thumb" ng-src="{/createUpdateCatalog.imageUrl/}" height="200" width="200" alt="添加项目图片..."/>
             <input type='file' class="ng-hide"
                    onchange="angular.element(this).scope().createUpdateCatalog.imageUpload(this.files)"/>
-            <md-button trigger-prev-click class="md-small md-primary"><i class="fa fa-upload"></i> 从文件中读取
+            <md-button trigger-prev-click class="md-small md-primary"><i class="fa fa-upload"></i> 从文件中读取</md-button>
+            <md-button class="md-small md-primary" ng-show="createUpdateCatalog.imageUrl"><i class="fa fa-upload"></i> 移除</md-button>
+
         </div>
     </div>
     <footer class="form-buttons">
         <md-button class="md-raised md-primary" ng-if="createUpdateCatalog.target === 'create'"
                    data-ng-disabled="staticForm.$invalid || createUpdateCatalog.errorInfo.stack || createUpdateCatalog.imageSize > IMAGE_MAX_SIZE"
-                   data-ng-click="createUpdateCatalog.create()">部署
+                   data-ng-click="createUpdateCatalog.deploy('create')">部署
         </md-button>
 
         <md-button class="md-raised md-primary" ng-if="createUpdateCatalog.target === 'update'"
                    data-ng-disabled="staticForm.$invalid || createUpdateCatalog.errorInfo.stack || createUpdateCatalog.imageSize > IMAGE_MAX_SIZE"
-                   data-ng-click="createUpdateCatalog.update()">更新
+                   data-ng-click="createUpdateCatalog.deploy('update')">更新
         </md-button>
 
         <md-button data-ng-click="rootCtrl.goBack()">取 消</md-button>

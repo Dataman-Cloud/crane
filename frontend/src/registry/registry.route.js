@@ -46,7 +46,7 @@
             })
             .state('registry.createCatalog', {
                 url: '/createCatalog?stack_name',
-                templateUrl: '/src/registry/create-catalog/create.html',
+                templateUrl: '/src/registry/create-update-catalog/create-update.html',
                 controller: 'CreateUpdateCatalog as createUpdateCatalog',
                 ncyBreadcrumb: {
                     label: '创建项目模板'
@@ -60,7 +60,7 @@
             })
             .state('registry.updateCatalog', {
                 url: '/updateCatalog/:catalog_id',
-                templateUrl: '/src/registry/create-catalog/create.html',
+                templateUrl: '/src/registry/create-update-catalog/create-update.html',
                 controller: 'CreateUpdateCatalog as createUpdateCatalog',
                 ncyBreadcrumb: {
                     label: '更新项目模板'
