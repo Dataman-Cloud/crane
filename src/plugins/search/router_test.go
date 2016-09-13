@@ -1,7 +1,9 @@
 package search
 
 import (
+	"reflect"
 	"testing"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
@@ -79,11 +81,42 @@ func TestRegisterApiForSearch(t *testing.T) {
 
 }
 
+type MockCraneIndexer struct {
+	Indexer
+}
+
+var nodeDocument = Document{
+	ID:   "24ifsmvkjbyhk",
+	Name: "bf3067039e47",
+	Type: DOCUMENT_NODE,
+	Param: map[string]string{
+		"NodeId": "24ifsmvkjbyhk",
+	},
+}
+var networkDocument = Document{
+	Name: "blah",
+	ID:   "8dfafdbc3a40",
+	Type: DOCUMENT_NETWORK,
+	Param: map[string]string{
+		"NodeId":    "24ifsmvkjbyhk",
+		"NetworkID": "8dfafdbc3a40",
+	},
+}
+
+func (mockIndexer *MockCraneIndexer) Index(store *DocumentStorage) {
+	store.Set("24ifsmvkjbyhkbf3067039e47", nodeDocument)
+	store.Set("8dfafdbc3a40blah24ifsmvkjbyhk", networkDocument)
+
+}
+
 func TestIndexData(t *testing.T) {
 	searchApi := &SearchApi{}
+	searchApi.Indexer = &MockCraneIndexer{}
 	searchApi.IndexData()
-	assert.Equal(t, len(searchApi.Index), 0, "should be equal")
-	assert.Empty(t, searchApi.Store, "should be equal")
-	assert.Empty(t, searchApi.PrefetchStore, "should be equal")
-	assert.Empty(t, searchApi.Indexer, "should be equal")
+	time.Sleep(time.Minute * time.Duration(SEARCH_LOAD_DATA_INTERVAL))
+	value1 := searchApi.PrefetchStore.Get("24ifsmvkjbyhkbf3067039e47")
+	value2 := searchApi.Store.Get("8dfafdbc3a40blah24ifsmvkjbyhk")
+	assert.Equal(t, len(searchApi.Index), 2, "should be equal")
+	assert.True(t, reflect.DeepEqual(value1, &nodeDocument), "should be equal")
+	assert.True(t, reflect.DeepEqual(value2, &networkDocument), "should be equal")
 }
