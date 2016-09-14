@@ -48,8 +48,6 @@
 
         self.stackChange = stackChange;
         self.imageUpload = imageUpload;
-        self.create = create;
-        self.update = update;
         self.deploy = deploy;
 
         activate();
@@ -94,19 +92,6 @@
                 };
             })(self.image);
             reader.readAsDataURL(self.image)
-        }
-
-        function create() {
-            var formData = new FormData();
-            formData.append("Name", self.form.Name);
-            formData.append("Bundle", self.form.Bundle);
-            if(self.form.Description)formData.append("Description", self.form.Description);
-            if(self.imageSize)formData.append("icon", self.image);
-            registryCurd.createCatalog(formData, $scope.staticForm)
-        }
-
-        function update() {
-            registryCurd.updateCatalog($stateParams.catalog_id, self.form);
         }
 
         function deploy(type) {

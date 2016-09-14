@@ -1,16 +1,20 @@
 <header layout="row" id="header-main">
-	<h1 flex="auto">
-	    <i class="fa fa-stack-overflow" aria-hidden="true"></i>
-	    {/stackDetailCtrl.stack.Namespace/}
-	</h1>
-	<div flex="none">
-		<md-button id="delete-stack" class="md-button md-primary md-small md-raised" data-ng-click="stackDetailCtrl.deleteStack($event)" aria-label="删除项目">
+    <h1 flex="auto">
+        <i class="fa fa-stack-overflow" aria-hidden="true"></i>
+        {/stackDetailCtrl.stack.Namespace/}
+    </h1>
+
+    <div flex="none">
+        <md-button id="delete-stack" class="md-button md-primary md-small md-raised"
+                   data-ng-click="stackDetailCtrl.deleteStack($event)" aria-label="删除项目">
             <i class="fa fa-trash" aria-hidden="true"></i> 删除项目
         </md-button>
-		<md-button id="add-catalog" class="md-button md-primary md-small md-raised" data-ui-sref="registry.createCatalog({stack_name: $stateParams.stack_name})" aria-label="添加至模板">
+        <md-button id="add-catalog" class="md-button md-primary md-small md-raised"
+                   data-ng-click="$state.go('registry.createCatalog', {stack_name: $stateParams.stack_name})"
+                   aria-label="添加至模板">
             <i class="fa fa-plus" aria-hidden="true"></i> 添加至模板
         </md-button>
-	</div>
+    </div>
 </header>
 <md-tabs md-dynamic-height md-border-bottom>
     <md-tab label="服务列表" dm-tab-sref="stack.detail.service"></md-tab>

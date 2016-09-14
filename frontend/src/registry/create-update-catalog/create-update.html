@@ -48,8 +48,9 @@
             <img class="thumb" ng-src="{/createUpdateCatalog.imageUrl/}" height="200" width="200" alt="添加项目图片..."/>
             <input type='file' class="ng-hide"
                    onchange="angular.element(this).scope().createUpdateCatalog.imageUpload(this.files)"/>
-            <md-button trigger-prev-click class="md-small md-primary"><i class="fa fa-upload"></i> 从文件中读取</md-button>
-            <md-button class="md-small md-primary" ng-show="createUpdateCatalog.imageUrl"><i class="fa fa-upload"></i> 移除</md-button>
+            <md-button id="image-upload" trigger-prev-click class="md-small md-primary"><i class="fa fa-upload"></i>
+                从文件中读取
+            </md-button>
 
         </div>
     </div>

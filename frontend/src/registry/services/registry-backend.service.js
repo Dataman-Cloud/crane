@@ -5,7 +5,7 @@
 
 
     /* @ngInject */
-    function registryBackend(gHttp, $http, utils, $window) {
+    function registryBackend(gHttp) {
         return {
             listPublicRepositories: listPublicRepositories,
             listMineRepositories: listMineRepositories,

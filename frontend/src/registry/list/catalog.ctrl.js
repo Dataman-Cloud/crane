@@ -11,8 +11,8 @@
 
         self.deleteCatalog = deleteCatalog;
 
-        function deleteCatalog(id) {
-            registryCurd.deleteCatalog(id)
+        function deleteCatalog(id, ev) {
+            registryCurd.deleteCatalog(id, ev)
         }
 
     }
