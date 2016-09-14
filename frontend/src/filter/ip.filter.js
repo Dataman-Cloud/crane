@@ -15,7 +15,7 @@
             //http://www.regular-expressions.info/examples.html
             var r = /\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/;
             var t = input.match(r);
-            return t.length > 0 ? t[0] : ""
+            return t && t.length ? t[0] : ""
         }
     }
 })();
