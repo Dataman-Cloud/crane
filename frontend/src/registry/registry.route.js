@@ -44,6 +44,34 @@
                     catalog: getCatalog
                 }
             })
+            .state('registry.createCatalog', {
+                url: '/createCatalog?stack_name',
+                templateUrl: '/src/registry/create-update-catalog/create-update.html',
+                controller: 'CreateUpdateCatalog as createUpdateCatalog',
+                ncyBreadcrumb: {
+                    label: '创建项目模板'
+                },
+                resolve: {
+                    stack: getStack,
+                    target: function () {
+                        return 'create'
+                    }
+                }
+            })
+            .state('registry.updateCatalog', {
+                url: '/updateCatalog/:catalog_id',
+                templateUrl: '/src/registry/create-update-catalog/create-update.html',
+                controller: 'CreateUpdateCatalog as createUpdateCatalog',
+                ncyBreadcrumb: {
+                    label: '更新项目模板'
+                },
+                resolve: {
+                    stack: getCatalog,
+                    target: function () {
+                        return 'update'
+                    }
+                }
+            })
             .state('registry.list.public', {
                 url: '/public',
                 templateUrl: '/src/registry/list/public.html',
@@ -88,7 +116,7 @@
             })
             .state('registry.createNote', {
                 url: '/createNote',
-                templateUrl: '/src/registry/create-note/note.html',
+                templateUrl: '/src/registry/create-image-note/note.html',
                 ncyBreadcrumb: {
                     label: '如何创建镜像'
                 }
@@ -118,6 +146,15 @@
         /* @ngInject */
         function getCatalog(registryBackend, $stateParams) {
             return registryBackend.getCatalog($stateParams.catalog_id);
+        }
+
+        /*@ngInject*/
+        function getStack(stackBackend, $stateParams) {
+            if($stateParams.stack_name){
+                return stackBackend.getStack($stateParams.stack_name);
+            }else {
+                return ""
+            }
         }
     }
 

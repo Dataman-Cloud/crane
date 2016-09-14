@@ -1,0 +1,70 @@
+<form name="staticForm" class="form-main">
+    <div class="form-group" layout="column">
+        <label>项目名称<span class="required">*</span>
+            <small></small>
+        </label>
+        <div class="form-control">
+            <input type="text" data-ng-model="createUpdateCatalog.form.Name" data-required="required" name="Name"
+                   data-ng-pattern="/^[A-Za-z0-9]+$/" focus-me>
+        </div>
+        <div ng-messages="staticForm.Name.$error" ng-if="staticForm.Name.$dirty" role="alert">
+            <p class="text-danger help-text" ng-message="required">名称不能为空</p>
+            <p class="text-danger help-text" ng-message="pattern">名称必须数字或者英文</p>
+        </div>
+    </div>
+
+    <div class="form-group" layout="column">
+        <label dm-doc-link='https://blog.docker.com/2016/06/docker-app-bundle/'>DAB<span
+                class="required">*</span></label>
+        <div class="form-control">
+            <textarea data-ng-model="createUpdateCatalog.form.Bundle" data-required="required" name="Bundle"
+                      ui-codemirror
+                      ui-codemirror-opts="createUpdateCatalog.editorOptions"
+                      ui-refresh="createUpdateCatalog.refreshCodeMirror"
+                      data-ng-change="createUpdateCatalog.stackChange()"></textarea>
+        </div>
+
+        <div ng-messages="staticForm.Bundle.$error" ng-if="staticForm.Bundle.$dirty" role="alert">
+            <p class="text-danger help-text"
+               ng-message="required">
+                <small>不能为空</small>
+            </p>
+        </div>
+        <p class="text-danger help-text" data-ng-show="createUpdateCatalog.errorInfo.stack">
+            {/createUpdateCatalog.errorInfo.stack/}
+        </p>
+
+    </div>
+
+    <div class="form-group" layout="column">
+        <label>项目描述</label>
+        <textarea id="create-catalog-description" data-ng-model="createUpdateCatalog.form.Description"
+                  name="Description">
+        </textarea>
+    </div>
+
+    <div layout="row" layout-align="space-between start" style="width: 580px;">
+        <div flex="none">
+            <img class="thumb" ng-src="{/createUpdateCatalog.imageUrl/}" height="200" width="200" alt="添加项目图片..."/>
+            <input type='file' class="ng-hide"
+                   onchange="angular.element(this).scope().createUpdateCatalog.imageUpload(this.files)"/>
+            <md-button id="image-upload" trigger-prev-click class="md-small md-primary"><i class="fa fa-upload"></i>
+                从文件中读取
+            </md-button>
+
+        </div>
+    </div>
+    <footer class="form-buttons">
+        <md-button class="md-raised md-primary" ng-if="createUpdateCatalog.target === 'create'"
+                   data-ng-disabled="staticForm.$invalid || createUpdateCatalog.errorInfo.stack || createUpdateCatalog.imageSize > IMAGE_MAX_SIZE"
+                   data-ng-click="createUpdateCatalog.deploy('create')">部署
+        </md-button>
+
+        <md-button class="md-raised md-primary" ng-if="createUpdateCatalog.target === 'update'"
+                   data-ng-disabled="staticForm.$invalid || createUpdateCatalog.errorInfo.stack || createUpdateCatalog.imageSize > IMAGE_MAX_SIZE"
+                   data-ng-click="createUpdateCatalog.deploy('update')">更新
+        </md-button>
+
+        <md-button data-ng-click="rootCtrl.goBack()">取 消</md-button>
+    </footer>
+</form>
