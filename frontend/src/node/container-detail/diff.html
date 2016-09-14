@@ -6,7 +6,7 @@
             <th md-column>文件路径</th>
         </tr>
         </thead>
-        <tbody md-body>
+        <tbody id="node-container-detail-diffs" md-body>
         <tr md-row ng-repeat="diff  in  nodeContainerDiffCtrl.diffs">
             <td md-cell>
                 <p ng-class="{'text-info': diff.Kind === 0, 'text-success': diff.Kind === 1, 'text-danger': diff.Kind === 2}">

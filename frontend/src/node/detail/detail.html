@@ -1,6 +1,6 @@
 <header id="header-main" layout="row">
     <div flex="auto">
-        <h1><i class="fa fa-server"></i>{/nodeDetailCtrl.node.Name/} <div class="label-node-ip">{/nodeDetailCtrl.node.Swarm.NodeAddr/}<div></h1>
+        <h1><i class="fa fa-server"></i>{/nodeDetailCtrl.node.Name/} <div class="label-node-ip">{/nodeDetailCtrl.node.Swarm.NodeAddr/}</div></h1>
         <div class="sub-info-main">
             <dl class="info-list">
                 <dt>运行容器</dt>
@@ -32,17 +32,17 @@
     </div>
     <div flex="none">
         <md-menu md-offset="0 -5">
-            <md-button class="md-button md-small md-primary md-raised" aria-label="More" ng-click="$mdOpenMenu($event)">
+            <md-button id="node-detail-create" class="md-button md-small md-primary md-raised" aria-label="More" ng-click="$mdOpenMenu($event)">
                 <i class="fa fa-ellipsis-h"></i> 创建
             </md-button>
             <md-menu-content width="2">
                 <md-menu-item>
-                    <md-button aria-label="start" data-ui-sref="node.createVolume({node_id: $stateParams.node_id})">
+                    <md-button id="node-create-disk" aria-label="start" data-ui-sref="node.createVolume({node_id: $stateParams.node_id})">
                         创建存储
                     </md-button>
                 </md-menu-item>
                 <md-menu-item>
-                    <md-button aria-label="start" data-ui-sref="node.createNetwork({node_id: $stateParams.node_id})">
+                    <md-button id="node-create-network" aria-label="start" data-ui-sref="node.createNetwork({node_id: $stateParams.node_id})">
                         创建单机网络
                     </md-button>
                 </md-menu-item>
@@ -51,10 +51,10 @@
     </div>
 </header>
 <md-tabs md-dynamic-height md-border-bottom>
-    <md-tab label="基本信息" dm-tab-sref="node.detail.config"></md-tab>
-    <md-tab label="容器" dm-tab-sref="node.detail.container"></md-tab>
-    <md-tab label="网络" dm-tab-sref="node.detail.network"></md-tab>
-    <md-tab label="储存卷" dm-tab-sref="node.detail.volume"></md-tab>
-    <md-tab label="镜像" dm-tab-sref="node.detail.image"></md-tab>
+    <md-tab id="node-tab-config" label="基本信息" dm-tab-sref="node.detail.config"></md-tab>
+    <md-tab id="node-tab-container" label="容器" dm-tab-sref="node.detail.container"></md-tab>
+    <md-tab id="node-tab-neetwork" label="网络" dm-tab-sref="node.detail.network"></md-tab>
+    <md-tab id="node-tab-volume" label="储存卷" dm-tab-sref="node.detail.volume"></md-tab>
+    <md-tab id="node-tab-image" label="镜像" dm-tab-sref="node.detail.image"></md-tab>
 </md-tabs>
 <md-content ui-view></md-content>
