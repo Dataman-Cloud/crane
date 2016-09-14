@@ -9,12 +9,12 @@
     "schemes": [
         "https"
     ],
-    "basePath": "/api/v1",
+    "basePath": "/",
     "produces": [
         "application/json"
     ],
     "paths": {
-        "/stacks": {
+        "/api/v1/stacks": {
             "post": {
                 "summary": "创建一个应用, 一个应用可包含多个服务",
                 "description": "创建应用的API, 成功返回 HTTPStatus 200, 失败返回相应的错误信息",
@@ -127,7 +127,7 @@
                 }
             }
         },
-        "/stacks/{namespace}": {
+        "/api/v1/stacks/{namespace}": {
             "get": {
                 "summary": "查询指定应用以及应用包含所有服务的信息",
                 "description": "查询指定应用以及应用包含所有服的相关信息",
@@ -215,7 +215,7 @@
                 }
             }
         },
-        "/login": {
+        "/account/v1/login": {
             "post": {
                 "summary": "通过用户邮箱和密码登陆系统, 登陆成功返回token",
                 "description": "向服务器验证用户邮箱和密码, 验证成功返回当前登录用户的token; 否则返回相应的错误信息",
@@ -281,7 +281,7 @@
                 }
             }
         },
-        "/nodes/{node_id}/networks": {
+        "/api/v1/nodes/{node_id}/networks": {
             "post": {
                 "summary": "在相应节点上创建集群网络",
                 "description": "创建成功返回200，创建失败返回相应错误信息",
@@ -393,7 +393,7 @@
                 }
             }
         },
-        "/nodes/{node_id}/networks/{network_id}": {
+        "/api/v1/nodes/{node_id}/networks/{network_id}": {
             "get": {
                 "summary": "获取网络详细信息",
                 "description": "获取成功返回200,错误返回相应信息",
@@ -510,7 +510,7 @@
                 }
             }
         },
-        "/networks": {
+        "/api/v1/networks": {
             "post": {
                 "summary": "在manager节点上创建集群网络",
                 "description": "创建成功返回200，创建失败返回相应错误信息",
@@ -602,7 +602,7 @@
                 }
             }
         },
-        "/networks/{network_id}": {
+        "/api/v1/networks/{network_id}": {
             "delete": {
                 "summary": "删除manager节点集群网络",
                 "description": "删除成功返回200，失败返回相应错误信息",
@@ -749,7 +749,7 @@
                 }
             }
         },
-        "/nodes/{node_id}/images": {
+        "/api/v1/nodes/{node_id}/images": {
             "get": {
                 "summary": "获取节点上所有的镜像",
                 "description": "争取返回200，错误返回相应错误码",
@@ -820,7 +820,7 @@
                 }
             }
         },
-        "/nodes/{node_id}/images/{image_id}": {
+        "/api/v1/nodes/{node_id}/images/{image_id}": {
             "get": {
                 "summary": "获取节点上所有的镜像",
                 "description": "争取返回200，错误返回相应错误码",
@@ -932,7 +932,7 @@
                 }
             }
         },
-        "/nodes/{node_id}/images/{image_id}/history": {
+        "/api/v1/nodes/{node_id}/images/{image_id}/history": {
             "get": {
                 "summary": "获取镜像历史记录",
                 "description": "正确返回200，错误返回相应错误码",
@@ -994,7 +994,7 @@
                 }
             }
         },
-        "/nodes": {
+        "/api/v1/nodes": {
             "get": {
                 "summary": "获取主机列表",
                 "description": "正确返回200，错误返回相应错误码",
@@ -1045,7 +1045,7 @@
                 }
             }
         },
-        "/nodes/{node_id}/info": {
+        "/api/v1/nodes/{node_id}/info": {
             "get": {
                 "summary": "获取主机信息",
                 "description": "正确返回200，错误返回相应错误码",
@@ -1096,11 +1096,17 @@
                         "schema": {
                             "$ref": "#/definitions/GeneralErrorResponse"
                         }
+                    },
+                    "503": {
+                        "description": "获取主机信息失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
                     }
                 }
             }
         },
-        "/node/{node_id}": {
+        "/api/v1/node/{node_id}": {
             "patch": {
                 "summary": "更改主机可用状态/修改主机标签/删除主机标签/更新主机地址",
                 "description": "操作成功返回200，失败返回相应信息",
@@ -1223,7 +1229,7 @@
                 }
             }
         },
-        "/nodes/{node_id}/containers/{container_id}/terminal": {
+        "/api/v1/nodes/{node_id}/containers/{container_id}/terminal": {
             "get": {
                 "summary": "容器终端websocket连接",
                 "description": "操作成功返回101，失败返回相应信息",
@@ -1278,7 +1284,7 @@
                 }
             }
         },
-        "/nodes/{node_id}/containers": {
+        "/api/v1/nodes/{node_id}/containers": {
             "get": {
                 "summary": "获取主机的容器列表",
                 "description": "正确返回200，错误返回相应错误码",
@@ -1336,7 +1342,7 @@
                 }
             }
         },
-        "/nodes/{node_id}/containers/{container_id}": {
+        "/api/v1/nodes/{node_id}/containers/{container_id}": {
             "get": {
                 "summary": "获取容器信息",
                 "description": "获取成功返回200，失败返回相应信息",
@@ -1460,7 +1466,7 @@
                 }
             }
         },
-        "/nodes/{node_id}/containers/{container_id}/diff": {
+        "/api/v1/nodes/{node_id}/containers/{container_id}/diff": {
             "get": {
                 "summary": "获取容器变更信息",
                 "description": "获取成功返回200，失败返回相应信息",
@@ -1534,6 +1540,264 @@
                     },
                     "500": {
                         "description": "获取失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/nodes/{node_id}/volumes": {
+            "post": {
+                "summary": "创建存储卷",
+                "description": "创建存储卷, 成功返回 HTTPStatus 200, 失败返回相应的错误信息",
+                "tags": [
+                    "Volumes"
+                ],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "用户token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "node_id",
+                        "in": "path",
+                        "description": "节点 id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "创建存储卷所需的参数",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "Driver": {
+                                    "type": "string",
+                                    "description": "驱动"
+                                },
+                                "Labels": {
+                                    "type": "object",
+                                    "description": "标签, key-value格式"
+                                },
+                                "Name": {
+                                    "type": "string",
+                                    "description": "名称"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回储存卷信息",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "integer",
+                                    "format": "int8",
+                                    "default": 0
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/Volume"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "创建存储卷参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "token 验证失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    },
+                    "503": {
+                        "description": "创建存储卷失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    }
+                }
+            },
+            "get": {
+                "summary": "获取节点上所有的存储卷",
+                "description": "获取成功返回200，错误返回相应错误码",
+                "tags": [
+                    "Volumes"
+                ],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "用户token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "node_id",
+                        "in": "path",
+                        "description": "节点 id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回所有存储卷信息",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "integer",
+                                    "format": "int8",
+                                    "default": 0
+                                },
+                                "data": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/Volume"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "过滤参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "token 验证失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "获取镜像失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/nodes/{node_id}/volumes/{volume_id}": {
+            "get": {
+                "summary": "获取节点上的指定储存卷",
+                "description": "成功返回200，错误返回相应错误码",
+                "tags": [
+                    "Volumes"
+                ],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "用户token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "node_id",
+                        "in": "path",
+                        "description": "节点 id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "volume_id",
+                        "in": "path",
+                        "description": "储存卷 id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回储存卷信息",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "integer",
+                                    "format": "int8",
+                                    "default": 0
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/Volume"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "token 验证失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "获取储存卷详细信息失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "删除储存卷",
+                "description": "删除成功返回200，错误返回相应错误码",
+                "tags": [
+                    "Volumes"
+                ],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "用户token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "node_id",
+                        "in": "path",
+                        "description": "节点 id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "volume_id",
+                        "in": "path",
+                        "description": "储存卷 id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralOkResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "token 验证失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "删除储存卷失败",
                         "schema": {
                             "$ref": "#/definitions/GeneralErrorResponse"
                         }
@@ -3302,6 +3566,23 @@
                             "type": "string"
                         }
                     }
+                }
+            }
+        },
+        "Volume": {
+            "type": "object",
+            "properties": {
+                "Driver": {
+                    "type": "string",
+                    "description": "驱动"
+                },
+                "Mountpoint": {
+                    "type": "string",
+                    "description": "挂载点"
+                },
+                "Name": {
+                    "type": "string",
+                    "description": "名称"
                 }
             }
         }
