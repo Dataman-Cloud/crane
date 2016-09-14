@@ -1672,12 +1672,6 @@
                             }
                         }
                     },
-                    "400": {
-                        "description": "过滤参数错误",
-                        "schema": {
-                            "$ref": "#/definitions/GeneralErrorResponse"
-                        }
-                    },
                     "401": {
                         "description": "token 验证失败",
                         "schema": {
@@ -1685,7 +1679,7 @@
                         }
                     },
                     "500": {
-                        "description": "获取镜像失败",
+                        "description": "获取存储卷失败",
                         "schema": {
                             "$ref": "#/definitions/GeneralErrorResponse"
                         }
@@ -1798,6 +1792,379 @@
                     },
                     "500": {
                         "description": "删除储存卷失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/stacks/{namespace}/services": {
+            "get": {
+                "summary": "获取应用上所有的服务",
+                "description": "成功返回200，错误返回相应错误码",
+                "tags": [
+                    "Stacks"
+                ],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "用户token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "namespace",
+                        "in": "path",
+                        "description": "应用名称",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回应用上所有的服务信息",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "integer",
+                                    "format": "int8",
+                                    "default": 0
+                                },
+                                "data": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/ServiceStatus"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "token 验证失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "获取服务失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/stacks/{namespace}/services/{service_id}": {
+            "get": {
+                "summary": "获取应用上指定的服务",
+                "description": "成功返回200，错误返回相应错误码",
+                "tags": [
+                    "Stacks"
+                ],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "用户token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "namespace",
+                        "in": "path",
+                        "description": "应用名称",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "service_id",
+                        "in": "path",
+                        "description": "服务 id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回服务详细信息",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "integer",
+                                    "format": "int8",
+                                    "default": 0
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/Service"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "token 验证失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "获取服务详细信息失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "summary": "更新应用上指定的服务",
+                "description": "成功返回200，错误返回相应错误码",
+                "tags": [
+                    "Stacks"
+                ],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "用户token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "namespace",
+                        "in": "path",
+                        "description": "应用名称",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "service_id",
+                        "in": "path",
+                        "description": "服务 id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "更新服务需要的参数",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ServiceSpec"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "更新服务成功",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralOkResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "token 验证失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "更新服务失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "summary": "修改任务数",
+                "description": "成功返回200，错误返回相应错误码",
+                "tags": [
+                    "Stacks"
+                ],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "用户token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "namespace",
+                        "in": "path",
+                        "description": "应用名称",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "service_id",
+                        "in": "path",
+                        "description": "服务 id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "修改任务数需要的参数",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "NumTasks": {
+                                    "description": "修改成的任务数",
+                                    "type": "integer",
+                                    "format": "int32"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "更新服务成功",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralOkResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "token 验证失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "更新服务失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/stacks/{namespace}/services/{service_id}/tasks": {
+            "get": {
+                "summary": "获取应用上的服务的任务列表",
+                "description": "成功返回200，错误返回相应错误码",
+                "tags": [
+                    "Stacks"
+                ],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "用户token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "namespace",
+                        "in": "path",
+                        "description": "应用名称",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "service_id",
+                        "in": "path",
+                        "description": "服务 id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回应用上的服务的任务列表",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "integer",
+                                    "format": "int8",
+                                    "default": 0
+                                },
+                                "data": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/ServiceTask"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "token 验证失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "获取任务列表失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/stacks/{namespace}/services/{service_id}/cd_url": {
+            "get": {
+                "summary": "获取应用上的服务的持续集成链接",
+                "description": "成功返回200，错误返回相应错误码",
+                "tags": [
+                    "Stacks"
+                ],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "用户token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "namespace",
+                        "in": "path",
+                        "description": "应用名称",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "service_id",
+                        "in": "path",
+                        "description": "服务 id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回应用上的服务的持续集成链接",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "integer",
+                                    "format": "int8",
+                                    "default": 0
+                                },
+                                "data": {
+                                    "type": "string",
+                                    "description": "持续集成的url中的key"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "token 验证失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "获取持续集成链接失败",
                         "schema": {
                             "$ref": "#/definitions/GeneralErrorResponse"
                         }
@@ -3583,6 +3950,163 @@
                 "Name": {
                     "type": "string",
                     "description": "名称"
+                }
+            }
+        },
+        "Service": {
+            "type": "object",
+            "properties": {
+                "CreatedAt": {
+                    "type": "string",
+                    "description": "创建时间"
+                },
+                "Endpoint": {
+                    "type": "object",
+                    "properties": {
+                        "Ports": {
+                            "description": "端口映射列表",
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/PortConfig"
+                            }
+                        },
+                        "Spec": {
+                            "$ref": "#/definitions/EndpointSpec"
+                        },
+                        "VirtualIPs": {
+                            "description": "虚拟IP信息",
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "Addr": {
+                                        "type": "string"
+                                    },
+                                    "NetworkID": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "ID": {
+                    "type": "string",
+                    "description": "id"
+                },
+                "Spec": {
+                    "$ref": "#/definitions/ServiceSpec"
+                },
+                "UpdateStatus": {
+                    "type": "object",
+                    "properties": {
+                        "CompletedAt": {
+                            "type": "string",
+                            "description": "完成时间"
+                        },
+                        "StartedAt": {
+                            "type": "string",
+                            "description": "开始时间"
+                        }
+                    }
+                },
+                "UpdatedAt": {
+                    "type": "string",
+                    "description": "更新时间"
+                },
+                "Version": {
+                    "type": "object",
+                    "description": "版本",
+                    "properties": {
+                        "Index": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                }
+            }
+        },
+        "ServiceTask": {
+            "type": "object",
+            "properties": {
+                "CreatedAt": {
+                    "type": "string",
+                    "description": "创建时间"
+                },
+                "DesiredState": {
+                    "type": "string",
+                    "description": "任务状态"
+                },
+                "ID": {
+                    "type": "string",
+                    "description": "id"
+                },
+                "NetworksAttachments": {
+                    "type": "array",
+                    "items": {
+                        "description": "网络信息",
+                        "type": "object"
+                    }
+                },
+                "NodeID": {
+                    "type": "string",
+                    "description": "节点 id"
+                },
+                "ServiceID": {
+                    "type": "string",
+                    "description": "服务 id"
+                },
+                "Slot": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "Spec": {
+                    "$ref": "#/definitions/TaskSpec"
+                },
+                "Status": {
+                    "type": "object",
+                    "properties": {
+                        "ContainerStatus": {
+                            "type": "object",
+                            "properties": {
+                                "ContainerID": {
+                                    "type": "string",
+                                    "description": "容器 id"
+                                },
+                                "PID": {
+                                    "type": "integer",
+                                    "format": "int64",
+                                    "description": "进程 id"
+                                }
+                            }
+                        },
+                        "Message": {
+                            "type": "string",
+                            "description": "信息"
+                        },
+                        "State": {
+                            "type": "string",
+                            "description": "状态"
+                        },
+                        "Timestamp": {
+                            "type": "string",
+                            "description": "时间"
+                        }
+                    }
+                },
+                "UpdatedAt": {
+                    "type": "string",
+                    "description": "更新时间"
+                },
+                "Version": {
+                    "type": "object",
+                    "description": "版本",
+                    "properties": {
+                        "Index": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
                 }
             }
         }
