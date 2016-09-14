@@ -1,5 +1,5 @@
 <md-table-container>
-    <table md-table>
+    <table id="node-image-list" md-table>
         <thead md-head>
         <tr md-row>
             <th md-column>ID</th>
@@ -12,7 +12,7 @@
         <tbody md-body>
         <tr md-row ng-repeat="image in nodeImageCtrl.images">
             <td md-cell>
-                <a class="ellipsis"
+                <a id="node-image-id-{/$index/}" class="ellipsis"
                    data-ui-sref="node.imageDetail({node_id: $stateParams.node_id, image_id: image.Id})">{/image.Id |
                     limitTo: ID_LIMIT_LENGTH/}
                     <md-tooltip md-direction="top">{/image.Id/}</md-tooltip>
@@ -21,7 +21,7 @@
             <td md-cell>
                 <ul>
                     <li ng-repeat="tag in image.RepoTags">
-                        <a class="ellipsis"
+                        <a id="node-image-name-{/$index/}" class="ellipsis"
                            data-ui-sref="node.imageDetail({node_id: $stateParams.node_id, image_id: image.Id})">{/tag/}
                             <md-tooltip md-direction="top">{/tag/}</md-tooltip>
                         </a>
@@ -31,7 +31,7 @@
             <td md-cell>{/image.Size | size/}</td>
             <td md-cell>{/image.Created * 1000| date: 'yyyy-MM-dd HH:mm:ss'/}</td>
             <td md-cell>
-                <md-button class="md-icon-button" aria-label="delete"
+                <md-button id="node-delete-image-{/$index/}" class="md-icon-button" aria-label="delete"
                            data-ng-click="nodeImageCtrl.deleteImage($stateParams.node_id, image.Id)">
                     <i class="fa fa-trash"></i>
                     <md-tooltip md-direction="left">删除镜像</md-tooltip>

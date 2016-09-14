@@ -5,7 +5,7 @@
             <small></small>
         </label>
         <div class="form-control">
-            <input type="text" name="name"
+            <input id="node-add-name" type="text" name="name"
                    data-ng-model="nodeCreateVolumeCtrl.form.Name"
                    data-ng-pattern="/^[A-Za-z0-9]+$/"
                    data-required="required">
@@ -30,9 +30,9 @@
         </label>
         <div class="form-control">
             <div class="form-control">
-                <md-select data-ng-model="nodeCreateVolumeCtrl.form.Driver" data-required="required"
+                <md-select id="node-select-driver" data-ng-model="nodeCreateVolumeCtrl.form.Driver" data-required="required"
                            aria-label="selectDriver" name="driver">
-                    <md-option value="local">
+                    <md-option id="node-option-local" value="local">
                         本地
                     </md-option>
                 </md-select>
@@ -45,7 +45,7 @@
             <small>可添加多个标签</small>
         </label>
         <div class="sub-button">
-            <md-button class="md-raised md-success md-small"
+            <md-button id="node-add-label" class="md-raised md-success md-small"
                        data-ng-click="nodeCreateVolumeCtrl.addLabel()">
                 添加标签
             </md-button>
@@ -53,16 +53,16 @@
         <div data-ng-repeat="label in nodeCreateVolumeCtrl.labels track by $index">
             <ng-form name="labels">
                 <div class="form-control sub-group" layout="row" layout-align="start center">
-                    <input type="text" placeholder="KEY" flex="20"
+                    <input id="node-label-key-{/$index/}" type="text" placeholder="KEY" flex="20"
                            data-ng-model="label.key" data-required="required"
                            name="labelKey" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/"
                            dm-check-include="nodeCreateVolumeCtrl.listLabel($index)">
 
-                    <input type="text" placeholder="VALUE" flex="20"
+                    <input id="node-label-value-{/$index/}" type="text" placeholder="VALUE" flex="20"
                            data-ng-model="label.value" data-required="required"
                            name="labelValue" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/">
 
-                    <md-button class="md-icon-button md-primary" aria-label="delete"
+                    <md-button id="node-label-delete-{/$index/}" class="md-icon-button md-primary" aria-label="delete"
                                data-ng-click="nodeCreateVolumeCtrl.deleteLabel($index)">
                         <i class="fa fa-trash-o" aria-hidden="true"></i>
                     </md-button>
@@ -89,10 +89,10 @@
     </div>
 
     <footer class="form-buttons">
-        <md-button class="md-raised md-primary"
+        <md-button id="node-volume-create" class="md-raised md-primary"
                    data-ng-click="nodeCreateVolumeCtrl.create()"
                    data-ng-disabled="createVolume.$invalid">创建
         </md-button>
-        <md-button data-ng-click="rootCtrl.goBack()">取消</md-button>
+        <md-button id="node-volume-cancel" data-ng-click="rootCtrl.goBack()">取消</md-button>
     </footer>
 </form>

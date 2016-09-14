@@ -4,7 +4,7 @@
             <div class="md-toolbar-tools">
                 <h2>需要主机的 Docker TCP Socket 地址</h2>
                 <span flex></span>
-                <md-button class="md-icon-button" ng-click="formCtrl.cancel()"
+                <md-button id="node-dialog-nodeip-cancel" class="md-icon-button" ng-click="formCtrl.cancel()"
                            aria-label="cancel">
                     <i class="fa fa-close"></i>
                 </md-button>
@@ -14,7 +14,7 @@
             <p>请提供该主机 Docker Daemon 的 TCP Socket 地址。</p>
             <p>为了获取主机详情信息，需要在该主机上开启 Docker Daemon TCP Socket 服务。</p>
             <p>Docker TCP Socket 地址</p>
-            <input type="text" name="endpoint" aria-label="endpoint" placeholder="http://192.168.59.105:2375"
+            <input id="node-nodeip-endpoint" type="text" name="endpoint" aria-label="endpoint" placeholder="http://192.168.59.105:2375"
                    data-ng-model="formCtrl.endpoint" data-required="required" md-autofocus>
             <div ng-messages="staticForm.endpoint.$error" ng-if="staticForm.endpoint.$dirty" role="alert">
                 <p class="help-info text-danger" ng-message="required"><small>地址不能为空</small></p>
@@ -34,8 +34,8 @@
             </p>
         </md-dialog-content>
         <md-dialog-actions layout="row">
-            <md-button ng-click="formCtrl.cancel()" aria-label="cancel">取消</md-button>
-            <md-button data-ng-disabled="staticForm.$invalid" data-ng-click="formCtrl.ok()" aria-label="ok"
+            <md-button id="node-nodeip-cancel" ng-click="formCtrl.cancel()" aria-label="cancel">取消</md-button>
+            <md-button id="node-nodeip-ok" data-ng-disabled="staticForm.$invalid" data-ng-click="formCtrl.ok()" aria-label="ok"
                        class="md-primary">连接
             </md-button>
         </md-dialog-actions>
