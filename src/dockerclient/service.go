@@ -103,7 +103,6 @@ func (client *CraneDockerClient) ListService(options types.ServiceListOptions) (
 func (client *CraneDockerClient) GetServicesStatus(services []swarm.Service) ([]ServiceStatus, error) {
 	var servicesSt []ServiceStatus
 	var ips []string
-	var ports []uint32
 
 	taskFilter := filters.NewArgs()
 	for _, service := range services {
@@ -122,9 +121,9 @@ func (client *CraneDockerClient) GetServicesStatus(services []swarm.Service) ([]
 
 	activeNodes := make(map[string]struct{})
 	for _, node := range nodes {
-		ips = append(ips, node.Spec.Labels["crane.reserved.node.endpoint"])
 		if node.Status.State == swarm.NodeStateReady {
 			activeNodes[node.ID] = struct{}{}
+			ips = append(ips, node.Spec.Labels["crane.reserved.node.endpoint"])
 		}
 	}
 
@@ -154,6 +153,7 @@ func (client *CraneDockerClient) GetServicesStatus(services []swarm.Service) ([]
 			reserveMems = int64(taskTotal) * service.Spec.TaskTemplate.Resources.Reservations.MemoryBytes
 		}
 
+		var ports []uint32
 		if service.Spec.EndpointSpec != nil {
 			for _, port := range service.Spec.EndpointSpec.Ports {
 				ports = append(ports, port.PublishedPort)
