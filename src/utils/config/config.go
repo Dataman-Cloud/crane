@@ -44,17 +44,21 @@ func (c *Config) FeatureEnabled(feature string) bool {
 	return utils.StringInSlice(feature, c.FeatureFlags)
 }
 
-var config Config
+var config *Config
 
 func GetConfig() *Config {
-	return &config
+	if config == nil {
+		Init()
+	}
+	return config
 }
 
-func init() {
+func Init() {
 	envFile := flag.String("config", "env_file", "")
 	LoadEnvFile(*envFile)
 
-	if err := LoadConfig(&config); err != nil {
+	config = new(Config)
+	if err := LoadConfig(config); err != nil {
 		log.Error("LoadConfig got error: ", err)
 		os.Exit(1)
 	}

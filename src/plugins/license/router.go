@@ -10,7 +10,7 @@ import (
 	_ "github.com/mattes/migrate/driver/mysql"
 )
 
-func init() {
+func Init() {
 	licenseApi := &LicenseApi{DbClient: db.DB()}
 	licenseApi.MigriateSetting()
 

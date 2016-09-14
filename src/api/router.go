@@ -9,7 +9,6 @@ import (
 	authApi "github.com/Dataman-Cloud/crane/src/plugins/auth/api"
 	"github.com/Dataman-Cloud/crane/src/plugins/catalog"
 	"github.com/Dataman-Cloud/crane/src/plugins/registry"
-	rauth "github.com/Dataman-Cloud/crane/src/plugins/registryauth"
 	"github.com/Dataman-Cloud/crane/src/plugins/search"
 	"github.com/Dataman-Cloud/crane/src/utils/db"
 	"github.com/Dataman-Cloud/crane/src/utils/log"
@@ -59,6 +58,13 @@ func (api *Api) ApiRouter() *gin.Engine {
 		licensePlugin, ok := apiplugin.ApiPlugins[apiplugin.License]
 		if ok && licensePlugin.Instance != nil {
 			licensePlugin.Instance.ApiRegister(router, Authorization)
+		}
+	}
+
+	if api.Config.FeatureEnabled(apiplugin.RegistryAuth) {
+		rAuthPlugin, ok := apiplugin.ApiPlugins[apiplugin.RegistryAuth]
+		if ok && rAuthPlugin.Instance != nil {
+			rAuthPlugin.Instance.ApiRegister(router, Authorization, middlewares.ListIntercept())
 		}
 	}
 
@@ -118,16 +124,6 @@ func (api *Api) ApiRouter() *gin.Engine {
 		v1.GET("/stacks/:namespace/services/:service_id/tasks", api.ListTasks)
 		v1.GET("/stacks/:namespace/services/:service_id/tasks/:task_id", api.InspectTask)
 		v1.GET("/stacks/:namespace/services/:service_id/cd_url", api.ServiceCDAddr)
-	}
-
-	if api.Config.FeatureEnabled("registryauth") {
-		rauth.GetHubApi().MigriateRegistryAuth()
-		rauthv1 := router.Group("/registryauth/v1", Authorization, middlewares.ListIntercept())
-		{
-			rauthv1.POST("/registryauths", api.Create)
-			rauthv1.GET("/registryauths", api.List)
-			rauthv1.DELETE("/registryauths/:rauth_name", api.Delete)
-		}
 	}
 
 	router.PUT("/api/v1/stacks/:namespace/services/:service_id/rolling_update", api.UpdateServiceImage) // skip authorization, public access

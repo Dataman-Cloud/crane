@@ -46,7 +46,7 @@ func (client *CraneDockerClient) ToCraneServiceSpec(swarmService swarm.ServiceSp
 }
 
 func EncodedRegistryAuth(registryAuth string) (string, error) {
-	authInfo, err := rauth.GetHubApi().Get(registryAuth)
+	authInfo, err := rauth.Get(registryAuth)
 	if err != nil {
 		return "", nil
 	}

@@ -17,7 +17,7 @@ const (
 	CodeRegistryAuthInvalidUserError = "401-17004"
 )
 
-func (api *Api) Create(ctx *gin.Context) {
+func (api *RegistryAuthApi) Create(ctx *gin.Context) {
 	account, ok := ctx.Get("account")
 	if !ok {
 		log.Error("get registryAuths invalid user")
@@ -32,7 +32,7 @@ func (api *Api) Create(ctx *gin.Context) {
 		return
 	}
 
-	rs, err := rauth.GetHubApi().List(&rauth.RegistryAuth{Name: registryAuth.Name, AccountId: registryAuth.AccountId})
+	rs, err := rauth.List(&rauth.RegistryAuth{Name: registryAuth.Name, AccountId: registryAuth.AccountId})
 	if err != nil {
 		httpresponse.Error(ctx, err)
 		return
@@ -44,7 +44,7 @@ func (api *Api) Create(ctx *gin.Context) {
 	}
 
 	registryAuth.AccountId = account.(auth.Account).ID
-	if err := rauth.GetHubApi().Create(&registryAuth); err != nil {
+	if err := rauth.Create(&registryAuth); err != nil {
 		log.Errorf("create registryAuth operation error: %v", err)
 		httpresponse.Error(ctx, err)
 		return
@@ -53,7 +53,7 @@ func (api *Api) Create(ctx *gin.Context) {
 	httpresponse.Ok(ctx, "create success")
 }
 
-func (api *Api) List(ctx *gin.Context) {
+func (api *RegistryAuthApi) List(ctx *gin.Context) {
 	account, ok := ctx.Get("account")
 	if !ok {
 		log.Error("get registryAuths invalid user")
@@ -61,7 +61,7 @@ func (api *Api) List(ctx *gin.Context) {
 		return
 	}
 
-	registryAuth, err := rauth.GetHubApi().List(&rauth.RegistryAuth{AccountId: account.(auth.Account).ID})
+	registryAuth, err := rauth.List(&rauth.RegistryAuth{AccountId: account.(auth.Account).ID})
 	if err != nil {
 		log.Errorf("get registryAuth by name error: %v", err)
 		httpresponse.Error(ctx, err)
@@ -71,7 +71,7 @@ func (api *Api) List(ctx *gin.Context) {
 	httpresponse.Ok(ctx, registryAuth)
 }
 
-func (api *Api) Delete(ctx *gin.Context) {
+func (api *RegistryAuthApi) Delete(ctx *gin.Context) {
 	account, ok := ctx.Get("account")
 	if !ok {
 		log.Error("delete registryAuth invalid user")
@@ -86,7 +86,7 @@ func (api *Api) Delete(ctx *gin.Context) {
 		return
 	}
 
-	if err := rauth.GetHubApi().Delete(&rauth.RegistryAuth{Name: name, AccountId: account.(auth.Account).ID}); err != nil {
+	if err := rauth.Delete(&rauth.RegistryAuth{Name: name, AccountId: account.(auth.Account).ID}); err != nil {
 		log.Errorf("delete registryAuth error: %v", err)
 		httpresponse.Error(ctx, err)
 		return
