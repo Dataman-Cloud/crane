@@ -35,8 +35,8 @@ func (api *Api) ConnectNetwork(ctx *gin.Context) {
 
 	if err := ctx.BindJSON(&connectNetworkRequest); err != nil {
 		log.Errorf("connect network request body parse json error: %v", err)
-		rerror := cranerror.NewError(CodeConnectNetworkParamError, err.Error())
-		httpresponse.Error(ctx, rerror)
+		craneError := cranerror.NewError(CodeConnectNetworkParamError, err.Error())
+		httpresponse.Error(ctx, craneError)
 		return
 	}
 
@@ -66,8 +66,8 @@ func (api *Api) CreateNetwork(ctx *gin.Context) {
 
 	if err := ctx.BindJSON(&netWorkOption); err != nil {
 		log.Error("create network request body parse json error: ", err)
-		rerror := cranerror.NewError(CodeCreateNetworkParamError, err.Error())
-		httpresponse.Error(ctx, rerror)
+		craneError := cranerror.NewError(CodeCreateNetworkParamError, err.Error())
+		httpresponse.Error(ctx, craneError)
 		return
 	}
 
@@ -86,8 +86,8 @@ func (api *Api) InspectNetwork(ctx *gin.Context) {
 	network, err := api.GetDockerClient().InspectNetwork(ctx.Param("network_id"))
 	if err != nil {
 		log.Error("inspect network error: ", err)
-		rerror := cranerror.NewError(CodeInspectNetworkParamError, err.Error())
-		httpresponse.Error(ctx, rerror)
+		craneError := cranerror.NewError(CodeInspectNetworkParamError, err.Error())
+		httpresponse.Error(ctx, craneError)
 		return
 	}
 
@@ -101,8 +101,8 @@ func (api *Api) ListNetworks(ctx *gin.Context) {
 	fp := ctx.DefaultQuery("filters", "{\"driver\": {\"overlay\": true}}")
 	if err := json.Unmarshal([]byte(fp), &filter); err != nil {
 		log.Error("list network request body parse json error: ", err)
-		rerror := cranerror.NewError(CodeListNetworkParamError, err.Error())
-		httpresponse.Error(ctx, rerror)
+		craneError := cranerror.NewError(CodeListNetworkParamError, err.Error())
+		httpresponse.Error(ctx, craneError)
 		return
 	}
 
@@ -132,8 +132,8 @@ func (api *Api) ConnectNodeNetwork(ctx *gin.Context) {
 	var connectNetworkRequest ConnectNetworkRequest
 	if err := ctx.BindJSON(&connectNetworkRequest); err != nil {
 		log.Errorf("connect network request body parse json error: %v", err)
-		rerror := cranerror.NewError(CodeConnectNetworkParamError, err.Error())
-		httpresponse.Error(ctx, rerror)
+		craneError := cranerror.NewError(CodeConnectNetworkParamError, err.Error())
+		httpresponse.Error(ctx, craneError)
 		return
 	}
 
@@ -183,8 +183,8 @@ func (api *Api) ListNodeNetworks(ctx *gin.Context) {
 	fp := ctx.DefaultQuery("filters", "{}")
 	if err := json.Unmarshal([]byte(fp), &filters); err != nil {
 		log.Error("list network request body parse json error: ", err)
-		rerror := cranerror.NewError(CodeListNetworkParamError, err.Error())
-		httpresponse.Error(ctx, rerror)
+		craneError := cranerror.NewError(CodeListNetworkParamError, err.Error())
+		httpresponse.Error(ctx, craneError)
 		return
 	}
 
@@ -205,8 +205,8 @@ func (api *Api) CreateNodeNetwork(ctx *gin.Context) {
 
 	if err := ctx.BindJSON(&netWorkOption); err != nil {
 		log.Error("create node network request body parse json error: ", err)
-		rerror := cranerror.NewError(CodeCreateNetworkParamError, err.Error())
-		httpresponse.Error(ctx, rerror)
+		craneError := cranerror.NewError(CodeCreateNetworkParamError, err.Error())
+		httpresponse.Error(ctx, craneError)
 		return
 	}
 

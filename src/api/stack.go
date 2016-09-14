@@ -38,8 +38,8 @@ func (api *Api) CreateStack(ctx *gin.Context) {
 				jsonErr.Offset, jsonErr.Type, jsonErr.Value)
 		}
 
-		rerror := cranerror.NewError(CodeCreateStackParamError, err.Error())
-		httpresponse.Error(ctx, rerror)
+		craneError := cranerror.NewError(CodeCreateStackParamError, err.Error())
+		httpresponse.Error(ctx, craneError)
 		return
 	}
 
@@ -49,8 +49,8 @@ func (api *Api) CreateStack(ctx *gin.Context) {
 		gId, err := strconv.ParseUint(groupId, 10, 64)
 		if err != nil || gId < 0 {
 			log.Error("CreateStack invalid group_id")
-			rerror := cranerror.NewError(CodeInvalidGroupId, "invalid group id")
-			httpresponse.Error(ctx, rerror)
+			craneError := cranerror.NewError(CodeInvalidGroupId, "invalid group id")
+			httpresponse.Error(ctx, craneError)
 			return
 		}
 

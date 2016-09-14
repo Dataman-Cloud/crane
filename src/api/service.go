@@ -83,8 +83,8 @@ func (api *Api) UpdateService(ctx *gin.Context) {
 	var craneServiceSpec model.CraneServiceSpec
 
 	if err := ctx.BindJSON(&craneServiceSpec); err != nil {
-		rerror := cranerror.NewError(CodeUpdateServiceParamError, err.Error())
-		httpresponse.Error(ctx, rerror)
+		craneError := cranerror.NewError(CodeUpdateServiceParamError, err.Error())
+		httpresponse.Error(ctx, craneError)
 		return
 	}
 
@@ -183,8 +183,8 @@ func (api *Api) CreateService(ctx *gin.Context) {
 	var service swarm.ServiceSpec
 	if err := ctx.BindJSON(&service); err != nil {
 		log.Error("CreateService invalied request body: ", err)
-		rerror := cranerror.NewError(CodeCreateServiceParamError, err.Error())
-		httpresponse.Error(ctx, rerror)
+		craneError := cranerror.NewError(CodeCreateServiceParamError, err.Error())
+		httpresponse.Error(ctx, craneError)
 		return
 	}
 
@@ -216,8 +216,8 @@ func (api *Api) ScaleService(ctx *gin.Context) {
 	var serviceScale dockerclient.ServiceScale
 	if err := ctx.BindJSON(&serviceScale); err != nil {
 		log.Errorf("Scale service %s got error: %s", serviceId, err.Error())
-		rerror := cranerror.NewError(CodeScaleServiceParamError, err.Error())
-		httpresponse.Error(ctx, rerror)
+		craneError := cranerror.NewError(CodeScaleServiceParamError, err.Error())
+		httpresponse.Error(ctx, craneError)
 		return
 	}
 
@@ -241,8 +241,8 @@ func (api *Api) LogsService(ctx *gin.Context) {
 	tasks, err := api.GetDockerClient().ListTasks(types.TaskListOptions{Filter: taskFilter})
 	if err != nil {
 		log.Errorf("ListTasks of service %s got error: %s", serviceId, err.Error())
-		rerror := cranerror.NewError(CodeListTaskParamError, err.Error())
-		httpresponse.Error(ctx, rerror)
+		craneError := cranerror.NewError(CodeListTaskParamError, err.Error())
+		httpresponse.Error(ctx, craneError)
 		return
 	}
 
@@ -272,8 +272,8 @@ func (api *Api) StatsService(ctx *gin.Context) {
 	tasks, err := api.GetDockerClient().ListTasks(types.TaskListOptions{Filter: taskFilter})
 	if err != nil {
 		log.Errorf("ListTasks of service %s got error: %s", serviceId, err.Error())
-		rerror := cranerror.NewError(CodeListTaskParamError, err.Error())
-		httpresponse.Error(ctx, rerror)
+		craneError := cranerror.NewError(CodeListTaskParamError, err.Error())
+		httpresponse.Error(ctx, craneError)
 		return
 	}
 

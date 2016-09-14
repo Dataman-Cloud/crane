@@ -81,8 +81,8 @@ func (api *Api) UpdateNode(ctx *gin.Context) {
 			log.Errorf("Unexpected type at by type %v. Expected %s but received %s.",
 				jsonErr.Offset, jsonErr.Type, jsonErr.Value)
 		}
-		rerror := cranerror.NewError(CodeUpdateNodeParamError, err.Error())
-		httpresponse.Error(ctx, rerror)
+		craneError := cranerror.NewError(CodeUpdateNodeParamError, err.Error())
+		httpresponse.Error(ctx, craneError)
 		return
 	}
 

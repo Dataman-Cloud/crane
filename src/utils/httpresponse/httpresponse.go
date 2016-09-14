@@ -43,14 +43,14 @@ func Update(ctx *gin.Context, data interface{}) {
 func Error(ctx *gin.Context, err error) {
 	log.Errorf("[%s] %s GOT error: %s", ctx.Request.Method, ctx.Request.URL.Path, err.Error())
 
-	rerror, ok := extractCraneError(err)
+	craneError, ok := extractCraneError(err)
 	if !ok {
 		ctx.JSON(http.StatusServiceUnavailable, gin.H{"code": CodeUndefined, "data": err, "message": err.Error(), "source": "docker"})
 		return
 	}
 
-	httpCode, errCode := parseHttpCodeAndErrCode(rerror.Code)
-	ctx.JSON(httpCode, gin.H{"code": errCode, "data": rerror.Err, "message": rerror.Err.Error(), "source": "crane"})
+	httpCode, errCode := parseHttpCodeAndErrCode(craneError.Code)
+	ctx.JSON(httpCode, gin.H{"code": errCode, "data": craneError.Err, "message": craneError.Err.Error(), "source": "crane"})
 	return
 }
 
@@ -81,15 +81,15 @@ func SSEventOk(ctx *gin.Context, namespace string, data interface{}) {
 func SSEventError(ctx *gin.Context, namespace string, err error) {
 	log.Errorf("[%s] %s GOT error: %s", ctx.Request.Method, ctx.Request.URL.Path, err.Error())
 
-	rerror, ok := extractCraneError(err)
+	craneError, ok := extractCraneError(err)
 	if !ok {
 		ctx.SSEvent(namespace, gin.H{"code": CodeUndefined, "data": err, "message": err.Error(), "source": "docker"})
 		ctx.Writer.Flush()
 		return
 	}
 
-	_, errCode := parseHttpCodeAndErrCode(rerror.Code)
-	ctx.SSEvent(namespace, gin.H{"code": errCode, "data": rerror.Err, "message": rerror.Err.Error(), "source": "crane"})
+	_, errCode := parseHttpCodeAndErrCode(craneError.Code)
+	ctx.SSEvent(namespace, gin.H{"code": errCode, "data": craneError.Err, "message": craneError.Err.Error(), "source": "crane"})
 	ctx.Writer.Flush()
 	return
 }

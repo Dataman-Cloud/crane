@@ -48,8 +48,8 @@ func (api *Api) CreateVolume(ctx *gin.Context) {
 
 	if err := ctx.BindJSON(&opts); err != nil {
 		log.Errorf("create volume request body parse json error: %v", err)
-		rerror := cranerror.NewError(CodeCreateVolumeParamError, err.Error())
-		httpresponse.Error(ctx, rerror)
+		craneError := cranerror.NewError(CodeCreateVolumeParamError, err.Error())
+		httpresponse.Error(ctx, craneError)
 		return
 	}
 
