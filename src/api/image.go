@@ -23,16 +23,16 @@ func (api *Api) ListImages(ctx *gin.Context) {
 	all, err := strconv.ParseBool(ctx.DefaultQuery("all", "false"))
 	if err != nil {
 		log.Error("Parse param all of list images got error: ", err)
-		rerror := cranerror.NewError(CodeListImageParamError, err.Error())
-		httpresponse.Error(ctx, rerror)
+		craneError := cranerror.NewError(CodeListImageParamError, err.Error())
+		httpresponse.Error(ctx, craneError)
 		return
 	}
 
 	digests, err := strconv.ParseBool(ctx.DefaultQuery("digests", "true"))
 	if err != nil {
 		log.Error("Parse param digests of list images got error: ", err)
-		rerror := cranerror.NewError(CodeListImageParamError, err.Error())
-		httpresponse.Error(ctx, rerror)
+		craneError := cranerror.NewError(CodeListImageParamError, err.Error())
+		httpresponse.Error(ctx, craneError)
 		return
 	}
 
@@ -40,8 +40,8 @@ func (api *Api) ListImages(ctx *gin.Context) {
 	queryFilters := ctx.DefaultQuery("filters", "{}")
 	if err := json.Unmarshal([]byte(queryFilters), &filters); err != nil {
 		log.Error("Unmarshal list images filters got error: ", err)
-		rerror := cranerror.NewError(CodeListImageParamError, err.Error())
-		httpresponse.Error(ctx, rerror)
+		craneError := cranerror.NewError(CodeListImageParamError, err.Error())
+		httpresponse.Error(ctx, craneError)
 		return
 	}
 

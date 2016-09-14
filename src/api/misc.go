@@ -40,8 +40,8 @@ func (api *Api) CraneConfig(ctx *gin.Context) {
 
 	if err != nil {
 		log.Errorf("InspectSwarm got error: %s", err.Error())
-		rerror := cranerror.NewError(CodeGetConfigError, err.Error())
-		httpresponse.Error(ctx, rerror)
+		craneError := cranerror.NewError(CodeGetConfigError, err.Error())
+		httpresponse.Error(ctx, craneError)
 		return
 	}
 

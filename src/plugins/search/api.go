@@ -22,8 +22,8 @@ const (
 func (searchApi *SearchApi) Search(ctx *gin.Context) {
 	query := ctx.Query("keyword")
 	if query == "" {
-		rerror := cranerror.NewError(CodeInvalidSearchKeywords, "invalid search keywords")
-		httpresponse.Error(ctx, rerror)
+		craneError := cranerror.NewError(CodeInvalidSearchKeywords, "invalid search keywords")
+		httpresponse.Error(ctx, craneError)
 		return
 	}
 

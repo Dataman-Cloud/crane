@@ -58,24 +58,24 @@ func (api *Api) ListContainers(ctx *gin.Context) {
 	all, err := strconv.ParseBool(ctx.DefaultQuery("all", "true"))
 	if err != nil {
 		log.Error("Parse param all of list container got error: ", err)
-		rerror := cranerror.NewError(CodeListContainerParamError, err.Error())
-		httpresponse.Error(ctx, rerror)
+		craneError := cranerror.NewError(CodeListContainerParamError, err.Error())
+		httpresponse.Error(ctx, craneError)
 		return
 	}
 
 	size, err := strconv.ParseBool(ctx.DefaultQuery("size", "false"))
 	if err != nil {
 		log.Error("Parse param size of list container got error: ", err)
-		rerror := cranerror.NewError(CodeListContainerParamError, err.Error())
-		httpresponse.Error(ctx, rerror)
+		craneError := cranerror.NewError(CodeListContainerParamError, err.Error())
+		httpresponse.Error(ctx, craneError)
 		return
 	}
 
 	limitValue, err := strconv.ParseInt(ctx.DefaultQuery("limit", "0"), 10, 64)
 	if err != nil {
 		log.Error("Parse param all of limit container got error: ", err)
-		rerror := cranerror.NewError(CodeListContainerParamError, err.Error())
-		httpresponse.Error(ctx, rerror)
+		craneError := cranerror.NewError(CodeListContainerParamError, err.Error())
+		httpresponse.Error(ctx, craneError)
 		return
 	}
 	limit := int(limitValue)
@@ -84,8 +84,8 @@ func (api *Api) ListContainers(ctx *gin.Context) {
 	queryFilters := ctx.DefaultQuery("filters", "{}")
 	if err := json.Unmarshal([]byte(queryFilters), &filters); err != nil {
 		log.Error("Unmarshal list container filters got error: ", err)
-		rerror := cranerror.NewError(CodeListContainerParamError, err.Error())
-		httpresponse.Error(ctx, rerror)
+		craneError := cranerror.NewError(CodeListContainerParamError, err.Error())
+		httpresponse.Error(ctx, craneError)
 		return
 	}
 
@@ -114,8 +114,8 @@ func (api *Api) PatchContainer(ctx *gin.Context) {
 	craneContext, _ := ctx.Get("craneContext")
 	var containerRequest ContainerRequest
 	if err := ctx.BindJSON(&containerRequest); err != nil {
-		rerror := cranerror.NewError(CodePatchContainerParamError, err.Error())
-		httpresponse.Error(ctx, rerror)
+		craneError := cranerror.NewError(CodePatchContainerParamError, err.Error())
+		httpresponse.Error(ctx, craneError)
 		return
 	}
 
@@ -159,8 +159,8 @@ func (api *Api) DeleteContainer(ctx *gin.Context) {
 	craneContext, _ := ctx.Get("craneContext")
 	var containerRequest ContainerRequest
 	if err := ctx.BindJSON(&containerRequest); err != nil {
-		rerror := cranerror.NewError(CodeDeleteContainerParamError, err.Error())
-		httpresponse.Error(ctx, rerror)
+		craneError := cranerror.NewError(CodeDeleteContainerParamError, err.Error())
+		httpresponse.Error(ctx, craneError)
 		return
 	}
 
