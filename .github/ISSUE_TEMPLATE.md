@@ -1,5 +1,3 @@
-*Frontend*:
-
 **Actual Behavior**:
  -  `What is the issue? *`
  -  `What is the expected behavior?`
