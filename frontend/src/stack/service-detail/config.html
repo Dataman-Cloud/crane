@@ -161,8 +161,8 @@
             </tr>
 
             <tr ng-repeat="env in serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Env">
-                <td>{/env.split('=')[0]/}</td>
-                <td>{/env.split('=')[1]/}</td>
+                <td>{/env.slice(0, env.indexOf('='))/}</td>
+                <td>{/env.slice(env.indexOf('=') + 1)/}</td>
             </tr>
         </table>
     </div>
@@ -255,8 +255,8 @@
             </tr>
 
             <tr ng-repeat="constraint in serviceConfigCtrl.service.Spec.TaskTemplate.Placement.Constraints">
-                <td>{/constraint.split('==')[0]/}</td>
-                <td>{/constraint.split('==')[1]/}</td>
+                <td>{/constraint.slice(0, constraint.indexOf('=='))/}</td>
+                <td>{/constraint.slice(constraint.indexOf('==') + 1)/}</td>
             </tr>
         </table>
     </div>

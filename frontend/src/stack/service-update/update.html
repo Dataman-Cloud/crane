@@ -163,7 +163,7 @@
                     <div class="form-control sub-group" layout="row" layout-align="start center">
                         <input flex="20" type="text" placeholder="KEY"
                                data-ng-model="env.key" data-required="required"
-                               name="envKey" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/"
+                               name="envKey" data-ng-pattern="/^[a-zA-Z0-9_]+$/"
                                dm-check-include="serviceUpdateCtrl.listConfigByKey(serviceUpdateCtrl.form.formEnv, $index)">
 
                         <input flex="20" type="text" placeholder="VALUE"
@@ -180,7 +180,7 @@
                      role="alert">
                     <p class="text-danger help-text"
                        ng-message="pattern">
-                        <small>环境变量 Key 值不能包含中文</small>
+                        <small>环境变量 KEY 只能为数字、字母或下划线</small>
                     </p>
                     <p class="text-danger help-text"
                        ng-message="dmCheckInclude">
@@ -615,7 +615,7 @@
                             <div class="form-control sub-group" layout="row" layout-align="start center">
                                 <input type="text" placeholder="node.labels.ssd" flex="20"
                                        data-ng-model="constraint.key" data-required="required"
-                                       name="constraintKey" minlength="2"
+                                       name="constraintKey" minlength="2" data-ng-pattern="/^[a-zA-Z0-9_]+$/"
                                        dm-check-include="serviceUpdateCtrl.listConfigByKey(serviceUpdateCtrl.form.formConstraints, $index)">
 
                                 <input type="text" placeholder="yes" flex="20"
@@ -633,7 +633,7 @@
                              role="alert">
                             <p class="text-danger help-text"
                                ng-message="pattern">
-                                <small>KEY 不能包含中文</small>
+                                <small>KEY 只能为数字、字母或下划线</small>
                             </p>
                             <p class="text-danger help-text"
                                ng-message="dmCheckInclude">
