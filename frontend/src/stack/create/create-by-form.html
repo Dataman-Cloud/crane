@@ -204,7 +204,7 @@
                                 <div class="form-control sub-group" layout="row" layout-align="start center">
                                     <input flex="20" type="text" placeholder="KEY"
                                            data-ng-model="env.key" data-required="required"
-                                           name="envKey" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/"
+                                           name="envKey" data-ng-pattern="/^[a-zA-Z0-9_]+$/"
                                            dm-check-include="stackCreateByFormCtrl.listConfigByKey(serve.TaskTemplate.ContainerSpec.Env, $index)">
 
                                     <input flex="20" type="text" placeholder="VALUE"
@@ -221,7 +221,7 @@
                                  role="alert">
                                 <p class="text-danger help-text"
                                    ng-message="pattern">
-                                    <small>环境变量 Key 值不能包含中文</small>
+                                    <small>环境变量 KEY 只能为数字、字母或下划线</small>
                                 </p>
                                 <p class="text-danger help-text"
                                    ng-message="dmCheckInclude">
@@ -651,7 +651,7 @@
                                     <div class="form-control sub-group" layout="row" layout-align="start center">
                                         <input flex="20" type="text" placeholder="node.labels.ssd"
                                                data-ng-model="constraint.key" data-required="required"
-                                               name="constraintKey"
+                                               name="constraintKey" data-ng-pattern="/^[a-zA-Z0-9_]+$/"
                                                dm-check-include="stackCreateByFormCtrl.listConfigByKey(serve.TaskTemplate.Placement.Constraints, $index)">
 
                                         <input flex="20" type="text" placeholder="yes"
@@ -669,7 +669,7 @@
                                      role="alert">
                                     <p class="text-danger help-text"
                                        ng-message="pattern">
-                                        <small>KEY 不能包含中文</small>
+                                        <small>KEY 只能为数字、字母或下划线</small>
                                     </p>
                                     <p class="text-danger help-text"
                                        ng-message="dmCheckInclude">

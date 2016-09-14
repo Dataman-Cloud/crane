@@ -158,8 +158,8 @@
             if (form.TaskTemplate.Placement.Constraints) {
                 angular.forEach(form.TaskTemplate.Placement.Constraints, function (item, index) {
                     var obj = {
-                        key: item.split('==')[0],
-                        value: item.split('==')[1]
+                        key: item.slice(0, item.indexOf('==')),
+                        value: item.slice(item.indexOf('==') + 1)
                     };
 
                     form.formConstraints.push(obj)
@@ -169,8 +169,8 @@
             if (form.TaskTemplate.ContainerSpec.Env) {
                 angular.forEach(form.TaskTemplate.ContainerSpec.Env, function (item, index) {
                     var obj = {
-                        key: item.split('=')[0],
-                        value: item.split('=')[1]
+                        key: item.slice(0, item.indexOf('=')),
+                        value: item.slice(item.indexOf('=') + 1)
                     };
 
                     form.formEnv.push(obj)
