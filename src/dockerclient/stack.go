@@ -215,7 +215,7 @@ func (client *CraneDockerClient) RemoveStack(namespace string) error {
 	}
 
 	if len(services) == 0 && len(networks) == 0 {
-		return cranerror.NewError(CodeStackNotFound, fmt.Sprintf("stack %s not found", namespace))
+		return cranerror.NewError(CodeStackUnavailable, fmt.Sprintf("stack or network can't be empty %s ", namespace))
 	}
 
 	return nil
