@@ -7,10 +7,7 @@ import (
 	"github.com/Dataman-Cloud/crane/src/plugins/apiplugin"
 	"github.com/Dataman-Cloud/crane/src/plugins/auth"
 	authApi "github.com/Dataman-Cloud/crane/src/plugins/auth/api"
-	"github.com/Dataman-Cloud/crane/src/plugins/catalog"
-	"github.com/Dataman-Cloud/crane/src/plugins/registry"
 	"github.com/Dataman-Cloud/crane/src/plugins/search"
-	"github.com/Dataman-Cloud/crane/src/utils/db"
 	"github.com/Dataman-Cloud/crane/src/utils/log"
 
 	"github.com/Sirupsen/logrus"
@@ -29,44 +26,6 @@ func (api *Api) ApiRouter() *gin.Engine {
 	router.GET("/", func(c *gin.Context) {
 		c.String(200, "pass")
 	})
-
-	if api.Config.FeatureEnabled("account") {
-		a := &authApi.AccountApi{Config: api.Config, CraneDockerClient: api.Client}
-		a.ApiRegister(router, middlewares.ListIntercept())
-		Authorization = a.Authorization
-	}
-
-	if api.Config.FeatureEnabled("registry") {
-		r := registry.NewRegistry(api.Config.AccountAuthenticator, api.Config.RegistryPrivateKeyPath, api.Config.RegistryAddr)
-		r.RegisterApiForRegistry(router, Authorization)
-	}
-
-	if api.Config.FeatureEnabled("catalog") {
-		c := catalog.NewCatalog(db.DB())
-		c.MigriateTable()
-		c.RegisterApiForCatalog(router, Authorization)
-	}
-
-	if api.Config.FeatureEnabled("search") {
-		s := &search.SearchApi{
-			Indexer: search.NewCraneIndex(api.Client),
-		}
-		s.RegisterApiForSearch(router, Authorization)
-	}
-
-	if api.Config.FeatureEnabled(apiplugin.License) {
-		licensePlugin, ok := apiplugin.ApiPlugins[apiplugin.License]
-		if ok && licensePlugin.Instance != nil {
-			licensePlugin.Instance.ApiRegister(router, Authorization)
-		}
-	}
-
-	if api.Config.FeatureEnabled(apiplugin.RegistryAuth) {
-		rAuthPlugin, ok := apiplugin.ApiPlugins[apiplugin.RegistryAuth]
-		if ok && rAuthPlugin.Instance != nil {
-			rAuthPlugin.Instance.ApiRegister(router, Authorization, middlewares.ListIntercept())
-		}
-	}
 
 	v1 := router.Group("/api/v1", Authorization, middlewares.ListIntercept())
 	{
@@ -124,6 +83,28 @@ func (api *Api) ApiRouter() *gin.Engine {
 		v1.GET("/stacks/:namespace/services/:service_id/tasks", api.ListTasks)
 		v1.GET("/stacks/:namespace/services/:service_id/tasks/:task_id", api.InspectTask)
 		v1.GET("/stacks/:namespace/services/:service_id/cd_url", api.ServiceCDAddr)
+	}
+
+	for _, plugin := range apiplugin.ApiPlugins {
+		if plugin.Instance != nil {
+			switch plugin.Name {
+			case apiplugin.Search:
+				searchApi, ok := plugin.Instance.(*search.SearchApi)
+				if ok {
+					searchApi.Indexer = search.NewCraneIndex(api.Client)
+					searchApi.ApiRegister(router, Authorization, middlewares.ListIntercept())
+				}
+			case apiplugin.Account:
+				accountApi, ok := plugin.Instance.(*authApi.AccountApi)
+				if ok {
+					accountApi.CraneDockerClient = api.Client
+					Authorization = accountApi.Authorization
+					accountApi.ApiRegister(router, middlewares.ListIntercept())
+				}
+			default:
+				plugin.Instance.ApiRegister(router, Authorization, middlewares.ListIntercept())
+			}
+		}
 	}
 
 	router.PUT("/api/v1/stacks/:namespace/services/:service_id/rolling_update", api.UpdateServiceImage) // skip authorization, public access
