@@ -1,10 +1,36 @@
 package registry
 
 import (
+	"os"
+
+	"github.com/Dataman-Cloud/crane/src/plugins/apiplugin"
+	"github.com/Dataman-Cloud/crane/src/utils/config"
+
+	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
 )
 
-func (registry *Registry) RegisterApiForRegistry(router *gin.Engine, middlewares ...gin.HandlerFunc) {
+func Init() {
+	log.Infof("begin to init and enable plugin: %s", apiplugin.Registry)
+	conf := config.GetConfig()
+	if conf == nil {
+		log.Errorf("init plugin: %s failed conf is nil", apiplugin.Registry)
+		os.Exit(1)
+	}
+
+	registryApi := NewRegistry(conf.AccountAuthenticator, conf.RegistryPrivateKeyPath, conf.RegistryAddr)
+
+	apiPlugin := &apiplugin.ApiPlugin{
+		Name:         apiplugin.Registry,
+		Dependencies: []string{apiplugin.Db},
+		Instance:     registryApi,
+	}
+
+	apiplugin.Add(apiPlugin)
+	log.Infof("init and enable plugin: %s success", apiplugin.License)
+}
+
+func (registry *Registry) ApiRegister(router *gin.Engine, middlewares ...gin.HandlerFunc) {
 	registryV1 := router.Group("/registry/v1")
 	{
 		registryV1.GET("/token", registry.Token)
