@@ -1,26 +1,12 @@
 package catalog
 
 import (
-	"errors"
-
-	log "github.com/Sirupsen/logrus"
+	"github.com/Dataman-Cloud/crane/src/utils/cranerror"
 )
 
 func (catalogApi *CatalogApi) Save(catalog *Catalog) error {
-	var catalogs []Catalog
-	if err := catalogApi.DbClient.Where("name = ?", catalog.Name).Find(&catalogs).Error; err != nil {
-		log.Errorf("get catalog error: %v", err)
-		return err
-	}
-
-	if len(catalogs) > 0 {
-		log.Warnf("catlog: %s already exist", catalog.Name)
-		return errors.New("already exist")
-	}
-
 	if err := catalogApi.DbClient.Save(catalog).Error; err != nil {
-		log.Errorf("save catalog error: %v", err)
-		return err
+		return cranerror.NewError(CodeCatalogGetCatalogError, err.Error())
 	}
 
 	return nil
@@ -28,16 +14,34 @@ func (catalogApi *CatalogApi) Save(catalog *Catalog) error {
 
 func (catalogApi *CatalogApi) List() ([]Catalog, error) {
 	var catalogs []Catalog
-	err := catalogApi.DbClient.Find(&catalogs).Error
-	return catalogs, err
+	if err := catalogApi.DbClient.Find(&catalogs).Error; err != nil {
+		return catalogs, cranerror.NewError(CodeCatalogListCatalogError, err.Error())
+	}
+
+	return catalogs, nil
 }
 
 func (catalogApi *CatalogApi) Get(catalogId uint64) (Catalog, error) {
 	var catalog Catalog
-	err := catalogApi.DbClient.Where("id = ?", catalogId).First(&catalog).Error
-	return catalog, err
+	if err := catalogApi.DbClient.Where("id = ?", catalogId).First(&catalog).Error; err != nil {
+		return catalog, cranerror.NewError(CodeCatalogGetCatalogError, err.Error())
+	}
+
+	return catalog, nil
 }
 
 func (catalogApi *CatalogApi) Delete(catalogId uint64) error {
-	return catalogApi.DbClient.Delete(&Catalog{ID: catalogId}).Error
+	if err := catalogApi.DbClient.Delete(&Catalog{ID: catalogId}).Error; err != nil {
+		return cranerror.NewError(CodeCatalogInvalidCatalogId, err.Error())
+	}
+
+	return nil
+}
+
+func (catalogApi *CatalogApi) Update(catalog *Catalog) error {
+	if err := catalogApi.DbClient.Save(catalog).Error; err != nil {
+		return cranerror.NewError(CodeCatalogInvalidParam, err.Error())
+	}
+
+	return nil
 }

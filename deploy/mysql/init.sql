@@ -31,9 +31,10 @@ CREATE TABLE `catalogs` (
 	  `bundle` longtext,
 	  `description` longtext,
 	  `icon_data` longtext,
-	  `user_id` bigint(20) unsigned DEFAULT NULL,
+	  `account_id` bigint(20) unsigned DEFAULT NULL,
 	  `type` int(10) unsigned DEFAULT NULL,
-	  PRIMARY KEY (`id`)
+	  PRIMARY KEY (`id`),
+	  UNIQUE KEY `accountid_name` (`account_id`, `name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
