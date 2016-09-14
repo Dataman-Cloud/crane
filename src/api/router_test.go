@@ -19,11 +19,9 @@ func TestApiRouter(t *testing.T) {
 	}
 	router := api.ApiRouter()
 
-	var hasAuth bool
 	var hasNetwork bool
 	var hasMetrics bool
 	var hasStacks bool
-	var hasSearch bool
 
 	for _, info := range router.Routes() {
 		if strings.Contains(info.Path, "nodes") {
@@ -32,20 +30,12 @@ func TestApiRouter(t *testing.T) {
 		if strings.Contains(info.Path, "network") {
 			hasNetwork = true
 		}
-		if strings.Contains(info.Path, "accounts") {
-			hasAuth = true
-		}
 		if strings.Contains(info.Path, "stacks") {
 			hasStacks = true
 		}
-		if strings.Contains(info.Path, "search") {
-			hasSearch = true
-		}
 	}
 
-	assert.True(t, hasAuth, "should be true")
 	assert.True(t, hasNetwork, "should be true")
 	assert.True(t, hasMetrics, "should be true")
 	assert.True(t, hasStacks, "should be true")
-	assert.True(t, hasSearch, "should be true")
 }
