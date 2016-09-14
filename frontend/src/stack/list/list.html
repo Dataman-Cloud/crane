@@ -6,7 +6,8 @@
 </header>
 
 <div layout="row" layout-wrap ng-flow-grid min-item-width="330" id="stack-list">
-    <div data-ng-repeat="stack in stackListCtrl.stacks | orderBy: 'stack.Services[0].CreatedAt'" class="flowGridItem"
+    <div data-ng-repeat="stack in stackListCtrl.stacks | orderBy: 'stack.Services[0].CreatedAt' track by $index"
+         class="flowGridItem"
          id="stack{/$index/}">
         <div class="app-panel">
             <header>
@@ -15,7 +16,7 @@
                 </h1>
             </header>
             <table>
-                <tr data-ng-repeat="service in stack.Services | orderBy: $index"
+                <tr data-ng-repeat="service in stack.Services track by $index"
                     id="{/stack.Namespace/}-services">
                     <td>
                         <i class="fa fa-wrench" aria-hidden="true"></i>
@@ -23,6 +24,17 @@
                            data-ui-sref="stack.serviceDetail({stack_name: stack.Namespace, service_id: service.ID})">{/service.Name/}</a>
                     </td>
                     <td>{/service.NumTasksRunning/}/{/service.NumTasksTotal/}</td>
+                    <td>
+                        <div ng-show="service.Ports.length" ng-repeat="ip in service.IPs track by $index">
+                            <p ng-repeat="port in service.Ports track by $index">
+                                <a ng-href="http://{/ip | ip/}:{/port/}" ng-show="ip" target='_blank'>
+                                    {/ip | ip/}:{/port/}
+                                </a>
+                                <span ng-hide="ip">{/port/}</span>
+                            </p>
+                        </div>
+                        <div ng-show="!service.Ports.length">未配置</div>
+                    </td>
                 </tr>
             </table>
             <div class="time">{/stack.Services[0].CreatedAt | date: 'yyyy-MM-dd HH:mm:ss' /}</div>
