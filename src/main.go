@@ -6,7 +6,7 @@ import (
 
 	"github.com/Dataman-Cloud/crane/src/api"
 	"github.com/Dataman-Cloud/crane/src/dockerclient"
-	_ "github.com/Dataman-Cloud/crane/src/plugins"
+	"github.com/Dataman-Cloud/crane/src/plugins"
 	"github.com/Dataman-Cloud/crane/src/utils/config"
 	log "github.com/Dataman-Cloud/crane/src/utils/log"
 
@@ -19,7 +19,7 @@ func main() {
 	ctx := context.Background()
 	conf := config.GetConfig()
 
-	//db.InitDB()
+	plugins.Init()
 
 	client, err := dockerclient.NewCraneDockerClient(conf)
 	if err != nil {
