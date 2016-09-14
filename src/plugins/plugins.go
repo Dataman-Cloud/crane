@@ -9,6 +9,7 @@ import (
 	rAuthApi "github.com/Dataman-Cloud/crane/src/plugins/registryauth/api"
 	"github.com/Dataman-Cloud/crane/src/plugins/search"
 	"github.com/Dataman-Cloud/crane/src/utils/config"
+	"github.com/Dataman-Cloud/crane/src/utils/db"
 
 	log "github.com/Sirupsen/logrus"
 )
@@ -27,7 +28,7 @@ func Init() {
 		case apiplugin.RegistryAuth:
 			rAuthApi.Init()
 		case apiplugin.Catalog:
-			catalog.Init()
+			catalog.Init(db.DB())
 		case apiplugin.Registry:
 			registry.Init()
 		case apiplugin.Search:

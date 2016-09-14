@@ -2,15 +2,15 @@ package catalog
 
 import (
 	"github.com/Dataman-Cloud/crane/src/plugins/apiplugin"
-	"github.com/Dataman-Cloud/crane/src/utils/db"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
+	"github.com/jinzhu/gorm"
 )
 
-func Init() {
+func Init(dbClient *gorm.DB) {
 	log.Infof("begin to init and enable plugin: %s", apiplugin.Catalog)
-	catalogApi := &CatalogApi{DbClient: db.DB()}
+	catalogApi := &CatalogApi{DbClient: dbClient}
 	catalogApi.DbClient.Set("gorm:table_options", "ENGINE=InnoDB DEFAULT CHARSET=utf8").AutoMigrate(&Catalog{})
 
 	apiPlugin := &apiplugin.ApiPlugin{
