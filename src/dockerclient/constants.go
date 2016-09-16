@@ -43,7 +43,7 @@ const (
 
 	// stack error code
 	CodeInvalidStackName = "503-11502"
-	CodeStackNotFound    = "404-11503"
+	CodeStackUnavailable = "400-11503"
 
 	// node error code
 	CodeErrorUpdateNodeMethod = "503-11302"
@@ -52,15 +52,15 @@ const (
 	CodeGetNodeInfoError      = "503-11305"
 
 	// network error code
-	CodeNetworkPredefined          = "403-11206"
-	CodeNetworkNotFound            = "404-11207"
-	CodeNetworkOrContainerNotFound = "404-11208"
-	CodeInvalidNetworkName         = "503-11209"
+	CodeNetworkPredefined         = "403-11206"
+	CodeNetworkInvalid            = "400-11207"
+	CodeNetworkOrContainerInvalid = "400-11208"
+	CodeInvalidNetworkName        = "503-11209"
 
 	//Container error code
 	CodePatchContainerParamError      = "400-11002"
 	CodePatchContainerMethodUndefined = "400-11003"
-	CodeContainerNotFound             = "404-11006"
+	CodeContainerInvalid              = "400-11006"
 	CodeContainerAlreadyRunning       = "400-11007"
 	CodeContainerNotRunning           = "400-11008"
 	CodeInvalidImageName              = "503-11009"

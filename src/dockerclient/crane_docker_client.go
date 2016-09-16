@@ -201,11 +201,11 @@ func ToCraneError(err error) error {
 	var detailError error
 	switch err.(type) {
 	case *docker.NoSuchContainer:
-		detailError = cranerror.NewError(CodeContainerNotFound, err.Error())
+		detailError = cranerror.NewError(CodeContainerInvalid, err.Error())
 	case *docker.NoSuchNetwork:
-		detailError = cranerror.NewError(CodeNetworkNotFound, err.Error())
+		detailError = cranerror.NewError(CodeNetworkInvalid, err.Error())
 	case *docker.NoSuchNetworkOrContainer:
-		detailError = cranerror.NewError(CodeNetworkOrContainerNotFound, err.Error())
+		detailError = cranerror.NewError(CodeNetworkOrContainerInvalid, err.Error())
 	case *docker.ContainerAlreadyRunning:
 		detailError = cranerror.NewError(CodeContainerAlreadyRunning, err.Error())
 	case *docker.ContainerNotRunning:
