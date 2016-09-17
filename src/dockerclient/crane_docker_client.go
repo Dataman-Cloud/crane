@@ -95,8 +95,8 @@ func (client *CraneDockerClient) createNodeClient(nodeId string) (*docker.Client
 	return swarmNode, nil
 }
 
-// create node client: form manager node got endpoint by node label and verify node id
-// by get docker info form httpclient
+// create node client: got endpoint by node label
+// verify if node id matches the endpoint against docker info
 func (client *CraneDockerClient) SwarmNode(ctx context.Context) (*docker.Client, error) {
 	nodeId, ok := ctx.Value("node_id").(string)
 	if !ok {
