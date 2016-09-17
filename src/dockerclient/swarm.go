@@ -3,6 +3,8 @@ package dockerclient
 import (
 	"encoding/json"
 
+	"github.com/Dataman-Cloud/crane/src/utils/cranerror"
+
 	"github.com/docker/engine-api/types"
 	"github.com/docker/engine-api/types/swarm"
 )
@@ -34,11 +36,11 @@ func (client *CraneDockerClient) ManagerInfo() (types.Info, error) {
 
 	content, err := client.sharedHttpClient.GET(nil, client.swarmManagerHttpEndpoint+"/info", nil, nil)
 	if err != nil {
-		return systemInfo, err
+		return systemInfo, cranerror.NewError(CodeGetManagerInfoError, err.Error())
 	}
 
 	if err := json.Unmarshal(content, &systemInfo); err != nil {
-		return systemInfo, err
+		return systemInfo, cranerror.NewError(CodeGetManagerInfoError, err.Error())
 	}
 
 	return systemInfo, nil

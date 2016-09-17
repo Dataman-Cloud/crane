@@ -59,6 +59,25 @@ func TestParseEndpoint(t *testing.T) {
 	assert.NotNil(t, err)
 }
 
+func TestgetAdvertiseAddrByEndpoint(t *testing.T) {
+	var host string
+	var err error
+	host, err = getAdvertiseAddrByEndpoint("localhost:2375")
+	assert.Nil(t, err)
+	assert.Equal(t, host, "localhost")
+	host, err = getAdvertiseAddrByEndpoint("tcp://localhost:2375")
+	assert.Nil(t, err)
+	assert.Equal(t, host, "localhost")
+	host, err = getAdvertiseAddrByEndpoint("localhost")
+	assert.Nil(t, err)
+	assert.Equal(t, host, "localhost")
+	host, err = getAdvertiseAddrByEndpoint("http://localhost")
+	assert.Nil(t, err)
+	assert.Equal(t, host, "localhost")
+	host, err = getAdvertiseAddrByEndpoint("://localhost")
+	assert.NotNil(t, err)
+}
+
 func TestGetServicesNamespace(t *testing.T) {
 	namespace := GetServicesNamespace(swarm.ServiceSpec{})
 	assert.Equal(t, namespace, "")

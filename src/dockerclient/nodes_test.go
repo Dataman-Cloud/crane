@@ -7,8 +7,11 @@ import (
 	"net/url"
 	"testing"
 
+	"github.com/Dataman-Cloud/crane/src/model"
+
 	"github.com/docker/engine-api/types"
 	"github.com/docker/engine-api/types/swarm"
+	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -104,6 +107,198 @@ func TestInspectNode(t *testing.T) {
 
 	_, err = client.InspectNode("test")
 	assert.Nil(t, err)
+}
+
+func fakeDockerVersion(ctx *gin.Context) {
+	var body types.Version
+	body.APIVersion = API_VERSION
+	ctx.JSON(http.StatusOK, body)
+}
+
+func TestCreateNodeRoleManager(t *testing.T) {
+	fakeClusterWithID := func(ID string) func(ctx *gin.Context) {
+		fakeCluster := func(ctx *gin.Context) {
+			var body swarm.Swarm
+			body.JoinTokens.Manager = "FakeManagerToken"
+			ctx.JSON(http.StatusOK, body)
+		}
+		return fakeCluster
+	}
+
+	fakeNodeInfo := func(addr string, nodeID string) func(ctx *gin.Context) {
+		nodeInfo := func(ctx *gin.Context) {
+			body := types.Info{
+				Swarm: swarm.Info{
+					NodeAddr: addr,
+					NodeID:   nodeID,
+				},
+			}
+			ctx.JSON(http.StatusOK, body)
+		}
+		return nodeInfo
+	}
+
+	fakeSwarmNodeInfo := func(addr string, nodeID string) func(ctx *gin.Context) {
+		swarmNodeInfo := func(ctx *gin.Context) {
+			body := swarm.Node{
+				ID: nodeID,
+				ManagerStatus: &swarm.ManagerStatus{
+					Addr: addr,
+				},
+			}
+			ctx.JSON(http.StatusOK, body)
+		}
+		return swarmNodeInfo
+	}
+
+	fakeNodeUpdate := func(ctx *gin.Context) {
+		body := ``
+		ctx.JSON(http.StatusOK, body)
+	}
+
+	fakeSwarmJoin := func(ctx *gin.Context) {
+		body := ``
+		ctx.JSON(http.StatusOK, body)
+	}
+
+	fakeManagerID := "FakeManagerID"
+	fakeJoiningNodeID := "FakeJoiningNodeID"
+
+	joiningNodeRouter := gin.New()
+	joiningNodeRouter.POST("/v"+API_VERSION+"/swarm/join", fakeSwarmJoin)
+	joiningNodeRouter.GET("/v"+API_VERSION+"/version", fakeDockerVersion)
+	joiningNodeRouter.GET("/info", fakeNodeInfo("FakeAddr", fakeJoiningNodeID))
+	joiningNode := httptest.NewServer(joiningNodeRouter)
+	defer joiningNode.Close()
+
+	managerRouter := gin.New()
+	managerRouter.GET("/swarm", fakeClusterWithID(fakeManagerID))
+	managerRouter.GET("/info", fakeNodeInfo("FakeAddr", fakeManagerID))
+	managerRouter.GET("/nodes/"+fakeManagerID, fakeSwarmNodeInfo("FakeAddr", fakeManagerID))
+	managerRouter.GET("/nodes/"+fakeJoiningNodeID, fakeSwarmNodeInfo(joiningNode.URL, fakeJoiningNodeID))
+	managerRouter.POST("/nodes/"+fakeJoiningNodeID+"/update", fakeNodeUpdate)
+
+	manager := httptest.NewServer(managerRouter)
+	defer manager.Close()
+
+	joiningNodeRoleManager := model.JoiningNode{
+		Role:     swarm.NodeRoleManager,
+		Endpoint: joiningNode.URL,
+	}
+
+	httpClient, err := NewHttpClient()
+	client := &CraneDockerClient{
+		sharedHttpClient:         httpClient,
+		swarmManagerHttpEndpoint: manager.URL,
+	}
+
+	err = client.CreateNode(joiningNodeRoleManager)
+	assert.Nil(t, err)
+}
+
+func TestCreateNodeRoleWorker(t *testing.T) {
+	fakeClusterWithID := func(ID string) func(ctx *gin.Context) {
+		fakeCluster := func(ctx *gin.Context) {
+			var body swarm.Swarm
+			body.JoinTokens.Worker = "FakeWorkerToken"
+			ctx.JSON(http.StatusOK, body)
+		}
+		return fakeCluster
+	}
+
+	fakeNodeInfo := func(addr string, nodeID string) func(ctx *gin.Context) {
+		nodeInfo := func(ctx *gin.Context) {
+			body := types.Info{
+				Swarm: swarm.Info{
+					NodeAddr: addr,
+					NodeID:   nodeID,
+				},
+			}
+			ctx.JSON(http.StatusOK, body)
+		}
+		return nodeInfo
+	}
+
+	fakeSwarmNodeInfo := func(addr string, nodeID string) func(ctx *gin.Context) {
+		swarmNodeInfo := func(ctx *gin.Context) {
+			body := swarm.Node{
+				ID: nodeID,
+				ManagerStatus: &swarm.ManagerStatus{
+					Addr: addr,
+				},
+			}
+			ctx.JSON(http.StatusOK, body)
+		}
+		return swarmNodeInfo
+	}
+
+	fakeNodeUpdate := func(ctx *gin.Context) {
+		body := ``
+		ctx.JSON(http.StatusOK, body)
+	}
+
+	fakeSwarmJoin := func(ctx *gin.Context) {
+		body := ``
+		ctx.JSON(http.StatusOK, body)
+	}
+
+	fakeManagerID := "FakeManagerID"
+	fakeJoiningNodeID := "FakeJoiningNodeID"
+
+	joiningNodeRouter := gin.New()
+	joiningNodeRouter.POST("/v"+API_VERSION+"/swarm/join", fakeSwarmJoin)
+	joiningNodeRouter.GET("/v"+API_VERSION+"/version", fakeDockerVersion)
+	joiningNodeRouter.GET("/info", fakeNodeInfo("FakeAddr", fakeJoiningNodeID))
+	joiningNode := httptest.NewServer(joiningNodeRouter)
+	defer joiningNode.Close()
+
+	managerRouter := gin.New()
+	managerRouter.GET("/swarm", fakeClusterWithID(fakeManagerID))
+	managerRouter.GET("/info", fakeNodeInfo("FakeAddr", fakeManagerID))
+	managerRouter.GET("/nodes/"+fakeManagerID, fakeSwarmNodeInfo("FakeAddr", fakeManagerID))
+	managerRouter.GET("/nodes/"+fakeJoiningNodeID, fakeSwarmNodeInfo(joiningNode.URL, fakeJoiningNodeID))
+	managerRouter.POST("/nodes/"+fakeJoiningNodeID+"/update", fakeNodeUpdate)
+
+	manager := httptest.NewServer(managerRouter)
+	defer manager.Close()
+
+	joiningNodeRoleWorker := model.JoiningNode{
+		Role:     swarm.NodeRoleWorker,
+		Endpoint: joiningNode.URL,
+	}
+
+	httpClient, err := NewHttpClient()
+	client := &CraneDockerClient{
+		sharedHttpClient:         httpClient,
+		swarmManagerHttpEndpoint: manager.URL,
+	}
+
+	err = client.CreateNode(joiningNodeRoleWorker)
+	assert.Nil(t, err)
+}
+func TestCreateNodeWithInvalidRole(t *testing.T) {
+	body := `{"Id":"e90302"}`
+	swarmManager := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.Write([]byte(body))
+	}))
+	defer swarmManager.Close()
+
+	joiningNodeWithInvalidRole := model.JoiningNode{
+		Role:     "invalidRole",
+		Endpoint: "invalid",
+	}
+
+	httpClient, err := NewHttpClient()
+	assert.Nil(t, err)
+
+	client := &CraneDockerClient{
+		sharedHttpClient:         httpClient,
+		swarmManagerHttpEndpoint: swarmManager.URL,
+	}
+
+	err = client.CreateNode(joiningNodeWithInvalidRole)
+	assert.NotNil(t, err)
 }
 
 func TestListNodeError(t *testing.T) {

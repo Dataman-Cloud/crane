@@ -83,6 +83,15 @@ func parseEndpoint(endpoint string) (*url.URL, error) {
 	return u, nil
 }
 
+func getAdvertiseAddrByEndpoint(endpoint string) (string, error) {
+	u, err := parseEndpoint(endpoint)
+	if err != nil {
+		return "", err
+	}
+
+	return strings.Split(u.Host, ":")[0], nil
+}
+
 func GetServicesNamespace(spec swarm.ServiceSpec) string {
 	if spec.Annotations.Labels == nil {
 		return ""
