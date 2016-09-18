@@ -1,8 +1,6 @@
 package registryauth
 
 import (
-	"github.com/Dataman-Cloud/crane/src/utils/db"
-
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	_ "github.com/mattes/migrate/driver/mysql"
@@ -18,10 +16,9 @@ type RegistryAuth struct {
 
 var DbClient *gorm.DB
 
-func Init() {
-	DbClient = db.DB()
+func Init(dbClient *gorm.DB) {
+	DbClient = dbClient
 	DbClient.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&RegistryAuth{}).AddUniqueIndex("idx_name_userid", "name", "account_id")
-
 }
 
 func Create(auth *RegistryAuth) error {

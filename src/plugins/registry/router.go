@@ -1,24 +1,15 @@
 package registry
 
 import (
-	"os"
-
 	"github.com/Dataman-Cloud/crane/src/plugins/apiplugin"
-	"github.com/Dataman-Cloud/crane/src/utils/config"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
 )
 
-func Init() {
+func Init(accountAuthenticator, registryPrivateKeyPath, registryAddr string) {
 	log.Infof("begin to init and enable plugin: %s", apiplugin.Registry)
-	conf := config.GetConfig()
-	if conf == nil {
-		log.Errorf("init plugin: %s failed conf is nil", apiplugin.Registry)
-		os.Exit(1)
-	}
-
-	registryApi := NewRegistry(conf.AccountAuthenticator, conf.RegistryPrivateKeyPath, conf.RegistryAddr)
+	registryApi := NewRegistry(accountAuthenticator, registryPrivateKeyPath, registryAddr)
 
 	apiPlugin := &apiplugin.ApiPlugin{
 		Name:         apiplugin.Registry,

@@ -12,6 +12,8 @@ import (
 	"github.com/Dataman-Cloud/crane/src/utils/db"
 
 	log "github.com/Sirupsen/logrus"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
+	_ "github.com/mattes/migrate/driver/mysql"
 )
 
 func Init() {
@@ -24,17 +26,17 @@ func Init() {
 	for _, feature := range conf.FeatureFlags {
 		switch feature {
 		case apiplugin.License:
-			license.Init()
+			license.Init(db.DB())
 		case apiplugin.RegistryAuth:
-			rAuthApi.Init()
+			rAuthApi.Init(db.DB())
 		case apiplugin.Catalog:
 			catalog.Init(db.DB())
 		case apiplugin.Registry:
-			registry.Init()
+			registry.Init(conf.AccountAuthenticator, conf.RegistryPrivateKeyPath, conf.RegistryAddr)
 		case apiplugin.Search:
 			search.Init()
 		case apiplugin.Account:
-			authApi.Init()
+			authApi.Init(conf)
 		}
 	}
 }

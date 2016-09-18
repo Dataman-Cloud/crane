@@ -5,6 +5,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Dataman-Cloud/crane/src/plugins/apiplugin"
+
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 )
@@ -15,6 +17,13 @@ var testDocument Document = Document{
 	Type:    "test",
 	GroupId: uint64(123),
 	Param:   map[string]string{"id": "test"},
+}
+
+func TestInit(t *testing.T) {
+	Init()
+	defer delete(apiplugin.ApiPlugins, apiplugin.Search)
+
+	assert.NotNil(t, apiplugin.ApiPlugins[apiplugin.Search])
 }
 
 func TestNewDocumentStorage(t *testing.T) {

@@ -1,8 +1,6 @@
 package api
 
 import (
-	"os"
-
 	"github.com/Dataman-Cloud/crane/src/dockerclient"
 	"github.com/Dataman-Cloud/crane/src/plugins/apiplugin"
 	"github.com/Dataman-Cloud/crane/src/plugins/auth"
@@ -23,14 +21,8 @@ type AccountApi struct {
 	Authorization     gin.HandlerFunc
 }
 
-func Init() {
+func Init(conf *config.Config) {
 	log.Infof("begin to init and enable plugin: %s", apiplugin.Account)
-	conf := config.GetConfig()
-	if conf == nil {
-		log.Errorf("init plugin: %s failed config is nil", apiplugin.Account)
-		os.Exit(1)
-	}
-
 	accountApi := &AccountApi{Config: conf}
 	if conf.AccountTokenStore == "default" {
 		accountApi.TokenStore = token_store.NewDefaultStore()
