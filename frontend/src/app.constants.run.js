@@ -67,9 +67,9 @@
         };
 
         $rootScope.TASK_RESTART_POLICY_COND = {
-            'none': '不重启',
-            'any': '退出后重启',
-            'on-failure': '失败重启'
+            'none': 'Task_restart_policy_none',
+            'any': 'Task_restart_policy_any',
+            'on-failure': 'Task_restart_policy_on_failure'
         };
 
         $rootScope.VOL_DRIVER = {

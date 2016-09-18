@@ -27,7 +27,7 @@
         };
 
         function link(scope, elem) {
-            var html = '<div class="no-info">{/text ? text : "暂无信息"/}</div>';
+            var html = '<div class="no-info">{/text ? text : "No information" | translate/}</div>';
 
             if (utils.isEmpty(scope.value)) {
                 var e = $compile(html)(scope);
