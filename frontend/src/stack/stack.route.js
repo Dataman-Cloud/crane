@@ -18,7 +18,7 @@
                 template: '<ui-view/>',
                 targetState: 'list',
                 ncyBreadcrumb: {
-                    label: '项目'
+                    label: "{/'Stack' | translate/}"
                 }
             })
             .state('stack.list', {
@@ -29,7 +29,7 @@
                     stacks: listStacks
                 },
                 ncyBreadcrumb: {
-                    label: '项目列表'
+                    label: "{/'Stack List' | translate/}"
                 }
             })
             .state('stack.createByJson', {
@@ -37,7 +37,7 @@
                 templateUrl: '/src/stack/create/create-by-Json.html',
                 controller: 'StackCreateByJsonCtrl as stackCreateByJsonCtrl',
                 ncyBreadcrumb: {
-                    label: '增加项目'
+                    label: "{/'Create Project' | translate/}"
                 }
             })
             .state('stack.createByForm', {
@@ -45,7 +45,7 @@
                 templateUrl: '/src/stack/create/create-by-form.html',
                 controller: 'StackCreateByFormCtrl as stackCreateByFormCtrl',
                 ncyBreadcrumb: {
-                    label: '增加项目'
+                    label: "{/'Add Project' | translate/}"
                 }
             })
             .state('stack.serviceUpdate', {
@@ -53,7 +53,7 @@
                 templateUrl: '/src/stack/service-update/update.html',
                 controller: 'ServiceUpdateCtrl as serviceUpdateCtrl',
                 ncyBreadcrumb: {
-                    label: '服务更新'
+                    label:  "{/'Service Update' | translate/}"
                 },
                 resolve: {
                     service: getService
@@ -68,7 +68,7 @@
                     stack: getStack
                 },
                 ncyBreadcrumb: {
-                    label: '项目详情'
+                    label: "{/'Project Detail' | translate/}"
                 }
             })
             .state('stack.detail.service', {
@@ -91,7 +91,7 @@
                     service: getService
                 },
                 ncyBreadcrumb: {
-                    label: '服务详情',
+                    label: "{/'Service Detail' | translate/}",
                     parent: 'stack.detail'
                 }
             })
