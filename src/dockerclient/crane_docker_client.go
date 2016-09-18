@@ -71,12 +71,9 @@ func (client *CraneDockerClient) SwarmManager() *docker.Client {
 }
 
 // create a daemon docker client base on host id stored in ctx
-func (client *CraneDockerClient) createNodeClient(nodeId string) (*docker.Client, error) {
+func (client *CraneDockerClient) createNodeClient(nodeUrl *url.URL) (*docker.Client, error) {
 	var swarmNode *docker.Client
-	nodeUrl, err := client.NodeDaemonUrl(nodeId)
-	if err != nil {
-		return nil, err
-	}
+	var err error
 
 	endpoint := nodeUrl.String()
 	if nodeUrl.Scheme == "https" {
@@ -85,27 +82,19 @@ func (client *CraneDockerClient) createNodeClient(nodeId string) (*docker.Client
 		swarmNode, err = docker.NewVersionedClient(endpoint, API_VERSION)
 	}
 
-	if err != nil {
-		return nil, &cranerror.CraneError{
-			Code: CodeConnToNodeError,
-			Err:  &cranerror.NodeConnError{ID: nodeId, Endpoint: endpoint, Err: err},
-		}
-	}
-
-	return swarmNode, nil
+	return swarmNode, err
 }
 
-// create node client: form manager node got endpoint by node label and verify node id
-// by get docker info form httpclient
+// create node client: got endpoint by node label
+// verify if node id matches the endpoint against docker info
 func (client *CraneDockerClient) SwarmNode(ctx context.Context) (*docker.Client, error) {
 	nodeId, ok := ctx.Value("node_id").(string)
 	if !ok {
 		return nil, &cranerror.CraneError{
 			Code: CodeConnToNodeError,
 			Err: &cranerror.NodeConnError{
-				ID:       nodeId,
-				Endpoint: "",
-				Err:      fmt.Errorf("parse node id  failed"),
+				ID:  nodeId,
+				Err: fmt.Errorf("parse node id failed"),
 			},
 		}
 	}
@@ -119,9 +108,12 @@ func (client *CraneDockerClient) SwarmNode(ctx context.Context) (*docker.Client,
 		return nil, err
 	}
 
-	nodeClient, err := client.createNodeClient(nodeId)
+	nodeClient, err := client.createNodeClient(nodeUrl)
 	if err != nil {
-		return nil, err
+		return nil, &cranerror.CraneError{
+			Code: CodeConnToNodeError,
+			Err:  &cranerror.NodeConnError{ID: nodeId, Err: err},
+		}
 	}
 
 	return nodeClient, nil
