@@ -60,7 +60,7 @@
             try {
                 JSON.parse(self.stack)
             } catch (err) {
-                self.errorInfo.stack = 'JSON 格式有误';
+                self.errorInfo.stack = 'Project Json Format Error';
             }
         }
 

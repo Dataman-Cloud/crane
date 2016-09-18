@@ -22,19 +22,19 @@
                         <md-menu-item>
                             <md-button id="deploy-catalog" aria-label="deploy"
                                        data-ui-sref="registry.catalogDetail({catalog_id: catalog.Id})">
-                                部署
+				    {/'Project Deployment' | translate/}
                             </md-button>
                         </md-menu-item>
                         <md-menu-item>
                             <md-button id="update-catalog" aria-label="update"
                                        data-ui-sref="registry.updateCatalog({catalog_id: catalog.Id})">
-                                更新
+				    {/'Project Update' | translate/}
                             </md-button>
                         </md-menu-item>
                         <md-menu-item>
                             <md-button id="delete-catalog" aria-label="delete"
                                        data-ng-click="repositorieListCatalogCtrl.deleteCatalog(catalog.Id, $event)">
-                                删除
+				    {/'Project Delete' | translate/}
                             </md-button>
                         </md-menu-item>
                     </md-menu-content>

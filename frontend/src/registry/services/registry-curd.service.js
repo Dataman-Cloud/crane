@@ -19,7 +19,7 @@
         };
 
         function deleteImage(repository, tag, ev) {
-            confirmModal.open("是否确认删除镜像？", ev).then(function () {
+            confirmModal.open("Registry Delete Confirm", ev).then(function () {
                 if (isPublicRepository(repository)) {
                     $state.go('registry.list.public', {open: repository}, {reload: true});
                 } else {
@@ -52,10 +52,10 @@
         }
 
         function deleteCatalog(catalogId, ev) {
-            confirmModal.open("是否确认删除该项目模板？", ev).then(function () {
+            confirmModal.open("Project Delete Confirm", ev).then(function () {
                 registryBackend.deleteCatalog(catalogId)
                     .then(function (data) {
-                        Notification.success('删除成功');
+                        Notification.success('Project Delete Success');
                         $state.go('registry.list.catalogs', null, {reload: true});
                     })
             });
@@ -64,7 +64,7 @@
         function updateCatalog(catalogId, data) {
             registryBackend.updateCatalog(catalogId, data)
                 .then(function (data) {
-                    Notification.success('更新成功');
+                    Notification.success('Project Update Success');
                     $state.go('registry.list.catalogs', null, {reload: true});
                 })
         }
