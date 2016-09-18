@@ -281,6 +281,92 @@
                 }
             }
         },
+        "/account/v1/logout": {
+            "post": {
+                "summary": "登出用户",
+                "description": "删除服务器token, 验证成功返回200; 否则返回相应的错误信息",
+                "tags": [
+                    "Account"
+                ],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "用户token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "登出成功",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralOkResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "登出失败, 返回相应的errorcode 和错误信息",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/account/v1/aboutme": {
+            "get": {
+                "summary": "获取当前用户信息",
+                "description": "正确返回当前用户信息，失败则返回相应错误信息",
+                "tags": [
+                    "Account"
+                ],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "用户token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回当前用户信息",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "Email": {
+                                    "type": "string",
+                                    "description": "邮箱"
+                                },
+                                "Id": {
+                                    "type": "integer",
+                                    "description": "id"
+                                },
+                                "LoginAt": {
+                                    "type": "string",
+                                    "description": "登录时间"
+                                },
+                                "Phone": {
+                                    "type": "string",
+                                    "description": "手机号"
+                                },
+                                "Title": {
+                                    "type": "string",
+                                    "description": "代称"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "token 验证失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/nodes/{node_id}/networks": {
             "post": {
                 "summary": "在相应节点上创建集群网络",
@@ -317,7 +403,17 @@
                     "200": {
                         "description": "创建成功返回信息",
                         "schema": {
-                            "$ref": "#/definitions/CreateNetworkOptions"
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "integer",
+                                    "format": "int8",
+                                    "default": 0
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/CreateNetworkOptions"
+                                }
+                            }
                         }
                     },
                     "400": {
@@ -366,9 +462,19 @@
                     "200": {
                         "description": "返回所有网络信息",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/CreateNetworkOptions"
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "integer",
+                                    "format": "int8",
+                                    "default": 0
+                                },
+                                "data": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/CreateNetworkOptions"
+                                    }
+                                }
                             }
                         }
                     },
@@ -427,7 +533,17 @@
                     "200": {
                         "description": "返回所有网络信息",
                         "schema": {
-                            "$ref": "#/definitions/CreateNetworkOptions"
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "integer",
+                                    "format": "int8",
+                                    "default": 0
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/CreateNetworkOptions"
+                                }
+                            }
                         }
                     },
                     "401": {
@@ -539,7 +655,17 @@
                     "200": {
                         "description": "创建成功返回信息",
                         "schema": {
-                            "$ref": "#/definitions/CreateNetworkOptions"
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "integer",
+                                    "format": "int8",
+                                    "default": 0
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/CreateNetworkOptions"
+                                }
+                            }
                         }
                     },
                     "400": {
@@ -581,9 +707,19 @@
                     "200": {
                         "description": "返回所有网络信息",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/CreateNetworkOptions"
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "integer",
+                                    "format": "int8",
+                                    "default": 0
+                                },
+                                "data": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/CreateNetworkOptions"
+                                    }
+                                }
                             }
                         }
                     },
@@ -672,7 +808,17 @@
                     "200": {
                         "description": "返回所有网络信息",
                         "schema": {
-                            "$ref": "#/definitions/CreateNetworkOptions"
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "integer",
+                                    "format": "int8",
+                                    "default": 0
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/CreateNetworkOptions"
+                                }
+                            }
                         }
                     },
                     "401": {
@@ -2171,6 +2317,167 @@
                     }
                 }
             }
+        },
+        "/misc/v1/config": {
+            "get": {
+                "summary": "获取平台信息",
+                "description": "成功返回信息，错误返回相应错误码",
+                "tags": [
+                    "Misc"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回平台信息",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "integer",
+                                    "format": "int8",
+                                    "default": 0
+                                },
+                                "data": {
+                                    "type": "object",
+                                    "properties": {
+                                        "Build": {
+                                            "type": "string",
+                                            "description": "平台程序build时间"
+                                        },
+                                        "FeatureFlags": {
+                                            "type": "array",
+                                            "description": "使用插件列表",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "NumGoroutine": {
+                                            "type": "integer",
+                                            "format": "int32",
+                                            "description": "协程总数"
+                                        },
+                                        "SwarmInfo": {
+                                            "type": "object",
+                                            "description": "swarm信息",
+                                            "properties": {
+                                                "CreatedAt": {
+                                                    "type": "string",
+                                                    "description": "swarm创建时间"
+                                                },
+                                                "ID": {
+                                                    "type": "string",
+                                                    "description": "swarm id"
+                                                },
+                                                "JoinTokens": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "Manager": {
+                                                            "type": "string",
+                                                            "description": "manager token"
+                                                        },
+                                                        "Worker": {
+                                                            "type": "string",
+                                                            "description": "worker token"
+                                                        }
+                                                    }
+                                                },
+                                                "Spec": {
+                                                    "$ref": "#/definitions/SwarmSpec"
+                                                },
+                                                "UpdatedAt": {
+                                                    "type": "string",
+                                                    "description": "swarm更新时间"
+                                                },
+                                                "Version": {
+                                                    "type": "object",
+                                                    "description": "swarm版本信息",
+                                                    "properties": {
+                                                        "Index": {
+                                                            "type": "integer",
+                                                            "format": "int64"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "Version": {
+                                            "type": "string",
+                                            "description": "平台版本号"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "获取持续集成链接失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/search/v1/luckysearch": {
+            "get": {
+                "summary": "搜索",
+                "description": "成功返回搜索结果，错误返回相应错误码",
+                "tags": [
+                    "Search"
+                ],
+                "parameters": [
+                    {
+                        "name": "keyword",
+                        "in": "query",
+                        "description": "搜索关键词",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "返回搜索结果",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "integer",
+                                    "format": "int8",
+                                    "default": 0
+                                },
+                                "data": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "ID": {
+                                                "type": "string",
+                                                "description": "id"
+                                            },
+                                            "Name": {
+                                                "type": "string",
+                                                "description": "名称"
+                                            },
+                                            "Param": {
+                                                "type": "object",
+                                                "description": "参数"
+                                            },
+                                            "Type": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "搜索失败",
+                        "schema": {
+                            "$ref": "#/definitions/GeneralErrorResponse"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -3379,6 +3686,65 @@
                 }
             }
         },
+        "SwarmSpec": {
+            "type": "object",
+            "properties": {
+                "CAConfig": {
+                    "type": "object",
+                    "properties": {
+                        "NodeCertExpiry": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                },
+                "Dispatcher": {
+                    "type": "object",
+                    "properties": {
+                        "HeartbeatPeriod": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                },
+                "Name": {
+                    "type": "string"
+                },
+                "Orchestration": {
+                    "type": "object",
+                    "properties": {
+                        "TaskHistoryRetentionLimit": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                },
+                "Raft": {
+                    "type": "object",
+                    "properties": {
+                        "ElectionTick": {
+                            "type": "integer",
+                            "format": "int64"
+                        },
+                        "HeartbeatTick": {
+                            "type": "integer",
+                            "format": "int64"
+                        },
+                        "LogEntriesForSlowFollowers": {
+                            "type": "integer",
+                            "format": "int64"
+                        },
+                        "SnapshotInterval": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                },
+                "TaskDefaults": {
+                    "type": "object"
+                }
+            }
+        },
         "NodeInfo": {
             "type": "object",
             "properties": {
@@ -3555,63 +3921,7 @@
                                     "type": "string"
                                 },
                                 "Spec": {
-                                    "type": "object",
-                                    "properties": {
-                                        "CAConfig": {
-                                            "type": "object",
-                                            "properties": {
-                                                "NodeCertExpiry": {
-                                                    "type": "integer",
-                                                    "format": "int64"
-                                                }
-                                            }
-                                        },
-                                        "Dispatcher": {
-                                            "type": "object",
-                                            "properties": {
-                                                "HeartbeatPeriod": {
-                                                    "type": "integer",
-                                                    "format": "int64"
-                                                }
-                                            }
-                                        },
-                                        "Name": {
-                                            "type": "string"
-                                        },
-                                        "Orchestration": {
-                                            "type": "object",
-                                            "properties": {
-                                                "TaskHistoryRetentionLimit": {
-                                                    "type": "integer",
-                                                    "format": "int64"
-                                                }
-                                            }
-                                        },
-                                        "Raft": {
-                                            "type": "object",
-                                            "properties": {
-                                                "ElectionTick": {
-                                                    "type": "integer",
-                                                    "format": "int64"
-                                                },
-                                                "HeartbeatTick": {
-                                                    "type": "integer",
-                                                    "format": "int64"
-                                                },
-                                                "LogEntriesForSlowFollowers": {
-                                                    "type": "integer",
-                                                    "format": "int64"
-                                                },
-                                                "SnapshotInterval": {
-                                                    "type": "integer",
-                                                    "format": "int64"
-                                                }
-                                            }
-                                        },
-                                        "TaskDefaults": {
-                                            "type": "object"
-                                        }
-                                    }
+                                    "$ref": "#/definitions/SwarmSpec"
                                 },
                                 "UpdatedAt": {
                                     "type": "string"
