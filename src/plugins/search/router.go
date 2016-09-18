@@ -3,6 +3,9 @@ package search
 import (
 	"time"
 
+	"github.com/Dataman-Cloud/crane/src/plugins/apiplugin"
+
+	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
 )
 
@@ -65,7 +68,20 @@ type Document struct {
 	Param   map[string]string
 }
 
-func (searchApi *SearchApi) RegisterApiForSearch(router *gin.Engine, middlewares ...gin.HandlerFunc) {
+func Init() {
+	log.Infof("begin to init and enable plugin: %s", apiplugin.Search)
+
+	apiPlugin := &apiplugin.ApiPlugin{
+		Name:         apiplugin.Search,
+		Dependencies: []string{},
+		Instance:     &SearchApi{},
+	}
+
+	apiplugin.Add(apiPlugin)
+	log.Infof("init and enable plugin: %s success", apiplugin.Search)
+}
+
+func (searchApi *SearchApi) ApiRegister(router *gin.Engine, middlewares ...gin.HandlerFunc) {
 	searchApi.IndexData()
 
 	searchV1 := router.Group("/search/v1", middlewares...)

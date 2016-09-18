@@ -6,13 +6,14 @@ import (
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
+	"github.com/jinzhu/gorm"
 )
 
 type RegistryAuthApi struct{}
 
-func Init() {
+func Init(dbClient *gorm.DB) {
 	log.Infof("begin to init and enable plugin: %s", apiplugin.RegistryAuth)
-	rauth.Init()
+	rauth.Init(dbClient)
 
 	apiPlugin := &apiplugin.ApiPlugin{
 		Name:         apiplugin.RegistryAuth,

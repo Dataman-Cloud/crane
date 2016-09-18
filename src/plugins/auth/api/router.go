@@ -2,12 +2,14 @@ package api
 
 import (
 	"github.com/Dataman-Cloud/crane/src/dockerclient"
+	"github.com/Dataman-Cloud/crane/src/plugins/apiplugin"
 	"github.com/Dataman-Cloud/crane/src/plugins/auth"
 	"github.com/Dataman-Cloud/crane/src/plugins/auth/authenticators"
 	chains "github.com/Dataman-Cloud/crane/src/plugins/auth/middlewares"
 	"github.com/Dataman-Cloud/crane/src/plugins/auth/token_store"
 	"github.com/Dataman-Cloud/crane/src/utils/config"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
 )
 
@@ -19,22 +21,34 @@ type AccountApi struct {
 	Authorization     gin.HandlerFunc
 }
 
+func Init(conf *config.Config) {
+	log.Infof("begin to init and enable plugin: %s", apiplugin.Account)
+	accountApi := &AccountApi{Config: conf}
+	if conf.AccountTokenStore == "default" {
+		accountApi.TokenStore = token_store.NewDefaultStore()
+	} else if conf.AccountTokenStore == "cookie_store" {
+		accountApi.TokenStore = token_store.NewCookieStore()
+	}
+
+	if conf.AccountAuthenticator == "default" {
+		accountApi.Authenticator = authenticators.NewDefaultAuthenticator()
+	} else if conf.AccountAuthenticator == "db" {
+		accountApi.Authenticator = authenticators.NewDBAuthenticator()
+	}
+
+	accountApi.Authorization = chains.Authorization(accountApi.TokenStore, accountApi.Authenticator)
+
+	apiPlugin := &apiplugin.ApiPlugin{
+		Name:         apiplugin.Account,
+		Dependencies: []string{apiplugin.Db},
+		Instance:     accountApi,
+	}
+
+	apiplugin.Add(apiPlugin)
+	log.Infof("init and enable plugin: %s success", apiplugin.Account)
+}
+
 func (account *AccountApi) ApiRegister(router *gin.Engine, middlewares ...gin.HandlerFunc) {
-	if account.Config.AccountTokenStore == "default" {
-		account.TokenStore = token_store.NewDefaultStore()
-	} else if account.Config.AccountTokenStore == "cookie_store" {
-		account.TokenStore = token_store.NewCookieStore()
-	}
-
-	if account.Config.AccountAuthenticator == "default" {
-		account.Authenticator = authenticators.NewDefaultAuthenticator()
-	} else if account.Config.AccountAuthenticator == "db" {
-		account.Authenticator = authenticators.NewDBAuthenticator()
-	}
-
-	account.Authorization = chains.Authorization(account.TokenStore, account.Authenticator)
-	AuthorizeServiceAccess := chains.AuthorizeServiceAccess()
-
 	accountV1 := router.Group("/account/v1")
 	{
 		accountV1.Use(account.Authorization)
@@ -60,6 +74,7 @@ func (account *AccountApi) ApiRegister(router *gin.Engine, middlewares ...gin.Ha
 
 	router.POST("/account/v1/login", account.AccountLogin)
 
+	AuthorizeServiceAccess := chains.AuthorizeServiceAccess()
 	serviceV1 := router.Group("/api/v1/")
 	{
 		serviceV1.Use(middlewares...)

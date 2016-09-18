@@ -1,22 +1,29 @@
 package catalog
 
 import (
+	"github.com/Dataman-Cloud/crane/src/plugins/apiplugin"
+
+	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 )
 
-func NewCatalog(db *gorm.DB) *CatalogApi {
-	return &CatalogApi{
-		DbClient: db,
-	}
-}
-
-func (catalogApi *CatalogApi) MigriateTable() {
+func Init(dbClient *gorm.DB) {
+	log.Infof("begin to init and enable plugin: %s", apiplugin.Catalog)
+	catalogApi := &CatalogApi{DbClient: dbClient}
 	catalogApi.DbClient.Set("gorm:table_options", "ENGINE=InnoDB DEFAULT CHARSET=utf8").AutoMigrate(&Catalog{})
+
+	apiPlugin := &apiplugin.ApiPlugin{
+		Name:         apiplugin.Catalog,
+		Dependencies: []string{apiplugin.Db},
+		Instance:     catalogApi,
+	}
+
+	apiplugin.Add(apiPlugin)
+	log.Infof("init and enable plugin: %s success", apiplugin.Catalog)
 }
 
-func (catalogApi *CatalogApi) RegisterApiForCatalog(router *gin.Engine, middlewares ...gin.HandlerFunc) {
-
+func (catalogApi *CatalogApi) ApiRegister(router *gin.Engine, middlewares ...gin.HandlerFunc) {
 	catalogV1 := router.Group("/catalog/v1", middlewares...)
 	{
 		catalogV1.GET("/catalogs", catalogApi.ListCatalog)

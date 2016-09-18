@@ -2,16 +2,17 @@ package license
 
 import (
 	"github.com/Dataman-Cloud/crane/src/plugins/apiplugin"
-	"github.com/Dataman-Cloud/crane/src/utils/db"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	_ "github.com/mattes/migrate/driver/mysql"
 )
 
-func Init() {
-	licenseApi := &LicenseApi{DbClient: db.DB()}
+func Init(dbClient *gorm.DB) {
+	log.Infof("begin to init and enable plugin: %s", apiplugin.License)
+	licenseApi := &LicenseApi{DbClient: dbClient}
 	licenseApi.MigriateSetting()
 
 	apiPlugin := &apiplugin.ApiPlugin{
@@ -21,6 +22,7 @@ func Init() {
 	}
 
 	apiplugin.Add(apiPlugin)
+	log.Infof("init and enable plugin: %s success", apiplugin.License)
 }
 
 type LicenseApi struct {

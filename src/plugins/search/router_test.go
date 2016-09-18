@@ -5,6 +5,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Dataman-Cloud/crane/src/plugins/apiplugin"
+
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 )
@@ -15,6 +17,13 @@ var testDocument Document = Document{
 	Type:    "test",
 	GroupId: uint64(123),
 	Param:   map[string]string{"id": "test"},
+}
+
+func TestInit(t *testing.T) {
+	Init()
+	defer delete(apiplugin.ApiPlugins, apiplugin.Search)
+
+	assert.NotNil(t, apiplugin.ApiPlugins[apiplugin.Search])
 }
 
 func TestNewDocumentStorage(t *testing.T) {
@@ -66,10 +75,10 @@ func TestGet(t *testing.T) {
 	assert.Equal(t, value, &testDocument, "should be equal")
 }
 
-func TestRegisterApiForSearch(t *testing.T) {
+func TestApiRegister(t *testing.T) {
 	router := gin.New()
 	searchApi := &SearchApi{}
-	searchApi.RegisterApiForSearch(router)
+	searchApi.ApiRegister(router)
 	routes := router.Routes()
 	assert.Equal(t, len(routes), 1, "there should be one router")
 	if len(routes) == 1 {
@@ -113,7 +122,7 @@ func TestIndexData(t *testing.T) {
 	searchApi := &SearchApi{}
 	searchApi.Indexer = &MockCraneIndexer{}
 	searchApi.IndexData()
-	time.Sleep(time.Minute * time.Duration(SEARCH_LOAD_DATA_INTERVAL))
+	time.Sleep(time.Minute * time.Duration(SEARCH_LOAD_DATA_INTERVAL) * 1)
 	value1 := searchApi.PrefetchStore.Get("24ifsmvkjbyhkbf3067039e47")
 	value2 := searchApi.Store.Get("8dfafdbc3a40blah24ifsmvkjbyhk")
 	assert.Equal(t, len(searchApi.Index), 2, "should be equal")

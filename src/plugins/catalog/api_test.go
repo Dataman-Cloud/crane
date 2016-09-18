@@ -29,7 +29,7 @@ func TestGetCatalogBadRequest(t *testing.T) {
 	fakeDb := SetupDB()
 	defer TearDownDB(fakeDb)
 	catalog := MockCatalog()
-	catalogApi := NewCatalog(fakeDb.Db)
+	catalogApi := &CatalogApi{DbClient: fakeDb.Db}
 	catalogApi.DbClient.Save(catalog)
 
 	assert.NotNil(t, catalog.ID)
@@ -50,7 +50,7 @@ func TestGetCatalogWrongCatalogID(t *testing.T) {
 	fakeDb := SetupDB()
 	defer TearDownDB(fakeDb)
 	catalog := MockCatalog()
-	catalogApi := NewCatalog(fakeDb.Db)
+	catalogApi := &CatalogApi{DbClient: fakeDb.Db}
 	catalogApi.DbClient.Save(catalog)
 
 	assert.NotNil(t, catalog.ID)
@@ -70,8 +70,7 @@ func TestGetCatalogWrongCatalogID(t *testing.T) {
 func TestGetCatalogSuccess(t *testing.T) {
 	fakeDb := SetupDB()
 	catalog := MockCatalog()
-	catalogApi := NewCatalog(fakeDb.Db)
-	catalogApi.MigriateTable()
+	catalogApi := &CatalogApi{DbClient: fakeDb.Db}
 
 	assert.NotNil(t, catalog.ID)
 	assert.Equal(t, catalogApi.DbClient, fakeDb.Db)
@@ -90,7 +89,7 @@ func TestListCatalogOK(t *testing.T) {
 	fakeDb := SetupDB()
 	defer TearDownDB(fakeDb)
 	catalog := MockCatalog()
-	catalogApi := NewCatalog(fakeDb.Db)
+	catalogApi := &CatalogApi{DbClient: fakeDb.Db}
 	catalogApi.DbClient.Save(catalog)
 
 	assert.NotNil(t, catalog.ID)
@@ -111,7 +110,7 @@ func TestListCatalogOK(t *testing.T) {
 func TestCreateCatalogOK(t *testing.T) {
 	fakeDb := SetupDB()
 	defer TearDownDB(fakeDb)
-	catalogApi := NewCatalog(fakeDb.Db)
+	catalogApi := &CatalogApi{DbClient: fakeDb.Db}
 
 	gin.SetMode(gin.TestMode)
 	router := gin.New()
