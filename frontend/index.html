@@ -31,37 +31,43 @@
         <ul>
             <li title="项目" data-ui-sref-active="active">
                 <md-button data-ui-sref="stack" data-ui-sref-opts="{reload: true, inherit: false}" id="index-stack">
-                    <i class="fa fa-stack-overflow"></i>项目
+                    <i class="fa fa-stack-overflow"></i>
+                    {/'Stack' | translate/}
                 </md-button>
             </li>
 
             <li title="镜像" data-ui-sref-active="active" dm-display-components="registry">
                 <md-button data-ui-sref="registry" data-ui-sref-opts="{inherit: false}" id="index-registry">
-                    <i class="fa fa-shopping-cart"></i>镜像
+                    <i class="fa fa-shopping-cart"></i>
+                    {/'Image' | translate/}
                 </md-button>
             </li>
 
             <li title="设施">
                 <md-button ng-disabled="true">
-                    <i class="fa fa fa-building"></i>设施
+                    <i class="fa fa fa-building"></i>
+                    {/'Facility' | translate/}
                 </md-button>
                 <ul>
                     <li title="主机" data-ui-sref-active="active">
                         <md-button data-ui-sref="node" data-ui-sref-opts="{inherit: false}" id="index-node">
-                            <i class="fa fa-server"></i>主机
+                            <i class="fa fa-server"></i>
+                            {/'Node' | translate/}
                         </md-button>
                     </li>
 
                     <li title="网络" data-ui-sref-active="active">
                         <md-button data-ui-sref="network" data-ui-sref-opts="{inherit: false}" id="index-network">
-                            <i class="fa fa-sitemap"></i>网络
+                            <i class="fa fa-sitemap"></i>
+                            {/'Network' | translate/}
                         </md-button>
                     </li>
 
                     <li title="ReAuth" data-ui-sref-active="active" dm-display-components="registryauth">
                         <md-button data-ui-sref="registryAuth" data-ui-sref-opts="{inherit: false}"
                                    id="index-registryAuth">
-                            <i class="fa fa-archive" aria-hidden="true"></i>仓库认证
+                            <i class="fa fa-archive" aria-hidden="true"></i>
+                            {/'Warehouse certification' | translate/}
                         </md-button>
                     </li>
                 </ul>
@@ -69,7 +75,8 @@
 
             <li title="设置" data-ui-sref-active="active">
                 <md-button data-ui-sref="misc" data-ui-sref-opts="{inherit: false}" id="index-misc"><i
-                        class="fa fa-cogs"></i>信息
+                        class="fa fa-cogs"></i>
+                    {/'Information' | translate/}
                 </md-button>
             </li>
         </ul>
@@ -108,7 +115,7 @@
                                 <md-button data-ng-click="rootCtrl.regLicense($event)" id="index-license">
                                     <md-icon md-svg-src="pics/ic_fingerprint_black_24px.svg"
                                              aria-label="ic_power_settings"></md-icon>
-                                    激活
+                                    {/'Activation' | translate/}
                                 </md-button>
                             </md-menu-item>
                             <md-menu-item>

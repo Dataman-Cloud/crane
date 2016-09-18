@@ -33,7 +33,7 @@
         }
 
         function deleteStack(ev, stackName) {
-            confirmModal.open("项目删除后将无法恢复，确认要删除？", ev).then(function () {
+            confirmModal.open("Modal title for delete stack", ev).then(function () {
                 stackBackend.deleteStack(stackName)
                     .then(function (data) {
                         $state.go('stack.list', undefined, {reload: true});
