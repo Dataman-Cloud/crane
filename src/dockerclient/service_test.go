@@ -662,10 +662,6 @@ func TestGetServiceStatus(t *testing.T) {
         "LimitMems":0,
         "ReserveCpus":0,
         "ReserveMems":0,
-        "IPs":[
-            "",
-            ""
-        ],
         "Ports":[
             8000
         ]
@@ -675,7 +671,7 @@ func TestGetServiceStatus(t *testing.T) {
 	// test TaskTemplate.Resources
 	json.Unmarshal([]byte(RqServiceStBody), &RqServiceSt)
 
-	assert.Equal(t, servicesSt, RqServiceSt)
+	assert.Equal(t, RqServiceSt, servicesSt)
 	server.Close()
 
 	serviceContent = `
@@ -799,10 +795,6 @@ func TestGetServiceStatus(t *testing.T) {
         "LimitMems":0,
         "ReserveCpus":1,
         "ReserveMems":1024,
-        "IPs":[
-            "",
-            ""
-        ],
         "Ports":[
             8000
         ]
@@ -812,6 +804,6 @@ func TestGetServiceStatus(t *testing.T) {
 
 	json.Unmarshal([]byte(RqServiceStBody2), &RqServiceSt2)
 
-	assert.Equal(t, servicesSt2, RqServiceSt2)
+	assert.Equal(t, RqServiceSt2, servicesSt2)
 	server.Close()
 }

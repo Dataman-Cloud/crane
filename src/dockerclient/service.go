@@ -123,7 +123,9 @@ func (client *CraneDockerClient) GetServicesStatus(services []swarm.Service) ([]
 	for _, node := range nodes {
 		if node.Status.State == swarm.NodeStateReady {
 			activeNodes[node.ID] = struct{}{}
-			ips = append(ips, node.Spec.Labels["crane.reserved.node.endpoint"])
+			if endpoint, ok := node.Spec.Labels["crane.reserved.node.endpoint"]; ok {
+				ips = append(ips, endpoint)
+			}
 		}
 	}
 
