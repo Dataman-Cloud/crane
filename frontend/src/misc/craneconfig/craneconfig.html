@@ -1,6 +1,6 @@
 <div class="main-content app-layout">
     <section layout="row" class="info-list-detail">
-        <h2 flex="20">基本信息</h2>
+        <h2 flex="20">{/'Basic Information' | translate/}</h2>
         <div flex="80" layout="row" layout-wrap>
             <div flex="30"><h5>Version</h5></div>
             <div flex="70"><p>{/miscConfigCtrl.craneconfig.Version/}</p></div>
@@ -8,7 +8,7 @@
             <div flex="70"><p>{/miscConfigCtrl.craneconfig.Build/}</p></div>
             <div flex="30"><h5>FeatureFlags</h5></div>
             <div flex="70"><p ng-class="{'no-info': !miscConfigCtrl.craneconfig.FeatureFlags}">
-                {/miscConfigCtrl.craneconfig.FeatureFlags || '未配置'/}</p></div>
+                {/miscConfigCtrl.craneconfig.FeatureFlags || ('Not configured' | translate)/}</p></div>
         </div>
     </section>
 
@@ -21,9 +21,9 @@
             <div flex="70"><p>{/miscConfigCtrl.craneconfig.SwarmInfo.JoinTokens.Manager/}</p></div>
             <div flex="30"><h5>工作节点 Token</h5></div>
             <div flex="70"><p>{/miscConfigCtrl.craneconfig.SwarmInfo.JoinTokens.Worker/}</p></div>
-            <div flex="30"><h5>更新时间</h5></div>
+            <div flex="30"><h5>{/'Update Time' | translate/}</h5></div>
             <div flex="70"><p>{/miscConfigCtrl.craneconfig.SwarmInfo.UpdatedAt | date: 'yyyy-MM-dd HH:mm:ss'/}</p></div>
-            <div flex="30"><h5>创建时间</h5></div>
+            <div flex="30"><h5>{/'Create Time' | translate/}</h5></div>
             <div flex="70"><p>{/miscConfigCtrl.craneconfig.SwarmInfo.CreatedAt | date: 'yyyy-MM-dd HH:mm:ss'/}</p></div>
         </div>
     </section>

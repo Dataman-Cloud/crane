@@ -6,23 +6,23 @@
         <div flex="30"><h5>支持 IPv6</h5></div>
         <div flex="70">
             <p ng-class="{'no-info': !networkConfigCtrl.network.EnableIPv6}">
-                {/networkConfigCtrl.network.EnableIPv6 ? '是' : '否'/}
+                {/networkConfigCtrl.network.EnableIPv6 ? 'YES' : 'NO' | translate/}
             </p>
         </div>
         <div flex="30"><h5>仅内部网络</h5></div>
         <div flex="70">
             <p ng-class="{'no-info': !networkConfigCtrl.network.Internal}">
-                {/networkConfigCtrl.network.Internal ? '是' : '否'/}
+                {/networkConfigCtrl.network.Internal ? 'YES' : 'NO' | translate/}
             </p>
         </div>
         <div flex="30"><h5>选项</h5></div>
-        <div flex="70" dm-empty-display="networkConfigCtrl.network.Options" dm-empty-text="未配置">
+        <div flex="70" dm-empty-display="networkConfigCtrl.network.Options" dm-empty-text="{/'Not configured' | translate/}">
             <ul>
                 <li data-ng-repeat="(key, value) in networkConfigCtrl.network.Options">{/key/} : {/value/}</li>
             </ul>
         </div>
-        <div flex="30"><h5>标签</h5></div>
-        <div flex="70" dm-empty-display="networkConfigCtrl.network.Labels" dm-empty-text="未配置">
+        <div flex="30"><h5>{/'Labels' | translate/}</h5></div>
+        <div flex="70" dm-empty-display="networkConfigCtrl.network.Labels" dm-empty-text="{/'Not configured' | translate/}">
             <ul>
                 <li data-ng-repeat="(key, value) in networkConfigCtrl.network.Labels">{/key/} : {/value/}</li>
             </ul>
@@ -35,7 +35,7 @@
     <div flex="80" layout="row" layout-wrap dm-empty-display="network.IPAM.Config[0]">
         <div flex="30"><h5>子网掩码</h5></div>
         <div flex="70"><p>{/networkConfigCtrl.network.IPAM.Config[0].Subnet/}</p></div>
-        <div flex="30"><h5>网关 IP</h5></div>
+        <div flex="30"><h5>{/'Gateway IP' | translate/}</h5></div>
         <div flex="70"><p>{/networkConfigCtrl.network.IPAM.Config[0].Gateway/}</p></div>
     </div>
 </section>
@@ -59,9 +59,9 @@
                         <md-tooltip md-direction="top">{/value.Name/}</md-tooltip>
                     </p>
                 </td>
-                <td><span ng-class="{'no-info': !value.IPv4Address}">{/value.IPv4Address || '未配置'/}</span></td>
-                <td><span ng-class="{'no-info': !value.IPv6Address}">{/value.IPv6Address || '未配置'/}</span></td>
-                <td><span ng-class="{'no-info': !value.MacAddress}">{/value.MacAddress || '未配置'/}</span></td>
+                <td><span ng-class="{'no-info': !value.IPv4Address}">{/value.IPv4Address || ('Not configured' | translate)/}</span></td>
+                <td><span ng-class="{'no-info': !value.IPv6Address}">{/value.IPv6Address || ('Not configured' | translate)/}</span></td>
+                <td><span ng-class="{'no-info': !value.MacAddress}">{/value.MacAddress || ('Not configured' | translate)/}</span></td>
             </tr>
             </tbody>
         </table>

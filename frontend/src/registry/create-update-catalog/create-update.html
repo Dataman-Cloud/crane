@@ -9,7 +9,7 @@
         </div>
         <div ng-messages="staticForm.Name.$error" ng-if="staticForm.Name.$dirty" role="alert">
             <p class="text-danger help-text" ng-message="required">名称不能为空</p>
-            <p class="text-danger help-text" ng-message="pattern">名称必须数字或者英文</p>
+            <p class="text-danger help-text" ng-message="pattern">{/'Only number and letter' | translate/}</p>
         </div>
     </div>
 
@@ -27,7 +27,7 @@
         <div ng-messages="staticForm.Bundle.$error" ng-if="staticForm.Bundle.$dirty" role="alert">
             <p class="text-danger help-text"
                ng-message="required">
-                <small>不能为空</small>
+                <small>{/'Can not be empty' | translate/}</small>
             </p>
         </div>
         <p class="text-danger help-text" data-ng-show="createUpdateCatalog.errorInfo.stack">
@@ -65,6 +65,6 @@
                    data-ng-click="createUpdateCatalog.deploy('update')">更新
         </md-button>
 
-        <md-button data-ng-click="rootCtrl.goBack()">取 消</md-button>
+        <md-button data-ng-click="rootCtrl.goBack()">{/'Cancel' | translate/}</md-button>
     </footer>
 </form>

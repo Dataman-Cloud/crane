@@ -1,5 +1,5 @@
 <md-tabs md-dynamic-height md-border-bottom>
-    <md-tab label="基本信息">
+    <md-tab label="{/'Basic Information' | translate/}">
         <form name="staticForm" class="form-main">
             <div class="form-group" layout="column">
                 <label>编排名称<span class="required">*</span>
@@ -33,7 +33,7 @@
                      role="alert">
                     <p class="text-danger help-text"
                        ng-message="required">
-                        <small>不能为空</small>
+                        <small>{/'Can not be empty' | translate/}</small>
                     </p>
                 </div>
                 <p class="text-danger help-text"
@@ -52,7 +52,7 @@
         </form>
     </md-tab>
 
-    <md-tab label="详情">
+    <md-tab label="{/'Detail' | translate/}">
         <md-content class="main-tab-content">
             <div class="alert alert-warning text-center" data-ng-if="!catalogDetailCtrl.description">
                 暂无详情

@@ -73,7 +73,7 @@
         };
 
         $rootScope.VOL_DRIVER = {
-            'local': '本地'
+            'local': 'Vol_driver_local'
         };
 
         $rootScope.RESERVED_NETWORK_NAMES = [

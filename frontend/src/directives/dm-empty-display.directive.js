@@ -2,7 +2,7 @@
  * @description
  * if dm-empty-display value is invalid, the html and child html will replaced dm-empty-text value or '暂无信息'
  * @example
- <div flex="70" dm-empty-display="serviceConfigCtrl.service.Spec.Networks" dm-empty-text="未配置">
+ <div flex="70" dm-empty-display="serviceConfigCtrl.service.Spec.Networks" dm-empty-text="{/'Not configured' | translate/}">
      <ul>
         <li data-ng-repeat="network in serviceConfigCtrl.service.Spec.Networks">{/network/}</li>
      </ul>

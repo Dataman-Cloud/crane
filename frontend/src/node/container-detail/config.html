@@ -1,27 +1,27 @@
 <section layout="row" class="info-list-detail">
     <h2 flex="20">基础信息</h2>
     <div flex="80" layout="row" layout-wrap>
-        <div flex="30"><h5>镜像</h5></div>
+        <div flex="30"><h5"{/'Image' | translate/}"/h5></div>
         <div flex="70"><p>{/nodeContainerConfigCtrl.container.Config.Image/}</p></div>
-        <div flex="30"><h5>摘要</h5></div>
+        <div flex="30"><h5>{/'Summary' | translate/}</h5></div>
         <div flex="70"><p>{/nodeContainerConfigCtrl.container.Image/}</p></div>
         <div flex="30"><h5>容器主机名</h5></div>
         <div flex="70"><p>{/nodeContainerConfigCtrl.container.Config.Hostname/}</p></div>
-        <div flex="30"><h5>网络模式</h5></div>
+        <div flex="30"><h5>{/'Network Mode' | translate/}</h5></div>
         <div flex="70"><p>{/nodeContainerConfigCtrl.container.HostConfig.NetworkMode/}</p></div>
-        <div flex="30"><h5>hostname 文件</h5></div>
+        <div flex="30"><h5>{/'HostnamePath' | translate/}</h5></div>
         <div flex="70"><p>{/nodeContainerConfigCtrl.container.HostnamePath/}</p></div>
-        <div flex="30"><h5>host 文件</h5></div>
+        <div flex="30"><h5>{/'HostnamePath' | translate/}</h5></div>
         <div flex="70"><p>{/nodeContainerConfigCtrl.container.HostsPath/}</p></div>
-        <div flex="30"><h5>log 文件</h5></div>
+        <div flex="30"><h5>{/'LogPath' | translate/}</h5></div>
         <div flex="70"><p>{/nodeContainerConfigCtrl.container.LogPath/}</p></div>
-        <div flex="30"><h5>resolv.conf 文件</h5></div>
+        <div flex="30"><h5>{/'ResolvConfPath' | translate/}</h5></div>
         <div flex="70"><p>{/nodeContainerConfigCtrl.container.ResolvConfPath/}</p></div>
     </div>
 </section>
 
 <section layout="row" class="info-list-detail">
-    <h2 flex="20">环境变量</h2>
+    <h2 flex="20">{/'Environment' | translate/}</h2>
     <div flex="80" layout="row" layout-wrap>
         <table id="container-config" cellpadding="0" cellspacing="0" dm-empty-display="nodeContainerConfigCtrl.container.Config.Env">
             <tr>
@@ -38,12 +38,12 @@
 </section>
 
 <section layout="row" class="info-list-detail">
-    <h2 flex="20">端口映射</h2>
+    <h2 flex="20">{/'Port Mapping' | translate/}</h2>
     <div flex="80" layout="row" layout-wrap>
         <table cellpadding="0" cellspacing="0" dm-empty-display="nodeContainerConfigCtrl.container.Config.ExposedPorts">
             <tr>
-                <th>端口</th>
-                <th>协议</th>
+                <th>{/'Port' | translate/}</th>
+                <th>{/'Protocol' | translate/}</th>
             </tr>
 
             <tr ng-repeat="(port, protocol)  in  nodeContainerConfigCtrl.container.Config.ExposedPorts">
@@ -55,15 +55,15 @@
 </section>
 
 <section layout="row" class="info-list-detail">
-    <h2 flex="20">网络配置</h2>
+    <h2 flex="20">{/'Network Configuration' | translate/}</h2>
     <div flex="80" layout="row" layout-wrap>
         <table cellpadding="0" cellspacing="0"
                dm-empty-display="nodeContainerConfigCtrl.container.NetworkSettings.Networks">
             <tr>
                 <th>网络</th>
-                <th>网关</th>
-                <th>IP 地址</th>
-                <th>MAC 地址</th>
+                <th>{/'Gateway' | translate/}</th>
+                <th>{/'IP Address' | translate/}</th>
+                <th>{/'MAC Address' | translate/}</th>
             </tr>
 
             <tr data-ng-repeat="(name, network) in nodeContainerConfigCtrl.container.NetworkSettings.Networks">
@@ -78,7 +78,7 @@
 </section>
 
 <section layout="row" class="info-list-detail">
-    <h2 flex="20">容器标签</h2>
+    <h2 flex="20">{/'Container tag"' | translate/}</h2>
     <div flex="80" layout="row" layout-wrap>
         <table cellpadding="0" cellspacing="0" dm-empty-display="nodeContainerConfigCtrl.container.Config.Labels">
             <tr>

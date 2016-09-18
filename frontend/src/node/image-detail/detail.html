@@ -2,7 +2,7 @@
     <h1><i class="fa fa-file-archive-o" aria-hidden="true"></i>{/nodeImageDetailCtrl.image.RepoTags[0]/}</h1>
     <div class="sub-info-main">
         <dl class="info-list">
-            <dt>创建时间</dt>
+            <dt>{/'Create Time' | translate/}</dt>
             <dd>{/nodeImageDetailCtrl.image.Created | date: 'yyyy-MM-dd HH:mm:ss'/}</dd>
             <dt>架构</dt>
             <dd ng-class="{'no-info': !nodeImageDetailCtrl.image.Architecture}">{/nodeImageDetailCtrl.image.Architecture || '未知'/}</dd>

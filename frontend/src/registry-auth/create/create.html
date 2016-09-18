@@ -59,7 +59,7 @@
              role="alert">
             <p class="text-danger help-text"
                ng-message="required">
-                <small>不能为空</small>
+                <small>{/'Can not be empty' | translate/}</small>
             </p>
             <p class="text-danger help-text"
                ng-message="checkrepeat">
@@ -71,7 +71,7 @@
     <footer class="form-buttons">
         <md-button class="md-raised md-primary"
                    data-ng-disabled="createRegAuth.$invalid"
-                   data-ng-click="regAuthCreateCtrl.create()">创建
+                   data-ng-click="regAuthCreateCtrl.create()">{/'Create' | translate/}
         </md-button>
         <md-button data-ng-click="rootCtrl.goBack()">取消</md-button>
     </footer>

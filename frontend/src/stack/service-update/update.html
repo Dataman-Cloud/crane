@@ -15,7 +15,7 @@
                 </p>
                 <p class="text-danger help-text"
                    ng-message="pattern">
-                    <small>名称必须数字或者英文</small>
+                    <small>{/'Only number and letter' | translate/}</small>
                 </p>
                 <p class="text-danger help-text"
                    ng-message="dmCheckInclude">
@@ -25,7 +25,7 @@
         </div>
 
         <div class="form-group" layout="column">
-            <label>镜像 <em>image</em><span class="required">*</span></label>
+            <label>{/'Image' | translate/} <em>image</em><span class="required">*</span></label>
             <div class="form-control">
                 <input type="text" focus-me
                        data-ng-model="serviceUpdateCtrl.form.TaskTemplate.ContainerSpec.Image"
@@ -406,7 +406,7 @@
                 <div class="form-control sub-group" layout="row" layout-align="start center">
                     <div flex="25">
                         <label class="sub-label">CPU
-                            <small>核</small>
+                            <small>{/'Core' | translate/}</small>
                         </label>
                         <input type="number"
                                data-ng-model="serviceUpdateCtrl.form.TaskTemplate.Resources.Limits.NanoCPUs"
@@ -414,7 +414,7 @@
                         <label><em>--limit-cpu</em></label>
                     </div>
                     <div flex="25">
-                        <label class="sub-label">内存
+                        <label class="sub-label">{/'Memory' | translate/}
                             <small>MB</small>
                         </label>
                         <input type="number"
@@ -434,7 +434,7 @@
                      role="alert">
                     <p class="text-danger help-text"
                        ng-message="min">
-                        <small>内存最小为 4 MB</small>
+                        <small>{/'Memory at least 4MB' | translate/}</small>
                     </p>
                 </div>
             </div>
@@ -444,7 +444,7 @@
                 <div class="form-control sub-group" layout="row" layout-align="start center">
                     <div flex="25">
                         <label class="sub-label">CPU
-                            <small>核</small>
+                            <small>{/'Core' | translate/}</small>
                         </label>
                         <input type="number"
                                data-ng-model="serviceUpdateCtrl.form.TaskTemplate.Resources.Reservations.NanoCPUs"
@@ -452,7 +452,7 @@
                         <label><em>--reserve-cpu</em></label>
                     </div>
                     <div flex="25">
-                        <label class="sub-label">内存
+                        <label class="sub-label">{/'Memory' | translate/}
                             <small>MB</small>
                         </label>
                         <input type="number"
@@ -474,7 +474,7 @@
                      role="alert">
                     <p class="text-danger help-text"
                        ng-message="min">
-                        <small>内存最小为 4 MB</small>
+                        <small>{/'Memory at least 4MB' | translate/}</small>
                     </p>
                 </div>
             </div>
@@ -518,7 +518,7 @@
                 <div class="form-control sub-group">
                     <div flex="55">
                         <label class="sub-label">评估间隔
-                            <small>秒</small>
+                            <small>{/'Second' | translate/}</small>
                         </label>
                         <input type="number" min="0"
                                data-ng-model="serviceUpdateCtrl.form.TaskTemplate.RestartPolicy.Window"
@@ -530,7 +530,7 @@
                 <div class="form-control sub-group">
                     <div flex="55">
                         <label class="sub-label">重启间隔
-                            <small>秒</small>
+                            <small>{/'Second' | translate/}</small>
                         </label>
                         <input type="number"
                                data-ng-model="serviceUpdateCtrl.form.TaskTemplate.RestartPolicy.Delay"
@@ -578,7 +578,7 @@
                 <div class="form-control sub-group" layout="row" layout-align="start center">
                     <div flex="25">
                         <label class="sub-label">间隔
-                            <small>秒</small>
+                            <small>{/'Second' | translate/}</small>
                         </label>
                         <input type="number" min="0"
                                data-ng-model="serviceUpdateCtrl.form.UpdateConfig.Delay" name="updateDelay">
@@ -710,7 +710,7 @@
             <footer class="form-buttons">
                 <md-button id="service-update" class="md-raised md-primary" data-ng-disabled="staticForm.$invalid"
                            data-ng-click="serviceUpdateCtrl.create()">
-                    更新
+                    {/'Update' | translate/}
                 </md-button>
 
                 <md-button id="service-update-cancel"

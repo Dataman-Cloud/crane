@@ -14,7 +14,7 @@
              role="alert">
             <p class="help-text"
                ng-message="required">
-                <small>不能为空</small>
+                <small>{/'Can not be empty' | translate/}</small>
             </p>
 
             <p class="help-text"
@@ -25,7 +25,7 @@
     </div>
 
     <div class="form-group" layout="column">
-        <label>驱动<span class="required">*</span>
+        <label>{/'Driver' | translate/}<span class="required">*</span>
             <small></small>
         </label>
         <div class="form-control">
@@ -41,7 +41,7 @@
     </div>
 
     <div class="form-group" layout="column">
-        <label>标签
+        <label>{/'Labels' | translate/}
             <small>可添加多个标签</small>
         </label>
         <div class="sub-button">
@@ -91,7 +91,7 @@
     <footer class="form-buttons">
         <md-button id="node-volume-create" class="md-raised md-primary"
                    data-ng-click="nodeCreateVolumeCtrl.create()"
-                   data-ng-disabled="createVolume.$invalid">创建
+                   data-ng-disabled="createVolume.$invalid">{/'Create' | translate/}
         </md-button>
         <md-button id="node-volume-cancel" data-ng-click="rootCtrl.goBack()">取消</md-button>
     </footer>

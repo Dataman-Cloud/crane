@@ -7,15 +7,15 @@
         </div>
         <div ng-messages="addNode.ip.$error" ng-if="addNode.ip.$dirty" role="alert">
             <p class="help-text" ng-message="pattern">IP 地址格式错误</p>
-            <p class="help-text" ng-message="required">不能为空</p>
+            <p class="help-text" ng-message="required">{/'Can not be empty' | translate/}</p>
         </div>
     </div>
     <footer class="form-buttons">
         <md-button id="node-add-next" class="md-raised md-primary" data-ng-click="nodeCreateCtrl.buildCmd(); nodeCreateCtrl.step = 'two'"
-                   data-ng-disabled="addNode.$invalid">下一步
+                   data-ng-disabled="addNode.$invalid">{/'Next' | translate/}
         </md-button>
 
-        <md-button id="node-add-cancel" data-ng-click="rootCtrl.goBack()">取 消</md-button>
+        <md-button id="node-add-cancel" data-ng-click="rootCtrl.goBack()">{/'Cancel' | translate/}</md-button>
     </footer>
 </form>
 
@@ -48,8 +48,8 @@
         </div>
     </div>
     <footer class="form-buttons">
-        <md-button id="node-add-last" data-ng-click="nodeCreateCtrl.step = 'one'">上一步</md-button>
-        <md-button id="node-add-ssh-cancel" data-ng-click="rootCtrl.goBack()">取 消</md-button>
-        <md-button id="node-add-ssh-complete" class="md-raised md-primary" data-ng-click="$state.go('node.list')">完成</md-button>
+        <md-button id="node-add-last" data-ng-click="nodeCreateCtrl.step = 'one'">{/'Previous' | translate/}</md-button>
+        <md-button id="node-add-ssh-cancel" data-ng-click="rootCtrl.goBack()">{/'Cancel' | translate/}</md-button>
+        <md-button id="node-add-ssh-complete" class="md-raised md-primary" data-ng-click="$state.go('node.list')">{/'Done' | translate/}</md-button>
     </footer>
 </form>

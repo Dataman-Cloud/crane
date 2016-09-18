@@ -188,7 +188,7 @@
 
 <section layout="row" class="info-list-detail"
          ng-show="serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Labels">
-    <h2 flex="20">容器标签</h2>
+    <h2 flex="20">{/'Container tag"' | translate/}</h2>
     <div flex="80" layout="row" layout-wrap>
         <table cellpadding="0" cellspacing="0"
                dm-empty-display="serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Labels">
@@ -206,12 +206,12 @@
 </section>
 
 <section layout="row" class="info-list-detail" ng-show="serviceConfigCtrl.service.Spec.EndpointSpec.Ports">
-    <h2 flex="20">端口映射</h2>
+    <h2 flex="20">{/'Port Mapping' | translate/}</h2>
     <div flex="80" layout="row" layout-wrap>
         <table cellpadding="0" cellspacing="0" dm-empty-display="serviceConfigCtrl.service.Spec.EndpointSpec.Ports">
             <tr>
                 <th>主机端口</th>
-                <th>协议</th>
+                <th>{/'Protocol' | translate/}</th>
                 <th>映射端口</th>
             </tr>
 
@@ -233,7 +233,7 @@
             <tr>
                 <th>主机路径</th>
                 <th>权限</th>
-                <th>容器</th>
+                <th>{/'Container' | translate/}</th>
             </tr>
 
             <tr ng-repeat="mount in serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Mounts">

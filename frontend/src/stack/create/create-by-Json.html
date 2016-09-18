@@ -9,7 +9,7 @@
         </div>
         <div ng-messages="staticForm.Name.$error" ng-if="staticForm.Name.$dirty" role="alert">
             <p class="text-danger help-text" ng-message="required">名称不能为空</p>
-            <p class="text-danger help-text" ng-message="pattern">名称必须数字或者英文</p>
+            <p class="text-danger help-text" ng-message="pattern">{/'Only number and letter' | translate/}</p>
         </div>
     </div>
     <!--<div class="form-group" layout="column">
@@ -43,7 +43,7 @@
         <div ng-messages="staticForm.Stack.$error" ng-if="staticForm.Stack.$dirty" role="alert">
             <p class="text-danger help-text"
                ng-message="required">
-                <small>不能为空</small>
+                <small>{/'Can not be empty' | translate/}</small>
             </p>
         </div>
         <p class="text-danger help-text" data-ng-show="stackCreateByJsonCtrl.errorInfo.stack">
@@ -93,6 +93,6 @@
                    data-ng-disabled="staticForm.$invalid || stackCreateByJsonCtrl.errorInfo.stack"
                    data-ng-click="stackCreateByJsonCtrl.createAndDownload()">部署并导出
         </md-button>
-        <md-button data-ng-click="rootCtrl.goBack()">取 消</md-button>
+        <md-button data-ng-click="rootCtrl.goBack()">{/'Cancel' | translate/}</md-button>
     </footer>
 </form>

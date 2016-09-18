@@ -33,7 +33,6 @@
             "Name":"Name",
             "Service":"Service",
             "Task":"Task",
-            "Operating":"Operating",
             "Basic Information": 'Basic Information',
             "Not configured": 'Not configured',
             "No information": 'No information',
@@ -112,6 +111,7 @@
             "Interval": 'Interval',
             "Number of parallel": 'Number of parallel',
             "Service Labels": 'Service Labels',
+            "Memory at least 4MB": "memory at least 4MB",
 
             // node module
             "Summary": "Summary",
@@ -122,7 +122,6 @@
             "HostsPath": "Hosts Path",
             "LogPath": "Log Path",
             "ResolvConfPath":"ResolvConf Path",
-            "Environment Variables": "Environment Variables",
             "Port Mapping":"Port Mapping",
             "Port":"Port",
             "Protocol":"Protocol",
@@ -131,6 +130,7 @@
             "Gateway illegal":"gateway illegal",
             "IP Address":"IP Address",
             "MAC Address":"MAC Address",
+            "Gateway IP":"Gateway IP",
             "Container labels":"Container Labels",
             "Volume":"Volume",
             "Path":"Path",
@@ -149,7 +149,7 @@
             "Install Docker":"1. Install Docker",
             "Docker intalled":"if Docker was installed, please skip。",
             "Copy code":"Click To Copy",
-            "Add host":"2. Command of add host",
+            "Add host command":"2. Command of add host",
             "Exec add host cmd":"Please sign the target host，run the following command，This operation requires sudo privileges.",
             "Create host nerwork":"Create Host Nerwork",
             "Subnet Mask":"Subnet Mask",
@@ -188,6 +188,17 @@
             "Remove network":"Remove Network",
             "Mount points":"Mount Points",
             "Remove volume":"Remove Volume",
+            "Vol_driver_local":"local",
+            "Node List":"Node List",
+            "Add Node": "Add Node",
+            "Node Detail": "Node Detail",
+            "Image Detail": "Image Detail",
+            "Container Detail": "Container Detail",
+            "Volume Detail": "Volume Detail",
+
+            //registry-auth module
+            "Registry auth list": "Registry Auth List",
+            "Add registry auth":"Add Registry Auth",
         });
     }
 })();

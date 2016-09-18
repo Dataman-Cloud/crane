@@ -20,8 +20,8 @@
                 <dt>内核版本</dt>
                 <dd>{/nodeDetailCtrl.node.KernelVersion/}</dd>
                 <dt>CPU</dt>
-                <dd>{/nodeDetailCtrl.node.NCPU/} 核</dd>
-                <dt>内存</dt>
+                <dd>{/nodeDetailCtrl.node.NCPU/} {/'Core' | translate/}</dd>
+                <dt>{/'Memory' | translate/}</dt>
                 <dd>{/nodeDetailCtrl.node.MemTotal | size/}</dd>
             </dl>
             <dl class="info-list" ng-if="nodeDetailCtrl.node.Label">
@@ -51,10 +51,10 @@
     </div>
 </header>
 <md-tabs md-dynamic-height md-border-bottom>
-    <md-tab id="node-tab-config" label="基本信息" dm-tab-sref="node.detail.config"></md-tab>
-    <md-tab id="node-tab-container" label="容器" dm-tab-sref="node.detail.container"></md-tab>
+    <md-tab id="node-tab-config" label="{/'Basic Information' | translate/}" dm-tab-sref="node.detail.config"></md-tab>
+    <md-tab id="node-tab-container" label="{/'Container' | translate/}" dm-tab-sref="node.detail.container"></md-tab>
     <md-tab id="node-tab-neetwork" label="网络" dm-tab-sref="node.detail.network"></md-tab>
     <md-tab id="node-tab-volume" label="储存卷" dm-tab-sref="node.detail.volume"></md-tab>
-    <md-tab id="node-tab-image" label="镜像" dm-tab-sref="node.detail.image"></md-tab>
+    <md-tab id="node-tab-image" label="{/'Image' | translate/}" dm-tab-sref="node.detail.image"></md-tab>
 </md-tabs>
 <md-content ui-view></md-content>

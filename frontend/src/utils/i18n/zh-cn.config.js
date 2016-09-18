@@ -18,7 +18,7 @@
             "Status":"状态",
             "Driver":"驱动",
             "Can not be empty":"不能为空",
-            "Only number and letter":"名称必须数字或者英文",
+            "Only number and letter":"名称必须为数字或者英文",
             "Next":"下一步",
             "Previous":"上一步",
             "Cancel": "取 消",
@@ -33,7 +33,6 @@
             "Name":"名称",
             "Service":"服务",
             "Task":"任务",
-            "Operating":"操作",
             "Basic Information": '基本信息',
             "Not configured": '未配置',
             "No information": '暂无信息',
@@ -113,6 +112,7 @@
             "Interval": '间隔',
             "Number of parallel": '并行数',
             "Service Labels": '服务标签',
+            "Memory at least 4MB": "内存最小为 4 MB",
 
 
             // node module
@@ -124,15 +124,15 @@
             "HostsPath": "host 文件",
             "LogPath": "log 文件",
             "ResolvConfPath":"resolv.conf 文件",
-            "Environment Variables": "环境变量",
             "Port Mapping":"端口映射",
             "Port":"端口",
-            "rotocol":"协议",
+            "Protocol":"协议",
             "Network Configuration":"网络配置",
             "Gateway":"网关",
             "Gateway illegal":"网关不合法",
             "IP Address":"IP 地址",
             "MAC Address":"MAC 地址",
+            "Gateway IP":"网关 IP",
             "Container tag":"容器标签",
             "Volume":"存储卷",
             "Path":"路径",
@@ -151,7 +151,7 @@
             "Install Docker":"1. 安装 Docker",
             "Docker intalled":"主机已安装 Docker，请跳过。",
             "Copy code":"点击复制代码",
-            "Add host":"2. 添加主机命令",
+            "Add host commad":"2. 添加主机命令",
             "Exec add host cmd":"请登录目标主机，运行以下命令，本操作需要 sudo 权限。",
             "Create host nerwork":"创建单机网络",
             "Subnet Mask":"子网掩码",
@@ -183,13 +183,24 @@
             "Stopped containers":"停止容器",
             "Images":"镜像个数",
             "Host labels":"主机标签",
-            "Created volume":"创建存储",
+            "Created volume":"创建存储卷",
             "Size":"大小",
             "Remove image":"删除镜像",
             "Container number":"容器数",
             "Remove network":"删除网络",
             "Mount points":"挂载点",
-            "Remove volume":"删除储存卷"
+            "Remove volume":"删除储存卷",
+            "Vol_driver_local":"本地",
+            "Node List":"主机列表",
+            "Add Node": "添加主机",
+            "Node Detail": "主机详情",
+            "Image Detail": "镜像详情",
+            "Container Detail": "容器详情",
+            "Volume Detail": "存储详情",
+
+            //registry-auth module
+            "Registry auth list":"管理列表",
+            "Add registry auth":"添加认证",
         });
     }
 })();

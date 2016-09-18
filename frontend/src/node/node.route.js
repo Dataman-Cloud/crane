@@ -11,7 +11,7 @@
                 template: '<ui-view/>',
                 targetState: 'list',
                 ncyBreadcrumb: {
-                    label: '主机'
+                    label: "{/'Node' | translate/}"
                 }
             })
             .state('node.list', {
@@ -22,7 +22,7 @@
                     nodes: listNodes
                 },
                 ncyBreadcrumb: {
-                    label: '主机列表'
+                    label: "{/'Node List' | translate/}"
                 }
             })
             .state('node.create', {
@@ -30,7 +30,7 @@
                 templateUrl: '/src/node/create/create.html',
                 controller: 'NodeCreateCtrl as nodeCreateCtrl',
                 ncyBreadcrumb: {
-                    label: '添加主机'
+                    label: "{/'Add Node' | translate/}"
                 }
             })
             .state('node.createVolume', {
@@ -38,7 +38,7 @@
                 templateUrl: '/src/node/create-volume/create.html',
                 controller: 'NodeCreateVolumeCtrl as nodeCreateVolumeCtrl',
                 ncyBreadcrumb: {
-                    label: '创建储存卷'
+                    label: "{/'Created volume' | translate/}"
                 }
             })
             .state('node.createNetwork', {
@@ -46,7 +46,7 @@
                 templateUrl: '/src/node/create-network/create.html',
                 controller: 'NodeCreateNetworkCtrl as nodeCreateNetworkCtrl',
                 ncyBreadcrumb: {
-                    label: '创建单机网络'
+                    label: "{/'Create host nerwork' | translate/}"
                 }
             })
             .state('node.detail', {
@@ -58,7 +58,7 @@
                     node: getNode
                 },
                 ncyBreadcrumb: {
-                    label: '主机详情'
+                    label: "{/'Node Detail' | translate/}"
                 }
             })
             .state('node.detail.config', {
@@ -122,7 +122,7 @@
                     image: getImage
                 },
                 ncyBreadcrumb: {
-                    label: '镜像详情',
+                    label: "{/'Image Detail' | translate/}",
                     parent: 'node.detail'
                 }
             })
@@ -154,7 +154,7 @@
                     container: getContainer
                 },
                 ncyBreadcrumb: {
-                    label: '容器详情',
+                    label: "{/'Container Detail' | translate/}",
                     parent: 'node.detail'
                 }
 
@@ -211,7 +211,7 @@
                     network: getNetwork
                 },
                 ncyBreadcrumb: {
-                    label: '网络详情',
+                    label: "{/'Network Detail' | translate/}",
                     parent: 'node.detail'
                 }
 
@@ -233,7 +233,7 @@
                     volume: getVolume
                 },
                 ncyBreadcrumb: {
-                    label: '存储详情',
+                    label: "{/'Volume Detail' | translate/}",
                     parent: 'node.detail'
                 }
 
