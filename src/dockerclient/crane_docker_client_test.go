@@ -8,6 +8,7 @@ import (
 
 	"github.com/Dataman-Cloud/crane/src/utils/config"
 
+	docker "github.com/Dataman-Cloud/go-dockerclient"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -137,4 +138,13 @@ func TestVerifyNodeEndpointErrorId(t *testing.T) {
 
 	err = client.VerifyNodeEndpoint("test", u)
 	assert.NotNil(t, err)
+}
+
+func TestSwarmManager(t *testing.T) {
+	fakeSwarmManager := &docker.Client{}
+	fakeCraneDockerClient := &CraneDockerClient{
+		swarmManager: fakeSwarmManager,
+	}
+	swarmManager := fakeCraneDockerClient.SwarmManager()
+	assert.Equal(t, fakeSwarmManager, swarmManager)
 }
