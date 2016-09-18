@@ -51,19 +51,19 @@
         };
 
         $rootScope.TASK_STATE = {
-            new: '初始化',
-            allocated: '资源已确认',
-            pending: '排队中',
-            assigned: '任务已派发',
-            accepted: '已接受',
-            preparing: '准备中',
-            ready: '准备就绪',
-            starting: '启动中',
-            running: '运行中',
-            complete: '已完成',
-            shutdown: '已关闭',
-            failed: '失败',
-            rejected: '拒绝'
+            new: 'Task_state_new',
+            allocated: 'Task_state_allocated',
+            pending: 'Task_state_pending',
+            assigned: 'Task_state_assigned',
+            accepted: 'Task_state_accepted',
+            preparing: 'Task_state_preparing',
+            ready: 'Task_state_ready',
+            starting: 'Task_state_starting',
+            running: 'Task_state_running',
+            complete: 'Task_state_complete',
+            shutdown: 'Task_state_shutdown',
+            failed: 'Task_state_failed',
+            rejected: 'Task_state_rejected'
         };
 
         $rootScope.TASK_RESTART_POLICY_COND = {

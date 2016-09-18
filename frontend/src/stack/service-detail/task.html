@@ -2,13 +2,15 @@
     <table md-table>
         <thead md-head>
         <tr md-row>
-            <th md-column>任务编号</th>
-            <th md-column dm-doc-link="https://github.com/docker/engine-api/blob/master/types/swarm/task.go#L8">任务状态</th>
-            <th md-column>主机</th>
-            <th md-column>容器</th>
-            <th md-column>创建时间</th>
-            <th md-column>更新时间</th>
-            <th md-column>异常</th>
+            <th md-column>{/'TaskId' | translate/}</th>
+            <!-- dm-doc-link has bug ,do not support translate-->
+            <!--<th md-column dm-doc-link="https://github.com/docker/engine-api/blob/master/types/swarm/task.go#L8">{/'Task State' | translate/}</th>-->
+            <th md-column>{/'Task State' | translate/}</th>
+            <th md-column>{/'Node' | translate/}</th>
+            <th md-column>{/'Container' | translate/}</th>
+            <th md-column>{/'Create Time' | translate/}</th>
+            <th md-column>{/'Update Time' | translate/}</th>
+            <th md-column>{/'Abnormal' | translate/}</th>
             <th md-column></th>
         </tr>
         </thead>
@@ -16,7 +18,7 @@
         <tr md-row
             ng-repeat-start="(key, value) in serviceTaskCtrl.tasks | orderBy: '-UpdatedAt' | groupBy: 'Slot || NodeID'">
             <td md-cell>{/key/}</td>
-            <td md-cell>{/TASK_STATE[value[0].Status.State]/}</td>
+            <td md-cell>{/TASK_STATE[value[0].Status.State] | translate/}</td>
             <td md-cell>
                 <a data-ui-sref="node.detail({node_id: value[0].NodeID})">{/serviceTaskCtrl.nodesMapping[value[0].NodeID].Description.Hostname/}</a>
             </td>
@@ -36,7 +38,7 @@
         </tr>
         <tr md-row ng-repeat-end ng-repeat="task in value" ng-if="!$first" ng-show="value[0].isCollapsed">
             <td md-cell></td>
-            <td md-cell>{/TASK_STATE[task.Status.State]/}</td>
+            <td md-cell>{/TASK_STATE[task.Status.State] | translate/}</td>
             <td md-cell>
                 <a data-ui-sref="node.detail({node_id: task.NodeID})">{/serviceTaskCtrl.nodesMapping[task.NodeID].Description.Hostname/}</a>
             </td>
