@@ -4,9 +4,9 @@
             <div class="info" flex="95" layout="column">
                 <h2>{/registryImageCtrl.image.name/}:{/registryImageCtrl.image.tag/}</h2>
                 <dl layout="row" layout-wrap layout-align="start end">
-                    <dt flex="none">架构</dt>
+                    <dt flex="none">{/'Architecture' | translate/}</dt>
                     <dd flex="none">{/registryImageCtrl.image.architecture/}</dd>
-                    <dt flex="none">Schema版本</dt>
+                    <dt flex="none">{/'Schema Version' | translate/}</dt>
                     <dd flex="none">{/registryImageCtrl.image.schemaVersion/}</dd>
                 </dl>
             </div>
@@ -15,14 +15,14 @@
                                    class="md-scale">
                     <md-fab-trigger>
                         <md-button aria-label="menu" class="md-fab md-mini">
-                            <md-tooltip md-direction="top">更多操作</md-tooltip>
+                            <md-tooltip md-direction="top">{/'More Actions' | translate/}</md-tooltip>
                             <i class="fa fa-ellipsis-h"></i>
                         </md-button>
                     </md-fab-trigger>
                     <md-fab-actions>
                         <md-button aria-label="start" class="md-fab md-raised md-mini"
                                    data-ng-click="registryImageCtrl.deleteImage($event)">
-                            <md-tooltip md-direction="top">删除</md-tooltip>
+                            <md-tooltip md-direction="top">{/'Delete' | translate/}</md-tooltip>
                             <i class="fa fa-trash"></i>
                         </md-button>
                     </md-fab-actions>

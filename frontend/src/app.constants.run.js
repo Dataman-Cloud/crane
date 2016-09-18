@@ -33,21 +33,21 @@
         };
 
         $rootScope.NODE_ROLE = {
-            worker: '工作节点',
-            manager: '管理节点'
+            worker: 'Node_role_worker',
+            manager: 'Node_role_manager'
         };
 
         $rootScope.NODE_AVAILABILITY = {
-            drain: '停止调度',
-            active: '正常调度',
-            pause: '暂停调度'
+            drain: 'Node_availability_drain',
+            active: 'Node_availability_active',
+            pause: 'Node_availability_pause'
         };
 
         $rootScope.NODE_STATE = {
-            unknown: '未知',
-            down: '下线',
-            ready: '就绪',
-            disconnected: '失联'
+            unknown: 'Node_state_unknown',
+            down: 'Node_state_down',
+            ready: 'Node_state_ready',
+            disconnected: 'Node_state_disconnected'
         };
 
         $rootScope.TASK_STATE = {

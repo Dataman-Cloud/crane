@@ -1,7 +1,7 @@
 <md-content>
     <form name="staticForm" class="form-main">
         <div class="form-group" layout="column">
-            <label>名称 <em>--name</em><span class="required">*</span>
+            <label>{/'Name' | translate/} <em>--name</em><span class="required">*</span>
             </label>
             <div class="form-control">
                 <input type="text" data-ng-model="serviceUpdateCtrl.form.Name"
@@ -41,14 +41,14 @@
         </div>
 
         <div class="form-group" layout="column">
-            <label>服务模式 <em>--mode</em></label>
+            <label>{/'Service Mode' | translate/} <em>--mode</em></label>
             <div class="form-control" layout="row" layout-align="start center">
                 <md-radio-group data-ng-model="serviceUpdateCtrl.form.defaultMode" layout="row"
                                 aria-label="defaultMode"
                                 data-ng-change="serviceUpdateCtrl.modeChange()"
                                 layout-align="start center" flex>
                     <div flex="25">
-                        <md-radio-button value="Replicated" class="md-primary" data-ng-disabled="true">固定数 <em>replicated</em>
+                        <md-radio-button value="Replicated" class="md-primary" data-ng-disabled="true">{/'Fixed number' | translate/} <em>replicated</em>
                         </md-radio-button>
                         <input type="number" min="0"
                                data-ng-show="serviceUpdateCtrl.form.defaultMode === 'Replicated'"
@@ -57,7 +57,7 @@
                     </div>
                     <div flex="25">
                         <md-radio-button value="Global" class="md-primary" flex-offset="5" data-ng-disabled="true">
-                            一节点一任务 <em>global</em>
+                            {/'A node in a task' | translate/} <em>global</em>
                         </md-radio-button>
                     </div>
                 </md-radio-group>
@@ -67,8 +67,8 @@
 
 
         <div class="form-group" layout="column">
-            <label>选择网络 <em>--network</em>
-                <small>(不支持修改)</small>
+            <label>{/'Select Network' | translate/} <em>--network</em>
+                <small>({/'Not be modified' | translate/})</small>
             </label>
             <div class="form-control">
                 <md-select data-ng-model="serviceUpdateCtrl.form.formNetworks" multiple
@@ -83,7 +83,7 @@
         </div>
 
         <div class="form-group" layout="column" dm-display-components="registryauth">
-            <label>仓库认证标识 <em>--RegistryAuth</em></label>
+            <label>{/'Warehouse certification mark' | translate/} <em>--RegistryAuth</em></label>
             <div class="form-control">
                 <md-select data-ng-model="serviceUpdateCtrl.form.RegistryAuth"
                            aria-label="RegAuth">
@@ -102,7 +102,7 @@
             <div class="sub-button">
                 <md-button class="md-raised md-success md-small"
                            data-ng-click="serviceUpdateCtrl.addConfig(serviceUpdateCtrl.form.formPorts, 'Ports')">
-                    <i class='fa fa-plus'></i>添加端口映射
+                    <i class='fa fa-plus'></i>{/'Add Port Mapping' | translate/}
                 </md-button>
                 <label> <em>--publish</em> </label>
             </div>
@@ -154,7 +154,7 @@
             <div class="sub-button">
                 <md-button class="md-raised md-success md-small"
                            data-ng-click="serviceUpdateCtrl.addConfig(serviceUpdateCtrl.form.formEnv, 'Env')">
-                    <i class='fa fa-plus'></i>添加环境变量
+                    <i class='fa fa-plus'></i>{/'Adding Environment Variables' | translate/}
                 </md-button>
                 <label> <em>--env</em> </label>
             </div>
@@ -202,12 +202,12 @@
             <a href="#"
                data-ng-click="serviceUpdateCtrl.showStartupParameter = !serviceUpdateCtrl.showStartupParameter">
                 <i class="fa"
-                   ng-class="{'fa-minus-square-o': serviceUpdateCtrl.showStartupParameter, 'fa-plus-square-o': !serviceUpdateCtrl.showStartupParameter}"></i>启动参数
+                   ng-class="{'fa-minus-square-o': serviceUpdateCtrl.showStartupParameter, 'fa-plus-square-o': !serviceUpdateCtrl.showStartupParameter}"></i>{/'Startup Parameters' | translate/}
             </a>
         </div>
         <div data-ng-show="serviceUpdateCtrl.showStartupParameter">
             <div class="form-group" layout="column">
-                <label>容器工作目录 --workdir</label>
+                <label>{/'Container working directory' | translate/} --workdir</label>
                 <div class="form-control">
                     <input type="text"
                            data-ng-model="serviceUpdateCtrl.form.TaskTemplate.ContainerSpec.Dir" name="workdir">
@@ -219,7 +219,7 @@
             </div>
 
             <div class="form-group" layout="column">
-                <label>命令行 command</label>
+                <label>{/'Command' | translate/} command</label>
                 <div class="sub-button">
                     <md-button class="md-raised md-success md-small"
                                data-ng-click="serviceUpdateCtrl.addConfig(serviceUpdateCtrl.form.formCmd, 'Cmd')">
@@ -286,7 +286,7 @@
         <div class="fold-line">
             <a href="#" data-ng-click="serviceUpdateCtrl.showTag = !serviceUpdateCtrl.showTag">
                 <i class="fa"
-                   ng-class="{'fa-minus-square-o': serviceUpdateCtrl.showTag, 'fa-plus-square-o': !serviceUpdateCtrl.showTag}"></i>标签
+                   ng-class="{'fa-minus-square-o': serviceUpdateCtrl.showTag, 'fa-plus-square-o': !serviceUpdateCtrl.showTag}"></i>{/'Labels' | translate/}
             </a>
         </div>
 
@@ -295,7 +295,7 @@
                 <div class="sub-button">
                     <md-button class="md-raised md-success md-small"
                                data-ng-click="serviceUpdateCtrl.addConfig(serviceUpdateCtrl.form.formLabels, 'ServeLabels')">
-                        <i class='fa fa-plus'></i>添加服务标签
+                        <i class='fa fa-plus'></i>{/'Add Service Labels' | translate/}
                     </md-button>
                     <label><em>--label</em></label>
                 </div>
@@ -347,7 +347,7 @@
                 <div class="sub-button">
                     <md-button class="md-raised md-success md-small"
                                data-ng-click="serviceUpdateCtrl.addConfig(serviceUpdateCtrl.form.formContainerLabels, 'Labels')">
-                        <i class='fa fa-plus'></i>添加容器标签
+                        <i class='fa fa-plus'></i>{/'Add Container Labels' | translate/}
                     </md-button>
                     <label><em>--container-label</em></label>
                 </div>
@@ -396,13 +396,13 @@
         <div class="fold-line">
             <a href="#" data-ng-click="serviceUpdateCtrl.showResourceLimit = !serviceUpdateCtrl.showResourceLimit">
                 <i class="fa"
-                   ng-class="{'fa-minus-square-o': serviceUpdateCtrl.showResourceLimit, 'fa-plus-square-o': !serviceUpdateCtrl.showResourceLimit}"></i>资源限制
+                   ng-class="{'fa-minus-square-o': serviceUpdateCtrl.showResourceLimit, 'fa-plus-square-o': !serviceUpdateCtrl.showResourceLimit}"></i>{/'Resource limit' | translate/}
             </a>
         </div>
         <div data-ng-show="serviceUpdateCtrl.showResourceLimit">
 
             <div class="form-group" layout="column">
-                <label>每个任务的资源限制</label>
+                <label>{/'Resource limits for each task' | translate/}</label>
                 <div class="form-control sub-group" layout="row" layout-align="start center">
                     <div flex="25">
                         <label class="sub-label">CPU
@@ -440,7 +440,7 @@
             </div>
 
             <div class="form-group" layout="column">
-                <label>每个任务的资源预留</label>
+                <label>{/'Set aside resources for each task' | translate/}</label>
                 <div class="form-control sub-group" layout="row" layout-align="start center">
                     <div flex="25">
                         <label class="sub-label">CPU
@@ -483,13 +483,13 @@
         <div class="fold-line">
             <a href="#" data-ng-click="serviceUpdateCtrl.showFaultTolerant = !serviceUpdateCtrl.showFaultTolerant">
                 <i class="fa"
-                   ng-class="{'fa-minus-square-o': serviceUpdateCtrl.showFaultTolerant, 'fa-plus-square-o': !serviceUpdateCtrl.showFaultTolerant}"></i>容错策略
+                   ng-class="{'fa-minus-square-o': serviceUpdateCtrl.showFaultTolerant, 'fa-plus-square-o': !serviceUpdateCtrl.showFaultTolerant}"></i>{/'Restart Policy' | translate/}
             </a>
         </div>
 
         <div data-ng-show="serviceUpdateCtrl.showFaultTolerant">
             <div class="form-group" layout="column">
-                <label>重启策略 <em>--restart-condition</em></label>
+                <label>{/'Restart Policy' | translate/} <em>--restart-condition</em></label>
                 <div class="form-control" layout="row" layout-align="start center">
                     <md-radio-group data-ng-model="serviceUpdateCtrl.form.TaskTemplate.RestartPolicy.Condition"
                                     layout="row" aria-label="restart-condition" flex>
@@ -607,7 +607,7 @@
                     <div class="sub-button">
                         <md-button class="md-raised md-success md-small"
                                    data-ng-click="serviceUpdateCtrl.addConfig(serviceUpdateCtrl.form.formConstraints, 'Constraints')">
-                            <i class='fa fa-plus'></i>添加限制条件
+                            <i class='fa fa-plus'></i>{/'Add constraints' | translate/}
                         </md-button>
                     </div>
                     <div data-ng-repeat="constraint in serviceUpdateCtrl.form.formConstraints track by $index">
@@ -668,7 +668,7 @@
                     <div class="sub-button">
                         <md-button class="md-raised md-success md-small"
                                    data-ng-click="serviceUpdateCtrl.addConfig(serviceUpdateCtrl.form.formMounts, 'Mounts')">
-                            <i class='fa fa-plus'></i>添加存储
+                            <i class='fa fa-plus'></i>{/'Add storage' | translate/}
                         </md-button>
                     </div>
                     <div data-ng-repeat="mount in serviceUpdateCtrl.form.formMounts track by $index">
@@ -715,7 +715,7 @@
 
                 <md-button id="service-update-cancel"
                            data-ng-click="rootCtrl.goBack()">
-                    取消
+                    {/'Cancel' | translate/}
                 </md-button>
             </footer>
         </div>
