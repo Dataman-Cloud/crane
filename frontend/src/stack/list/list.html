@@ -25,15 +25,13 @@
                     </td>
                     <td>{/service.NumTasksRunning/}/{/service.NumTasksTotal/}</td>
                     <td>
-                        <div ng-show="service.Ports.length" ng-repeat="ip in service.IPs track by $index">
-                            <p ng-repeat="port in service.Ports track by $index">
-                                <a ng-href="http://{/ip | ip/}:{/port/}" ng-show="ip" target='_blank'>
-                                    {/ip | ip/}:{/port/}
-                                </a>
-                                <span ng-hide="ip">{/port/}</span>
-                            </p>
-                        </div>
-                        <div ng-show="!service.Ports.length">未配置</div>
+                        <li ng-show="service.addrs.length" ng-repeat="addr in service.addrs">
+                            <a ng-href="http://{/addr.ip | ip/}:{/addr.port/}" ng-show="addr.ip" target='_blank'>
+                                {/addr.ip | ip/}:{/addr.port/}
+                            </a>
+                            <span ng-hide="addr.ip">{/addr.port/}</span>
+                        </li>
+                        <div ng-show="!service.addrs.length">未配置</div>
                     </td>
                 </tr>
             </table>
