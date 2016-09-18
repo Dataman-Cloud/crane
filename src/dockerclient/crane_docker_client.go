@@ -1,7 +1,6 @@
 package dockerclient
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -13,7 +12,6 @@ import (
 
 	docker "github.com/Dataman-Cloud/go-dockerclient"
 	log "github.com/Sirupsen/logrus"
-	"github.com/docker/engine-api/types"
 	"golang.org/x/net/context"
 )
 
@@ -99,7 +97,7 @@ func (client *CraneDockerClient) SwarmNode(ctx context.Context) (*docker.Client,
 		}
 	}
 
-	nodeUrl, err := client.NodeDaemonUrl(nodeId)
+	nodeUrl, err := client.GetDaemonUrlById(nodeId)
 	if err != nil {
 		return nil, err
 	}
@@ -126,39 +124,18 @@ func (client *CraneDockerClient) VerifyNodeEndpoint(nodeId string, nodeUrl *url.
 			Err:  &cranerror.NodeConnError{ID: nodeId, Err: fmt.Errorf("verify endpoint failed: empty node url")},
 		}
 	}
-	var nodeInfo types.Info
-	//TODO hardcode may have better way
-	if nodeUrl.Scheme == "tcp" {
-		nodeUrl.Scheme = "http"
-	}
-
-	endpoint := nodeUrl.String()
-	content, err := client.sharedHttpClient.GET(nil, endpoint+"/info", url.Values{}, nil)
+	returnedNodeId, err := client.getNodeIdByUrl(nodeUrl)
 	if err != nil {
 		return &cranerror.CraneError{
 			Code: CodeVerifyNodeEnpointFailed,
-			Err:  &cranerror.NodeConnError{ID: nodeId, Endpoint: endpoint, Err: fmt.Errorf("verify endpoint failed: %s", err.Error())},
+			Err:  &cranerror.NodeConnError{ID: nodeId, Endpoint: nodeUrl.String(), Err: fmt.Errorf("verify endpoint failed: %s", err.Error())},
 		}
 	}
 
-	if err := json.Unmarshal(content, &nodeInfo); err != nil {
-		return &cranerror.CraneError{
-			Code: CodeVerifyNodeEnpointFailed,
-			Err:  &cranerror.NodeConnError{ID: nodeId, Endpoint: endpoint, Err: fmt.Errorf("verify endpoint failed: %s", err.Error())},
-		}
-	}
-
-	if err != nil {
-		return &cranerror.CraneError{
-			Code: CodeConnToNodeError,
-			Err:  &cranerror.NodeConnError{ID: nodeId, Endpoint: endpoint, Err: err},
-		}
-	}
-
-	if nodeId != nodeInfo.Swarm.NodeID {
+	if nodeId != returnedNodeId {
 		return &cranerror.CraneError{
 			Code: CodeNodeEndpointIpMatchError,
-			Err:  &cranerror.NodeConnError{ID: nodeId, Endpoint: endpoint, Err: fmt.Errorf("node id not matched endpoint")},
+			Err:  &cranerror.NodeConnError{ID: nodeId, Endpoint: nodeUrl.String(), Err: fmt.Errorf("node id not matched endpoint")},
 		}
 	}
 

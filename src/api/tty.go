@@ -25,7 +25,7 @@ func (api *Api) ConnectContainer(ctx *gin.Context) {
 	log.Info("Init message: ", string(stream))
 
 	// Add TLS config and file path
-	nodeUrl, err := api.GetDockerClient().NodeDaemonUrl(ctx.Param("node_id"))
+	nodeUrl, err := api.GetDockerClient().GetDaemonUrlById(ctx.Param("node_id"))
 	if err != nil {
 		log.Error("Get container endpoint got error: ", err)
 		return

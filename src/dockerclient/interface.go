@@ -22,7 +22,7 @@ type DockerClientInterface interface {
 	InspectNode(nodeId string) (swarm.Node, error)
 	RemoveNode(nodeId string) error
 	UpdateNode(nodeId string, opts opt.UpdateOptions) error
-	NodeDaemonUrl(nodeId string) (*url.URL, error)
+	GetDaemonUrlById(nodeId string) (*url.URL, error)
 
 	InspectContainer(id string) (*docker.Container, error)
 	ListContainers(opts docker.ListContainersOptions) ([]docker.APIContainers, error)
