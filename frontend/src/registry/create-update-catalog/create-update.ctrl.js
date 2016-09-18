@@ -74,7 +74,7 @@
             try {
                 JSON.parse(self.form.Bundle)
             } catch (err) {
-                self.errorInfo.stack = 'JSON 格式有误';
+                self.errorInfo.stack = 'Project Json Format Error';
             }
         }
 
@@ -82,7 +82,7 @@
             self.image = files[0]; //FileList object
             self.imageSize = files[0].size;
             if (self.imageSize > $rootScope.IMAGE_MAX_SIZE) {
-                Notification.warning('图片过大，请选择小于 1M 的图片');
+                Notification.warning('Project Image Too Large');
             }
             var reader = new FileReader();
             reader.onload = (function (theFile) {
