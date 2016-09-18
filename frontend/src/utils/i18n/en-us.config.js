@@ -11,6 +11,10 @@
             "Update Time": 'Update Time',
             "Operation": 'Operation',
             "Update": 'Update',
+            "Real Monitoring": 'Real Monitoring',
+            "Log": 'Log',
+            "Detail": 'Detail',
+            "Container": 'Container',
 
             //index module
             "LOGOUT": 'Logout',
@@ -41,6 +45,25 @@
             "Running/Total": 'Running/Total',
             "Service Scale": 'Service Scale',
             "Modal title for delete stack": 'The project will not be able to recover after deletion, confirm to be deleted?',
+            "Task List": 'Task List',
+            "Discovery": 'Discovery',
+            "CICD": 'CICD',
+            "TaskId": 'Task Id',
+            "Task State": 'Task State',
+            "Abnormal": 'Abnormal',
+            "Task_state_new": 'new',
+            "Task_state_allocated": 'allocated',
+            "Task_state_pending": 'pending',
+            "Task_state_assigned": 'assigned',
+            "Task_state_accepted": 'accepted',
+            "Task_state_preparing": 'preparing',
+            "Task_state_ready": 'ready',
+            "Task_state_starting": 'starting',
+            "Task_state_running": 'running',
+            "Task_state_complete": 'complete',
+            "Task_state_shutdown": 'shutdown',
+            "Task_state_failed": 'failed',
+            "Task_state_rejected": 'rejected',
         });
     }
 })();
