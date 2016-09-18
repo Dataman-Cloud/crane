@@ -14,6 +14,16 @@ export TAG=`git log --pretty=format:'%h' -n 1`
 export CRANE_SWARM_MANAGER_IP=$CRANE_IP
 export REGISTRY_PREFIX=""
 
+# node env check
+echo "Checking the node status"
+./frontend/misc-tools/node-init.sh
+
+# swarm init
+echo "Trying to init swarm cluster"
+$(docker swarm init --advertise-addr=$CRANE_IP &>/dev/null) || {
+   echo "Swarm cluster have been running!"
+}
+
 docker-compose -p crane -f deploy/docker-compose.yml stop
 docker-compose -p crane -f deploy/docker-compose.yml rm -f
 docker-compose -p crane -f deploy/docker-compose.yml up -d
