@@ -97,7 +97,6 @@ code {
 .no-info {
     color: #3F4855 !important;
 }
-
 .no-info-main {
     color: #3F4855 !important;
     padding-top: 100px;
@@ -511,9 +510,12 @@ textarea {
     width: 580px;
     height: 120px;
     color: #D3D1D5;
-    font-size: 16px;
+    font-size: 14px;
     padding-left: 15px;
     padding-right: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    line-height: 1.5;
 }
 
 md-select {
@@ -1051,10 +1053,15 @@ table.md-table td.md-cell .md-icon-button {
     font-size: 24px;
 }
 
+.app-panel table {
+    width: 100%;
+}
+
 .app-panel td, .app-panel th {
     text-align: left;
     padding-bottom: 0;
     padding-right: 15px;
+    vertical-align: top;
 }
 
 .app-panel td i {
@@ -1064,12 +1071,20 @@ table.md-table td.md-cell .md-icon-button {
 
 .app-panel td a {
     color: #93929D;
+    padding: 0 3px;
+    border-radius: 3px;
+    text-align: center;
+    cursor: pointer;
 }
 
 .app-panel a:hover {
     background-color: rgba(211, 209, 213, 0.15);
     color: #FFF;
     text-decoration: none;
+}
+
+.app-panel td a i {
+    margin: 0;
 }
 
 article {
@@ -1260,4 +1275,8 @@ md-dialog md-card i {
 
 .md-button.md-default-theme.md-primary.md-raised.md-focused:not([disabled]), .md-button.md-primary.md-raised.md-focused:not([disabled]), .md-button.md-default-theme.md-primary.md-fab.md-focused:not([disabled]), .md-button.md-primary.md-fab.md-focused:not([disabled]) {
     background: #00bdda;
+}
+
+md-menu-item > a.md-button {
+    color: rgba(0,0,0,0.87);
 }

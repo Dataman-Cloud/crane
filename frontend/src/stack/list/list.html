@@ -17,21 +17,24 @@
                 </h1>
             </header>
             <table>
-                <tr data-ng-repeat="service in stack.Services track by $index"
-                    id="{/stack.Namespace/}-services">
+                <tr data-ng-repeat="service in stack.Services track by $index" id="{/stack.Namespace/}-services">
                     <td>
-                        <i class="fa fa-wrench" aria-hidden="true"></i>
                         <a id="{/stack.Namespace/}-{/service.Name/}"
                            data-ui-sref="stack.serviceDetail({stack_name: stack.Namespace, service_id: service.ID})">{/service.Name/}</a>
                     </td>
                     <td>{/service.NumTasksRunning/}/{/service.NumTasksTotal/}</td>
                     <td>
-                        <li ng-show="service.addrs.length" ng-repeat="addr in service.addrs">
-                            <a ng-href="http://{/addr.ip | ip/}:{/addr.port/}" ng-show="addr.ip" target='_blank'>
-                                {/addr.ip | ip/}:{/addr.port/}
-                            </a>
-                            <span ng-hide="addr.ip">{/addr.port/}</span>
-                        </li>
+                        <md-menu ng-show="service.addrs.length">
+                            <a ng-click="$mdOpenMenu()"><i class="fa fa-link"></i></a>
+                            <md-menu-content>
+                                <md-menu-item ng-repeat="addr in service.addrs">
+                                    <md-button ng-href="http://{/addr.ip | ip/}:{/addr.port/}" ng-show="addr.ip"
+                                               target='_blank'>{/addr.ip | ip/}:{/addr.port/}
+                                    </md-button>
+                                    <span ng-hide="addr.ip">{/addr.port/}</span>
+                                </md-menu-item>
+                            </md-menu-content>
+                        </md-menu>
                         <div ng-show="!service.addrs.length">{/'Not configured' | translate/}</div>
                     </td>
                 </tr>

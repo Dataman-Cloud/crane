@@ -54,10 +54,10 @@
 
     <md-tab label="{/'Detail' | translate/}">
         <md-content class="main-tab-content">
-            <div class="alert alert-warning text-center" data-ng-if="!catalogDetailCtrl.description">
+            <div class="no-info-main" data-ng-if="!catalogDetailCtrl.description">
                 {/'No details' | translate/}
             </div>
-            <div>{/catalogDetailCtrl.description/}</div>
+            <div style="color: #EEE; line-height: 2;">{/catalogDetailCtrl.description/}</div>
         </md-content>
     </md-tab>
 </md-tabs>
