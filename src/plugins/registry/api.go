@@ -3,7 +3,6 @@ package registry
 import (
 	"encoding/json"
 	"fmt"
-	"net/http"
 	"regexp"
 	"strings"
 
@@ -30,6 +29,9 @@ const (
 	CodeRegistryImagePublicityUpdateError = "503-14005"
 	CodeRegistryCatalogListError          = "503-14006"
 	CodeRegistryTagsListError             = "503-14007"
+	CodeRegistryGetBasicAuthFaild         = "400-14008"
+	CodeRegistryUnauthorized              = "401-14009"
+	CodeRegistryMakeTokenFaild            = "503-14010"
 )
 
 const manifestPattern = `^application/vnd.docker.distribution.manifest.v\d`
@@ -67,14 +69,21 @@ func (registry *Registry) MigriateTable() {
 }
 
 func (registry *Registry) Token(ctx *gin.Context) {
-	username, password, _ := ctx.Request.BasicAuth()
+	username, password, ok := ctx.Request.BasicAuth()
+	if !ok {
+		log.Error("registry get token error: can't get basicauth from request")
+		craneerr := cranerror.NewError(CodeRegistryGetBasicAuthFaild, "registry get token error: can't get basicauth from request")
+		httpresponse.Error(ctx, craneerr)
+		return
+	}
 	authenticated := registry.Authenticate(username, password)
 
 	service := ctx.Query("service")
 	scope := ctx.Query("scope")
 
 	if len(scope) == 0 && !authenticated {
-		ctx.JSON(http.StatusUnauthorized, gin.H{})
+		craneerr := cranerror.NewError(CodeRegistryUnauthorized, "registry get token unauthorized")
+		httpresponse.Error(ctx, craneerr)
 		return
 	}
 
@@ -87,11 +96,12 @@ func (registry *Registry) Token(ctx *gin.Context) {
 	rawToken, err := registry.MakeToken(registry.PrivateKeyPath, username, service, accesses)
 	if err != nil {
 		log.Errorf("get registry token error: %v", err)
-		ctx.JSON(http.StatusInternalServerError, gin.H{})
+		craneerr := cranerror.NewError(CodeRegistryMakeTokenFaild, err.Error())
+		httpresponse.Error(ctx, craneerr)
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"token": rawToken})
+	httpresponse.Ok(ctx, gin.H{"token": rawToken})
 }
 
 func (registry *Registry) Authenticate(principal, password string) bool {
@@ -121,7 +131,7 @@ func (registry *Registry) Notifications(ctx *gin.Context) {
 		}
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{})
+	httpresponse.Ok(ctx, gin.H{})
 }
 
 func (registry *Registry) TagList(ctx *gin.Context) {
@@ -144,7 +154,8 @@ func (registry *Registry) TagList(ctx *gin.Context) {
 func (registry *Registry) GetManifests(ctx *gin.Context) {
 	account_, found := ctx.Get("account")
 	if !found {
-		ctx.JSON(http.StatusUnauthorized, gin.H{})
+		craneerr := cranerror.NewError(CodeRegistryUnauthorized, "invalid user")
+		httpresponse.Error(ctx, craneerr)
 		return
 	}
 	account := account_.(auth.Account)
@@ -170,7 +181,8 @@ func (registry *Registry) GetManifests(ctx *gin.Context) {
 func (registry *Registry) DeleteManifests(ctx *gin.Context) {
 	account_, found := ctx.Get("account")
 	if !found {
-		ctx.JSON(http.StatusUnauthorized, gin.H{})
+		craneerr := cranerror.NewError(CodeRegistryUnauthorized, "invalid user")
+		httpresponse.Error(ctx, craneerr)
 		return
 	}
 	account := account_.(auth.Account)
@@ -189,7 +201,8 @@ func (registry *Registry) MineRepositories(ctx *gin.Context) {
 	keywords := ctx.Query("keywords")
 	account_, found := ctx.Get("account")
 	if !found {
-		ctx.JSON(http.StatusUnauthorized, gin.H{})
+		craneerr := cranerror.NewError(CodeRegistryUnauthorized, "invalid user")
+		httpresponse.Error(ctx, craneerr)
 		return
 	}
 	account := account_.(auth.Account)
