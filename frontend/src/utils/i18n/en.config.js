@@ -263,7 +263,7 @@
             "Mount points": "Mount Points",
             "Remove volume": "Remove Volume",
             "Vol_driver_local": "local",
-            "Node List": "Node List",
+            "Nodes": "Nodes",
             "Add Node": "Add Node",
             "Node Detail": "Node Detail",
             "Image Detail": "Image Detail",
@@ -328,7 +328,7 @@
 
 
             //registry-auth module
-            "Registry Auth list": "Registry Auth List",
+            "Registry Auth list": "Registry Auth",
             "Add registry auth": "Add Registry Auth",
             "Registry Auth Name": "Registry Auth Name",
             "Are you sure to delete this auth pair?": "Are you sure to delete this auth pair?",
@@ -349,7 +349,7 @@
             "Are you sure to delete the stack template ?": "Are you sure to delete the stack template ?",
 
             //network module
-            "Network List": "Network List",
+            "Networks": "Networks",
             "Type": "Type",
             "Create Network": "Create Network",
             "Network Detail": "Network Detail",

@@ -22,7 +22,7 @@
                     networks: listNetwork
                 },
                 ncyBreadcrumb: {
-                    label: "{/'Network List' | translate/}"
+                    label: "{/'Networks' | translate/}"
                 }
             })
             .state('network.create', {
