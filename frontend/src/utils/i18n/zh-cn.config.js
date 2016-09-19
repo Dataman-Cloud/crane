@@ -370,6 +370,12 @@
             "No query information to a network": "未查询到网络信息",
             "Are you sure to delete the network ?": "是否确认删除该网络 ?",
 
+            //misc module
+            "Cluster Name": "集群名称",
+            "Token management node": "管理节点 Token",
+            "Working node Token": "工作节点 Token",
+            "Cluster Information": "集群信息",
+
 
             //Notification
             "Host successful update": "更新主机成功",

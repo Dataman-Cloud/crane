@@ -13,13 +13,13 @@
     </section>
 
     <section layout="row" class="info-list-detail">
-        <h2 flex="20">集群信息</h2>
+        <h2 flex="20">{/'Cluster Information' | translate/}</h2>
         <div flex="80" layout="row" layout-wrap>
-            <div flex="30"><h5>集群名称</h5></div>
+            <div flex="30"><h5>{/'Cluster Name' | translate/}</h5></div>
             <div flex="70"><p>{/miscConfigCtrl.craneconfig.SwarmInfo.Spec.Name/}</p></div>
-            <div flex="30"><h5>管理节点 Token</h5></div>
+            <div flex="30"><h5>{/'Token management node' | translate/}</h5></div>
             <div flex="70"><p>{/miscConfigCtrl.craneconfig.SwarmInfo.JoinTokens.Manager/}</p></div>
-            <div flex="30"><h5>工作节点 Token</h5></div>
+            <div flex="30"><h5>{/'Working node Token' | translate/}</h5></div>
             <div flex="70"><p>{/miscConfigCtrl.craneconfig.SwarmInfo.JoinTokens.Worker/}</p></div>
             <div flex="30"><h5>{/'Update Time' | translate/}</h5></div>
             <div flex="70"><p>{/miscConfigCtrl.craneconfig.SwarmInfo.UpdatedAt | date: 'yyyy-MM-dd HH:mm:ss'/}</p></div>

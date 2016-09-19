@@ -369,6 +369,12 @@
             "No query information to a network": "No query information to a network",
             "Are you sure to delete the network ?": "Are you sure to delete the network ?",
 
+            //misc module
+            "Cluster Name": "Cluster Name",
+            "Token management node": "Token management node",
+            "Working node Token": "Working node Token",
+            "Cluster Information": "Cluster Information",
+
             //Notification
             "Host successful update": "Host successful update",
             "Successfully deleted": "Successfully deleted",
