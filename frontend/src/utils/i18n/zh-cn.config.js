@@ -255,7 +255,7 @@
             "Total containers": "容器总数",
             "Paused containers": "暂停容器",
             "Stopped containers": "停止容器",
-            "Images": "镜像个数",
+            "Images Sum": "镜像个数",
             "Node labels": "主机标签",
             "Create Volume": "创建存储卷",
             "Size": "大小",
@@ -336,7 +336,7 @@
 
             //registry module
             "Schema Version": "Schema 版本",
-            "Image List": "镜像列表",
+            "Images": "镜像列表",
             "Stack Deploy": "项目部署",
             "Create Stack Template": "创建项目模板",
             "Update Stack Template": "更新项目模板",

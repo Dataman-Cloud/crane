@@ -19,7 +19,7 @@
                 templateUrl: '/src/registry/list/list.html',
                 targetState: 'catalogs',
                 ncyBreadcrumb: {
-                    label: "{/'Image List' | translate/}"
+                    label: "{/'Images' | translate/}"
                 }
             })
             .state('registry.list.catalogs', {
