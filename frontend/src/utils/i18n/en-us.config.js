@@ -387,6 +387,11 @@
             "Update Success": "Update Success",
             "Modify the number of tasks successfully": "Modify the number of tasks successfully",
             "The project began to deploy , the deployment time-dependent mirror pull time , please wait": "The project began to deploy , the deployment time-dependent mirror pull time , please wait",
+
+            //error code
+            "CODE_MESSAGE_10000": "Service busy, please try again later",
+            "CODE_MESSAGE_10001": "Service busy, please try again later",
+            "CODE_MESSAGE_11413": "Service Mapping port conflict"
         });
     }
 })();

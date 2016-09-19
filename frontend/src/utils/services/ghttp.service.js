@@ -4,7 +4,7 @@
     angular.module('app.utils').factory('gHttp', gHttp);
 
     /* @ngInject */
-    function gHttp(utils, $q, $rootScope, $http, Notification) {
+    function gHttp(utils, $q, $rootScope, $http, Notification, $filter) {
         var token;
 
         var ResourceCls = buildResourceCls();
@@ -68,7 +68,7 @@
                             if (data.data) {
                                 options.form.message_error_info = data.data;
                             } else {
-                                Notification.error(CODE_MESSAGE[data.code]);
+                                Notification.error($filter('translate')(CODE_MESSAGE[data.code]));
                             }
                         }
                         options.form.$setValidity("submit", true);
@@ -128,15 +128,16 @@
                         //notification data.message if SHOW_ERROR_MESSAGE includes code
                         Notification.error(data.message);
                     } else if (this.options.ignoreCodes.indexOf(data.code) === -1) {
-                        Notification.error(CODE_MESSAGE[data.code]);
+                        Notification.error($filter('translate')(CODE_MESSAGE[data.code]));
                     }
+
                 } else if (status == 401) {
                     utils.redirectLogin(true);
                 } else if (status == 404) {
                     //$state.go('404');
                 } else {
                     data = {code: MESSAGE_CODE.unknow};
-                    Notification.error(CODE_MESSAGE[data.code]);
+                    Notification.error($filter('translate')(CODE_MESSAGE[data.code]));
                 }
 
                 deferred.reject(data)

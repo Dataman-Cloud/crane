@@ -390,6 +390,11 @@
             "Modify the number of tasks successfully": "修改任务数成功",
             "The project began to deploy , the deployment time-dependent mirror pull time , please wait": "项目开始部署，部署时间依赖镜像拉取时间，请稍后",
 
+            //error code
+            "CODE_MESSAGE_10000": "服务忙, 请稍后重试",
+            "CODE_MESSAGE_10001": "服务忙, 请稍后重试",
+            "CODE_MESSAGE_11413": "服务映射端口冲突",
+
 
         });
     }
