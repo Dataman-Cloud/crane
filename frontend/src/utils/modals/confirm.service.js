@@ -15,8 +15,8 @@
             .clickOutsideToClose(true)
             .title($filter('translate')(title))
             .targetEvent(ev)
-            .ok('确定')
-            .cancel('取消');
+            .ok($filter('translate')('Confirm'))
+            .cancel($filter('translate')('Cancel'));
             if (content) {
                 confirm.htmlContent(content);
             }

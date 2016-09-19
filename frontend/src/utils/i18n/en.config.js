@@ -5,7 +5,7 @@
 
     /* @ngInject */
     function i18nEn($translateProvider) {
-        $translateProvider.translations('en-US', {
+        $translateProvider.translations('en', {
             //general
             "Create Time": 'Create Time',
             "Update Time": 'Update Time',

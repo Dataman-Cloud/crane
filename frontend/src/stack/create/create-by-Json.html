@@ -8,7 +8,7 @@
                    data-ng-pattern="/^[A-Za-z0-9]+$/" focus-me>
         </div>
         <div ng-messages="staticForm.Name.$error" ng-if="staticForm.Name.$dirty" role="alert">
-            <p class="text-danger help-text" ng-message="required">名称不能为空</p>
+            <p class="text-danger help-text" ng-message="required">{/'Name can not be empty' | translate/}</p>
             <p class="text-danger help-text" ng-message="pattern">{/'Only number and letter' | translate/}</p>
         </div>
     </div>
@@ -20,7 +20,7 @@
             <div class="form-control">
                 <md-select data-ng-model="stackCreateByJsonCtrl.selectGroupId" aria-label="selectGroupId"
                            md-on-open="stackCreateByJsonCtrl.loadGroups()">
-                    <md-option value="null" ng-selected="true">空</md-option>
+                    <md-option value="null" ng-selected="true">{/'Empty' | translate/}</md-option>
                     <md-option
                             data-ng-repeat="group in stackCreateByJsonCtrl.groups"
                             ng-value="group.Id">{/group.Name/}
@@ -54,7 +54,7 @@
             <div flex="none">
                 <input id="dockerFileInput" name="file" type="file" class="ng-hide" accept="text/plain, .json"
                        onchange="angular.element(this).scope().stackCreateByJsonCtrl.onFileSelect(this.files)">
-                <md-button trigger-prev-click class="md-small md-primary"><i class="fa fa-upload"></i> 从文件中读取
+                <md-button trigger-prev-click class="md-small md-primary"><i class="fa fa-upload"></i> {/'Read from a file' | translate/}
                 </md-button>
             </div>
 
@@ -87,11 +87,11 @@
     <footer class="form-buttons">
         <md-button class="md-raised md-primary"
                    data-ng-disabled="staticForm.$invalid || stackCreateByJsonCtrl.errorInfo.stack"
-                   data-ng-click="stackCreateByJsonCtrl.create()">部署
+                   data-ng-click="stackCreateByJsonCtrl.create()">{/'Deploy' | translate/}
         </md-button>
         <md-button class="md-raised md-primary"
                    data-ng-disabled="staticForm.$invalid || stackCreateByJsonCtrl.errorInfo.stack"
-                   data-ng-click="stackCreateByJsonCtrl.createAndDownload()">部署并导出
+                   data-ng-click="stackCreateByJsonCtrl.createAndDownload()">{/'Deployment and export' | translate/}
         </md-button>
         <md-button data-ng-click="rootCtrl.goBack()">{/'Cancel' | translate/}</md-button>
     </footer>

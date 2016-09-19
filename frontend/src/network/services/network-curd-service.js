@@ -8,7 +8,7 @@
 
 
     /* @ngInject */
-    function networkCurd(networkBackend, $state, confirmModal, Notification) {
+    function networkCurd(networkBackend, $state, confirmModal, Notification, $filter) {
         //////
         return {
             create: create,
@@ -25,10 +25,10 @@
         }
 
         function deleteNetwork(id) {
-            confirmModal.open("是否确认删除该网络？").then(function () {
+            confirmModal.open("Are you sure to delete the network ?").then(function () {
                 networkBackend.deleteNetwork(id)
                     .then(function (data) {
-                        Notification.success('删除成功');
+                        Notification.success($filter('translate')('Successfully deleted'));
                         $state.reload()
                     })
             });

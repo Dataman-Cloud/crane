@@ -11,7 +11,7 @@
                  role="alert">
                 <p class="text-danger help-text"
                    ng-message="required">
-                    <small>名称不能为空</small>
+                    <small>{/'Name can not be empty' | translate/}</small>
                 </p>
                 <p class="text-danger help-text"
                    ng-message="pattern">
@@ -19,7 +19,7 @@
                 </p>
                 <p class="text-danger help-text"
                    ng-message="dmCheckInclude">
-                    <small>服务名不能重复</small>
+                    <small>{/'Service name can not be repeated' | translate/}</small>
                 </p>
             </div>
         </div>
@@ -35,7 +35,7 @@
                  role="alert">
                 <p class="text-danger help-text"
                    ng-message="required">
-                    <small>镜像不能为空</small>
+                    <small>{/'Mirroring can not be empty' | translate/}</small>
                 </p>
             </div>
         </div>
@@ -87,7 +87,7 @@
             <div class="form-control">
                 <md-select data-ng-model="serviceUpdateCtrl.form.RegistryAuth"
                            aria-label="RegAuth">
-                    <md-option value="">空</md-option>
+                    <md-option value="">{/'Empty' | translate/}</md-option>
                     <md-option data-ng-repeat="regAuth in serviceUpdateCtrl.regAuths"
                                ng-value="regAuth.Name"
                                ng-selected="regAuth.Name === serviceUpdateCtrl.service.Spec.RegistryAuth">
@@ -131,11 +131,11 @@
                      role="alert">
                     <p class="text-danger help-text"
                        ng-message="max">
-                        <small>服务端口最大不超过 65535</small>
+                        <small>{/'Maximum service port can not exceed 65535' | translate/}</small>
                     </p>
                     <p class="text-danger help-text"
                        ng-message="min">
-                        <small>服务端口最小为 1</small>
+                        <small>{/'Minimum service port 1' | translate/}</small>
                     </p>
                 </div>
 
@@ -144,7 +144,7 @@
                      role="alert">
                     <p class="text-danger help-text"
                        ng-message="max">
-                        <small>主机端口最大不超过 65535</small>
+                        <small>{/'Maximum host port can not exceed 65535' | translate/}</small>
                     </p>
                 </div>
             </div>
@@ -180,11 +180,11 @@
                      role="alert">
                     <p class="text-danger help-text"
                        ng-message="pattern">
-                        <small>环境变量 KEY 只能为数字、字母或下划线</small>
+                        <small>{/'KEY must be numbers, letters or underscore' | translate/}</small>
                     </p>
                     <p class="text-danger help-text"
                        ng-message="dmCheckInclude">
-                        <small>环境变量 Key 值不能重复</small>
+                        <small>{/'KEY can not be repeated' | translate/}</small>
                     </p>
                 </div>
 
@@ -192,7 +192,7 @@
                      role="alert">
                     <p class="text-danger help-text"
                        ng-message="pattern">
-                        <small>环境变量 Value 值不能包含中文</small>
+                        <small>{/'Value can not contain Chinese' | translate/}</small>
                     </p>
                 </div>
             </div>
@@ -244,7 +244,7 @@
                          role="alert">
                         <p class="error-info help-info-bottom"
                            ng-message="pattern">
-                            <small>Command 不能包含中文</small>
+                            <small>{/'Command can not contain Chinese' | translate/}</small>
                         </p>
                     </div>
                 </div>
@@ -276,7 +276,7 @@
                          role="alert">
                         <p class="error-info help-info-bottom"
                            ng-message="pattern">
-                            <small>Args 不能包含中文</small>
+                            <small>{/'Args can not contain Chinese' | translate/}</small>
                         </p>
                     </div>
                 </div>
@@ -324,11 +324,11 @@
                          role="alert">
                         <p class="text-danger help-text"
                            ng-message="pattern">
-                            <small>标签 Key 值不能包含中文</small>
+                            <small>{/'KEY can not contain Chinese' | translate/}</small>
                         </p>
                         <p class="text-danger help-text"
                            ng-message="dmCheckInclude">
-                            <small>标签 Key 值不能重复</small>
+                            <small>{/'KEY can not be repeated' | translate/}</small>
                         </p>
                     </div>
 
@@ -337,7 +337,7 @@
                          role="alert">
                         <p class="text-danger help-text"
                            ng-message="pattern">
-                            <small>标签 Value 值不能包含中文</small>
+                            <small>{/'Value can not contain Chinese' | translate/}</small>
                         </p>
                     </div>
                 </div>
@@ -373,11 +373,11 @@
                          role="alert">
                         <p class="text-danger help-text"
                            ng-message="pattern">
-                            <small>标签 Key 值不能包含中文</small>
+                            <small>{/'KEY can not contain Chinese' | translate/}</small>
                         </p>
                         <p class="text-danger help-text"
                            ng-message="dmCheckInclude">
-                            <small>标签 Key 值不能重复</small>
+                            <small>{/'KEY can not be repeated' | translate/}</small>
                         </p>
                     </div>
 
@@ -386,7 +386,7 @@
                          role="alert">
                         <p class="text-danger help-text"
                            ng-message="pattern">
-                            <small>标签 Value 值不能包含中文</small>
+                            <small>{/'Value can not contain Chinese' | translate/}</small>
                         </p>
                     </div>
                 </div>
@@ -427,7 +427,7 @@
                      role="alert">
                     <p class="text-danger help-text"
                        ng-message="min">
-                        <small>CPU 最小为 0.01</small>
+                        <small>{/'CPU minimum 0.01' | translate/}</small>
                     </p>
                 </div>
                 <div ng-messages="staticForm.limitMem.$error" ng-if="staticForm.limitMem.$dirty"
@@ -466,7 +466,7 @@
                      role="alert">
                     <p class="text-danger help-text"
                        ng-message="min">
-                        <small>CPU 最小为 0.01</small>
+                        <small>{/'CPU minimum 0.01' | translate/}</small>
                     </p>
                 </div>
                 <div ng-messages="staticForm.ReservationsMem.$error"
@@ -680,8 +680,8 @@
 
                                 <md-select ng-model="mount.ReadOnly" data-required="required" flex="20"
                                            aria-label="select mount">
-                                    <md-option ng-value="true">只读</md-option>
-                                    <md-option ng-value="false">读写</md-option>
+                                    <md-option ng-value="true">{/'Read-only' | translate/}</md-option>
+                                    <md-option ng-value="false">{/'Read-Write' | translate/}</md-option>
                                 </md-select>
 
                                 <input type="text" placeholder="Target" flex="20"

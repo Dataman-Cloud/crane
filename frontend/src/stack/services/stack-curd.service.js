@@ -8,7 +8,7 @@
 
 
     /* @ngInject */
-    function stackCurd(stackBackend, formModal, confirmModal, Notification, $state, createSelectModal) {
+    function stackCurd(stackBackend, formModal, confirmModal, Notification, $state, createSelectModal, $filter) {
         //////
         return {
             upServiceScale: upServiceScale,
@@ -22,7 +22,7 @@
             formModal.open('/src/stack/modals/up-scale.html', ev,
                 {dataName: 'scale', initData: curScale}).then(function (scale) {
                 stackBackend.upServiceScale(stackName, serviceID, scale).then(function (data) {
-                    Notification.success('修改任务数成功');
+                    Notification.success($filter('translate')('Modify the number of tasks successfully'));
                     $state.reload();
                 });
             });
@@ -44,14 +44,14 @@
         function createStack(formData, form, groupId) {
             return stackBackend.createStack(formData, form, groupId)
                 .then(function (data) {
-                    Notification.success('项目开始部署，部署时间依赖镜像拉取时间，请稍后');
+                    Notification.success($filter('translate')('The project began to deploy , the deployment time-dependent mirror pull time , please wait'));
                     $state.go('stack.detail.service', {stack_name: formData.Namespace})
                 })
         }
 
         function updateService(data, form, stackName, serviceID) {
             stackBackend.updateService(data, form, stackName, serviceID).then(function (data) {
-                Notification.success('更新成功');
+                Notification.success($filter('translate')('Update Success'));
                 $state.go('stack.serviceDetail.config', {stack_name: stackName, service_id: serviceID}, {reload: true});
             });
         }

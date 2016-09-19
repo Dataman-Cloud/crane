@@ -4,9 +4,9 @@
         <tr md-row>
             <th md-column>ID</th>
             <th md-column>{/'Name' | translate/}</th>
-            <th md-column>作用范围</th>
-            <th md-column>类型</th>
-            <th md-column>容器数</th>
+            <th md-column>{/'Scope' | translate/}</th>
+            <th md-column>{/'Type' | translate/}</th>
+            <th md-column>{/'Container number' | translate/}</th>
             <th md-column>{/'Operation' | translate/}</th>
         </tr>
         </thead>
@@ -30,7 +30,7 @@
                 <md-button id="node-delete-network-{/$index/}" class="md-icon-button" aria-label="delete"
                            ng-hide="RESERVED_NETWORK_NAMES.indexOf(network.Name) !== -1"
                            data-ng-click="nodeNetworkCtrl.deleteNetwork(network.Id)"><i class="fa fa-trash"/>
-                    <md-tooltip md-direction="left">删除网络</md-tooltip>
+                    <md-tooltip md-direction="left">{/'Remove network' | translate/}</md-tooltip>
                 </md-button>
             </td>
         </tr>

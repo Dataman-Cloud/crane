@@ -1,13 +1,13 @@
 <section layout="row" class="info-list-detail">
     <h2 flex="20">{/'Basic Information' | translate/}</h2>
     <div flex="80" layout="row" layout-wrap>
-        <div flex="30"><h5>作用范围</h5></div>
+        <div flex="30"><h5>{/'Scope' | translate/}</h5></div>
         <div flex="70"><p>{/nodeNetworkConfigCtrl.network.Scope/}</p></div>
-        <div flex="30"><h5>支持 IPv6</h5></div>
+        <div flex="30"><h5>{/'Support IPv6' | translate/}</h5></div>
         <div flex="70"><p>{/nodeNetworkConfigCtrl.network.EnableIPv6 ? 'YES' : 'NO' | translate/}</p></div>
-        <div flex="30"><h5>仅内部网络</h5></div>
+        <div flex="30"><h5>{/'Only the internal network' | translate/}</h5></div>
         <div flex="70"><p>{/nodeNetworkConfigCtrl.network.Internal ? 'YES' : 'NO' | translate/}</p></div>
-        <div flex="30"><h5>选项</h5></div>
+        <div flex="30"><h5>{/'Options' | translate/}</h5></div>
         <div flex="70" dm-empty-display="nodeNetworkConfigCtrl.network.Options" dm-empty-text="{/'Not configured' | translate/}">
             <ul>
                 <li data-ng-repeat="(key, value) in nodeNetworkConfigCtrl.network.Options">{/key/} : {/value/}</li>
@@ -23,9 +23,9 @@
 </section>
 
 <section layout="row" class="info-list-detail">
-    <h2 flex="20">地址管理</h2>
+    <h2 flex="20">{/'Address Management' | translate/}</h2>
     <div flex="80" layout="row" layout-wrap>
-        <div flex="30"><h5>子网掩码</h5></div>
+        <div flex="30"><h5>{/'Subnet Mask' | translate/}</h5></div>
         <div flex="70"><p ng-class="{'no-info': !nodeNetworkConfigCtrl.network.IPAM.Config[0].Subnet}">
             {/nodeNetworkConfigCtrl.network.IPAM.Config[0].Subnet || ('Not configured' | translate)/}</p></div>
         <div flex="30"><h5>{/'Gateway IP' | translate/}</h5></div>
@@ -36,15 +36,15 @@
 </section>
 
 <section layout="row" class="info-list-detail">
-    <h2 flex="20">连接容器</h2>
+    <h2 flex="20">{/'Connections container' | translate/}</h2>
     <div flex="80" dm-empty-display="nodeNetworkConfigCtrl.network.Containers">
         <table id="node-network-detail-config-table">
             <thead>
             <tr>
-                <th>容器名称</th>
-                <th>IPv4 地址</th>
-                <th>IPv6 地址</th>
-                <th>Mac 地址</th>
+                <th>{/'Container Name' | translate/}</th>
+                <th>{/'IPv4 address' | translate/}</th>
+                <th>{/'IPv6 address' | translate/}</th>
+                <th>{/'MAC Address' | translate/}</th>
             </tr>
             </thead>
             <tbody>

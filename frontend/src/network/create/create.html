@@ -9,7 +9,7 @@
         <div ng-messages="createNetwork.name.$error" ng-if="createNetwork.name.$dirty" role="alert">
             <p class="help-text"
                ng-message="required">
-                <small>名称不能为空</small>
+                <small>{/'Name can not be empty' | translate/}</small>
             </p>
             <p class="help-text"
                ng-message="pattern">
@@ -19,7 +19,7 @@
     </div>
 
     <div class="form-group" layout="column">
-        <label>子网掩码
+        <label>{/'Subnet Mask' | translate/}
             <small></small>
         </label>
         <div class="form-control">
@@ -56,7 +56,7 @@
     </div>
 
     <div class="form-group" layout="column">
-        <label>IP 范围
+        <label>{/'IP range' | translate/}
             <small></small>
         </label>
         <div class="form-control">
@@ -76,12 +76,12 @@
     </div>
 
     <div class="form-group" layout="column">
-        <label>内部网络</label>
+        <label>{/'Internal Network' | translate/}</label>
         <div class="form-control" layout="row" layout-align="start center">
             <md-radio-group ng-model="networkCreateCtrl.form.Internal" layout="row"
                             data-required="required" aria-label="Network Internal" flex>
                 <div flex="25">
-                    <md-radio-button ng-value="true" class="md-primary">是</md-radio-button>
+                    <md-radio-button ng-value="true" class="md-primary">{/'YES' | translate/}</md-radio-button>
                 </div>
                 <div flex="25">
                     <md-radio-button ng-value="false" class="md-primary">否</md-radio-button>
@@ -93,12 +93,12 @@
 
     <div class="form-group" layout="column">
         <label>{/'Labels' | translate/}
-            <small>可添加多个标签</small>
+            <small>{/'Can add multiple labels' | translate/}</small>
         </label>
         <div class="sub-button">
             <md-button class="md-raised md-success md-small"
                        data-ng-click="networkCreateCtrl.addLabel()">
-                添加标签
+                {/'Add labels' | translate/}
             </md-button>
         </div>
         <div data-ng-repeat="label in networkCreateCtrl.labels track by $index">
@@ -122,11 +122,11 @@
             <div ng-messages="labelForm.labelKey.$error" ng-if="labelForm.labelKey.$dirty" role="alert">
                 <p class="help-text"
                    ng-message="pattern">
-                    <small>标签 Key 不能包含中文</small>
+                    <small>{/'KEY can not contain Chinese' | translate/}</small>
                 </p>
                 <p class="help-text"
                    ng-message="dmCheckInclude">
-                    <small>标签 Key 不能重复</small>
+                    <small>{/'KEY can not be repeated' | translate/}</small>
                 </p>
             </div>
 
@@ -134,7 +134,7 @@
                  role="alert">
                 <p class="help-text"
                    ng-message="pattern">
-                    <small>标签 Value 不能包含中文</small>
+                    <small>{/'Value can not contain Chinese' | translate/}</small>
                 </p>
             </div>
         </div>

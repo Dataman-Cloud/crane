@@ -14,7 +14,7 @@
         $interpolateProvider.startSymbol('{/');
         $interpolateProvider.endSymbol('/}');
 
-        $translateProvider.preferredLanguage('en-us');
+        $translateProvider.preferredLanguage(window.navigator.language || 'en');
         $translateProvider.useSanitizeValueStrategy(null);
 
         NotificationProvider.setOptions({

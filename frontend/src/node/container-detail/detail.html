@@ -8,7 +8,7 @@
         </dl>
 
         <dl class="info-list">
-            <dt>镜像名称</dt>
+            <dt>{/'Image Name' | translate/}</dt>
             <dd>{/nodeContainerDetailCtrl.container.Config.Image/}</dd>
         </dl>
     </div>
@@ -17,7 +17,7 @@
     <md-tab id="node-container-config" label="{/'Detail' | translate/}" dm-tab-sref="node.containerDetail.config"></md-tab>
     <md-tab id="node-container-log" label="{/'Log' | translate/}" dm-tab-sref="node.containerDetail.log"></md-tab>
     <md-tab id="node-container-stats" label="{/'Real Monitoring' | translate/}" dm-tab-sref="node.containerDetail.stats"></md-tab>
-    <md-tab id="node-container-diff" label="变更" dm-tab-sref="node.containerDetail.diff"></md-tab>
-    <md-tab id="node-container-terminal" label="终端" dm-tab-sref="node.containerDetail.terminal"></md-tab>
+    <md-tab id="node-container-diff" label="{/'Change' | translate/}" dm-tab-sref="node.containerDetail.diff"></md-tab>
+    <md-tab id="node-container-terminal" label="{/'Terminal' | translate/}" dm-tab-sref="node.containerDetail.terminal"></md-tab>
 </md-tabs>
 <md-content ui-view></md-content>

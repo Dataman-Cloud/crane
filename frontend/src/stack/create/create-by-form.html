@@ -16,7 +16,7 @@
                  role="alert">
                 <p class="text-danger help-text"
                    ng-message="required">
-                    <small>名称不能为空</small>
+                    <small>{/'Name can not be empty' | translate/}</small>
                 </p>
                 <p class="text-danger help-text"
                    ng-message="pattern">
@@ -56,7 +56,7 @@
                              role="alert">
                             <p class="text-danger help-text"
                                ng-message="required">
-                                <small>名称不能为空</small>
+                                <small>{/'Name can not be empty' | translate/}</small>
                             </p>
                             <p class="text-danger help-text"
                                ng-message="pattern">
@@ -64,7 +64,7 @@
                             </p>
                             <p class="text-danger help-text"
                                ng-message="dmCheckInclude">
-                                <small>服务名不能重复</small>
+                                <small>{/'Service name can not be repeated' | translate/}</small>
                             </p>
                         </div>
                     </div>
@@ -79,7 +79,7 @@
                              role="alert">
                             <p class="text-danger help-text"
                                ng-message="required">
-                                <small>镜像不能为空</small>
+                                <small>{/'Mirroring can not be empty' | translate/}</small>
                             </p>
                         </div>
                     </div>
@@ -129,7 +129,7 @@
                             <md-select id="service{/$index/}-RegistryAuth" data-ng-model="serve.RegistryAuth"
                                        aria-label="RegAuth"
                                        md-on-open="stackCreateByFormCtrl.loadRegAuths()">
-                                <md-option value="" ng-selected="true">空</md-option>
+                                <md-option value="" ng-selected="true">{/'Empty' | translate/}</md-option>
                                 <md-option
                                         data-ng-repeat="regAuth in stackCreateByFormCtrl.regAuths"
                                         ng-value="regAuth.Name">{/regAuth.Name/}
@@ -172,11 +172,11 @@
                                  role="alert">
                                 <p class="text-danger help-text"
                                    ng-message="max">
-                                    <small>服务端口最大不超过 65535</small>
+                                    <small>{/'Maximum service port can not exceed 65535' | translate/}</small>
                                 </p>
                                 <p class="text-danger help-text"
                                    ng-message="min">
-                                    <small>服务端口最小为 1</small>
+                                    <small>{/'Minimum service port 1' | translate/}</small>
                                 </p>
                             </div>
 
@@ -185,7 +185,7 @@
                                  role="alert">
                                 <p class="text-danger help-text"
                                    ng-message="max">
-                                    <small>主机端口最大不超过 65535</small>
+                                    <small>{/'Maximum host port can not exceed 65535' | translate/}</small>
                                 </p>
                             </div>
                         </div>
@@ -221,11 +221,11 @@
                                  role="alert">
                                 <p class="text-danger help-text"
                                    ng-message="pattern">
-                                    <small>环境变量 KEY 只能为数字、字母或下划线</small>
+                                    <small>{/'KEY must be numbers, letters or underscore' | translate/}</small>
                                 </p>
                                 <p class="text-danger help-text"
                                    ng-message="dmCheckInclude">
-                                    <small>环境变量 Key 值不能重复</small>
+                                    <small>{/'KEY can not be repeated' | translate/}</small>
                                 </p>
                             </div>
 
@@ -233,7 +233,7 @@
                                  role="alert">
                                 <p class="text-danger help-text"
                                    ng-message="pattern">
-                                    <small>环境变量 Value 值不能包含中文</small>
+                                    <small>{/'Value can not contain Chinese' | translate/}</small>
                                 </p>
                             </div>
                         </div>
@@ -317,7 +317,7 @@
                                      role="alert">
                                     <p class="text-danger help-text"
                                        ng-message="pattern">
-                                        <small>Args 不能包含中文</small>
+                                        <small>{/'Args can not contain Chinese' | translate/}</small>
                                     </p>
                                 </div>
                             </div>
@@ -361,11 +361,11 @@
                                      role="alert">
                                     <p class="text-danger help-text"
                                        ng-message="pattern">
-                                        <small>标签 Key 值不能包含中文</small>
+                                        <small>{/'KEY can not contain Chinese' | translate/}</small>
                                     </p>
                                     <p class="text-danger help-text"
                                        ng-message="dmCheckInclude">
-                                        <small>标签 Key 值不能重复</small>
+                                        <small>{/'KEY can not be repeated' | translate/}</small>
                                     </p>
                                 </div>
 
@@ -374,7 +374,7 @@
                                      role="alert">
                                     <p class="text-danger help-text"
                                        ng-message="pattern">
-                                        <small>标签 Value 值不能包含中文</small>
+                                        <small>{/'Value can not contain Chinese' | translate/}</small>
                                     </p>
                                 </div>
                             </div>
@@ -411,11 +411,11 @@
                                      role="alert">
                                     <p class="text-danger help-text"
                                        ng-message="pattern">
-                                        <small>标签 Key 值不能包含中文</small>
+                                        <small>{/'KEY can not contain Chinese' | translate/}</small>
                                     </p>
                                     <p class="text-danger help-text"
                                        ng-message="dmCheckInclude">
-                                        <small>标签 Key 值不能重复</small>
+                                        <small>{/'KEY can not be repeated' | translate/}</small>
                                     </p>
                                 </div>
 
@@ -424,7 +424,7 @@
                                      role="alert">
                                     <p class="text-danger help-text"
                                        ng-message="pattern">
-                                        <small>标签 Value 值不能包含中文</small>
+                                        <small>{/'Value can not contain Chinese' | translate/}</small>
                                     </p>
                                 </div>
                             </div>
@@ -461,7 +461,7 @@
                                  role="alert">
                                 <p class="text-danger help-text"
                                    ng-message="min">
-                                    <small>CPU 最小为 0.01</small>
+                                    <small>{/'CPU minimum 0.01' | translate/}</small>
                                 </p>
                             </div>
                             <div ng-messages="staticForm.limitMem.$error" ng-if="staticForm.limitMem.$dirty"
@@ -500,7 +500,7 @@
                                  role="alert">
                                 <p class="text-danger help-text"
                                    ng-message="min">
-                                    <small>CPU 最小为 0.01</small>
+                                    <small>{/'CPU minimum 0.01' | translate/}</small>
                                 </p>
                             </div>
                             <div ng-messages="staticForm.ReservationsMem.$error"
@@ -712,8 +712,8 @@
 
                                         <md-select ng-model="mount.ReadOnly" data-required="required" flex="20"
                                                    aria-label="select mount">
-                                            <md-option ng-value="true">只读</md-option>
-                                            <md-option ng-value="false">读写</md-option>
+                                            <md-option ng-value="true">{/'Read-only' | translate/}</md-option>
+                                            <md-option ng-value="false">{/'Read-Write' | translate/}</md-option>
                                         </md-select>
 
                                         <input flex="20" type="text" placeholder="Target"
@@ -745,20 +745,20 @@
                         </md-button>
 
                         <md-button id="addServe{/$index/}" class="md-raised" data-ng-disabled="staticForm.$invalid"
-                                   data-ng-click="stackCreateByFormCtrl.addServe()">继续添加
+                                   data-ng-click="stackCreateByFormCtrl.addServe()">{/'Continue Add' | translate/}
                         </md-button>
                         <md-button id="removeServe{/$index/}" class="md-raised"
                                    data-ng-if="!$first"
-                                   data-ng-click="stackCreateByFormCtrl.removeServe($index)">删除服务
+                                   data-ng-click="stackCreateByFormCtrl.removeServe($index)">{/'Delete Service' | translate/}
                         </md-button>
                         <md-button id="create{/$index/}" class="md-raised md-primary"
                                    data-ng-disabled="staticForm.$invalid"
                                    data-ng-click="stackCreateByFormCtrl.create()">
-                            部署
+                            {/'Deploy' | translate/}
                         </md-button>
                         <md-button id="createAndDownload{/$index/}" class="md-raised md-primary"
                                    data-ng-disabled="staticForm.$invalid"
-                                   data-ng-click="stackCreateByFormCtrl.createAndDownload()">部署并导出
+                                   data-ng-click="stackCreateByFormCtrl.createAndDownload()">{/'Deployment and export' | translate/}
                         </md-button>
                     </footer>
                 </form>

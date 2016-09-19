@@ -11,7 +11,7 @@
                 template: '<ui-view/>',
                 targetState: 'list',
                 ncyBreadcrumb: {
-                    label: '镜像'
+                    label: "{/'Image' | translate/}"
                 }
             })
             .state('registry.list', {
@@ -19,7 +19,7 @@
                 templateUrl: '/src/registry/list/list.html',
                 targetState: 'catalogs',
                 ncyBreadcrumb: {
-                    label: '镜像列表'
+                    label: "{/'Image List' | translate/}"
                 }
             })
             .state('registry.list.catalogs', {
@@ -38,7 +38,7 @@
                 templateUrl: '/src/registry/catalog-detail/detail.html',
                 controller: 'CatalogDetailCtrl as catalogDetailCtrl',
                 ncyBreadcrumb: {
-                    label: '项目部署'
+                    label: "{/'Project Deployment' | translate/}"
                 },
                 resolve: {
                     catalog: getCatalog
@@ -49,7 +49,7 @@
                 templateUrl: '/src/registry/create-update-catalog/create-update.html',
                 controller: 'CreateUpdateCatalog as createUpdateCatalog',
                 ncyBreadcrumb: {
-                    label: '创建项目模板'
+                    label: "{/'Creating project templates' | translate/}"
                 },
                 resolve: {
                     stack: getStack,
@@ -63,7 +63,7 @@
                 templateUrl: '/src/registry/create-update-catalog/create-update.html',
                 controller: 'CreateUpdateCatalog as createUpdateCatalog',
                 ncyBreadcrumb: {
-                    label: '更新项目模板'
+                    label: "{/'Update project templates' | translate/}"
                 },
                 resolve: {
                     stack: getCatalog,
@@ -100,7 +100,7 @@
                 controller: 'RegistryImageCtrl as registryImageCtrl',
                 targetState: 'history',
                 ncyBreadcrumb: {
-                    label: '镜像详情'
+                    label: "{/'Image Detail' | translate/}"
                 },
                 resolve: {
                     image: getImage
@@ -118,7 +118,7 @@
                 url: '/createNote',
                 templateUrl: '/src/registry/create-image-note/note.html',
                 ncyBreadcrumb: {
-                    label: '如何创建镜像'
+                    label: "{/'How to create a mirror' | translate/}"
                 }
             });
 
@@ -150,9 +150,9 @@
 
         /*@ngInject*/
         function getStack(stackBackend, $stateParams) {
-            if($stateParams.stack_name){
+            if ($stateParams.stack_name) {
                 return stackBackend.getStack($stateParams.stack_name);
-            }else {
+            } else {
                 return ""
             }
         }

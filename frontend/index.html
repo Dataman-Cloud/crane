@@ -144,7 +144,7 @@
                         md-items="item in rootCtrl.querySearch(rootCtrl.searchText)"
                         md-item-text="item.Name ? item.Name : item.ID"
                         md-min-length="1"
-                        placeholder="随便输点什么试试..."
+                        placeholder="{/'Just try to lose something ...' | translate/}"
                         md-delay="500"
                         md-selected-item-change="rootCtrl.searchJump(item)" class="search-header">
                     <md-item-template>
@@ -163,7 +163,7 @@
                         </div>
                     </md-item-template>
                     <md-not-found>
-                        未查询到相关信息...
+                        {/'No query to the relevant information ...' | translate/}
                     </md-not-found>
                 </md-autocomplete>
             </form>
@@ -186,7 +186,7 @@
 </div>
 
 <div class="licence-alert" ng-if="!licenseValidFlag">
-    您的序列号即将到期，请填写信息获取新的序列号。
+    {/'License will be expired' | translate/}
     <a href="http://shurenyun.mikecrm.com/FTzYAr" target="_blank" id="index-get-licence">立即获取序列号</a>
 </div>
 <a href="http://shurenyun.mikecrm.com/FCNKya" class="feedback-btn" target="_blank" id="index-mikecrm">
@@ -245,8 +245,9 @@
 
 <script src="src/utils/utils.module.js" type="text/javascript"></script>
 <script src="src/utils/utils.config.js" type="text/javascript"></script>
-<script src="src/utils/i18n/zh-cn.config.js" type="text/javascript"></script>
-<script src="src/utils/i18n/en-us.config.js" type="text/javascript"></script>
+<script src="src/utils/i18n/zh-CN.config.js" type="text/javascript"></script>
+<script src="src/utils/i18n/en-US.config.js" type="text/javascript"></script>
+<script src="src/utils/i18n/en.config.js" type="text/javascript"></script>
 <script src="src/utils/services/utils.service.js" type="text/javascript"></script>
 <script src="src/utils/services/ghttp.service.js" type="text/javascript"></script>
 <script src="src/utils/services/mdTable.service.js" type="text/javascript"></script>

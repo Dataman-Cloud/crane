@@ -1,7 +1,7 @@
 <header layout="row" layout-align="end start" id="header-main">
     <div flex="none">
         <md-button class="md-button md-primary md-small md-raised" aria-label="创建虚拟网络" data-ui-sref="network.create">
-            <i class="fa fa-plus" aria-hidden="true"></i> 创建网络
+            <i class="fa fa-plus" aria-hidden="true"></i> {/'Create Network' | translate/}
         </md-button>
     </div>
 </header>
@@ -11,11 +11,11 @@
         <tr md-row>
             <th md-column>ID</th>
             <th md-column>{/'Name' | translate/}</th>
-            <th md-column dm-doc-link='https://docs.docker.com/engine/userguide/networking/'> 类型</th>
-            <th md-column>内部网络</th>
-            <th md-column>子网掩码</th>
+            <th md-column>{/'Type' | translate/}</th>
+            <th md-column>{/'Internal Network' | translate/}</th>
+            <th md-column>{/'Subnet Mask' | translate/}</th>
             <th md-column>{/'Gateway' | translate/}</th>
-            <th md-column>IP 范围</th>
+            <th md-column>{/'IP range' | translate/}</th>
             <th md-column>{/'Operation' | translate/}</th>
         </tr>
         </thead>
@@ -32,7 +32,7 @@
                 </a>
             </td>
             <td md-cell>{/network.Driver/}</td>
-            <td md-cell>{/network.Internal ? '是':'否'/}</td>
+            <td md-cell>{/network.Internal ? 'YES':'NO' | translate/}</td>
             <td md-cell><span ng-class="{'no-info': !network.IPAM.Config[0].Subnet}">{/network.IPAM.Config[0].Subnet || ('Not configured' | translate)/}</span>
             </td>
             <td md-cell><span ng-class="{'no-info': !network.IPAM.Config[0].Gateway}">{/network.IPAM.Config[0].Gateway || ('Not configured' | translate)/}</span>
@@ -42,13 +42,13 @@
             <td md-cell>
                 <md-button class="md-icon-button" aria-label="delete" ng-hide="RESERVED_NETWORK_NAMES.indexOf(network.Name) !== -1"
                            data-ng-click="networkListCtrl.deleteNetwork(network.Id)"><i class="fa fa-trash"></i>
-                    <md-tooltip md-direction="left">删除网络</md-tooltip>
+                    <md-tooltip md-direction="left">{/'Remove network' | translate/}</md-tooltip>
                 </md-button>
             </td>
         </tr>
         </tbody>
     </table>
     <div class="alert alert-warning text-center" data-ng-if="!networkListCtrl.networks.length">
-        未查询到网络信息
+        {/'No query information to a network' | translate/}
     </div>
 </md-table-container>

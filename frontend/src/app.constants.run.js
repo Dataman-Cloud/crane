@@ -7,12 +7,12 @@
     function run($rootScope) {
         $rootScope.DOCKER_REGISTRY_URL = DOCKER_REGISTRY_URL;
         $rootScope.CONTAINER_STATUS_LABELS = {
-            running: '运行中',
-            paused: '暂停中',
-            dead: '已崩溃',
-            restarting: '正在重启中',
-            created: '初始化中',
-            exited: '已退出'
+            running: 'Container_status_labels_running',
+            paused: 'Container_status_labels_paused',
+            dead: 'Container_status_labels_dead',
+            restarting: 'Container_status_labels_restarting',
+            created: 'Container_status_labels_created',
+            exited: 'Container_status_labels_exited'
         };
 
         $rootScope.CONTAINER_STATUS_LABELS_CLASS = {
@@ -27,9 +27,9 @@
         $rootScope.STATS_POINT_NUM = 180;
 
         $rootScope.DIFF_KIND = {
-            0: '修改',
-            1: '添加',
-            2: '删除'
+            0: 'Diff_kind_0',
+            1: 'Diff_kind_1',
+            2: 'Diff_kind_2'
         };
 
         $rootScope.NODE_ROLE = {

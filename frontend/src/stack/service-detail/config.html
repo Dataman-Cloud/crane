@@ -210,9 +210,9 @@
     <div flex="80" layout="row" layout-wrap>
         <table cellpadding="0" cellspacing="0" dm-empty-display="serviceConfigCtrl.service.Spec.EndpointSpec.Ports">
             <tr>
-                <th>主机端口</th>
+                <th>{/'Host port' | translate/}</th>
                 <th>{/'Protocol' | translate/}</th>
-                <th>映射端口</th>
+                <th>{/'Port Mapping' | translate/}</th>
             </tr>
 
             <tr ng-repeat="port in serviceConfigCtrl.service.Spec.EndpointSpec.Ports">
@@ -226,19 +226,19 @@
 
 <section layout="row" class="info-list-detail"
          ng-show="serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Mounts">
-    <h2 flex="20">挂载</h2>
+    <h2 flex="20">{/'File mount' | translate/}</h2>
     <div flex="80" layout="row" layout-wrap>
         <table cellpadding="0" cellspacing="0"
                dm-empty-display="serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Mounts">
             <tr>
-                <th>主机路径</th>
-                <th>权限</th>
+                <th>{/'Host path' | translate/}</th>
+                <th>{/'Competence' | translate/}</th>
                 <th>{/'Container' | translate/}</th>
             </tr>
 
             <tr ng-repeat="mount in serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Mounts">
                 <td>{/mount.Source/}</td>
-                <td>{/mount.ReadOnly ? '只读' : '读写'/}</td>
+                <td>{/mount.ReadOnly ? 'Read-only' : 'Read-Write' | translate/}</td>
                 <td>{/mount.Target/}</td>
             </tr>
         </table>
@@ -247,7 +247,7 @@
 
 <section layout="row" class="info-list-detail"
          ng-show="serviceConfigCtrl.service.Spec.TaskTemplate.Placement.Constraints">
-    <h2 flex="20">限制条件</h2>
+    <h2 flex="20">{/'Limitation factor' | translate/}</h2>
     <div flex="80" layout="row" layout-wrap>
         <table cellpadding="0" cellspacing="0"
                dm-empty-display="serviceConfigCtrl.service.Spec.TaskTemplate.Placement.Constraints">
@@ -266,7 +266,7 @@
 
 <section layout="row" class="info-list-detail"
          ng-show="serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Command">
-    <h2 flex="20">启动命令</h2>
+    <h2 flex="20">{/'Start Command' | translate/}</h2>
     <div flex="80" layout="row" layout-wrap>
         <table cellpadding="0" cellspacing="0"
                dm-empty-display="serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Command">

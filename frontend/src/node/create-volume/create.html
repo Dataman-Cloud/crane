@@ -1,7 +1,7 @@
-<h1>添加存储卷</h1>
+<h1>{/'Add volume' | translate/}</h1>
 <form name="createVolume" class="form-main">
     <div class="form-group" layout="column">
-        <label>卷名<span class="required">*</span>
+        <label>{/'Volume name' | translate/}<span class="required">*</span>
             <small></small>
         </label>
         <div class="form-control">
@@ -19,7 +19,7 @@
 
             <p class="help-text"
                ng-message="pattern">
-                <small>卷名必须为字母或者数字</small>
+                <small>{/'Must be letter or digit' | translate/}</small>
             </p>
         </div>
     </div>
@@ -33,7 +33,7 @@
                 <md-select id="node-select-driver" data-ng-model="nodeCreateVolumeCtrl.form.Driver" data-required="required"
                            aria-label="selectDriver" name="driver">
                     <md-option id="node-option-local" value="local">
-                        本地
+                        {/'Vol_driver_local' | translate/}
                     </md-option>
                 </md-select>
             </div>
@@ -42,12 +42,12 @@
 
     <div class="form-group" layout="column">
         <label>{/'Labels' | translate/}
-            <small>可添加多个标签</small>
+            <small>{/'Can add multiple labels' | translate/}</small>
         </label>
         <div class="sub-button">
             <md-button id="node-add-label" class="md-raised md-success md-small"
                        data-ng-click="nodeCreateVolumeCtrl.addLabel()">
-                添加标签
+                {/'Add labels' | translate/}
             </md-button>
         </div>
         <div data-ng-repeat="label in nodeCreateVolumeCtrl.labels track by $index">
@@ -71,18 +71,18 @@
             <div ng-messages="labels.labelKey.$error" ng-if="labels.labelKey.$dirty" role="alert">
                 <p class="help-text"
                    ng-message="pattern">
-                    <small>标签 Key 不能包含中文</small>
+                    <small>{/'KEY can not contain Chinese' | translate/}</small>
                 </p>
                 <p class="help-text"
                    ng-message="dmCheckInclude">
-                    <small>标签 Key 不能重复</small>
+                    <small>{/'KEY can not be repeated' | translate/}</small>
                 </p>
             </div>
 
             <div ng-messages="labels.labelValue.$error" ng-if="labels.labelValue.$dirty" role="alert">
                 <p class="help-text"
                    ng-message="pattern">
-                    <small>标签 Value 不能包含中文</small>
+                    <small>{/'Value can not contain Chinese' | translate/}</small>
                 </p>
             </div>
         </div>

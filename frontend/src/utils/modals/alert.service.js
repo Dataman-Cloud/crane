@@ -5,7 +5,7 @@
 
 
     /* @ngInject */
-    function alertModal($mdDialog) {
+    function alertModal($mdDialog, $filter) {
         
         return {
             open: open
@@ -15,7 +15,7 @@
             var alert = $mdDialog.alert()
                     .clickOutsideToClose(true)
                     .title(title)
-                    .ok('确定')
+                    .ok($filter('translate')('Confirm'))
                     .targetEvent(ev);
             if (content) {
                 alert.htmlContent(content);

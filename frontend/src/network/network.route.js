@@ -11,7 +11,7 @@
                 template: '<ui-view/>',
                 targetState: 'list',
                 ncyBreadcrumb: {
-                    label: '网络'
+                    label: "{/'Network' | translate/}"
                 }
             })
             .state('network.list', {
@@ -22,7 +22,7 @@
                     networks: listNetwork
                 },
                 ncyBreadcrumb: {
-                    label: '网络列表'
+                    label: "{/'Network List' | translate/}"
                 }
             })
             .state('network.create', {
@@ -30,7 +30,7 @@
                 templateUrl: '/src/network/create/create.html',
                 controller: 'NetworkCreateCtrl as networkCreateCtrl',
                 ncyBreadcrumb: {
-                    label: '创建网络'
+                    label: "{/'Create Network' | translate/}"
                 }
             })
             .state('network.detail', {
@@ -42,7 +42,7 @@
                     network: getNetwork
                 },
                 ncyBreadcrumb: {
-                    label: '网络详情'
+                    label: "{/'Network Detail' | translate/}"
                 }
             })
             .state('network.detail.config', {
