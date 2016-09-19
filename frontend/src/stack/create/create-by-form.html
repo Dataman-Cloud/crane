@@ -532,19 +532,19 @@
                                         <md-radio-button value="any" class="md-primary">
                                             <i class="fa fa-umbrella"></i>
                                             <md-tooltip md-direction="top">无论任务正常或异常退出，都重启, 适合批处理或定时任务场景</md-tooltip>
-                                            退出
+                                            {/'Exit' | translate/}
                                         </md-radio-button>
                                         <label><em>any</em></label>
                                     </div>
                                     <div flex="25">
-                                        <md-radio-button value="none" class="md-primary">从不</md-radio-button>
+                                        <md-radio-button value="none" class="md-primary">{/'Do not restart' | translate/}</md-radio-button>
                                         <label><em>none</em></label>
                                     </div>
                                     <div flex="25">
                                         <md-radio-button value="on-failure" class="md-primary">
                                             <i class="fa fa-umbrella"></i>
                                             <md-tooltip md-direction="top">在退出状态码(exit code)非 0 的情况下重启</md-tooltip>
-                                            失败
+                                            {/'Failure' | translate/}
                                         </md-radio-button>
                                         <label><em>on-failure</em></label>
                                     </div>
@@ -552,7 +552,7 @@
                             </div>
                             <div class="form-control sub-group">
                                 <div flex="55">
-                                    <label class="sub-label">评估间隔
+                                    <label class="sub-label">{/'Window' | translate/}
                                         <small>{/'Second' | translate/}</small>
                                     </label>
                                     <input id="service{/$index/}-Window" type="number" min="0"
@@ -563,7 +563,7 @@
                             </div>
                             <div class="form-control sub-group">
                                 <div flex="55">
-                                    <label class="sub-label">重启间隔
+                                    <label class="sub-label">{/'Delay' | translate/}
                                         <small>{/'Second' | translate/}</small>
                                     </label>
                                     <input id="service{/$index/}-Delay" type="number"
@@ -574,7 +574,7 @@
                             </div>
                             <div class="form-control sub-group">
                                 <div flex="65">
-                                    <label class="sub-label">尝试次数
+                                    <label class="sub-label">{/'MaxAttempts' | translate/}
                                         <small>&nbsp;&nbsp;&nbsp;&nbsp;</small>
                                     </label>
                                     <input id="service{/$index/}-MaxAttempts" type="number" min="0"
@@ -590,29 +590,29 @@
                     <div class="fold-line">
                         <a href="#" data-ng-click="serve.showUpdatePolicy = !serve.showUpdatePolicy">
                             <i class="fa"
-                               ng-class="{'fa-chevron-down': serve.showUpdatePolicy, 'fa-chevron-right': !serve.showUpdatePolicy}"></i>更新策略
+                               ng-class="{'fa-chevron-down': serve.showUpdatePolicy, 'fa-chevron-right': !serve.showUpdatePolicy}"></i>{/'Update Policy' | translate/}
                         </a>
                     </div>
                     <div data-ng-show="serve.showUpdatePolicy">
                         <div class="form-group" layout="column">
-                            <label>失败后策略 <em>--update-failure-action</em></label>
+                            <label>{/'After a failed policy' | translate/} <em>--update-failure-action</em></label>
                             <div class="form-control" layout="row" layout-align="start center">
                                 <md-radio-group id="service{/$index/}-FailureAction"
                                                 data-ng-model="serve.UpdateConfig.FailureAction" layout="row"
                                                 aria-label="restart-condition" flex>
                                     <div flex="33">
-                                        <md-radio-button value="continue" class="md-primary">继续尝试</md-radio-button>
+                                        <md-radio-button value="continue" class="md-primary">{/'Keep trying' | translate/}</md-radio-button>
                                         <label> <em>continue</em></label>
                                     </div>
                                     <div flex="33">
-                                        <md-radio-button value="pause" class="md-primary">立即停止</md-radio-button>
+                                        <md-radio-button value="pause" class="md-primary">{/'Immediately stop' | translate/}</md-radio-button>
                                         <label> <em>pause</em></label>
                                     </div>
                                 </md-radio-group>
                             </div>
                             <div class="form-control sub-group" layout="row" layout-align="start center">
                                 <div flex="33">
-                                    <label class="sub-label">间隔
+                                    <label class="sub-label">{/'Interval' | translate/}
                                         <small>{/'Second' | translate/}</small>
                                     </label>
                                     <input id="service{/$index/}-updateDelay" type="number" min="0"
@@ -620,7 +620,7 @@
                                     <label> <em>--update-delay</em></label>
                                 </div>
                                 <div flex="33">
-                                    <label class="sub-label">并行数</label>
+                                    <label class="sub-label">{/'Number of parallel' | translate/}</label>
                                     <input id="service{/$index/}-Parallelism" type="number" min="0"
                                            data-ng-model="serve.UpdateConfig.Parallelism"
                                            name="updateParallelism">
@@ -635,7 +635,7 @@
                     <div class="fold-line">
                         <a href="#" data-ng-click="serve.showSchedulingStrategy = !serve.showSchedulingStrategy">
                             <i class="fa"
-                               ng-class="{'fa-chevron-down': serve.showSchedulingStrategy, 'fa-chevron-right': !serve.showSchedulingStrategy}"></i>调度策略
+                               ng-class="{'fa-chevron-down': serve.showSchedulingStrategy, 'fa-chevron-right': !serve.showSchedulingStrategy}"></i>{/'Scheduling Policy' | translate/}
                         </a>
                     </div>
                     <div data-ng-show="serve.showSchedulingStrategy">
@@ -691,7 +691,7 @@
                     <div class="fold-line">
                         <a href="#" data-ng-click="serve.showFileMount = !serve.showFileMount">
                             <i class="fa"
-                               ng-class="{'fa-chevron-down': serve.showFileMount, 'fa-chevron-right': !serve.showFileMount}"></i>文件挂载
+                               ng-class="{'fa-chevron-down': serve.showFileMount, 'fa-chevron-right': !serve.showFileMount}"></i>{/'File mount' | translate/}
                         </a>
                     </div>
 

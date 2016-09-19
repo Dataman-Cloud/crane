@@ -48,6 +48,8 @@
             "unknown": "unknown",
             "More Actions": "More Actions",
             "Delete": "Delete",
+            "Exit": "Exit",
+
 
             //index module
             "LOGOUT": 'Logout',
@@ -114,6 +116,7 @@
             "MaxAttempts": 'Max Attempts',
             "Rollover": 'Rollover',
             "FailureAction": 'Update failed policy',
+            "Update Policy": 'Update Policy',
             "Keep trying": 'Keep trying',
             "Stop trying": 'Stop trying',
             "Interval": 'Interval',
@@ -143,6 +146,12 @@
             "Resource limits for each task": "Resource limits for each task",
             "Set aside resources for each task": "Set aside resources for each task",
             "Restart Policy": "Restart Policy",
+            "Do not restart": "Don't restart",
+            "Failure": "Failure",
+            "After a failed policy": "After a failed policy",
+            "Immediately stop": "Immediately stop",
+            "Scheduling Policy": "Scheduling Policy",
+            "File mount": "File mount",
 
 
             // node module

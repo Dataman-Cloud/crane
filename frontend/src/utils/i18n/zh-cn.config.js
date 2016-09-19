@@ -48,6 +48,9 @@
             "unknown": "未知",
             "More Actions": "更多操作",
             "Delete": "删除",
+            "Exit": "退出",
+            "Failure": "失败",
+
 
             //index module
             "LOGOUT": '登出',
@@ -115,6 +118,7 @@
             "MaxAttempts": '尝试次数',
             "Rollover": '滚动更新',
             "FailureAction": '更新失败策略',
+            "Update Policy": '更新策略',
             "Keep trying": '继续尝试',
             "Stop trying": '停止尝试',
             "Interval": '间隔',
@@ -144,6 +148,11 @@
             "Resource limits for each task": "每个任务的资源限制",
             "Set aside resources for each task": "每个任务的资源预留",
             "Restart Policy": "重启策略",
+            "Do not restart": "不重启",
+            "After a failed policy": "失败后策略",
+            "Immediately stop": "立即停止",
+            "Scheduling Policy": "调度策略",
+            "File mount": "文件挂载",
 
 
             // node module
