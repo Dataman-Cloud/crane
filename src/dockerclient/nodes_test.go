@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"net/url"
 	"testing"
 
 	"github.com/docker/engine-api/types"
@@ -336,7 +337,7 @@ func TestNodeAvailability(t *testing.T) {
 	assert.Equal(t, swarm.NodeAvailabilityDrain, availability)
 }
 
-func TestNodeDaemonUrlErrorKey(t *testing.T) {
+func TestGetDaemonUrlByIdErrorKey(t *testing.T) {
 	body := `
 	{
 	    "ID":"1t6jojzasio4veexyubvic4j2",
@@ -385,11 +386,11 @@ func TestNodeDaemonUrlErrorKey(t *testing.T) {
 		swarmManagerHttpEndpoint: server1.URL,
 	}
 
-	_, err = client.NodeDaemonUrl("test")
+	_, err = client.GetDaemonUrlById("test")
 	assert.NotNil(t, err)
 }
 
-func TestNodeDaemonUrl(t *testing.T) {
+func TestGetDaemonUrlById(t *testing.T) {
 	body := `
 	{
 	    "ID":"1t6jojzasio4veexyubvic4j2",
@@ -438,6 +439,55 @@ func TestNodeDaemonUrl(t *testing.T) {
 		swarmManagerHttpEndpoint: server1.URL,
 	}
 
-	_, err = client.NodeDaemonUrl("test")
+	_, err = client.GetDaemonUrlById("test")
 	assert.Nil(t, err)
+}
+
+func TestgetNodeIdByUrl(t *testing.T) {
+	body := `
+	{
+	    "Swarm":{
+	        "NodeID":"dbspw1g0sjee8ja1khx2w0xtt",
+	    }
+	}
+	`
+	server1 := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.Write([]byte(body))
+	}))
+	defer server1.Close()
+
+	httpClient, err := NewHttpClient()
+	assert.Nil(t, err)
+
+	client := &CraneDockerClient{
+		sharedHttpClient:         httpClient,
+		swarmManagerHttpEndpoint: server1.URL,
+	}
+
+	u, err := url.Parse(server1.URL)
+	assert.Nil(t, err)
+
+	matchedNodeUrlWithSchemeTcp := u
+	matchedNodeUrlWithSchemeTcp.Scheme = "tcp"
+	matchedNodeUrlWithSchemeHttp := u
+	matchedNodeUrlWithSchemeHttp.Scheme = "http"
+	matchedNodeUrlWithoutScheme := u
+	matchedNodeUrlWithoutScheme.Scheme = ""
+	misMatchedNodeUrl := u
+	misMatchedNodeUrl.Host = misMatchedNodeUrl.Host + "mis-match"
+
+	var returnedNodeId string
+	returnedNodeId, err = client.getNodeIdByUrl(matchedNodeUrlWithSchemeTcp)
+	assert.Nil(t, err)
+	assert.Equal(t, returnedNodeId, "dbspw1g0sjee8ja1khx2w0xtt")
+	returnedNodeId, err = client.getNodeIdByUrl(matchedNodeUrlWithSchemeHttp)
+	assert.Nil(t, err)
+	assert.Equal(t, returnedNodeId, "dbspw1g0sjee8ja1khx2w0xtt")
+	returnedNodeId, err = client.getNodeIdByUrl(matchedNodeUrlWithoutScheme)
+	assert.Nil(t, err)
+	assert.Equal(t, returnedNodeId, "dbspw1g0sjee8ja1khx2w0xtt")
+	returnedNodeId, err = client.getNodeIdByUrl(misMatchedNodeUrl)
+	assert.NotNil(t, err)
+	assert.Equal(t, returnedNodeId, "")
 }

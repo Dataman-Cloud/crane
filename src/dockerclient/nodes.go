@@ -226,7 +226,7 @@ func (client *CraneDockerClient) Info(ctx context.Context) (*docker.DockerInfo, 
 	return swarmNode.Info()
 }
 
-func (client *CraneDockerClient) NodeDaemonUrl(nodeId string) (*url.URL, error) {
+func (client *CraneDockerClient) GetDaemonUrlById(nodeId string) (*url.URL, error) {
 	node, err := client.InspectNode(nodeId)
 	var nodeConnErr *cranerror.NodeConnError
 	if err != nil {
@@ -241,4 +241,24 @@ func (client *CraneDockerClient) NodeDaemonUrl(nodeId string) (*url.URL, error) 
 	}
 
 	return parseEndpoint(endpoint)
+}
+
+func (client *CraneDockerClient) getNodeIdByUrl(nodeUrl *url.URL) (string, error) {
+	//TODO hardcode may have better way
+	if nodeUrl.Scheme == "tcp" {
+		nodeUrl.Scheme = "http"
+	}
+
+	endpoint := nodeUrl.String()
+	content, err := client.sharedHttpClient.GET(nil, endpoint+"/info", url.Values{}, nil)
+	if err != nil {
+		return "", err
+	}
+
+	var nodeInfo types.Info
+	if err := json.Unmarshal(content, &nodeInfo); err != nil {
+		return "", err
+	}
+
+	return nodeInfo.Swarm.NodeID, nil
 }
