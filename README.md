@@ -22,7 +22,13 @@ Crane, maintained by [dataman-cloud](https://github.com/Dataman-Cloud), is a doc
 
 ## Demo
 
-TODO: Let's deploy the demo.
+Please visit http://crane.shurenyun.com
+
+* Username: admin@admin.com
+* Password: adminadmin
+
+Note: the above is a demo site, unstable and maintainless.
+
 
 ## Installation
 
