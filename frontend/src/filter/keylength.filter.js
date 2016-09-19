@@ -7,13 +7,13 @@
         .filter('keylength', keylength);
 
     /* @ngInject */
-    function keylength() {
+    function keylength($filter) {
         //////
         return function (input) {
             if (angular.isObject(input)) {
                 return Object.keys(input).length;
             } else {
-                return '未配置'
+                return $filter('translate')('Not configured')
             }
         }
     }

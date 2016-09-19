@@ -1,51 +1,51 @@
 <section layout="row" class="info-list-detail">
-    <h2 flex="20">Docker 信息</h2>
+    <h2 flex="20">{/'Docker info' | translate/}</h2>
     <div flex="80" layout="row" layout-wrap>
-        <div flex="30"><h5>版本</h5></div>
+        <div flex="30"><h5>{/'Version' | translate/}</h5></div>
         <div flex="70"><p>{/nodeConfigCtrl.node.ServerVersion/}</p></div>
-        <div flex="30"><h5>存储驱动</h5></div>
+        <div flex="30"><h5>{/'Volume driver' | translate/}</h5></div>
         <div flex="70"><p>{/nodeConfigCtrl.node.Driver/}</p></div>
-        <div flex="30"><h5>Docker 存储目录</h5></div>
+        <div flex="30"><h5>{/'Docker storage directory' | translate/}</h5></div>
         <div flex="70"><p>{/nodeConfigCtrl.node.DockerRootDir/}</p></div>
-        <div flex="30"><h5>Debug 模式</h5></div>
+        <div flex="30"><h5>{/'Debug model' | translate/}</h5></div>
         <div flex="70">
             <p ng-class="{'no-info': !nodeConfigCtrl.node.Debug}">
-                {/nodeConfigCtrl.node.Debug ? '是' : '否'/}
+                {/nodeConfigCtrl.node.Debug ? 'YES' : 'NO' | translate/}
             </p>
         </div>
         <div flex="30"><h5>IPv4Forwarding</h5></div>
         <div flex="70">
             <p ng-class="{'no-info': !nodeConfigCtrl.node.IPv4Forwarding}">
-                {/nodeConfigCtrl.node.IPv4Forwarding ? '是' : '否'/}
+                {/nodeConfigCtrl.node.IPv4Forwarding ? 'YES' : 'NO' | translate/}
             </p>
         </div>
-        <div flex="30"><h5>Cgroup 驱动</h5></div>
+        <div flex="30"><h5>{/'Cgroup driver' | translate/}</h5></div>
         <div flex="70"><p>{/nodeConfigCtrl.node.CgroupDriver/}</p></div>
         <div flex="30"><h5>Logging Driver</h5></div>
         <div flex="70"><p>{/nodeConfigCtrl.node.LoggingDriver/}</p></div>
-        <div flex="30"><h5>允许内存溢出</h5></div>
+        <div flex="30"><h5>{/'Allows memory overflow' | translate/}</h5></div>
         <div flex="70">
             <p ng-class="{'no-info': !nodeConfigCtrl.node.OomKillDisable}">
-                {/nodeConfigCtrl.node.OomKillDisable ? '是' : '否'/}
+                {/nodeConfigCtrl.node.OomKillDisable ? 'YES' : 'NO' | translate/}
             </p>
         </div>
     </div>
 </section>
 
 <section layout="row" class="info-list-detail">
-    <h2 flex="20">主机信息</h2>
+    <h2 flex="20">{/'Host information' | translate/}</h2>
     <div flex="80" layout="row" layout-wrap>
         <div flex="30">
             <h5>CPU
-                <small>核</small>
+                <small>{/'Core' | translate/}</small>
             </h5>
         </div>
         <div flex="70"><p>{/nodeConfigCtrl.node.NCPU/}</p></div>
-        <div flex="30"><h5>内存</h5></div>
+        <div flex="30"><h5>{/'Memory' | translate/}</h5></div>
         <div flex="70"><p>{/nodeConfigCtrl.node.MemTotal | size/}</p></div>
-        <div flex="30"><h5>内核版本</h5></div>
+        <div flex="30"><h5>{/'Kernel version' | translate/}</h5></div>
         <div flex="70"><p>{/nodeConfigCtrl.node.KernelVersion/}</p></div>
-        <div flex="30"><h5>系统时间</h5></div>
+        <div flex="30"><h5>{/'System time' | translate/}</h5></div>
         <div flex="70"><p>{/nodeConfigCtrl.node.SystemTime | date: 'yyyy-MM-dd HH:mm:ss'/}</p></div>
     </div>
 </section>

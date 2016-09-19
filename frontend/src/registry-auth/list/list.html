@@ -2,7 +2,7 @@
     <div flex="none">
         <md-button class="md-button md-primary md-small md-raised" aria-label="添加认证"
                    data-ui-sref="registryAuth.create">
-            <i class="fa fa-plus" aria-hidden="true"></i> 添加认证
+            <i class="fa fa-plus" aria-hidden="true"></i> {/'Add registry auth' | translate/}
         </md-button>
     </div>
 </header>
@@ -11,10 +11,10 @@
     <table md-table>
         <thead md-head>
         <tr md-row>
-            <th md-column>名称</th>
-            <th md-column>用户名</th>
-            <th md-column>密码</th>
-            <th md-column>操作</th>
+            <th md-column>{/'Name' | translate/}</th>
+            <th md-column>{/'Username' | translate/}</th>
+            <th md-column>{/'Password' | translate/}</th>
+            <th md-column>{/'Operation' | translate/}</th>
         </tr>
         </thead>
         <tbody md-body>
@@ -25,7 +25,7 @@
             <td md-cell>
                 <md-button class="md-icon-button" aria-label="delete"
                            data-ng-click="regAuthListCtrl.deleteRegAuth(reAuth.Name)"><i class="fa fa-trash"></i>
-                    <md-tooltip md-direction="left">删除</md-tooltip>
+                    <md-tooltip md-direction="left">{/'Delete' | translate/}</md-tooltip>
                 </md-button>
             </td>
         </tr>

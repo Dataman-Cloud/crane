@@ -4,19 +4,19 @@
         .factory('confirmModal', confirmModal);
 
     /* @ngInject */
-    function confirmModal($mdDialog) {
+    function confirmModal($mdDialog, $filter) {
         
         return {
             open: open
-        }
+        };
         
         function open(title, ev, content) {
             var confirm = $mdDialog.confirm()
             .clickOutsideToClose(true)
-            .title(title)
+            .title($filter('translate')(title))
             .targetEvent(ev)
-            .ok('确定')
-            .cancel('取消');
+            .ok($filter('translate')('Confirm'))
+            .cancel($filter('translate')('Cancel'));
             if (content) {
                 confirm.htmlContent(content);
             }

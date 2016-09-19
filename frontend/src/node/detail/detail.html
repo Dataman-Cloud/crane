@@ -3,29 +3,29 @@
         <h1><i class="fa fa-server"></i>{/nodeDetailCtrl.node.Name/} <div class="label-node-ip">{/nodeDetailCtrl.node.Swarm.NodeAddr/}</div></h1>
         <div class="sub-info-main">
             <dl class="info-list">
-                <dt>运行容器</dt>
+                <dt>{/'Running containers' | translate/}</dt>
                 <dd>{/nodeDetailCtrl.node.ContainersRunning/}</dd>
-                <dt>容器总数</dt>
+                <dt>{/'Total containers' | translate/}</dt>
                 <dd>{/nodeDetailCtrl.node.Containers/}</dd>
-                <dt>暂停容器</dt>
+                <dt>{/'Pasued containers' | translate/}</dt>
                 <dd>{/nodeDetailCtrl.node.ContainersPaused/}</dd>
-                <dt>停止容器</dt>
+                <dt>{/'Stopped containers' | translate/}</dt>
                 <dd>{/nodeDetailCtrl.node.ContainersStopped/}</dd>
-                <dt>镜像个数</dt>
+                <dt>{/'Images' | translate/}</dt>
                 <dd>{/nodeDetailCtrl.node.Images/}</dd>
             </dl>
             <dl class="info-list">
-                <dt>系统</dt>
+                <dt>{/'System' | translate/}</dt>
                 <dd>{/nodeDetailCtrl.node.OperatingSystem/}</dd>
-                <dt>内核版本</dt>
+                <dt>{/'Kernel version' | translate/}</dt>
                 <dd>{/nodeDetailCtrl.node.KernelVersion/}</dd>
                 <dt>CPU</dt>
-                <dd>{/nodeDetailCtrl.node.NCPU/} 核</dd>
-                <dt>内存</dt>
+                <dd>{/nodeDetailCtrl.node.NCPU/} {/'Core' | translate/}</dd>
+                <dt>{/'Memory' | translate/}</dt>
                 <dd>{/nodeDetailCtrl.node.MemTotal | size/}</dd>
             </dl>
             <dl class="info-list" ng-if="nodeDetailCtrl.node.Label">
-                <dt>主机标签</dt>
+                <dt>{/'Host labels' | translate/}</dt>
                 <dd>{/nodeDetailCtrl.node.Label/}</dd>
             </dl>
         </div>
@@ -33,17 +33,17 @@
     <div flex="none">
         <md-menu md-offset="0 -5">
             <md-button id="node-detail-create" class="md-button md-small md-primary md-raised" aria-label="More" ng-click="$mdOpenMenu($event)">
-                <i class="fa fa-ellipsis-h"></i> 创建
+                <i class="fa fa-ellipsis-h"></i> {/'Create' | translate/}
             </md-button>
             <md-menu-content width="2">
                 <md-menu-item>
                     <md-button id="node-create-disk" aria-label="start" data-ui-sref="node.createVolume({node_id: $stateParams.node_id})">
-                        创建存储
+                        {/'Created volume' | translate/}
                     </md-button>
                 </md-menu-item>
                 <md-menu-item>
                     <md-button id="node-create-network" aria-label="start" data-ui-sref="node.createNetwork({node_id: $stateParams.node_id})">
-                        创建单机网络
+                       {/'Create host nerwork' | translate/}
                     </md-button>
                 </md-menu-item>
             </md-menu-content>
@@ -51,10 +51,10 @@
     </div>
 </header>
 <md-tabs md-dynamic-height md-border-bottom>
-    <md-tab id="node-tab-config" label="基本信息" dm-tab-sref="node.detail.config"></md-tab>
-    <md-tab id="node-tab-container" label="容器" dm-tab-sref="node.detail.container"></md-tab>
-    <md-tab id="node-tab-neetwork" label="网络" dm-tab-sref="node.detail.network"></md-tab>
-    <md-tab id="node-tab-volume" label="储存卷" dm-tab-sref="node.detail.volume"></md-tab>
-    <md-tab id="node-tab-image" label="镜像" dm-tab-sref="node.detail.image"></md-tab>
+    <md-tab id="node-tab-config" label="{/'Basic Information' | translate/}" dm-tab-sref="node.detail.config"></md-tab>
+    <md-tab id="node-tab-container" label="{/'Container' | translate/}" dm-tab-sref="node.detail.container"></md-tab>
+    <md-tab id="node-tab-neetwork" label="{/'Network' | translate/}" dm-tab-sref="node.detail.network"></md-tab>
+    <md-tab id="node-tab-volume" label="{/'Volume' | translate/}" dm-tab-sref="node.detail.volume"></md-tab>
+    <md-tab id="node-tab-image" label="{/'Image' | translate/}" dm-tab-sref="node.detail.image"></md-tab>
 </md-tabs>
 <md-content ui-view></md-content>

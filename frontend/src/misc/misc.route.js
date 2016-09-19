@@ -11,7 +11,7 @@
                 template: '<ui-view/>',
                 targetState: 'config',
                 ncyBreadcrumb: {
-                    label: '信息'
+                    label: "{/'Information' | translate/}"
                 }
             })
             .state('misc.config', {

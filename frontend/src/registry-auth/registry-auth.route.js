@@ -11,7 +11,7 @@
                 template: '<ui-view/>',
                 targetState: 'list',
                 ncyBreadcrumb: {
-                    label: '仓库认证'
+                    label: "{/'Warehouse certification' | translate/}"
                 }
             })
             .state('registryAuth.list', {
@@ -22,7 +22,7 @@
                     reAuths: listReAuth
                 },
                 ncyBreadcrumb: {
-                    label: '管理列表'
+                    label: "{/'Registry auth list' | translate/}"
                 }
             })
             .state('registryAuth.create', {
@@ -30,7 +30,7 @@
                 templateUrl: '/src/registry-auth/create/create.html',
                 controller: 'RegistryAuthCreateCtrl as regAuthCreateCtrl',
                 ncyBreadcrumb: {
-                    label: '添加认证'
+                    label: "{/'Add registry auth' | translate/}"
                 }
             });
 

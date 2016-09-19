@@ -1,7 +1,7 @@
 <header layout="row" layout-align="end start" id="header-main">
     <div flex="none">
         <md-button id="node-add-node" class="md-button md-primary md-small md-raised" aria-label="添加主机" data-ui-sref="node.create">
-            <i class="fa fa-plus" aria-hidden="true"></i> 添加主机
+            <i class="fa fa-plus" aria-hidden="true"></i> {/'Add Node' | translate/}
         </md-button>
     </div>
 </header>
@@ -11,13 +11,13 @@
         <thead md-head>
         <tr md-row>
             <th md-column>ID</th>
-            <th md-column>主机名</th>
-            <th md-column>角色</th>
-            <th id="node-usability" md-column dm-doc-link='https://github.com/docker/engine-api/blob/master/types/swarm/node.go#L34'>可用性</th>
-            <th id="node-status" md-column dm-doc-link='https://github.com/docker/engine-api/blob/master/types/swarm/node.go#L98'>状态</th>
-            <th md-column>标签</th>
-            <th md-column>添加时间</th>
-            <th md-column>操作</th>
+            <th md-column>{/'Hostname' | translate/}</th>
+            <th md-column>{/'Role' | translate/}</th>
+            <th md-column id="node-usability">{/'Availability' | translate/}</th>
+            <th md-column id="node-status">{/'Status' | translate/}</th>
+            <th md-column>{/'Labels' | translate/}</th>
+            <th md-column>{/'Create Time' | translate/}</th>
+            <th md-column>{/'Operation' | translate/}</th>
         </tr>
         </thead>
         <tbody md-body>
@@ -31,9 +31,9 @@
                 <p ng-show="node.Status.State === 'down'">{/node.Description.Hostname/}</p>
                 <a id="node-list-name-{/$index/}" data-ui-sref="node.detail({node_id: node.ID})" ng-hide="node.Status.State === 'down'">{/node.Description.Hostname/}</a>
             </td>
-            <td md-cell>{/NODE_ROLE[node.Spec.Role]/} <i class="fa fa-anchor text-success" data-ng-if="node.ManagerStatus.Leader"></i></td>
-            <td md-cell>{/NODE_AVAILABILITY[node.Spec.Availability]/}</td>
-            <td md-cell>{/NODE_STATE[node.Status.State]/}</td>
+            <td md-cell>{/NODE_ROLE[node.Spec.Role] | translate/} <i class="fa fa-anchor text-success" data-ng-if="node.ManagerStatus.Leader"></i></td>
+            <td md-cell>{/NODE_AVAILABILITY[node.Spec.Availability] | translate/}</td>
+            <td md-cell>{/NODE_STATE[node.Status.State] | translate/}</td>
             <td md-cell>
                 <ul>
                     <li ng-repeat="(key, value) in node.Spec.Labels">{/key/}:{/value/}</li>
@@ -47,41 +47,41 @@
                     </md-button>
                     <md-menu-content width="2">
                         <md-menu-item>
-                            <md-button id="node-link-master-{/$index/}" aria-label="endpoint" data-ng-click="nodeListCtrl.updateEndpoint(node.ID, $event, node.Spec.Labels)">连接主机
-                                <md-tooltip md-direction="left">编辑连接主机Docker Daemon的地址</md-tooltip>
+                            <md-button id="node-link-master-{/$index/}" aria-label="endpoint" data-ng-click="nodeListCtrl.updateEndpoint(node.ID, $event, node.Spec.Labels)">{/'Connect host' | translate/}
+                                <md-tooltip md-direction="left">{/'Connect host tooltip' | translate/}</md-tooltip>
                             </md-button>
                         </md-menu-item>
                         <md-menu-item>
-                            <md-button id="node-edit-label-{/$index/}" aria-label="labels" data-ng-click="nodeListCtrl.updateLabels(node.ID, $event, node.Spec.Labels)">编辑标签
-                                <md-tooltip md-direction="left">编辑主机标签</md-tooltip>
+                            <md-button id="node-edit-label-{/$index/}" aria-label="labels" data-ng-click="nodeListCtrl.updateLabels(node.ID, $event, node.Spec.Labels)">{/'Edit label' | translate/}
+                                <md-tooltip md-direction="left">{/'Edit label tooltip' | translate/}</md-tooltip>
                             </md-button>
                         </md-menu-item>
                         <md-menu-item>
                             <md-button id="node-stop-dispatch-{/$index/}" aria-label="drain"
                                        data-ng-disabled="node.Spec.Availability !== 'active'"
-                                       data-ng-click="nodeListCtrl.drainNode(node.ID)">停止调度
-                                <md-tooltip md-direction="left">停止调度后该主机上的任务将被分配到其它主机上, 新的任务也不会被分配到该主机</md-tooltip>
+                                       data-ng-click="nodeListCtrl.drainNode(node.ID)">{/'Stop scheduling' | translate/}
+                                <md-tooltip md-direction="left">{/'Stop scheduling tooltip' | translate/}</md-tooltip>
                             </md-button>
                         </md-menu-item>
                         <md-menu-item>
                             <md-button id="node-recover-dispatch-{/$index/}" aria-label="active"
                                        data-ng-disabled="node.Spec.Availability === 'active'"
-                                       data-ng-click="nodeListCtrl.activeNode(node.ID)">恢复调度
-                                <md-tooltip md-direction="left">恢复任务在这台主机上的自由调度</md-tooltip>
+                                       data-ng-click="nodeListCtrl.activeNode(node.ID)">{/'Restore scheduling' | translate/}
+                                <md-tooltip md-direction="left">{/'Restore scheduling tooltip' | translate/}</md-tooltip>
                             </md-button>
                         </md-menu-item>
                         <md-menu-item>
                             <md-button id="node-pause-dispatch-{/$index/}" aria-label="pause"
                                        data-ng-disabled="node.Spec.Availability !== 'active'"
-                                       data-ng-click="nodeListCtrl.pauseNode(node.ID)">暂停调度
-                                <md-tooltip md-direction="left">暂停调度后新的任务将不再被分配到该主机，但已经发布到该主机上的任务不会受到影响</md-tooltip>
+                                       data-ng-click="nodeListCtrl.pauseNode(node.ID)">{/'Pause scheduling' | translate/}
+                                <md-tooltip md-direction="left">{/'Pause scheduling tooltip' | translate/}</md-tooltip>
                             </md-button>
                         </md-menu-item>
                         <md-menu-item>
                             <md-button id="node-delete-master-{/$index/}" aria-label="delete"
                                        data-ng-disabled="node.Status.State !== 'down'"
-                                       data-ng-click="nodeListCtrl.deleteNode(node.ID)">删除主机
-                                <md-tooltip md-direction="left">删除主机，注意只有状态为Down的主机才能被删除</md-tooltip>
+                                       data-ng-click="nodeListCtrl.deleteNode(node.ID)">{/'Delete host' | translate/}
+                                <md-tooltip md-direction="left">{/'Delete host tooltip' | translate/}</md-tooltip>
                             </md-button>
                         </md-menu-item>
                     </md-menu-content>

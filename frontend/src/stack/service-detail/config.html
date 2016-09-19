@@ -1,39 +1,39 @@
 <section layout="row" class="info-list-detail">
-    <h2 flex="20">基本信息</h2>
+    <h2 flex="20">{/'Basic Information' | translate/}</h2>
     <div flex="80" layout="row" layout-wrap>
-        <div flex="30"><h5>镜像</h5></div>
+        <div flex="30"><h5>{/'Image' | translate/}</h5></div>
         <div flex="70"><p>{/serviceDetailCtrl.service.Spec.TaskTemplate.ContainerSpec.Image/}</p></div>
-        <div flex="30"><h5>镜像所属权限</h5></div>
+        <div flex="30"><h5>{/'Image Permissions' | translate/}</h5></div>
         <div flex="70">
             <p ng-class="{'no-info': !serviceDetailCtrl.service.Spec.RegistryAuth}">
-                {/serviceDetailCtrl.service.Spec.RegistryAuth || '未配置'/}</p>
+                {/serviceDetailCtrl.service.Spec.RegistryAuth || ('Not configured' | translate)/}</p>
         </div>
-        <div flex="30"><h5>任务数量</h5></div>
+        <div flex="30"><h5>{/'Task Number' | translate/}</h5></div>
         <div flex="70">
             <p data-ng-if="serviceConfigCtrl.service.Spec.Mode.Replicated"
                ng-class="{'no-info': !serviceConfigCtrl.service.Spec.Mode.Replicated.Replicas}">
-                {/serviceConfigCtrl.service.Spec.Mode.Replicated.Replicas || '未配置'/}
+                {/serviceConfigCtrl.service.Spec.Mode.Replicated.Replicas || ('Not configured' | translate)/}
             </p>
-            <p data-ng-if="serviceConfigCtrl.service.Spec.Mode.Global">一主机一任务</p>
+            <p data-ng-if="serviceConfigCtrl.service.Spec.Mode.Global">{/'A host of a task' | translate/}</p>
         </div>
         <div flex="30">
-            <h5 class="help-info">容器退出的容忍时间<i class="fa fa-umbrella"></i>
-                <md-tooltip md-direction="top">容器将在容忍时间之后被强制杀死</md-tooltip>
+            <h5 class="help-info">{/'StopGracePeriod' | translate/}<i class="fa fa-umbrella"></i>
+                <md-tooltip md-direction="top">{/'StopGracePeriod Tooltip' | translate/}</md-tooltip>
             </h5>
         </div>
         <div flex="70">
             <p ng-class="{'no-info': !serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.StopGracePeriod}">
-                {/serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.StopGracePeriod / Math.pow(10, 9)|| '未配置'/}
+                {/serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.StopGracePeriod / Math.pow(10, 9)|| ('Notconfigured' | translate)/}
             </p>
         </div>
-        <div flex="30"><h5>容器目录</h5></div>
+        <div flex="30"><h5>{/'Container Dir' | translate/}</h5></div>
         <div flex="70">
             <p ng-class="{'no-info': !serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Dir}">
-                {/serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Dir || '未配置'/}
+                {/serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Dir || ('Not configured' | translate)/}
             </p>
         </div>
-        <div flex="30"><h5>网络</h5></div>
-        <div flex="70" dm-empty-display="serviceConfigCtrl.service.Spec.Networks" dm-empty-text="未配置">
+        <div flex="30"><h5>{/'Network' | translate/}</h5></div>
+        <div flex="70" dm-empty-display="serviceConfigCtrl.service.Spec.Networks" dm-empty-text="Not configured">
             <ul>
                 <li data-ng-repeat="network in serviceConfigCtrl.service.Spec.Networks">{/network/}</li>
             </ul>
@@ -42,20 +42,20 @@
 </section>
 
 <section layout="row" class="info-list-detail" ng-show="serviceConfigCtrl.service.Spec.TaskTemplate.Resources.Limits">
-    <h2 flex="20">每个任务的资源限制</h2>
+    <h2 flex="20">{/'Resources Limits' | translate/}</h2>
     <div flex="80" layout="row" layout-wrap>
         <div flex="30">
             <h5>CPU
-                <small>核</small>
+                <small>{/'Core' | translate/}</small>
             </h5>
         </div>
         <div flex="70"><p
                 ng-class="{'no-info': !serviceConfigCtrl.service.Spec.TaskTemplate.Resources.Limits.NanoCPUs}">
             {/serviceConfigCtrl.service.Spec.TaskTemplate.Resources.Limits.NanoCPUs /
-            Math.pow(10, 9) || '未配置'/}</p></div>
+            Math.pow(10, 9) || ('Not configured' | translate)/}</p></div>
 
         <div flex="30">
-            <h5>内存
+            <h5>{/'Memory' | translate/}
                 <small>MB</small>
             </h5>
         </div>
@@ -63,95 +63,97 @@
                 ng-class="{'no-info': !serviceConfigCtrl.service.Spec.TaskTemplate.Resources.Limits.MemoryBytes}">
             {/serviceConfigCtrl.service.Spec.TaskTemplate.Resources.Limits.MemoryBytes / (
             1024 * 1024) ||
-            '未配置'/}</p>
+            ('Not configured' | translate)/}</p>
         </div>
     </div>
 </section>
 
 <section layout="row" class="info-list-detail"
          ng-show="serviceConfigCtrl.service.Spec.TaskTemplate.Resources.Reservations">
-    <h2 flex="20">每个任务的资源预留</h2>
+    <h2 flex="20">{/'Reservations' | translate/}</h2>
     <div flex="80" layout="row" layout-wrap>
         <div flex="30">
             <h5>CPU
-                <small>核</small>
+                <small>{/'Core' | translate/}</small>
             </h5>
         </div>
         <div flex="70"><p
                 ng-class="{'no-info': !serviceConfigCtrl.service.Spec.TaskTemplate.Resources.Reservations.NanoCPUs}">
             {/serviceConfigCtrl.service.Spec.TaskTemplate.Resources.Reservations.NanoCPUs
-            / Math.pow(10, 9) || '未配置'/}</p></div>
+            / Math.pow(10, 9) || ('Not configured' | translate)/}</p></div>
 
         <div flex="30">
-            <h5>内存
+            <h5>{/'Memory' | translate/}
                 <small>MB</small>
             </h5>
         </div>
         <div flex="70"><p
                 ng-class="{'no-info': !serviceConfigCtrl.service.Spec.TaskTemplate.Resources.Reservations.MemoryBytes}">
             {/serviceConfigCtrl.service.Spec.TaskTemplate.Resources.Reservations.MemoryBytes / ( 1024 *
-            1024) || '未配置'/}</p>
+            1024) || ('Not configured' | translate)/}</p>
         </div>
     </div>
 </section>
 
 <section layout="row" class="info-list-detail" ng-show="serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy">
-    <h2 flex="20">容错</h2>
+    <h2 flex="20">{/'Fault Tolerant' | translate/}</h2>
     <div flex="80" layout="row" layout-wrap>
-        <div flex="30"><h5>重启策略</h5></div>
+        <div flex="30"><h5>{/'RestartPolicy' | translate/}</h5></div>
         <div flex="70"><p ng-class="{'no-info': !serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.Condition}">
             {/TASK_RESTART_POLICY_COND[serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.Condition] ||
-            '未配置'/}</p>
+            'Not configured' | translate/}</p>
         </div>
         <div flex="30">
-            <h5 class="help-info">重启间隔
-                <small>秒</small>
+            <h5 class="help-info">{/'Delay' | translate/}
+                <small>{/'Second' | translate/}</small>
             </h5>
         </div>
         <div flex="70"><p ng-class="{'no-info': !serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.Delay}">
             {/serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.Delay / Math.pow(10, 9) ||
-            '未配置'/}</p>
+            ('Not configured' | translate)/}</p>
         </div>
         <div flex="30">
-            <h5>评估间隔
-                <small>秒</small>
+            <h5>{/'Window' | translate/}
+                <small>{/'Second' | translate/}</small>
             </h5>
         </div>
         <div flex="70">
             <p ng-class="{'no-info': !serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.Window}">
-                {/serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.Window / Math.pow(10, 9) || '未配置'/}
+                {/serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.Window / Math.pow(10, 9) || ('Not configured' | translate)/}
             </p>
         </div>
-        <div flex="30"><h5>尝试次数</h5></div>
+        <div flex="30"><h5>{/'MaxAttempts' | translate/}</h5></div>
         <div flex="70">
             <p ng-class="{'no-info': !serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.MaxAttempts}">
-                {/serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.MaxAttempts || '未配置'/}
+                {/serviceConfigCtrl.service.Spec.TaskTemplate.RestartPolicy.MaxAttempts || 'Not configured' |
+                translate/}
             </p>
         </div>
     </div>
 </section>
 
 <section layout="row" class="info-list-detail" ng-show="serviceConfigCtrl.service.Spec.UpdateConfig">
-    <h2 flex="20">滚动更新</h2>
+    <h2 flex="20">{/'Rollover' | translate/}</h2>
     <div flex="80" layout="row" layout-wrap>
-        <div flex="30"><h5>更新失败策略</h5></div>
-        <div flex="70"><p>{/serviceConfigCtrl.service.Spec.UpdateConfig.FailureAction === 'continue' ? '继续尝试' :
-            '停止尝试'/}</p></div>
+        <div flex="30"><h5>{/'FailureAction' | translate/}</h5></div>
+        <div flex="70"><p>{/serviceConfigCtrl.service.Spec.UpdateConfig.FailureAction === 'continue' ? 'Keep trying' :
+            'Stop trying' | translate/}</p></div>
         <div flex="30">
-            <h5>间隔
-                <small>秒</small>
+            <h5>{/'Interval' | translate/}
+                <small>{/'Second' | translate/}</small>
             </h5>
         </div>
         <div flex="70"><p ng-class="{'no-info': !serviceConfigCtrl.service.Spec.UpdateConfig.Delay}">
-            {/serviceConfigCtrl.service.Spec.UpdateConfig.Delay / Math.pow(10, 9) || '未配置'/}</p></div>
-        <div flex="30"><h5>并行数</h5></div>
+            {/serviceConfigCtrl.service.Spec.UpdateConfig.Delay / Math.pow(10, 9) || ('Not configured' |
+            translate)/}</p></div>
+        <div flex="30"><h5>{/'Number of parallel' | translate/}</h5></div>
         <div flex="70"><p ng-class="{'no-info': !serviceConfigCtrl.service.Spec.UpdateConfig.Parallelism}">
-            {/serviceConfigCtrl.service.Spec.UpdateConfig.Parallelism || '未配置'/}</p></div>
+            {/serviceConfigCtrl.service.Spec.UpdateConfig.Parallelism || ('Not configured' | translate)/}</p></div>
     </div>
 </section>
 
 <section layout="row" class="info-list-detail" ng-show="serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Env">
-    <h2 flex="20">环境变量</h2>
+    <h2 flex="20">{/'Environment' | translate/}</h2>
     <div flex="80" layout="row" layout-wrap>
         <table cellpadding="0" cellspacing="0"
                dm-empty-display="serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Env">
@@ -169,7 +171,7 @@
 </section>
 
 <section layout="row" class="info-list-detail" ng-show="serviceConfigCtrl.service.Spec.Labels">
-    <h2 flex="20">服务标签</h2>
+    <h2 flex="20">{/'Service Labels' | translate/}</h2>
     <div flex="80" layout="row" layout-wrap>
         <table cellpadding="0" cellspacing="0" dm-empty-display="serviceConfigCtrl.service.Spec.Labels">
             <tr>
@@ -186,7 +188,7 @@
 
 <section layout="row" class="info-list-detail"
          ng-show="serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Labels">
-    <h2 flex="20">容器标签</h2>
+    <h2 flex="20">{/'Container tag"' | translate/}</h2>
     <div flex="80" layout="row" layout-wrap>
         <table cellpadding="0" cellspacing="0"
                dm-empty-display="serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Labels">
@@ -204,13 +206,13 @@
 </section>
 
 <section layout="row" class="info-list-detail" ng-show="serviceConfigCtrl.service.Spec.EndpointSpec.Ports">
-    <h2 flex="20">端口映射</h2>
+    <h2 flex="20">{/'Port Mapping' | translate/}</h2>
     <div flex="80" layout="row" layout-wrap>
         <table cellpadding="0" cellspacing="0" dm-empty-display="serviceConfigCtrl.service.Spec.EndpointSpec.Ports">
             <tr>
-                <th>主机端口</th>
-                <th>协议</th>
-                <th>映射端口</th>
+                <th>{/'Host port' | translate/}</th>
+                <th>{/'Protocol' | translate/}</th>
+                <th>{/'Port Mapping' | translate/}</th>
             </tr>
 
             <tr ng-repeat="port in serviceConfigCtrl.service.Spec.EndpointSpec.Ports">
@@ -224,19 +226,19 @@
 
 <section layout="row" class="info-list-detail"
          ng-show="serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Mounts">
-    <h2 flex="20">挂载</h2>
+    <h2 flex="20">{/'File mount' | translate/}</h2>
     <div flex="80" layout="row" layout-wrap>
         <table cellpadding="0" cellspacing="0"
                dm-empty-display="serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Mounts">
             <tr>
-                <th>主机路径</th>
-                <th>权限</th>
-                <th>容器</th>
+                <th>{/'Host path' | translate/}</th>
+                <th>{/'Competence' | translate/}</th>
+                <th>{/'Container' | translate/}</th>
             </tr>
 
             <tr ng-repeat="mount in serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Mounts">
                 <td>{/mount.Source/}</td>
-                <td>{/mount.ReadOnly ? '只读' : '读写'/}</td>
+                <td>{/mount.ReadOnly ? 'Read-only' : 'Read-Write' | translate/}</td>
                 <td>{/mount.Target/}</td>
             </tr>
         </table>
@@ -245,7 +247,7 @@
 
 <section layout="row" class="info-list-detail"
          ng-show="serviceConfigCtrl.service.Spec.TaskTemplate.Placement.Constraints">
-    <h2 flex="20">限制条件</h2>
+    <h2 flex="20">{/'Limitation factor' | translate/}</h2>
     <div flex="80" layout="row" layout-wrap>
         <table cellpadding="0" cellspacing="0"
                dm-empty-display="serviceConfigCtrl.service.Spec.TaskTemplate.Placement.Constraints">
@@ -264,7 +266,7 @@
 
 <section layout="row" class="info-list-detail"
          ng-show="serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Command">
-    <h2 flex="20">启动命令</h2>
+    <h2 flex="20">{/'Start Command' | translate/}</h2>
     <div flex="80" layout="row" layout-wrap>
         <table cellpadding="0" cellspacing="0"
                dm-empty-display="serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Command">

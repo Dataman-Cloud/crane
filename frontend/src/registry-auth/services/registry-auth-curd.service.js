@@ -5,7 +5,7 @@
 
 
     /* @ngInject */
-    function registryAuthCurd(registryAuthBackend, $state, Notification, confirmModal) {
+    function registryAuthCurd(registryAuthBackend, $state, Notification, confirmModal, $filter) {
         return {
             createRegAuth: createRegAuth,
             deleteRegAuth: deleteRegAuth
@@ -14,16 +14,16 @@
         function createRegAuth(data, form) {
             registryAuthBackend.createRegAuth(data, form)
                 .then(function (data) {
-                    Notification.success('创建成功');
+                    Notification.success($filter('translate')('Creating Success'));
                     $state.go('registryAuth.list', undefined, {reload: true})
                 })
         }
 
         function deleteRegAuth(name) {
-            confirmModal.open("是否确认删除该认证？").then(function () {
+            confirmModal.open("Are you sure to delete this certificate ?").then(function () {
                 registryAuthBackend.deleteRegAuth(name)
                     .then(function (data) {
-                        Notification.success('删除成功');
+                        Notification.success($filter('translate')('Successfully deleted'));
                         $state.reload()
                     })
             });

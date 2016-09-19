@@ -2,22 +2,22 @@
     <h1><i class="fa fa-cube" aria-hidden="true"></i>{/nodeContainerDetailCtrl.container.Name.substring(1)/}</h1>
     <div class="sub-info-main">
         <dl class="info-list">
-            <dt>状态</dt><dd>{/CONTAINER_STATUS_LABELS[nodeContainerDetailCtrl.container.State.Status] || '未知'/}</dd>
-            <dt>创建时间</dt><dd>{/nodeContainerDetailCtrl.container.Created | date: 'yyyy-MM-dd HH:mm:ss'/}</dd>
-            <dt>驱动</dt><dd>{/nodeContainerDetailCtrl.container.Driver || '未知'/}</dd>
+            <dt>{/'Status' | translate/}</dt><dd>{/CONTAINER_STATUS_LABELS[nodeContainerDetailCtrl.container.State.Status] || ('unknown' | translate)/}</dd>
+            <dt>{/'Create Time' | translate/}</dt><dd>{/nodeContainerDetailCtrl.container.Created | date: 'yyyy-MM-dd HH:mm:ss'/}</dd>
+            <dt>{/'Driver' | translate/}</dt><dd>{/nodeContainerDetailCtrl.container.Driver || ('unknown' | translate)/}</dd>
         </dl>
 
         <dl class="info-list">
-            <dt>镜像名称</dt>
+            <dt>{/'Image Name' | translate/}</dt>
             <dd>{/nodeContainerDetailCtrl.container.Config.Image/}</dd>
         </dl>
     </div>
 </header>
 <md-tabs md-dynamic-height md-border-bottom>
-    <md-tab id="node-container-config" label="详情" dm-tab-sref="node.containerDetail.config"></md-tab>
-    <md-tab id="node-container-log" label="日志" dm-tab-sref="node.containerDetail.log"></md-tab>
-    <md-tab id="node-container-stats" label="实时监控" dm-tab-sref="node.containerDetail.stats"></md-tab>
-    <md-tab id="node-container-diff" label="变更" dm-tab-sref="node.containerDetail.diff"></md-tab>
-    <md-tab id="node-container-terminal" label="终端" dm-tab-sref="node.containerDetail.terminal"></md-tab>
+    <md-tab id="node-container-config" label="{/'Detail' | translate/}" dm-tab-sref="node.containerDetail.config"></md-tab>
+    <md-tab id="node-container-log" label="{/'Log' | translate/}" dm-tab-sref="node.containerDetail.log"></md-tab>
+    <md-tab id="node-container-stats" label="{/'Real Monitoring' | translate/}" dm-tab-sref="node.containerDetail.stats"></md-tab>
+    <md-tab id="node-container-diff" label="{/'Change' | translate/}" dm-tab-sref="node.containerDetail.diff"></md-tab>
+    <md-tab id="node-container-terminal" label="{/'Terminal' | translate/}" dm-tab-sref="node.containerDetail.terminal"></md-tab>
 </md-tabs>
 <md-content ui-view></md-content>

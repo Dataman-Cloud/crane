@@ -2,7 +2,7 @@
     <form name="staticForm" class="form-main">
         <md-toolbar>
             <div class="md-toolbar-tools">
-                <h2>修改任务数</h2>
+                <h2>{/'Service Scale' | translate/}</h2>
                 <span flex></span>
                 <md-button class="md-icon-button" ng-click="formCtrl.cancel()"
                            aria-label="cancel">
@@ -12,7 +12,7 @@
         </md-toolbar>
         <md-dialog-content>
             <div class="form-group">
-                <label>任务个数</label>
+                <label>{/'The number of tasks' | translate/}</label>
                 <div class="form-control">
                     <input type="number" class="form-input" name="scale" aria-label="scale" data-ng-model="formCtrl.scale" data-required min="0" md-autofocus>
                     <div ng-messages="staticForm.scale.$error" ng-if="staticForm.scale.$dirty" role="alert">
@@ -23,8 +23,8 @@
             </div>
         </md-dialog-content>
         <md-dialog-actions layout="row">
-            <md-button ng-click="formCtrl.cancel()" aria-label="cancel">取消</md-button>
-            <md-button data-ng-disabled="staticForm.$invalid" data-ng-click="formCtrl.ok()" aria-label="ok" class="md-primary">确认</md-button>
+            <md-button ng-click="formCtrl.cancel()" aria-label="cancel">{/'Cancel' | translate/}</md-button>
+            <md-button data-ng-disabled="staticForm.$invalid" data-ng-click="formCtrl.ok()" aria-label="ok" class="md-primary">{/'Confirm' | translate/}</md-button>
         </md-dialog-actions>
     </form>
 </md-dialog>

@@ -2,10 +2,10 @@
     <table id="node-volume-list" md-table>
         <thead md-head>
         <tr md-row>
-            <th md-column>储存卷</th>
-            <th md-column>驱动</th>
-            <th md-column>挂载点</th>
-            <th md-column>操作</th>
+            <th md-column>{/'Volume' | translate/}</th>
+            <th md-column>{/'Driver' | translate/}</th>
+            <th md-column>{/'Mount points' | translate/}</th>
+            <th md-column>{/'Operation' | translate/}</th>
         </tr>
         </thead>
         <tbody md-body>
@@ -26,7 +26,7 @@
             <td md-cell>
                 <md-button id="delete-volume{/$index/}" class="md-icon-button" aria-label="delete"
                            data-ng-click="nodeVolumeCtrl.deleteVolume(volume.Name)"><i class="fa fa-trash"/>
-                    <md-tooltip md-direction="left">删除储存卷</md-tooltip>
+                    <md-tooltip md-direction="left">{/'Remove volume' | translate/}</md-tooltip>
                 </md-button>
             </td>
         </tr>

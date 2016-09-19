@@ -3,13 +3,13 @@
         <thead md-head>
         <tr md-row>
             <th md-column>ID</th>
-            <th md-column>名称</th>
-            <th md-column>对内地址</th>
-            <th md-column>服务</th>
-            <th md-column>任务</th>
-            <th md-column>状态/运行时间</th>
-            <th md-column>创建时间</th>
-            <th md-column>操作</th>
+            <th md-column>{/'Name' | translate/}</th>
+            <th md-column>{/'Internal address' | translate/}</th>
+            <th md-column>{/'Service' | translate/}</th>
+            <th md-column>{/'Task' | translate/}</th>
+            <th md-column>{/'Status and operation hours' | translate/}</th>
+            <th md-column>{/'Create Time' | translate/}</th>
+            <th md-column>{/'Operation' | translate/}</th>
         </tr>
         </thead>
         <tbody md-body>
@@ -28,21 +28,21 @@
                 </a>
             </td>
             <td md-cell>
-                <span ng-if="!container.Ports.length" ng-class="{'no-info': !container.Ports.length}">未配置</span>
+                <span ng-if="!container.Ports.length" ng-class="{'no-info': !container.Ports.length}">{/'Not configured' | translate/}</span>
                 <ul>
                     <li ng-repeat="port in container.Ports">
                         <span ng-show="container.NetworkSettings.Networks.bridge.IPAddress">{/container.NetworkSettings.Networks.bridge.IPAddress/}:</span>{/port.PrivatePort/}/{/port.Type/}
                     </li>
                 </ul>
             </td>
-            <td md-cell><span ng-class="{'no-info': !container.Labels['com.docker.swarm.service.name']}">{/container.Labels['com.docker.swarm.service.name'] || '未配置'/}</span>
+            <td md-cell><span ng-class="{'no-info': !container.Labels['com.docker.swarm.service.name']}">{/container.Labels['com.docker.swarm.service.name'] || ('Not configured' | translate)/}</span>
             </td>
-            <td md-cell><span ng-class="{'no-info': !container.Labels['com.docker.swarm.task.name']}">{/container.Labels['com.docker.swarm.task.name'] || '未配置'/}</span>
+            <td md-cell><span ng-class="{'no-info': !container.Labels['com.docker.swarm.task.name']}">{/container.Labels['com.docker.swarm.task.name'] || ('Not configured' | translate)/}</span>
             </td>
             <td md-cell>
                 <ul>
                     <li class="{/CONTAINER_STATUS_LABELS_CLASS[container.State]/}">
-                        {/CONTAINER_STATUS_LABELS[container.State]/}
+                        {/CONTAINER_STATUS_LABELS[container.State] | translate/}
                     </li>
                     <li>{/container.Status | statusZh /}</li>
                 </ul>
@@ -56,13 +56,13 @@
                     <md-menu-content width="2">
                         <md-menu-item>
                             <md-button id="node-container-remove-{/$index/}" aria-label="rm" data-ng-click="nodeContainerCtrl.removeContainer(container.Id)">
-                                移除
+                                {/'Remove' | translate/}
                                 <strong>(rm)</strong>
                             </md-button>
                         </md-menu-item>
                         <md-menu-item>
                             <md-button id="node-coniner-kill-{/$index/}" aria-label="kill" data-ng-click="nodeContainerCtrl.killContainer(container.Id)">
-                                杀死
+                                {/'Kill' | translate/}
                                 <strong>(kill)</strong>
                             </md-button>
                         </md-menu-item>

@@ -5,7 +5,7 @@
 
 
     /* @ngInject */
-    function registryCurd(registryBackend, confirmModal, $rootScope, utils, $state, Notification) {
+    function registryCurd(registryBackend, confirmModal, $rootScope, utils, $state, Notification, $filter) {
         //////
         return {
             deleteImage: deleteImage,
@@ -19,7 +19,7 @@
         };
 
         function deleteImage(repository, tag, ev) {
-            confirmModal.open("是否确认删除镜像？", ev).then(function () {
+            confirmModal.open("Are you sure to remove the mirror ?", ev).then(function () {
                 if (isPublicRepository(repository)) {
                     $state.go('registry.list.public', {open: repository}, {reload: true});
                 } else {
@@ -52,10 +52,10 @@
         }
 
         function deleteCatalog(catalogId, ev) {
-            confirmModal.open("是否确认删除该项目模板？", ev).then(function () {
+            confirmModal.open("Are you sure to delete the project template ?", ev).then(function () {
                 registryBackend.deleteCatalog(catalogId)
                     .then(function (data) {
-                        Notification.success('删除成功');
+                        Notification.success($filter('translate')('Successfully deleted'));
                         $state.go('registry.list.catalogs', null, {reload: true});
                     })
             });
@@ -64,7 +64,7 @@
         function updateCatalog(catalogId, data) {
             registryBackend.updateCatalog(catalogId, data)
                 .then(function (data) {
-                    Notification.success('更新成功');
+                    Notification.success($filter('translate')('Update Success'));
                     $state.go('registry.list.catalogs', null, {reload: true});
                 })
         }

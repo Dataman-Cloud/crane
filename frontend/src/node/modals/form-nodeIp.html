@@ -2,7 +2,7 @@
     <form name="staticForm" class="form-main">
         <md-toolbar>
             <div class="md-toolbar-tools">
-                <h2>需要主机的 Docker TCP Socket 地址</h2>
+                <h2>{/'Need Docker TCP Socket Addrs' | translate/}</h2>
                 <span flex></span>
                 <md-button id="node-dialog-nodeip-cancel" class="md-icon-button" ng-click="formCtrl.cancel()"
                            aria-label="cancel">
@@ -11,32 +11,32 @@
             </div>
         </md-toolbar>
         <md-dialog-content>
-            <p>请提供该主机 Docker Daemon 的 TCP Socket 地址。</p>
-            <p>为了获取主机详情信息，需要在该主机上开启 Docker Daemon TCP Socket 服务。</p>
-            <p>Docker TCP Socket 地址</p>
+            <p>{/'Provide Docker TCP Socket Addrs' | translate/}</p>
+            <p>{/'Open Docker TCP Socket Service' | translate/}</p>
+            <p>{/'Docker TCP Socket Addrs' | translate/}</p>
             <input id="node-nodeip-endpoint" type="text" name="endpoint" aria-label="endpoint" placeholder="http://192.168.59.105:2375"
                    data-ng-model="formCtrl.endpoint" data-required="required" md-autofocus>
             <div ng-messages="staticForm.endpoint.$error" ng-if="staticForm.endpoint.$dirty" role="alert">
-                <p class="help-info text-danger" ng-message="required"><small>地址不能为空</small></p>
+                <p class="help-info text-danger" ng-message="required"><small>{/'Address can not be empty' | translate/}</small></p>
             </div>
-            <p>如何配置 Docker Daemon 的 TCP Socket 地址?</p>
+            <p>{/'How to configure Docker Daemon Socket Addrs' | translate/}</p>
             <p>CentOS/RHEL(systemd):</p>
-            <p>编辑文件 /usr/lib/systemd/system/docker.service , 设置</p>
+            <p>{/'Edit the docker.service file' | translate/}</p>
             <p>ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:$DOCKER_TCP_SOCKET -H unix:///var/run/docker.sock</p>
-            <p>保存并执行命令</p>
+            <p>{/'Save and Run Command' | translate/}</p>
             <code>systemctl daemon-reload && service docker restart</code>
             <p>Ubuntu(upstart):</p>
-            <p>编辑文件 /etc/default/docker , 设置</p>
+            <p>{/'Edit the docker file' | translate/}</p>
             <p>DOCKER_OPTS="-H tcp://0.0.0.0:$DOCKER_TCP_SOCKET -H unix:///var/run/docker.sock"</p>
-            <p>保存并执行命令</p>
+            <p>{/'Save and Run Command' | translate/}</p>
             <code>service docker restart</code>
             <p><a href="https://docs.docker.com/engine/reference/commandline/dockerd/#/daemon-socket-option">参考链接</a>
             </p>
         </md-dialog-content>
         <md-dialog-actions layout="row">
-            <md-button id="node-nodeip-cancel" ng-click="formCtrl.cancel()" aria-label="cancel">取消</md-button>
+            <md-button id="node-nodeip-cancel" ng-click="formCtrl.cancel()" aria-label="cancel">{/'Cancel' | translate/}</md-button>
             <md-button id="node-nodeip-ok" data-ng-disabled="staticForm.$invalid" data-ng-click="formCtrl.ok()" aria-label="ok"
-                       class="md-primary">连接
+                       class="md-primary">{/'Connect' | translate/}
             </md-button>
         </md-dialog-actions>
     </form>

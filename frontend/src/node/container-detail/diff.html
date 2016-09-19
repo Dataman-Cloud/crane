@@ -2,15 +2,15 @@
     <table md-table>
         <thead md-head>
         <tr md-row>
-            <th md-column>变更方式</th>
-            <th md-column>文件路径</th>
+            <th md-column>{/'Change ode' | translate/}</th>
+            <th md-column>{/'File Path' | translate/}</th>
         </tr>
         </thead>
         <tbody id="node-container-detail-diffs" md-body>
         <tr md-row ng-repeat="diff  in  nodeContainerDiffCtrl.diffs">
             <td md-cell>
                 <p ng-class="{'text-info': diff.Kind === 0, 'text-success': diff.Kind === 1, 'text-danger': diff.Kind === 2}">
-                    {/DIFF_KIND[diff.Kind]/}
+                    {/DIFF_KIND[diff.Kind] | translate/}
                 </p>
             </td>
             <td md-cell>{/diff.Path/}</td>
@@ -18,4 +18,4 @@
         </tbody>
     </table>
 </md-table-container>
-<div class="no-info-main" data-ng-if="!nodeContainerDiffCtrl.diffs">未查询到变更信息</div>
+<div class="no-info-main" data-ng-if="!nodeContainerDiffCtrl.diffs">{/'No query information about the changes' | translate/}</div>
