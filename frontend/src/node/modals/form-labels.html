@@ -34,11 +34,11 @@
                     </div>
                 </ng-form>
                 <div ng-messages="labelForm.labelKey.$error" ng-if="labelForm.labelKey.$dirty" role="alert">
-                    <p class="help-info text-danger" ng-message="pattern">{/'Chinese not permitted' | translate/}</p>
+                    <p class="help-info text-danger" ng-message="pattern">{/'Chinese KEY not permitted' | translate/}</p>
                     <p class="help-info text-danger" ng-message="dmCheckInclude">{/'Duplicated KEY is not permitted' | translate/}</p>
                 </div>
                 <div ng-messages="labelForm.labelValue.$error" ng-if="labelForm.labelValue.$dirty" role="alert">
-                    <p class="help-info text-danger" ng-message="pattern">{/'Labels value can not contain Chinese' | translate/}</p>
+                    <p class="help-info text-danger" ng-message="pattern">{/'Chinese VALUE not permitted' | translate/}</p>
                 </div>
             </div>
         </md-dialog-content>
