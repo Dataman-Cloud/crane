@@ -19,6 +19,7 @@
             <table>
                 <tr data-ng-repeat="service in stack.Services track by $index" id="{/stack.Namespace/}-services">
                     <td>
+<<<<<<< 87379135cb7cf96a3da8e8059ee4fe9500aec4f6
                         <a id="{/stack.Namespace/}-{/service.Name/}"
                            data-ui-sref="stack.serviceDetail({stack_name: stack.Namespace, service_id: service.ID})">{/service.Name/}</a>
                     </td>
@@ -32,6 +33,16 @@
                                                target='_blank'>{/addr.ip | ip/}:{/addr.port/}
                                     </md-button>
                                     <span ng-hide="addr.ip">{/addr.port/}</span>
+=======
+                        <a id="{/stack.Namespace/}-{/service.Name/}" data-ui-sref="stack.serviceDetail({stack_name: stack.Namespace, service_id: service.ID})">{/service.Name/}</a>
+                    </td>
+                    <td>{/service.NumTasksRunning/}/{/service.NumTasksTotal/}</td>
+                    <td>
+                        <md-menu ng-show="service.addrs.length" >
+                            <a ng-click="$mdOpenMenu()"><i class="fa fa-link"></i></a>
+                            <md-menu-content>
+                                <md-menu-item ng-repeat="addr in service.addrs">    <md-button ng-href="http://{/addr.ip | ip/}:{/addr.port/}" ng-show="addr.ip" target='_blank'>{/addr.ip | ip/}:{/addr.port/}</md-button><span ng-hide="addr.ip">{/addr.port/}</span>
+>>>>>>> UI
                                 </md-menu-item>
                             </md-menu-content>
                         </md-menu>
