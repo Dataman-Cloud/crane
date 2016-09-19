@@ -6,13 +6,13 @@
 
     <div flex="none">
         <md-button id="delete-stack" class="md-button md-primary md-small md-raised"
-                   data-ng-click="stackDetailCtrl.deleteStack($event)" aria-label="Delete Project">
-            <i class="fa fa-trash" aria-hidden="true"></i> {/'Delete Project' | translate/}
+                   data-ng-click="stackDetailCtrl.deleteStack($event)" aria-label="Delete Stack">
+            <i class="fa fa-trash" aria-hidden="true"></i> {/'Delete Stack' | translate/}
         </md-button>
         <md-button id="add-catalog" class="md-button md-primary md-small md-raised"
                    data-ng-click="$state.go('registry.createCatalog', {stack_name: $stateParams.stack_name})"
-                   aria-label="Add to template">
-            <i class="fa fa-plus" aria-hidden="true"></i>{/'Add to template' | translate/}
+                   aria-label="Save as stack template">
+            <i class="fa fa-plus" aria-hidden="true"></i>{/'Save as stack template' | translate/}
         </md-button>
     </div>
 </header>

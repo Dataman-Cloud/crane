@@ -17,13 +17,13 @@
         <div flex="80" layout="row" layout-wrap>
             <div flex="30"><h5>{/'Cluster Name' | translate/}</h5></div>
             <div flex="70"><p>{/miscConfigCtrl.craneconfig.SwarmInfo.Spec.Name/}</p></div>
-            <div flex="30"><h5>{/'Token management node' | translate/}</h5></div>
+            <div flex="30"><h5>{/'Manager Token' | translate/}</h5></div>
             <div flex="70"><p>{/miscConfigCtrl.craneconfig.SwarmInfo.JoinTokens.Manager/}</p></div>
-            <div flex="30"><h5>{/'Working node Token' | translate/}</h5></div>
+            <div flex="30"><h5>{/'Worker Token' | translate/}</h5></div>
             <div flex="70"><p>{/miscConfigCtrl.craneconfig.SwarmInfo.JoinTokens.Worker/}</p></div>
-            <div flex="30"><h5>{/'Update Time' | translate/}</h5></div>
+            <div flex="30"><h5>{/'Updated At' | translate/}</h5></div>
             <div flex="70"><p>{/miscConfigCtrl.craneconfig.SwarmInfo.UpdatedAt | date: 'yyyy-MM-dd HH:mm:ss'/}</p></div>
-            <div flex="30"><h5>{/'Create Time' | translate/}</h5></div>
+            <div flex="30"><h5>{/'Created At' | translate/}</h5></div>
             <div flex="70"><p>{/miscConfigCtrl.craneconfig.SwarmInfo.CreatedAt | date: 'yyyy-MM-dd HH:mm:ss'/}</p></div>
         </div>
     </section>

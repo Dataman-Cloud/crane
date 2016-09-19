@@ -14,7 +14,7 @@
                ng-class="{'no-info': !serviceConfigCtrl.service.Spec.Mode.Replicated.Replicas}">
                 {/serviceConfigCtrl.service.Spec.Mode.Replicated.Replicas || ('Not configured' | translate)/}
             </p>
-            <p data-ng-if="serviceConfigCtrl.service.Spec.Mode.Global">{/'A host of a task' | translate/}</p>
+            <p data-ng-if="serviceConfigCtrl.service.Spec.Mode.Global">{/'Global' | translate/}</p>
         </div>
         <div flex="30">
             <h5 class="help-info">{/'StopGracePeriod' | translate/}<i class="fa fa-umbrella"></i>
@@ -133,11 +133,11 @@
 </section>
 
 <section layout="row" class="info-list-detail" ng-show="serviceConfigCtrl.service.Spec.UpdateConfig">
-    <h2 flex="20">{/'Rollover' | translate/}</h2>
+    <h2 flex="20">{/'Rolling Update' | translate/}</h2>
     <div flex="80" layout="row" layout-wrap>
         <div flex="30"><h5>{/'FailureAction' | translate/}</h5></div>
-        <div flex="70"><p>{/serviceConfigCtrl.service.Spec.UpdateConfig.FailureAction === 'continue' ? 'Keep trying' :
-            'Stop trying' | translate/}</p></div>
+        <div flex="70"><p>{/serviceConfigCtrl.service.Spec.UpdateConfig.FailureAction === 'continue' ? 'continue' :
+            'Stop' | translate/}</p></div>
         <div flex="30">
             <h5>{/'Interval' | translate/}
                 <small>{/'Second' | translate/}</small>
@@ -146,7 +146,7 @@
         <div flex="70"><p ng-class="{'no-info': !serviceConfigCtrl.service.Spec.UpdateConfig.Delay}">
             {/serviceConfigCtrl.service.Spec.UpdateConfig.Delay / Math.pow(10, 9) || ('Not configured' |
             translate)/}</p></div>
-        <div flex="30"><h5>{/'Number of parallel' | translate/}</h5></div>
+        <div flex="30"><h5>{/'Update Parallelism' | translate/}</h5></div>
         <div flex="70"><p ng-class="{'no-info': !serviceConfigCtrl.service.Spec.UpdateConfig.Parallelism}">
             {/serviceConfigCtrl.service.Spec.UpdateConfig.Parallelism || ('Not configured' | translate)/}</p></div>
     </div>
@@ -212,7 +212,7 @@
             <tr>
                 <th>{/'Host port' | translate/}</th>
                 <th>{/'Protocol' | translate/}</th>
-                <th>{/'Port Mapping' | translate/}</th>
+                <th>{/'Published Port' | translate/}</th>
             </tr>
 
             <tr ng-repeat="port in serviceConfigCtrl.service.Spec.EndpointSpec.Ports">
@@ -232,7 +232,7 @@
                dm-empty-display="serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Mounts">
             <tr>
                 <th>{/'Host path' | translate/}</th>
-                <th>{/'Competence' | translate/}</th>
+                <th>{/'Permission' | translate/}</th>
                 <th>{/'Container' | translate/}</th>
             </tr>
 
@@ -247,7 +247,7 @@
 
 <section layout="row" class="info-list-detail"
          ng-show="serviceConfigCtrl.service.Spec.TaskTemplate.Placement.Constraints">
-    <h2 flex="20">{/'Limitation factor' | translate/}</h2>
+    <h2 flex="20">{/'Constraints' | translate/}</h2>
     <div flex="80" layout="row" layout-wrap>
         <table cellpadding="0" cellspacing="0"
                dm-empty-display="serviceConfigCtrl.service.Spec.TaskTemplate.Placement.Constraints">
@@ -266,7 +266,7 @@
 
 <section layout="row" class="info-list-detail"
          ng-show="serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Command">
-    <h2 flex="20">{/'Start Command' | translate/}</h2>
+    <h2 flex="20">{/'CMD' | translate/}</h2>
     <div flex="80" layout="row" layout-wrap>
         <table cellpadding="0" cellspacing="0"
                dm-empty-display="serviceConfigCtrl.service.Spec.TaskTemplate.ContainerSpec.Command">

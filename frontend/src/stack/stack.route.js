@@ -37,7 +37,7 @@
                 templateUrl: '/src/stack/create/create-by-Json.html',
                 controller: 'StackCreateByJsonCtrl as stackCreateByJsonCtrl',
                 ncyBreadcrumb: {
-                    label: "{/'Create Project' | translate/}"
+                    label: "{/'Create Stack' | translate/}"
                 }
             })
             .state('stack.createByForm', {
@@ -45,7 +45,7 @@
                 templateUrl: '/src/stack/create/create-by-form.html',
                 controller: 'StackCreateByFormCtrl as stackCreateByFormCtrl',
                 ncyBreadcrumb: {
-                    label: "{/'Add Project' | translate/}"
+                    label: "{/'Create Stack' | translate/}"
                 }
             })
             .state('stack.serviceUpdate', {
@@ -68,7 +68,7 @@
                     stack: getStack
                 },
                 ncyBreadcrumb: {
-                    label: "{/'Project Detail' | translate/}"
+                    label: "{/'Stack Detail' | translate/}"
                 }
             })
             .state('stack.detail.service', {

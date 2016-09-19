@@ -14,7 +14,7 @@
              role="alert">
             <p class="help-text"
                ng-message="required">
-                <small>{/'Can not be empty' | translate/}</small>
+                <small>{/'Volume Name is required' | translate/}</small>
             </p>
 
             <p class="help-text"
@@ -42,7 +42,7 @@
 
     <div class="form-group" layout="column">
         <label>{/'Labels' | translate/}
-            <small>{/'Can add multiple labels' | translate/}</small>
+            <small>{/'Multiple labels supported' | translate/}</small>
         </label>
         <div class="sub-button">
             <md-button id="node-add-label" class="md-raised md-success md-small"
@@ -71,18 +71,18 @@
             <div ng-messages="labels.labelKey.$error" ng-if="labels.labelKey.$dirty" role="alert">
                 <p class="help-text"
                    ng-message="pattern">
-                    <small>{/'KEY can not contain Chinese' | translate/}</small>
+                    <small>{/'Chinese is not permitted' | translate/}</small>
                 </p>
                 <p class="help-text"
                    ng-message="dmCheckInclude">
-                    <small>{/'KEY can not be repeated' | translate/}</small>
+                    <small>{/'Duplicated KEY is not permitted' | translate/}</small>
                 </p>
             </div>
 
             <div ng-messages="labels.labelValue.$error" ng-if="labels.labelValue.$dirty" role="alert">
                 <p class="help-text"
                    ng-message="pattern">
-                    <small>{/'Value can not contain Chinese' | translate/}</small>
+                    <small>{/'Chinese is not permitted' | translate/}</small>
                 </p>
             </div>
         </div>

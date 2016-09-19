@@ -30,7 +30,7 @@
             formModal.open('/src/node/modals/form-nodeIp.html', env, {dataName: 'endpoint', initData: endpoint})
                 .then(function (endpoint) {
                 nodeBackend.handleNode(nodeId, "endpoint-update", endpoint).then(function (data) {
-                    Notification.success($filter('translate')('Host successful update'));
+                    Notification.success($filter('translate')('Host updated successfully'));
                     $state.reload()
                 });
             });
@@ -49,7 +49,7 @@
                         this[label.key] = label.value;
                     }, newLabels);
                     nodeBackend.handleNode(nodeId, "label-update", newLabels).then(function (data) {
-                        Notification.success($filter('translate')('Host successful update'));
+                        Notification.success($filter('translate')('Host updated successfully'));
                         $state.reload()
                     });
                 });
@@ -57,7 +57,7 @@
 
         function removeLabels(nodeId, rmList) {
             nodeBackend.handleNode(nodeId, "label-rm", rmList).then(function (data) {
-                Notification.success($filter('translate')('Host successful update'));
+                Notification.success($filter('translate')('Host updated successfully'));
                 $state.reload()
             });
         }
@@ -96,7 +96,7 @@
             confirmModal.open("Are you sure to kill the container ?").then(function () {
                 nodeBackend.killContainer(nodeId, containerId)
                     .then(function (data) {
-                        Notification.success($filter('translate')('Kill Success'));
+                        Notification.success($filter('translate')('Killed successfully'));
                         $state.reload()
                     })
             });
@@ -109,10 +109,10 @@
         }
 
         function drainNode(nodeId) {
-            confirmModal.open("Are you sure that host offline ?").then(function () {
+            confirmModal.open("Are you sure offline the host ?").then(function () {
                 nodeBackend.handleNode(nodeId, "availability", 'drain')
                     .then(function (data) {
-                        Notification.success($filter('translate')('Success offline'));
+                        Notification.success($filter('translate')('Offline successfully'));
                         $state.reload()
                     })
             });
@@ -122,7 +122,7 @@
             confirmModal.open("Are you sure to activate the host ?").then(function () {
                 nodeBackend.handleNode(nodeId, "availability", 'active')
                     .then(function (data) {
-                        Notification.success($filter('translate')('Activation successful'));
+                        Notification.success($filter('translate')('Activated successfully'));
                         $state.reload()
                     })
             });
@@ -139,10 +139,10 @@
         }
 
         function pauseNode(nodeId) {
-            confirmModal.open("Are you sure the host is suspended ?").then(function () {
+            confirmModal.open("Are you sure to pause the node?").then(function () {
                 nodeBackend.handleNode(nodeId, "availability", 'pause')
                     .then(function (data) {
-                        Notification.success($filter('translate')('Pause success'));
+                        Notification.success($filter('translate')('Paused successfully'));
                         $state.reload()
                     })
             });
@@ -151,7 +151,7 @@
         function createNetwork(data, nodeId, form) {
             nodeBackend.createNetwork(data, nodeId, form)
                 .then(function (data) {
-                    Notification.success($filter('translate')('Creating Success'));
+                    Notification.success($filter('translate')('Created successfully'));
                     $state.go('node.networkDetail', {node_id: nodeId, network_id: data.Id}, {reload: true})
                 })
         }

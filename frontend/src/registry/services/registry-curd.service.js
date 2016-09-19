@@ -19,7 +19,7 @@
         };
 
         function deleteImage(repository, tag, ev) {
-            confirmModal.open("Are you sure to remove the mirror ?", ev).then(function () {
+            confirmModal.open("Are you sure to remove the image ?", ev).then(function () {
                 if (isPublicRepository(repository)) {
                     $state.go('registry.list.public', {open: repository}, {reload: true});
                 } else {
@@ -52,7 +52,7 @@
         }
 
         function deleteCatalog(catalogId, ev) {
-            confirmModal.open("Are you sure to delete the project template ?", ev).then(function () {
+            confirmModal.open("Are you sure to delete the stack template ?", ev).then(function () {
                 registryBackend.deleteCatalog(catalogId)
                     .then(function (data) {
                         Notification.success($filter('translate')('Successfully deleted'));
@@ -64,7 +64,7 @@
         function updateCatalog(catalogId, data) {
             registryBackend.updateCatalog(catalogId, data)
                 .then(function (data) {
-                    Notification.success($filter('translate')('Update Success'));
+                    Notification.success($filter('translate')('Updated Successfully'));
                     $state.go('registry.list.catalogs', null, {reload: true});
                 })
         }

@@ -3,7 +3,7 @@
     <div class="sub-info-main">
         <dl class="info-list">
             <dt>{/'Status' | translate/}</dt><dd>{/CONTAINER_STATUS_LABELS[nodeContainerDetailCtrl.container.State.Status] || ('unknown' | translate)/}</dd>
-            <dt>{/'Create Time' | translate/}</dt><dd>{/nodeContainerDetailCtrl.container.Created | date: 'yyyy-MM-dd HH:mm:ss'/}</dd>
+            <dt>{/'Created At' | translate/}</dt><dd>{/nodeContainerDetailCtrl.container.Created | date: 'yyyy-MM-dd HH:mm:ss'/}</dd>
             <dt>{/'Driver' | translate/}</dt><dd>{/nodeContainerDetailCtrl.container.Driver || ('unknown' | translate)/}</dd>
         </dl>
 
@@ -16,7 +16,7 @@
 <md-tabs md-dynamic-height md-border-bottom>
     <md-tab id="node-container-config" label="{/'Detail' | translate/}" dm-tab-sref="node.containerDetail.config"></md-tab>
     <md-tab id="node-container-log" label="{/'Log' | translate/}" dm-tab-sref="node.containerDetail.log"></md-tab>
-    <md-tab id="node-container-stats" label="{/'Real Monitoring' | translate/}" dm-tab-sref="node.containerDetail.stats"></md-tab>
+    <md-tab id="node-container-stats" label="{/'Real Stats' | translate/}" dm-tab-sref="node.containerDetail.stats"></md-tab>
     <md-tab id="node-container-diff" label="{/'Change' | translate/}" dm-tab-sref="node.containerDetail.diff"></md-tab>
     <md-tab id="node-container-terminal" label="{/'Terminal' | translate/}" dm-tab-sref="node.containerDetail.terminal"></md-tab>
 </md-tabs>

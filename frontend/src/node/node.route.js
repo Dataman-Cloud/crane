@@ -38,7 +38,7 @@
                 templateUrl: '/src/node/create-volume/create.html',
                 controller: 'NodeCreateVolumeCtrl as nodeCreateVolumeCtrl',
                 ncyBreadcrumb: {
-                    label: "{/'Created volume' | translate/}"
+                    label: "{/'Create Volume' | translate/}"
                 }
             })
             .state('node.createNetwork', {
@@ -46,7 +46,7 @@
                 templateUrl: '/src/node/create-network/create.html',
                 controller: 'NodeCreateNetworkCtrl as nodeCreateNetworkCtrl',
                 ncyBreadcrumb: {
-                    label: "{/'Create host nerwork' | translate/}"
+                    label: "{/'Create Host-Only network' | translate/}"
                 }
             })
             .state('node.detail', {

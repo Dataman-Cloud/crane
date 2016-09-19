@@ -2,7 +2,7 @@
     <form name="staticForm" class="form-main">
         <md-toolbar>
             <div class="md-toolbar-tools">
-                <h2>{/'Need Docker TCP Socket Addrs' | translate/}</h2>
+                <h2>{/'Docker TCP Socket Addrs Required' | translate/}</h2>
                 <span flex></span>
                 <md-button id="node-dialog-nodeip-cancel" class="md-icon-button" ng-click="formCtrl.cancel()"
                            aria-label="cancel">
@@ -11,13 +11,13 @@
             </div>
         </md-toolbar>
         <md-dialog-content>
-            <p>{/'Provide Docker TCP Socket Addrs' | translate/}</p>
-            <p>{/'Open Docker TCP Socket Service' | translate/}</p>
+            <p>{/'Docker Daemon TCP Socket required' | translate/}</p>
+            <p>{/'Enable Docker TCP Socket' | translate/}</p>
             <p>{/'Docker TCP Socket Addrs' | translate/}</p>
             <input id="node-nodeip-endpoint" type="text" name="endpoint" aria-label="endpoint" placeholder="http://192.168.59.105:2375"
                    data-ng-model="formCtrl.endpoint" data-required="required" md-autofocus>
             <div ng-messages="staticForm.endpoint.$error" ng-if="staticForm.endpoint.$dirty" role="alert">
-                <p class="help-info text-danger" ng-message="required"><small>{/'Address can not be empty' | translate/}</small></p>
+                <p class="help-info text-danger" ng-message="required"><small>{/'Address Required' | translate/}</small></p>
             </div>
             <p>{/'How to configure Docker Daemon Socket Addrs' | translate/}</p>
             <p>CentOS/RHEL(systemd):</p>

@@ -5,7 +5,7 @@
         <div flex="70"><p>{/nodeConfigCtrl.node.ServerVersion/}</p></div>
         <div flex="30"><h5>{/'Volume driver' | translate/}</h5></div>
         <div flex="70"><p>{/nodeConfigCtrl.node.Driver/}</p></div>
-        <div flex="30"><h5>{/'Docker storage directory' | translate/}</h5></div>
+        <div flex="30"><h5>{/'Docker Volume' | translate/}</h5></div>
         <div flex="70"><p>{/nodeConfigCtrl.node.DockerRootDir/}</p></div>
         <div flex="30"><h5>{/'Debug model' | translate/}</h5></div>
         <div flex="70">
@@ -23,7 +23,7 @@
         <div flex="70"><p>{/nodeConfigCtrl.node.CgroupDriver/}</p></div>
         <div flex="30"><h5>Logging Driver</h5></div>
         <div flex="70"><p>{/nodeConfigCtrl.node.LoggingDriver/}</p></div>
-        <div flex="30"><h5>{/'Allows memory overflow' | translate/}</h5></div>
+        <div flex="30"><h5>{/'Disable OOM Kill' | translate/}</h5></div>
         <div flex="70">
             <p ng-class="{'no-info': !nodeConfigCtrl.node.OomKillDisable}">
                 {/nodeConfigCtrl.node.OomKillDisable ? 'YES' : 'NO' | translate/}
