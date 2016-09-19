@@ -86,6 +86,7 @@ func (registry *Registry) Token(ctx *gin.Context) {
 	//create token
 	rawToken, err := registry.MakeToken(registry.PrivateKeyPath, username, service, accesses)
 	if err != nil {
+		log.Errorf("get registry token error: %v", err)
 		ctx.JSON(http.StatusInternalServerError, gin.H{})
 		return
 	}
