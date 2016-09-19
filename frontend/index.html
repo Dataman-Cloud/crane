@@ -46,7 +46,7 @@
             <li title="设施">
                 <md-button ng-disabled="true">
                     <i class="fa fa fa-building"></i>
-                    {/'Facility' | translate/}
+                    {/'Architecture' | translate/}
                 </md-button>
                 <ul>
                     <li title="主机" data-ui-sref-active="active">
@@ -67,7 +67,7 @@
                         <md-button data-ui-sref="registryAuth" data-ui-sref-opts="{inherit: false}"
                                    id="index-registryAuth">
                             <i class="fa fa-archive" aria-hidden="true"></i>
-                            {/'Warehouse certification' | translate/}
+                            {/'Registry Auth' | translate/}
                         </md-button>
                     </li>
                 </ul>
@@ -144,7 +144,7 @@
                         md-items="item in rootCtrl.querySearch(rootCtrl.searchText)"
                         md-item-text="item.Name ? item.Name : item.ID"
                         md-min-length="1"
-                        placeholder="{/'Just try to lose something ...' | translate/}"
+                        placeholder="{/'have a try ...' | translate/}"
                         md-delay="500"
                         md-selected-item-change="rootCtrl.searchJump(item)" class="search-header">
                     <md-item-template>
@@ -163,7 +163,7 @@
                         </div>
                     </md-item-template>
                     <md-not-found>
-                        {/'No query to the relevant information ...' | translate/}
+                        {/'Empty records ...' | translate/}
                     </md-not-found>
                 </md-autocomplete>
             </form>

@@ -9,11 +9,11 @@
         <div ng-messages="createNetwork.name.$error" ng-if="createNetwork.name.$dirty" role="alert">
             <p class="help-text"
                ng-message="required">
-                <small>{/'Name can not be empty' | translate/}</small>
+                <small>{/'Name field is required' | translate/}</small>
             </p>
             <p class="help-text"
                ng-message="pattern">
-                <small>{/'Only number and letter' | translate/}</small>
+                <small>{/'Only number and letter permitted' | translate/}</small>
             </p>
         </div>
     </div>
@@ -50,7 +50,7 @@
              role="alert">
             <p class="help-text"
                ng-message="pattern">
-                <small>{/'Gateway illegal' | translate/}</small>
+                <small>{/'Illegal Gateway' | translate/}</small>
             </p>
         </div>
     </div>
@@ -93,7 +93,7 @@
 
     <div class="form-group" layout="column">
         <label>{/'Labels' | translate/}
-            <small>{/'Can add multiple labels' | translate/}</small>
+            <small>{/'Multiple labels supported' | translate/}</small>
         </label>
         <div class="sub-button">
             <md-button class="md-raised md-success md-small"
@@ -122,11 +122,11 @@
             <div ng-messages="labelForm.labelKey.$error" ng-if="labelForm.labelKey.$dirty" role="alert">
                 <p class="help-text"
                    ng-message="pattern">
-                    <small>{/'KEY can not contain Chinese' | translate/}</small>
+                    <small>{/'Chinese is not permitted' | translate/}</small>
                 </p>
                 <p class="help-text"
                    ng-message="dmCheckInclude">
-                    <small>{/'KEY can not be repeated' | translate/}</small>
+                    <small>{/'Duplicated KEY is not permitted' | translate/}</small>
                 </p>
             </div>
 
@@ -134,7 +134,7 @@
                  role="alert">
                 <p class="help-text"
                    ng-message="pattern">
-                    <small>{/'Value can not contain Chinese' | translate/}</small>
+                    <small>{/'Chinese is not permitted' | translate/}</small>
                 </p>
             </div>
         </div>

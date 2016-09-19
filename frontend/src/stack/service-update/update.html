@@ -11,15 +11,15 @@
                  role="alert">
                 <p class="text-danger help-text"
                    ng-message="required">
-                    <small>{/'Name can not be empty' | translate/}</small>
+                    <small>{/'Name field is required' | translate/}</small>
                 </p>
                 <p class="text-danger help-text"
                    ng-message="pattern">
-                    <small>{/'Only number and letter' | translate/}</small>
+                    <small>{/'Only number and letter permitted' | translate/}</small>
                 </p>
                 <p class="text-danger help-text"
                    ng-message="dmCheckInclude">
-                    <small>{/'Service name can not be repeated' | translate/}</small>
+                    <small>{/'Duplicated service name is not permitted' | translate/}</small>
                 </p>
             </div>
         </div>
@@ -35,7 +35,7 @@
                  role="alert">
                 <p class="text-danger help-text"
                    ng-message="required">
-                    <small>{/'Mirroring can not be empty' | translate/}</small>
+                    <small>{/'Image is required' | translate/}</small>
                 </p>
             </div>
         </div>
@@ -48,7 +48,7 @@
                                 data-ng-change="serviceUpdateCtrl.modeChange()"
                                 layout-align="start center" flex>
                     <div flex="25">
-                        <md-radio-button value="Replicated" class="md-primary" data-ng-disabled="true">{/'Fixed number' | translate/} <em>replicated</em>
+                        <md-radio-button value="Replicated" class="md-primary" data-ng-disabled="true">{/'Replicated' | translate/} <em>replicated</em>
                         </md-radio-button>
                         <input type="number" min="0"
                                data-ng-show="serviceUpdateCtrl.form.defaultMode === 'Replicated'"
@@ -57,7 +57,7 @@
                     </div>
                     <div flex="25">
                         <md-radio-button value="Global" class="md-primary" flex-offset="5" data-ng-disabled="true">
-                            {/'A node in a task' | translate/} <em>global</em>
+                            {/'Global' | translate/} <em>global</em>
                         </md-radio-button>
                     </div>
                 </md-radio-group>
@@ -68,7 +68,7 @@
 
         <div class="form-group" layout="column">
             <label>{/'Select Network' | translate/} <em>--network</em>
-                <small>({/'Not be modified' | translate/})</small>
+                <small>({/'Read Only' | translate/})</small>
             </label>
             <div class="form-control">
                 <md-select data-ng-model="serviceUpdateCtrl.form.formNetworks" multiple
@@ -83,7 +83,7 @@
         </div>
 
         <div class="form-group" layout="column" dm-display-components="registryauth">
-            <label>{/'Warehouse certification mark' | translate/} <em>--RegistryAuth</em></label>
+            <label>{/'Registry Auth Name' | translate/} <em>--RegistryAuth</em></label>
             <div class="form-control">
                 <md-select data-ng-model="serviceUpdateCtrl.form.RegistryAuth"
                            aria-label="RegAuth">
@@ -135,7 +135,7 @@
                     </p>
                     <p class="text-danger help-text"
                        ng-message="min">
-                        <small>{/'Minimum service port 1' | translate/}</small>
+                        <small>{/'Service port at least 1' | translate/}</small>
                     </p>
                 </div>
 
@@ -144,7 +144,7 @@
                      role="alert">
                     <p class="text-danger help-text"
                        ng-message="max">
-                        <small>{/'Maximum host port can not exceed 65535' | translate/}</small>
+                        <small>{/'Port can not exceed 65535' | translate/}</small>
                     </p>
                 </div>
             </div>
@@ -154,7 +154,7 @@
             <div class="sub-button">
                 <md-button class="md-raised md-success md-small"
                            data-ng-click="serviceUpdateCtrl.addConfig(serviceUpdateCtrl.form.formEnv, 'Env')">
-                    <i class='fa fa-plus'></i>{/'Adding Environment Variables' | translate/}
+                    <i class='fa fa-plus'></i>{/'Added Environment Variables' | translate/}
                 </md-button>
                 <label> <em>--env</em> </label>
             </div>
@@ -180,11 +180,11 @@
                      role="alert">
                     <p class="text-danger help-text"
                        ng-message="pattern">
-                        <small>{/'KEY must be numbers, letters or underscore' | translate/}</small>
+                        <small>{/'Only numbers, letters or underscore permitted' | translate/}</small>
                     </p>
                     <p class="text-danger help-text"
                        ng-message="dmCheckInclude">
-                        <small>{/'KEY can not be repeated' | translate/}</small>
+                        <small>{/'Duplicated KEY is not permitted' | translate/}</small>
                     </p>
                 </div>
 
@@ -192,7 +192,7 @@
                      role="alert">
                     <p class="text-danger help-text"
                        ng-message="pattern">
-                        <small>{/'Value can not contain Chinese' | translate/}</small>
+                        <small>{/'Chinese is not permitted' | translate/}</small>
                     </p>
                 </div>
             </div>
@@ -202,12 +202,12 @@
             <a href="#"
                data-ng-click="serviceUpdateCtrl.showStartupParameter = !serviceUpdateCtrl.showStartupParameter">
                 <i class="fa"
-                   ng-class="{'fa-minus-square-o': serviceUpdateCtrl.showStartupParameter, 'fa-plus-square-o': !serviceUpdateCtrl.showStartupParameter}"></i>{/'Startup Parameters' | translate/}
+                   ng-class="{'fa-minus-square-o': serviceUpdateCtrl.showStartupParameter, 'fa-plus-square-o': !serviceUpdateCtrl.showStartupParameter}"></i>{/'CMD' | translate/}
             </a>
         </div>
         <div data-ng-show="serviceUpdateCtrl.showStartupParameter">
             <div class="form-group" layout="column">
-                <label>{/'Container working directory' | translate/} --workdir</label>
+                <label>{/'Work directory' | translate/} --workdir</label>
                 <div class="form-control">
                     <input type="text"
                            data-ng-model="serviceUpdateCtrl.form.TaskTemplate.ContainerSpec.Dir" name="workdir">
@@ -324,11 +324,11 @@
                          role="alert">
                         <p class="text-danger help-text"
                            ng-message="pattern">
-                            <small>{/'KEY can not contain Chinese' | translate/}</small>
+                            <small>{/'Chinese is not permitted' | translate/}</small>
                         </p>
                         <p class="text-danger help-text"
                            ng-message="dmCheckInclude">
-                            <small>{/'KEY can not be repeated' | translate/}</small>
+                            <small>{/'Duplicated KEY is not permitted' | translate/}</small>
                         </p>
                     </div>
 
@@ -337,7 +337,7 @@
                          role="alert">
                         <p class="text-danger help-text"
                            ng-message="pattern">
-                            <small>{/'Value can not contain Chinese' | translate/}</small>
+                            <small>{/'Chinese is not permitted' | translate/}</small>
                         </p>
                     </div>
                 </div>
@@ -373,11 +373,11 @@
                          role="alert">
                         <p class="text-danger help-text"
                            ng-message="pattern">
-                            <small>{/'KEY can not contain Chinese' | translate/}</small>
+                            <small>{/'Chinese is not permitted' | translate/}</small>
                         </p>
                         <p class="text-danger help-text"
                            ng-message="dmCheckInclude">
-                            <small>{/'KEY can not be repeated' | translate/}</small>
+                            <small>{/'Duplicated KEY is not permitted' | translate/}</small>
                         </p>
                     </div>
 
@@ -386,7 +386,7 @@
                          role="alert">
                         <p class="text-danger help-text"
                            ng-message="pattern">
-                            <small>{/'Value can not contain Chinese' | translate/}</small>
+                            <small>{/'Chinese is not permitted' | translate/}</small>
                         </p>
                     </div>
                 </div>
@@ -427,7 +427,7 @@
                      role="alert">
                     <p class="text-danger help-text"
                        ng-message="min">
-                        <small>{/'CPU minimum 0.01' | translate/}</small>
+                        <small>{/'CPU at least 0.01' | translate/}</small>
                     </p>
                 </div>
                 <div ng-messages="staticForm.limitMem.$error" ng-if="staticForm.limitMem.$dirty"
@@ -440,7 +440,7 @@
             </div>
 
             <div class="form-group" layout="column">
-                <label>{/'Set aside resources for each task' | translate/}</label>
+                <label>{/'Reserved resources for each task' | translate/}</label>
                 <div class="form-control sub-group" layout="row" layout-align="start center">
                     <div flex="25">
                         <label class="sub-label">CPU
@@ -466,7 +466,7 @@
                      role="alert">
                     <p class="text-danger help-text"
                        ng-message="min">
-                        <small>{/'CPU minimum 0.01' | translate/}</small>
+                        <small>{/'CPU at least 0.01' | translate/}</small>
                     </p>
                 </div>
                 <div ng-messages="staticForm.ReservationsMem.$error"
@@ -497,19 +497,19 @@
                             <md-radio-button value="any" class="md-primary">
                                 <i class="fa fa-umbrella"></i>
                                 <md-tooltip md-direction="top">无论任务正常或异常退出，都重启, 适合批处理或定时任务场景</md-tooltip>
-                                {/'Exit' | translate/}
+                                {/'Restart condition: Any' | translate/}
                             </md-radio-button>
                             <label><em>any</em></label>
                         </div>
                         <div flex="25">
-                            <md-radio-button value="none" class="md-primary">{/'Do not restart' | translate/}</md-radio-button>
+                            <md-radio-button value="none" class="md-primary">{/'none' | translate/}</md-radio-button>
                             <label><em>none</em></label>
                         </div>
                         <div flex="25">
                             <md-radio-button value="on-failure" class="md-primary">
                                 <i class="fa fa-umbrella"></i>
                                 <md-tooltip md-direction="top">在退出状态码(exit code)非 0 的情况下重启</md-tooltip>
-                                {/'Failure' | translate/}
+                                {/'on-failure' | translate/}
                             </md-radio-button>
                             <label><em>on-failure</em></label>
                         </div>
@@ -561,16 +561,16 @@
 
         <div data-ng-show="serviceUpdateCtrl.showUpdatePolicy">
             <div class="form-group" layout="column">
-                <label>{/'After a failed policy' | translate/} <em>--update-failure-action</em></label>
+                <label>{/'Update Failure Action' | translate/} <em>--update-failure-action</em></label>
                 <div class="form-control" layout="row" layout-align="start center">
                     <md-radio-group data-ng-model="serviceUpdateCtrl.form.UpdateConfig.FailureAction" layout="row"
                                     aria-label="restart-condition" flex>
                         <div flex="25">
-                            <md-radio-button value="continue" class="md-primary">{/'Keep trying' | translate/}</md-radio-button>
+                            <md-radio-button value="continue" class="md-primary">{/'continue' | translate/}</md-radio-button>
                             <label> <em>continue</em></label>
                         </div>
                         <div flex="25">
-                            <md-radio-button value="pause" class="md-primary">{/'Immediately stop' | translate/}</md-radio-button>
+                            <md-radio-button value="pause" class="md-primary">{/'Pause' | translate/}</md-radio-button>
                             <label> <em>pause</em></label>
                         </div>
                     </md-radio-group>
@@ -585,7 +585,7 @@
                         <label> <em>--update-delay</em></label>
                     </div>
                     <div flex="25">
-                        <label class="sub-label">{/'Number of parallel' | translate/}</label>
+                        <label class="sub-label">{/'Update Parallelism' | translate/}</label>
                         <input type="number" min="0"
                                data-ng-model="serviceUpdateCtrl.form.UpdateConfig.Parallelism"
                                name="updateParallelism">
@@ -668,7 +668,7 @@
                     <div class="sub-button">
                         <md-button class="md-raised md-success md-small"
                                    data-ng-click="serviceUpdateCtrl.addConfig(serviceUpdateCtrl.form.formMounts, 'Mounts')">
-                            <i class='fa fa-plus'></i>{/'Add storage' | translate/}
+                            <i class='fa fa-plus'></i>{/'Mount' | translate/}
                         </md-button>
                     </div>
                     <div data-ng-repeat="mount in serviceUpdateCtrl.form.formMounts track by $index">

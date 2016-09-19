@@ -11,7 +11,7 @@
                 template: '<ui-view/>',
                 targetState: 'list',
                 ncyBreadcrumb: {
-                    label: "{/'Warehouse certification' | translate/}"
+                    label: "{/'Registry Auth' | translate/}"
                 }
             })
             .state('registryAuth.list', {
@@ -22,7 +22,7 @@
                     reAuths: listReAuth
                 },
                 ncyBreadcrumb: {
-                    label: "{/'Registry auth list' | translate/}"
+                    label: "{/'Registry Auth list' | translate/}"
                 }
             })
             .state('registryAuth.create', {

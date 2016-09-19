@@ -14,13 +14,13 @@
         function createRegAuth(data, form) {
             registryAuthBackend.createRegAuth(data, form)
                 .then(function (data) {
-                    Notification.success($filter('translate')('Creating Success'));
+                    Notification.success($filter('translate')('Created successfully'));
                     $state.go('registryAuth.list', undefined, {reload: true})
                 })
         }
 
         function deleteRegAuth(name) {
-            confirmModal.open("Are you sure to delete this certificate ?").then(function () {
+            confirmModal.open("Are you sure to delete this auth pair?").then(function () {
                 registryAuthBackend.deleteRegAuth(name)
                     .then(function (data) {
                         Notification.success($filter('translate')('Successfully deleted'));

@@ -3,7 +3,7 @@
     <div flex="80" layout="row" layout-wrap>
         <div flex="30"><h5>{/'Image' | translate/}</h5></div>
         <div flex="70"><p>{/nodeContainerConfigCtrl.container.Config.Image/}</p></div>
-        <div flex="30"><h5>{/'Summary' | translate/}</h5></div>
+        <div flex="30"><h5>{/'Digest' | translate/}</h5></div>
         <div flex="70"><p>{/nodeContainerConfigCtrl.container.Image/}</p></div>
         <div flex="30"><h5>{/'Container hostname' | translate/}</h5></div>
         <div flex="70"><p>{/nodeContainerConfigCtrl.container.Config.Hostname/}</p></div>
@@ -110,7 +110,7 @@
 </section>
 
 <section layout="row" class="info-list-detail">
-    <h2 flex="20">{/'Start Command' | translate/}</h2>
+    <h2 flex="20">{/'CMD' | translate/}</h2>
     <div flex="80" layout="row" layout-wrap>
         <table cellpadding="0" cellspacing="0" dm-empty-display="nodeContainerConfigCtrl.container.Config.Cmd">
             <tr>

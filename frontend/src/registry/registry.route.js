@@ -38,7 +38,7 @@
                 templateUrl: '/src/registry/catalog-detail/detail.html',
                 controller: 'CatalogDetailCtrl as catalogDetailCtrl',
                 ncyBreadcrumb: {
-                    label: "{/'Project Deployment' | translate/}"
+                    label: "{/'Stack Deploy' | translate/}"
                 },
                 resolve: {
                     catalog: getCatalog
@@ -49,7 +49,7 @@
                 templateUrl: '/src/registry/create-update-catalog/create-update.html',
                 controller: 'CreateUpdateCatalog as createUpdateCatalog',
                 ncyBreadcrumb: {
-                    label: "{/'Creating project templates' | translate/}"
+                    label: "{/'Create Stack Template' | translate/}"
                 },
                 resolve: {
                     stack: getStack,
@@ -63,7 +63,7 @@
                 templateUrl: '/src/registry/create-update-catalog/create-update.html',
                 controller: 'CreateUpdateCatalog as createUpdateCatalog',
                 ncyBreadcrumb: {
-                    label: "{/'Update project templates' | translate/}"
+                    label: "{/'Update Stack Template' | translate/}"
                 },
                 resolve: {
                     stack: getCatalog,
@@ -118,7 +118,7 @@
                 url: '/createNote',
                 templateUrl: '/src/registry/create-image-note/note.html',
                 ncyBreadcrumb: {
-                    label: "{/'How to create a mirror' | translate/}"
+                    label: "{/'How to create a docker image' | translate/}"
                 }
             });
 

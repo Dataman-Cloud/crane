@@ -16,7 +16,7 @@
             <th md-column id="node-usability">{/'Availability' | translate/}</th>
             <th md-column id="node-status">{/'Status' | translate/}</th>
             <th md-column>{/'Labels' | translate/}</th>
-            <th md-column>{/'Create Time' | translate/}</th>
+            <th md-column>{/'Created At' | translate/}</th>
             <th md-column>{/'Operation' | translate/}</th>
         </tr>
         </thead>
@@ -48,7 +48,7 @@
                     <md-menu-content width="2">
                         <md-menu-item>
                             <md-button id="node-link-master-{/$index/}" aria-label="endpoint" data-ng-click="nodeListCtrl.updateEndpoint(node.ID, $event, node.Spec.Labels)">{/'Connect host' | translate/}
-                                <md-tooltip md-direction="left">{/'Connect host tooltip' | translate/}</md-tooltip>
+                                <md-tooltip md-direction="left">{/'Docker Daemon Setup' | translate/}</md-tooltip>
                             </md-button>
                         </md-menu-item>
                         <md-menu-item>
@@ -59,22 +59,22 @@
                         <md-menu-item>
                             <md-button id="node-stop-dispatch-{/$index/}" aria-label="drain"
                                        data-ng-disabled="node.Spec.Availability !== 'active'"
-                                       data-ng-click="nodeListCtrl.drainNode(node.ID)">{/'Stop scheduling' | translate/}
-                                <md-tooltip md-direction="left">{/'Stop scheduling tooltip' | translate/}</md-tooltip>
+                                       data-ng-click="nodeListCtrl.drainNode(node.ID)">{/'Drain' | translate/}
+                                <md-tooltip md-direction="left">{/'Drain' | translate/}</md-tooltip>
                             </md-button>
                         </md-menu-item>
                         <md-menu-item>
                             <md-button id="node-recover-dispatch-{/$index/}" aria-label="active"
                                        data-ng-disabled="node.Spec.Availability === 'active'"
-                                       data-ng-click="nodeListCtrl.activeNode(node.ID)">{/'Restore scheduling' | translate/}
-                                <md-tooltip md-direction="left">{/'Restore scheduling tooltip' | translate/}</md-tooltip>
+                                       data-ng-click="nodeListCtrl.activeNode(node.ID)">{/'Active' | translate/}
+                                <md-tooltip md-direction="left">{/'Active' | translate/}</md-tooltip>
                             </md-button>
                         </md-menu-item>
                         <md-menu-item>
                             <md-button id="node-pause-dispatch-{/$index/}" aria-label="pause"
                                        data-ng-disabled="node.Spec.Availability !== 'active'"
-                                       data-ng-click="nodeListCtrl.pauseNode(node.ID)">{/'Pause scheduling' | translate/}
-                                <md-tooltip md-direction="left">{/'Pause scheduling tooltip' | translate/}</md-tooltip>
+                                       data-ng-click="nodeListCtrl.pauseNode(node.ID)">{/'Pause' | translate/}
+                                <md-tooltip md-direction="left">{/'Pause' | translate/}</md-tooltip>
                             </md-button>
                         </md-menu-item>
                         <md-menu-item>

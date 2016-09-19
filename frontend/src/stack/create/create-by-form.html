@@ -1,10 +1,10 @@
 <div data-ng-show="stackCreateByFormCtrl.step == 1">
     <header class="header-main">
-        <h1>{/'Set name for project' | translate/}</h1>
+        <h1>{/'Set a name for your stack' | translate/}</h1>
     </header>
     <form name="stepOneForm" class="form-main">
         <div class="form-group" layout="column">
-            <label>{/'Project Name' | translate/}<span class="required">*</span>
+            <label>{/'Stack Template Name' | translate/}<span class="required">*</span>
                 <small></small>
             </label>
             <div class="form-control">
@@ -16,11 +16,11 @@
                  role="alert">
                 <p class="text-danger help-text"
                    ng-message="required">
-                    <small>{/'Name can not be empty' | translate/}</small>
+                    <small>{/'Name field is required' | translate/}</small>
                 </p>
                 <p class="text-danger help-text"
                    ng-message="pattern">
-                    <small>{/'Only number and letter' | translate/}</small>
+                    <small>{/'Only number and letter permitted' | translate/}</small>
                 </p>
             </div>
         </div>
@@ -56,15 +56,15 @@
                              role="alert">
                             <p class="text-danger help-text"
                                ng-message="required">
-                                <small>{/'Name can not be empty' | translate/}</small>
+                                <small>{/'Name field is required' | translate/}</small>
                             </p>
                             <p class="text-danger help-text"
                                ng-message="pattern">
-                                <small>{/'Only number and letter' | translate/}</small>
+                                <small>{/'Only number and letter permitted' | translate/}</small>
                             </p>
                             <p class="text-danger help-text"
                                ng-message="dmCheckInclude">
-                                <small>{/'Service name can not be repeated' | translate/}</small>
+                                <small>{/'Duplicated service name is not permitted' | translate/}</small>
                             </p>
                         </div>
                     </div>
@@ -79,7 +79,7 @@
                              role="alert">
                             <p class="text-danger help-text"
                                ng-message="required">
-                                <small>{/'Mirroring can not be empty' | translate/}</small>
+                                <small>{/'Image is required' | translate/}</small>
                             </p>
                         </div>
                     </div>
@@ -91,7 +91,7 @@
                                             data-ng-change="stackCreateByFormCtrl.modeChange(serve)"
                                             layout-align="start center" flex>
                                 <div flex="25">
-                                    <md-radio-button value="Replicated" class="md-primary">{/'Fixed number' | translate/} <em>replicated</em>
+                                    <md-radio-button value="Replicated" class="md-primary">{/'Replicated' | translate/} <em>replicated</em>
                                     </md-radio-button>
                                     <input id="service{/$index/}-Replicas" type="number" min="0"
                                            data-ng-show="serve.defaultMode === 'Replicated'"
@@ -99,7 +99,7 @@
                                            data-ng-model="serve.Mode.Replicated.Replicas" name="replicas">
                                 </div>
                                 <div flex="25">
-                                    <md-radio-button value="Global" class="md-primary" flex-offset="5">{/'A node in a task' | translate/}
+                                    <md-radio-button value="Global" class="md-primary" flex-offset="5">{/'Global' | translate/}
                                         <em>global</em>
                                     </md-radio-button>
                                 </div>
@@ -124,7 +124,7 @@
                     </div>
 
                     <div class="form-group" layout="column" dm-display-components="registryauth">
-                        <label>{/'Warehouse certification mark' | translate/} <em>--RegistryAuth</em></label>
+                        <label>{/'Registry Auth Name' | translate/} <em>--RegistryAuth</em></label>
                         <div class="form-control">
                             <md-select id="service{/$index/}-RegistryAuth" data-ng-model="serve.RegistryAuth"
                                        aria-label="RegAuth"
@@ -176,7 +176,7 @@
                                 </p>
                                 <p class="text-danger help-text"
                                    ng-message="min">
-                                    <small>{/'Minimum service port 1' | translate/}</small>
+                                    <small>{/'Service port at least 1' | translate/}</small>
                                 </p>
                             </div>
 
@@ -185,7 +185,7 @@
                                  role="alert">
                                 <p class="text-danger help-text"
                                    ng-message="max">
-                                    <small>{/'Maximum host port can not exceed 65535' | translate/}</small>
+                                    <small>{/'Port can not exceed 65535' | translate/}</small>
                                 </p>
                             </div>
                         </div>
@@ -195,7 +195,7 @@
                         <div class="sub-button">
                             <md-button id="service{/$index/}-AddEnv" class="md-raised md-success md-small"
                                        data-ng-click="stackCreateByFormCtrl.addConfig(serve.TaskTemplate.ContainerSpec.Env, 'Env')">
-                                <i class='fa fa-plus'></i> {/'Adding Environment Variables' | translate/}
+                                <i class='fa fa-plus'></i> {/'Added Environment Variables' | translate/}
                             </md-button>
                             <label> <em>--env</em> </label>
                         </div>
@@ -221,11 +221,11 @@
                                  role="alert">
                                 <p class="text-danger help-text"
                                    ng-message="pattern">
-                                    <small>{/'KEY must be numbers, letters or underscore' | translate/}</small>
+                                    <small>{/'Only numbers, letters or underscore permitted' | translate/}</small>
                                 </p>
                                 <p class="text-danger help-text"
                                    ng-message="dmCheckInclude">
-                                    <small>{/'KEY can not be repeated' | translate/}</small>
+                                    <small>{/'Duplicated KEY is not permitted' | translate/}</small>
                                 </p>
                             </div>
 
@@ -233,7 +233,7 @@
                                  role="alert">
                                 <p class="text-danger help-text"
                                    ng-message="pattern">
-                                    <small>{/'Value can not contain Chinese' | translate/}</small>
+                                    <small>{/'Chinese is not permitted' | translate/}</small>
                                 </p>
                             </div>
                         </div>
@@ -241,13 +241,13 @@
                     <div class="fold-line">
                         <a href="#" data-ng-click="serve.showStartupParameter = !serve.showStartupParameter">
                             <i class="fa"
-                               ng-class="{'fa-chevron-down': serve.showStartupParameter, 'fa-chevron-right': !serve.showStartupParameter}"></i>{/'Startup Parameters' | translate/}
+                               ng-class="{'fa-chevron-down': serve.showStartupParameter, 'fa-chevron-right': !serve.showStartupParameter}"></i>{/'CMD' | translate/}
                         </a>
                     </div>
 
                     <div data-ng-show="serve.showStartupParameter">
                         <div class="form-group" layout="column">
-                            <label>{/'Container working directory' | translate/} --workdir</label>
+                            <label>{/'Work directory' | translate/} --workdir</label>
                             <div class="form-control">
                                 <input id="service{/$index/}-Dir" type="text"
                                        data-ng-model="serve.TaskTemplate.ContainerSpec.Dir" name="workdir">
@@ -361,11 +361,11 @@
                                      role="alert">
                                     <p class="text-danger help-text"
                                        ng-message="pattern">
-                                        <small>{/'KEY can not contain Chinese' | translate/}</small>
+                                        <small>{/'Chinese is not permitted' | translate/}</small>
                                     </p>
                                     <p class="text-danger help-text"
                                        ng-message="dmCheckInclude">
-                                        <small>{/'KEY can not be repeated' | translate/}</small>
+                                        <small>{/'Duplicated KEY is not permitted' | translate/}</small>
                                     </p>
                                 </div>
 
@@ -374,7 +374,7 @@
                                      role="alert">
                                     <p class="text-danger help-text"
                                        ng-message="pattern">
-                                        <small>{/'Value can not contain Chinese' | translate/}</small>
+                                        <small>{/'Chinese is not permitted' | translate/}</small>
                                     </p>
                                 </div>
                             </div>
@@ -411,11 +411,11 @@
                                      role="alert">
                                     <p class="text-danger help-text"
                                        ng-message="pattern">
-                                        <small>{/'KEY can not contain Chinese' | translate/}</small>
+                                        <small>{/'Chinese is not permitted' | translate/}</small>
                                     </p>
                                     <p class="text-danger help-text"
                                        ng-message="dmCheckInclude">
-                                        <small>{/'KEY can not be repeated' | translate/}</small>
+                                        <small>{/'Duplicated KEY is not permitted' | translate/}</small>
                                     </p>
                                 </div>
 
@@ -424,7 +424,7 @@
                                      role="alert">
                                     <p class="text-danger help-text"
                                        ng-message="pattern">
-                                        <small>{/'Value can not contain Chinese' | translate/}</small>
+                                        <small>{/'Chinese is not permitted' | translate/}</small>
                                     </p>
                                 </div>
                             </div>
@@ -461,7 +461,7 @@
                                  role="alert">
                                 <p class="text-danger help-text"
                                    ng-message="min">
-                                    <small>{/'CPU minimum 0.01' | translate/}</small>
+                                    <small>{/'CPU at least 0.01' | translate/}</small>
                                 </p>
                             </div>
                             <div ng-messages="staticForm.limitMem.$error" ng-if="staticForm.limitMem.$dirty"
@@ -474,7 +474,7 @@
                         </div>
 
                         <div class="form-group" layout="column">
-                            <label>{/'Set aside resources for each task' | translate/}</label>
+                            <label>{/'Reserved resources for each task' | translate/}</label>
                             <div class="form-control sub-group" layout="row" layout-align="start center">
                                 <div flex="25">
                                     <label class="sub-label">CPU
@@ -500,7 +500,7 @@
                                  role="alert">
                                 <p class="text-danger help-text"
                                    ng-message="min">
-                                    <small>{/'CPU minimum 0.01' | translate/}</small>
+                                    <small>{/'CPU at least 0.01' | translate/}</small>
                                 </p>
                             </div>
                             <div ng-messages="staticForm.ReservationsMem.$error"
@@ -532,19 +532,19 @@
                                         <md-radio-button value="any" class="md-primary">
                                             <i class="fa fa-umbrella"></i>
                                             <md-tooltip md-direction="top">无论任务正常或异常退出，都重启, 适合批处理或定时任务场景</md-tooltip>
-                                            {/'Exit' | translate/}
+                                            {/'Restart condition: Any' | translate/}
                                         </md-radio-button>
                                         <label><em>any</em></label>
                                     </div>
                                     <div flex="25">
-                                        <md-radio-button value="none" class="md-primary">{/'Do not restart' | translate/}</md-radio-button>
+                                        <md-radio-button value="none" class="md-primary">{/'none' | translate/}</md-radio-button>
                                         <label><em>none</em></label>
                                     </div>
                                     <div flex="25">
                                         <md-radio-button value="on-failure" class="md-primary">
                                             <i class="fa fa-umbrella"></i>
                                             <md-tooltip md-direction="top">在退出状态码(exit code)非 0 的情况下重启</md-tooltip>
-                                            {/'Failure' | translate/}
+                                            {/'on-failure' | translate/}
                                         </md-radio-button>
                                         <label><em>on-failure</em></label>
                                     </div>
@@ -595,17 +595,17 @@
                     </div>
                     <div data-ng-show="serve.showUpdatePolicy">
                         <div class="form-group" layout="column">
-                            <label>{/'After a failed policy' | translate/} <em>--update-failure-action</em></label>
+                            <label>{/'Update Failure Action' | translate/} <em>--update-failure-action</em></label>
                             <div class="form-control" layout="row" layout-align="start center">
                                 <md-radio-group id="service{/$index/}-FailureAction"
                                                 data-ng-model="serve.UpdateConfig.FailureAction" layout="row"
                                                 aria-label="restart-condition" flex>
                                     <div flex="33">
-                                        <md-radio-button value="continue" class="md-primary">{/'Keep trying' | translate/}</md-radio-button>
+                                        <md-radio-button value="continue" class="md-primary">{/'continue' | translate/}</md-radio-button>
                                         <label> <em>continue</em></label>
                                     </div>
                                     <div flex="33">
-                                        <md-radio-button value="pause" class="md-primary">{/'Immediately stop' | translate/}</md-radio-button>
+                                        <md-radio-button value="pause" class="md-primary">{/'Pause' | translate/}</md-radio-button>
                                         <label> <em>pause</em></label>
                                     </div>
                                 </md-radio-group>
@@ -620,7 +620,7 @@
                                     <label> <em>--update-delay</em></label>
                                 </div>
                                 <div flex="33">
-                                    <label class="sub-label">{/'Number of parallel' | translate/}</label>
+                                    <label class="sub-label">{/'Update Parallelism' | translate/}</label>
                                     <input id="service{/$index/}-Parallelism" type="number" min="0"
                                            data-ng-model="serve.UpdateConfig.Parallelism"
                                            name="updateParallelism">
@@ -700,7 +700,7 @@
                             <div class="sub-button">
                                 <md-button id="service{/$index/}-AddMounts" class="md-raised md-success md-small"
                                            data-ng-click="stackCreateByFormCtrl.addConfig(serve.TaskTemplate.ContainerSpec.Mounts, 'Mounts')">
-                                    <i class='fa fa-plus'></i> {/'Add storage' | translate/}
+                                    <i class='fa fa-plus'></i> {/'Mount' | translate/}
                                 </md-button>
                             </div>
                             <div data-ng-repeat="mount in serve.TaskTemplate.ContainerSpec.Mounts track by $index">
@@ -745,7 +745,7 @@
                         </md-button>
 
                         <md-button id="addServe{/$index/}" class="md-raised" data-ng-disabled="staticForm.$invalid"
-                                   data-ng-click="stackCreateByFormCtrl.addServe()">{/'Continue Add' | translate/}
+                                   data-ng-click="stackCreateByFormCtrl.addServe()">{/'Continue to add' | translate/}
                         </md-button>
                         <md-button id="removeServe{/$index/}" class="md-raised"
                                    data-ng-if="!$first"

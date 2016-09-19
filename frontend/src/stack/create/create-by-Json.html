@@ -1,6 +1,6 @@
 <form name="staticForm" class="form-main">
     <div class="form-group" layout="column">
-        <label>{/'Project Name' | translate/}<span class="required">*</span>
+        <label>{/'Stack Template Name' | translate/}<span class="required">*</span>
             <small></small>
         </label>
         <div class="form-control">
@@ -8,8 +8,8 @@
                    data-ng-pattern="/^[A-Za-z0-9]+$/" focus-me>
         </div>
         <div ng-messages="staticForm.Name.$error" ng-if="staticForm.Name.$dirty" role="alert">
-            <p class="text-danger help-text" ng-message="required">{/'Name can not be empty' | translate/}</p>
-            <p class="text-danger help-text" ng-message="pattern">{/'Only number and letter' | translate/}</p>
+            <p class="text-danger help-text" ng-message="required">{/'Name field is required' | translate/}</p>
+            <p class="text-danger help-text" ng-message="pattern">{/'Only number and letter permitted' | translate/}</p>
         </div>
     </div>
     <!--<div class="form-group" layout="column">
@@ -43,7 +43,7 @@
         <div ng-messages="staticForm.Stack.$error" ng-if="staticForm.Stack.$dirty" role="alert">
             <p class="text-danger help-text"
                ng-message="required">
-                <small>{/'Can not be empty' | translate/}</small>
+                <small>{/'Volume Name is required' | translate/}</small>
             </p>
         </div>
         <p class="text-danger help-text" data-ng-show="stackCreateByJsonCtrl.errorInfo.stack">

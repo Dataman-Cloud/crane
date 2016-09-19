@@ -1,20 +1,20 @@
 <header layout="row" layout-align="end start" id="header-main">
     <div flex="none">
         <md-button id="create-image-note" class="md-raised md-primary md-button md-small"
-                   aria-label="How to create a mirror" data-ui-sref='registry.createNote'>
-            <i class="fa fa-question" aria-hidden="true"></i> {/'How to create a mirror' | translate/}
+                   aria-label="How to create a docker image" data-ui-sref='registry.createNote'>
+            <i class="fa fa-question" aria-hidden="true"></i> {/'How to create a docker image' | translate/}
         </md-button>
         <md-button id="add-newcatalog" class="md-button md-primary md-small md-raised"
-                   data-ui-sref="registry.createCatalog" aria-label="New Project Template">
-            <i class="fa fa-plus" aria-hidden="true"></i> {/'New Project Template' | translate/}
+                   data-ui-sref="registry.createCatalog" aria-label="New Stack Template">
+            <i class="fa fa-plus" aria-hidden="true"></i> {/'New Stack Template' | translate/}
         </md-button>
     </div>
 </header>
 <md-content>
     <md-tabs md-dynamic-height md-border-bottom>
-        <md-tab label="{/'Project Templates' | translate/}" dm-tab-sref="registry.list.catalogs"></md-tab>
-        <md-tab label="{/'Public Mirror' | translate/}" dm-tab-sref="registry.list.public"></md-tab>
-        <md-tab label="{/'My Mirror' | translate/}" dm-tab-sref="registry.list.mine"></md-tab>
+        <md-tab label="{/'Stack Templates' | translate/}" dm-tab-sref="registry.list.catalogs"></md-tab>
+        <md-tab label="{/'Public Docker Images' | translate/}" dm-tab-sref="registry.list.public"></md-tab>
+        <md-tab label="{/'My Docker Images' | translate/}" dm-tab-sref="registry.list.mine"></md-tab>
     </md-tabs>
     <md-content data-ui-view></md-content>
 </md-content>

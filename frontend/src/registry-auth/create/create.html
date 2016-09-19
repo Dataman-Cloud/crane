@@ -1,6 +1,6 @@
 <form name="createRegAuth" class="form-main">
     <div class="form-group" layout="column">
-        <label>{/'Certification mark' | translate/}<span class="required">*</span></label>
+        <label>{/'Registry Auth Name' | translate/}<span class="required">*</span></label>
         <div class="form-control">
             <input type="text" data-ng-model="regAuthCreateCtrl.form.Name" focus-me
                    data-required="required" name="name">
@@ -8,7 +8,7 @@
         <div ng-messages="createRegAuth.name.$error" ng-if="createRegAuth.name.$dirty" role="alert">
             <p class="text-danger help-text"
                ng-message="required">
-                <small>{/'Name can not be empty' | translate/}</small>
+                <small>{/'Name field is required' | translate/}</small>
             </p>
         </div>
     </div>
@@ -24,7 +24,7 @@
         <div ng-messages="createRegAuth.UserName.$error" ng-if="createRegAuth.UserName.$dirty" role="alert">
             <p class="text-danger help-text"
                ng-message="required">
-                <small>{/'Username can not be empty' | translate/}</small>
+                <small>{/'Username is required' | translate/}</small>
             </p>
         </div>
     </div>
@@ -41,7 +41,7 @@
              role="alert">
             <p class="text-danger help-text"
                ng-message="required">
-                <small>{/'Password can not be empty' | translate/}</small>
+                <small>{/'Password is required' | translate/}</small>
             </p>
         </div>
     </div>
@@ -59,11 +59,11 @@
              role="alert">
             <p class="text-danger help-text"
                ng-message="required">
-                <small>{/'Can not be empty' | translate/}</small>
+                <small>{/'Volume Name is required' | translate/}</small>
             </p>
             <p class="text-danger help-text"
                ng-message="checkrepeat">
-                <small>{/'Passwords do not match' | translate/}</small>
+                <small>{/'Passwords mis-match' | translate/}</small>
             </p>
         </div>
     </div>

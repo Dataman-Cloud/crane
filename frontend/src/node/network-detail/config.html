@@ -5,7 +5,7 @@
         <div flex="70"><p>{/nodeNetworkConfigCtrl.network.Scope/}</p></div>
         <div flex="30"><h5>{/'Support IPv6' | translate/}</h5></div>
         <div flex="70"><p>{/nodeNetworkConfigCtrl.network.EnableIPv6 ? 'YES' : 'NO' | translate/}</p></div>
-        <div flex="30"><h5>{/'Only the internal network' | translate/}</h5></div>
+        <div flex="30"><h5>{/'Host-Only network' | translate/}</h5></div>
         <div flex="70"><p>{/nodeNetworkConfigCtrl.network.Internal ? 'YES' : 'NO' | translate/}</p></div>
         <div flex="30"><h5>{/'Options' | translate/}</h5></div>
         <div flex="70" dm-empty-display="nodeNetworkConfigCtrl.network.Options" dm-empty-text="{/'Not configured' | translate/}">
@@ -36,7 +36,7 @@
 </section>
 
 <section layout="row" class="info-list-detail">
-    <h2 flex="20">{/'Connections container' | translate/}</h2>
+    <h2 flex="20">{/'Connect containers' | translate/}</h2>
     <div flex="80" dm-empty-display="nodeNetworkConfigCtrl.network.Containers">
         <table id="node-network-detail-config-table">
             <thead>

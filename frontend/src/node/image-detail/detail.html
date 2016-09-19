@@ -2,7 +2,7 @@
     <h1><i class="fa fa-file-archive-o" aria-hidden="true"></i>{/nodeImageDetailCtrl.image.RepoTags[0]/}</h1>
     <div class="sub-info-main">
         <dl class="info-list">
-            <dt>{/'Create Time' | translate/}</dt>
+            <dt>{/'Created At' | translate/}</dt>
             <dd>{/nodeImageDetailCtrl.image.Created | date: 'yyyy-MM-dd HH:mm:ss'/}</dd>
             <dt>{/'Architecture' | translate/}</dt>
             <dd ng-class="{'no-info': !nodeImageDetailCtrl.image.Architecture}">{/nodeImageDetailCtrl.image.Architecture || ('unknown' | translate)/}</dd>
