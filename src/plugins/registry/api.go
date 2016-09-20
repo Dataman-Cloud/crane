@@ -3,6 +3,7 @@ package registry
 import (
 	"encoding/json"
 	"fmt"
+	"net/http"
 	"regexp"
 	"strings"
 
@@ -101,7 +102,8 @@ func (registry *Registry) Token(ctx *gin.Context) {
 		return
 	}
 
-	httpresponse.Ok(ctx, gin.H{"token": rawToken})
+	//fixed format
+	ctx.JSON(http.StatusOK, gin.H{"token": rawToken})
 }
 
 func (registry *Registry) Authenticate(principal, password string) bool {
