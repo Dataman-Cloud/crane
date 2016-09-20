@@ -26,7 +26,7 @@
             "YES": "是",
             "NO": "否",
             "ID": "ID",
-            "Labels": "标签标签",
+            "Labels": "标签",
             "Create": "创建",
             "Local": "本地",
             "Version": "版本",
@@ -70,6 +70,14 @@
             "Passwords mis-match": "密码不一致",
             "Confirm password again": "再次确认密码",
             "Username is required": "用户名不能为空",
+            "Upload Picture": "上传图片",
+            "second": "秒",
+            "minute": "分钟",
+            "hour": "小时",
+            "day": "天",
+            "week": "周",
+            "month": "月",
+            "year": "年",
 
 
             //index module
@@ -189,6 +197,9 @@
             "Deployment and export": "部署并导出",
             "Continue to add": "继续添加",
             "Delete Service": "删除服务",
+            "CPU Usage": "CPU 使用率",
+            "Memory Usage": "内存使用率",
+            "Network Receive/Send Rate": "网络发送/接收速率",
 
 
             // node module
@@ -235,7 +246,6 @@
             "Internal Network": "内部网络",
             "Multiple labels supported": "可添加多个标签",
             "Add labels": "添加标签",
-            "Duplicated KEY is not permitted": "标签 Key 不能重复",
             "Add volume": "添加存储卷",
             "Volume name": "卷名",
             "Docker info": "Docker 信息",

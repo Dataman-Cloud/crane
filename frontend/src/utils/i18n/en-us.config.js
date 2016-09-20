@@ -70,6 +70,14 @@
             "Passwords mis-match": "Passwords mis-match",
             "Confirm password again": "Confirm password again",
             "Username is required": "Username is required",
+            "Upload Picture": "Upload Picture",
+            "second": "second",
+            "minute": "minute",
+            "hour": "hour",
+            "day": "day",
+            "week": "week",
+            "month": "month",
+            "year": "year",
 
 
             //index module
@@ -188,6 +196,9 @@
             "Deployment and export": "Deployment and export",
             "Continue to add": "Continue to add",
             "Delete Service": "Delete Service",
+            "CPU Usage": "CPU Usage",
+            "Memory Usage": "Memory usage",
+            "Network Receive/Send Rate": "Network Receive/Send Rate",
 
 
             // node module
@@ -234,7 +245,6 @@
             "Internal Network": "Internal Network",
             "Multiple labels supported": "Multiple labels supported",
             "Add labels": "Add Labels",
-            "Duplicated KEY is not permitted": "Duplicated KEY is not permitted",
             "Add volume": "Add Volume",
             "Volume name": "Volume Name",
             "Docker info": "Docker Info",
@@ -254,7 +264,7 @@
             "Total containers": "Total Containers",
             "Paused containers": "Paused Containers",
             "Stopped containers": "Stopped Containers",
-            "Images": "Images",
+            "Images Sum": "Images",
             "Node labels": "Host Labels",
             "Create Volume": "Created Volume",
             "Size": "Size",
@@ -341,8 +351,8 @@
             "Update Stack Template": "Update Stack Template",
             "How to create a docker image": "How to create a docker image",
             "Stack Templates": "Stack Templates",
-            "Public Docker Images": "Public Docker Images",
-            "My Docker Images": "My Docker Images",
+            "Public Docker Images": "Public Images",
+            "My Docker Images": "My Images",
             "New Stack Template": "New Stack Template",
             "Stack Template Description": "Stack Template Description",
             "Are you sure to remove the image ?": "Are you sure to remove the mirror ？",
