@@ -125,7 +125,6 @@
             "Task_state_failed": '失败',
             "Task_state_rejected": '拒绝',
             "Image Permissions": '镜像权限',
-            "Global": '一主机一任务',
             "StopGracePeriod": '容器退出的容忍时间',
             "StopGracePeriod Tooltip": '容器将在容忍时间之后被强制杀死',
             "Container Dir": '容器目录',
@@ -173,7 +172,7 @@
             "Restart Policy": "重启策略",
             "none": "不重启",
             "Update Failure Action": "失败后策略",
-            "Pause": "立即停止",
+            "Pause Update": "立即停止",
             "Scheduling Policy": "调度策略",
             "File mount": "文件挂载",
             "Host port": "主机端口",
@@ -214,7 +213,6 @@
             "Container tag": "容器标签",
             "Volume": "存储卷",
             "Path": "路径",
-            "CMD": "启动命令",
             "Image Name": "镜像名称",
             "Change": "变更",
             "Terminal": "终端",
@@ -238,7 +236,6 @@
             "Multiple labels supported": "可添加多个标签",
             "Add labels": "添加标签",
             "Chinese not permitted": "标签 Key 不能包含中文",
-            "Duplicated KEY is not permitted": "标签 Key 不能重复",
             "Labels value can not contain Chinese": "标签 Value 不能包含中文",
             "Add volume": "添加存储卷",
             "Volume name": "卷名",
@@ -319,7 +316,6 @@
             "Image size": "镜像大小",
             "Layer": "层级",
             "Docker Version": "Docker 版本",
-            "Architecture": "架构",
             "Container hostname": "容器主机名",
             "None": "未查询到变更信息",
             "Container_status_labels_running": "运行中",
@@ -337,7 +333,6 @@
             //registry-auth module
             "Registry Auth list": "管理列表",
             "Add registry auth": "添加认证",
-            "Registry Auth Name": "认证标识",
             "Are you sure to delete this auth pair?": "是否确认删除该认证 ?",
 
             //registry module

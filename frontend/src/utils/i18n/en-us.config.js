@@ -124,7 +124,6 @@
             "Task_state_failed": 'failed',
             "Task_state_rejected": 'rejected',
             "Image Permissions": 'Image Permissions',
-            "Global": 'Global',
             "StopGracePeriod": 'StopGracePeriod',
             "StopGracePeriod Tooltip": 'The container will be forced to kill after the tolerance time',
             "Container Dir": 'Container Dir',
@@ -172,7 +171,7 @@
             "Restart Policy": "Restart Policy",
             "none": "Don't restart",
             "Update Failure Action": "Update Failure Action",
-            "Pause": "Pause",
+            "Pause Update": "Pause",
             "Scheduling Policy": "Scheduling Policy",
             "File mount": "File mount",
             "Host port": "Host port",
@@ -213,7 +212,6 @@
             "Container labels": "Container Labels",
             "Volume": "Volume",
             "Path": "Path",
-            "CMD": "Command",
             "Image Name": "Image",
             "Change": "Changed",
             "Terminal": "Terminal",
@@ -237,7 +235,6 @@
             "Multiple labels supported": "Multiple labels supported",
             "Add labels": "Add Labels",
             "Chinese not permitted": "Chinese not permitted",
-            "Duplicated KEY is not permitted": "Duplicated KEY is not permitted",
             "Labels value can not contain Chinese": "labels value can not contain Chinese",
             "Add volume": "Add Volume",
             "Volume name": "Volume Name",
@@ -318,7 +315,6 @@
             "Image size": "Image size",
             "Layer": "Layer",
             "Docker Version": "Docker Version",
-            "Architecture": "Architecture",
             "Container hostname": "Container hostname",
             "None": "None",
             "Container_status_labels_running": "running",
@@ -336,7 +332,6 @@
             //registry-auth module
             "Registry Auth list": "Registry Auth List",
             "Add registry auth": "Add Registry Auth",
-            "Registry Auth Name": "Registry Auth Name",
             "Are you sure to delete this auth pair?": "Are you sure to delete this auth pair?",
 
             //registry module
