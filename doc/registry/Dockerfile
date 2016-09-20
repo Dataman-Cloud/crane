@@ -8,7 +8,7 @@ ADD ./private_key.pem /etc/registry/private_key.pem
 ADD ./root.crt /etc/registry/root.crt
 
 COPY docker-entrypoint.sh /entrypoint.sh
-
+RUN chmod 755 /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 
 CMD ["/etc/docker/registry/config.yml"]
