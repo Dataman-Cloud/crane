@@ -17,6 +17,9 @@ services:
       context: ../doc/registry
       dockerfile: ./Dockerfile
     image: ${REGISTRY_PREFIX}registry:crane${TAG}
+    ports:
+      - "5000:5000"
+      - "5001:5001"
     environment:
       - CRANE_IP
     volumes:
