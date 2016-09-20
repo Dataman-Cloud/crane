@@ -198,6 +198,12 @@
             "CPU Usage": "CPU Usage",
             "Memory Usage": "Memory usage",
             "Network Receive/Send Rate": "Network Receive/Send Rate",
+            "Nginx Configuration Reference": "Nginx Configuration Reference",
+            "Haproxy Configuration Reference": "Haproxy Configuration Reference",
+            "Copy Text": "Copy Text",
+            "CD Execute bash command": "Bash command to execute the above redeploy this project;",
+            "CD docker pull image": "Your-new-image will be replaced with a new mirror address, make sure that the real image and the cluster hosts can pull docker pull the mirror;",
+            "Do not disclose this command": "Do not disclose this command;",
 
 
             // node module

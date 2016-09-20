@@ -12,7 +12,7 @@
         </md-toolbar>
         <md-dialog-content layout="row" style="width: 600px;">
             <div flex="30">
-                <md-card data-ng-click="formCtrl.ok('stack.createByJson')">
+                <md-card id="modal_createByJson" data-ng-click="formCtrl.ok('stack.createByJson')">
                     <md-card-title>
                         <md-card-title-text>
                             <i class="fa fa-code"></i>
@@ -22,7 +22,7 @@
                 </md-card>
             </div>
             <div flex="30" flex-offset="5">
-                <md-card data-ng-click="formCtrl.ok('stack.createByForm')">
+                <md-card id="modal_createByForm" data-ng-click="formCtrl.ok('stack.createByForm')">
                     <md-card-title>
                         <md-card-title-text>
                             <i class="fa fa-mouse-pointer"></i>
@@ -32,7 +32,7 @@
                 </md-card>
             </div>
             <div flex="30" flex-offset="5" dm-display-components="catalog">
-                <md-card data-ng-click="formCtrl.ok('registry.list.catalogs')">
+                <md-card id="modal_catalogs" data-ng-click="formCtrl.ok('registry.list.catalogs')">
                     <md-card-title>
                         <md-card-title-text>
                             <i class="fa fa-shopping-cart"></i>

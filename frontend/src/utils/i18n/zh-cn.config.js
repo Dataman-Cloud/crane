@@ -200,6 +200,13 @@
             "CPU Usage": "CPU 使用率",
             "Memory Usage": "内存使用率",
             "Network Receive/Send Rate": "网络发送/接收速率",
+            "Nginx Configuration Reference": "Nginx 配置参考",
+            "Haproxy Configuration Reference": "Haproxy 配置参考",
+            "Copy Text": "点击复制文本",
+            "CD Execute bash command": "执行上面 Bash 命令可重新部署此项目;",
+            "CD docker pull image": "将 your-new-image 替换为新的镜像地址,请确保该镜像真实存在,并且集群主机能够拉取 docker pull 该镜像;",
+            "Do not disclose this command": "请勿泄露本命令;",
+
 
 
             // node module
