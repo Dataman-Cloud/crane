@@ -31,7 +31,7 @@
             Options.prototype._createNetworkOptions = function () {
                 var options = chartUtil.createDefaultOptions();
                 options.chart.yAxis.axisLabel = '速率';
-                options.title.text = '网络接收/发送速率';
+                options.title.text = $filter('translate')('Network Receive/Send Rate');
                 options.chart.yAxis.tickFormat = function (d) {
                     return $filter('netRate')(d);
                 };
@@ -41,15 +41,15 @@
 
             Options.prototype._createCpuOptions = function () {
                 var options = chartUtil.createDefaultOptions();
-                options.chart.yAxis.axisLabel = 'CPU使用率';
-                options.title.text = 'CPU 使用率';
+                options.chart.yAxis.axisLabel = $filter('translate')('CPU Usage');
+                options.title.text = $filter('translate')('CPU Usage');
                 return options
             };
 
             Options.prototype._createMemOptions = function () {
                 var options = chartUtil.createDefaultOptions();
-                options.chart.yAxis.axisLabel = '内存使用率';
-                options.title.text = '内存使用率';
+                options.chart.yAxis.axisLabel = $filter('translate')('Memory Usage');
+                options.title.text = $filter('translate')('Memory Usage');
                 return options;
             };
 
