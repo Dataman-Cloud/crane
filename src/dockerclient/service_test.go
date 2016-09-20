@@ -12,6 +12,189 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+const (
+	ServiceContent = `
+	    {
+		"ID":"1ns52ng0jqs7c3lw8ydxbrga4",
+		"Version":{
+		    "Index":43
+		},
+		"CreatedAt":"2016-09-12T06:18:17.03174955Z",
+		"UpdatedAt":"2016-09-13T06:01:17.607771366Z",
+		"Spec":{
+		    "Name":"test_2048",
+		    "Labels":{
+			"com.docker.stack.namespace":"test",
+			"crane.reserved.permissions.1.r":"true",
+			"crane.reserved.permissions.1.w":"true",
+			"crane.reserved.permissions.1.x":"true",
+			"name":"2048"
+		    },
+		    "TaskTemplate":{
+			"ContainerSpec":{
+			    "Image":"blackicebird/2048"
+			},
+			"Resources":{
+				"Limits":{
+					"NanoCPUs":1,
+					"MemoryBytes":1024
+				},
+				"Reservations":{
+					"NanoCPUs":1,
+					"MemoryBytes":1024
+				}
+			}
+		    },
+		    "Mode":{
+			"Replicated":{
+			    "Replicas":1
+			}
+		    },
+		    "Networks":[
+			{
+			    "Target":"c0it8e2mhwcnbebm494639496",
+			    "Aliases":[
+				"2048"
+			    ]
+			}
+		    ],
+		    "EndpointSpec":{
+			"Mode":"vip",
+			"Ports":[
+			    {
+				"Name":"pbport",
+				"Protocol":"tcp",
+				"TargetPort":80,
+				"PublishedPort":8000
+			    }
+			]
+		    }
+		},
+		"Endpoint":{
+		    "Spec":{
+			"Mode":"vip",
+			"Ports":[
+			    {
+				"Name":"pbport",
+				"Protocol":"tcp",
+				"TargetPort":80,
+				"PublishedPort":8000
+			    }
+			]
+		    },
+		    "Ports":[
+			{
+			    "Name":"pbport",
+			    "Protocol":"tcp",
+			    "TargetPort":80,
+			    "PublishedPort":8000
+			}
+		    ],
+		    "VirtualIPs":[
+			{
+			    "NetworkID":"c0it8e2mhwcnbebm494639496",
+			    "Addr":"10.255.0.2/16"
+			}
+		    ]
+		},
+		"UpdateStatus":{
+		    "StartedAt":"0001-01-01T00:00:00Z",
+		    "CompletedAt":"0001-01-01T00:00:00Z"
+		}
+	    }
+	`
+
+	ServiceContentNoReplicated = `
+	    {
+		"ID":"1ns52ng0jqs7c3lw8ydxbrga4",
+		"Version":{
+		    "Index":43
+		},
+		"CreatedAt":"2016-09-12T06:18:17.03174955Z",
+		"UpdatedAt":"2016-09-13T06:01:17.607771366Z",
+		"Spec":{
+		    "Name":"test_2048",
+		    "Labels":{
+			"com.docker.stack.namespace":"test",
+			"crane.reserved.permissions.1.r":"true",
+			"crane.reserved.permissions.1.w":"true",
+			"crane.reserved.permissions.1.x":"true",
+			"name":"2048"
+		    },
+		    "TaskTemplate":{
+			"ContainerSpec":{
+			    "Image":"blackicebird/2048"
+			},
+			"Resources":{
+				"Limits":{
+					"NanoCPUs":1,
+					"MemoryBytes":1024
+				},
+				"Reservations":{
+					"NanoCPUs":1,
+					"MemoryBytes":1024
+				}
+			}
+		    },
+		    "Mode":{
+			"Global":{
+			}
+		    },
+		    "Networks":[
+			{
+			    "Target":"c0it8e2mhwcnbebm494639496",
+			    "Aliases":[
+				"2048"
+			    ]
+			}
+		    ],
+		    "EndpointSpec":{
+			"Mode":"vip",
+			"Ports":[
+			    {
+				"Name":"pbport",
+				"Protocol":"tcp",
+				"TargetPort":80,
+				"PublishedPort":8000
+			    }
+			]
+		    }
+		},
+		"Endpoint":{
+		    "Spec":{
+			"Mode":"vip",
+			"Ports":[
+			    {
+				"Name":"pbport",
+				"Protocol":"tcp",
+				"TargetPort":80,
+				"PublishedPort":8000
+			    }
+			]
+		    },
+		    "Ports":[
+			{
+			    "Name":"pbport",
+			    "Protocol":"tcp",
+			    "TargetPort":80,
+			    "PublishedPort":8000
+			}
+		    ],
+		    "VirtualIPs":[
+			{
+			    "NetworkID":"c0it8e2mhwcnbebm494639496",
+			    "Addr":"10.255.0.2/16"
+			}
+		    ]
+		},
+		"UpdateStatus":{
+		    "StartedAt":"0001-01-01T00:00:00Z",
+		    "CompletedAt":"0001-01-01T00:00:00Z"
+		}
+	    }
+	`
+)
+
 func TestCreateService(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
@@ -806,4 +989,312 @@ func TestGetServiceStatus(t *testing.T) {
 
 	assert.Equal(t, RqServiceSt2, servicesSt2)
 	server.Close()
+}
+
+func TestRemoveService(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.Write([]byte(`[{"ID":"e90302"}]`))
+	}))
+	defer server.Close()
+
+	httpClient, err := NewHttpClient()
+	assert.Nil(t, err)
+
+	client := &CraneDockerClient{
+		sharedHttpClient:         httpClient,
+		swarmManagerHttpEndpoint: server.URL,
+	}
+	err = client.RemoveService("1111")
+	assert.Nil(t, err)
+}
+
+func TestUpdateService(t *testing.T) {
+	var version swarm.Version
+	var serviceSpec swarm.ServiceSpec
+	var updateOpts types.ServiceUpdateOptions
+
+	versionContent := `
+		{Index: 138662}
+	`
+	serviceSpecContent := `
+	{
+            "Name":"yyao_hdfs-namenode",
+            "Labels":{
+                "com.docker.stack.namespace":"yyao",
+                "crane.reserved.permissions.1.r":"true",
+                "crane.reserved.permissions.1.w":"true",
+                "crane.reserved.permissions.1.x":"true",
+                "name":"hdfs-namenode"
+            },
+            "TaskTemplate":{
+                "ContainerSpec":{
+                    "Image":"dataman/hdfs-namenode:2.7.1",
+                    "Labels":{
+                        "name":"hdfs-namenode"
+                    },
+                    "User":"root"
+                }
+            },
+            "Mode":{
+                "Replicated":{
+                    "Replicas":1
+                }
+            },
+            "UpdateConfig":{
+
+            },
+            "Networks":[
+                "ingress"
+            ],
+            "EndpointSpec":{
+                "Mode":"vip",
+                "Ports":[
+                    {
+                        "Name":"manageport",
+                        "Protocol":"tcp",
+                        "TargetPort":50070,
+                        "PublishedPort":50070
+                    }
+                ]
+            },
+            "RegistryAuth":""
+        }
+	`
+	json.Unmarshal([]byte(versionContent), &version)
+	json.Unmarshal([]byte(serviceSpecContent), &serviceSpec)
+	updateOpts = types.ServiceUpdateOptions{}
+
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.Write([]byte(`[{"ID":"e90302"}]`))
+	}))
+	defer server.Close()
+
+	httpClient, err := NewHttpClient()
+	assert.Nil(t, err)
+
+	client := &CraneDockerClient{
+		sharedHttpClient:         httpClient,
+		swarmManagerHttpEndpoint: server.URL,
+	}
+
+	err = client.UpdateService("1111", version, serviceSpec, updateOpts)
+	assert.Nil(t, err)
+}
+
+func TestUpdateServiceAutoOption(t *testing.T) {
+	var version swarm.Version
+	var serviceSpec swarm.ServiceSpec
+
+	versionContent := `
+		{Index: 138662}
+	`
+	serviceSpecContent := `
+	{
+            "Name":"yyao_hdfs-namenode",
+            "Labels":{
+                "com.docker.stack.namespace":"yyao",
+                "crane.reserved.permissions.1.r":"true",
+                "crane.reserved.permissions.1.w":"true",
+                "crane.reserved.permissions.1.x":"true",
+                "name":"hdfs-namenode"
+            },
+            "TaskTemplate":{
+                "ContainerSpec":{
+                    "Image":"dataman/hdfs-namenode:2.7.1",
+                    "Labels":{
+                        "name":"hdfs-namenode"
+                    },
+                    "User":"root"
+                }
+            },
+            "Mode":{
+                "Replicated":{
+                    "Replicas":1
+                }
+            },
+            "UpdateConfig":{
+
+            },
+            "Networks":[
+                "ingress"
+            ],
+            "EndpointSpec":{
+                "Mode":"vip",
+                "Ports":[
+                    {
+                        "Name":"manageport",
+                        "Protocol":"tcp",
+                        "TargetPort":50070,
+                        "PublishedPort":50070
+                    }
+                ]
+            },
+            "RegistryAuth":""
+        }
+	`
+	json.Unmarshal([]byte(versionContent), &version)
+	json.Unmarshal([]byte(serviceSpecContent), &serviceSpec)
+
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.Write([]byte(`[{"ID":"e90302"}]`))
+	}))
+	defer server.Close()
+
+	httpClient, err := NewHttpClient()
+	assert.Nil(t, err)
+
+	client := &CraneDockerClient{
+		sharedHttpClient:         httpClient,
+		swarmManagerHttpEndpoint: server.URL,
+	}
+
+	err = client.UpdateServiceAutoOption("1111", version, serviceSpec)
+	assert.Nil(t, err)
+}
+
+func TestScaleService(t *testing.T) {
+	serviceScale := ServiceScale{NumTasks: 1}
+
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.Write([]byte(ServiceContent))
+	}))
+
+	httpClient, err := NewHttpClient()
+	assert.Nil(t, err)
+
+	client := &CraneDockerClient{
+		sharedHttpClient:         httpClient,
+		swarmManagerHttpEndpoint: server.URL,
+	}
+
+	err = client.ScaleService("1111", serviceScale)
+	assert.Nil(t, err)
+	server.Close()
+
+	server = httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.Write([]byte(ServiceContentNoReplicated))
+	}))
+
+	client = &CraneDockerClient{
+		sharedHttpClient:         httpClient,
+		swarmManagerHttpEndpoint: server.URL,
+	}
+
+	err = client.ScaleService("1111", serviceScale)
+	assert.NotNil(t, err)
+	server.Close()
+}
+
+func TestInspectServiceWithRaw(t *testing.T) {
+	var rqService swarm.Service
+
+	json.Unmarshal([]byte(ServiceContent), &rqService)
+
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.Write([]byte(ServiceContent))
+	}))
+	defer server.Close()
+
+	httpClient, err := NewHttpClient()
+	assert.Nil(t, err)
+
+	client := &CraneDockerClient{
+		sharedHttpClient:         httpClient,
+		swarmManagerHttpEndpoint: server.URL,
+	}
+
+	service, err := client.InspectServiceWithRaw("1111")
+	assert.Equal(t, rqService, service)
+	assert.Nil(t, err)
+}
+
+func TestServiceAddLabel(t *testing.T) {
+	var rqService swarm.Service
+
+	json.Unmarshal([]byte(ServiceContent), &rqService)
+
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.Write([]byte(ServiceContent))
+	}))
+	defer server.Close()
+
+	httpClient, err := NewHttpClient()
+	assert.Nil(t, err)
+
+	client := &CraneDockerClient{
+		sharedHttpClient:         httpClient,
+		swarmManagerHttpEndpoint: server.URL,
+	}
+
+	labels := map[string]string{
+		"com.docker.stack.namespace":     "yyao",
+		"crane.reserved.permissions.1.r": "true",
+		"crane.reserved.permissions.1.w": "true",
+		"crane.reserved.permissions.1.x": "true",
+		"name": "hdfs-namenode",
+	}
+
+	err = client.ServiceAddLabel("1111", labels)
+	assert.Nil(t, err)
+}
+
+func TestServiceRemoveLabel(t *testing.T) {
+	var rqService swarm.Service
+
+	json.Unmarshal([]byte(ServiceContent), &rqService)
+
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.Write([]byte(ServiceContent))
+	}))
+	defer server.Close()
+
+	httpClient, err := NewHttpClient()
+	assert.Nil(t, err)
+
+	client := &CraneDockerClient{
+		sharedHttpClient:         httpClient,
+		swarmManagerHttpEndpoint: server.URL,
+	}
+
+	labels := []string{
+		"com.docker.stack.namespace",
+		"crane.reserved.permissions.1.r",
+		"crane.reserved.permissions.1.w",
+		"crane.reserved.permissions.1.x",
+	}
+
+	err = client.ServiceRemoveLabel("1111", labels)
+	assert.Nil(t, err)
+}
+
+func TestGetServiceNetworkNames(t *testing.T) {
+	var networkAttachmentConfigs []swarm.NetworkAttachmentConfig
+
+	networkContent := `[]`
+	json.Unmarshal([]byte(networkContent), &networkAttachmentConfigs)
+
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.Write([]byte(`[{"ID":"e90302"}]`))
+	}))
+	defer server.Close()
+
+	httpClient, err := NewHttpClient()
+	assert.Nil(t, err)
+
+	client := &CraneDockerClient{
+		sharedHttpClient:         httpClient,
+		swarmManagerHttpEndpoint: server.URL,
+	}
+
+	networkNameList := client.GetServiceNetworkNames(networkAttachmentConfigs)
+	assert.Equal(t, []string{}, networkNameList)
 }
