@@ -123,7 +123,7 @@ func (api *Api) RemoveNetwork(ctx *gin.Context) {
 		return
 	}
 
-	httpresponse.Ok(ctx, "remove succsee")
+	httpresponse.Ok(ctx, "remove success")
 	return
 }
 
