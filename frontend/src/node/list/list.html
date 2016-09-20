@@ -60,21 +60,21 @@
                             <md-button id="node-stop-dispatch-{/$index/}" aria-label="drain"
                                        data-ng-disabled="node.Spec.Availability !== 'active'"
                                        data-ng-click="nodeListCtrl.drainNode(node.ID)">{/'Drain' | translate/}
-                                <md-tooltip md-direction="left">{/'Drain' | translate/}</md-tooltip>
+                                <md-tooltip md-direction="left">{/'Drain tooltip' | translate/}</md-tooltip>
                             </md-button>
                         </md-menu-item>
                         <md-menu-item>
                             <md-button id="node-recover-dispatch-{/$index/}" aria-label="active"
                                        data-ng-disabled="node.Spec.Availability === 'active'"
                                        data-ng-click="nodeListCtrl.activeNode(node.ID)">{/'Active' | translate/}
-                                <md-tooltip md-direction="left">{/'Active' | translate/}</md-tooltip>
+                                <md-tooltip md-direction="left">{/'Active tooltip' | translate/}</md-tooltip>
                             </md-button>
                         </md-menu-item>
                         <md-menu-item>
                             <md-button id="node-pause-dispatch-{/$index/}" aria-label="pause"
                                        data-ng-disabled="node.Spec.Availability !== 'active'"
                                        data-ng-click="nodeListCtrl.pauseNode(node.ID)">{/'Pause' | translate/}
-                                <md-tooltip md-direction="left">{/'Pause' | translate/}</md-tooltip>
+                                <md-tooltip md-direction="left">{/'Pause tooltip' | translate/}</md-tooltip>
                             </md-button>
                         </md-menu-item>
                         <md-menu-item>

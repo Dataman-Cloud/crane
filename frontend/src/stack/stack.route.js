@@ -29,7 +29,7 @@
                     stacks: listStacks
                 },
                 ncyBreadcrumb: {
-                    label: "{/'Stack List' | translate/}"
+                    label: "{/'Stacks' | translate/}"
                 }
             })
             .state('stack.createByJson', {
