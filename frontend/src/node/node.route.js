@@ -22,7 +22,7 @@
                     nodes: listNodes
                 },
                 ncyBreadcrumb: {
-                    label: "{/'Node List' | translate/}"
+                    label: "{/'Nodes' | translate/}"
                 }
             })
             .state('node.create', {

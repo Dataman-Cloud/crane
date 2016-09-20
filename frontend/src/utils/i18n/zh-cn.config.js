@@ -275,7 +275,7 @@
             "Mount points": "挂载点",
             "Remove volume": "删除储存卷",
             "Vol_driver_local": "本地",
-            "Node List": "主机列表",
+            "Nodes": "主机列表",
             "Add Node": "添加主机",
             "Node Detail": "主机详情",
             "Image Detail": "镜像详情",
@@ -360,7 +360,7 @@
             "Are you sure to delete the stack template ?": "是否确认删除该项目模板？",
 
             //network module
-            "Network List": "网络列表",
+            "Networks": "网络列表",
             "Type": "类型",
             "Create Network": "创建网络",
             "Network Detail": "网络详情",
