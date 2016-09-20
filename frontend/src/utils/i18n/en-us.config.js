@@ -95,7 +95,7 @@
             "Create in the following ways": 'Create in the following ways',
             "In DAB": 'DAB',
             "In Form Wizard": 'Guide',
-            "In Stack template": 'In Stack template',
+            "In Stack template": 'Stack Template',
             "Delete Stack": 'Delete Stack',
             "Save as stack template": 'Save as stack template',
             "Services": 'Services',
@@ -152,8 +152,8 @@
             "Add constraints": 'Add constraints',
             "Mount": 'Mount',
             "Memory at least 4MB": "memory at least 4MB",
-            "Set a name for your stack": "The first step in. Give your project a name",
-            "Fill in the service information": "The second step. Fill in the service information",
+            "Set a name for your stack": "Set a name for your stack",
+            "Fill in the service information": "Fill in the service information",
             "Stack Template Name": "Stack Template Name",
             "New Service": "New Service",
             "Service Mode": "Service Mode",
@@ -335,7 +335,7 @@
 
             //registry module
             "Schema Version": "Schema Version",
-            "Image List": "Image List",
+            "Images": "Images",
             "Stack Deploy": "Stack Deploy",
             "Create Stack Template": "Create Stack Template",
             "Update Stack Template": "Update Stack Template",
