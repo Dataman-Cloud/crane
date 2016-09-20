@@ -51,6 +51,7 @@ func startHttpServer() *httptest.Server {
 
 func TestToken(t *testing.T) {
 	req, err := http.NewRequest("GET", baseUrl+"/registry/v1/token", nil)
+	req.SetBasicAuth("admin@admin.com", "adminadmin")
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		t.Error(err)
@@ -59,13 +60,21 @@ func TestToken(t *testing.T) {
 
 	// private key path lost
 	// assert make token failed
-	r.PrivateKeyPath = ""
 	req, err = http.NewRequest("GET", baseUrl+"/registry/v1/token", nil)
 	resp, err = http.DefaultClient.Do(req)
 	if err != nil {
 		t.Error(err)
 	}
-	assert.Equal(t, resp.StatusCode, http.StatusInternalServerError, "response status code should be equal")
+	assert.Equal(t, resp.StatusCode, http.StatusBadRequest, "response status code should be equal")
+
+	r.PrivateKeyPath = ""
+	req, err = http.NewRequest("GET", baseUrl+"/registry/v1/token", nil)
+	req.SetBasicAuth("admin@admin.com", "adminadmin")
+	resp, err = http.DefaultClient.Do(req)
+	if err != nil {
+		t.Error(err)
+	}
+	assert.Equal(t, resp.StatusCode, http.StatusServiceUnavailable, "response status code should be equal")
 }
 
 func TestNotifications(t *testing.T) {

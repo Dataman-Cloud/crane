@@ -85,6 +85,15 @@ func (api *Api) ApiRouter() *gin.Engine {
 		v1.GET("/stacks/:namespace/services/:service_id/cd_url", api.ServiceCDAddr)
 	}
 
+	if plugin, ok := apiplugin.ApiPlugins[apiplugin.Account]; ok {
+		accountApi, ok := plugin.Instance.(*authApi.AccountApi)
+		if ok {
+			accountApi.CraneDockerClient = api.Client
+			Authorization = accountApi.Authorization
+			accountApi.ApiRegister(router, middlewares.ListIntercept())
+		}
+	}
+
 	for _, plugin := range apiplugin.ApiPlugins {
 		if plugin.Instance != nil {
 			switch plugin.Name {
@@ -95,12 +104,6 @@ func (api *Api) ApiRouter() *gin.Engine {
 					searchApi.ApiRegister(router, Authorization, middlewares.ListIntercept())
 				}
 			case apiplugin.Account:
-				accountApi, ok := plugin.Instance.(*authApi.AccountApi)
-				if ok {
-					accountApi.CraneDockerClient = api.Client
-					Authorization = accountApi.Authorization
-					accountApi.ApiRegister(router, middlewares.ListIntercept())
-				}
 			default:
 				plugin.Instance.ApiRegister(router, Authorization, middlewares.ListIntercept())
 			}
