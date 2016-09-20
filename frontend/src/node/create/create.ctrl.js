@@ -31,7 +31,7 @@
                 .then(function(data){
                     self.managerIp = data.ManagerStatus.Addr;
                     self.cmd = "docker swarm join --advertise-addr " + self.ip +" --token " + self.workerToken + " --listen-addr " + self.ip + ":2377 " + self.managerIp;
-                    self.cmd = "curl -XGET " + MISC_TOOLS_URL + "node-init.sh | sh && " + self.cmd;
+                    self.cmd = "curl -XGET " + MISC_TOOLS_URL + "node-init.sh | sudo sh && " + self.cmd;
                 });
         }
     }
