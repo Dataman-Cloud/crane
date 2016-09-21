@@ -443,7 +443,7 @@ func TestGetDaemonUrlById(t *testing.T) {
 	assert.Nil(t, err)
 }
 
-func TestgetNodeIdByUrl(t *testing.T) {
+func TestGetNodeIdByUrl(t *testing.T) {
 	body := `
 	{
 	    "Swarm":{
