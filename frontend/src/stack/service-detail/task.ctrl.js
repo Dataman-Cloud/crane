@@ -8,7 +8,9 @@
         var self = this;
 
         self.tasks = tasks;
-        self.nodesMapping;
+        self.nodesMapping = {};
+
+        self.orderByRunning = orderByRunning;
 
         activate();
 
@@ -16,6 +18,10 @@
             nodeCurd.getNodesMapping().then(function (mapping) {
                 self.nodesMapping = mapping;
             });
+        }
+
+        function orderByRunning(task) {
+            return task.Status.State !== 'running';
         }
 
     }
