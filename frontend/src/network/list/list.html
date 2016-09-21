@@ -1,12 +1,12 @@
 <header layout="row" layout-align="end start" id="header-main">
     <div flex="none">
-        <md-button class="md-button md-primary md-small md-raised" aria-label="创建虚拟网络" data-ui-sref="network.create">
+        <md-button id="net-create-btn" class="md-button md-primary md-small md-raised" aria-label="创建虚拟网络" data-ui-sref="network.create">
             <i class="fa fa-plus" aria-hidden="true"></i> {/'Create Network' | translate/}
         </md-button>
     </div>
 </header>
 <md-table-container>
-    <table md-table>
+    <table id="net-list-table" md-table>
         <thead md-head>
         <tr md-row>
             <th md-column>ID</th>
@@ -22,12 +22,12 @@
         <tbody md-body>
         <tr md-row ng-repeat="network in networkListCtrl.networks">
             <td md-cell>
-                <a class="ellipsis" data-ui-sref="network.detail({network_id: network.Id})">{/network.Id | limitTo: ID_LIMIT_LENGTH/}
+                <a id="net-network-id-{/$index/}" class="ellipsis" data-ui-sref="network.detail({network_id: network.Id})">{/network.Id | limitTo: ID_LIMIT_LENGTH/}
                     <md-tooltip md-direction="top">{/network.Id/}</md-tooltip>
                 </a>
             </td>
             <td md-cell>
-                <a class="ellipsis" data-ui-sref="network.detail({network_id: network.Id})">{/network.Name/}
+                <a id="net-network-name-{/$index/}" class="ellipsis" data-ui-sref="network.detail({network_id: network.Id})">{/network.Name/}
                     <md-tooltip md-direction="top">{/network.Name/}</md-tooltip>
                 </a>
             </td>
@@ -40,7 +40,7 @@
             <td md-cell><span ng-class="{'no-info': !network.IPAM.Config[0].IPRange}">{/network.IPAM.Config[0].IPRange || ('Not configured' | translate)/}</span>
             </td>
             <td md-cell>
-                <md-button class="md-icon-button" aria-label="delete" ng-hide="RESERVED_NETWORK_NAMES.indexOf(network.Name) !== -1"
+                <md-button id="net-remove-network-{/$index/}" class="md-icon-button" aria-label="delete" ng-hide="RESERVED_NETWORK_NAMES.indexOf(network.Name) !== -1"
                            data-ng-click="networkListCtrl.deleteNetwork(network.Id)"><i class="fa fa-trash"></i>
                     <md-tooltip md-direction="left">{/'Remove network' | translate/}</md-tooltip>
                 </md-button>

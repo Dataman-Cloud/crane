@@ -9,8 +9,8 @@
             <md-switch class="md-primary" ng-true-value="1" ng-false-value="0" ng-model="repository.Publicity" ng-change="repositorieListMineCtrl.toggleImagePublicity(repository)">公开镜像</md-switch>
         </div>
         <div flex="80">
-            <table cellpadding="0" cellspacing="0">
-              <tr >
+            <table id="image-mine-table" cellpadding="0" cellspacing="0">
+              <tr>
                   <th>TAG</th>
                   <th>docker pull</th>
                   <th>{/'Size' | translate/}<small>MB</small></th>
