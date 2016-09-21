@@ -484,7 +484,6 @@
             "CODE_MESSAGE_12030": "添加服务权限失败",
             "CODE_MESSAGE_12031": "移除服务权限失败, 无效的查询词",
             "CODE_MESSAGE_12032": "移除服务权限失败",
-            "CODE_MESSAGE_12033": "无效的 Token",
             "CODE_MESSAGE_12034": "账号不存在",
             "CODE_MESSAGE_12035": "密码错误",
             "CODE_MESSAGE_13001": "查询关键词错误",
