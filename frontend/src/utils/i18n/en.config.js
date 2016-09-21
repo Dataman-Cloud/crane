@@ -79,9 +79,6 @@
             "month": "month",
             "year": "year",
             "Language": "Language",
-            "English": "English",
-            "Simplified Chinese": "Chinese",
-
 
             //index module
             "LOGOUT": 'Logout',
@@ -484,6 +481,9 @@
             "CODE_MESSAGE_12030": "Add service access failure",
             "CODE_MESSAGE_12031": "Remove service access failure, invalid query key",
             "CODE_MESSAGE_12032": "Remove service access failure",
+            "CODE_MESSAGE_12033": "Invalid Token",
+            "CODE_MESSAGE_12034": "Account does not exist",
+            "CODE_MESSAGE_12035": "Password error",
             "CODE_MESSAGE_13001": "Error search key word",
             "CODE_MESSAGE_14001": "Get registry config error",
             "CODE_MESSAGE_14002": "Get registry config failed, error parameter",

@@ -4,7 +4,7 @@
     angular.module('app.utils').factory('gHttp', gHttp);
 
     /* @ngInject */
-    function gHttp(utils, $q, $rootScope, $http, Notification, $filter) {
+    function gHttp(utils, $q, $http, Notification, $filter) {
         var token;
 
         var ResourceCls = buildResourceCls();

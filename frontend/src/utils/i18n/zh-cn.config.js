@@ -79,9 +79,6 @@
             "month": "月",
             "year": "年",
             "Language": "语言",
-            "English": "English",
-            "Simplified Chinese": "简体中文",
-
 
             //index module
             "LOGOUT": '登出',
@@ -487,6 +484,9 @@
             "CODE_MESSAGE_12030": "添加服务权限失败",
             "CODE_MESSAGE_12031": "移除服务权限失败, 无效的查询词",
             "CODE_MESSAGE_12032": "移除服务权限失败",
+            "CODE_MESSAGE_12033": "无效的 Token",
+            "CODE_MESSAGE_12034": "账号不存在",
+            "CODE_MESSAGE_12035": "密码错误",
             "CODE_MESSAGE_13001": "查询关键词错误",
             "CODE_MESSAGE_14001": "获取镜像仓库配置失败",
             "CODE_MESSAGE_14002": "获取镜像仓库配置失败, 参数解析错误",
