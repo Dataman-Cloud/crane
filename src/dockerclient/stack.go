@@ -55,7 +55,7 @@ func (client *CraneDockerClient) DeployStack(bundle *model.Bundle) error {
 }
 
 // before deploy stack we must verify all service spec params and check port conflict
-// aslo we need check networks used by all of the servcie if the network is not existed
+// also we need check networks used by all of the servcie if the network is not existed
 // created the network by the default param(network driver --overlay)
 func (client *CraneDockerClient) PretreatmentStack(bundle model.Bundle) (map[string]bool, error) {
 	// create network map and convert to slice for distinct network

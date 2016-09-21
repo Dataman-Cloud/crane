@@ -250,7 +250,7 @@ func (ctx *ClientContext) processReceive() {
 		}
 
 		if len(data) == 0 {
-			log.Error("An error has occured")
+			log.Error("An error has occurred")
 			return
 		}
 
