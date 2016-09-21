@@ -2,7 +2,6 @@ package catalog
 
 import (
 	"encoding/base64"
-	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -18,14 +17,6 @@ type Catalog struct {
 	Type        uint8  `json:"Type"`
 }
 
-const (
-	ICON_SIZE = 1024 * 1024 * 1024
-)
-
-type Size interface {
-	Size() int64
-}
-
 func ImageHandle(request *http.Request) (string, error) {
 	var buf []byte
 	var err error
@@ -34,10 +25,6 @@ func ImageHandle(request *http.Request) (string, error) {
 	if err != nil {
 		return "", nil
 	} else {
-		if fileSize, ok := icon.(Size); !ok || fileSize.Size() > ICON_SIZE {
-			return "", errors.New("invalid image")
-		}
-
 		buf, err = ioutil.ReadAll(icon)
 		if err != nil {
 			return "", err
