@@ -108,7 +108,7 @@
             "Save as stack template": 'Save as stack template',
             "Services": 'Services',
             "Service Name": 'Service Name',
-            "Task Number": 'Task Number',
+            "Task Number": 'Tasks',
             "Running/Total": 'Running/Total',
             "Service Scale": 'Service Scale',
             "Modal title for delete stack": 'The project will not be able to recover after deletion, confirm to be deleted?',
