@@ -1027,7 +1027,7 @@ table.md-table td.md-cell .md-icon-button {
 
 .app-panel {
     background-color: rgba(211, 209, 213, 0.1);
-    padding: 15px 15px 25px 15px;
+    padding: 15px 15px 30px 15px;
     margin-right: 25px;
     margin-bottom: 25px;
     color: #93929D;
@@ -1044,7 +1044,7 @@ table.md-table td.md-cell .md-icon-button {
     bottom: 5px;
     font-size: 11px;
     position: absolute;
-    color: #252d31;
+    color: rgba(255,255,255,0.2);
 }
 
 .app-panel h1 {
@@ -1069,8 +1069,8 @@ table.md-table td.md-cell .md-icon-button {
     margin-right: 5px;
 }
 
-.app-panel td a {
-    color: #93929D;
+.app-panel a {
+    color: #FFF;
     padding: 0 3px;
     border-radius: 3px;
     text-align: center;
@@ -1078,13 +1078,36 @@ table.md-table td.md-cell .md-icon-button {
 }
 
 .app-panel a:hover {
-    background-color: rgba(211, 209, 213, 0.15);
     color: #FFF;
     text-decoration: none;
+    background-color: rgba(211, 209, 213, 0.25);
 }
 
 .app-panel td a i {
     margin: 0;
+}
+
+.app-panel.create-stack {
+    text-align: center;
+    border: 2px solid rgba(211, 209, 213, 0.1);
+    background-color: transparent;
+    padding: 15px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    outline: none;
+}
+
+.app-panel.create-stack:hover {
+    border: 2px solid rgba(211, 209, 213, 0.15);
+    background-color: rgba(211, 209, 213, 0.05);
+    color: #FFF;
+}
+
+.app-panel.create-stack i {
+    /*color: #00bdda;*/
+    font-size: 30px;
+    margin-bottom: 5px;
 }
 
 article {
