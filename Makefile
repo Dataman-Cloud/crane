@@ -32,7 +32,8 @@ fmt:
 # https://github.com/golang/lint
 # go get github.com/golang/lint/golint
 lint:
-	golint ./src/
+	@echo "🐳  $@"
+	@test -z "$$(golint ./src/... | tee /dev/stderr)"
 
 run: build
 	./bin/crane
