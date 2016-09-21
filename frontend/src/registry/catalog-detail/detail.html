@@ -6,7 +6,7 @@
                     <small></small>
                 </label>
                 <div class="form-control">
-                    <input type="text" data-required="required" name="stackName" focus-me
+                    <input id="image-catalog-namespace" type="text" data-required="required" name="stackName" focus-me
                            data-ng-model="catalogDetailCtrl.form.Namespace">
                 </div>
                 <div ng-messages="staticForm.stackName.$error" ng-if="staticForm.stackName.$dirty" role="alert">
@@ -18,10 +18,10 @@
             </div>
 
             <div class="form-group" layout="column">
-                <label dm-doc-link='https://blog.docker.com/2016/06/docker-app-bundle/'>DAB<span
+                <label id="image-DAB-doc" dm-doc-link='https://blog.docker.com/2016/06/docker-app-bundle/'>DAB<span
                         class="required">*</span></label>
                 <div class="form-control">
-                    <textarea data-ng-model="catalogDetailCtrl.stack"
+                    <textarea id="image-catalog-stack" data-ng-model="catalogDetailCtrl.stack"
                               data-required="required" name="Stack"
                               ui-codemirror ui-codemirror-opts="catalogDetailCtrl.editorOptions"
                               ui-refresh="catalogDetailCtrl.refreshCodeMirror"
@@ -43,7 +43,7 @@
             </div>
 
             <footer class="form-buttons">
-                <md-button class="md-raised md-primary"
+                <md-button id="image-catalog-detail-ctreate" class="md-raised md-primary"
                            data-ng-disabled="staticForm.$invalid  || catalogDetailCtrl.errorInfo.stack"
                            data-ng-click="catalogDetailCtrl.create()">
                     {/'Create' | translate/}

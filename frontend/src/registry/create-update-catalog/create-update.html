@@ -4,7 +4,7 @@
             <small></small>
         </label>
         <div class="form-control">
-            <input type="text" data-ng-model="createUpdateCatalog.form.Name" data-required="required" name="Name"
+            <input id="image-catalog-name" type="text" data-ng-model="createUpdateCatalog.form.Name" data-required="required" name="Name"
                    data-ng-pattern="/^[A-Za-z0-9]+$/" focus-me>
         </div>
         <div ng-messages="staticForm.Name.$error" ng-if="staticForm.Name.$dirty" role="alert">
@@ -17,7 +17,7 @@
         <label dm-doc-link='https://blog.docker.com/2016/06/docker-app-bundle/'>DAB<span
                 class="required">*</span></label>
         <div class="form-control">
-            <textarea data-ng-model="createUpdateCatalog.form.Bundle" data-required="required" name="Bundle"
+            <textarea id="imaage-catalog-json" data-ng-model="createUpdateCatalog.form.Bundle" data-required="required" name="Bundle"
                       ui-codemirror
                       ui-codemirror-opts="createUpdateCatalog.editorOptions"
                       ui-refresh="createUpdateCatalog.refreshCodeMirror"
@@ -62,16 +62,16 @@
     </div>
 
     <footer class="form-buttons">
-        <md-button class="md-raised md-primary" ng-if="createUpdateCatalog.target === 'create'"
+        <md-button id="image-catalog-create" class="md-raised md-primary" ng-if="createUpdateCatalog.target === 'create'"
                    data-ng-disabled="staticForm.$invalid || createUpdateCatalog.errorInfo.stack || createUpdateCatalog.imageSize > IMAGE_MAX_SIZE"
                    data-ng-click="createUpdateCatalog.deploy('create')">{/'Deploy' | translate/}
         </md-button>
 
-        <md-button class="md-raised md-primary" ng-if="createUpdateCatalog.target === 'update'"
+        <md-button id="image-catalog-update" class="md-raised md-primary" ng-if="createUpdateCatalog.target === 'update'"
                    data-ng-disabled="staticForm.$invalid || createUpdateCatalog.errorInfo.stack || createUpdateCatalog.imageSize > IMAGE_MAX_SIZE"
                    data-ng-click="createUpdateCatalog.deploy('update')">{/'Update' | translate/}
         </md-button>
 
-        <md-button data-ng-click="rootCtrl.goBack()">{/'Cancel' | translate/}</md-button>
+        <md-button id="image-catalog-cancel" data-ng-click="rootCtrl.goBack()">{/'Cancel' | translate/}</md-button>
     </footer>
 </form>

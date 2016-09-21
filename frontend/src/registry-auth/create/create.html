@@ -2,7 +2,7 @@
     <div class="form-group" layout="column">
         <label>{/'Registry Auth Name' | translate/}<span class="required">*</span></label>
         <div class="form-control">
-            <input type="text" data-ng-model="regAuthCreateCtrl.form.Name" focus-me
+            <input id="Rauth-name" type="text" data-ng-model="regAuthCreateCtrl.form.Name" focus-me
                    data-required="required" name="name">
         </div>
         <div ng-messages="createRegAuth.name.$error" ng-if="createRegAuth.name.$dirty" role="alert">
@@ -18,7 +18,7 @@
             <small></small>
         </label>
         <div class="form-control">
-            <input type="text" name="UserName" data-required="required"
+            <input id="Rauth-user-name" type="text" name="UserName" data-required="required"
                    data-ng-model="regAuthCreateCtrl.form.Username">
         </div>
         <div ng-messages="createRegAuth.UserName.$error" ng-if="createRegAuth.UserName.$dirty" role="alert">
@@ -34,7 +34,7 @@
             <small></small>
         </label>
         <div class="form-control">
-            <input type=password ng-trim="false" name="PassWord" data-required="required"
+            <input id="Rauth-password" type=password ng-trim="false" name="PassWord" data-required="required"
                    data-ng-model="regAuthCreateCtrl.form.Password">
         </div>
         <div ng-messages="createRegAuth.PassWord.$error" ng-if="createRegAuth.PassWord.$dirty"
@@ -51,7 +51,7 @@
             <small></small>
         </label>
         <div class="form-control">
-            <input type=password ng-trim="false" name="rePassWord" data-required="required"
+            <input id="Rauth-rePassword" type=password ng-trim="false" name="rePassWord" data-required="required"
                    data-ng-model="regAuthCreateCtrl.rePassWord"
                    dm-no-equal="regAuthCreateCtrl.form.Password">
         </div>
@@ -69,10 +69,10 @@
     </div>
 
     <footer class="form-buttons">
-        <md-button class="md-raised md-primary"
+        <md-button id="Rauth-create" class="md-raised md-primary"
                    data-ng-disabled="createRegAuth.$invalid"
                    data-ng-click="regAuthCreateCtrl.create()">{/'Create' | translate/}
         </md-button>
-        <md-button data-ng-click="rootCtrl.goBack()">{/'Cancel' | translate/}</md-button>
+        <md-button id="Rauth-cancel" data-ng-click="rootCtrl.goBack()">{/'Cancel' | translate/}</md-button>
     </footer>
 </form>
