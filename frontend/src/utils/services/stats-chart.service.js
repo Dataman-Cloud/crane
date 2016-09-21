@@ -41,6 +41,7 @@
 
             Options.prototype._createCpuOptions = function () {
                 var options = chartUtil.createDefaultOptions();
+                options.chart.forceY = [0, 1];
                 options.chart.yAxis.axisLabel = $filter('translate')('CPU Usage');
                 options.title.text = $filter('translate')('CPU Usage');
                 return options
@@ -48,9 +49,25 @@
 
             Options.prototype._createMemOptions = function () {
                 var options = chartUtil.createDefaultOptions();
+                options.chart.forceY = [0, 1];
                 options.chart.yAxis.axisLabel = $filter('translate')('Memory Usage');
                 options.title.text = $filter('translate')('Memory Usage');
                 return options;
+            };
+
+            Options.prototype.initNoDataCharts = function () {
+                chartUtil.pushData(this.cpuData, "", {
+                    x: new Date().getTime(),
+                    y: 0
+                }, $rootScope.STATS_POINT_NUM);
+                chartUtil.pushData(this.memData, "", {
+                    x: new Date().getTime(),
+                    y: 0
+                }, $rootScope.STATS_POINT_NUM);
+                chartUtil.pushData(this.networkData, "", {
+                    x: new Date().getTime(),
+                    y: 0
+                }, $rootScope.STATS_POINT_NUM);
             };
 
             Options.prototype.pushData = function (data, cpuApi, memApi, networkApi) {
