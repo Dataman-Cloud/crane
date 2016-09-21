@@ -78,6 +78,9 @@
             "week": "week",
             "month": "month",
             "year": "year",
+            "Language": "Language",
+            "English": "English",
+            "Simplified Chinese": "Chinese",
 
 
             //index module

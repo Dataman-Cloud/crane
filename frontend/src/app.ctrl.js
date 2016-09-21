@@ -4,16 +4,17 @@
         .controller('RootCtrl', RootCtrl);
 
     /* @ngInject */
-    function RootCtrl($state, $window, mdSideNav, gHttp, utils, userBackend, $rootScope, tty, stream, layoutBackend, miscBackend, userCurd) {
+    function RootCtrl($state, $window, mdSideNav, gHttp, utils, userBackend, $rootScope, tty, stream, layoutBackend, miscBackend, userCurd, $scope, $translate) {
         var self = this;
 
         $rootScope.accountId = null;
         $rootScope.licenseValidFlag = true;
 
         self.noticeNav = mdSideNav.createSideNav('noticeNav');
-        self.goBack = goBack;
         self.simulateQuery = true;
+        self.language = $window.localStorage.getItem('language') || 'en';
 
+        self.goBack = goBack;
         self.querySearch = querySearch;
         self.logout = logout;
         self.searchJump = searchJump;
@@ -29,7 +30,7 @@
         }
 
         function initUser() {
-            var token = $window.localStorage .getItem('token');
+            var token = $window.localStorage.getItem('token');
             if (token) {
                 gHttp.setToken(token);
                 tty.setToken(token);
@@ -123,7 +124,10 @@
                         break;
                     case 'volume':
                         //go to volume list
-                        $state.go('node.volumeDetail', {node_id: item.Param.NodeId, volume_name: item.Param.VolumeName});
+                        $state.go('node.volumeDetail', {
+                            node_id: item.Param.NodeId,
+                            volume_name: item.Param.VolumeName
+                        });
                         break;
                 }
             }
@@ -136,5 +140,14 @@
                 document.querySelector('#autoCompleteSearch').focus();
             }, 0);
         }
+
+        $scope.$watch(function () {
+            return self.language
+        }, function (newVal) {
+            if (newVal) {
+                $window.localStorage.setItem('language', newVal);
+                $translate.use(self.language)
+            }
+        })
     }
 })();

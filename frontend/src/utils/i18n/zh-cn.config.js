@@ -78,6 +78,9 @@
             "week": "周",
             "month": "月",
             "year": "年",
+            "Language": "语言",
+            "English": "English",
+            "Simplified Chinese": "简体中文",
 
 
             //index module
