@@ -30,9 +30,10 @@
                     <td>{/service.NumTasksRunning/}/{/service.NumTasksTotal/}</td>
                     <td>
                         <md-menu ng-show="service.addrs.length" >
-                            <a ng-click="$mdOpenMenu()"><i class="fa fa-link"></i></a>
+                            <a id="stack-addrs-menu-{/$index/}" ng-click="$mdOpenMenu()"><i class="fa fa-link"></i></a>
                             <md-menu-content>
-                                <md-menu-item ng-repeat="addr in service.addrs">    <md-button ng-href="http://{/addr.ip | ip/}:{/addr.port/}" ng-show="addr.ip" target='_blank'>{/addr.ip | ip/}:{/addr.port/}</md-button><span ng-hide="addr.ip">{/addr.port/}</span>
+                                <md-menu-item ng-repeat="addr in service.addrs">
+                                    <md-button id="addr.ip-{/$index/}" ng-href="http://{/addr.ip | ip/}:{/addr.port/}" ng-show="addr.ip" target='_blank'>{/addr.ip | ip/}:{/addr.port/}</md-button><span ng-hide="addr.ip">{/addr.port/}</span>
                                 </md-menu-item>
                             </md-menu-content>
                         </md-menu>

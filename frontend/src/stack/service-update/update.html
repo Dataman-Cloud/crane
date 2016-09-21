@@ -4,7 +4,7 @@
             <label>{/'Name' | translate/} <em>--name</em><span class="required">*</span>
             </label>
             <div class="form-control">
-                <input type="text" data-ng-model="serviceUpdateCtrl.form.Name"
+                <input id="service-update-name" type="text" data-ng-model="serviceUpdateCtrl.form.Name"
                        data-required="required" name="name" data-ng-disabled="true">
             </div>
             <div ng-messages="staticForm.name.$error" ng-if="staticForm.name.$dirty"
@@ -27,7 +27,7 @@
         <div class="form-group" layout="column">
             <label>{/'Image' | translate/} <em>image</em><span class="required">*</span></label>
             <div class="form-control">
-                <input type="text" focus-me
+                <input id="service-update-image" type="text" focus-me
                        data-ng-model="serviceUpdateCtrl.form.TaskTemplate.ContainerSpec.Image"
                        data-required="required" name="Image">
             </div>
@@ -43,20 +43,20 @@
         <div class="form-group" layout="column">
             <label>{/'Service Mode' | translate/} <em>--mode</em></label>
             <div class="form-control" layout="row" layout-align="start center">
-                <md-radio-group data-ng-model="serviceUpdateCtrl.form.defaultMode" layout="row"
+                <md-radio-group id="service-update-default-mode" data-ng-model="serviceUpdateCtrl.form.defaultMode" layout="row"
                                 aria-label="defaultMode"
                                 data-ng-change="serviceUpdateCtrl.modeChange()"
                                 layout-align="start center" flex>
                     <div flex="25">
-                        <md-radio-button value="Replicated" class="md-primary" data-ng-disabled="true">{/'Replicated' | translate/} <em>replicated</em>
+                        <md-radio-button id="service-update-replicated" value="Replicated" class="md-primary" data-ng-disabled="true">{/'Replicated' | translate/} <em>replicated</em>
                         </md-radio-button>
-                        <input type="number" min="0"
+                        <input id="service-update-replicas" type="number" min="0"
                                data-ng-show="serviceUpdateCtrl.form.defaultMode === 'Replicated'"
                                data-ng-required="serviceUpdateCtrl.form.defaultMode === 'Replicated'"
                                data-ng-model="serviceUpdateCtrl.form.Mode.Replicated.Replicas   " name="replicas">
                     </div>
                     <div flex="25">
-                        <md-radio-button value="Global" class="md-primary" flex-offset="5" data-ng-disabled="true">
+                        <md-radio-button id="service-update-global" value="Global" class="md-primary" flex-offset="5" data-ng-disabled="true">
                             {/'Global' | translate/} <em>global</em>
                         </md-radio-button>
                     </div>
@@ -71,9 +71,9 @@
                 <small>({/'Read Only' | translate/})</small>
             </label>
             <div class="form-control">
-                <md-select data-ng-model="serviceUpdateCtrl.form.formNetworks" multiple
+                <md-select id="service-updatae-form-networks" data-ng-model="serviceUpdateCtrl.form.formNetworks" multiple
                            aria-label="Networks" data-ng-disabled="true">
-                    <md-option data-ng-repeat="network in serviceUpdateCtrl.networks | filter: {Driver: '!bridge'}"
+                    <md-option id="service-update-network-{/$index/}" data-ng-repeat="network in serviceUpdateCtrl.networks | filter: {Driver: '!bridge'}"
                                ng-value="network.Name"
                                ng-selected="serviceUpdateCtrl.initSelectNetworks(network.Name)">{/network.Name/}
                     </md-option>
@@ -85,10 +85,10 @@
         <div class="form-group" layout="column" dm-display-components="registryauth">
             <label>{/'Registry Auth Name' | translate/} <em>--RegistryAuth</em></label>
             <div class="form-control">
-                <md-select data-ng-model="serviceUpdateCtrl.form.RegistryAuth"
+                <md-select id="update-reg-auth" data-ng-model="serviceUpdateCtrl.form.RegistryAuth"
                            aria-label="RegAuth">
-                    <md-option value="">{/'Empty' | translate/}</md-option>
-                    <md-option data-ng-repeat="regAuth in serviceUpdateCtrl.regAuths"
+                    <md-option id="update-empty" value="">{/'Empty' | translate/}</md-option>
+                    <md-option id="reg-auth-{/$index/}" data-ng-repeat="regAuth in serviceUpdateCtrl.regAuths"
                                ng-value="regAuth.Name"
                                ng-selected="regAuth.Name === serviceUpdateCtrl.service.Spec.RegistryAuth">
                         {/regAuth.Name/}
@@ -100,7 +100,7 @@
 
         <div class="form-group" layout="column">
             <div class="sub-button">
-                <md-button class="md-raised md-success md-small"
+                <md-button id="update-fromports" class="md-raised md-success md-small"
                            data-ng-click="serviceUpdateCtrl.addConfig(serviceUpdateCtrl.form.formPorts, 'Ports')">
                     <i class='fa fa-plus'></i>{/'Add Port Mapping' | translate/}
                 </md-button>
@@ -109,18 +109,18 @@
             <div data-ng-repeat="port in serviceUpdateCtrl.form.formPorts track by $index">
                 <ng-form name="portForm">
                     <div class="form-control sub-group" layout="row" layout-align="start center">
-                        <input type="number" placeholder="TargetPort" flex="20"
+                        <input id="target-port-{/$index/}" type="number" placeholder="TargetPort" flex="20"
                                data-ng-model="port.TargetPort" data-required="required"
                                name="TargetPort" max="65535" min="1">
-                        <md-select ng-model="port.Protocol" data-required="required" flex="20"
+                        <md-select id="protocol-select" ng-model="port.Protocol" data-required="required" flex="20"
                                    aria-label="select protocol">
-                            <md-option value="tcp">TCP</md-option>
-                            <md-option value="udp">UDP</md-option>
+                            <md-option id="port-tcp" value="tcp">TCP</md-option>
+                            <md-option id="port-udp" value="udp">UDP</md-option>
                         </md-select>
-                        <input type="number" placeholder="主机端口" flex="20"
+                        <input id="publised-port" type="number" placeholder="主机端口" flex="20"
                                data-ng-model="port.PublishedPort" data-required="required"
                                name="PublishedPort" max="65535" min="1">
-                        <md-button class="md-icon-button md-primary" aria-label="trash"
+                        <md-button id="form-port-delete" class="md-icon-button md-primary" aria-label="trash"
                                    data-ng-click="serviceUpdateCtrl.deleteConfig($index, serviceUpdateCtrl.form.formPorts)">
                             <i class="fa fa-trash-o" aria-hidden="true"></i>
                         </md-button>
@@ -152,7 +152,7 @@
 
         <div class="form-group" layout="column">
             <div class="sub-button">
-                <md-button class="md-raised md-success md-small"
+                <md-button id="update-add-env" class="md-raised md-success md-small"
                            data-ng-click="serviceUpdateCtrl.addConfig(serviceUpdateCtrl.form.formEnv, 'Env')">
                     <i class='fa fa-plus'></i>{/'Added Environment Variables' | translate/}
                 </md-button>
@@ -161,16 +161,16 @@
             <div data-ng-repeat="env in serviceUpdateCtrl.form.formEnv track by $index">
                 <ng-form name="envForm">
                     <div class="form-control sub-group" layout="row" layout-align="start center">
-                        <input flex="20" type="text" placeholder="KEY"
+                        <input id="update-env-key-{/$index/}" flex="20" type="text" placeholder="KEY"
                                data-ng-model="env.key" data-required="required"
                                name="envKey" data-ng-pattern="/^[a-zA-Z0-9_]+$/"
                                dm-check-include="serviceUpdateCtrl.listConfigByKey(serviceUpdateCtrl.form.formEnv, $index)">
 
-                        <input flex="20" type="text" placeholder="VALUE"
+                        <input id="update-env-value" flex="20" type="text" placeholder="VALUE"
                                data-ng-model="env.value" data-required="required"
                                name="envValue" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/">
 
-                        <md-button class="md-icon-button md-primary" aria-label="trash"
+                        <md-button id="update-env-delete" class="md-icon-button md-primary" aria-label="trash"
                                    data-ng-click="serviceUpdateCtrl.deleteConfig($index, serviceUpdateCtrl.form.formEnv)">
                             <i class="fa fa-trash-o" aria-hidden="true"></i>
                         </md-button>
@@ -200,6 +200,7 @@
 
         <div class="fold-line">
             <a href="#"
+               id="show-startup-parameter"
                data-ng-click="serviceUpdateCtrl.showStartupParameter = !serviceUpdateCtrl.showStartupParameter">
                 <i class="fa"
                    ng-class="{'fa-minus-square-o': serviceUpdateCtrl.showStartupParameter, 'fa-plus-square-o': !serviceUpdateCtrl.showStartupParameter}"></i>{/'CMD' | translate/}
@@ -209,7 +210,7 @@
             <div class="form-group" layout="column">
                 <label>{/'Work directory' | translate/} --workdir</label>
                 <div class="form-control">
-                    <input type="text"
+                    <input id="update-work-dir" type="text"
                            data-ng-model="serviceUpdateCtrl.form.TaskTemplate.ContainerSpec.Dir" name="workdir">
                 </div>
                 <div ng-messages="staticForm.workdir.$error"
@@ -221,7 +222,7 @@
             <div class="form-group" layout="column">
                 <label>{/'Command' | translate/} command</label>
                 <div class="sub-button">
-                    <md-button class="md-raised md-success md-small"
+                    <md-button id="update-add-cmd" class="md-raised md-success md-small"
                                data-ng-click="serviceUpdateCtrl.addConfig(serviceUpdateCtrl.form.formCmd, 'Cmd')">
                         <i class='fa fa-plus'></i>Command
                     </md-button>
@@ -229,11 +230,11 @@
                 <div data-ng-repeat="cmd in serviceUpdateCtrl.form.formCmd track by $index">
                     <ng-form name="cmdForm">
                         <div class="form-control sub-group" layout="row" layout-align="start center">
-                            <input type="text" placeholder="CMD" flex="40"
+                            <input id="update-cmd-input-{/$index/}" type="text" placeholder="CMD" flex="40"
                                    data-ng-model="cmd.command" data-required="required"
                                    name="cmdInput">
 
-                            <md-button class="md-icon-button md-primary" aria-label="trash"
+                            <md-button id="update-delete-cmd-{/$index/}" class="md-icon-button md-primary" aria-label="trash"
                                        data-ng-click="serviceUpdateCtrl.deleteConfig($index, serviceUpdateCtrl.form.formCmd)">
                                 <i class="fa fa-trash-o" aria-hidden="true"></i>
                             </md-button>
@@ -253,7 +254,7 @@
             <div class="form-group" layout="column">
                 <label>参数 args</label>
                 <div class="sub-button">
-                    <md-button class="md-raised md-success md-small"
+                    <md-button id="update-add-args" class="md-raised md-success md-small"
                                data-ng-click="serviceUpdateCtrl.addConfig(serviceUpdateCtrl.form.formArgs, 'Args')">
                         <i class='fa fa-plus'></i>Args
                     </md-button>
@@ -261,11 +262,11 @@
                 <div data-ng-repeat="arg in serviceUpdateCtrl.form.formArgs track by $index">
                     <ng-form name="argsForm">
                         <div class="form-control sub-group" layout="row" layout-align="start center">
-                            <input type="text" flex="40"
+                            <input id="arg-value-{/$index/}" type="text" flex="40"
                                    data-ng-model="arg.arg" data-required="required"
                                    name="argInput">
 
-                            <md-button class="md-icon-button md-primary" aria-label="trash"
+                            <md-button id="arg-delete-arg" class="md-icon-button md-primary" aria-label="trash"
                                        data-ng-click="serviceUpdateCtrl.deleteConfig($index, serviceUpdateCtrl.form.formArgs)">
                                 <i class="fa fa-trash-o" aria-hidden="true"></i>
                             </md-button>
@@ -284,7 +285,7 @@
         </div>
 
         <div class="fold-line">
-            <a href="#" data-ng-click="serviceUpdateCtrl.showTag = !serviceUpdateCtrl.showTag">
+            <a id="update-show-tag" href="#" data-ng-click="serviceUpdateCtrl.showTag = !serviceUpdateCtrl.showTag">
                 <i class="fa"
                    ng-class="{'fa-minus-square-o': serviceUpdateCtrl.showTag, 'fa-plus-square-o': !serviceUpdateCtrl.showTag}"></i>{/'Labels' | translate/}
             </a>
@@ -293,7 +294,7 @@
         <div data-ng-show="serviceUpdateCtrl.showTag">
             <div class="form-group" layout="column">
                 <div class="sub-button">
-                    <md-button class="md-raised md-success md-small"
+                    <md-button id="add-serve-label" class="md-raised md-success md-small"
                                data-ng-click="serviceUpdateCtrl.addConfig(serviceUpdateCtrl.form.formLabels, 'ServeLabels')">
                         <i class='fa fa-plus'></i>{/'Add Service Labels' | translate/}
                     </md-button>
@@ -302,17 +303,17 @@
                 <div data-ng-repeat="label in serviceUpdateCtrl.form.formLabels track by $index">
                     <ng-form name="labelForm">
                         <div class="form-control sub-group" layout="row" layout-align="start center">
-                            <input type="text" placeholder="KEY" flex="20"
+                            <input id="label-key-{/$index/}" type="text" placeholder="KEY" flex="20"
                                    data-ng-model="label.key" data-required="required"
                                    name="labelKey" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/"
                                    data-ng-disabled="$index < serviceUpdateCtrl.serviceLabelLength"
                                    dm-check-include="serviceUpdateCtrl.listConfigByKey(serviceUpdateCtrl.form.formLabels, $index)">
-                            <input type="text" placeholder="VALUE" flex="20"
+                            <input id="label-value-{/$index/}" type="text" placeholder="VALUE" flex="20"
                                    data-ng-model="label.value" data-required="required"
                                    name="labelValue" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/"
                                    data-ng-disabled="$index < serviceUpdateCtrl.serviceLabelLength">
 
-                            <md-button class="md-icon-button md-primary" aria-label="trash"
+                            <md-button id="label-delete" class="md-icon-button md-primary" aria-label="trash"
                                        data-ng-hide="$index < serviceUpdateCtrl.serviceLabelLength"
                                        data-ng-click="serviceUpdateCtrl.deleteConfig($index, serviceUpdateCtrl.form.formLabels)">
                                 <i class="fa fa-trash-o" aria-hidden="true"></i>
@@ -346,6 +347,7 @@
             <div class="form-group" layout="column">
                 <div class="sub-button">
                     <md-button class="md-raised md-success md-small"
+                               id="container-labels-add"
                                data-ng-click="serviceUpdateCtrl.addConfig(serviceUpdateCtrl.form.formContainerLabels, 'Labels')">
                         <i class='fa fa-plus'></i>{/'Add Container Labels' | translate/}
                     </md-button>
@@ -354,15 +356,15 @@
                 <div data-ng-repeat="label in serviceUpdateCtrl.form.formContainerLabels track by $index">
                     <ng-form name="labelForm">
                         <div class="form-control sub-group" layout="row" layout-align="start center">
-                            <input type="text" placeholder="KEY" flex="20"
+                            <input id="label-container-key-{/$index/}" type="text" placeholder="KEY" flex="20"
                                    data-ng-model="label.key" data-required="required"
                                    name="labelKey" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/"
                                    dm-check-include="serviceUpdateCtrl.listConfigByKey(serviceUpdateCtrl.form.formContainerLabels, $index)">
-                            <input type="text" placeholder="VALUE" flex="20"
+                            <input id="label-container-value-{/$index/}" type="text" placeholder="VALUE" flex="20"
                                    data-ng-model="label.value" data-required="required"
                                    name="labelValue" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/">
 
-                            <md-button class="md-icon-button md-primary" aria-label="trash"
+                            <md-button id="label-container-value-{/$index/}" class="md-icon-button md-primary" aria-label="trash"
                                        data-ng-click="serviceUpdateCtrl.deleteConfig($index, serviceUpdateCtrl.form.formContainerLabels)">
                                 <i class="fa fa-trash-o" aria-hidden="true"></i>
                             </md-button>
@@ -408,7 +410,7 @@
                         <label class="sub-label">CPU
                             <small>{/'Core' | translate/}</small>
                         </label>
-                        <input type="number"
+                        <input id="update-cpus" type="number"
                                data-ng-model="serviceUpdateCtrl.form.TaskTemplate.Resources.Limits.NanoCPUs"
                                name="limitCpu" min="0.01">
                         <label><em>--limit-cpu</em></label>
@@ -417,7 +419,7 @@
                         <label class="sub-label">{/'Memory' | translate/}
                             <small>MB</small>
                         </label>
-                        <input type="number"
+                        <input id="memory-bytes" type="number"
                                data-ng-model="serviceUpdateCtrl.form.TaskTemplate.Resources.Limits.MemoryBytes"
                                name="limitMem" min="4">
                         <label><em>--limit-memory</em></label>
@@ -446,7 +448,7 @@
                         <label class="sub-label">CPU
                             <small>{/'Core' | translate/}</small>
                         </label>
-                        <input type="number"
+                        <input id="nano-cpus" type="number"
                                data-ng-model="serviceUpdateCtrl.form.TaskTemplate.Resources.Reservations.NanoCPUs"
                                name="ReservationsCpu" min="0.01">
                         <label><em>--reserve-cpu</em></label>
@@ -455,7 +457,7 @@
                         <label class="sub-label">{/'Memory' | translate/}
                             <small>MB</small>
                         </label>
-                        <input type="number"
+                        <input id="update-reservations-mem" type="number"
                                data-ng-model="serviceUpdateCtrl.form.TaskTemplate.Resources.Reservations.MemoryBytes"
                                name="ReservationsMem" min="4">
                         <label><em>--reserve-cpu</em></label>
@@ -491,10 +493,10 @@
             <div class="form-group" layout="column">
                 <label>{/'Restart Policy' | translate/} <em>--restart-condition</em></label>
                 <div class="form-control" layout="row" layout-align="start center">
-                    <md-radio-group data-ng-model="serviceUpdateCtrl.form.TaskTemplate.RestartPolicy.Condition"
+                    <md-radio-group id="condition-group-radio" data-ng-model="serviceUpdateCtrl.form.TaskTemplate.RestartPolicy.Condition"
                                     layout="row" aria-label="restart-condition" flex>
                         <div flex="25">
-                            <md-radio-button value="any" class="md-primary">
+                            <md-radio-button id="radio-any" value="any" class="md-primary">
                                 <i class="fa fa-umbrella"></i>
                                 <md-tooltip md-direction="top">无论任务正常或异常退出，都重启, 适合批处理或定时任务场景</md-tooltip>
                                 {/'Restart condition: Any' | translate/}
@@ -502,11 +504,11 @@
                             <label><em>any</em></label>
                         </div>
                         <div flex="25">
-                            <md-radio-button value="none" class="md-primary">{/'none' | translate/}</md-radio-button>
+                            <md-radio-button id="radio-none" value="none" class="md-primary">{/'none' | translate/}</md-radio-button>
                             <label><em>none</em></label>
                         </div>
                         <div flex="25">
-                            <md-radio-button value="on-failure" class="md-primary">
+                            <md-radio-button id="radio-on-failure" value="on-failure" class="md-primary">
                                 <i class="fa fa-umbrella"></i>
                                 <md-tooltip md-direction="top">在退出状态码(exit code)非 0 的情况下重启</md-tooltip>
                                 {/'on-failure' | translate/}
@@ -520,7 +522,7 @@
                         <label class="sub-label">{/'Window' | translate/}
                             <small>{/'Second' | translate/}</small>
                         </label>
-                        <input type="number" min="0"
+                        <input id="restart-max-attempts" type="number" min="0"
                                data-ng-model="serviceUpdateCtrl.form.TaskTemplate.RestartPolicy.Window"
                                name="restartMaxAttempts">
                         <label><em>--restart-window</em></label>
@@ -532,7 +534,7 @@
                         <label class="sub-label">{/'Delay' | translate/}
                             <small>{/'Second' | translate/}</small>
                         </label>
-                        <input type="number"
+                        <input id="restart-delay" type="number"
                                data-ng-model="serviceUpdateCtrl.form.TaskTemplate.RestartPolicy.Delay"
                                name="restartDelay" min="0">
                         <label><em>--restart-delay</em></label>
@@ -543,7 +545,7 @@
                         <label class="sub-label">{/'MaxAttempts' | translate/}
                             <small>&nbsp;&nbsp;&nbsp;&nbsp;</small>
                         </label>
-                        <input type="number" min="0"
+                        <input id="max-attempts" type="number" min="0"
                                data-ng-model="serviceUpdateCtrl.form.TaskTemplate.RestartPolicy.MaxAttempts"
                                name="restartMaxAttempts">
                         <label><em>--restart-max-attempts</em></label>
@@ -563,14 +565,14 @@
             <div class="form-group" layout="column">
                 <label>{/'Update Failure Action' | translate/} <em>--update-failure-action</em></label>
                 <div class="form-control" layout="row" layout-align="start center">
-                    <md-radio-group data-ng-model="serviceUpdateCtrl.form.UpdateConfig.FailureAction" layout="row"
+                    <md-radio-group id="failure-action" data-ng-model="serviceUpdateCtrl.form.UpdateConfig.FailureAction" layout="row"
                                     aria-label="restart-condition" flex>
                         <div flex="25">
-                            <md-radio-button value="continue" class="md-primary">{/'continue' | translate/}</md-radio-button>
+                            <md-radio-button id="action-continue" value="continue" class="md-primary">{/'continue' | translate/}</md-radio-button>
                             <label> <em>continue</em></label>
                         </div>
                         <div flex="25">
-                            <md-radio-button value="pause" class="md-primary">{/'Pause Update' | translate/}</md-radio-button>
+                            <md-radio-button id="action-pause" value="pause" class="md-primary">{/'Pause Update' | translate/}</md-radio-button>
                             <label> <em>pause</em></label>
                         </div>
                     </md-radio-group>
@@ -580,13 +582,13 @@
                         <label class="sub-label">{/'Interval' | translate/}
                             <small>{/'Second' | translate/}</small>
                         </label>
-                        <input type="number" min="0"
+                        <input id="update-delay" type="number" min="0"
                                data-ng-model="serviceUpdateCtrl.form.UpdateConfig.Delay" name="updateDelay">
                         <label> <em>--update-delay</em></label>
                     </div>
                     <div flex="25">
                         <label class="sub-label">{/'Update Parallelism' | translate/}</label>
-                        <input type="number" min="0"
+                        <input id="update-parallelism" type="number" min="0"
                                data-ng-model="serviceUpdateCtrl.form.UpdateConfig.Parallelism"
                                name="updateParallelism">
                         <label> <em>--update-parallelism</em></label>
@@ -605,7 +607,7 @@
             <div data-ng-show="serviceUpdateCtrl.showSchedulingStrategy">
                 <div class="form-group" layout="column">
                     <div class="sub-button">
-                        <md-button class="md-raised md-success md-small"
+                        <md-button id="add-from-constraints" class="md-raised md-success md-small"
                                    data-ng-click="serviceUpdateCtrl.addConfig(serviceUpdateCtrl.form.formConstraints, 'Constraints')">
                             <i class='fa fa-plus'></i>{/'Add constraints' | translate/}
                         </md-button>
@@ -613,16 +615,16 @@
                     <div data-ng-repeat="constraint in serviceUpdateCtrl.form.formConstraints track by $index">
                         <ng-form name="constraintForm">
                             <div class="form-control sub-group" layout="row" layout-align="start center">
-                                <input type="text" placeholder="node.labels.ssd" flex="20"
+                                <input id="constraint-ssd-{/$index/}" type="text" placeholder="node.labels.ssd" flex="20"
                                        data-ng-model="constraint.key" data-required="required"
                                        name="constraintKey" minlength="2" data-ng-pattern="/^[a-zA-Z0-9_]+$/"
                                        dm-check-include="serviceUpdateCtrl.listConfigByKey(serviceUpdateCtrl.form.formConstraints, $index)">
 
-                                <input type="text" placeholder="yes" flex="20"
+                                <input id="constraint-value-{/$index/}" type="text" placeholder="yes" flex="20"
                                        data-ng-model="constraint.value" data-required="required"
                                        name="constraintValue">
 
-                                <md-button class="md-icon-button md-primary" aria-label="trash"
+                                <md-button id="from-constraints-delete-{/$index/}" class="md-icon-button md-primary" aria-label="trash"
                                            data-ng-click="serviceUpdateCtrl.deleteConfig($index, serviceUpdateCtrl.form.formConstraints)">
                                     <i class="fa fa-trash-o" aria-hidden="true"></i>
                                 </md-button>
@@ -666,7 +668,7 @@
             <div data-ng-show="serviceUpdateCtrl.showFileMount">
                 <div class="form-group" layout="column">
                     <div class="sub-button">
-                        <md-button class="md-raised md-success md-small"
+                        <md-button id="form-mounts-add" class="md-raised md-success md-small"
                                    data-ng-click="serviceUpdateCtrl.addConfig(serviceUpdateCtrl.form.formMounts, 'Mounts')">
                             <i class='fa fa-plus'></i>{/'Mount' | translate/}
                         </md-button>
@@ -674,21 +676,21 @@
                     <div data-ng-repeat="mount in serviceUpdateCtrl.form.formMounts track by $index">
                         <ng-form name="mountForm">
                             <div class="form-control sub-group" layout="row" layout-align="start center">
-                                <input type="text" placeholder="Source" flex="20"
+                                <input id="mounts-source-{/$index/}" type="text" placeholder="Source" flex="20"
                                        data-ng-model="mount.Source" data-required="required"
                                        name="Source" max="65535" min="1">
 
-                                <md-select ng-model="mount.ReadOnly" data-required="required" flex="20"
+                                <md-select id="mount-readOnly-select-{/$index/}" ng-model="mount.ReadOnly" data-required="required" flex="20"
                                            aria-label="select mount">
-                                    <md-option ng-value="true">{/'Read-only' | translate/}</md-option>
-                                    <md-option ng-value="false">{/'Read-Write' | translate/}</md-option>
+                                    <md-option id="mount-value-true-{/$index/}" ng-value="true">{/'Read-only' | translate/}</md-option>
+                                    <md-option id="mount-value-yes-{/$index/}" ng-value="false">{/'Read-Write' | translate/}</md-option>
                                 </md-select>
 
-                                <input type="text" placeholder="Target" flex="20"
+                                <input id="mount-target-{/$index/}" type="text" placeholder="Target" flex="20"
                                        data-ng-model="mount.Target" data-required="required"
                                        name="Target" max="65535" min="1">
 
-                                <md-button class="md-icon-button md-primary" aria-label="trash"
+                                <md-button id="form-mounts-{/$index/}" class="md-icon-button md-primary" aria-label="trash"
                                            data-ng-click="serviceUpdateCtrl.deleteConfig($index, serviceUpdateCtrl.form.formMounts)">
                                     <i class="fa fa-trash-o" aria-hidden="true"></i>
                                 </md-button>

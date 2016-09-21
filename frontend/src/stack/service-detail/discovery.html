@@ -3,7 +3,7 @@
     <div flex="80" layout="row" layout-wrap dm-empty-display="serviceDiscoveryCtrl.service.Spec.EndpointSpec.Ports">
         <ul ng-repeat="port in serviceDiscoveryCtrl.service.Spec.EndpointSpec.Ports">
             <li ng-repeat="node in serviceDiscoveryCtrl.nodes">
-                <a data-ng-if='node.Spec.Labels["crane.reserved.node.endpoint"]'
+                <a id="discovery-endpoint-{/$index/}" data-ng-if='node.Spec.Labels["crane.reserved.node.endpoint"]'
                    ng-href="http://{/node.Spec.Labels['crane.reserved.node.endpoint'] | ip/}:{/port.PublishedPort/}"
                    target='_blank'>
                 {/node.Spec.Labels['crane.reserved.node.endpoint'] | ip/}:{/port.PublishedPort/}
@@ -18,7 +18,7 @@
         <code id="nginx">
             <pre>{/serviceDiscoveryCtrl.nginx/}</pre>
         </code>
-        <md-button class="md-button md-primary copy" ngclipboard data-clipboard-target="#nginx">
+        <md-button id="nginx-copy-btn" class="md-button md-primary copy" ngclipboard data-clipboard-target="#nginx">
             <i class="fa fa-clone"></i> {/'Copy Text' | translate/}
         </md-button>
     </div>
@@ -29,7 +29,7 @@
         <code id="haproxy">
             <pre>{/serviceDiscoveryCtrl.haproxy/}</pre>
         </code>
-        <md-button class="md-button md-primary copy" ngclipboard data-clipboard-target="#haproxy">
+        <md-button id="haproxy-copy-btn" class="md-button md-primary copy" ngclipboard data-clipboard-target="#haproxy">
             <i class="fa fa-clone"></i> {/'Copy Text' | translate/}
         </md-button>
     </div>
