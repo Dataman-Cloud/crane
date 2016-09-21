@@ -105,28 +105,45 @@
                         <i class="fa fa-bell"></i>
                     </md-button>
                     -->
-                    <md-menu>
-                        <md-button class="md-icon-button" aria-label="More" ng-click="$mdOpenMenu($event)"
-                                   id="index-menu">
-                            <i class="fa fa-user"></i>
-                        </md-button>
-                        <md-menu-content>
-                            <md-menu-item dm-display-components="license">
-                                <md-button data-ng-click="rootCtrl.regLicense($event)" id="index-license">
-                                    <md-icon md-svg-src="pics/ic_fingerprint_black_24px.svg"
-                                             aria-label="ic_power_settings"></md-icon>
-                                    {/'Activation' | translate/}
-                                </md-button>
-                            </md-menu-item>
-                            <md-menu-item>
-                                <md-button data-ng-click="rootCtrl.logout()" id="index-logout">
-                                    <md-icon md-svg-src="pics/ic_power_settings.svg"
-                                             aria-label="ic_power_settings"></md-icon>
-                                    {/'LOGOUT' | translate /}
-                                </md-button>
-                            </md-menu-item>
-                        </md-menu-content>
-                    </md-menu>
+                    <md-menu-bar>
+                        <md-menu>
+                            <md-button class="md-icon-button" aria-label="More" ng-click="$mdOpenMenu($event)"
+                                       id="index-menu">
+                                <i class="fa fa-user"></i>
+                            </md-button>
+                            <md-menu-content width="3">
+                                <md-menu-item dm-display-components="license">
+                                    <md-button data-ng-click="rootCtrl.regLicense($event)" id="index-license">
+                                        <md-icon md-svg-src="pics/ic_fingerprint_black_24px.svg"
+                                                 aria-label="ic_power_settings"></md-icon>
+                                        {/'Activation' | translate/}
+                                    </md-button>
+                                </md-menu-item>
+                                <md-menu-divider dm-display-components="license"></md-menu-divider>
+                                <md-menu-item>
+                                    <md-button data-ng-click="rootCtrl.logout()" id="index-logout">
+                                        <md-icon md-svg-src="pics/ic_power_settings.svg"
+                                                 aria-label="ic_power_settings"></md-icon>
+                                        {/'LOGOUT' | translate /}
+                                    </md-button>
+                                </md-menu-item>
+                                <md-menu-divider></md-menu-divider>
+                                <md-menu-item>
+                                    <md-menu>
+                                        <md-button ng-click="$mdOpenMenu()">
+                                            {/'Language' | translate/}
+                                        </md-button>
+                                        <md-menu-content width="2">
+                                            <md-menu-item type="radio" ng-model="rootCtrl.language" value="en">English
+                                            </md-menu-item>
+                                            <md-menu-item type="radio" ng-model="rootCtrl.language" value="zh-CN">简体中文
+                                            </md-menu-item>
+                                        </md-menu-content>
+                                    </md-menu>
+                                </md-menu-item>
+                            </md-menu-content>
+                        </md-menu>
+                    </md-menu-bar>
                 </div>
             </md-toolbar>
         </nav>

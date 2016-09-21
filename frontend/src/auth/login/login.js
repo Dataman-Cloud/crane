@@ -4,7 +4,7 @@
         .controller('LoginCtrl', LoginCtrl);
 
     /* @ngInject */
-    function LoginCtrl($state, $stateParams, $scope, authCurd, authBackend) {
+    function LoginCtrl($scope, authCurd) {
         var self = this;
         self.form = {
             Email: '',
