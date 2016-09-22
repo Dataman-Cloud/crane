@@ -34,6 +34,10 @@ type CraneDockerClient struct {
 func NewCraneDockerClient(config *config.Config) (*CraneDockerClient, error) {
 	var err error
 
+	if config == nil {
+		return nil, fmt.Errorf("config can not be nil")
+	}
+
 	swarmManagerEntry := config.DockerEntryScheme + "://" + config.SwarmManagerIP + ":" + config.DockerEntryPort
 	client := &CraneDockerClient{
 		config: config,
@@ -42,10 +46,10 @@ func NewCraneDockerClient(config *config.Config) (*CraneDockerClient, error) {
 	}
 
 	if config.DockerTlsVerify {
-		client.swarmManager, err = NewGoDockerClientTls(swarmManagerEntry, API_VERSION, config)
+		client.swarmManager, err = NewGoDockerClientTls(swarmManagerEntry, config)
 		client.sharedHttpClient, err = NewHttpClientTls(config)
 	} else {
-		client.swarmManager, err = docker.NewVersionedClient(swarmManagerEntry, API_VERSION)
+		client.swarmManager, err = docker.NewVersionedClient(swarmManagerEntry, config.DockerApiVersion)
 		client.sharedHttpClient, err = NewHttpClient()
 	}
 
@@ -79,9 +83,10 @@ func (client *CraneDockerClient) createNodeClient(nodeUrl *url.URL) (*docker.Cli
 
 	endpoint := nodeUrl.String()
 	if nodeUrl.Scheme == "https" {
-		swarmNode, err = NewGoDockerClientTls(endpoint, API_VERSION, client.config)
+		swarmNode, err = NewGoDockerClientTls(endpoint, client.config)
 	} else {
-		swarmNode, err = docker.NewVersionedClient(endpoint, API_VERSION)
+		//swarmNode, err = docker.NewVersionedClient(endpoint, API_VERSION)
+		swarmNode, err = docker.NewClient(endpoint)
 	}
 
 	return swarmNode, err
@@ -146,9 +151,9 @@ func (client *CraneDockerClient) VerifyNodeEndpoint(nodeId string, nodeUrl *url.
 	return nil
 }
 
-func NewGoDockerClientTls(endpoint string, apiVersion string, config *config.Config) (*docker.Client, error) {
+func NewGoDockerClientTls(endpoint string, config *config.Config) (*docker.Client, error) {
 	tlsCaCert, tlsCert, tlsKey := SharedClientCertFiles(config)
-	return docker.NewVersionedTLSClient(endpoint, tlsCert, tlsKey, tlsCaCert, apiVersion)
+	return docker.NewVersionedTLSClient(endpoint, tlsCert, tlsKey, tlsCaCert, config.DockerApiVersion)
 }
 
 func NewHttpClient() (*httpclient.Client, error) {

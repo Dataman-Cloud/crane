@@ -109,12 +109,6 @@ func TestInspectNode(t *testing.T) {
 	assert.Nil(t, err)
 }
 
-func fakeDockerVersion(ctx *gin.Context) {
-	var body types.Version
-	body.APIVersion = API_VERSION
-	ctx.JSON(http.StatusOK, body)
-}
-
 func TestCreateNodeRoleManager(t *testing.T) {
 	fakeClusterWithID := func(ID string) func(ctx *gin.Context) {
 		fakeCluster := func(ctx *gin.Context) {
@@ -165,8 +159,7 @@ func TestCreateNodeRoleManager(t *testing.T) {
 	fakeJoiningNodeID := "FakeJoiningNodeID"
 
 	joiningNodeRouter := gin.New()
-	joiningNodeRouter.POST("/v"+API_VERSION+"/swarm/join", fakeSwarmJoin)
-	joiningNodeRouter.GET("/v"+API_VERSION+"/version", fakeDockerVersion)
+	joiningNodeRouter.POST("/swarm/join", fakeSwarmJoin)
 	joiningNodeRouter.GET("/info", fakeNodeInfo("FakeAddr", fakeJoiningNodeID))
 	joiningNode := httptest.NewServer(joiningNodeRouter)
 	defer joiningNode.Close()
@@ -246,8 +239,7 @@ func TestCreateNodeRoleWorker(t *testing.T) {
 	fakeJoiningNodeID := "FakeJoiningNodeID"
 
 	joiningNodeRouter := gin.New()
-	joiningNodeRouter.POST("/v"+API_VERSION+"/swarm/join", fakeSwarmJoin)
-	joiningNodeRouter.GET("/v"+API_VERSION+"/version", fakeDockerVersion)
+	joiningNodeRouter.POST("/swarm/join", fakeSwarmJoin)
 	joiningNodeRouter.GET("/info", fakeNodeInfo("FakeAddr", fakeJoiningNodeID))
 	joiningNode := httptest.NewServer(joiningNodeRouter)
 	defer joiningNode.Close()

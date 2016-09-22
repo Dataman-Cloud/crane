@@ -38,7 +38,7 @@ func TestNewHttpClientError(t *testing.T) {
 }
 
 func TestNewGoDockerClientTlsError(t *testing.T) {
-	client, err := NewGoDockerClientTls("x.x.x.x", "1.23", &config.Config{})
+	client, err := NewGoDockerClientTls("x.x.x.x", &config.Config{})
 	assert.NotNil(t, err)
 
 	assert.Nil(t, client)
