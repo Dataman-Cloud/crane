@@ -1,15 +1,25 @@
 package dockerclient
 
 import (
+	"encoding/json"
+	"fmt"
+	"math/rand"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
+	"strconv"
 	"testing"
+	"time"
 
+	"github.com/Dataman-Cloud/crane/src/model"
 	"github.com/Dataman-Cloud/crane/src/utils/config"
 
 	docker "github.com/Dataman-Cloud/go-dockerclient"
+	dockertest "github.com/Dataman-Cloud/go-dockerclient/testing"
+	"github.com/docker/engine-api/types"
+	"github.com/docker/engine-api/types/swarm"
 	"github.com/stretchr/testify/assert"
+	"golang.org/x/net/context"
 )
 
 func TestNewHttpClient(t *testing.T) {
@@ -147,4 +157,56 @@ func TestSwarmManager(t *testing.T) {
 	}
 	swarmManager := fakeCraneDockerClient.SwarmManager()
 	assert.Equal(t, fakeSwarmManager, swarmManager)
+}
+
+func StartTestServer() *dockertest.DockerServer {
+	rand.Seed(time.Now().Unix())
+	serverPort := rand.Intn(39999-30000) + 30000
+	bindAddr := "127.0.0.1:" + strconv.FormatInt(int64(serverPort), 10)
+	testServer, _ := dockertest.NewServer(bindAddr, nil, nil)
+	return testServer
+}
+
+func InitTestSwarm(t *testing.T) (*dockertest.DockerServer, *CraneDockerClient, string) {
+	testServer := StartTestServer()
+	assert.NotNil(t, testServer)
+
+	httpClient, err := NewHttpClient()
+	assert.Nil(t, err)
+	endpoint := testServer.URL()[0 : len(testServer.URL())-1]
+	client := &CraneDockerClient{
+		sharedHttpClient:         httpClient,
+		swarmManagerHttpEndpoint: endpoint,
+	}
+
+	swarmInitInfo := swarm.InitRequest{
+		ForceNewCluster: false,
+	}
+	_, err = client.sharedHttpClient.POST(nil, client.swarmManagerHttpEndpoint+"/swarm/init", nil, swarmInitInfo, nil)
+	assert.Nil(t, err)
+	nodes, err := client.ListNode(types.NodeListOptions{})
+	assert.Equal(t, len(nodes), 1)
+
+	node := nodes[0]
+	var nodeUpdate model.UpdateOptions
+	updateOptions := `{"Method":"endpoint-update", "Options": "%s"}`
+	updateOptions = fmt.Sprintf(updateOptions, endpoint)
+	err = json.Unmarshal([]byte(updateOptions), &nodeUpdate)
+	assert.Nil(t, err)
+
+	err = client.UpdateNode(node.ID, nodeUpdate)
+	assert.Nil(t, err)
+	return testServer, client, node.ID
+}
+
+func TestSwarmNode(t *testing.T) {
+	testServer, craneClient, nodeId := InitTestSwarm(t)
+	assert.NotNil(t, nodeId)
+	assert.NotNil(t, craneClient)
+	defer testServer.Stop()
+	backgroundContext := context.Background()
+	craneContext := context.WithValue(backgroundContext, "node_id", nodeId)
+	dockerClient, err := craneClient.SwarmNode(craneContext)
+	assert.Nil(t, err)
+	assert.NotNil(t, dockerClient)
 }
