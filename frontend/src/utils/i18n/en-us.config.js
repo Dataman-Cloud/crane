@@ -356,7 +356,7 @@
             "Create Stack Template": "Create Stack Template",
             "Update Stack Template": "Update Stack Template",
             "How to create a docker image": "How to create a docker image",
-            "Stack Templates": "Stack Templates",
+            "Templates": "Templates",
             "Public Docker Images": "Public Images",
             "My Docker Images": "My Images",
             "New Stack Template": "New Stack Template",

@@ -358,7 +358,7 @@
             "Create Stack Template": "创建项目模板",
             "Update Stack Template": "更新项目模板",
             "How to create a docker image": "如何创建镜像",
-            "Stack Templates": "项目模板",
+            "Templates": "项目模板",
             "Public Docker Images": "公有镜像",
             "My Docker Images": "我的镜像",
             "New Stack Template": "新建项目模板",
