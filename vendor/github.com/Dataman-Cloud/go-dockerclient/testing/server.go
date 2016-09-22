@@ -26,9 +26,9 @@ import (
 	"sync"
 	"time"
 
+	docker "github.com/Dataman-Cloud/go-dockerclient"
 	"github.com/docker/docker/pkg/stdcopy"
 	"github.com/docker/engine-api/types/swarm"
-	"github.com/Dataman-Cloud/go-dockerclient"
 	"github.com/gorilla/mux"
 )
 
