@@ -447,7 +447,7 @@ func TestGetNodeIdByUrl(t *testing.T) {
 	body := `
 	{
 	    "Swarm":{
-	        "NodeID":"dbspw1g0sjee8ja1khx2w0xtt",
+	        "NodeID":"dbspw1g0sjee8ja1khx2w0xtt"
 	    }
 	}
 	`
@@ -468,25 +468,27 @@ func TestGetNodeIdByUrl(t *testing.T) {
 	u, err := url.Parse(server1.URL)
 	assert.Nil(t, err)
 
+	var returnedNodeId string
 	matchedNodeUrlWithSchemeTcp := u
 	matchedNodeUrlWithSchemeTcp.Scheme = "tcp"
-	matchedNodeUrlWithSchemeHttp := u
-	matchedNodeUrlWithSchemeHttp.Scheme = "http"
-	matchedNodeUrlWithoutScheme := u
-	matchedNodeUrlWithoutScheme.Scheme = ""
-	misMatchedNodeUrl := u
-	misMatchedNodeUrl.Host = misMatchedNodeUrl.Host + "mis-match"
-
-	var returnedNodeId string
 	returnedNodeId, err = client.getNodeIdByUrl(matchedNodeUrlWithSchemeTcp)
 	assert.Nil(t, err)
 	assert.Equal(t, returnedNodeId, "dbspw1g0sjee8ja1khx2w0xtt")
+
+	matchedNodeUrlWithSchemeHttp := u
+	matchedNodeUrlWithSchemeHttp.Scheme = "http"
 	returnedNodeId, err = client.getNodeIdByUrl(matchedNodeUrlWithSchemeHttp)
 	assert.Nil(t, err)
 	assert.Equal(t, returnedNodeId, "dbspw1g0sjee8ja1khx2w0xtt")
+
+	matchedNodeUrlWithoutScheme := u
+	matchedNodeUrlWithoutScheme.Scheme = ""
 	returnedNodeId, err = client.getNodeIdByUrl(matchedNodeUrlWithoutScheme)
-	assert.Nil(t, err)
-	assert.Equal(t, returnedNodeId, "dbspw1g0sjee8ja1khx2w0xtt")
+	assert.NotNil(t, err)
+	assert.Equal(t, returnedNodeId, "")
+
+	misMatchedNodeUrl := u
+	misMatchedNodeUrl.Host = misMatchedNodeUrl.Host + "mis-match"
 	returnedNodeId, err = client.getNodeIdByUrl(misMatchedNodeUrl)
 	assert.NotNil(t, err)
 	assert.Equal(t, returnedNodeId, "")
