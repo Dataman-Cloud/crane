@@ -11,7 +11,6 @@
             getNode: getNode,
             deleteNode: deleteNode,
             handleNode: handleNode,
-            getManagerInfo: getManagerInfo,
             createVolume: createVolume,
             listVolumes: listVolumes,
             getVolume: getVolume,
@@ -27,11 +26,16 @@
             diffContainer: diffContainer,
             listNetworks: listNetworks,
             getNetwork: getNetwork,
-            createNetwork: createNetwork
+            createNetwork: createNetwork,
+            addWorkerNode: addWorkerNode
         };
 
         function listNodes(params, loading) {
             return gHttp.Resource('node.nodes').get({params: params, "loading": loading});
+        }
+
+        function addWorkerNode(data, form){
+            return gHttp.Resource('node.nodes').post(data, {form: form});
         }
 
         function handleNode(nodeId, method, options) {
@@ -44,10 +48,6 @@
 
         function deleteNode(nodeId) {
             return gHttp.Resource('node.node', {node_id: nodeId}).delete();
-        }
-
-        function getManagerInfo() {
-            return gHttp.Resource('node.leader').get();
         }
 
         function createVolume(data, nodeId, form) {

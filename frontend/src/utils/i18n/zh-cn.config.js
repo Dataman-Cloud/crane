@@ -344,6 +344,7 @@
             "Diff_kind_0": "修改",
             "Diff_kind_1": "添加",
             "Diff_kind_2": "删除",
+            "Add node pending": "添加主机中，您可以先干点别的",
 
 
             //registry-auth module
@@ -430,7 +431,9 @@
             "CODE_MESSAGE_11302": "不支持的节点操作类型",
             "CODE_MESSAGE_11303": "未定义的节点角色",
             "CODE_MESSAGE_11304": "不支持的节点状态",
-            "CODE_MESSAGE_11305": "获取及节点信息失败",
+            "CODE_MESSAGE_11305": "获取节点信息失败",
+            "CODE_MESSAGE_11307": "获取节点地址失败",
+            "CODE_MESSAGE_11308": "加入节点失败",
             "CODE_MESSAGE_11401": "更新服务参数错误",
             "CODE_MESSAGE_11402": "创建服务参数错误",
             "CODE_MESSAGE_11403": "扩展服务参数错误",
@@ -452,6 +455,7 @@
             "CODE_MESSAGE_11702": "连接到指定节点失败, 目标地址为空",
             "CODE_MESSAGE_11703": "指定节点的连接地址和节点ID不匹配",
             "CODE_MESSAGE_11704": "连接到指定节点失败, 错误的访问地址",
+            "CODE_MESSAGE_11705": "获取管理节点信息失败",
             "CODE_MESSAGE_11901": "获取配置失败",
             "CODE_MESSAGE_12001": "未定义的用户组",
             "CODE_MESSAGE_12002": "创建用户参数错误",

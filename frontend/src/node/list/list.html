@@ -1,6 +1,6 @@
 <header layout="row" layout-align="end start" id="header-main">
     <div flex="none">
-        <md-button id="node-add-node" class="md-button md-primary md-small md-raised" aria-label="添加主机" data-ui-sref="node.create">
+        <md-button id="node-add-node" class="md-button md-primary md-small md-raised" aria-label="添加主机" data-ng-click="nodeListCtrl.addWorkerNode($event)">
             <i class="fa fa-plus" aria-hidden="true"></i> {/'Add Node' | translate/}
         </md-button>
     </div>

@@ -341,6 +341,7 @@
             "Diff_kind_0": "modify",
             "Diff_kind_1": "add",
             "Diff_kind_2": "delete",
+            "Add node pending": "Add in the host, you can do something else",
 
 
             //registry-auth module
@@ -428,6 +429,8 @@
             "CODE_MESSAGE_11303": "Invalid node role",
             "CODE_MESSAGE_11304": "Invalid node availability",
             "CODE_MESSAGE_11305": "Get node info failed",
+            "CODE_MESSAGE_11307": "Get node advertise address failed",
+            "CODE_MESSAGE_11308": "Join node error",
             "CODE_MESSAGE_11401": "Update service parameter error",
             "CODE_MESSAGE_11402": "Create service parameter error",
             "CODE_MESSAGE_11403": "Scale service parameter error",
@@ -435,7 +438,7 @@
             "CODE_MESSAGE_11405": "Invalid delay parameter of service",
             "CODE_MESSAGE_11406": "Invalid window parameter of service",
             "CODE_MESSAGE_11407": "Invalid terminal parameter of service",
-            "CODE_MESSAGE_11408": "Invalid depoly parameter of service",
+            "CODE_MESSAGE_11408": "Invalid deploy parameter of service",
             "CODE_MESSAGE_11409": "Invalid memory parameter of service",
             "CODE_MESSAGE_11410": "Invalid update parameter of service",
             "CODE_MESSAGE_11411": "Parameter of service can not empty",
@@ -449,6 +452,7 @@
             "CODE_MESSAGE_11702": "Connected to the specified node fails, empty endpoint",
             "CODE_MESSAGE_11703": "Endpoint and node ID does not match the specified node",
             "CODE_MESSAGE_11704": "Connected to the specified node fails, error endpoint",
+            "CODE_MESSAGE_11705": "Get manager info error",
             "CODE_MESSAGE_11901": "Get config failed",
             "CODE_MESSAGE_12001": "Invalid user group",
             "CODE_MESSAGE_12002": "Create user parameter error",

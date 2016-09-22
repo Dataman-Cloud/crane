@@ -23,17 +23,18 @@
             createNetwork: createNetwork,
             updateEndpoint: updateEndpoint,
             updateLabels: updateLabels,
-            removeLabels: removeLabels
+            removeLabels: removeLabels,
+            addWorkerNode: addWorkerNode
         };
-        
+
         function updateEndpoint(nodeId, env, endpoint) {
             formModal.open('/src/node/modals/form-nodeIp.html', env, {dataName: 'endpoint', initData: endpoint})
                 .then(function (endpoint) {
-                nodeBackend.handleNode(nodeId, "endpoint-update", endpoint).then(function (data) {
-                    Notification.success($filter('translate')('Host updated successfully'));
-                    $state.reload()
+                    nodeBackend.handleNode(nodeId, "endpoint-update", endpoint).then(function (data) {
+                        Notification.success($filter('translate')('Host updated successfully'));
+                        $state.reload()
+                    });
                 });
-            });
         }
 
         function updateLabels(nodeId, env, labels) {
@@ -42,7 +43,10 @@
                 this.push({"key": key, "value": value})
             }, labelList);
 
-            updateLabelsFormModal.open('/src/node/modals/form-labels.html', env, {dataName: 'labels', initData: labelList})
+            updateLabelsFormModal.open('/src/node/modals/form-labels.html', env, {
+                dataName: 'labels',
+                initData: labelList
+            })
                 .then(function (labelList) {
                     var newLabels = {};
                     angular.forEach(labelList, function (label) {
@@ -61,7 +65,7 @@
                 $state.reload()
             });
         }
-        
+
         function deleteVolume(id, name) {
             confirmModal.open("Are you sure to delete the storage volume ?").then(function () {
                 nodeBackend.deleteVolume(id, name)
@@ -154,6 +158,23 @@
                     Notification.success($filter('translate')('Created successfully'));
                     $state.go('node.networkDetail', {node_id: nodeId, network_id: data.Id}, {reload: true})
                 })
+        }
+
+        function addWorkerNode(env) {
+            formModal.open('/src/node/modals/create-node.html', env, {dataName: 'endpoint'})
+                .then(function (endpoint) {
+                    Notification.success($filter('translate')('Add node pending'));
+                    var data = {
+                        Role: "worker",
+                        Endpoint: endpoint
+                    };
+
+                    nodeBackend.addWorkerNode(data)
+                        .then(function (data) {
+                            Notification.success($filter('translate')('Created successfully'));
+                            $state.reload()
+                        })
+                });
         }
 
     }

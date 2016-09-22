@@ -25,14 +25,6 @@
                     label: "{/'Nodes' | translate/}"
                 }
             })
-            .state('node.create', {
-                url: '/create',
-                templateUrl: '/src/node/create/create.html',
-                controller: 'NodeCreateCtrl as nodeCreateCtrl',
-                ncyBreadcrumb: {
-                    label: "{/'Add Node' | translate/}"
-                }
-            })
             .state('node.createVolume', {
                 url: '/createVolume/:node_id',
                 templateUrl: '/src/node/create-volume/create.html',
