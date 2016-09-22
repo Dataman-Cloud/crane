@@ -54,6 +54,10 @@ func NewCraneDockerClient(config *config.Config) (*CraneDockerClient, error) {
 		return nil, err
 	}
 
+	if client.swarmManager == nil {
+		return nil, fmt.Errorf("create swarmManager client failed")
+	}
+
 	err = client.swarmManager.Ping()
 	if err != nil {
 		log.Error("Unable to ping docker daemon. Ensure docker is running endpoint ", swarmManagerEntry, "err: ", err)
