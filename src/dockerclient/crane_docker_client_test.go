@@ -2,6 +2,7 @@ package dockerclient
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"math/rand"
 	"net/http"
@@ -13,6 +14,7 @@ import (
 
 	"github.com/Dataman-Cloud/crane/src/model"
 	"github.com/Dataman-Cloud/crane/src/utils/config"
+	"github.com/Dataman-Cloud/crane/src/utils/cranerror"
 
 	docker "github.com/Dataman-Cloud/go-dockerclient"
 	dockertest "github.com/Dataman-Cloud/go-dockerclient/testing"
@@ -40,6 +42,18 @@ func TestNewGoDockerClientTlsError(t *testing.T) {
 	assert.NotNil(t, err)
 
 	assert.Nil(t, client)
+}
+
+func TestNewCraneDockerClient(t *testing.T) {
+	conf := &config.Config{}
+	craneClient, err := NewCraneDockerClient(conf)
+	assert.NotNil(t, err)
+	assert.Nil(t, craneClient)
+
+	tlsConf := &config.Config{DockerTlsVerify: true}
+	tlsClient, err := NewCraneDockerClient(tlsConf)
+	assert.NotNil(t, err)
+	assert.Nil(t, tlsClient)
 }
 
 func TestVerifyNodeEndpoint(t *testing.T) {
@@ -89,11 +103,18 @@ func TestVerifyNodeEndpoint(t *testing.T) {
 		swarmManagerHttpEndpoint: server1.URL,
 	}
 
+	err = client.VerifyNodeEndpoint("test", nil)
+	assert.NotNil(t, err)
+
 	u, err := url.Parse(server1.URL)
 	assert.Nil(t, err)
 
 	err = client.VerifyNodeEndpoint("dbspw1g0sjee8ja1khx2w0xtt", u)
 	assert.Nil(t, err)
+
+	u.Host = "errorHost"
+	err = client.VerifyNodeEndpoint("dbspw1g0sjee8ja1khx2w0xtt", u)
+	assert.NotNil(t, err)
 }
 
 func TestVerifyNodeEndpointErrorId(t *testing.T) {
@@ -205,8 +226,58 @@ func TestSwarmNode(t *testing.T) {
 	assert.NotNil(t, craneClient)
 	defer testServer.Stop()
 	backgroundContext := context.Background()
-	craneContext := context.WithValue(backgroundContext, "node_id", nodeId)
+	_, err := craneClient.SwarmNode(backgroundContext)
+	assert.NotNil(t, err)
+
+	craneContext := context.WithValue(backgroundContext, "node_id", "errorId")
 	dockerClient, err := craneClient.SwarmNode(craneContext)
+	assert.NotNil(t, err)
+
+	craneContext = context.WithValue(backgroundContext, "node_id", nodeId)
+	dockerClient, err = craneClient.SwarmNode(craneContext)
 	assert.Nil(t, err)
 	assert.NotNil(t, dockerClient)
+}
+
+func TestToCraneError(t *testing.T) {
+	noSuchContainerErr := &docker.NoSuchContainer{ID: "test", Err: errors.New("test error")}
+	err := ToCraneError(noSuchContainerErr)
+	assert.NotNil(t, err)
+	craneErr, ok := err.(*cranerror.CraneError)
+	assert.True(t, ok)
+	assert.Equal(t, CodeContainerInvalid, craneErr.Code)
+
+	noSuchNetworkErr := &docker.NoSuchNetwork{ID: "test"}
+	err = ToCraneError(noSuchNetworkErr)
+	assert.NotNil(t, err)
+	craneErr, ok = err.(*cranerror.CraneError)
+	assert.True(t, ok)
+	assert.Equal(t, CodeNetworkInvalid, craneErr.Code)
+
+	noSuchContainerOrNetworkErr := &docker.NoSuchNetworkOrContainer{
+		NetworkID:   "test",
+		ContainerID: "test",
+	}
+	err = ToCraneError(noSuchContainerOrNetworkErr)
+	assert.NotNil(t, err)
+	craneErr, ok = err.(*cranerror.CraneError)
+	assert.True(t, ok)
+	assert.Equal(t, CodeNetworkOrContainerInvalid, craneErr.Code)
+
+	containerAlreadyRunningErr := &docker.ContainerAlreadyRunning{ID: "test"}
+	err = ToCraneError(containerAlreadyRunningErr)
+	assert.NotNil(t, err)
+	craneErr, ok = err.(*cranerror.CraneError)
+	assert.True(t, ok)
+	assert.Equal(t, CodeContainerAlreadyRunning, craneErr.Code)
+
+	containerNotRunningErr := &docker.ContainerNotRunning{ID: "test"}
+	err = ToCraneError(containerNotRunningErr)
+	assert.NotNil(t, err)
+	craneErr, ok = err.(*cranerror.CraneError)
+	assert.True(t, ok)
+	assert.Equal(t, CodeContainerNotRunning, craneErr.Code)
+
+	err = ToCraneError(errors.New("test"))
+	assert.NotNil(t, err)
 }
