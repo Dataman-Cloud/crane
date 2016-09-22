@@ -9,9 +9,6 @@ const (
 	defaultNetworkDriver = "overlay"
 
 	defaultHttpRequestTimeout = time.Second * 10
-
-	// docker remote API version
-	API_VERSION = "1.24"
 )
 
 const (

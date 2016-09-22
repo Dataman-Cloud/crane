@@ -20,6 +20,7 @@ type Config struct {
 	DockerEntryPort   string   `env:"CRANE_DOCKER_ENTRY_PORT",required:"false"`
 	DockerTlsVerify   bool     `env:"CRANE_DOCKER_TLS_VERIFY",required:"true"`
 	DockerCertPath    string   `env:"CRANE_DOCKER_CERT_PATH",required:"true"`
+	DockerApiVersion  string   `env:"CRANE_DOCKER_API_VERSION",required:"false"`
 	DbDriver          string   `env:"CRANE_DB_DRIVER",required:"true"`
 	DbDSN             string   `env:"CRANE_DB_DSN",required:"true"`
 	FeatureFlags      []string `env:"CRANE_FEATURE_FLAGS",required:"true"`
