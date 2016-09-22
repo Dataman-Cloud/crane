@@ -29,7 +29,7 @@ const (
 )
 
 type ResponseBody struct {
-	Code int   `json: "code"`
+	Code int   `json:"code"`
 	Err  error `json:"err"`
 }
 
