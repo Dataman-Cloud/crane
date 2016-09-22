@@ -41,6 +41,89 @@ func (client *CraneDockerClient) ListNode(opts types.NodeListOptions) ([]swarm.N
 	return nodes, nil
 }
 
+// create a new node
+func (client *CraneDockerClient) CreateNode(joiningNode model.JoiningNode) error {
+	if joiningNode.Role != swarm.NodeRoleWorker && joiningNode.Role != swarm.NodeRoleManager {
+		errMsg := fmt.Sprintf("node role only support %s/%s but got %s",
+			swarm.NodeRoleWorker, swarm.NodeRoleManager, joiningNode.Role)
+		return cranerror.NewError(CodeErrorNodeRole, errMsg)
+	}
+
+	nodeUrl, err := parseEndpoint(joiningNode.Endpoint)
+	if err != nil {
+		return &cranerror.CraneError{
+			Code: CodeGetNodeEndpointError,
+			Err:  &cranerror.NodeConnError{ID: "", Err: fmt.Errorf("get node endpoint failed: %s", err.Error())},
+		}
+	}
+
+	swarmInfo, err := client.InspectSwarm()
+	if err != nil {
+		return err
+	}
+	managerInfo, err := client.ManagerInfo()
+	if err != nil {
+		return err
+	}
+	advertiseAddr, err := getAdvertiseAddrByEndpoint(joiningNode.Endpoint)
+	if err != nil {
+		return &cranerror.CraneError{
+			Code: CodeGetNodeAdvertiseAddrError,
+			Err:  &cranerror.NodeConnError{ID: "", Err: fmt.Errorf("get node advertiseAddr failed: %s", err.Error())},
+		}
+	}
+	var joinToken string
+	if joiningNode.Role == swarm.NodeRoleWorker {
+		joinToken = swarmInfo.JoinTokens.Worker
+	} else if joiningNode.Role == swarm.NodeRoleManager {
+		joinToken = swarmInfo.JoinTokens.Manager
+	}
+	req := swarm.JoinRequest{
+		JoinToken:     joinToken,
+		AdvertiseAddr: advertiseAddr,
+		RemoteAddrs:   []string{managerInfo.Swarm.NodeAddr},
+	}
+	opts := docker.JoinSwarmOptions{
+		JoinRequest: req,
+	}
+	// swarm join
+	nodeClient, err := client.createNodeClient(nodeUrl)
+	if err != nil {
+		return err
+	}
+	if err := nodeClient.JoinSwarm(opts); err != nil {
+		return &cranerror.CraneError{
+			Code: CodeJoinNodeError,
+			Err:  fmt.Errorf("node %s (%s) failed to join cluster: %s", joiningNode.Endpoint, nodeUrl, err.Error()),
+		}
+	}
+
+	// Store the endpoint in the node label
+	nodeId, err := client.getNodeIdByUrl(nodeUrl)
+	if err != nil {
+		return &cranerror.CraneError{
+			Code: CodeVerifyNodeEnpointFailed,
+			Err:  &cranerror.NodeConnError{ID: nodeId, Endpoint: joiningNode.Endpoint, Err: fmt.Errorf("verify endpoint failed: %s", err.Error())},
+		}
+	}
+	node, err := client.InspectNode(nodeId)
+	if err != nil {
+		return err
+	}
+	if node.Spec.Annotations.Labels == nil {
+		node.Spec.Annotations.Labels = make(map[string]string)
+	}
+	node.Spec.Annotations.Labels[labelNodeEndpoint] = joiningNode.Endpoint
+	query := url.Values{}
+	query.Set("version", strconv.FormatUint(node.Version.Index, 10))
+	_, err = client.sharedHttpClient.POST(nil, client.swarmManagerHttpEndpoint+"/"+path.Join("nodes", nodeId, "update"), query, node.Spec, nil)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 // Inspect node returns the single node.
 func (client *CraneDockerClient) InspectNode(nodeId string) (swarm.Node, error) {
 	var node swarm.Node

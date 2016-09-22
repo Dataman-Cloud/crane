@@ -30,6 +30,7 @@ func (api *Api) ApiRouter() *gin.Engine {
 	v1 := router.Group("/api/v1", Authorization, middlewares.ListIntercept())
 	{
 		v1.GET("/nodes", api.ListNodes)
+		v1.POST("/nodes", api.CreateNode)
 		v1.GET("/nodes/:node_id", api.InspectNode)
 		v1.GET("/nodes/:node_id/info", api.Info)
 		v1.PATCH("/nodes/:node_id", api.UpdateNode)

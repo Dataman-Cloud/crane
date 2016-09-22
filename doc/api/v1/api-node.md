@@ -316,3 +316,37 @@ Availability: drain/active/pause
   "data": "success"
 }
 ```
+
+###Added a worker node
+
+```
+   curl -v -X POST http://localhost:5013/api/v1/nodes -H Content-Type:application/json -d \
+   '
+   {
+	"Role": "worker",
+	"Endpoint": "http://192.168.59.105:2375"
+   }
+   '
+```
+
+* Endpoint: http://192.168.59.105:2375 or http://192.168.59.105, or 192.168.59.105:2375, or 192.168.59.105
+
+** Success Response **
+
+```
+{
+  "code": 0,
+  "data": "success"
+}
+```
+
+** Unexpected Response**
+
+```
+{
+  "code": CodeCreateNodeParamError,
+  "data": ""
+}
+```
+
+code: CodeCreateNodeParamError, CodeErrorNodeRole, CodeGetNodeEndpointError, CodeGetNodeAdvertiseAddrError, CodeGetManagerInfoError, CodeGetConfigError, CodeVerifyNodeEndpointFailed

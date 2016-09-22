@@ -4,7 +4,7 @@ import (
 	"net/url"
 
 	"github.com/Dataman-Cloud/crane/src/dockerclient/model"
-	opt "github.com/Dataman-Cloud/crane/src/model"
+	node "github.com/Dataman-Cloud/crane/src/model"
 
 	docker "github.com/Dataman-Cloud/go-dockerclient"
 	"github.com/docker/engine-api/types"
@@ -21,7 +21,8 @@ type DockerClientInterface interface {
 	ListNode(opts types.NodeListOptions) ([]swarm.Node, error)
 	InspectNode(nodeId string) (swarm.Node, error)
 	RemoveNode(nodeId string) error
-	UpdateNode(nodeId string, opts opt.UpdateOptions) error
+	CreateNode(joiningNode node.JoiningNode) error
+	UpdateNode(nodeId string, opts node.UpdateOptions) error
 	GetDaemonUrlById(nodeId string) (*url.URL, error)
 
 	InspectContainer(id string) (*docker.Container, error)

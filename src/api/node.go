@@ -15,6 +15,7 @@ import (
 
 const (
 	CodeUpdateNodeParamError = "400-11301"
+	CodeCreateNodeParamError = "400-11306"
 )
 
 func (api *Api) InspectNode(ctx *gin.Context) {
@@ -68,7 +69,31 @@ func (api *Api) ListNodes(ctx *gin.Context) {
 	return
 }
 
-func (api *Api) CreateNode(ctx *gin.Context) {}
+func (api *Api) CreateNode(ctx *gin.Context) {
+	var joiningNode model.JoiningNode
+
+	if err := ctx.BindJSON(&joiningNode); err != nil {
+		switch jsonErr := err.(type) {
+		case *json.SyntaxError:
+			log.Errorf("JSON syntax error at byte %v: %s", jsonErr.Offset, jsonErr.Error())
+		case *json.UnmarshalTypeError:
+			log.Errorf("Unexpected type at by type %v. Expected %s but received %s.",
+				jsonErr.Offset, jsonErr.Type, jsonErr.Value)
+		}
+		rerror := cranerror.NewError(CodeCreateNodeParamError, err.Error())
+		httpresponse.Error(ctx, rerror)
+		return
+	}
+
+	if err := api.GetDockerClient().CreateNode(joiningNode); err != nil {
+		log.Errorf("Create node %s got error: %s", joiningNode.Endpoint, err.Error())
+		httpresponse.Error(ctx, err)
+		return
+	}
+
+	httpresponse.Ok(ctx, "success")
+	return
+}
 
 func (api *Api) UpdateNode(ctx *gin.Context) {
 	var nodeUpdate model.UpdateOptions

@@ -46,10 +46,12 @@ const (
 	CodeStackUnavailable = "400-11503"
 
 	// node error code
-	CodeErrorUpdateNodeMethod = "503-11302"
-	CodeErrorNodeRole         = "503-11303"
-	CodeErrorNodeAvailability = "503-11304"
-	CodeGetNodeInfoError      = "503-11305"
+	CodeErrorUpdateNodeMethod     = "503-11302"
+	CodeErrorNodeRole             = "503-11303"
+	CodeErrorNodeAvailability     = "503-11304"
+	CodeGetNodeInfoError          = "503-11305"
+	CodeGetNodeAdvertiseAddrError = "503-11307"
+	CodeJoinNodeError             = "503-11308"
 
 	// network error code
 	CodeNetworkPredefined         = "403-11206"
@@ -70,6 +72,7 @@ const (
 	CodeGetNodeEndpointError     = "503-11702"
 	CodeNodeEndpointIpMatchError = "503-11703"
 	CodeVerifyNodeEnpointFailed  = "503-11704"
+	CodeGetManagerInfoError      = "503-11705"
 
 	//Volume error code
 	CodeInvalidVolumeName = "503-11602"
