@@ -4,24 +4,16 @@
         .controller('StackCreateByJsonCtrl', StackCreateByJsonCtrl);
 
     /* @ngInject */
-    function StackCreateByJsonCtrl($timeout, $scope, $rootScope, stackCurd, userBackend, $http, FileSaver, Blob) {
+    function StackCreateByJsonCtrl($scope, $rootScope, stackCurd, userBackend, $http, FileSaver, Blob) {
         var self = this;
 
         self.supportReadFile = false;
-        self.refreshCodeMirror = false;
 
-        self.editorOptions = {
-            theme: 'midnight',
-            lineNumbers: true,
-            indentWithTabs: true,
-            matchBrackets: true,
-            mode: 'Javascript',
-            tabSize: 2,
-            extraKeys: {
-                Tab: function (cm) {
-                    var spaces = new Array(cm.getOption('indentUnit') + 1).join(' ');
-                    cm.replaceSelection(spaces);
-                }
+        self.aceOption = {
+            theme: 'twilight',
+            mode: 'javascript',
+            onLoad: function (_editor) {
+                _editor.$blockScrolling = Infinity;
             }
         };
 
@@ -49,16 +41,6 @@
             self.supportReadFile = !!(window.File && window.FileReader && window.FileList && window.Blob);
 
             getStackExample('2048');
-            
-            // cload timeout is 10, set long for it;
-            var timeoutPromise = $timeout(function () {
-                self.refreshCodeMirror = true;
-            }, 20, false);
-
-            $scope.$on('$destroy', function () {
-                $timeout.cancel(timeoutPromise);
-            });
-
         }
 
         function loadGroups() {
@@ -112,11 +94,11 @@
                 });
         }
 
-	function createAndDownload() {
-            create().then(function(data){
-	        var blob = new Blob([self.stack], { type: 'text/plain;charset=utf-8' });
+        function createAndDownload() {
+            create().then(function (data) {
+                var blob = new Blob([self.stack], {type: 'text/plain;charset=utf-8'});
                 FileSaver.saveAs(blob, self.form.Namespace + '.json');
             })
-	}
+        }
     }
 })();

@@ -19,18 +19,11 @@
             Stack: ""
         };
 
-        self.editorOptions = {
-            theme: 'midnight',
-            lineNumbers: true,
-            indentWithTabs: true,
-            matchBrackets: true,
-            mode: 'Javascript',
-            tabSize: 2,
-            extraKeys: {
-                Tab: function (cm) {
-                    var spaces = new Array(cm.getOption('indentUnit') + 1).join(' ');
-                    cm.replaceSelection(spaces);
-                }
+        self.aceOption = {
+            theme: 'twilight',
+            mode: 'javascript',
+            onLoad: function (_editor) {
+                _editor.$blockScrolling = Infinity;
             }
         };
 

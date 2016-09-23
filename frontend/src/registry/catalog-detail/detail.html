@@ -21,10 +21,8 @@
                 <label id="image-DAB-doc" dm-doc-link='https://blog.docker.com/2016/06/docker-app-bundle/'>DAB<span
                         class="required">*</span></label>
                 <div class="form-control">
-                    <textarea id="image-catalog-stack" data-ng-model="catalogDetailCtrl.stack"
+                    <textarea id="image-catalog-stack" ui-ace="catalogDetailCtrl.aceOption" data-ng-model="catalogDetailCtrl.stack"
                               data-required="required" name="Stack"
-                              ui-codemirror ui-codemirror-opts="catalogDetailCtrl.editorOptions"
-                              ui-refresh="catalogDetailCtrl.refreshCodeMirror"
                               data-ng-change="catalogDetailCtrl.stackChange()">
                     </textarea>
                 </div>

@@ -17,11 +17,10 @@
         <label dm-doc-link='https://blog.docker.com/2016/06/docker-app-bundle/'>DAB<span
                 class="required">*</span></label>
         <div class="form-control">
-            <textarea id="imaage-catalog-json" data-ng-model="createUpdateCatalog.form.Bundle" data-required="required" name="Bundle"
-                      ui-codemirror
-                      ui-codemirror-opts="createUpdateCatalog.editorOptions"
-                      ui-refresh="createUpdateCatalog.refreshCodeMirror"
-                      data-ng-change="createUpdateCatalog.stackChange()"></textarea>
+            <textarea id="imaage-catalog-json" ui-ace="createUpdateCatalog.aceOption" data-ng-model="createUpdateCatalog.form.Bundle"
+                      data-required="required" name="Bundle"
+                      data-ng-change="createUpdateCatalog.stackChange()">
+            </textarea>
         </div>
 
         <div ng-messages="staticForm.Bundle.$error" ng-if="staticForm.Bundle.$dirty" role="alert">

@@ -1139,20 +1139,6 @@ article ol li code {
     margin-right: 6px;
 }
 
-.cm-s-midnight.CodeMirror {
-    background-color: #3F4855;
-    border: 1px solid #666C71;
-    color: #D3D1D5;
-    font-size: 12px;
-    width: 580px;
-}
-
-.cm-s-midnight .CodeMirror-gutters {
-    background-color: #3F4855;
-    border-right: 1px solid #666C71;
-    color: #D3D1D5;
-}
-
 md-dialog md-dialog-content {
     padding: 25px;
     max-width: 800px;
@@ -1302,4 +1288,9 @@ md-dialog md-card i {
 
 md-menu-item > a.md-button {
     color: rgba(0,0,0,0.87);
+}
+
+.ace_editor  {
+    height : 400px;
+    width: 580px;
 }
