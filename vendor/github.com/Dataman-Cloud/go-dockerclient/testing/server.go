@@ -26,9 +26,9 @@ import (
 	"sync"
 	"time"
 
-	docker "github.com/Dataman-Cloud/go-dockerclient"
 	"github.com/docker/docker/pkg/stdcopy"
 	"github.com/docker/engine-api/types/swarm"
+	"github.com/Dataman-Cloud/go-dockerclient"
 	"github.com/gorilla/mux"
 )
 
@@ -68,7 +68,7 @@ type DockerServer struct {
 	swarm          *swarm.Swarm
 	swarmServer    *swarmServer
 	nodes          []swarm.Node
-	nodeId         string
+	nodeID         string
 }
 
 type swarmServer struct {
@@ -1256,11 +1256,10 @@ func (s *DockerServer) listVolumes(w http.ResponseWriter, r *http.Request) {
 	for _, volumeCounter := range s.volStore {
 		result = append(result, volumeCounter.volume)
 	}
-	dockerResult := map[string][]docker.Volume{"Volumes": result}
 	s.volMut.RUnlock()
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(dockerResult)
+	json.NewEncoder(w).Encode(map[string][]docker.Volume{"Volumes": result})
 }
 
 func (s *DockerServer) createVolume(w http.ResponseWriter, r *http.Request) {
@@ -1366,7 +1365,13 @@ func (s *DockerServer) infoDocker(w http.ResponseWriter, r *http.Request) {
 	var swarmInfo *swarm.Info
 	if s.swarm != nil {
 		swarmInfo = &swarm.Info{
-			NodeID: s.nodeId,
+			NodeID: s.nodeID,
+		}
+		for _, n := range s.nodes {
+			swarmInfo.RemoteManagers = append(swarmInfo.RemoteManagers, swarm.Peer{
+				NodeID: n.ID,
+				Addr:   n.ManagerStatus.Addr,
+			})
 		}
 	}
 	envs := map[string]interface{}{
@@ -1453,6 +1458,14 @@ func (s *DockerServer) versionDocker(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(envs)
 }
 
+// SwarmAddress returns the address if there's a fake swarm server enabled.
+func (s *DockerServer) SwarmAddress() string {
+	if s.swarmServer == nil {
+		return ""
+	}
+	return s.swarmServer.listener.Addr().String()
+}
+
 func (s *DockerServer) initSwarmNode(listenAddr, advertiseAddr string) (swarm.Node, error) {
 	if listenAddr == "" {
 		listenAddr = "127.0.0.1:0"
@@ -1463,16 +1476,23 @@ func (s *DockerServer) initSwarmNode(listenAddr, advertiseAddr string) (swarm.No
 		return swarm.Node{}, err
 	}
 	if advertiseAddr == "" {
-		advertiseAddr = s.swarmServer.URL()
+		advertiseAddr = s.SwarmAddress()
 	}
-	s.nodeId = s.generateID()
+	hostPart, portPart, err := net.SplitHostPort(advertiseAddr)
+	if err != nil {
+		hostPart = advertiseAddr
+	}
+	if portPart == "" || portPart == "0" {
+		_, portPart, _ = net.SplitHostPort(s.SwarmAddress())
+	}
+	s.nodeID = s.generateID()
 	return swarm.Node{
-		ID: s.nodeId,
+		ID: s.nodeID,
 		Status: swarm.NodeStatus{
 			State: swarm.NodeStateReady,
 		},
 		ManagerStatus: &swarm.ManagerStatus{
-			Addr: advertiseAddr,
+			Addr: fmt.Sprintf("%s:%s", hostPart, portPart),
 		},
 	}, nil
 }
@@ -1496,7 +1516,7 @@ func (s *DockerServer) swarmInit(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	node.ManagerStatus.Leader = true
-	err = s.runNodeOperation(node.ManagerStatus.Addr, nodeOperation{
+	err = s.runNodeOperation(s.swarmServer.URL(), nodeOperation{
 		Op:   "add",
 		Node: node,
 	})
@@ -1511,7 +1531,7 @@ func (s *DockerServer) swarmInit(w http.ResponseWriter, r *http.Request) {
 		},
 	}
 	w.Header().Set("Content-Type", "application/json")
-	err = json.NewEncoder(w).Encode(s.nodeId)
+	err = json.NewEncoder(w).Encode(s.nodeID)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
@@ -1551,7 +1571,7 @@ func (s *DockerServer) swarmJoin(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	err = s.runNodeOperation(req.RemoteAddrs[0], nodeOperation{
+	err = s.runNodeOperation(fmt.Sprintf("http://%s", req.RemoteAddrs[0]), nodeOperation{
 		Op:   "add",
 		Node: node,
 	})
@@ -1578,7 +1598,7 @@ func (s *DockerServer) swarmLeave(w http.ResponseWriter, r *http.Request) {
 		s.swarm = nil
 		s.nodes = nil
 		s.swarmServer = nil
-		s.nodeId = ""
+		s.nodeID = ""
 		w.WriteHeader(http.StatusOK)
 	}
 }
@@ -1776,10 +1796,10 @@ func (s *DockerServer) internalUpdateNodes(w http.ResponseWriter, r *http.Reques
 	}
 	if propagate {
 		for _, node := range s.nodes {
-			if s.swarmServer.URL() == node.ManagerStatus.Addr {
+			if s.nodeID == node.ID {
 				continue
 			}
-			url := fmt.Sprintf("%s/internal/updatenodes?propagate=0", strings.TrimRight(node.ManagerStatus.Addr, "/"))
+			url := fmt.Sprintf("http://%s/internal/updatenodes?propagate=0", node.ManagerStatus.Addr)
 			_, err = http.Post(url, "application/json", bytes.NewReader(data))
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)

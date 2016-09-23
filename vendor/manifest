@@ -230,7 +230,7 @@
 			"importpath": "github.com/Dataman-Cloud/go-dockerclient",
 			"repository": "https://github.com/Dataman-Cloud/go-dockerclient",
 			"vcs": "git",
-			"revision": "14aeb20c16fc3c29503daa29dbc657308d3d3484",
+			"revision": "1b0fe216d3308142222a96812426dbcd9e93166e",
 			"branch": "master",
 			"notests": true
 		},
