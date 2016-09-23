@@ -97,6 +97,10 @@ func (client *CraneDockerClient) ListNodeNetworks(ctx context.Context, opts dock
 }
 
 func (client *CraneDockerClient) CreateNodeNetwork(ctx context.Context, opts docker.CreateNetworkOptions) (*docker.Network, error) {
+	if opts.Name == "" || !isValidName.MatchString(opts.Name) {
+		return nil, cranerror.NewError(CodeInvalidNetworkName, "invalid name, only [a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9] are allowed")
+	}
+
 	swarmNode, err := client.SwarmNode(ctx)
 	if err != nil {
 		return nil, err
