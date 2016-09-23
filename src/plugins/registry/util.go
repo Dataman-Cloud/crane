@@ -48,6 +48,7 @@ func (registry *Registry) FilterAccess(username string, authenticated bool, a *t
 	if a.Type == "repository" {
 		if strings.Contains(a.Name, "/") { //Only check the permission when the requested image has a namespace, i.e. project
 			// TODO check if account has read/write permission
+			// TODO handle the exception: a.Name = "test/" or a.Name = "/test"
 			namespace := strings.Split(a.Name, "/")[0]
 			image := strings.Split(a.Name, "/")[1]
 
