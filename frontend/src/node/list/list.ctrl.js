@@ -16,6 +16,7 @@
         self.deleteNode = deleteNode;
         self.updateEndpoint = updateEndpoint;
         self.updateLabels = updateLabels;
+        self.addWorkerNode = addWorkerNode;
 
         activate();
 
@@ -51,6 +52,10 @@
         function updateLabels(nodeId, env, labels) {
             labels = labels || {};
             nodeCurd.updateLabels(nodeId, env, labels)
+        }
+
+        function addWorkerNode(env){
+            nodeCurd.addWorkerNode(env)
         }
     }
 })();

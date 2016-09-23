@@ -1,6 +1,6 @@
 (function () {
     'use strict';
-    angular.module('app.utils')
+    angular.module('app.node')
         .factory('updateLabelsFormModal', updateLabelsFormModal);
 
     /* @ngInject */

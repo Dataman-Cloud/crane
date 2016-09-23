@@ -1,0 +1,34 @@
+<md-dialog aria-label="select image">
+    <form name="staticForm" class="form-main">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>{/'Add Node' | translate/}</h2>
+                <span flex></span>
+                <md-button id="create-dialog-endpoint-cancel" class="md-icon-button" ng-click="formCtrl.cancel()"
+                           aria-label="cancel">
+                    <i class="fa fa-close"></i>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="form-group">
+                <label>{/'Host IP' | translate/}</label>
+                <div class="form-control">
+                    <input id="create-node-modal" type="text" name="endpoint" aria-label="endpoint" placeholder="192.168.1.63"
+                           data-ng-model="formCtrl.endpoint" data-required="required" md-autofocus>
+                    <div ng-messages="staticForm.endpoint.$error" ng-if="staticForm.endpoint.$dirty" role="alert">
+                        <p class="help-info text-danger" ng-message="required">
+                            <small>{/'Volume Name is required' | translate/}</small></p>
+                    </div>
+                </div>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <md-button id="create-endpoint-cancel" ng-click="formCtrl.cancel()" aria-label="cancel">{/'Cancel' | translate/}</md-button>
+            <md-button id="create-endpoint-ok" data-ng-disabled="staticForm.$invalid" data-ng-click="formCtrl.ok()" aria-label="ok"
+                       class="md-primary">{/'Create' | translate/}
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>
+
