@@ -28,6 +28,11 @@ type CraneConfigResponse struct {
 	NumGoroutine int
 }
 
+type RouteInfo struct {
+	Method string `json:"Method"`
+	Path   string `json:"Path"`
+}
+
 func (api *Api) CraneConfig(ctx *gin.Context) {
 	config := &CraneConfigResponse{}
 	config.Version = version.Version
@@ -78,10 +83,6 @@ func (api *Api) HealthCheck(ctx *gin.Context) {
 }
 
 func (api *Api) Help(engine *gin.Engine) gin.HandlerFunc {
-	type RouteInfo struct {
-		Method string `json:"Method"`
-		Path   string `json:"Path"`
-	}
 	routes := make([]*RouteInfo, 0)
 	for _, r := range engine.Routes() {
 		routes = append(routes, &RouteInfo{
