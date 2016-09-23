@@ -19,7 +19,7 @@ func main() {
 	ctx := context.Background()
 	conf := config.GetConfig()
 
-	plugins.Init()
+	plugins.Init(conf)
 
 	client, err := dockerclient.NewCraneDockerClient(conf)
 	if err != nil {

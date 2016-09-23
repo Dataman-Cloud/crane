@@ -2,9 +2,9 @@ package api
 
 import (
 	"encoding/json"
-	"testing"
 	"net/http"
 	"net/http/httptest"
+	"testing"
 
 	"github.com/Dataman-Cloud/crane/src/dockerclient"
 	"github.com/Dataman-Cloud/crane/src/utils/cranerror"

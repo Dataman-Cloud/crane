@@ -16,8 +16,7 @@ import (
 	_ "github.com/mattes/migrate/driver/mysql"
 )
 
-func Init() {
-	conf := config.GetConfig()
+func Init(conf *config.Config) {
 	if conf == nil || conf.FeatureFlags == nil {
 		log.Warnf("conf or feature flags was nil")
 		return
