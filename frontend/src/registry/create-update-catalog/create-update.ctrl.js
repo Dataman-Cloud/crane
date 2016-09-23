@@ -4,7 +4,7 @@
         .controller('CreateUpdateCatalog', CreateUpdateCatalog);
 
     /* @ngInject */
-    function CreateUpdateCatalog(stack, $timeout, $scope, Notification, $rootScope, registryCurd, target, $stateParams) {
+    function CreateUpdateCatalog(stack, $scope, Notification, $rootScope, registryCurd, target, $stateParams) {
         var self = this;
 
         self.target = target;
@@ -25,20 +25,11 @@
             self.imageUrl = stack.IconData || ''
         }
 
-
-        self.refreshCodeMirror = false;
-        self.editorOptions = {
-            theme: 'midnight',
-            lineNumbers: true,
-            indentWithTabs: true,
-            matchBrackets: true,
-            mode: 'Javascript',
-            tabSize: 2,
-            extraKeys: {
-                Tab: function (cm) {
-                    var spaces = new Array(cm.getOption('indentUnit') + 1).join(' ');
-                    cm.replaceSelection(spaces);
-                }
+        self.aceOption = {
+            theme: 'twilight',
+            mode: 'javascript',
+            onLoad: function (_editor) {
+                _editor.$blockScrolling = Infinity;
             }
         };
 
@@ -53,14 +44,6 @@
         activate();
 
         function activate() {
-            // cload timeout is 10, set long for it;
-            var timeoutPromise = $timeout(function () {
-                self.refreshCodeMirror = true;
-            }, 20, false);
-
-            $scope.$on('$destroy', function () {
-                $timeout.cancel(timeoutPromise);
-            });
         }
 
         function stackChange() {
