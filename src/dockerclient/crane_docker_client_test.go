@@ -185,6 +185,7 @@ func StartTestServer() *dockertest.DockerServer {
 	serverPort := rand.Intn(39999-30000) + 30000
 	bindAddr := "127.0.0.1:" + strconv.FormatInt(int64(serverPort), 10)
 	testServer, _ := dockertest.NewServer(bindAddr, nil, nil)
+	time.Sleep(time.Second)
 	return testServer
 }
 
