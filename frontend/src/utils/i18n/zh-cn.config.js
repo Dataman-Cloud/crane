@@ -358,6 +358,7 @@
             "Create Stack Template": "创建项目模板",
             "Update Stack Template": "更新项目模板",
             "How to create a docker image": "如何创建镜像",
+            "How to create a docker image note": " 注意： push/pull 镜像之前确保 docker daemon 启动参数 --insecure-registry=REGISTRY_IP:5000",
             "Templates": "项目模板",
             "Public Docker Images": "公有镜像",
             "My Docker Images": "我的镜像",

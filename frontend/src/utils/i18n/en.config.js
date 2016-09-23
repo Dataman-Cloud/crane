@@ -356,6 +356,7 @@
             "Create Stack Template": "Create Stack Template",
             "Update Stack Template": "Update Stack Template",
             "How to create a docker image": "How to create a docker image",
+            "How to create a docker image note": "notes: Make sure your docker daemon have been started with option --insecure-registry=REGISTRY_IP:5000 before any image going to be pushed into the repository.",
             "Templates": "Templates",
             "Public Docker Images": "Public Images",
             "My Docker Images": "My Images",
