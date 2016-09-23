@@ -307,7 +307,7 @@ func (client *CraneDockerClient) updateNetworks(networks map[string]bool, namesp
 	return newNetworkMap, nil
 }
 
-func (client *CraneDockerClient) convertNetworks(newNetworkMap map[string]bool, networks []string, namespace string, name string) []swarm.NetworkAttachmentConfig {
+func convertNetworks(newNetworkMap map[string]bool, networks []string, namespace string, name string) []swarm.NetworkAttachmentConfig {
 	nets := []swarm.NetworkAttachmentConfig{}
 	for _, serviceNetwork := range networks {
 		if isNew, ok := newNetworkMap[serviceNetwork]; ok && isNew {
@@ -347,7 +347,7 @@ func (client *CraneDockerClient) deployServices(services map[string]model.CraneS
 			Mode:         service.Mode,
 			TaskTemplate: service.TaskTemplate,
 			EndpointSpec: service.EndpointSpec,
-			Networks:     client.convertNetworks(newNetworkMap, service.Networks, namespace, internalName),
+			Networks:     convertNetworks(newNetworkMap, service.Networks, namespace, internalName),
 			UpdateConfig: service.UpdateConfig,
 		}
 

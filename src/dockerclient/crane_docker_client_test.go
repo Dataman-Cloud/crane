@@ -196,9 +196,11 @@ func InitTestSwarm(t *testing.T) (*dockertest.DockerServer, *CraneDockerClient, 
 	httpClient, err := NewHttpClient()
 	assert.Nil(t, err)
 	endpoint := testServer.URL()[0 : len(testServer.URL())-1]
+	managerClient, err := docker.NewVersionedClient(endpoint, "")
 	client := &CraneDockerClient{
 		sharedHttpClient:         httpClient,
 		swarmManagerHttpEndpoint: endpoint,
+		swarmManager:             managerClient,
 	}
 
 	swarmInitInfo := swarm.InitRequest{
