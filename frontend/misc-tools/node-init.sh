@@ -187,7 +187,7 @@ ntp_is_enabled_on_ubuntu()
 {
     if _command_exists ntpq; then
         echo "-> Checking NTP service status..."
-        # TODO: wierd method to check the ntp status
+        # TODO: weird method to check the ntp status
         ntpq -p | grep -Fq offset ||
             {
                 printf "\033[41mERROR:\033[0m NTP is unsynchronised, Please confirm your ntp status before continue.\n"
