@@ -6,8 +6,8 @@ import (
 
 	"github.com/Dataman-Cloud/crane/src/utils/config"
 
-	"github.com/stretchr/testify/assert"
 	"github.com/gin-gonic/gin"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestApiRouter(t *testing.T) {

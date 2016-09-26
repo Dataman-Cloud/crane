@@ -1,17 +1,16 @@
 package registry
 
 import (
-	"testing"
-	"strings"
 	"io/ioutil"
 	"os"
+	"strings"
+	"testing"
 
 	"github.com/Dataman-Cloud/crane/src/plugins/auth"
 
-	"github.com/stretchr/testify/assert"
 	"github.com/docker/distribution/registry/auth/token"
+	"github.com/stretchr/testify/assert"
 )
-
 
 func TestParseResourceActionsNone(t *testing.T) {
 	scope := ""
@@ -25,8 +24,8 @@ func TestParseResourceActions(t *testing.T) {
 	scope := "type:name:action1,action2"
 	var expectedReturn []*token.ResourceActions
 	expectedReturn = append(expectedReturn, &token.ResourceActions{
-		Type: "type",
-		Name: "name",
+		Type:    "type",
+		Name:    "name",
 		Actions: strings.Split("action1,action2", ","),
 	})
 

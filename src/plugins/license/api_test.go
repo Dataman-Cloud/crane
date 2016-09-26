@@ -1,18 +1,18 @@
 package license
 
 import (
-	"net/http/httptest"
-	"path/filepath"
-	"os"
-	"testing"
-	"net/http"
-	"io"
 	"encoding/json"
+	"io"
+	"net/http"
+	"net/http/httptest"
+	"os"
+	"path/filepath"
+	"testing"
 
-	"github.com/jinzhu/gorm"
-	"github.com/stretchr/testify/assert"
 	"github.com/gin-gonic/gin"
+	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
+	"github.com/stretchr/testify/assert"
 
 	"strings"
 )
@@ -48,8 +48,8 @@ func ParseErrorCode(r io.Reader) ExpectedResponse {
 
 func MockLicense() *Setting {
 	return &Setting{
-		ID:          1,
-		License:     "dsfsdfsd",
+		ID:      1,
+		License: "dsfsdfsd",
 	}
 }
 
