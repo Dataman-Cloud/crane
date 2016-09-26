@@ -4,7 +4,7 @@
             <div class="md-toolbar-tools">
                 <h2>{/'Service Scale' | translate/}</h2>
                 <span flex></span>
-                <md-button class="md-icon-button" ng-click="formCtrl.cancel()"
+                <md-button id="stack-modals-cancel" class="md-icon-button" ng-click="formCtrl.cancel()"
                            aria-label="cancel">
                     <i class="fa fa-close"></i>
                 </md-button>
@@ -14,7 +14,7 @@
             <div class="form-group">
                 <label>{/'The number of tasks' | translate/}</label>
                 <div class="form-control">
-                    <input type="number" class="form-input" name="scale" aria-label="scale" data-ng-model="formCtrl.scale" data-required min="0" md-autofocus>
+                    <input id="modals-scale" type="number" class="form-input" name="scale" aria-label="scale" data-ng-model="formCtrl.scale" data-required min="0" md-autofocus>
                     <div ng-messages="staticForm.scale.$error" ng-if="staticForm.scale.$dirty" role="alert">
                         <p class="help-info text-danger" ng-message="required">任务数不能为空</p>
                         <p class="help-info text-danger" ng-message="min">任务数量不能是负数</p>
@@ -23,8 +23,8 @@
             </div>
         </md-dialog-content>
         <md-dialog-actions layout="row">
-            <md-button ng-click="formCtrl.cancel()" aria-label="cancel">{/'Cancel' | translate/}</md-button>
-            <md-button data-ng-disabled="staticForm.$invalid" data-ng-click="formCtrl.ok()" aria-label="ok" class="md-primary">{/'Confirm' | translate/}</md-button>
+            <md-button id="modals-cancel-btn" ng-click="formCtrl.cancel()" aria-label="cancel">{/'Cancel' | translate/}</md-button>
+            <md-button id="modals-ok-btn" data-ng-disabled="staticForm.$invalid" data-ng-click="formCtrl.ok()" aria-label="ok" class="md-primary">{/'Confirm' | translate/}</md-button>
         </md-dialog-actions>
     </form>
 </md-dialog>

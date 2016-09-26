@@ -25,10 +25,10 @@
             </div>
         </div>
         <footer class="form-buttons">
-            <md-button id="next" class="md-raised md-primary" data-ng-disabled="stepOneForm.$invalid"
+            <md-button id="stack-create-next" class="md-raised md-primary" data-ng-disabled="stepOneForm.$invalid"
                        data-ng-click="stackCreateByFormCtrl.step = 2">{/'Next' | translate/}
             </md-button>
-            <md-button data-ng-click="rootCtrl.goBack()">{/'Cancel' | translate/}</md-button>
+            <md-button id="stack-create-cancel" data-ng-click="rootCtrl.goBack()">{/'Cancel' | translate/}</md-button>
         </footer>
     </form>
 </div>
@@ -91,7 +91,8 @@
                                             data-ng-change="stackCreateByFormCtrl.modeChange(serve)"
                                             layout-align="start center" flex>
                                 <div flex="25">
-                                    <md-radio-button value="Replicated" class="md-primary">{/'Replicated' | translate/} <em>replicated</em>
+                                    <md-radio-button value="Replicated" class="md-primary">{/'Replicated' | translate/}
+                                        <em>replicated</em>
                                     </md-radio-button>
                                     <input id="service{/$index/}-Replicas" type="number" min="0"
                                            data-ng-show="serve.defaultMode === 'Replicated'"
@@ -99,7 +100,8 @@
                                            data-ng-model="serve.Mode.Replicated.Replicas" name="replicas">
                                 </div>
                                 <div flex="25">
-                                    <md-radio-button value="Global" class="md-primary" flex-offset="5">{/'Global' | translate/}
+                                    <md-radio-button id="stack-create-global" value="Global" class="md-primary"
+                                                     flex-offset="5">{/'Global' | translate/}
                                         <em>global</em>
                                     </md-radio-button>
                                 </div>
@@ -114,9 +116,9 @@
                             <md-select id="service{/$index/}-Networks" data-ng-model="serve.Networks" multiple
                                        aria-label="Networks"
                                        md-on-open="stackCreateByFormCtrl.loadNetworks()">
-                                <md-option
-                                        data-ng-repeat="network in stackCreateByFormCtrl.networks | filter: {Driver: '!bridge'}"
-                                        ng-value="network.Name">{/network.Name/}
+                                <md-option id="service{/$index/}-network-value"
+                                           data-ng-repeat="network in stackCreateByFormCtrl.networks | filter: {Driver: '!bridge'}"
+                                           ng-value="network.Name">{/network.Name/}
                                 </md-option>
                             </md-select>
                         </div>
@@ -130,9 +132,9 @@
                                        aria-label="RegAuth"
                                        md-on-open="stackCreateByFormCtrl.loadRegAuths()">
                                 <md-option value="" ng-selected="true">{/'Empty' | translate/}</md-option>
-                                <md-option
-                                        data-ng-repeat="regAuth in stackCreateByFormCtrl.regAuths"
-                                        ng-value="regAuth.Name">{/regAuth.Name/}
+                                <md-option id="service{/$index/}-RegistryAuth-value"
+                                           data-ng-repeat="regAuth in stackCreateByFormCtrl.regAuths"
+                                           ng-value="regAuth.Name">{/regAuth.Name/}
                                 </md-option>
                             </md-select>
                         </div>
@@ -150,18 +152,20 @@
                         <div data-ng-repeat="port in serve.EndpointSpec.Ports track by $index">
                             <ng-form id="portForm{/$index/}" name="portForm">
                                 <div class="form-control sub-group" layout="row" layout-align="start center">
-                                    <input flex="20" type="number" placeholder="容器端口"
+                                    <input id="container-port-{/$index/}" flex="20" type="number" placeholder="容器端口"
                                            data-ng-model="port.TargetPort" data-required="required"
                                            name="TargetPort" max="65535" min="1">
-                                    <md-select ng-model="port.Protocol" data-required="required" flex="20"
+                                    <md-select id="container-select-port-{/$index/}" ng-model="port.Protocol"
+                                               data-required="required" flex="20"
                                                aria-label="select protocol">
-                                        <md-option value="tcp">TCP</md-option>
-                                        <md-option value="udp">UDP</md-option>
+                                        <md-option id="select-port-value-tcp-{/$index/}" value="tcp">TCP</md-option>
+                                        <md-option id="select-port-value-udp-{/$index/}" value="udp">UDP</md-option>
                                     </md-select>
-                                    <input flex="20" type="number" placeholder="主机端口"
+                                    <input id="host-port-{/$index/}" flex="20" type="number" placeholder="主机端口"
                                            data-ng-model="port.PublishedPort" data-required="required"
                                            name="PublishedPort" max="65535" min="1">
-                                    <md-button class="md-icon-button md-primary" aria-label="trash"
+                                    <md-button id="delete-endpointSpec-{/$index/}" class="md-icon-button md-primary"
+                                               aria-label="trash"
                                                data-ng-click="stackCreateByFormCtrl.deleteConfig($index, serve.EndpointSpec.Ports)">
                                         <i class="fa fa-trash-o" aria-hidden="true"></i>
                                     </md-button>
@@ -202,16 +206,17 @@
                         <div data-ng-repeat="env in serve.TaskTemplate.ContainerSpec.Env track by $index">
                             <ng-form id="envForm{/$index/}" name="envForm">
                                 <div class="form-control sub-group" layout="row" layout-align="start center">
-                                    <input flex="20" type="text" placeholder="KEY"
+                                    <input id="stack-env-key-{/$index/}" flex="20" type="text" placeholder="KEY"
                                            data-ng-model="env.key" data-required="required"
                                            name="envKey" data-ng-pattern="/^[a-zA-Z0-9_]+$/"
                                            dm-check-include="stackCreateByFormCtrl.listConfigByKey(serve.TaskTemplate.ContainerSpec.Env, $index)">
 
-                                    <input flex="20" type="text" placeholder="VALUE"
+                                    <input id="stack-env-value-{/$index/}" flex="20" type="text" placeholder="VALUE"
                                            data-ng-model="env.value" data-required="required"
                                            name="envValue" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/">
 
-                                    <md-button class="md-icon-button md-primary" aria-label="trash"
+                                    <md-button id="delete-env-{/$index/}" class="md-icon-button md-primary"
+                                               aria-label="trash"
                                                data-ng-click="stackCreateByFormCtrl.deleteConfig($index, serve.TaskTemplate.ContainerSpec.Env)">
                                         <i class="fa fa-trash-o" aria-hidden="true"></i>
                                     </md-button>
@@ -239,9 +244,11 @@
                         </div>
                     </div>
                     <div class="fold-line">
-                        <a href="#" data-ng-click="serve.showStartupParameter = !serve.showStartupParameter">
+                        <a id="show-start-up-parameter" href="#"
+                           data-ng-click="serve.showStartupParameter = !serve.showStartupParameter">
                             <i class="fa"
-                               ng-class="{'fa-chevron-down': serve.showStartupParameter, 'fa-chevron-right': !serve.showStartupParameter}"></i>{/'CMD' | translate/}
+                               ng-class="{'fa-chevron-down': serve.showStartupParameter, 'fa-chevron-right': !serve.showStartupParameter}"></i>{/'CMD'
+                            | translate/}
                         </a>
                     </div>
 
@@ -269,11 +276,12 @@
                             <div data-ng-repeat="cmd in serve.TaskTemplate.ContainerSpec.Command track by $index">
                                 <ng-form id="cmdForm{/$index/}" name="cmdForm">
                                     <div class="form-control sub-group" layout="row" layout-align="start center">
-                                        <input type="text" placeholder="CMD" flex="40"
+                                        <input id="stack-cmd-input-{/$index/}" type="text" placeholder="CMD" flex="40"
                                                data-ng-model="cmd.command" data-required="required"
                                                name="cmdInput">
 
-                                        <md-button class="md-icon-button md-primary" aria-label="trash"
+                                        <md-button id="delete-cmd-{/$index/}" class="md-icon-button md-primary"
+                                                   aria-label="trash"
                                                    data-ng-click="stackCreateByFormCtrl.deleteConfig($index, serve.TaskTemplate.ContainerSpec.Command)">
                                             <i class="fa fa-trash-o" aria-hidden="true"></i>
                                         </md-button>
@@ -302,11 +310,12 @@
                             <div data-ng-repeat="arg in serve.TaskTemplate.ContainerSpec.Args track by $index">
                                 <ng-form id="argForm{/$index/}" name="argForm">
                                     <div class="form-control sub-group" layout="row" layout-align="start center">
-                                        <input type="text" flex="40"
+                                        <input id="arg-input-{/$index/}" type="text" flex="40"
                                                data-ng-model="arg.arg" data-required="required"
                                                name="argInput">
 
-                                        <md-button class="md-icon-button md-primary" aria-label="trash"
+                                        <md-button id="delete-arg-{/$index/}" class="md-icon-button md-primary"
+                                                   aria-label="trash"
                                                    data-ng-click="stackCreateByFormCtrl.deleteConfig($index, serve.TaskTemplate.ContainerSpec.Args)">
                                             <i class="fa fa-trash-o" aria-hidden="true"></i>
                                         </md-button>
@@ -324,9 +333,10 @@
                         </div>
                     </div>
                     <div class="fold-line">
-                        <a href="#" data-ng-click="serve.showTag = !serve.showTag">
+                        <a id="stack-show-tag" href="#" data-ng-click="serve.showTag = !serve.showTag">
                             <i class="fa"
-                               ng-class="{'fa-chevron-down': serve.showTag, 'fa-chevron-right': !serve.showTag}"></i>{/'Labels' | translate/}
+                               ng-class="{'fa-chevron-down': serve.showTag, 'fa-chevron-right': !serve.showTag}"></i>{/'Labels'
+                            | translate/}
                         </a>
                     </div>
                     <div data-ng-show="serve.showTag">
@@ -341,16 +351,18 @@
                             <div data-ng-repeat="label in serve.Labels track by $index">
                                 <ng-form id="serveLabels{/$index/}" name="labelForm">
                                     <div class="form-control sub-group" layout="row" layout-align="start center">
-                                        <input flex="20" type="text" placeholder="KEY"
+                                        <input id="serve-label-key-{/$index/}" flex="20" type="text" placeholder="KEY"
                                                data-ng-model="label.key" data-required="required"
                                                name="labelKey" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/"
                                                dm-check-include="stackCreateByFormCtrl.listConfigByKey(serve.Labels, $index)">
 
-                                        <input flex="20" type="text" placeholder="VALUE"
+                                        <input id="serve-label-value-{/$index/}" flex="20" type="text"
+                                               placeholder="VALUE"
                                                data-ng-model="label.value" data-required="required"
                                                name="labelValue" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/">
 
-                                        <md-button class="md-icon-button md-primary" aria-label="trash"
+                                        <md-button id="serve-label-delete-{/$index/}" class="md-icon-button md-primary"
+                                                   aria-label="trash"
                                                    data-ng-click="stackCreateByFormCtrl.deleteConfig($index, serve.Labels)">
                                             <i class="fa fa-trash-o" aria-hidden="true"></i>
                                         </md-button>
@@ -391,16 +403,19 @@
                             <div data-ng-repeat="label in serve.TaskTemplate.ContainerSpec.Labels track by $index">
                                 <ng-form id="labelForm{/$index/}" name="labelForm">
                                     <div class="form-control sub-group" layout="row" layout-align="start center">
-                                        <input flex="20" type="text" placeholder="KEY"
+                                        <input id="container-label-key-{/$index/}" flex="20" type="text"
+                                               placeholder="KEY"
                                                data-ng-model="label.key" data-required="required"
                                                name="labelKey" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/"
                                                dm-check-include="stackCreateByFormCtrl.listConfigByKey(serve.TaskTemplate.ContainerSpec.Labels, $index)">
 
-                                        <input flex="20" type="text" placeholder="VALUE"
+                                        <input id="container-label-value-{/$index/}" flex="20" type="text"
+                                               placeholder="VALUE"
                                                data-ng-model="label.value" data-required="required"
                                                name="labelValue" data-ng-pattern="/^[^\u4e00-\u9fa5]*$/">
 
-                                        <md-button class="md-icon-button md-primary" aria-label="trash"
+                                        <md-button id="delete-container-label-{/$index/}"
+                                                   class="md-icon-button md-primary" aria-label="trash"
                                                    data-ng-click="stackCreateByFormCtrl.deleteConfig($index, serve.TaskTemplate.ContainerSpec.Labels)">
                                             <i class="fa fa-trash-o" aria-hidden="true"></i>
                                         </md-button>
@@ -431,9 +446,11 @@
                         </div>
                     </div>
                     <div class="fold-line">
-                        <a href="#" data-ng-click="serve.showResourceLimit = !serve.showResourceLimit">
+                        <a id="show-resource-limit" href="#"
+                           data-ng-click="serve.showResourceLimit = !serve.showResourceLimit">
                             <i class="fa"
-                               ng-class="{'fa-chevron-down': serve.showResourceLimit, 'fa-chevron-right': !serve.showResourceLimit}"></i>{/'Resource limit' | translate/}
+                               ng-class="{'fa-chevron-down': serve.showResourceLimit, 'fa-chevron-right': !serve.showResourceLimit}"></i>{/'Resource
+                            limit' | translate/}
                         </a>
                     </div>
                     <div data-ng-show="serve.showResourceLimit">
@@ -515,9 +532,10 @@
                     </div>
 
                     <div class="fold-line">
-                        <a href="#" data-ng-click="serve.showFaultTolerant = !serve.showFaultTolerant">
+                        <a id="show-fault-tolerant" href="#" data-ng-click="serve.showFaultTolerant = !serve.showFaultTolerant">
                             <i class="fa"
-                               ng-class="{'fa-chevron-down': serve.showFaultTolerant, 'fa-chevron-right': !serve.showFaultTolerant}"></i>{/'Restart Policy' | translate/}
+                               ng-class="{'fa-chevron-down': serve.showFaultTolerant, 'fa-chevron-right': !serve.showFaultTolerant}"></i>{/'Restart
+                            Policy' | translate/}
                         </a>
                     </div>
 
@@ -529,7 +547,8 @@
                                                 data-ng-model="serve.TaskTemplate.RestartPolicy.Condition" layout="row"
                                                 aria-label="restart-condition" flex>
                                     <div flex="25">
-                                        <md-radio-button value="any" class="md-primary">
+                                        <md-radio-button id="service{/$index/}-Condition-any" value="any"
+                                                         class="md-primary">
                                             <i class="fa fa-umbrella"></i>
                                             <md-tooltip md-direction="top">无论任务正常或异常退出，都重启, 适合批处理或定时任务场景</md-tooltip>
                                             {/'Restart condition: Any' | translate/}
@@ -537,11 +556,14 @@
                                         <label><em>any</em></label>
                                     </div>
                                     <div flex="25">
-                                        <md-radio-button value="none" class="md-primary">{/'none' | translate/}</md-radio-button>
+                                        <md-radio-button id="service{/$index/}-Condition-none" value="none"
+                                                         class="md-primary">{/'none' | translate/}
+                                        </md-radio-button>
                                         <label><em>none</em></label>
                                     </div>
                                     <div flex="25">
-                                        <md-radio-button value="on-failure" class="md-primary">
+                                        <md-radio-button id="service{/$index/}-Condition-on-failure" value="on-failure"
+                                                         class="md-primary">
                                             <i class="fa fa-umbrella"></i>
                                             <md-tooltip md-direction="top">在退出状态码(exit code)非 0 的情况下重启</md-tooltip>
                                             {/'on-failure' | translate/}
@@ -588,9 +610,10 @@
                     </div>
 
                     <div class="fold-line">
-                        <a href="#" data-ng-click="serve.showUpdatePolicy = !serve.showUpdatePolicy">
+                        <a id="show-update-policy" href="#" data-ng-click="serve.showUpdatePolicy = !serve.showUpdatePolicy">
                             <i class="fa"
-                               ng-class="{'fa-chevron-down': serve.showUpdatePolicy, 'fa-chevron-right': !serve.showUpdatePolicy}"></i>{/'Update Policy' | translate/}
+                               ng-class="{'fa-chevron-down': serve.showUpdatePolicy, 'fa-chevron-right': !serve.showUpdatePolicy}"></i>{/'Update
+                            Policy' | translate/}
                         </a>
                     </div>
                     <div data-ng-show="serve.showUpdatePolicy">
@@ -601,11 +624,15 @@
                                                 data-ng-model="serve.UpdateConfig.FailureAction" layout="row"
                                                 aria-label="restart-condition" flex>
                                     <div flex="33">
-                                        <md-radio-button value="continue" class="md-primary">{/'continue' | translate/}</md-radio-button>
+                                        <md-radio-button id="service{/$index/}-FailureAction-continue" value="continue"
+                                                         class="md-primary">{/'continue' | translate/}
+                                        </md-radio-button>
                                         <label> <em>continue</em></label>
                                     </div>
                                     <div flex="33">
-                                        <md-radio-button value="pause" class="md-primary">{/'Pause Update' | translate/}</md-radio-button>
+                                        <md-radio-button id="service{/$index/}-FailureAction-pause" value="pause"
+                                                         class="md-primary">{/'Pause Update' | translate/}
+                                        </md-radio-button>
                                         <label> <em>pause</em></label>
                                     </div>
                                 </md-radio-group>
@@ -633,9 +660,11 @@
 
 
                     <div class="fold-line">
-                        <a href="#" data-ng-click="serve.showSchedulingStrategy = !serve.showSchedulingStrategy">
+                        <a id="show-scheduling-strategy" href="#"
+                           data-ng-click="serve.showSchedulingStrategy = !serve.showSchedulingStrategy">
                             <i class="fa"
-                               ng-class="{'fa-chevron-down': serve.showSchedulingStrategy, 'fa-chevron-right': !serve.showSchedulingStrategy}"></i>{/'Scheduling Policy' | translate/}
+                               ng-class="{'fa-chevron-down': serve.showSchedulingStrategy, 'fa-chevron-right': !serve.showSchedulingStrategy}"></i>{/'Scheduling
+                            Policy' | translate/}
                         </a>
                     </div>
                     <div data-ng-show="serve.showSchedulingStrategy">
@@ -649,16 +678,18 @@
                             <div data-ng-repeat="constraint in serve.TaskTemplate.Placement.Constraints track by $index">
                                 <ng-form id="constraintForm{/$index/}" name="constraintForm">
                                     <div class="form-control sub-group" layout="row" layout-align="start center">
-                                        <input flex="20" type="text" placeholder="node.labels.ssd"
+                                        <input id="constraintForm{/$index/}-ssd" flex="20" type="text"
+                                               placeholder="node.labels.ssd"
                                                data-ng-model="constraint.key" data-required="required"
                                                name="constraintKey" data-ng-pattern="/^[a-zA-Z0-9_]+$/"
                                                dm-check-include="stackCreateByFormCtrl.listConfigByKey(serve.TaskTemplate.Placement.Constraints, $index)">
 
-                                        <input flex="20" type="text" placeholder="yes"
+                                        <input id="constraintForm{/$index/}-yes" flex="20" type="text" placeholder="yes"
                                                data-ng-model="constraint.value" data-required="required"
                                                name="constraintValue">
 
-                                        <md-button class="md-icon-button md-primary" aria-label="trash"
+                                        <md-button id="constraintForm{/$index/}-delete"
+                                                   class="md-icon-button md-primary" aria-label="trash"
                                                    data-ng-click="stackCreateByFormCtrl.deleteConfig($index, serve.TaskTemplate.Placement.Constraints)">
                                             <i class="fa fa-trash-o" aria-hidden="true"></i>
                                         </md-button>
@@ -689,9 +720,10 @@
                     </div>
 
                     <div class="fold-line">
-                        <a href="#" data-ng-click="serve.showFileMount = !serve.showFileMount">
+                        <a id="show-file-mount" href="#" data-ng-click="serve.showFileMount = !serve.showFileMount">
                             <i class="fa"
-                               ng-class="{'fa-chevron-down': serve.showFileMount, 'fa-chevron-right': !serve.showFileMount}"></i>{/'File mount' | translate/}
+                               ng-class="{'fa-chevron-down': serve.showFileMount, 'fa-chevron-right': !serve.showFileMount}"></i>{/'File
+                            mount' | translate/}
                         </a>
                     </div>
 
@@ -706,21 +738,29 @@
                             <div data-ng-repeat="mount in serve.TaskTemplate.ContainerSpec.Mounts track by $index">
                                 <ng-form id="mountForm{/$index/}" name="mountForm">
                                     <div class="form-control sub-group" layout="row" layout-align="start center">
-                                        <input flex="20" type="text" placeholder="Source"
+                                        <input id="mountForm{/$index/}-source" flex="20" type="text"
+                                               placeholder="Source"
                                                data-ng-model="mount.Source" data-required="required"
                                                name="Source" max="65535" min="1">
 
-                                        <md-select ng-model="mount.ReadOnly" data-required="required" flex="20"
+                                        <md-select id="mountForm{/$index/}-select" ng-model="mount.ReadOnly"
+                                                   data-required="required" flex="20"
                                                    aria-label="select mount">
-                                            <md-option ng-value="true">{/'Read-only' | translate/}</md-option>
-                                            <md-option ng-value="false">{/'Read-Write' | translate/}</md-option>
+                                            <md-option id="mountForm{/$index/}-yes" ng-value="true">{/'Read-only' |
+                                                translate/}
+                                            </md-option>
+                                            <md-option id="mountForm{/$index/}-no" ng-value="false">{/'Read-Write' |
+                                                translate/}
+                                            </md-option>
                                         </md-select>
 
-                                        <input flex="20" type="text" placeholder="Target"
+                                        <input id="mountForm{/$index/}-target" flex="20" type="text"
+                                               placeholder="Target"
                                                data-ng-model="mount.Target" data-required="required"
                                                name="Target" max="65535" min="1">
 
-                                        <md-button class="md-icon-button md-primary" aria-label="trash"
+                                        <md-button id="mountForm{/$index/}-delete" class="md-icon-button md-primary"
+                                                   aria-label="trash"
                                                    data-ng-click="stackCreateByFormCtrl.deleteConfig($index, serve.TaskTemplate.ContainerSpec.Mounts)">
                                             <i class="fa fa-trash-o" aria-hidden="true"></i>
                                         </md-button>
@@ -749,7 +789,8 @@
                         </md-button>
                         <md-button id="removeServe{/$index/}" class="md-raised"
                                    data-ng-if="!$first"
-                                   data-ng-click="stackCreateByFormCtrl.removeServe($index)">{/'Delete Service' | translate/}
+                                   data-ng-click="stackCreateByFormCtrl.removeServe($index)">{/'Delete Service' |
+                            translate/}
                         </md-button>
                         <md-button id="create{/$index/}" class="md-raised md-primary"
                                    data-ng-disabled="staticForm.$invalid"
@@ -758,7 +799,8 @@
                         </md-button>
                         <md-button id="createAndDownload{/$index/}" class="md-raised md-primary"
                                    data-ng-disabled="staticForm.$invalid"
-                                   data-ng-click="stackCreateByFormCtrl.createAndDownload()">{/'Deployment and export' | translate/}
+                                   data-ng-click="stackCreateByFormCtrl.createAndDownload()">{/'Deployment and export' |
+                            translate/}
                         </md-button>
                     </footer>
                 </form>
