@@ -30,6 +30,11 @@ Please visit http://crane.shurenyun.com
 
 Note: the above is a demo site, unstable and maintainless.
 
+## OS supported
+
+* Ubuntu 12.04 Server
+* Ubuntu 14.04 Server
+* CentOS 7.X
 
 ## Installation
 
