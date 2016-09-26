@@ -13,6 +13,7 @@ set -o errexit
 # check ip forwarding
 # check docker version
 # check docker tcp socket
+# check apparmor for ubuntu
 # check selinux for centos/rhel
 # check ntp service
 # check firewalld
@@ -147,6 +148,20 @@ iptables_docker_rules() {
         exit 1
     fi
     echo "Checking docker rules on Iptables...DONE"
+}
+
+apparmor_required_on_ubuntu()
+{
+  /etc/init.d/apparmor status >/dev/null 2>&1 ||
+      {
+        echo "********************************************************"
+        printf "\033[41mERROR:\033[0m Exception triggered when run \e[1;34m /etc/init.d/apparmor status \e[0m ! Please install apparmor as following:\n"
+        echo "********************************************************"
+        printf "\n"
+        printf "\n"
+        printf "apt-get install -y apparmor apparmor-utils\n"
+        exit 1
+      }
 }
 
 # Firewalld on CentOS/RHEL caused docker issue maybe: https://github.com/docker/docker/issues/16137
@@ -295,6 +310,7 @@ have_a_init()
             ;;
         ubuntu|debian)
             (
+            apparmor_required_on_ubuntu
             ntp_is_enabled_on_ubuntu
             )
             exit 0
