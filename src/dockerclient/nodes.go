@@ -17,6 +17,8 @@ import (
 )
 
 const (
+	defaultListenAddr = "0.0.0.0:2377"
+
 	flagUpdateRole         = "role"
 	flagUpdateAvailability = "availability"
 	flagLabelAdd           = "label-add"
@@ -81,6 +83,7 @@ func (client *CraneDockerClient) CreateNode(joiningNode model.JoiningNode) error
 	req := swarm.JoinRequest{
 		JoinToken:     joinToken,
 		AdvertiseAddr: advertiseAddr,
+		ListenAddr:    defaultListenAddr,
 		RemoteAddrs:   []string{managerInfo.Swarm.NodeAddr},
 	}
 	opts := docker.JoinSwarmOptions{
