@@ -41,6 +41,21 @@ host_arch_supported()
   fi
 }
 
+ip_forwarding_enabled()
+{
+  sysctl net.ipv4.ip_forward | grep 1 || {
+      echo "********************************************************"
+      printf "\033[41mERROR:\033[0m IP Forwarding is disabled! Please Enable the IP Forwarding permanently as following:\n"
+      echo "********************************************************"
+      printf "\n"
+      printf "\n"
+      printf "edit or add a line containing \e[1;34m net.ipv4.ip_forward=1 \e[0m to file /etc/sysctl.conf , and then,\n"
+      printf "run command sysctl -p /etc/sysctl.conf\n"
+      printf "refer: http://www.ducea.com/2006/08/01/how-to-enable-ip-forwarding-in-linux/\n"
+      exit 1
+    }
+}
+
 docker_required() {
   if _command_exists dockerd; then
       echo "-> Checking docker runtime environment..."
@@ -107,12 +122,12 @@ docker_tcp_open_required()
 
 iptables_docker_rules() {
     echo "-> Checking docker rules on Iptables..."
-    if sudo iptables -L | grep "DOCKER" > /dev/null; then
-        if sudo iptables -L | grep "REJECT" > /dev/null; then
+    if iptables -L | grep "DOCKER" > /dev/null; then
+        if iptables -L | grep "REJECT" > /dev/null; then
             printf "\033[41mERROR:\033[0m Some REJECT rules found in iptables, which may cause undesired exceptions, to continue, please remove the REJECT rules and restart Iptables service.\n"
             printf "One way to delete iptables rules is by its chain and line number. To determine a rule's line number, list the rules in the table format and add the --line-numbers option:\n"
             printf "\n"
-            printf "sudo iptables -L --line-numbers\n"
+            printf "iptables -L --line-numbers\n"
             printf "\n"
             printf "\tChain INPUT (policy DROP)\n"
             printf "\tnum  target     prot opt source               destination\n"
@@ -121,7 +136,7 @@ iptables_docker_rules() {
             printf "\t3    REJECT     udp  --  anywhere             anywhere             reject-with icmp-port-unreachable\n"
             printf "Once you know which rule you want to delete, note the chain and line number of the rule. Then run the iptables -D command followed by the chain and rule number. For example:\n"
             printf "\n"
-            printf "sudo iptables -D INPUT 3\n"
+            printf "iptables -D INPUT 3\n"
             printf "\n"
             exit 1
         fi
@@ -187,7 +202,7 @@ ntp_is_enabled_on_ubuntu()
 {
     if _command_exists ntpq; then
         echo "-> Checking NTP service status..."
-        # TODO: wierd method to check the ntp status
+        # TODO: weird method to check the ntp status
         ntpq -p | grep -Fq offset ||
             {
                 printf "\033[41mERROR:\033[0m NTP is unsynchronised, Please confirm your ntp status before continue.\n"
@@ -234,6 +249,7 @@ lsb_version=""
 have_a_init()
 {
     host_arch_supported
+    ip_forwarding_enabled
     docker_required
     docker_tcp_open_required
     case "$(get_distribution_type)" in
