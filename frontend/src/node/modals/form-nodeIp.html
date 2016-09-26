@@ -11,26 +11,29 @@
             </div>
         </md-toolbar>
         <md-dialog-content>
-            <p>{/'Docker Daemon TCP Socket required' | translate/}</p>
-            <p>{/'Enable Docker TCP Socket' | translate/}</p>
+            <h3 class="ng-binding">
+              {/'1. Check&Init the node' | translate/}
+              <span class="required">*</span>
+            </h3>
+            <p>{/'Init node' | translate/}</p>
+            <code id="cmd">curl -XGET {/MISC_TOOLS_URL/}node-init.sh | sudo sh</code>
+            <div class="sub-button">
+              <md-button id="node-master-ssh-copy" class="md-raised md-success md-small copy" ngclipboard data-clipboard-target="#cmd"  md-autofocus>
+                <i class="fa fa-clone"></i>{/'Copy code' | translate/}
+              </md-button>
+            </div>
+            <h3 class="ng-binding">
+              {/'2. Docker Daemon TCP Socket required' | translate/}
+              <span class="required">*</span>
+            </h3>
             <p>{/'Docker TCP Socket Addrs' | translate/}</p>
             <input id="node-nodeip-endpoint" type="text" name="endpoint" aria-label="endpoint" placeholder="http://192.168.59.105:2375"
                    data-ng-model="formCtrl.endpoint" data-required="required" md-autofocus>
             <div ng-messages="staticForm.endpoint.$error" ng-if="staticForm.endpoint.$dirty" role="alert">
                 <p class="help-info text-danger" ng-message="required"><small>{/'Address Required' | translate/}</small></p>
             </div>
-            <p>{/'How to configure Docker Daemon Socket Addrs' | translate/}</p>
-            <p>CentOS/RHEL(systemd):</p>
-            <p>{/'Edit the docker.service file' | translate/}</p>
-            <p>ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:$DOCKER_TCP_SOCKET -H unix:///var/run/docker.sock</p>
-            <p>{/'Save and Run Command' | translate/}</p>
-            <code>systemctl daemon-reload && service docker restart</code>
-            <p>Ubuntu(upstart):</p>
-            <p>{/'Edit the docker file' | translate/}</p>
-            <p>DOCKER_OPTS="-H tcp://0.0.0.0:$DOCKER_TCP_SOCKET -H unix:///var/run/docker.sock"</p>
-            <p>{/'Save and Run Command' | translate/}</p>
-            <code>service docker restart</code>
-            <p><a href="https://docs.docker.com/engine/reference/commandline/dockerd/#/daemon-socket-option">参考链接</a>
+            <p>
+              <a style="color:#333" href="https://docs.docker.com/engine/reference/commandline/dockerd/#/daemon-socket-option">{/'How to configure Docker Daemon Socket Addrs' | translate/}</a>
             </p>
         </md-dialog-content>
         <md-dialog-actions layout="row">
