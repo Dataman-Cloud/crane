@@ -1,0 +1,204 @@
+[
+  {
+    "ID": "0kzzo1i0y4jz6027t0k7aezc7",
+    "Version": {
+      "Index": 71
+    },
+    "CreatedAt": "2016-06-07T21:07:31.171892745Z",
+    "UpdatedAt": "2016-06-07T21:07:31.376370513Z",
+    "Name": "hopeful_cori",
+    "Spec": {
+      "ContainerSpec": {
+        "Image": "redis"
+      },
+      "Resources": {
+        "Limits": {},
+        "Reservations": {}
+      },
+      "RestartPolicy": {
+        "Condition": "ANY"
+      },
+      "Placement": {}
+    },
+    "ServiceID": "9mnpnzenvg8p8tdbtq4wvbkcz",
+    "Instance": 1,
+    "NodeID": "24ifsmvkjbyhk",
+    "ServiceAnnotations": {},
+    "Status": {
+      "Timestamp": "2016-06-07T21:07:31.290032978Z",
+      "State": "FAILED",
+      "Message": "execution failed",
+      "ContainerStatus": {}
+    },
+    "DesiredState": "SHUTDOWN",
+    "NetworksAttachments": [
+      {
+        "Network": {
+          "ID": "4qvuz4ko70xaltuqbt8956gd1",
+          "Version": {
+            "Index": 18
+          },
+          "CreatedAt": "2016-06-07T20:31:11.912919752Z",
+          "UpdatedAt": "2016-06-07T21:07:29.955277358Z",
+          "Spec": {
+            "Name": "ingress",
+            "Labels": {
+              "com.docker.swarm.internal": "true"
+            },
+            "DriverConfiguration": {},
+            "IPAM": {
+              "Driver": {},
+              "Configs": [
+                {
+                  "Family": "UNKNOWN",
+                  "Subnet": "10.255.0.0/16"
+                }
+              ]
+            }
+          },
+          "DriverState": {
+            "Name": "overlay",
+            "Options": {
+              "com.docker.network.driver.overlay.vxlanid_list": "256"
+            }
+          },
+          "IPAM": {
+            "Driver": {
+              "Name": "default"
+            },
+            "Configs": [
+              {
+                "Family": "UNKNOWN",
+                "Subnet": "10.255.0.0/16"
+              }
+            ]
+          }
+        },
+        "Addresses": [
+          "10.255.0.10/16"
+        ]
+      }
+    ],
+    "Endpoint": {
+      "Spec": {},
+      "ExposedPorts": [
+        {
+          "Protocol": "tcp",
+          "Port": 6379,
+          "PublicPort": 30000
+        }
+      ],
+      "VirtualIPs": [
+        {
+          "NetworkID": "4qvuz4ko70xaltuqbt8956gd1",
+          "Addr": "10.255.0.2/16"
+        },
+        {
+          "NetworkID": "4qvuz4ko70xaltuqbt8956gd1",
+          "Addr": "10.255.0.3/16"
+        }
+      ]
+    }
+  },
+  {
+    "ID": "1yljwbmlr8er2waf8orvqpwms",
+    "Version": {
+      "Index": 30
+    },
+    "CreatedAt": "2016-06-07T21:07:30.019104782Z",
+    "UpdatedAt": "2016-06-07T21:07:30.231958098Z",
+    "Name": "hopeful_cori",
+    "Spec": {
+      "ContainerSpec": {
+        "Image": "redis"
+      },
+      "Resources": {
+        "Limits": {},
+        "Reservations": {}
+      },
+      "RestartPolicy": {
+        "Condition": "ANY"
+      },
+      "Placement": {}
+    },
+    "ServiceID": "9mnpnzenvg8p8tdbtq4wvbkcz",
+    "Instance": 1,
+    "NodeID": "24ifsmvkjbyhk",
+    "ServiceAnnotations": {},
+    "Status": {
+      "Timestamp": "2016-06-07T21:07:30.202183143Z",
+      "State": "FAILED",
+      "Message": "execution failed",
+      "ContainerStatus": {}
+    },
+    "DesiredState": "SHUTDOWN",
+    "NetworksAttachments": [
+      {
+        "Network": {
+          "ID": "4qvuz4ko70xaltuqbt8956gd1",
+          "Version": {
+            "Index": 18
+          },
+          "CreatedAt": "2016-06-07T20:31:11.912919752Z",
+          "UpdatedAt": "2016-06-07T21:07:29.955277358Z",
+          "Spec": {
+            "Name": "ingress",
+            "Labels": {
+              "com.docker.swarm.internal": "true"
+            },
+            "DriverConfiguration": {},
+            "IPAM": {
+              "Driver": {},
+              "Configs": [
+                {
+                  "Family": "UNKNOWN",
+                  "Subnet": "10.255.0.0/16"
+                }
+              ]
+            }
+          },
+          "DriverState": {
+            "Name": "overlay",
+            "Options": {
+              "com.docker.network.driver.overlay.vxlanid_list": "256"
+            }
+          },
+          "IPAM": {
+            "Driver": {
+              "Name": "default"
+            },
+            "Configs": [
+              {
+                "Family": "UNKNOWN",
+                "Subnet": "10.255.0.0/16"
+              }
+            ]
+          }
+        },
+        "Addresses": [
+          "10.255.0.5/16"
+        ]
+      }
+    ],
+    "Endpoint": {
+      "Spec": {},
+      "ExposedPorts": [
+        {
+          "Protocol": "tcp",
+          "Port": 6379,
+          "PublicPort": 30000
+        }
+      ],
+      "VirtualIPs": [
+        {
+          "NetworkID": "4qvuz4ko70xaltuqbt8956gd1",
+          "Addr": "10.255.0.2/16"
+        },
+        {
+          "NetworkID": "4qvuz4ko70xaltuqbt8956gd1",
+          "Addr": "10.255.0.3/16"
+        }
+      ]
+    }
+  }
+]

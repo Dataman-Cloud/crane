@@ -1,0 +1,67 @@
+[
+  {
+    "ID": "9mnpnzenvg8p8tdbtq4wvbkcz",
+    "Version": {
+      "Index": 19
+    },
+    "CreatedAt": "2016-06-07T21:05:51.880065305Z",
+    "UpdatedAt": "2016-06-07T21:07:29.962229872Z",
+    "Spec": {
+      "Name": "hopeful_cori",
+      "TaskTemplate": {
+        "ContainerSpec": {
+          "Image": "redis"
+        },
+        "Resources": {
+          "Limits": {},
+          "Reservations": {}
+        },
+        "RestartPolicy": {
+          "Condition": "ANY"
+        },
+        "Placement": {}
+      },
+      "Mode": {
+        "Replicated": {
+          "Replicas": 1
+        }
+      },
+      "UpdateConfig": {
+        "Parallelism": 1
+      },
+      "EndpointSpec": {
+        "Mode": "VIP",
+        "Ingress": "PUBLICPORT",
+        "ExposedPorts": [
+          {
+            "Protocol": "tcp",
+            "Port": 6379
+          }
+        ]
+      },
+      "Labels": {
+	"com.docker.stack.namespace": "true"
+      }
+    },
+    "Endpoint": {
+      "Spec": {},
+      "ExposedPorts": [
+        {
+          "Protocol": "tcp",
+          "Port": 6379,
+          "PublicPort": 30000
+        }
+      ],
+      "VirtualIPs": [
+        {
+          "NetworkID": "4qvuz4ko70xaltuqbt8956gd1",
+          "Addr": "10.255.0.2/16"
+        },
+        {
+          "NetworkID": "4qvuz4ko70xaltuqbt8956gd1",
+          "Addr": "10.255.0.3/16"
+        }
+      ]
+    }
+  }
+]
