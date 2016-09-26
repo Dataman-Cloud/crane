@@ -17,7 +17,7 @@
     <div class="form-group" layout="column">
         <label id="json-create-dab" dm-doc-link='https://blog.docker.com/2016/06/docker-app-bundle/'>DAB<span
                 class="required">*</span></label>
-        <div class="form-control">
+        <div id="create-by-json-div" class="form-control">
              <textarea id="create-by-json-textarea" ui-ace="stackCreateByJsonCtrl.aceOption" data-ng-model="stackCreateByJsonCtrl.stack"
                        data-required="required" name="Stack"
                        data-ng-change="stackCreateByJsonCtrl.stackChange()">
@@ -38,8 +38,7 @@
             <div flex="none">
                 <input id="dockerFileInput" name="file" type="file" class="ng-hide" accept="text/plain, .json"
                        onchange="angular.element(this).scope().stackCreateByJsonCtrl.onFileSelect(this.files)">
-                <md-button trigger-prev-click class="md-small md-primary"><i class="fa fa-upload"></i> {/'Read from a
-                    file' | translate/}
+                <md-button trigger-prev-click class="md-small md-primary"><i class="fa fa-upload"></i> {/'Read from a file' | translate/}
                 </md-button>
             </div>
 
