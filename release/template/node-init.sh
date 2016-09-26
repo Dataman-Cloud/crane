@@ -10,6 +10,7 @@ set -o errexit
 #
 # Feature:
 # check host arch
+# check ip forwarding
 # check docker version
 # check docker tcp socket
 # check selinux for centos/rhel
