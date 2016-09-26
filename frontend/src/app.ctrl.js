@@ -6,6 +6,7 @@
     /* @ngInject */
     function RootCtrl($state, $window, mdSideNav, gHttp, utils, userBackend, $rootScope, tty, stream, layoutBackend, miscBackend, userCurd, $scope, $translate) {
         var self = this;
+        var token = $window.localStorage.getItem('token');
 
         $rootScope.accountId = null;
         $rootScope.licenseValidFlag = true;
@@ -30,7 +31,6 @@
         }
 
         function initUser() {
-            var token = $window.localStorage.getItem('token');
             if (token) {
                 gHttp.setToken(token);
                 tty.setToken(token);

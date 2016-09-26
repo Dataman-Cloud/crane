@@ -161,9 +161,9 @@
         }
 
         function addWorkerNode(env) {
-            formModal.open('/src/node/modals/create-node.html', env, {dataName: 'endpoint'})
+            formModal.open('/src/node/modals/form-nodeIp.html', env, {dataName: 'endpoint'})
                 .then(function (endpoint) {
-                    Notification.success($filter('translate')('Add node pending'));
+                    Notification.primary($filter('translate')('Add node pending'));
                     var data = {
                         Role: "worker",
                         Endpoint: endpoint

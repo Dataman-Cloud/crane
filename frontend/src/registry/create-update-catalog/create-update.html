@@ -16,8 +16,8 @@
     <div class="form-group" layout="column">
         <label dm-doc-link='https://blog.docker.com/2016/06/docker-app-bundle/'>DAB<span
                 class="required">*</span></label>
-        <div class="form-control">
-            <textarea id="imaage-catalog-json" ui-ace="createUpdateCatalog.aceOption" data-ng-model="createUpdateCatalog.form.Bundle"
+        <div id="image-catalog-json-div" class="form-control">
+            <textarea id="image-catalog-json" ui-ace="createUpdateCatalog.aceOption" data-ng-model="createUpdateCatalog.form.Bundle"
                       data-required="required" name="Bundle"
                       data-ng-change="createUpdateCatalog.stackChange()">
             </textarea>
