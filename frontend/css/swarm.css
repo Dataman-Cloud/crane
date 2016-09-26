@@ -1291,6 +1291,6 @@ md-menu-item > a.md-button {
 }
 
 .ace_editor  {
-    height : 400px;
-    width: 580px;
+    height : 600px;
+    width: 50%;
 }
