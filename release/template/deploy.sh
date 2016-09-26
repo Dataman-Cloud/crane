@@ -13,9 +13,14 @@ echo "Checking the node status"
 
 # swarm init
 echo "Trying to init swarm cluster"
-$(docker swarm init --advertise-addr=$CRANE_IP &>/dev/null) || {
-   echo "Swarm cluster have been running!"
+INIT_ERROR=$(docker swarm init --advertise-addr=$CRANE_IP 2>&1 > /dev/null) || {
+   docker info 2>/dev/null | grep Swarm | grep -v inactive || {
+      printf "\033[41mERROR:\033[0m failed to init swarm against cmd: \e[1;34mdocker swarm init --advertise-addr=$CRANE_IP\e[0m\n"
+      echo "$INIT_ERROR"
+      exit 1
+   }
 }
+echo "Swarm cluster have been running!"
 
 docker-compose -p crane up -d
 
