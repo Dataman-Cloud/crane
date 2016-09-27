@@ -180,6 +180,7 @@ func (registry *Registry) GetManifests(ctx *gin.Context) {
 }
 
 func (registry *Registry) DeleteManifests(ctx *gin.Context) {
+	var err error
 	account_, found := ctx.Get("account")
 	if !found {
 		craneerr := cranerror.NewError(CodeRegistryUnauthorized, "invalid user")
@@ -188,11 +189,41 @@ func (registry *Registry) DeleteManifests(ctx *gin.Context) {
 	}
 	account := account_.(auth.Account)
 
-	_, _, err := registry.RegistryAPIDeleteSchemaV2(fmt.Sprintf("%s/%s/manifests/%s", ctx.Param("namespace"), ctx.Param("image"), ctx.Param("reference")), account.Email)
+	var tags []*Tag
+	if ctx.Query("tag") == "" {
+		err = registry.DbClient.Where("namespace = ? AND image = ?", ctx.Param("namespace"), ctx.Param("image")).Find(&tags).Error
+	} else {
+		err = registry.DbClient.Where("namespace = ? AND image = ? AND tag = ? ",
+			ctx.Param("namespace"),
+			ctx.Param("image"),
+			ctx.Query("tag")).Find(&tags).Error
+	}
+
 	if err != nil {
-		err := cranerror.NewError(CodeRegistryManifestDeleteError, err.Error())
-		httpresponse.Error(ctx, err)
+		craneerr := cranerror.NewError(CodeRegistryTagsListError, err.Error())
+		httpresponse.Error(ctx, craneerr)
 		return
+	}
+
+	for _, tag := range tags {
+		if _, _, err = registry.RegistryAPIDeleteSchemaV2(fmt.Sprintf("%s/%s/manifests/%s",
+			ctx.Param("namespace"),
+			ctx.Param("image"),
+			tag.Digest,
+		), account.Email); err == nil {
+			registry.DbClient.Delete(tag)
+		} else {
+			craneerr := cranerror.NewError(CodeRegistryManifestDeleteError, err.Error())
+			httpresponse.Error(ctx, craneerr)
+			return
+		}
+	}
+
+	if err = registry.DbClient.Where("namespace = ? AND image = ?", ctx.Param("namespace"), ctx.Param("image")).Find(&tags).Error; err == nil {
+		if len(tags) == 0 {
+			registry.DbClient.Where("namespace = ? AND image = ?", ctx.Param("namespace"), ctx.Param("image")).Delete(&Image{})
+			registry.DbClient.Where("namespace = ? AND image = ?", ctx.Param("namespace"), ctx.Param("image")).Delete(&ImageAccess{})
+		}
 	}
 
 	httpresponse.Ok(ctx, "success")
@@ -210,6 +241,7 @@ func (registry *Registry) MineRepositories(ctx *gin.Context) {
 
 	var images []*Image
 	var err error
+
 	if len(keywords) > 0 {
 		err = registry.DbClient.Where("namespace = ? AND (namespace like ? OR image like ?)", RegistryNamespaceForAccount(account),
 			LikeParam(keywords), LikeParam(keywords)).Order("created_at DESC").Find(&images).Error

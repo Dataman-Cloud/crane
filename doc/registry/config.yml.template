@@ -11,6 +11,8 @@ storage:
     maintenance:
         uploadpurging:
             enabled: false
+    delete:
+        enabled: true
 http:
     addr: :5000
     secret: placeholder
@@ -28,7 +30,6 @@ notifications:
       - name: crane
         disabled: false
         url: http://CRANE_IP:CRANE_PORT/registry/v1/notifications
-        timeout: 500
+        timeout: 5000ms
         threshold: 5
-        backoff: 1000
-
+        backoff: 1s
