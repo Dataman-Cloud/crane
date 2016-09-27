@@ -28,9 +28,14 @@
         };
 
         function updateEndpoint(nodeId, env, endpoint) {
-            formModal.open('/src/node/modals/form-nodeIp.html', env, {dataName: 'endpoint', initData: endpoint})
-                .then(function (endpoint) {
-                    nodeBackend.handleNode(nodeId, "endpoint-update", endpoint).then(function (data) {
+            formModal.open('/src/node/modals/form-nodeIp.html', env, {
+                dataName: 'data',
+                initData: {
+                    url: MISC_TOOLS_URL,
+                    endpoint: endpoint
+                }
+            }).then(function (data) {
+                    nodeBackend.handleNode(nodeId, "endpoint-update", data.endpoint).then(function (data) {
                         Notification.success($filter('translate')('Host updated successfully'));
                         $state.reload()
                     });
@@ -161,20 +166,25 @@
         }
 
         function addWorkerNode(env) {
-            formModal.open('/src/node/modals/form-nodeIp.html', env, {dataName: 'endpoint'})
-                .then(function (endpoint) {
-                    Notification.primary($filter('translate')('Add node pending'));
-                    var data = {
-                        Role: "worker",
-                        Endpoint: endpoint
-                    };
+            formModal.open('/src/node/modals/form-nodeIp.html', env, {
+                dataName: 'data',
+                initData: {
+                    url: MISC_TOOLS_URL,
+                    endpoint: ''
+                }
+            }).then(function (data) {
+                Notification.primary($filter('translate')('Add node pending'));
+                var obj = {
+                    Role: "worker",
+                    Endpoint: data.endpoint
+                };
 
-                    nodeBackend.addWorkerNode(data)
-                        .then(function (data) {
-                            Notification.success($filter('translate')('Created successfully'));
-                            $state.reload()
-                        })
-                });
+                nodeBackend.addWorkerNode(obj)
+                    .then(function (data) {
+                        Notification.success($filter('translate')('Created successfully'));
+                        $state.reload()
+                    })
+            });
         }
 
     }

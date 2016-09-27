@@ -63,7 +63,7 @@
     <footer class="form-buttons">
         <md-button id="image-catalog-create" class="md-raised md-primary" ng-if="createUpdateCatalog.target === 'create'"
                    data-ng-disabled="staticForm.$invalid || createUpdateCatalog.errorInfo.stack || createUpdateCatalog.imageSize > IMAGE_MAX_SIZE"
-                   data-ng-click="createUpdateCatalog.deploy('create')">{/'Deploy' | translate/}
+                   data-ng-click="createUpdateCatalog.deploy('create')">{/'Save' | translate/}
         </md-button>
 
         <md-button id="image-catalog-update" class="md-raised md-primary" ng-if="createUpdateCatalog.target === 'update'"
