@@ -16,7 +16,7 @@
               <span class="required">*</span>
             </h3>
             <p>{/'Init node' | translate/}</p>
-            <code id="cmd">curl -XGET {/MISC_TOOLS_URL/}node-init.sh | sudo sh</code>
+            <code id="cmd">curl -XGET {/formCtrl.data.url/} node-init.sh | sudo sh</code>
             <div class="sub-button">
               <md-button id="node-master-ssh-copy" class="md-raised md-success md-small copy" ngclipboard data-clipboard-target="#cmd"  md-autofocus>
                 <i class="fa fa-clone"></i>{/'Copy code' | translate/}
@@ -28,7 +28,7 @@
             </h3>
             <p>{/'Docker TCP Socket Addrs' | translate/}</p>
             <input id="node-nodeip-endpoint" type="text" name="endpoint" aria-label="endpoint" placeholder="http://192.168.59.105:2375"
-                   data-ng-model="formCtrl.endpoint" data-required="required" md-autofocus>
+                   data-ng-model="formCtrl.data.endpoint" data-required="required" md-autofocus>
             <div ng-messages="staticForm.endpoint.$error" ng-if="staticForm.endpoint.$dirty" role="alert">
                 <p class="help-info text-danger" ng-message="required"><small>{/'Address Required' | translate/}</small></p>
             </div>
