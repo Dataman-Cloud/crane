@@ -48,22 +48,12 @@ Note: the above is a demo site, unstable and maintainless.
 
 ### Option 1: Stable version in one line
 
-#### For Chinese guys (pull images from catalog.shurenyun.com):
-
-  ```bash
-  bash -c "$(curl http://ocrqkagax.bkt.clouddn.com/install.sh)" -s v1.0.4
-  ```
-
-#### For others (pull images from hub.docker.com):
-
-  ```bash
-  bash -c "$(curl http://ocrqkagax.bkt.clouddn.com/install.sh)" -s v1.0.4 2breakfast/
-  ```
+ Please read the [release/v1.0.5/README.md](release/v1.0.5/README.md)
 
 ### Option 2: Latest or development from docker build
 
   ```bash
-  CRANE_IP=192.168.59.105 ./bin/build-and-start.sh
+  CRANE_IP=192.168.59.105 ./bin/build-push-or-up.sh up
   ```
 
 CRANE_IP is the ip address(don't use 0.0.0.0 because we are using container in network bridge mode) of the running Crane host which is the swarm manager also.
