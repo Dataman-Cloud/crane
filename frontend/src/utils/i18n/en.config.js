@@ -354,10 +354,13 @@
             "How to create a docker image note": "notes: Make sure your docker daemon have been started with option",
             "Templates": "Templates",
             "Public Docker Images": "Public Images",
+            "Push Count": "Push Count",
+            "Pull Count": "Pull Count",
+            "Public": "Public",
             "My Docker Images": "My Images",
             "New Stack Template": "New Stack Template",
             "Stack Template Description": "Stack Template Description",
-            "Are you sure to remove the image ?": "Are you sure to remove the mirror ？",
+            "Are you sure to remove the image ?": "Are you sure to remove the mirror ?",
             "Are you sure to delete the stack template ?": "Are you sure to delete the stack template ?",
 
             //network module
