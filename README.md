@@ -3,7 +3,7 @@
 [![Join the chat at https://gitter.im/Dataman-Cloud/crane](https://badges.gitter.im/Dataman-Cloud/crane.svg)](https://gitter.im/Dataman-Cloud/crane?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Build Status](https://travis-ci.org/Dataman-Cloud/crane.svg?branch=master)](https://travis-ci.org/Dataman-Cloud/crane)
 [![Go Report Card](https://goreportcard.com/badge/github.com/Dataman-Cloud/crane)](https://goreportcard.com/report/github.com/Dataman-Cloud/crane)
-
+[![codecov](https://codecov.io/gh/Dataman-Cloud/crane/branch/master/graph/badge.svg)](https://codecov.io/gh/Dataman-Cloud/crane)
 
 ![Crane](doc/img/crane-logo-black.png)
 
