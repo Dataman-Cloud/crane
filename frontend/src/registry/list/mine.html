@@ -3,10 +3,10 @@
         <div flex="20">
             <h2>{/repository.Namespace + "/" + repository.Image/}</h2>
             <dl layout="row">
-                <dt><i class="fa fa-cloud-download"></i><md-tooltip md-direction="bottom">下载次数</md-tooltip></dt><dd flex-offset="5" class="text-info">{/repository.PullCount/}</dd>
-                <dt flex-offset="10"><i class="fa fa-cloud-upload"><md-tooltip md-direction="bottom">上传次数</md-tooltip></i></dt><dd flex-offset="5" class="text-info">{/repository.PushCount/}</dd>
+                <dt><i class="fa fa-cloud-download"></i><md-tooltip md-direction="bottom">{/'Pull Count' | translate/}</md-tooltip></dt><dd flex-offset="5" class="text-info">{/repository.PullCount/}</dd>
+                <dt flex-offset="10"><i class="fa fa-cloud-upload"><md-tooltip md-direction="bottom">{/'Push Count' | translate/}</md-tooltip></i></dt><dd flex-offset="5" class="text-info">{/repository.PushCount/}</dd>
             </dl>
-            <md-switch class="md-primary" ng-true-value="1" ng-false-value="0" ng-model="repository.Publicity" ng-change="repositorieListMineCtrl.toggleImagePublicity(repository)">公开镜像</md-switch>
+            <md-switch class="md-primary" ng-true-value="1" ng-false-value="0" ng-model="repository.Publicity" ng-change="repositorieListMineCtrl.toggleImagePublicity(repository)">{/'Public' | translate/}</md-switch>
         </div>
         <div flex="80">
             <table id="image-mine-table" cellpadding="0" cellspacing="0">
