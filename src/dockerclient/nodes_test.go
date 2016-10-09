@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"net/url"
+	"os"
 	"testing"
 
 	"github.com/Dataman-Cloud/crane/src/model"
@@ -428,6 +429,25 @@ func TestUpdateNodeLabelUpdate(t *testing.T) {
 }
 
 func TestUpdateNodeEndpointUpdate(t *testing.T) {
+	os.Setenv("CRANE_ADDR", "foobar")
+	os.Setenv("CRANE_SWARM_MANAGER_IP", "foobar")
+	os.Setenv("CRANE_DOCKER_CERT_PATH", "foobar")
+	os.Setenv("CRANE_DB_DRIVER", "foobar")
+	os.Setenv("CRANE_DB_DSN", "foobar")
+	os.Setenv("CRANE_FEATURE_FLAGS", "foobar")
+	os.Setenv("CRANE_REGISTRY_PRIVATE_KEY_PATH", "foobar")
+	os.Setenv("CRANE_REGISTRY_ADDR", "foobar")
+	os.Setenv("CRANE_ACCOUNT_AUTHENTICATOR", "foobar")
+	defer os.Setenv("CRANE_ADDR", "")
+	defer os.Setenv("CRANE_SWARM_MANAGER_IP", "")
+	defer os.Setenv("CRANE_DOCKER_CERT_PATH", "")
+	defer os.Setenv("CRANE_DB_DRIVER", "")
+	defer os.Setenv("CRANE_DB_DSN", "")
+	defer os.Setenv("CRANE_FEATURE_FLAGS", "")
+	defer os.Setenv("CRANE_REGISTRY_PRIVATE_KEY_PATH", "")
+	defer os.Setenv("CRANE_REGISTRY_ADDR", "")
+	defer os.Setenv("CRANE_ACCOUNT_AUTHENTICATOR", "")
+
 	mockServer := mock.NewServer()
 	defer mockServer.Close()
 
@@ -530,6 +550,25 @@ func TestUpdateNodeDefault(t *testing.T) {
 
 // TODO (wtzhou) refactor me by test/testing mock
 func TestCreateNodeRoleManager(t *testing.T) {
+	os.Setenv("CRANE_ADDR", "foobar")
+	os.Setenv("CRANE_SWARM_MANAGER_IP", "foobar")
+	os.Setenv("CRANE_DOCKER_CERT_PATH", "foobar")
+	os.Setenv("CRANE_DB_DRIVER", "foobar")
+	os.Setenv("CRANE_DB_DSN", "foobar")
+	os.Setenv("CRANE_FEATURE_FLAGS", "foobar")
+	os.Setenv("CRANE_REGISTRY_PRIVATE_KEY_PATH", "foobar")
+	os.Setenv("CRANE_REGISTRY_ADDR", "foobar")
+	os.Setenv("CRANE_ACCOUNT_AUTHENTICATOR", "foobar")
+	defer os.Setenv("CRANE_ADDR", "")
+	defer os.Setenv("CRANE_SWARM_MANAGER_IP", "")
+	defer os.Setenv("CRANE_DOCKER_CERT_PATH", "")
+	defer os.Setenv("CRANE_DB_DRIVER", "")
+	defer os.Setenv("CRANE_DB_DSN", "")
+	defer os.Setenv("CRANE_FEATURE_FLAGS", "")
+	defer os.Setenv("CRANE_REGISTRY_PRIVATE_KEY_PATH", "")
+	defer os.Setenv("CRANE_REGISTRY_ADDR", "")
+	defer os.Setenv("CRANE_ACCOUNT_AUTHENTICATOR", "")
+
 	fakeClusterWithID := func(ID string) func(ctx *gin.Context) {
 		fakeCluster := func(ctx *gin.Context) {
 			var body swarm.Swarm
@@ -610,6 +649,25 @@ func TestCreateNodeRoleManager(t *testing.T) {
 }
 
 func TestCreateNodeRoleWorker(t *testing.T) {
+	os.Setenv("CRANE_ADDR", "foobar")
+	os.Setenv("CRANE_SWARM_MANAGER_IP", "foobar")
+	os.Setenv("CRANE_DOCKER_CERT_PATH", "foobar")
+	os.Setenv("CRANE_DB_DRIVER", "foobar")
+	os.Setenv("CRANE_DB_DSN", "foobar")
+	os.Setenv("CRANE_FEATURE_FLAGS", "foobar")
+	os.Setenv("CRANE_REGISTRY_PRIVATE_KEY_PATH", "foobar")
+	os.Setenv("CRANE_REGISTRY_ADDR", "foobar")
+	os.Setenv("CRANE_ACCOUNT_AUTHENTICATOR", "foobar")
+	defer os.Setenv("CRANE_ADDR", "")
+	defer os.Setenv("CRANE_SWARM_MANAGER_IP", "")
+	defer os.Setenv("CRANE_DOCKER_CERT_PATH", "")
+	defer os.Setenv("CRANE_DB_DRIVER", "")
+	defer os.Setenv("CRANE_DB_DSN", "")
+	defer os.Setenv("CRANE_FEATURE_FLAGS", "")
+	defer os.Setenv("CRANE_REGISTRY_PRIVATE_KEY_PATH", "")
+	defer os.Setenv("CRANE_REGISTRY_ADDR", "")
+	defer os.Setenv("CRANE_ACCOUNT_AUTHENTICATOR", "")
+
 	fakeClusterWithID := func(ID string) func(ctx *gin.Context) {
 		fakeCluster := func(ctx *gin.Context) {
 			var body swarm.Swarm
@@ -714,6 +772,25 @@ func TestCreateNodeWithInvalidRole(t *testing.T) {
 }
 
 func TestListNodeError(t *testing.T) {
+	os.Setenv("CRANE_ADDR", "foobar")
+	os.Setenv("CRANE_SWARM_MANAGER_IP", "foobar")
+	os.Setenv("CRANE_DOCKER_CERT_PATH", "foobar")
+	os.Setenv("CRANE_DB_DRIVER", "foobar")
+	os.Setenv("CRANE_DB_DSN", "foobar")
+	os.Setenv("CRANE_FEATURE_FLAGS", "foobar")
+	os.Setenv("CRANE_REGISTRY_PRIVATE_KEY_PATH", "foobar")
+	os.Setenv("CRANE_REGISTRY_ADDR", "foobar")
+	os.Setenv("CRANE_ACCOUNT_AUTHENTICATOR", "foobar")
+	defer os.Setenv("CRANE_ADDR", "")
+	defer os.Setenv("CRANE_SWARM_MANAGER_IP", "")
+	defer os.Setenv("CRANE_DOCKER_CERT_PATH", "")
+	defer os.Setenv("CRANE_DB_DRIVER", "")
+	defer os.Setenv("CRANE_DB_DSN", "")
+	defer os.Setenv("CRANE_FEATURE_FLAGS", "")
+	defer os.Setenv("CRANE_REGISTRY_PRIVATE_KEY_PATH", "")
+	defer os.Setenv("CRANE_REGISTRY_ADDR", "")
+	defer os.Setenv("CRANE_ACCOUNT_AUTHENTICATOR", "")
+
 	body := `{"Id":"e90302"}`
 	server1 := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
@@ -998,6 +1075,25 @@ func TestGetDaemonUrlByIdErrorKey(t *testing.T) {
 }
 
 func TestGetDaemonUrlById(t *testing.T) {
+	os.Setenv("CRANE_ADDR", "foobar")
+	os.Setenv("CRANE_SWARM_MANAGER_IP", "foobar")
+	os.Setenv("CRANE_DOCKER_CERT_PATH", "foobar")
+	os.Setenv("CRANE_DB_DRIVER", "foobar")
+	os.Setenv("CRANE_DB_DSN", "foobar")
+	os.Setenv("CRANE_FEATURE_FLAGS", "foobar")
+	os.Setenv("CRANE_REGISTRY_PRIVATE_KEY_PATH", "foobar")
+	os.Setenv("CRANE_REGISTRY_ADDR", "foobar")
+	os.Setenv("CRANE_ACCOUNT_AUTHENTICATOR", "foobar")
+	defer os.Setenv("CRANE_ADDR", "")
+	defer os.Setenv("CRANE_SWARM_MANAGER_IP", "")
+	defer os.Setenv("CRANE_DOCKER_CERT_PATH", "")
+	defer os.Setenv("CRANE_DB_DRIVER", "")
+	defer os.Setenv("CRANE_DB_DSN", "")
+	defer os.Setenv("CRANE_FEATURE_FLAGS", "")
+	defer os.Setenv("CRANE_REGISTRY_PRIVATE_KEY_PATH", "")
+	defer os.Setenv("CRANE_REGISTRY_ADDR", "")
+	defer os.Setenv("CRANE_ACCOUNT_AUTHENTICATOR", "")
+
 	body := `
 	{
 	    "ID":"1t6jojzasio4veexyubvic4j2",

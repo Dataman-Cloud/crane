@@ -22,6 +22,11 @@ if [ ! -f docker/docker ]; then
     curl https://get.docker.com/builds/Linux/x86_64/docker-latest.tgz | tar xzv
 fi
 
+# setup env_file
+echo "Copy default env file to env_file"
+cp deploy/env deploy/env_file
+sed -i -e "/CRANE_SWARM_MANAGER_IP/  s/192\.168\.1\.111/${CRANE_IP}/" deploy/env_file
+# build crane
 docker-compose -p crane -f deploy/docker-compose.yml build
 
 if [ "x$up_or_push" = "xpush" ]

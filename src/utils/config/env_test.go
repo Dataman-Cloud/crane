@@ -1,40 +1,251 @@
 package config
 
 import (
-	"io/ioutil"
+	"fmt"
 	"os"
-	"path/filepath"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 )
 
-func TestLoadEnvFile(t *testing.T) {
-	tempFileName := filepath.Join(os.TempDir(), "env_file")
-	err := ioutil.WriteFile(tempFileName, []byte("FOO=bar"), 0666)
-	assert.Nil(t, err)
-	defer func() {
-		os.Remove(tempFileName)
-	}()
-
-	env := os.Getenv("FOO")
-	assert.Equal(t, env, "")
-	LoadEnvFile(tempFileName)
-	assert.NotNil(t, os.Getenv("FOO"))
-	assert.Equal(t, os.Getenv("FOO"), "bar")
-	defer func() {
-		os.Unsetenv("FOO")
-	}()
+type TestConfig struct {
+	Some        string `env:"somevar"`
+	Other       bool   `env:"othervar"`
+	Port        int    `env:"PORT"`
+	NotAnEnv    string
+	DatabaseURL string        `env:"DATABASE_URL" envDefault:"postgres://localhost:5432/db"`
+	Strings     []string      `env:"STRINGS"`
+	SepStrings  []string      `env:"SEPSTRINGS" envSeparator:":"`
+	Numbers     []int         `env:"NUMBERS"`
+	Bools       []bool        `env:"BOOLS"`
+	Duration    time.Duration `env:"DURATION"`
 }
 
-func TestParseLn(t *testing.T) {
-	keyValueLine := "FOO=bar"
-	k, v, err := Parseln(keyValueLine)
-	assert.Equal(t, k, "FOO")
-	assert.Equal(t, v, "bar")
-	assert.Nil(t, err)
+func TestParsesEnv(t *testing.T) {
+	os.Setenv("somevar", "somevalue")
+	os.Setenv("othervar", "true")
+	os.Setenv("PORT", "8080")
+	os.Setenv("STRINGS", "string1,string2,string3")
+	os.Setenv("SEPSTRINGS", "string1:string2:string3")
+	os.Setenv("NUMBERS", "1,2,3,4")
+	os.Setenv("BOOLS", "t,TRUE,0,1")
+	os.Setenv("DURATION", "1s")
 
-	keyValueLineIncorrect := "FOObar"
-	k, v, err = Parseln(keyValueLineIncorrect)
-	assert.NotNil(t, err)
+	defer os.Setenv("somevar", "")
+	defer os.Setenv("othervar", "")
+	defer os.Setenv("PORT", "")
+	defer os.Setenv("STRINGS", "")
+	defer os.Setenv("SEPSTRINGS", "")
+	defer os.Setenv("NUMBERS", "")
+	defer os.Setenv("BOOLS", "")
+	defer os.Setenv("DURATION", "")
+
+	cfg := TestConfig{}
+	assert.NoError(t, Parse(&cfg))
+	assert.Equal(t, "somevalue", cfg.Some)
+	assert.Equal(t, true, cfg.Other)
+	assert.Equal(t, 8080, cfg.Port)
+	assert.Equal(t, []string{"string1", "string2", "string3"}, cfg.Strings)
+	assert.Equal(t, []string{"string1", "string2", "string3"}, cfg.SepStrings)
+	assert.Equal(t, []int{1, 2, 3, 4}, cfg.Numbers)
+	assert.Equal(t, []bool{true, true, false, true}, cfg.Bools)
+	d, _ := time.ParseDuration("1s")
+	assert.Equal(t, d, cfg.Duration)
+}
+
+func TestEmptyVars(t *testing.T) {
+	cfg := TestConfig{}
+	assert.NoError(t, Parse(&cfg))
+	assert.Equal(t, "", cfg.Some)
+	assert.Equal(t, false, cfg.Other)
+	assert.Equal(t, 0, cfg.Port)
+	assert.Equal(t, 0, len(cfg.Strings))
+	assert.Equal(t, 0, len(cfg.SepStrings))
+	assert.Equal(t, 0, len(cfg.Numbers))
+	assert.Equal(t, 0, len(cfg.Bools))
+}
+
+func TestPassAnInvalidPtr(t *testing.T) {
+	var thisShouldBreak int
+	assert.Error(t, Parse(&thisShouldBreak))
+}
+
+func TestPassReference(t *testing.T) {
+	cfg := TestConfig{}
+	assert.Error(t, Parse(cfg))
+}
+
+func TestInvalidBool(t *testing.T) {
+	os.Setenv("othervar", "should-be-a-bool")
+	defer os.Setenv("othervar", "")
+
+	cfg := TestConfig{}
+	assert.Error(t, Parse(&cfg))
+}
+
+func TestInvalidInt(t *testing.T) {
+	os.Setenv("PORT", "should-be-an-int")
+	defer os.Setenv("PORT", "")
+
+	cfg := TestConfig{}
+	assert.Error(t, Parse(&cfg))
+}
+
+func TestInvalidBoolsSlice(t *testing.T) {
+	type config struct {
+		BadBools []bool `env:"BADBOOLS"`
+	}
+
+	os.Setenv("BADBOOLS", "t,f,TRUE,faaaalse")
+	cfg := &config{}
+	assert.Error(t, Parse(cfg))
+}
+
+func TestInvalidDuration(t *testing.T) {
+	os.Setenv("DURATION", "should-be-a-valid-duration")
+	defer os.Setenv("DURATION", "")
+
+	cfg := TestConfig{}
+	assert.Error(t, Parse(&cfg))
+}
+
+func TestParsesDefaultConfig(t *testing.T) {
+	cfg := TestConfig{}
+	assert.NoError(t, Parse(&cfg))
+	assert.Equal(t, "postgres://localhost:5432/db", cfg.DatabaseURL)
+}
+
+func TestParseStructWithoutEnvTag(t *testing.T) {
+	cfg := TestConfig{}
+	assert.NoError(t, Parse(&cfg))
+	assert.Empty(t, cfg.NotAnEnv)
+}
+
+func TestParseStructWithInvalidFieldKindInt64(t *testing.T) {
+	type config struct {
+		WontWork int64 `env:"BLAH"`
+	}
+	os.Setenv("BLAH", "10")
+	cfg := config{}
+	assert.Error(t, Parse(&cfg))
+}
+
+func TestParseStructWithInvalidFieldKind(t *testing.T) {
+	type config struct {
+		WontWorkFloat float32 `env:"BLAH"`
+	}
+	os.Setenv("BLAH", "10.0")
+	cfg := config{}
+	assert.Error(t, Parse(&cfg))
+}
+
+func TestUnsupportedSliceType(t *testing.T) {
+	type config struct {
+		WontWork []map[int]int `env:"WONTWORK"`
+	}
+
+	os.Setenv("WONTWORK", "1,2,3")
+	defer os.Setenv("WONTWORK", "")
+
+	cfg := &config{}
+	assert.Error(t, Parse(cfg))
+}
+
+func TestBadSeparator(t *testing.T) {
+	type config struct {
+		WontWork []int `env:"WONTWORK" envSeparator:":"`
+	}
+
+	cfg := &config{}
+	os.Setenv("WONTWORK", "1,2,3,4")
+	defer os.Setenv("WONTWORK", "")
+
+	assert.Error(t, Parse(cfg))
+}
+
+func TestNoErrorRequiredSet(t *testing.T) {
+	type config struct {
+		IsRequired string `env:"IS_REQUIRED,required"`
+	}
+
+	cfg := &config{}
+
+	os.Setenv("IS_REQUIRED", "val")
+	defer os.Setenv("IS_REQUIRED", "")
+	assert.NoError(t, Parse(cfg))
+	assert.Equal(t, "val", cfg.IsRequired)
+}
+
+func TestErrorRequiredNotSet(t *testing.T) {
+	type config struct {
+		IsRequired string `env:"IS_REQUIRED,required"`
+	}
+
+	cfg := &config{}
+	assert.Error(t, Parse(cfg))
+}
+
+func TestEmptyOption(t *testing.T) {
+	type config struct {
+		Var string `env:"VAR,"`
+	}
+
+	cfg := &config{}
+
+	os.Setenv("VAR", "val")
+	defer os.Setenv("VAR", "")
+	assert.NoError(t, Parse(cfg))
+	assert.Equal(t, "val", cfg.Var)
+}
+
+func TestErrorOptionNotRecognized(t *testing.T) {
+	type config struct {
+		Var string `env:"VAR,not_supported!"`
+	}
+
+	cfg := &config{}
+	assert.Error(t, Parse(cfg))
+
+}
+
+func ExampleParse() {
+	type config struct {
+		Home         string `env:"HOME"`
+		Port         int    `env:"PORT" envDefault:"3000"`
+		IsProduction bool   `env:"PRODUCTION"`
+	}
+	os.Setenv("HOME", "/tmp/fakehome")
+	cfg := config{}
+	Parse(&cfg)
+	fmt.Println(cfg)
+	// Output: {/tmp/fakehome 3000 false}
+}
+
+func ExampleParseRequiredField() {
+	type config struct {
+		Home         string `env:"HOME"`
+		Port         int    `env:"PORT" envDefault:"3000"`
+		IsProduction bool   `env:"PRODUCTION"`
+		SecretKey    string `env:"SECRET_KEY,required"`
+	}
+	os.Setenv("HOME", "/tmp/fakehome")
+	cfg := config{}
+	err := Parse(&cfg)
+	fmt.Println(err)
+	// Output: Required environment variable SECRET_KEY is not set
+}
+
+func ExampleParseMultipleOptions() {
+	type config struct {
+		Home         string `env:"HOME"`
+		Port         int    `env:"PORT" envDefault:"3000"`
+		IsProduction bool   `env:"PRODUCTION"`
+		SecretKey    string `env:"SECRET_KEY,required,option1"`
+	}
+	os.Setenv("HOME", "/tmp/fakehome")
+	cfg := config{}
+	err := Parse(&cfg)
+	fmt.Println(err)
+	// Output: Env tag option option1 not supported.
 }

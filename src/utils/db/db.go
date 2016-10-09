@@ -19,7 +19,7 @@ func DB() *gorm.DB {
 }
 
 func InitDB() {
-	conf := config.GetConfig()
+	conf := config.InitConfig()
 
 	err := initDb(conf.DbDriver, conf.DbDSN)
 	if err != nil {

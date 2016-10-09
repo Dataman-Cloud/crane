@@ -29,14 +29,14 @@ var (
 )
 
 func (d *Default) GetDefaultAccounts() []auth.Account {
-	if config.GetConfig().AccountEmailDefault != "" &&
-		config.GetConfig().AccountPasswordDefault != "" {
+	if c := config.InitConfig(); c.AccountEmailDefault != "" &&
+		c.AccountPasswordDefault != "" {
 		Accounts = []auth.Account{
 			{
 				ID:       1,
 				Title:    "Engineering",
-				Email:    config.GetConfig().AccountEmailDefault,
-				Password: config.GetConfig().AccountPasswordDefault,
+				Email:    c.AccountEmailDefault,
+				Password: c.AccountPasswordDefault,
 			},
 		}
 	}

@@ -3,6 +3,7 @@ package dockerclient
 import (
 	"encoding/json"
 	"net/http"
+	"os"
 	"strings"
 	"testing"
 	"time"
@@ -102,6 +103,25 @@ func TestConvertNetworks(t *testing.T) {
 }
 
 func TestDeployStack(t *testing.T) {
+	os.Setenv("CRANE_ADDR", "foobar")
+	os.Setenv("CRANE_SWARM_MANAGER_IP", "foobar")
+	os.Setenv("CRANE_DOCKER_CERT_PATH", "foobar")
+	os.Setenv("CRANE_DB_DRIVER", "foobar")
+	os.Setenv("CRANE_DB_DSN", "foobar")
+	os.Setenv("CRANE_FEATURE_FLAGS", "foobar")
+	os.Setenv("CRANE_REGISTRY_PRIVATE_KEY_PATH", "foobar")
+	os.Setenv("CRANE_REGISTRY_ADDR", "foobar")
+	os.Setenv("CRANE_ACCOUNT_AUTHENTICATOR", "foobar")
+	defer os.Setenv("CRANE_ADDR", "")
+	defer os.Setenv("CRANE_SWARM_MANAGER_IP", "")
+	defer os.Setenv("CRANE_DOCKER_CERT_PATH", "")
+	defer os.Setenv("CRANE_DB_DRIVER", "")
+	defer os.Setenv("CRANE_DB_DSN", "")
+	defer os.Setenv("CRANE_FEATURE_FLAGS", "")
+	defer os.Setenv("CRANE_REGISTRY_PRIVATE_KEY_PATH", "")
+	defer os.Setenv("CRANE_REGISTRY_ADDR", "")
+	defer os.Setenv("CRANE_ACCOUNT_AUTHENTICATOR", "")
+
 	testServer, craneClient, _ := InitTestSwarm(t)
 	assert.NotNil(t, craneClient)
 	defer testServer.Stop()
@@ -149,6 +169,25 @@ func TestDeployStack(t *testing.T) {
 }
 
 func TestStack(t *testing.T) {
+	os.Setenv("CRANE_ADDR", "foobar")
+	os.Setenv("CRANE_SWARM_MANAGER_IP", "foobar")
+	os.Setenv("CRANE_DOCKER_CERT_PATH", "foobar")
+	os.Setenv("CRANE_DB_DRIVER", "foobar")
+	os.Setenv("CRANE_DB_DSN", "foobar")
+	os.Setenv("CRANE_FEATURE_FLAGS", "foobar")
+	os.Setenv("CRANE_REGISTRY_PRIVATE_KEY_PATH", "foobar")
+	os.Setenv("CRANE_REGISTRY_ADDR", "foobar")
+	os.Setenv("CRANE_ACCOUNT_AUTHENTICATOR", "foobar")
+	defer os.Setenv("CRANE_ADDR", "")
+	defer os.Setenv("CRANE_SWARM_MANAGER_IP", "")
+	defer os.Setenv("CRANE_DOCKER_CERT_PATH", "")
+	defer os.Setenv("CRANE_DB_DRIVER", "")
+	defer os.Setenv("CRANE_DB_DSN", "")
+	defer os.Setenv("CRANE_FEATURE_FLAGS", "")
+	defer os.Setenv("CRANE_REGISTRY_PRIVATE_KEY_PATH", "")
+	defer os.Setenv("CRANE_REGISTRY_ADDR", "")
+	defer os.Setenv("CRANE_ACCOUNT_AUTHENTICATOR", "")
+
 	testServer, craneClient, _ := InitTestSwarm(t)
 	assert.NotNil(t, craneClient)
 	defer testServer.Stop()

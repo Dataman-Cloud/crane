@@ -27,8 +27,7 @@ bin/nohup.out
 mysql_storage
 registry_storage
 docker
-env_file
-deploy/env
+deploy/env_file
 deploy/docker-compose.yml
 coverage-all.out
 coverage.out
