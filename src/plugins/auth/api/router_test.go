@@ -21,23 +21,24 @@ func TestApiRouter(t *testing.T) {
 
 	api.ApiRegister(router)
 
-	var hasNetwork bool
-	var hasMetrics bool
-	var hasStacks bool
+	// TODO (weitao) improve me by func assert.Contains(t, ) . refer plugins/registry/router_test.go
+	var hasAccounts bool
+	var hasAboutme bool
+	var hasGroups bool
 
 	for _, info := range router.Routes() {
 		if strings.Contains(info.Path, "accounts") {
-			hasMetrics = true
+			hasAccounts = true
 		}
 		if strings.Contains(info.Path, "aboutme") {
-			hasNetwork = true
+			hasAboutme = true
 		}
 		if strings.Contains(info.Path, "groups") {
-			hasStacks = true
+			hasGroups = true
 		}
 	}
 
-	assert.True(t, hasNetwork, "should be true")
-	assert.True(t, hasMetrics, "should be true")
-	assert.True(t, hasStacks, "should be true")
+	assert.True(t, hasAboutme, "should be true")
+	assert.True(t, hasAccounts, "should be true")
+	assert.True(t, hasGroups, "should be true")
 }
