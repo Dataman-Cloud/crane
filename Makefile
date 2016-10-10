@@ -1,4 +1,4 @@
-PACKAGES = $(shell find ./src/ -type d -not -path '*/\.*')
+PACKAGES = $(shell go list ./src/...)
 
 .PHONY: build doc fmt lint run test vet test-cover-html test-cover-func collect-cover-data
 
