@@ -9,8 +9,49 @@ import (
 	"github.com/docker/engine-api/types/swarm"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
+
+	mock "github.com/Dataman-Cloud/crane/src/testing"
+	"github.com/Dataman-Cloud/crane/src/utils/config"
 )
 
+func TestPing(t *testing.T) {
+	mockServer := mock.NewServer()
+	defer mockServer.Close()
+
+	envs := map[string]interface{}{
+		"Version":       "1.10.1",
+		"Os":            "linux",
+		"KernelVersion": "3.13.0-77-generic",
+		"GoVersion":     "go1.4.2",
+		"GitCommit":     "9e83765",
+		"Arch":          "amd64",
+		"ApiVersion":    "1.22",
+		"BuildTime":     "2015-12-01T07:09:13.444803460+00:00",
+		"Experimental":  false,
+	}
+	mockServer.AddRouter("/_ping", "get").RGroup().
+		Reply(200)
+	mockServer.AddRouter("/version", "get").RGroup().
+		Reply(200).
+		WJSON(envs)
+
+	mockServer.Register()
+
+	config := &config.Config{
+		DockerEntryScheme: mockServer.Scheme,
+		SwarmManagerIP:    mockServer.Addr,
+		DockerEntryPort:   mockServer.Port,
+		DockerTlsVerify:   false,
+		DockerApiVersion:  "",
+	}
+	craneDockerClient, err := NewCraneDockerClient(config)
+	assert.Nil(t, err)
+
+	err = craneDockerClient.Ping()
+	assert.Nil(t, err)
+}
+
+// TODO (wtzhou) refactor me by assist package mock
 func TestInspectSwarmErrorGet(t *testing.T) {
 	fakeCluster := func(ctx *gin.Context) {
 		var body swarm.Swarm
