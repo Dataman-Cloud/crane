@@ -28,7 +28,7 @@ func (s Stacks) Swap(i, j int) {
 }
 
 func (s Stacks) Less(i, j int) bool {
-	return s[j].Services[0].CreatedAt.Unix() < s[i].Services[0].CreatedAt.Unix()
+	return s[i].Services[0].CreatedAt.Unix() < s[j].Services[0].CreatedAt.Unix()
 }
 
 type Stack struct {
@@ -152,7 +152,7 @@ func (client *CraneDockerClient) ListStack() (Stacks, error) {
 		}
 		stacks = append(stacks, *stack)
 	}
-	sort.Sort(stacks)
+	sort.Sort(sort.Reverse(stacks))
 
 	return stacks, nil
 }

@@ -21,7 +21,7 @@ func (t Tasks) Swap(i, j int) {
 }
 
 func (t Tasks) Less(i, j int) bool {
-	return t[j].CreatedAt.Unix() < t[i].CreatedAt.Unix()
+	return t[i].CreatedAt.Unix() < t[j].CreatedAt.Unix()
 }
 
 // TaskList returns the list of tasks.
@@ -47,7 +47,7 @@ func (client *CraneDockerClient) ListTasks(options types.TaskListOptions) (Tasks
 		return tasks, err
 	}
 
-	sort.Sort(tasks)
+	sort.Sort(sort.Reverse(tasks))
 
 	return tasks, nil
 }
