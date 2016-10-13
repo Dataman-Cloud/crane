@@ -6,6 +6,7 @@ import (
 
 	"github.com/Dataman-Cloud/crane/src/dockerclient"
 	"github.com/Dataman-Cloud/crane/src/dockerclient/model"
+	rauth "github.com/Dataman-Cloud/crane/src/plugins/registryauth"
 	"github.com/Dataman-Cloud/crane/src/utils/cranerror"
 	"github.com/Dataman-Cloud/crane/src/utils/httpresponse"
 
@@ -134,12 +135,17 @@ func (api *Api) UpdateService(ctx *gin.Context) {
 	}
 	updateOpts := types.ServiceUpdateOptions{}
 	if craneServiceSpec.RegistryAuth != "" {
-		registryAuth, err := dockerclient.EncodedRegistryAuth(craneServiceSpec.RegistryAuth)
+		authInfo, err := rauth.Get(craneServiceSpec.RegistryAuth)
 		if err != nil {
 			httpresponse.Error(ctx, err)
 			return
 		}
-		updateOpts.EncodedRegistryAuth = registryAuth
+		encodedRegistryAuth, err := dockerclient.EncodeRegistryAuth(authInfo)
+		if err != nil {
+			httpresponse.Error(ctx, err)
+			return
+		}
+		updateOpts.EncodedRegistryAuth = encodedRegistryAuth
 
 		if swarmServiceSpec.Labels == nil {
 			swarmServiceSpec.Labels = make(map[string]string)

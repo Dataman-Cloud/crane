@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/Dataman-Cloud/crane/src/dockerclient/model"
+	rauth "github.com/Dataman-Cloud/crane/src/plugins/registryauth"
 	"github.com/Dataman-Cloud/crane/src/utils/cranerror"
 
 	docker "github.com/Dataman-Cloud/go-dockerclient"
@@ -349,12 +350,16 @@ func (client *CraneDockerClient) deployServices(services map[string]model.CraneS
 		createOpts := types.ServiceCreateOptions{}
 		updateOpts := types.ServiceUpdateOptions{}
 		if service.RegistryAuth != "" {
-			registryAuth, err := EncodedRegistryAuth(service.RegistryAuth)
+			authInfo, err := rauth.Get(service.RegistryAuth)
 			if err != nil {
 				return err
 			}
-			createOpts.EncodedRegistryAuth = registryAuth
-			updateOpts.EncodedRegistryAuth = registryAuth
+			encodedRegistryAuth, err := EncodeRegistryAuth(authInfo)
+			if err != nil {
+				return err
+			}
+			createOpts.EncodedRegistryAuth = encodedRegistryAuth
+			updateOpts.EncodedRegistryAuth = encodedRegistryAuth
 
 			if serviceSpec.Labels == nil {
 				serviceSpec.Labels = make(map[string]string)

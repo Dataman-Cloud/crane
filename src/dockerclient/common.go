@@ -10,9 +10,9 @@ import (
 	"github.com/Dataman-Cloud/crane/src/dockerclient/model"
 	rauth "github.com/Dataman-Cloud/crane/src/plugins/registryauth"
 	"github.com/Dataman-Cloud/crane/src/utils/config"
-	"github.com/docker/engine-api/types/swarm"
 
 	docker "github.com/Dataman-Cloud/go-dockerclient"
+	"github.com/docker/engine-api/types/swarm"
 )
 
 // convert swarm service to bundle service
@@ -45,12 +45,7 @@ func (client *CraneDockerClient) ToCraneServiceSpec(swarmService swarm.ServiceSp
 	return craneServiceSpec
 }
 
-func EncodedRegistryAuth(registryAuth string) (string, error) {
-	authInfo, err := rauth.Get(registryAuth)
-	if err != nil {
-		return "", nil
-	}
-
+func EncodeRegistryAuth(authInfo *rauth.RegistryAuth) (string, error) {
 	authConfig := docker.AuthConfiguration{
 		Username: authInfo.Username,
 		Password: authInfo.Password,

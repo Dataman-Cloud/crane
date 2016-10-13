@@ -9,6 +9,8 @@ import (
 	"strings"
 	"time"
 
+	rauth "github.com/Dataman-Cloud/crane/src/plugins/registryauth"
+
 	log "github.com/Sirupsen/logrus"
 	"github.com/docker/engine-api/types"
 	"github.com/docker/engine-api/types/filters"
@@ -213,11 +215,15 @@ func (client *CraneDockerClient) UpdateServiceAutoOption(serviceID string, versi
 	updateOpts := types.ServiceUpdateOptions{}
 	if service.Annotations.Labels != nil {
 		if registryAuth, ok := service.Annotations.Labels[LabelRegistryAuth]; ok {
-			encodeRegistryAuth, err := EncodedRegistryAuth(registryAuth)
+			authInfo, err := rauth.Get(registryAuth)
 			if err != nil {
-				return nil
+				return err
 			}
-			updateOpts.EncodedRegistryAuth = encodeRegistryAuth
+			encodedRegistryAuth, err := EncodeRegistryAuth(authInfo)
+			if err != nil {
+				return err
+			}
+			updateOpts.EncodedRegistryAuth = encodedRegistryAuth
 		}
 	}
 
