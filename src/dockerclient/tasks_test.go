@@ -11,7 +11,7 @@ import (
 	"github.com/Dataman-Cloud/crane/src/utils/config"
 )
 
-func TestLen(t *testing.T) {
+func TestTaskLen(t *testing.T) {
 	tasks := Tasks{
 		swarm.Task{
 			ID: "0",
@@ -23,7 +23,7 @@ func TestLen(t *testing.T) {
 	assert.Equal(t, tasks.Len(), 2)
 }
 
-func TestSwap(t *testing.T) {
+func TestTaskSwap(t *testing.T) {
 	tasks := Tasks{
 		swarm.Task{
 			ID: "0",
@@ -37,7 +37,7 @@ func TestSwap(t *testing.T) {
 	assert.Equal(t, tasks[1].ID, "0")
 }
 
-func TestLess(t *testing.T) {
+func TestTaskLess(t *testing.T) {
 	t0 := time.Now()
 	t1 := t0.AddDate(1, 1, 1)
 	tasks := Tasks{
