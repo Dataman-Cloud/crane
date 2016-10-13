@@ -112,7 +112,14 @@ func (api *Api) UpdateNode(ctx *gin.Context) {
 	}
 
 	nodeId := ctx.Param("node_id")
-	if err := api.GetDockerClient().UpdateNode(nodeId, nodeUpdate); err != nil {
+	node, err := api.GetDockerClient().InspectNode(nodeId)
+	if err != nil {
+		log.Errorf("Inspect node %s got error: %s", nodeId, err.Error())
+		httpresponse.Error(ctx, err)
+		return
+	}
+
+	if err := api.GetDockerClient().UpdateNode(node, nodeUpdate); err != nil {
 		log.Errorf("Update node %s got error: %s", nodeId, err.Error())
 		httpresponse.Error(ctx, err)
 		return
