@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/Dataman-Cloud/crane/src/dockerclient/model"
 
@@ -13,6 +14,71 @@ import (
 	"github.com/docker/engine-api/types/swarm"
 	"github.com/stretchr/testify/assert"
 )
+
+func TestStackLen(t *testing.T) {
+	stacks := Stacks{
+		Stack{},
+		Stack{},
+	}
+	assert.Equal(t, stacks.Len(), 2)
+}
+
+func TestStackSwap(t *testing.T) {
+	stacks := Stacks{
+		Stack{
+			Namespace: "stack0",
+		},
+		Stack{
+			Namespace: "stack1",
+		},
+	}
+	stacks.Swap(0, 1)
+	assert.Equal(t, stacks[0].Namespace, "stack1")
+	assert.Equal(t, stacks[1].Namespace, "stack0")
+}
+
+func TestStackLess(t *testing.T) {
+	t0 := time.Now()
+	t1 := t0.AddDate(1, 1, 1)
+	stacks := Stacks{
+		Stack{
+			Services: []ServiceStatus{
+				ServiceStatus{
+					CreatedAt: t0,
+				},
+			},
+		},
+		Stack{
+			Services: []ServiceStatus{
+				ServiceStatus{
+					CreatedAt: t1,
+				},
+			},
+		},
+	}
+	result := stacks.Less(0, 1)
+
+	assert.True(t, result)
+}
+
+func TestGetStackGroup(t *testing.T) {
+	bundle := model.Bundle{
+		Stack: model.BundleService{
+			Services: map[string]model.CraneServiceSpec{
+				"service1": model.CraneServiceSpec{
+					Labels: map[string]string{
+						"com.crane.permissions.1": "rw",
+					},
+				},
+			},
+		},
+	}
+
+	cli := &CraneDockerClient{}
+	groupId, err := cli.GetStackGroup(&bundle)
+	assert.Nil(t, err)
+	assert.Equal(t, groupId, uint64(1))
+}
 
 func TestConvertNetworks(t *testing.T) {
 	networkMap := map[string]bool{"test1": true, "test2": false}

@@ -60,7 +60,7 @@ type DockerClientInterface interface {
 	RemoveStack(namespace string) error
 	FilterServiceByStack(namespace string, opts types.ServiceListOptions) ([]swarm.Service, error)
 	ToCraneServiceSpec(swarmService swarm.ServiceSpec) model.CraneServiceSpec
-	GetStackGroup(namespace string) (uint64, error)
+	GetStackGroup(bundle *model.Bundle) (uint64, error)
 
 	CreateService(service swarm.ServiceSpec, options types.ServiceCreateOptions) (types.ServiceCreateResponse, error)
 	ListServiceSpec(options types.ServiceListOptions) ([]swarm.Service, error)

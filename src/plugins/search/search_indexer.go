@@ -83,7 +83,8 @@ func (indexer *CraneIndexer) Index(store *DocumentStorage) {
 
 	if stacks, err := indexer.CraneDockerClient.ListStack(); err == nil {
 		for _, stack := range stacks {
-			//groupId, _ := indexer.CraneDockerClient.GetStackGroup(stack.Namespace)
+			//bundle, _ := indexer.Cranedockerclient.InspectStack(stack.Namespace)
+			//groupId, _ := indexer.CraneDockerClient.GetStackGroup(bundle)
 			groupId := uint64(1)
 
 			store.Set(stack.Namespace, Document{

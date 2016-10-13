@@ -251,12 +251,7 @@ func (client *CraneDockerClient) FilterServiceByStack(namespace string, opts typ
 	return stackServices, nil
 }
 
-func (client *CraneDockerClient) GetStackGroup(namespace string) (uint64, error) {
-	bundle, err := client.InspectStack(namespace)
-	if err != nil {
-		return 0, err
-	}
-
+func (client *CraneDockerClient) GetStackGroup(bundle *model.Bundle) (uint64, error) {
 	for _, service := range bundle.Stack.Services {
 		for k, _ := range service.Labels {
 			if strings.HasPrefix(k, "com.crane.permissions") {
@@ -356,7 +351,7 @@ func (client *CraneDockerClient) deployServices(services map[string]model.CraneS
 		if service.RegistryAuth != "" {
 			registryAuth, err := EncodedRegistryAuth(service.RegistryAuth)
 			if err != nil {
-				return nil
+				return err
 			}
 			createOpts.EncodedRegistryAuth = registryAuth
 			updateOpts.EncodedRegistryAuth = registryAuth
