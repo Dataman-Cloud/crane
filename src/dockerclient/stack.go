@@ -356,7 +356,7 @@ func (client *CraneDockerClient) deployServices(services map[string]model.CraneS
 		if service.RegistryAuth != "" {
 			registryAuth, err := EncodedRegistryAuth(service.RegistryAuth)
 			if err != nil {
-				return nil
+				return err
 			}
 			createOpts.EncodedRegistryAuth = registryAuth
 			updateOpts.EncodedRegistryAuth = registryAuth
