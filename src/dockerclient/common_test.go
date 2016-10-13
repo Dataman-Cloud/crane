@@ -5,6 +5,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	rauth "github.com/Dataman-Cloud/crane/src/plugins/registryauth"
+
 	"github.com/docker/engine-api/types/swarm"
 	"github.com/stretchr/testify/assert"
 )
@@ -88,4 +90,14 @@ func TestGetServicesNamespace(t *testing.T) {
 	}
 	namespace = GetServicesNamespace(spec)
 	assert.Equal(t, namespace, "value")
+}
+
+func TestEncodeRegistryAuth(t *testing.T) {
+	authInfo := rauth.RegistryAuth{
+		Username: "Username",
+		Password: "Password",
+	}
+
+	_, err := EncodeRegistryAuth(&authInfo)
+	assert.Nil(t, err)
 }
