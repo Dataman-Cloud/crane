@@ -44,7 +44,12 @@ func AuthorizeServiceAccess() func(permissionRequired auth.Permission) gin.Handl
 				}
 			} else { // for list services request
 				authpass := false
-				groupId, err := a.CraneDockerClient.GetStackGroup(ctx.Param("namespace"))
+				bundle, err := a.Cranedockerclient.InspectStack(ctx.Param("namespace"))
+				if err != nil {
+					ctx.Abort()
+					return
+				}
+				groupId, err := a.CraneDockerClient.GetStackGroup(bundle)
 				if err != nil {
 					ctx.Abort()
 					return
