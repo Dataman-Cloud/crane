@@ -45,7 +45,21 @@ host_arch_supported()
 
 ip_forwarding_enabled()
 {
-  sysctl net.ipv4.ip_forward | grep 1 || {
+  OS="`uname`"
+  case $OS in
+    'Darwin')
+      sysctl net.inet.ip.forwarding | grep 1 || {
+      echo "********************************************************"
+      printf "\033[41mERROR:\033[0m IP Forwarding is disabled! Please Enable the IP Forwarding permanently as following:\n"
+      echo "********************************************************"
+      printf "\n"
+      printf "\n"
+      printf "run command sudo sysctl -w net.inet.ip.forwarding=1\n"
+      printf "refer: http://serverfault.com/questions/97117/how-do-i-enable-ip-forwarding-in-macos-x\n"
+      exit 1
+    } ;;
+    *)
+    sysctl net.ipv4.ip_forward | grep 1 || {
       echo "********************************************************"
       printf "\033[41mERROR:\033[0m IP Forwarding is disabled! Please Enable the IP Forwarding permanently as following:\n"
       echo "********************************************************"
@@ -55,18 +69,26 @@ ip_forwarding_enabled()
       printf "run command sysctl -p /etc/sysctl.conf\n"
       printf "refer: http://www.ducea.com/2006/08/01/how-to-enable-ip-forwarding-in-linux/\n"
       exit 1
-    }
+    } ;;
+  esac
 }
 
 docker_required() {
-  if _command_exists dockerd; then
-      echo "-> Checking docker runtime environment..."
-  else
-      echo "********************************************************"
-      printf "\033[41mERROR:\033[0m command **dockerd** is NOT FOUND! Please make sure docker-engine>=1.$DOCKER_MINOR_VERSION_REQUIRED is installed!\n"
-      echo "********************************************************"
-      exit 1
-  fi
+  OS=`uname`
+  case $OS in
+    'Darwin')
+      ;;
+    *)
+      if _command_exists dockerd; then
+        echo "-> Checking docker runtime environment..."
+      else
+        echo "********************************************************"
+        printf "\033[41mERROR:\033[0m command **dockerd** is NOT FOUND! Please make sure docker-engine>=1.$DOCKER_MINOR_VERSION_REQUIRED is installed!\n"
+        echo "********************************************************"
+        exit 1
+      fi
+      ;;
+  esac
 
   docker_version="$(docker version --format '{{.Server.Version}}' | awk -F. '{print $2}')"
 
@@ -316,8 +338,17 @@ have_a_init()
             exit 0
             ;;
         *)
-            printf "\033[41mERROR\033[0m Unknown operating system.\n"
-            echo "Learn more: https://dataman.kf5.com/posts/view/131402"
+            OS=`uname`
+            case $OS in
+              'Darwin')
+                printf "\033[42mNOTICE\033[0m Macos, only development mode.\n]]"
+                ;;
+              *)
+                printf "\033[41mERROR\033[0m Unknown operating system.\n"
+                echo "Learn more: https://dataman.kf5.com/posts/view/131402"
+                ;;
+            esac
+            exit 0
             ;;
     esac
 }
