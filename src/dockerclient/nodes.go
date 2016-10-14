@@ -154,12 +154,7 @@ func (client *CraneDockerClient) RemoveNode(nodeId string) error {
 }
 
 // Update a single node
-func (client *CraneDockerClient) UpdateNode(nodeId string, opts model.UpdateOptions) error {
-	node, err := client.InspectNode(nodeId)
-	if err != nil {
-		return err
-	}
-
+func (client *CraneDockerClient) UpdateNode(node swarm.Node, opts model.UpdateOptions) error {
 	spec := &node.Spec
 	switch opts.Method {
 	case flagUpdateRole:
@@ -187,7 +182,7 @@ func (client *CraneDockerClient) UpdateNode(nodeId string, opts model.UpdateOpti
 			return err
 		}
 	case flagEndpointUpdate:
-		if err := client.nodeUpdateEndpoint(nodeId, spec, opts.Options); err != nil {
+		if err := client.nodeUpdateEndpoint(node.ID, spec, opts.Options); err != nil {
 			return err
 		}
 	default:
@@ -196,7 +191,7 @@ func (client *CraneDockerClient) UpdateNode(nodeId string, opts model.UpdateOpti
 
 	query := url.Values{}
 	query.Set("version", strconv.FormatUint(node.Version.Index, 10))
-	_, err = client.sharedHttpClient.POST(nil, client.swarmManagerHttpEndpoint+"/"+path.Join("nodes", nodeId, "update"), query, node.Spec, nil)
+	_, err := client.sharedHttpClient.POST(nil, client.swarmManagerHttpEndpoint+"/"+path.Join("nodes", node.ID, "update"), query, node.Spec, nil)
 	if err != nil {
 		return err
 	}

@@ -8,6 +8,8 @@ import (
 	"testing"
 
 	"github.com/Dataman-Cloud/crane/src/model"
+	mock "github.com/Dataman-Cloud/crane/src/testing"
+	"github.com/Dataman-Cloud/crane/src/utils/config"
 
 	"github.com/docker/engine-api/types"
 	"github.com/docker/engine-api/types/swarm"
@@ -109,6 +111,424 @@ func TestInspectNode(t *testing.T) {
 	assert.Nil(t, err)
 }
 
+func TestUpdateNodeRole(t *testing.T) {
+	mockServer := mock.NewServer()
+	defer mockServer.Close()
+
+	envs := map[string]interface{}{
+		"Version":       "1.10.1",
+		"Os":            "linux",
+		"KernelVersion": "3.13.0-77-generic",
+		"GoVersion":     "go1.4.2",
+		"GitCommit":     "9e83765",
+		"Arch":          "amd64",
+		"ApiVersion":    "1.22",
+		"BuildTime":     "2015-12-01T07:09:13.444803460+00:00",
+		"Experimental":  false,
+	}
+	node := swarm.Node{
+		ID: "nodeid",
+		Spec: swarm.NodeSpec{
+			Role: "manager",
+		},
+		Meta: swarm.Meta{
+			Version: swarm.Version{
+				Index: uint64(100),
+			},
+		},
+	}
+	opts := model.UpdateOptions{
+		Method:  flagUpdateRole,
+		Options: []byte(`"worker"`),
+	}
+
+	requestBody := node.Spec
+	requestBody.Role = "worker"
+
+	mockServer.AddRouter("/_ping", "get").RGroup().
+		Reply(200)
+	mockServer.AddRouter("/version", "get").RGroup().
+		Reply(200).
+		WJSON(envs)
+	mockServer.AddRouter("/nodes/nodeid/update", "post").RGroup().
+		Reply(200).
+		RQuery("version=100").
+		RJSON(requestBody)
+
+	mockServer.Register()
+
+	config := &config.Config{
+		DockerEntryScheme: mockServer.Scheme,
+		SwarmManagerIP:    mockServer.Addr,
+		DockerEntryPort:   mockServer.Port,
+		DockerTlsVerify:   false,
+		DockerApiVersion:  "",
+	}
+	craneDockerClient, err := NewCraneDockerClient(config)
+	assert.Nil(t, err)
+
+	err = craneDockerClient.UpdateNode(node, opts)
+	assert.Nil(t, err)
+}
+
+func TestUpdateNodeAvailability(t *testing.T) {
+	mockServer := mock.NewServer()
+	defer mockServer.Close()
+
+	envs := map[string]interface{}{
+		"Version":       "1.10.1",
+		"Os":            "linux",
+		"KernelVersion": "3.13.0-77-generic",
+		"GoVersion":     "go1.4.2",
+		"GitCommit":     "9e83765",
+		"Arch":          "amd64",
+		"ApiVersion":    "1.22",
+		"BuildTime":     "2015-12-01T07:09:13.444803460+00:00",
+		"Experimental":  false,
+	}
+	node := swarm.Node{
+		ID: "nodeid",
+		Spec: swarm.NodeSpec{
+			Availability: "active",
+		},
+		Meta: swarm.Meta{
+			Version: swarm.Version{
+				Index: uint64(100),
+			},
+		},
+	}
+	opts := model.UpdateOptions{
+		Method:  flagUpdateAvailability,
+		Options: []byte(`"drain"`),
+	}
+
+	requestBody := node.Spec
+	requestBody.Availability = "drain"
+
+	mockServer.AddRouter("/_ping", "get").RGroup().
+		Reply(200)
+	mockServer.AddRouter("/version", "get").RGroup().
+		Reply(200).
+		WJSON(envs)
+	mockServer.AddRouter("/nodes/nodeid/update", "post").RGroup().
+		Reply(200).
+		RQuery("version=100").
+		RJSON(requestBody)
+
+	mockServer.Register()
+
+	config := &config.Config{
+		DockerEntryScheme: mockServer.Scheme,
+		SwarmManagerIP:    mockServer.Addr,
+		DockerEntryPort:   mockServer.Port,
+		DockerTlsVerify:   false,
+		DockerApiVersion:  "",
+	}
+	craneDockerClient, err := NewCraneDockerClient(config)
+	assert.Nil(t, err)
+
+	err = craneDockerClient.UpdateNode(node, opts)
+	assert.Nil(t, err)
+}
+
+func TestUpdateNodeLabelAdd(t *testing.T) {
+	mockServer := mock.NewServer()
+	defer mockServer.Close()
+
+	envs := map[string]interface{}{
+		"Version":       "1.10.1",
+		"Os":            "linux",
+		"KernelVersion": "3.13.0-77-generic",
+		"GoVersion":     "go1.4.2",
+		"GitCommit":     "9e83765",
+		"Arch":          "amd64",
+		"ApiVersion":    "1.22",
+		"BuildTime":     "2015-12-01T07:09:13.444803460+00:00",
+		"Experimental":  false,
+	}
+	node := swarm.Node{
+		ID: "nodeid",
+		Spec: swarm.NodeSpec{
+			Annotations: swarm.Annotations{
+				Labels: nil,
+			},
+		},
+		Meta: swarm.Meta{
+			Version: swarm.Version{
+				Index: uint64(100),
+			},
+		},
+	}
+	opts := model.UpdateOptions{
+		Method: flagLabelAdd,
+		Options: []byte(`
+		{
+			"labelKey": "labelValue"
+		}
+		`),
+	}
+
+	requestBody := node.Spec
+	requestBody.Annotations.Labels = map[string]string{
+		"labelKey": "labelValue",
+	}
+
+	mockServer.AddRouter("/_ping", "get").RGroup().
+		Reply(200)
+	mockServer.AddRouter("/version", "get").RGroup().
+		Reply(200).
+		WJSON(envs)
+	mockServer.AddRouter("/nodes/nodeid/update", "post").RGroup().
+		Reply(200).
+		RQuery("version=100").
+		RJSON(requestBody)
+
+	mockServer.Register()
+
+	config := &config.Config{
+		DockerEntryScheme: mockServer.Scheme,
+		SwarmManagerIP:    mockServer.Addr,
+		DockerEntryPort:   mockServer.Port,
+		DockerTlsVerify:   false,
+		DockerApiVersion:  "",
+	}
+	craneDockerClient, err := NewCraneDockerClient(config)
+	assert.Nil(t, err)
+
+	err = craneDockerClient.UpdateNode(node, opts)
+	assert.Nil(t, err)
+}
+
+func TestUpdateNodeLabelRemove(t *testing.T) {
+	mockServer := mock.NewServer()
+	defer mockServer.Close()
+
+	envs := map[string]interface{}{
+		"Version":       "1.10.1",
+		"Os":            "linux",
+		"KernelVersion": "3.13.0-77-generic",
+		"GoVersion":     "go1.4.2",
+		"GitCommit":     "9e83765",
+		"Arch":          "amd64",
+		"ApiVersion":    "1.22",
+		"BuildTime":     "2015-12-01T07:09:13.444803460+00:00",
+		"Experimental":  false,
+	}
+	node := swarm.Node{
+		ID: "nodeid",
+		Spec: swarm.NodeSpec{
+			Annotations: swarm.Annotations{
+				Labels: map[string]string{
+					"keyToBeRemoved": "valueToBeRemoved",
+				},
+			},
+		},
+		Meta: swarm.Meta{
+			Version: swarm.Version{
+				Index: uint64(100),
+			},
+		},
+	}
+	opts := model.UpdateOptions{
+		Method:  flagLabelRemove,
+		Options: []byte(`["keyToBeRemoved"]`),
+	}
+
+	requestBody := node.Spec
+	requestBody.Annotations.Labels = map[string]string{}
+
+	mockServer.AddRouter("/_ping", "get").RGroup().
+		Reply(200)
+	mockServer.AddRouter("/version", "get").RGroup().
+		Reply(200).
+		WJSON(envs)
+	mockServer.AddRouter("/nodes/nodeid/update", "post").RGroup().
+		Reply(200).
+		RQuery("version=100").
+		RJSON(requestBody)
+
+	mockServer.Register()
+
+	config := &config.Config{
+		DockerEntryScheme: mockServer.Scheme,
+		SwarmManagerIP:    mockServer.Addr,
+		DockerEntryPort:   mockServer.Port,
+		DockerTlsVerify:   false,
+		DockerApiVersion:  "",
+	}
+	craneDockerClient, err := NewCraneDockerClient(config)
+	assert.Nil(t, err)
+
+	err = craneDockerClient.UpdateNode(node, opts)
+	assert.Nil(t, err)
+}
+
+func TestUpdateNodeLabelUpdate(t *testing.T) {
+	mockServer := mock.NewServer()
+	defer mockServer.Close()
+
+	envs := map[string]interface{}{
+		"Version":       "1.10.1",
+		"Os":            "linux",
+		"KernelVersion": "3.13.0-77-generic",
+		"GoVersion":     "go1.4.2",
+		"GitCommit":     "9e83765",
+		"Arch":          "amd64",
+		"ApiVersion":    "1.22",
+		"BuildTime":     "2015-12-01T07:09:13.444803460+00:00",
+		"Experimental":  false,
+	}
+	node := swarm.Node{
+		ID: "nodeid",
+		Spec: swarm.NodeSpec{
+			Annotations: swarm.Annotations{
+				Labels: map[string]string{
+					"keyToBeUpdated": "valueCurrent",
+				},
+			},
+		},
+		Meta: swarm.Meta{
+			Version: swarm.Version{
+				Index: uint64(100),
+			},
+		},
+	}
+	opts := model.UpdateOptions{
+		Method:  flagLabelUpdate,
+		Options: []byte(`{"keyToBeUpdated": "valueUpdated"}`),
+	}
+
+	requestBody := node.Spec
+	requestBody.Annotations.Labels["keyToBeUpdated"] = "valueUpdated"
+
+	mockServer.AddRouter("/_ping", "get").RGroup().
+		Reply(200)
+	mockServer.AddRouter("/version", "get").RGroup().
+		Reply(200).
+		WJSON(envs)
+	mockServer.AddRouter("/nodes/nodeid/update", "post").RGroup().
+		Reply(200).
+		RQuery("version=100").
+		RJSON(requestBody)
+
+	mockServer.Register()
+
+	config := &config.Config{
+		DockerEntryScheme: mockServer.Scheme,
+		SwarmManagerIP:    mockServer.Addr,
+		DockerEntryPort:   mockServer.Port,
+		DockerTlsVerify:   false,
+		DockerApiVersion:  "",
+	}
+	craneDockerClient, err := NewCraneDockerClient(config)
+	assert.Nil(t, err)
+
+	err = craneDockerClient.UpdateNode(node, opts)
+	assert.Nil(t, err)
+}
+
+func TestUpdateNodeEndpointUpdate(t *testing.T) {
+	mockServer := mock.NewServer()
+	defer mockServer.Close()
+
+	envs := map[string]interface{}{
+		"Version":       "1.10.1",
+		"Os":            "linux",
+		"KernelVersion": "3.13.0-77-generic",
+		"GoVersion":     "go1.4.2",
+		"GitCommit":     "9e83765",
+		"Arch":          "amd64",
+		"ApiVersion":    "1.22",
+		"BuildTime":     "2015-12-01T07:09:13.444803460+00:00",
+		"Experimental":  false,
+	}
+	node := swarm.Node{
+		ID:   "nodeid",
+		Spec: swarm.NodeSpec{},
+		Meta: swarm.Meta{
+			Version: swarm.Version{
+				Index: uint64(100),
+			},
+		},
+	}
+	opts := model.UpdateOptions{
+		Method:  flagEndpointUpdate,
+		Options: []byte(`"wrong ip"`),
+	}
+
+	mockServer.AddRouter("/_ping", "get").RGroup().
+		Reply(200)
+	mockServer.AddRouter("/version", "get").RGroup().
+		Reply(200).
+		WJSON(envs)
+	mockServer.AddRouter("/nodes/nodeid/update", "post").RGroup().
+		Reply(200).
+		RQuery("version=100")
+
+	mockServer.Register()
+
+	config := &config.Config{
+		DockerEntryScheme: mockServer.Scheme,
+		SwarmManagerIP:    mockServer.Addr,
+		DockerEntryPort:   mockServer.Port,
+		DockerTlsVerify:   false,
+		DockerApiVersion:  "",
+	}
+	craneDockerClient, err := NewCraneDockerClient(config)
+	assert.Nil(t, err)
+
+	err = craneDockerClient.UpdateNode(node, opts)
+	assert.NotNil(t, err)
+}
+
+func TestUpdateNodeDefault(t *testing.T) {
+	mockServer := mock.NewServer()
+	defer mockServer.Close()
+
+	envs := map[string]interface{}{
+		"Version":       "1.10.1",
+		"Os":            "linux",
+		"KernelVersion": "3.13.0-77-generic",
+		"GoVersion":     "go1.4.2",
+		"GitCommit":     "9e83765",
+		"Arch":          "amd64",
+		"ApiVersion":    "1.22",
+		"BuildTime":     "2015-12-01T07:09:13.444803460+00:00",
+		"Experimental":  false,
+	}
+	node := swarm.Node{
+		Spec: swarm.NodeSpec{},
+	}
+	opts := model.UpdateOptions{
+		Method: "defaultError",
+	}
+
+	mockServer.AddRouter("/_ping", "get").RGroup().
+		Reply(200)
+	mockServer.AddRouter("/version", "get").RGroup().
+		Reply(200).
+		WJSON(envs)
+	mockServer.AddRouter("/nodes/nodeid/update", "post").RGroup().
+		Reply(200).
+		RQuery("version=100")
+
+	mockServer.Register()
+
+	config := &config.Config{
+		DockerEntryScheme: mockServer.Scheme,
+		SwarmManagerIP:    mockServer.Addr,
+		DockerEntryPort:   mockServer.Port,
+		DockerTlsVerify:   false,
+		DockerApiVersion:  "",
+	}
+	craneDockerClient, err := NewCraneDockerClient(config)
+	assert.Nil(t, err)
+
+	err = craneDockerClient.UpdateNode(node, opts)
+	assert.NotNil(t, err)
+}
+
+// TODO (wtzhou) refactor me by test/testing mock
 func TestCreateNodeRoleManager(t *testing.T) {
 	fakeClusterWithID := func(ID string) func(ctx *gin.Context) {
 		fakeCluster := func(ctx *gin.Context) {

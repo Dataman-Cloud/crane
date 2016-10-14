@@ -218,7 +218,7 @@ func InitTestSwarm(t *testing.T) (*dockertest.DockerServer, *CraneDockerClient, 
 	err = json.Unmarshal([]byte(updateOptions), &nodeUpdate)
 	assert.Nil(t, err)
 
-	err = client.UpdateNode(node.ID, nodeUpdate)
+	err = client.UpdateNode(node, nodeUpdate)
 	assert.Nil(t, err)
 	return testServer, client, node.ID
 }
