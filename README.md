@@ -58,12 +58,21 @@ Note: the above is a demo site, unstable and maintainless.
 
 CRANE_IP is the ip address(don't use 0.0.0.0 because we are using container in network bridge mode) of the running Crane host which is the swarm manager also.
 
-## Usage
+## Build From Source
 
-Browser http://$CRANE_IP , 
+Clone crane in GoPath
 
-  * username: `admin@admin.com`
-  * password: `adminadmin`
+  ```bash
+  > mkdir -p ${GOPATH}/src/github.com/Dataman-Cloud/crane
+  > cd ${GOPATH}/src/github.com/Dataman-Cloud/crane
+  > git clone https://github.com/Dataman-Cloud/crane.git crane
+  ```
+
+And make sure you have go (>= 1.6) go into the crane dir
+
+  ```bash
+  > make
+  ```
 
 Please click [Crane User Guide in Chinese](https://dataman.gitbooks.io/crane/content/) for more details.
 
