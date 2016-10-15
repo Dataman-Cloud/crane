@@ -1,17 +1,12 @@
-**Actual Behavior**:
- -  `What is the issue? *`
- -  `What is the expected behavior?`
+### Expected behavior
 
-**CodePen** (or steps to reproduce the issue): *
- -  `CodePen Demo which shows your issue:`
- -  `Details:`
+### Actual behavior
 
-**Angular Versions**: *
- -  `Angular Version:`
- -  `Angular Material Version:`
+### Information about the Issue
 
-**Additional Information**:
- -  `Browser Type: *`
- -  `Browser Version: *`
- -  `OS: *`
- -  `Stack Traces:`
+
+### Steps to reproduce the behavior
+
+  1. ...
+  2. ...
+
