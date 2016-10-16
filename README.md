@@ -13,22 +13,13 @@ Crane, maintained by [dataman-cloud](https://github.com/Dataman-Cloud), is a doc
 ## Features
 
   * **Swarm features**: Portal every feature of swarm almost. Crane has highlighted the common swarm functions and improved the user experiences through the friendly frontend.
-  * **Stack templates management**: User can save a running stack as a template, by which others can deploy repeatly.
-  * **Image management**: The private image owned by user can be publiced to others.
-  * **Fuzzy search**: A in-memory index maintained by the backend serves the function.
-  * **Node operation**: Crane details about a node such as kernel version, docker info, docker images and also containers running on the node.
+  * **Stack Templates Management**: User can save a running stack as a template, by which others can deploy repeatly.
+  * **Image Management**: The private image owned by user can be publiced to others.
+  * **Fuzzy Search**: A in-memory index maintained by the backend serves the function.
+  * **Node Operation**: Crane details about a node such as kernel version, docker info, docker images and also containers running on the node.
   * **Network Management**: The overlay network CRUD.
-  * **Registries Authentation Managment**: You can save your private registry username/password pair to Crane, with which a to-be-deployed stack with restricted image access can attach.
-  * **Webssh**: Command 'docker exec' is the magic behind it.
-
-## Demo
-
-Please visit http://crane.shurenyun.com
-
-* Username: admin@admin.com
-* Password: adminadmin
-
-Note: the above is a demo site, unstable and maintainless.
+  * **Registries Authentication Management**: You can save your private registry username/password pair to Crane, with which a to-be-deployed stack with restricted image access can attach.
+  * **WebSSH**: Command 'docker exec' is the magic behind it.
 
 ## OS supported
 
@@ -44,7 +35,6 @@ Note: the above is a demo site, unstable and maintainless.
 * docker-compose>=1.8.0 [how to install](https://docs.docker.com/compose/install/)
 * Enable the Docker tcp Socket on port: 2375 [how to config](https://docs.docker.com/engine/reference/commandline/dockerd/#/daemon-socket-option)
 * Start ntp service
-* You'd better `setenforce 0`
 
 ### Option 1: Stable version in one line
 
