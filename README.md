@@ -49,6 +49,10 @@ Crane, maintained by [dataman-cloud](https://github.com/Dataman-Cloud), is a doc
 
 CRANE_IP is the ip address(don't use 0.0.0.0 because we are using container in network bridge mode) of the running Crane host which is the swarm manager also.
 
+## How to use it
+
+[![Introduction of Crane](http://img.youtube.com/vi/YOUTUBE_VIDEO_ID_HERE/0.jpg)](http://www.youtube.com/watch?v=0BznNNJFIJM)
+
 ## Build From Source
 
 Clone crane in GoPath
