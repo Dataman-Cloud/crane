@@ -17,7 +17,7 @@ func main() {
 	flag.Parse()
 
 	ctx := context.Background()
-	conf := config.GetConfig()
+	conf := config.InitConfig()
 
 	plugins.Init(conf)
 

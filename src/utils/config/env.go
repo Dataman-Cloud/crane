@@ -1,139 +1,196 @@
+// Copy from https://github.com/caarlos0/env
 package config
 
 import (
-	"bufio"
 	"errors"
 	"os"
 	"reflect"
 	"strconv"
 	"strings"
-
-	log "github.com/Sirupsen/logrus"
+	"time"
 )
 
-func LoadEnvFile(envfile string) {
-	// load the environment file
-	log.Debug("envfile: ", envfile)
-	f, err := os.Open(envfile)
-	if err != nil {
-		log.Infof("Failed to open config file %s: %s", envfile, err.Error())
-		return
+var (
+	// ErrNotAStructPtr is returned if you pass something that is not a pointer to a
+	// Struct to Parse
+	ErrNotAStructPtr = errors.New("Expected a pointer to a Struct")
+	// ErrUnsupportedType if the struct field type is not supported by env
+	ErrUnsupportedType = errors.New("Type is not supported")
+	// ErrUnsupportedSliceType if the slice element type is not supported by env
+	ErrUnsupportedSliceType = errors.New("Unsupported slice type")
+	// Friendly names for reflect types
+	sliceOfInts    = reflect.TypeOf([]int(nil))
+	sliceOfStrings = reflect.TypeOf([]string(nil))
+	sliceOfBools   = reflect.TypeOf([]bool(nil))
+)
+
+// Parse parses a struct containing `env` tags and loads its values from
+// environment variables.
+func Parse(v interface{}) error {
+	ptrRef := reflect.ValueOf(v)
+	if ptrRef.Kind() != reflect.Ptr {
+		return ErrNotAStructPtr
 	}
-	defer f.Close()
+	ref := ptrRef.Elem()
+	if ref.Kind() != reflect.Struct {
+		return ErrNotAStructPtr
+	}
+	return doParse(ref)
+}
 
-	r := bufio.NewReader(f)
-	for {
-		line, _, err := r.ReadLine()
+func doParse(ref reflect.Value) error {
+	refType := ref.Type()
+	for i := 0; i < refType.NumField(); i++ {
+		value, err := get(refType.Field(i))
 		if err != nil {
-			break
+			return err
 		}
-
-		if len(line) == 0 {
+		if value == "" {
 			continue
 		}
-
-		key, val, err := Parseln(string(line))
-		if err != nil {
-			log.Errorf("Parse info %s got error: %s", line, err.Error())
-			continue
-		}
-
-		if len(os.Getenv(strings.ToUpper(key))) == 0 {
-			err1 := os.Setenv(strings.ToUpper(key), val)
-			if err1 != nil {
-				log.Error(err1.Error())
-			}
+		if err := set(ref.Field(i), refType.Field(i), value); err != nil {
+			return err
 		}
 	}
-}
-
-// helper function to parse a "key=value" environment variable string.
-func Parseln(line string) (string, string, error) {
-	splits := strings.SplitN(removeComments(line), "=", 2)
-
-	if len(splits) < 2 {
-		return "", "", errors.New("missing delimiter '='")
-	}
-
-	key := strings.Trim(splits[0], " ")
-	val := strings.Trim(splits[1], ` "'`)
-	return key, val, nil
-
-}
-
-// helper function to trim comments and whitespace from a string.
-func removeComments(s string) string {
-	if len(s) == 0 || string(s[0]) == "#" {
-		return ""
-	} else {
-		index := strings.Index(s, " #")
-		if index > -1 {
-			s = strings.TrimSpace(s[0:index])
-		}
-	}
-	return s
-}
-
-func exitMissingEnv(env string) {
-	log.Errorf("program exit missing config for env %s", env)
-	os.Exit(1)
-}
-
-func exitCheckEnv(env string, err error) {
-	log.Errorf("Check env %s got error: %s", env, err.Error())
-}
-
-func LoadConfig(configEntry interface{}) error {
-	val := reflect.ValueOf(configEntry).Elem()
-
-	for i := 0; i < val.NumField(); i++ {
-		typeField := val.Type().Field(i)
-		required := typeField.Tag.Get("required")
-		envKey := typeField.Tag.Get("env")
-
-		env := os.Getenv(envKey)
-
-		if env == "" && required == "true" {
-			exitMissingEnv(envKey)
-		}
-
-		var configEntryValue interface{}
-		var err error
-		valueFiled := val.Field(i).Interface()
-		value := val.Field(i)
-		switch valueFiled.(type) {
-		case int64:
-			configEntryValue, err = strconv.ParseInt(env, 10, 64)
-		case int16:
-			configEntryValue, err = strconv.ParseInt(env, 10, 16)
-			_, ok := configEntryValue.(int64)
-			if !ok {
-				exitCheckEnv(typeField.Name, err)
-			}
-			configEntryValue = int16(configEntryValue.(int64))
-		case uint16:
-			configEntryValue, err = strconv.ParseUint(env, 10, 16)
-
-			_, ok := configEntryValue.(uint64)
-			if !ok {
-				exitCheckEnv(typeField.Name, err)
-			}
-			configEntryValue = uint16(configEntryValue.(uint64))
-		case uint64:
-			configEntryValue, err = strconv.ParseUint(env, 10, 64)
-		case bool:
-			configEntryValue, err = strconv.ParseBool(env)
-		case []string:
-			configEntryValue = strings.SplitN(env, ",", -1)
-		default:
-			configEntryValue = env
-		}
-
-		if err != nil {
-			exitCheckEnv(typeField.Name, err)
-		}
-		value.Set(reflect.ValueOf(configEntryValue))
-	}
-
 	return nil
+}
+
+func get(field reflect.StructField) (string, error) {
+	var (
+		val string
+		err error
+	)
+
+	key, opts := parseKeyForOption(field.Tag.Get("env"))
+
+	defaultValue := field.Tag.Get("envDefault")
+	val = getOr(key, defaultValue)
+
+	if len(opts) > 0 {
+		for _, opt := range opts {
+			// The only option supported is "required".
+			switch opt {
+			case "":
+				break
+			case "required":
+				val, err = getRequired(key)
+			default:
+				err = errors.New("Env tag option " + opt + " not supported.")
+			}
+		}
+	}
+
+	return val, err
+}
+
+// split the env tag's key into the expected key and desired option, if any.
+func parseKeyForOption(key string) (string, []string) {
+	opts := strings.Split(key, ",")
+	return opts[0], opts[1:]
+}
+
+func getRequired(key string) (string, error) {
+	if value := os.Getenv(key); value != "" {
+		return value, nil
+	}
+	// We do not use fmt.Errorf to avoid another import.
+	return "", errors.New("Required environment variable " + key + " is not set")
+}
+
+func getOr(key, defaultValue string) string {
+	value := os.Getenv(key)
+	if value != "" {
+		return value
+	}
+	return defaultValue
+}
+
+func set(field reflect.Value, refType reflect.StructField, value string) error {
+	switch field.Kind() {
+	case reflect.Slice:
+		separator := refType.Tag.Get("envSeparator")
+		return handleSlice(field, value, separator)
+	case reflect.String:
+		field.SetString(value)
+	case reflect.Bool:
+		bvalue, err := strconv.ParseBool(value)
+		if err != nil {
+			return err
+		}
+		field.SetBool(bvalue)
+	case reflect.Int:
+		intValue, err := strconv.ParseInt(value, 10, 32)
+		if err != nil {
+			return err
+		}
+		field.SetInt(intValue)
+	case reflect.Int64:
+		if refType.Type.String() == "time.Duration" {
+			dValue, err := time.ParseDuration(value)
+			if err != nil {
+				return err
+			}
+			field.Set(reflect.ValueOf(dValue))
+		} else {
+			return ErrUnsupportedType
+		}
+	default:
+		return ErrUnsupportedType
+	}
+	return nil
+}
+
+func handleSlice(field reflect.Value, value, separator string) error {
+	if separator == "" {
+		separator = ","
+	}
+
+	splitData := strings.Split(value, separator)
+
+	switch field.Type() {
+	case sliceOfStrings:
+		field.Set(reflect.ValueOf(splitData))
+	case sliceOfInts:
+		intData, err := parseInts(splitData)
+		if err != nil {
+			return err
+		}
+		field.Set(reflect.ValueOf(intData))
+	case sliceOfBools:
+		boolData, err := parseBools(splitData)
+		if err != nil {
+			return err
+		}
+		field.Set(reflect.ValueOf(boolData))
+	default:
+		return ErrUnsupportedSliceType
+	}
+	return nil
+}
+
+func parseInts(data []string) ([]int, error) {
+	var intSlice []int
+
+	for _, v := range data {
+		intValue, err := strconv.ParseInt(v, 10, 32)
+		if err != nil {
+			return nil, err
+		}
+		intSlice = append(intSlice, int(intValue))
+	}
+	return intSlice, nil
+}
+
+func parseBools(data []string) ([]bool, error) {
+	var boolSlice []bool
+
+	for _, v := range data {
+		bvalue, err := strconv.ParseBool(v)
+		if err != nil {
+			return nil, err
+		}
+
+		boolSlice = append(boolSlice, bvalue)
+	}
+	return boolSlice, nil
 }

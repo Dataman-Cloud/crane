@@ -20,8 +20,8 @@ services:
     ports:
       - "5000:5000"
       - "5001:5001"
-    environment:
-      - CRANE_IP
+    env_file:
+      - ./env_file
     volumes:
       - ./registry_storage:/storage
     restart: always
@@ -30,11 +30,11 @@ services:
       context: ../
       dockerfile: ./deploy/Dockerfile
     image: ${REGISTRY_PREFIX}crane:${TAG}
-    environment:
-      - CRANE_SWARM_MANAGER_IP
+    env_file:
+      - ./env_file
     links:
       - crane_registry
-      - crane_db  
+      - crane_db
     ports:
        - "5013:5013"
     restart: always
