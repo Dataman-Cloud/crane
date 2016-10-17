@@ -82,3 +82,7 @@ test-cover-html:
 test-cover-func:
 	@echo "🐳 $@"
 	go tool cover -func=coverage-all.out
+
+AUTHORS: .mailmap .git/HEAD
+	@echo "🐳  $@"
+		git log --format='%aN <%aE>' | LC_ALL=C.UTF-8 sort -fu > $@
