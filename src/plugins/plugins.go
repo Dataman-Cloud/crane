@@ -16,26 +16,44 @@ import (
 	_ "github.com/mattes/migrate/driver/mysql"
 )
 
-func Init(conf *config.Config) {
+func Init(conf *config.Config) error {
 	if conf == nil || conf.FeatureFlags == nil {
 		log.Warnf("conf or feature flags was nil")
-		return
+		return nil
 	}
 
 	for _, feature := range conf.FeatureFlags {
 		switch feature {
 		case apiplugin.License:
-			license.Init(db.DB())
+			// TODO (wtzhou) improve me: how to merge the following db.NewDB into single
+			dbClient, err := db.NewDB(conf.DbDriver, conf.DbDSN)
+			if err != nil {
+				return err
+			}
+			license.Init(dbClient)
 		case apiplugin.RegistryAuth:
-			rAuthApi.Init(db.DB())
+			dbClient, err := db.NewDB(conf.DbDriver, conf.DbDSN)
+			if err != nil {
+				return err
+			}
+			rAuthApi.Init(dbClient)
 		case apiplugin.Catalog:
-			catalog.Init(db.DB())
+			dbClient, err := db.NewDB(conf.DbDriver, conf.DbDSN)
+			if err != nil {
+				return err
+			}
+			catalog.Init(dbClient)
 		case apiplugin.Registry:
-			registry.Init(conf.AccountAuthenticator, conf.RegistryPrivateKeyPath, conf.RegistryAddr)
+			dbClient, err := db.NewDB(conf.DbDriver, conf.DbDSN)
+			if err != nil {
+				return err
+			}
+			registry.Init(conf.AccountAuthenticator, conf.RegistryPrivateKeyPath, conf.RegistryAddr, conf.DbDriver, conf.DbDSN, dbClient)
 		case apiplugin.Search:
 			search.Init()
 		case apiplugin.Account:
 			authApi.Init(conf)
 		}
 	}
+	return nil
 }

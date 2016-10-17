@@ -5,6 +5,8 @@ import (
 	"testing"
 
 	"github.com/Dataman-Cloud/crane/src/utils/config"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestInitNilConfig(t *testing.T) {
@@ -27,7 +29,8 @@ func TestInitNilConfig(t *testing.T) {
 	defer os.Setenv("CRANE_REGISTRY_ADDR", "")
 	defer os.Setenv("CRANE_ACCOUNT_AUTHENTICATOR", "")
 
-	Init(nil)
+	err := Init(nil)
+	assert.Nil(t, err)
 }
 
 func TestInitSearchConfig(t *testing.T) {

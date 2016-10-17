@@ -5,11 +5,14 @@ import (
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
+	_ "github.com/mattes/migrate/driver/mysql"
 )
 
-func Init(accountAuthenticator, registryPrivateKeyPath, registryAddr string) {
+func Init(accountAuthenticator, registryPrivateKeyPath, registryAddr, dbDriver, dbDsn string, dbClient *gorm.DB) {
 	log.Infof("begin to init and enable plugin: %s", apiplugin.Registry)
-	registryApi := NewRegistry(accountAuthenticator, registryPrivateKeyPath, registryAddr)
+	registryApi := NewRegistry(accountAuthenticator, registryPrivateKeyPath, registryAddr, dbDriver, dbDsn, dbClient)
 
 	apiPlugin := &apiplugin.ApiPlugin{
 		Name:         apiplugin.Registry,

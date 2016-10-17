@@ -23,8 +23,10 @@ type DbAuthenicator struct {
 	auth.Authenticator
 }
 
-func NewDBAuthenticator() *DbAuthenicator {
-	authenticator := &DbAuthenicator{DbClient: db.DB()}
+func NewDBAuthenticator(dbDriver, dbDsn string) *DbAuthenicator {
+	// TODO (wtzhou) need error handler
+	dbClient, _ := db.NewDB(dbDriver, dbDsn)
+	authenticator := &DbAuthenicator{DbClient: dbClient}
 	authenticator.MigriateTable()
 	return authenticator
 }

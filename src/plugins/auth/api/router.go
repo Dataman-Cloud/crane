@@ -33,7 +33,7 @@ func Init(conf *config.Config) {
 	if conf.AccountAuthenticator == "default" {
 		accountApi.Authenticator = authenticators.NewDefaultAuthenticator()
 	} else if conf.AccountAuthenticator == "db" {
-		accountApi.Authenticator = authenticators.NewDBAuthenticator()
+		accountApi.Authenticator = authenticators.NewDBAuthenticator(conf.DbDriver, conf.DbDSN)
 	}
 
 	accountApi.Authorization = chains.Authorization(accountApi.TokenStore, accountApi.Authenticator)

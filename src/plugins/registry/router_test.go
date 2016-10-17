@@ -3,9 +3,18 @@ package registry
 import (
 	"testing"
 
+	"github.com/Dataman-Cloud/crane/src/utils/db"
+
+	_ "github.com/erikstmartin/go-testdb"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 )
+
+func TestInit(t *testing.T) {
+	dbClient, err := db.NewDB("testdb", "")
+	assert.Nil(t, err)
+	Init("db", "", "", "testdb", "", dbClient)
+}
 
 func TestApiRouter(t *testing.T) {
 	registry := &Registry{}

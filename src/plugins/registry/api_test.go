@@ -9,11 +9,26 @@ import (
 	"testing"
 
 	"github.com/Dataman-Cloud/crane/src/plugins/auth"
+	"github.com/Dataman-Cloud/crane/src/utils/db"
 
+	_ "github.com/erikstmartin/go-testdb"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 )
 
+func TestNewRegistry(t *testing.T) {
+	dbDriver := "testdb"
+	dbDSN := ""
+	dbClient, err := db.NewDB(dbDriver, dbDSN)
+	assert.Nil(t, err)
+
+	// TODO (wtzhou) how to assert dbClient
+	registry := NewRegistry("db", "", "", dbDriver, dbDSN, dbClient)
+	assert.Equal(t, "db", registry.AccountAuthenticator)
+	assert.Equal(t, "", registry.PrivateKeyPath)
+}
+
+// TODO (wtzhou) refactor me by test/testing mock
 var (
 	baseUrl string
 	server  *httptest.Server

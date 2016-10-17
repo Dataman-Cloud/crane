@@ -24,6 +24,11 @@ func (r testResult) RowsAffected() (int64, error) {
 	return r.affectedRows, nil
 }
 
+func TestNewDBAuthenticator(t *testing.T) {
+	// TODO (wtzhou) how to assert
+	NewDBAuthenticator("testdb", "")
+}
+
 func TestAccounts(t *testing.T) {
 	DB, _ := gorm.Open("testdb", "")
 	authenticator := &DbAuthenicator{
@@ -123,7 +128,7 @@ func TestUpdateGroup(t *testing.T) {
 	}
 }
 
-func EncryptPassword(t *testing.T) {
+func TestEncryptPassword(t *testing.T) {
 	authenticator := &DbAuthenicator{}
 	if p := authenticator.EncryptPassword("rolex"); p != "" {
 		t.Log("pass")

@@ -1,8 +1,6 @@
 package db
 
 import (
-	"github.com/Dataman-Cloud/crane/src/utils/config"
-
 	log "github.com/Sirupsen/logrus"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
@@ -11,37 +9,20 @@ import (
 
 var db *gorm.DB
 
-func DB() *gorm.DB {
+func NewDB(driver, dsn string) (*gorm.DB, error) {
 	if db == nil {
-		InitDB()
+		var err error
+		log.Infof("connecting %s uri: %s", driver, dsn)
+		if db, err = gorm.Open(driver, dsn); err != nil {
+			log.Fatalf("failed to connect db %s error: %s", dsn, err.Error())
+			return nil, err
+		}
+		configDb(db)
 	}
-	return db
+	return db, nil
 }
 
-func InitDB() {
-	conf := config.InitConfig()
-
-	err := initDb(conf.DbDriver, conf.DbDSN)
-	if err != nil {
-		log.Fatalf("init %s error: %v", conf.DbDriver, conf.DbDSN)
-	}
-
-	configDb()
-}
-
-func initDb(driver, dsn string) error {
-	var err error
-	log.Infof("connecting %s uri: %s", driver, dsn)
-
-	db, err = gorm.Open(driver, dsn)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func configDb() {
+func configDb(db *gorm.DB) {
 	db.DB().SetMaxIdleConns(5)
 	db.DB().SetMaxOpenConns(50)
 	db.SetLogger(log.StandardLogger())
