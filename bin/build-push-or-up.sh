@@ -6,7 +6,6 @@ set -o errexit
 export REGISTRY_PREFIX=${REGISTRY_PREFIX:-""}
 export DEFAULT_TAG=`git log --pretty=format:'%h' -n 1`
 export TAG=${VERSION:-$DEFAULT_TAG}
-export CRANE_SWARM_MANAGER_IP=$CRANE_IP
 
 up_or_push=$1
 if [ "x$up_or_push" != "xpush" ] && [ "x$up_or_push" != "xup" ]
@@ -25,7 +24,7 @@ fi
 # setup env_file
 echo "Copy default env file to env_file"
 cp deploy/env deploy/env_file
-sed -i -e "/CRANE_SWARM_MANAGER_IP/  s/192\.168\.1\.111/${CRANE_IP}/" deploy/env_file
+sed -i -e "s/CRANE_IP/${CRANE_IP}/" deploy/env_file
 # build crane
 docker-compose -p crane -f deploy/docker-compose.yml build
 
