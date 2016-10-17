@@ -1,0 +1,17 @@
+# Generate AUTHORS: hack/generate-authors.sh
+
+# Tip for finding duplicates (besides scanning the output of AUTHORS for name
+# duplicates that aren't also email duplicates): scan the output of:
+#   git log --format='%aE - %aN' | sort -uf
+#
+# For explanation on this file format: man git-shortlog
+
+Deshi Xiao <xiaods@gmail.com> <xiaods@users.noreply.github.com>
+jfchen <jfchen@dataman-inc.com>  <jfchen-dataman@users.noreply.github.com>
+kevin xu <cming.xu@gmail.com>
+merryfox <merryfox@126.com> <56734536@qq.com>
+YiQin Guo <yqguo@dataman-inc.com> yqguodataman
+zhfang <154396937@qq.com> 方志浩
+yyao <yaoyunsmile@163.com> 姚云
+yyao <yaoyunsmile@163.com> upccup
+Myu <313231068@qq.com> my9074

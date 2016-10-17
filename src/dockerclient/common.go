@@ -60,7 +60,7 @@ func EncodeRegistryAuth(authInfo *rauth.RegistryAuth) (string, error) {
 }
 
 func parseEndpoint(endpoint string) (*url.URL, error) {
-	conf := config.GetConfig()
+	conf := config.InitConfig()
 	if !strings.Contains(endpoint, "://") {
 		endpoint = conf.DockerEntryScheme + "://" + endpoint
 	}
