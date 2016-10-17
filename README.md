@@ -51,7 +51,7 @@ CRANE_IP is the ip address(don't use 0.0.0.0 because we are using container in n
 
 ## How to use it
 
-[![Introduction of Crane](http://img.youtube.com/vi/YOUTUBE_VIDEO_ID_HERE/0.jpg)](http://www.youtube.com/watch?v=0BznNNJFIJM)
+[![Demo Crane](https://j.gifs.com/oYvQW3.gif)](https://www.youtube.com/watch?v=0BznNNJFIJM)
 
 ## Build From Source
 
