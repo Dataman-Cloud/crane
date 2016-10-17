@@ -26,6 +26,7 @@ Crane, maintained by [dataman-cloud](https://github.com/Dataman-Cloud), is a doc
 * Ubuntu 12.04 Server
 * Ubuntu 14.04 Server
 * CentOS 7.X
+* MacOS 10.x
 
 ## Installation
 
@@ -43,7 +44,7 @@ Crane, maintained by [dataman-cloud](https://github.com/Dataman-Cloud), is a doc
 ### Option 2: Latest or development from docker build
 
   ```bash
-  CRANE_IP=192.168.59.105 ./bin/build-push-or-up.sh up
+  CRANE_IP=<your eth0 ip> ./bin/build-push-or-up.sh up
   ```
 
 CRANE_IP is the ip address(don't use 0.0.0.0 because we are using container in network bridge mode) of the running Crane host which is the swarm manager also.
@@ -53,8 +54,8 @@ CRANE_IP is the ip address(don't use 0.0.0.0 because we are using container in n
 Clone crane in GoPath
 
   ```bash
-  > mkdir -p ${GOPATH}/src/github.com/Dataman-Cloud/crane
-  > cd ${GOPATH}/src/github.com/Dataman-Cloud/crane
+  > mkdir -p ${GOPATH}/src/github.com/Dataman-Cloud
+  > cd ${GOPATH}/src/github.com/Dataman-Cloud
   > git clone https://github.com/Dataman-Cloud/crane.git crane
   ```
 
