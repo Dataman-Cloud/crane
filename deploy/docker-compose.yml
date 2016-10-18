@@ -20,8 +20,8 @@ services:
     ports:
       - "5000:5000"
       - "5001:5001"
-    env_file:
-      - ./env_file
+    environment:
+      - CRANE_IP
     volumes:
       - ./registry_storage:/storage
     restart: always
