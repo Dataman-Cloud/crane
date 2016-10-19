@@ -10,7 +10,6 @@ import (
 	"github.com/Dataman-Cloud/crane/src/plugins/auth"
 	"github.com/Dataman-Cloud/crane/src/plugins/auth/authenticators"
 	"github.com/Dataman-Cloud/crane/src/utils/cranerror"
-	"github.com/Dataman-Cloud/crane/src/utils/db"
 	"github.com/Dataman-Cloud/crane/src/utils/httpresponse"
 
 	log "github.com/Sirupsen/logrus"
@@ -46,24 +45,24 @@ type Registry struct {
 	RegistryAddr         string
 }
 
-func NewRegistry(AccountAuthenticator string, PrivateKeyPath string, RegistryAddr string) *Registry {
+func NewRegistry(AccountAuthenticator string, PrivateKeyPath string, RegistryAddr string, DbDriver string, DbDSN string, dbClient *gorm.DB) *Registry {
 	registry := &Registry{AccountAuthenticator: AccountAuthenticator,
 		PrivateKeyPath: PrivateKeyPath,
 		RegistryAddr:   RegistryAddr,
-		DbClient:       db.DB()}
+		DbClient:       dbClient}
 
 	if registry.AccountAuthenticator == "db" {
-		registry.Authenticator = authenticators.NewDBAuthenticator()
+		registry.Authenticator = authenticators.NewDBAuthenticator(DbDriver, DbDSN)
 	} else if registry.AccountAuthenticator == "ldap" {
 	} else {
 		registry.Authenticator = authenticators.NewDefaultAuthenticator()
 	}
 
-	registry.MigriateTable()
+	registry.migrateTable()
 	return registry
 }
 
-func (registry *Registry) MigriateTable() {
+func (registry *Registry) migrateTable() {
 	registry.DbClient.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&Image{})
 	registry.DbClient.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&Tag{})
 	registry.DbClient.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&ImageAccess{})

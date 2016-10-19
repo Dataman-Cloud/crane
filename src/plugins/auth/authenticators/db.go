@@ -23,13 +23,15 @@ type DbAuthenicator struct {
 	auth.Authenticator
 }
 
-func NewDBAuthenticator() *DbAuthenicator {
-	authenticator := &DbAuthenicator{DbClient: db.DB()}
-	authenticator.MigriateTable()
+func NewDBAuthenticator(dbDriver, dbDsn string) *DbAuthenicator {
+	// TODO (wtzhou) need error handler
+	dbClient, _ := db.NewDB(dbDriver, dbDsn)
+	authenticator := &DbAuthenicator{DbClient: dbClient}
+	authenticator.migrateTable()
 	return authenticator
 }
 
-func (authenticator *DbAuthenicator) MigriateTable() {
+func (authenticator *DbAuthenicator) migrateTable() {
 	authenticator.DbClient.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&auth.Account{})
 	authenticator.DbClient.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&auth.Group{})
 	authenticator.DbClient.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&auth.AccountGroup{})

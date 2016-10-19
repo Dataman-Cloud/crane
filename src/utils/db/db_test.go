@@ -1,15 +1,21 @@
 package db
 
 import (
+	"os"
+	"os/exec"
 	"testing"
-
-	"github.com/stretchr/testify/assert"
 )
 
-func TestInitDb(t *testing.T) {
-	assert.Error(t, initDb("foobar", "ff"))
-}
-
-func TestInitDbWithDsnError(t *testing.T) {
-	assert.Error(t, initDb("mysql", "fake-dsn"))
+func TestNewDB(t *testing.T) {
+	if os.Getenv("BE_NEWDB") == "1" {
+		NewDB("foobar", "ff")
+		return
+	}
+	cmd := exec.Command(os.Args[0], "-test.run=TestNewDB")
+	cmd.Env = append(os.Environ(), "BE_NEWDB=1")
+	err := cmd.Run()
+	if e, ok := err.(*exec.ExitError); ok && !e.Success() {
+		return
+	}
+	t.Fatalf("process ran with err %v, want exit status 1", err)
 }

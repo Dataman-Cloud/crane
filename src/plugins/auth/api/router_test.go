@@ -7,9 +7,20 @@ import (
 
 	"github.com/Dataman-Cloud/crane/src/utils/config"
 
+	_ "github.com/erikstmartin/go-testdb"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 )
+
+func TestInit(t *testing.T) {
+	conf := config.Config{
+		AccountTokenStore:    "default",
+		AccountAuthenticator: "db",
+		DbDSN:                "",
+		DbDriver:             "testdb",
+	}
+	Init(&conf)
+}
 
 func TestApiRouter(t *testing.T) {
 	os.Setenv("CRANE_ADDR", "foobar")
