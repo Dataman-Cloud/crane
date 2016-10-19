@@ -58,11 +58,11 @@ func NewRegistry(AccountAuthenticator string, PrivateKeyPath string, RegistryAdd
 		registry.Authenticator = authenticators.NewDefaultAuthenticator()
 	}
 
-	registry.MigriateTable()
+	registry.migrateTable()
 	return registry
 }
 
-func (registry *Registry) MigriateTable() {
+func (registry *Registry) migrateTable() {
 	registry.DbClient.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&Image{})
 	registry.DbClient.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&Tag{})
 	registry.DbClient.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&ImageAccess{})
