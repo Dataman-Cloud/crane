@@ -50,7 +50,6 @@ then
     }
     echo "Swarm cluster have been running!"
 
-    docker-compose -p crane -f deploy/docker-compose.yml stop
-    docker-compose -p crane -f deploy/docker-compose.yml rm -f
+    docker-compose -p crane -f deploy/docker-compose.yml down
     docker-compose -p crane -f deploy/docker-compose.yml up -d
 fi
