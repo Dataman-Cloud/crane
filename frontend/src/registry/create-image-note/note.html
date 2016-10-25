@@ -4,13 +4,13 @@
 
 <p>
     <code>
-        docker login {/DOCKER_REGISTRY_URL/} -u{/userName/} -pYOUR_PASSWORD
+        docker login {/DOCKER_REGISTRY_URL/} -u{/registryCtrl.namespace/} -pYOUR_PASSWORD
     </code>
 </p>
 
 <p>
     <code>
-        docker push {/DOCKER_REGISTRY_URL/}{/userName.substring(0, userName.indexOf('@'))/}/IMAGE_NAME
+        docker push {/DOCKER_REGISTRY_URL/}{/registryCtrl.namespace/}/IMAGE_NAME
     </code>
 </p>
 

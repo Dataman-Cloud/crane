@@ -9,6 +9,7 @@
             .state('registry', {
                 url: '/registry',
                 template: '<ui-view/>',
+                controller: 'RegistryCtrl as registryCtrl',
                 targetState: 'list',
                 ncyBreadcrumb: {
                     label: "{/'Image' | translate/}"

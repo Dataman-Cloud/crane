@@ -39,6 +39,19 @@ type Request struct {
 	UserAgent string
 }
 
+type Namespace struct {
+	Namespace string `json:"Namespace"`
+}
+
+type NamespaceEmail struct {
+	ID        uint64
+	CreatedAt time.Time
+	UpdatedAt time.Time
+
+	Namespace    string `json:"Namespace" gorm:"not null" sql:"unique"`
+	AccountEmail string `json:"AccountEmail" gorm:"not null" sql:"unique"`
+}
+
 type Image struct {
 	ID        uint64
 	CreatedAt time.Time

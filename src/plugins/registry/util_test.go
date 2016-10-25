@@ -1,14 +1,17 @@
 package registry
 
 import (
+	"database/sql/driver"
 	"io/ioutil"
 	"os"
 	"strings"
 	"testing"
 
 	"github.com/Dataman-Cloud/crane/src/plugins/auth"
+	"github.com/Dataman-Cloud/crane/src/utils/db"
 
 	"github.com/docker/distribution/registry/auth/token"
+	"github.com/erikstmartin/go-testdb"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -43,10 +46,24 @@ func TestFilterAccessFirstIFReturn(t *testing.T) {
 }
 
 func TestFilterAccess(t *testing.T) {
-	regi := &Registry{}
+	dbClient, _ := db.NewDB("testdb", "")
+	regi := &Registry{
+		DbClient: dbClient,
+	}
+
+	testdb.SetQueryWithArgsFunc(func(query string, args []driver.Value) (result driver.Rows, err error) {
+		columns := []string{"namespace", "account_email"}
+
+		rows := ""
+		if args[0] == "name@test.com" {
+			rows = "test_namespace,name@test.com"
+		}
+		return testdb.RowsFromCSVString(columns, rows), nil
+	})
+
 	a := &token.ResourceActions{
 		Type: "repository",
-		Name: "name/image",
+		Name: "test_namespace/image",
 	}
 	regi.FilterAccess("name@test.com", true, a)
 }
@@ -98,14 +115,61 @@ func TestBase64UrlEncode(t *testing.T) {
 }
 
 func TestRegistryNamespaceForAccount(t *testing.T) {
-	a := auth.Account{
-		Email: "test@test.com",
+	dbClient, _ := db.NewDB("testdb", "")
+	regi := &Registry{
+		DbClient: dbClient,
 	}
-	pre := RegistryNamespaceForAccount(a)
-	assert.Equal(t, "test", pre)
+	testdb.SetQueryWithArgsFunc(func(query string, args []driver.Value) (result driver.Rows, err error) {
+		columns := []string{"namespace", "account_email"}
+
+		rows := ""
+		if args[0] == "name@test.com" {
+			rows = "test_namespace,name@test.com"
+		}
+		return testdb.RowsFromCSVString(columns, rows), nil
+	})
+	a := auth.Account{
+		Email: "name@test.com",
+	}
+	pre := regi.RegistryNamespaceForAccount(a)
+	assert.Equal(t, "test_namespace", pre)
+}
+
+func TestRegistryNamespaceForAccountError(t *testing.T) {
+	dbClient, _ := db.NewDB("testdb", "")
+	regi := &Registry{
+		DbClient: dbClient,
+	}
+	a := auth.Account{
+		Email: "nobody@nobody.com",
+	}
+	pre := regi.RegistryNamespaceForAccount(a)
+	assert.Equal(t, "", pre)
 }
 
 func TestRegistryNamespaceForEmail(t *testing.T) {
-	pre := RegistryNamespaceForEmail("test@test.com")
-	assert.Equal(t, "test", pre)
+	dbClient, _ := db.NewDB("testdb", "")
+	regi := &Registry{
+		DbClient: dbClient,
+	}
+	testdb.SetQueryWithArgsFunc(func(query string, args []driver.Value) (result driver.Rows, err error) {
+		columns := []string{"namespace", "account_email"}
+
+		rows := ""
+		if args[0] == "test@test.com" {
+			rows = "test_namespace,test@test.com"
+		}
+		return testdb.RowsFromCSVString(columns, rows), nil
+	})
+	pre := regi.registryNamespaceForEmail("test@test.com")
+	assert.Equal(t, "test_namespace", pre)
+}
+
+func TestRegistryNamespaceForEmailError(t *testing.T) {
+	dbClient, _ := db.NewDB("testdb", "")
+	regi := &Registry{
+		DbClient: dbClient,
+	}
+	pre := regi.registryNamespaceForEmail("nobody@nobody.com")
+	assert.Equal(t, "", pre)
 }

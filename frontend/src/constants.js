@@ -102,6 +102,10 @@ CODE_MESSAGE = {
     14008: "CODE_MESSAGE_14008",
     14009: "CODE_MESSAGE_14009",
     14010: "CODE_MESSAGE_14010",
+    14011: "CODE_MESSAGE_14011",
+    14012: "CODE_MESSAGE_14012",
+    14013: "CODE_MESSAGE_14013",
+    14014: "CODE_MESSAGE_14014",
     15031: "CODE_MESSAGE_15031",
     15032: "CODE_MESSAGE_15032",
     15033: "CODE_MESSAGE_15033",
@@ -122,6 +126,7 @@ CODE_MESSAGE = {
 };
 
 NODE_CONN_ERROR_CODE = [11701, 11702, 11703, 11704];
+NAMESPACE_NO_FOUND_ERROR_CODE = [14014];
 NODE_ENDPOINT_LABEL = "crane.reserved.node.endpoint";
 
 SHOW_ERROR_MESSAGE = [10001];
@@ -171,6 +176,7 @@ BACKEND_URL = {
         config: 'misc/v1/config'
     },
     registry: {
+        namespace: 'registry/v1/namespace',
         publicRepositories: 'registry/v1/repositories/public',
         mineRepositories: 'registry/v1/repositories/mine',
         listTags: 'registry/v1/tag/list/$repository',
