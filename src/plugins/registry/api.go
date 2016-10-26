@@ -29,9 +29,9 @@ const (
 	CodeRegistryImagePublicityUpdateError = "503-14005"
 	CodeRegistryCatalogListError          = "503-14006"
 	CodeRegistryTagsListError             = "503-14007"
-	CodeRegistryGetBasicAuthFaild         = "400-14008"
+	CodeRegistryGetBasicAuthFailed        = "400-14008"
 	CodeRegistryUnauthorized              = "401-14009"
-	CodeRegistryMakeTokenFaild            = "503-14010"
+	CodeRegistryMakeTokenFailed           = "503-14010"
 )
 
 const manifestPattern = `^application/vnd.docker.distribution.manifest.v\d`
@@ -72,7 +72,7 @@ func (registry *Registry) Token(ctx *gin.Context) {
 	username, password, ok := ctx.Request.BasicAuth()
 	if !ok {
 		log.Error("registry get token error: can't get basicauth from request")
-		craneerr := cranerror.NewError(CodeRegistryGetBasicAuthFaild, "registry get token error: can't get basicauth from request")
+		craneerr := cranerror.NewError(CodeRegistryGetBasicAuthFailed, "registry get token error: can't get basicauth from request")
 		httpresponse.Error(ctx, craneerr)
 		return
 	}
@@ -96,7 +96,7 @@ func (registry *Registry) Token(ctx *gin.Context) {
 	rawToken, err := registry.MakeToken(registry.PrivateKeyPath, username, service, accesses)
 	if err != nil {
 		log.Errorf("get registry token error: %v", err)
-		craneerr := cranerror.NewError(CodeRegistryMakeTokenFaild, err.Error())
+		craneerr := cranerror.NewError(CodeRegistryMakeTokenFailed, err.Error())
 		httpresponse.Error(ctx, craneerr)
 		return
 	}

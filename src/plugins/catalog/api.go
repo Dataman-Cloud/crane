@@ -22,10 +22,10 @@ const (
 	CodeCatalogInvalidCatalogId   = "400-15034"
 	CodeCatalogInvalidParam       = "400-15035"
 	CodeCatalogInvalidIcon        = "400-15036"
-	CodeCatalogDeleteFaild        = "503-15037"
+	CodeCatalogDeleteFailed       = "503-15037"
 	CodeCatalogForbiddenOperation = "403-15038"
-	CodeCatalogUpdateFaild        = "503-15039"
-	CodeCatalogCreateFaild        = "503-15040"
+	CodeCatalogUpdateFailed       = "503-15039"
+	CodeCatalogCreateFailed       = "503-15040"
 )
 
 const (
@@ -185,7 +185,7 @@ func (catalogApi *CatalogApi) UpdateCatalog(ctx *gin.Context) {
 	catalog.AccountId = cl.AccountId
 	if err = catalogApi.Update(&catalog); err != nil {
 		log.Errorf("update catalog error: %v", err)
-		craneerr := cranerror.NewError(CodeCatalogUpdateFaild, err.Error())
+		craneerr := cranerror.NewError(CodeCatalogUpdateFailed, err.Error())
 		httpresponse.Error(ctx, craneerr)
 		return
 	}
