@@ -33,3 +33,4 @@ coverage-all.out
 coverage.out
 coverage.html
 doc/registry/config.yml
+.crane.json
