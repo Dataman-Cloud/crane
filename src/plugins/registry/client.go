@@ -109,7 +109,7 @@ func (registry *Registry) RegistryAPI(method, path, username, acceptHeader strin
 			return nil, "", err
 		}
 
-		if response.StatusCode != http.StatusOK {
+		if response.StatusCode != http.StatusAccepted && response.StatusCode != http.StatusOK {
 			return nil, "", fmt.Errorf(fmt.Sprintf("Unexpected return code from registry: %d", response.StatusCode))
 		}
 		result, err = ioutil.ReadAll(response.Body)

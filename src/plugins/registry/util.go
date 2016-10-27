@@ -56,6 +56,9 @@ func (registry *Registry) FilterAccess(username string, authenticated bool, a *t
 			if strings.Contains(permission, "W") {
 				a.Actions = append(a.Actions, "push")
 			}
+			if strings.Contains(permission, "M") {
+				a.Actions = append(a.Actions, "*")
+			}
 			if strings.Contains(permission, "R") {
 				a.Actions = append(a.Actions, "pull")
 			}
@@ -159,7 +162,7 @@ func (registry *Registry) GetPermission(username, namespace, image string) strin
 	}
 
 	if RegistryNamespaceForEmail(username) == namespace { // for user access himself's repository
-		return "RW"
+		return "RWM"
 	}
 
 	var modelImage Image

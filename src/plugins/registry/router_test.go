@@ -16,7 +16,7 @@ func TestInit(t *testing.T) {
 	Init("db", "", "", "testdb", "", dbClient)
 }
 
-func TestApiRouter(t *testing.T) {
+func TestApiRegister(t *testing.T) {
 	registry := &Registry{}
 
 	router := gin.New()
@@ -31,6 +31,7 @@ func TestApiRouter(t *testing.T) {
 		"/registry/v1/tag/list/:namespace/:image",
 		"/registry/v1/manifests/:reference/:namespace/:image",
 		"/registry/v1/:namespace/:image/publicity",
+		"/registry/v1/manifests/:namespace/:image",
 	}
 
 	for _, info := range router.Routes() {

@@ -38,6 +38,6 @@ func (registry *Registry) ApiRegister(router *gin.Engine, middlewares ...gin.Han
 		registryV1Protected.GET("/tag/list/:namespace/:image", registry.TagList)
 		registryV1Protected.GET("/manifests/:reference/:namespace/:image", registry.GetManifests)
 		registryV1Protected.PATCH("/:namespace/:image/publicity", registry.ImagePublicity)
-		registryV1Protected.DELETE("/manifests/:reference/:namespace/:image", registry.DeleteManifests)
+		registryV1Protected.DELETE("/manifests/:namespace/:image", registry.DeleteManifests)
 	}
 }

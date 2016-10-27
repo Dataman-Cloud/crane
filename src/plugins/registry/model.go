@@ -2,8 +2,6 @@ package registry
 
 import (
 	"time"
-
-	"github.com/jinzhu/gorm"
 )
 
 // Notification holds all events.
@@ -42,7 +40,9 @@ type Request struct {
 }
 
 type Image struct {
-	gorm.Model
+	ID        uint64
+	CreatedAt time.Time
+	UpdatedAt time.Time
 
 	LatestTag string `json:"LatestTag"`
 	Namespace string `json:"Namespace" gorm:"not null"`
@@ -54,7 +54,9 @@ type Image struct {
 }
 
 type Tag struct {
-	gorm.Model
+	ID        uint64
+	CreatedAt time.Time
+	UpdatedAt time.Time
 
 	Digest    string `json:"Digest"`
 	Tag       string `json:"Tag"`
@@ -67,7 +69,9 @@ type Tag struct {
 }
 
 type ImageAccess struct {
-	gorm.Model
+	ID        uint64
+	CreatedAt time.Time
+	UpdatedAt time.Time
 
 	Namespace    string `json:"Namespace" gorm:"not null"`
 	Image        string `json:"Image" gorm:"not null"`
