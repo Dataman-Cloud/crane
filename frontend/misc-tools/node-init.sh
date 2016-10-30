@@ -294,13 +294,38 @@ have_a_init()
             )
             exit 1
             ;;
-        fedora|centos|rhel|redhatenterpriseserver)
+        fedora)
             (
             if [ -r /etc/os-release ]; then
-		#fixed fedora version check support
-		os_type=$(get_distribution_type)
                 lsb_version="$(. /etc/os-release && echo "$VERSION_ID")"
-                if [ "$os_type" = "fedora" ] && [ $lsb_version -lt  24 ]  ||  [ $lsb_version -lt  7  ]
+                if [ $lsb_version -lt  24 ]
+                then
+                    printf "\033[41mERROR:\033[0m CentOS-${lsb_version} is unsupported\n"
+                    exit 1
+                fi
+            else
+                printf "\033[41mERROR:\033[0m File /etc/os-release not found, so the CentOS version cannot be confirmed.\n"
+                exit 1
+            fi
+            if _command_exists firewall-cmd; then
+                firewalld_is_enabled
+            fi
+            if _command_exists iptables; then
+                iptables_docker_rules
+            else
+                printf "\033[41mERROR:\033[0m Command iptables does not exists.\n"
+                exit 1
+            fi
+            selinux_is_disabled
+            ntp_is_enabled_on_centos_or_rhel
+            )
+            exit 0
+            ;;
+        centos|rhel|redhatenterpriseserver)
+            (
+            if [ -r /etc/os-release ]; then
+                lsb_version="$(. /etc/os-release && echo "$VERSION_ID")"
+                if [ $lsb_version -lt  7  ]
                 then
                     printf "\033[41mERROR:\033[0m CentOS-${lsb_version} is unsupported\n"
                     exit 1
