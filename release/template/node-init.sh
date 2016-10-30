@@ -1,8 +1,5 @@
 #!/bin/sh
-
-set -o errtrace
-set -o errexit
-
+set -e
 # Maintainer: weitao zhou <wtzhou@dataman-inc.com>
 
 # Usage:
@@ -57,9 +54,9 @@ ip_forwarding_enabled()
       printf "run command sudo sysctl -w net.inet.ip.forwarding=1\n"
       printf "refer: http://serverfault.com/questions/97117/how-do-i-enable-ip-forwarding-in-macos-x\n"
       exit 1
-    } ;;
+      } ;;
     *)
-    sysctl net.ipv4.ip_forward | grep 1 || {
+      sysctl net.ipv4.ip_forward | grep 1 || {
       echo "********************************************************"
       printf "\033[41mERROR:\033[0m IP Forwarding is disabled! Please Enable the IP Forwarding permanently as following:\n"
       echo "********************************************************"
@@ -69,7 +66,7 @@ ip_forwarding_enabled()
       printf "run command sysctl -p /etc/sysctl.conf\n"
       printf "refer: http://www.ducea.com/2006/08/01/how-to-enable-ip-forwarding-in-linux/\n"
       exit 1
-    } ;;
+      } ;;
   esac
 }
 
@@ -297,13 +294,40 @@ have_a_init()
             )
             exit 1
             ;;
-        fedora|centos|rhel|redhatenterpriseserver)
+        fedora)
             (
             if [ -r /etc/os-release ]; then
                 lsb_version="$(. /etc/os-release && echo "$VERSION_ID")"
-                if [ $lsb_version '<' 7 ]
+                if [ $lsb_version -lt  24 ]
                 then
-                    printf "\033[41mERROR:\033[0m CentOS-$(lsb_version) is unsupported\n"
+                    printf "\033[41mERROR:\033[0m CentOS-${lsb_version} is unsupported\n"
+                    exit 1
+                fi
+            else
+                printf "\033[41mERROR:\033[0m File /etc/os-release not found, so the CentOS version cannot be confirmed.\n"
+                exit 1
+            fi
+            if _command_exists firewall-cmd; then
+                firewalld_is_enabled
+            fi
+            if _command_exists iptables; then
+                iptables_docker_rules
+            else
+                printf "\033[41mERROR:\033[0m Command iptables does not exists.\n"
+                exit 1
+            fi
+            selinux_is_disabled
+            ntp_is_enabled_on_centos_or_rhel
+            )
+            exit 0
+            ;;
+        centos|rhel|redhatenterpriseserver)
+            (
+            if [ -r /etc/os-release ]; then
+                lsb_version="$(. /etc/os-release && echo "$VERSION_ID")"
+                if [ $lsb_version -lt  7  ]
+                then
+                    printf "\033[41mERROR:\033[0m CentOS-${lsb_version} is unsupported\n"
                     exit 1
                 fi
             else
