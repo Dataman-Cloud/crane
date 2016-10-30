@@ -297,10 +297,12 @@ have_a_init()
         fedora|centos|rhel|redhatenterpriseserver)
             (
             if [ -r /etc/os-release ]; then
+		#fixed fedora version check support
+		os_type=$(get_distribution_type)
                 lsb_version="$(. /etc/os-release && echo "$VERSION_ID")"
-                if [ $lsb_version '<' 7 ]
+                if [ "$os_type" = "fedora" ] && [ $lsb_version -lt  24 ]  ||  [ $lsb_version -lt  7  ]
                 then
-                    printf "\033[41mERROR:\033[0m CentOS-$(lsb_version) is unsupported\n"
+                    printf "\033[41mERROR:\033[0m CentOS-${lsb_version} is unsupported\n"
                     exit 1
                 fi
             else
