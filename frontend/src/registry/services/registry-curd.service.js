@@ -5,9 +5,10 @@
 
 
     /* @ngInject */
-    function registryCurd(registryBackend, confirmModal, $rootScope, utils, $state, Notification, $filter) {
+    function registryCurd(registryBackend, confirmModal, createNamespaceFormModal, $rootScope, utils, $state, Notification, $filter) {
         //////
         return {
+            createNamespace: createNamespace,
             deleteImage: deleteImage,
             isPublicRepository: isPublicRepository,
             hideImage: hideImage,
@@ -17,6 +18,17 @@
             deleteCatalog: deleteCatalog,
             updateCatalog: updateCatalog
         };
+
+        function createNamespace(form) {
+            createNamespaceFormModal.open('/src/registry/modals/form-namespace.html', null, {
+                dataName: 'namespace'
+            }).then(function (namespace) {
+                registryBackend.createNamespace({'namespace': namespace}, form).then(function(data){
+                     Notification.success($filter('translate')('Set namespace successfully'));
+                     $state.reload();
+                });
+            });
+        }
 
         function deleteImage(repository, tag, ev) {
             confirmModal.open("Are you sure to remove the image ?", ev).then(function () {

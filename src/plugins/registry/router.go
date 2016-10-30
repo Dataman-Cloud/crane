@@ -33,6 +33,8 @@ func (registry *Registry) ApiRegister(router *gin.Engine, middlewares ...gin.Han
 
 	registryV1Protected := router.Group("/registry/v1", middlewares...)
 	{
+		registryV1Protected.GET("/namespace", registry.Namespace)
+		registryV1Protected.POST("/namespace", registry.Namespace)
 		registryV1Protected.GET("/repositories/mine", registry.MineRepositories)
 		registryV1Protected.GET("/repositories/public", registry.PublicRepositories) // under library or tag marked as public
 		registryV1Protected.GET("/tag/list/:namespace/:image", registry.TagList)

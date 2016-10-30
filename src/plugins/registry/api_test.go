@@ -10,7 +10,9 @@ import (
 	"testing"
 
 	"github.com/Dataman-Cloud/crane/src/plugins/auth"
+	"github.com/Dataman-Cloud/crane/src/utils/cranerror"
 	"github.com/Dataman-Cloud/crane/src/utils/db"
+	"github.com/Dataman-Cloud/crane/src/utils/httpresponse"
 
 	"github.com/erikstmartin/go-testdb"
 	"github.com/gin-gonic/gin"
@@ -43,7 +45,6 @@ func TestMigrateTable(t *testing.T) {
 	assert.Nil(t, nil)
 }
 
-// TODO (wtzhou) refactor me by test/testing mock
 var (
 	baseUrl string
 	server  *httptest.Server
@@ -64,15 +65,18 @@ func TestMain(m *testing.M) {
 }
 
 func FakeAuthenticate(ctx *gin.Context) {
-	if _, _, ok := ctx.Request.BasicAuth(); ok {
-		ctx.Set("account", auth.ReferenceToValue(&auth.Account{
-			ID:       1,
-			Title:    "",
-			Email:    "admin@admin.com",
-			Phone:    "",
-			Password: "adminadmin",
-		}))
+	if _, _, ok := ctx.Request.BasicAuth(); !ok {
+		httpresponse.Error(ctx, cranerror.NewError("400-99999", "Invalid Authorization"))
+		ctx.Abort()
+		return
 	}
+	ctx.Set("account", auth.ReferenceToValue(&auth.Account{
+		ID:       1,
+		Title:    "",
+		Email:    "admin@admin.com",
+		Phone:    "",
+		Password: "adminadmin",
+	}))
 	ctx.Next()
 }
 
@@ -86,6 +90,8 @@ func startHttpServer() *httptest.Server {
 	registryV1 := router.Group("/registry/v1", FakeAuthenticate)
 	{
 		registryV1.GET("/token", r.Token)
+		registryV1.GET("/namespace", r.Namespace)
+		registryV1.POST("/namespace", r.Namespace)
 		registryV1.POST("/notifications", r.Notifications)
 		registryV1.DELETE("/manifests/:namespace/:image", r.DeleteManifests)
 		//registry_addr/v2/admin/2048/manifests/Tim
@@ -100,13 +106,22 @@ func startHttpServer() *httptest.Server {
 }
 
 func TestToken(t *testing.T) {
-	req, err := http.NewRequest("GET", baseUrl+"/registry/v1/token", nil)
-	req.SetBasicAuth("admin@admin.com", "adminadmin")
+	req, err := http.NewRequest("GET", baseUrl+"/registry/v1/token?scope="+baseUrl+":admin_namespace:pull,push", nil)
+	req.SetBasicAuth("admin_namespace", "adminadmin")
+
+	testdb.SetQueryWithArgsFunc(func(query string, args []driver.Value) (result driver.Rows, err error) {
+		columns := []string{"namespace", "account_email"}
+
+		rows := ""
+		if args[0] == "admin_namespace" {
+			rows = "admin_namespace,admin@admin.com"
+		}
+		return testdb.RowsFromCSVString(columns, rows), nil
+	})
+
 	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		t.Error(err)
-	}
-	assert.Equal(t, resp.StatusCode, http.StatusOK, "response status code should be equal")
+	assert.Nil(t, err)
+	assert.Equal(t, http.StatusOK, resp.StatusCode, "response status code should be equal")
 
 	// private key path lost
 	// assert make token failed
@@ -115,7 +130,7 @@ func TestToken(t *testing.T) {
 	if err != nil {
 		t.Log("pass")
 	}
-	assert.Equal(t, resp.StatusCode, http.StatusBadRequest, "response status code should be equal")
+	assert.Equal(t, http.StatusBadRequest, resp.StatusCode, "response status code should be equal")
 
 	r.PrivateKeyPath = ""
 	req, err = http.NewRequest("GET", baseUrl+"/registry/v1/token", nil)
@@ -124,7 +139,37 @@ func TestToken(t *testing.T) {
 	if err != nil {
 		t.Log("pass")
 	}
-	assert.Equal(t, resp.StatusCode, http.StatusServiceUnavailable, "response status code should be equal")
+	assert.Equal(t, http.StatusUnauthorized, resp.StatusCode, "response status code should be equal")
+}
+
+func TestCreateNamespace(t *testing.T) {
+	req, err := http.NewRequest("POST", baseUrl+"/registry/v1/namespace", strings.NewReader(`{"namespace": "admin_namespace"}`))
+	req.SetBasicAuth("admin@admin.com", "adminadmin")
+
+	resp, err := http.DefaultClient.Do(req)
+	assert.Nil(t, err)
+	assert.Equal(t, http.StatusConflict, resp.StatusCode, "response status code should be equal")
+	type responseBody struct {
+		Code int
+	}
+	body := responseBody{}
+	json.NewDecoder(resp.Body).Decode(&body)
+	assert.Equal(t, 14013, body.Code, "response status code should be equal")
+}
+
+func TestGetNamespaceBadRequest(t *testing.T) {
+	req, err := http.NewRequest("GET", baseUrl+"/registry/v1/namespace", nil)
+	req.SetBasicAuth("admin@admin.com", "adminadmin")
+
+	resp, err := http.DefaultClient.Do(req)
+	assert.Nil(t, err)
+	assert.Equal(t, http.StatusBadRequest, resp.StatusCode, "response status code should be equal")
+	type responseBody struct {
+		Code int
+	}
+	body := responseBody{}
+	json.NewDecoder(resp.Body).Decode(&body)
+	assert.Equal(t, 14014, body.Code, "response status code should be equal")
 }
 
 func TestNotifications(t *testing.T) {
@@ -145,12 +190,13 @@ func TestNotifications(t *testing.T) {
 	}
 
 	req, err := http.NewRequest("POST", baseUrl+"/registry/v1/notifications", strings.NewReader(string(body)))
+	req.SetBasicAuth("admin_namespace", "adminadmin")
 	req.Header.Add("User-Agent", "Go-http-client")
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		t.Error(err)
 	}
-	assert.Equal(t, resp.StatusCode, http.StatusOK, "response status code should be equal")
+	assert.Equal(t, http.StatusOK, resp.StatusCode, "response status code should be equal")
 }
 
 func TestDeleteManifests(t *testing.T) {
@@ -159,15 +205,15 @@ func TestDeleteManifests(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	assert.Equal(t, resp.StatusCode, http.StatusUnauthorized, "response status code should be equal")
+	assert.Equal(t, http.StatusBadRequest, resp.StatusCode, "response status code should be equal")
 
-	req, err = http.NewRequest("DELETE", baseUrl+"/registry/v1/manifests/admin/2048", nil)
+	req, err = http.NewRequest("DELETE", baseUrl+"/registry/v1/manifests/admin_namespace/2048", nil)
 	req.SetBasicAuth("admin@admin.com", "adminadmin")
 	resp, err = http.DefaultClient.Do(req)
 	if err != nil {
 		t.Error(err)
 	}
-	assert.Equal(t, resp.StatusCode, http.StatusServiceUnavailable, "response status code should be equal")
+	assert.Equal(t, http.StatusServiceUnavailable, resp.StatusCode, "response status code should be equal")
 
 	testdb.SetQueryFunc(func(query string) (driver.Rows, error) {
 		columns := []string{"id", "digest", "tag", "namespace", "image"}
@@ -185,7 +231,7 @@ func TestDeleteManifests(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	assert.Equal(t, resp.StatusCode, http.StatusOK, "response status code should be equal")
+	assert.Equal(t, http.StatusOK, resp.StatusCode, "response status code should be equal")
 
 	req, err = http.NewRequest("DELETE", baseUrl+"/registry/v1/manifests/admin/2048?namespace=admin&image=2048", nil)
 	req.SetBasicAuth("admin@admin.com", "adminadmin")
@@ -193,5 +239,5 @@ func TestDeleteManifests(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	assert.Equal(t, resp.StatusCode, http.StatusOK, "response status code should be equal")
+	assert.Equal(t, http.StatusOK, resp.StatusCode, "response status code should be equal")
 }

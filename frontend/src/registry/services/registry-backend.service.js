@@ -10,6 +10,8 @@
             listPublicRepositories: listPublicRepositories,
             listMineRepositories: listMineRepositories,
             listRepositoryTags: listRepositoryTags,
+            getNamespace: getNamespace,
+            createNamespace: createNamespace,
             getImage: getImage,
             listCatalogs: listCatalogs,
             getCatalog: getCatalog,
@@ -35,6 +37,14 @@
 
         function getImage(repository, tag) {
             return gHttp.Resource('registry.image', {repository: repository, tag: tag}).get();
+        }
+
+        function getNamespace() {
+            return gHttp.Resource('registry.namespace').get();
+        }
+
+        function createNamespace(data, form) {
+            return gHttp.Resource('registry.namespace').post(data, {'form': form});
         }
 
         function listCatalogs() {

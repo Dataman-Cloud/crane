@@ -1,0 +1,28 @@
+<md-dialog aria-label="select image">
+    <form name="staticForm" class="form-main">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>{/'Registry Namespace Setup' | translate/}</h2>
+                <span flex></span>
+                <md-button id="registry-dialog-namespace-cancel" class="md-icon-button" ng-click="formCtrl.cancel()" aria-label="cancel">
+                    <i class="fa fa-close"></i>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <p>{/'Registry Namespace' | translate/}</p>
+            <input id="registry-namespace" type="text" name="namespace" aria-label="namespace" data-ng-pattern="/^[a-z0-9][a-z0-9\-_]{0,28}[a-z0-9]$/" data-ng-model="formCtrl.namespace" data-required="required" md-autofocus>
+            <div ng-messages="staticForm.namespace.$error" ng-if="staticForm.namespace.$dirty" role="alert">
+                <p class="help-info text-danger" ng-message="required"><small>{/'Namespace Required' | translate/}</small></p>
+            </div>
+            <p>{/'Namespace Pattern' | translate/}</p>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <md-button id="registry-namespace-cancel" ng-click="formCtrl.cancel()" aria-label="cancel">{/'Cancel' | translate/}</md-button>
+            <md-button id="registry-namespace-ok" data-ng-disabled="staticForm.$invalid" data-ng-click="formCtrl.ok()" aria-label="ok"
+                       class="md-primary">{/'Confirm' | translate/}
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>
+

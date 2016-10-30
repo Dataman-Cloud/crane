@@ -24,6 +24,7 @@ func TestApiRegister(t *testing.T) {
 	registry.ApiRegister(router)
 
 	pathMix := []string{
+		"/registry/v1/namespace",
 		"/registry/v1/token",
 		"/registry/v1/notifications",
 		"/registry/v1/repositories/mine",

@@ -364,6 +364,11 @@
             "Stack Template Description": "项目描述",
             "Are you sure to remove the image ?": "是否确认删除镜像？",
             "Are you sure to delete the stack template ?": "是否确认删除该项目模板？",
+            "Registry Namespace Setup": "设置仓库的命名空间",
+            "Registry Namespace": "仓库命名空间",
+            "Namespace Required": "请输入命名空间",
+            "Namespace Pattern": "设置后不可修改 长度为2-30位，可填写小写英文字母、数字，可使用的分隔符包括“_”、“-”（分隔符不能在首位或末位）",
+            "Set namespace successfully": "设置命名空间成功",
 
             //network module
             "Networks": "网络列表",
@@ -499,6 +504,10 @@
             "CODE_MESSAGE_14008": "获取镜像仓库Token失败",
             "CODE_MESSAGE_14009": "无效的验证信息",
             "CODE_MESSAGE_14010": "生成Token失败",
+            "CODE_MESSAGE_14011": "创建命名空间失败，参数解析错误",
+            "CODE_MESSAGE_14012": "长度为2-30位，可填写小写英文字母、数字，可使用的分隔符包括“_”、“-”（分隔符不能在首位或末位）",
+            "CODE_MESSAGE_14013": "保存命名空间错误",
+            "CODE_MESSAGE_14014": "获取命名空间错误",
             "CODE_MESSAGE_15031": "获取项目模板列表错误",
             "CODE_MESSAGE_15032": "获取项目模板错误",
             "CODE_MESSAGE_15033": "无效的用户",

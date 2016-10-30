@@ -362,6 +362,11 @@
             "Stack Template Description": "Stack Template Description",
             "Are you sure to remove the image ?": "Are you sure to remove the mirror ?",
             "Are you sure to delete the stack template ?": "Are you sure to delete the stack template ?",
+            "Registry Namespace Setup": "Registry Namespace Setup",
+            "Registry Namespace": "Registry Namespace",
+            "Namespace Required": "Namespace Required",
+            "Namespace Pattern": "The length must between 2 and 30; Only a-z, 0-9, -, _ permitted; the beginning and end of line cannot be _ or -",
+            "Set namespace successfully": "Set namespace successfully",
 
             //network module
             "Networks": "Networks",
@@ -496,6 +501,10 @@
             "CODE_MESSAGE_14008": "Get registry token get basicauth error",
             "CODE_MESSAGE_14009": "Get registry invalid auth",
             "CODE_MESSAGE_14010": "Get registry make token error",
+            "CODE_MESSAGE_14011": "Failed to create namespace, params error",
+            "CODE_MESSAGE_14012": "The length must between 2 and 30; Only a-z, 0-9, -, _ permitted; the beginning and end of line cannot be _ or -",
+            "CODE_MESSAGE_14013": "Error when save namespace",
+            "CODE_MESSAGE_14014": "Error when get namespace",
             "CODE_MESSAGE_15031": "Get stack template list error",
             "CODE_MESSAGE_15032": "Get stack template error",
             "CODE_MESSAGE_15033": "Invalid user",

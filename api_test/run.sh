@@ -17,3 +17,5 @@
 . ./api_v1_stack_get.sh
 . ./api_v1_stacks_list.sh
 . ./api_v1_stack_delete.sh
+
+. ./registry_v1_namespace.sh
