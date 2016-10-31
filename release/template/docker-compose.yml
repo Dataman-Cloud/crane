@@ -17,14 +17,16 @@ services:
     environment:
       - CRANE_IP
     volumes:
-      - ./registry_storage:/var/lib/registry
+      - ./registry_storage:/storage
       - /etc/localtime:/etc/localtime
     restart: always
   crane:
     image: ${REGISTRY_PREFIX}crane:${TAG}
-    environment:
-      - CRANE_SWARM_MANAGER_IP
-      - CRANE_DOCKER_ENTRY_PORT
+    env_file:
+      - ./env
+    links:
+      - crane_registry
+      - crane_db
     volumes:
       - /etc/localtime:/etc/localtime
     ports:
