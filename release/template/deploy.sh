@@ -1,7 +1,6 @@
 #!/bin/bash
 
-set -o errtrace
-set -o errexit
+set -e
 
 export CRANE_SWARM_MANAGER_IP=$CRANE_IP
 export TAG=${VERSION:-1.0}
