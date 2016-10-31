@@ -1,7 +1,6 @@
 #!/bin/bash
 
-set -o errtrace
-set -o errexit
+set -e
 
 export REGISTRY_PREFIX=${REGISTRY_PREFIX:-""}
 export DEFAULT_TAG=`git log --pretty=format:'%h' -n 1`
@@ -21,10 +20,6 @@ if [ ! -f docker/docker ]; then
     curl https://get.docker.com/builds/Linux/x86_64/docker-latest.tgz | tar xzv
 fi
 
-# setup env_file
-echo "Copy default env file to env_file"
-cp deploy/env deploy/env_file
-sed -i -e "s/CRANE_IP/${CRANE_IP}/" deploy/env_file
 # build crane
 docker-compose -p crane -f deploy/docker-compose.yml build
 
@@ -52,5 +47,6 @@ then
 
     docker-compose -p crane -f deploy/docker-compose.yml stop
     docker-compose -p crane -f deploy/docker-compose.yml rm -f
-    docker-compose -p crane -f deploy/docker-compose.yml up -d
+
+    CRANE_SWARM_MANAGER_IP=${CRANE_IP} docker-compose -p crane -f deploy/docker-compose.yml up -d
 fi
