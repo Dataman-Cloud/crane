@@ -39,7 +39,7 @@ Crane, maintained by [dataman-cloud](https://github.com/Dataman-Cloud), is a doc
 
 ### Option 1: Stable version in one line
 
- Please read the [release/v1.0.5/README.md](release/v1.0.5/README.md)
+ Please read the [release/v1.0.6/README.md](release/v1.0.6/README.md)
 
 ### Option 2: Latest or development from docker build
 
