@@ -24,6 +24,7 @@ services:
       - CRANE_IP
     volumes:
       - ./registry_storage:/storage
+      - /etc/localtime:/etc/localtime
     restart: always
   crane:
     build:
@@ -31,12 +32,14 @@ services:
       dockerfile: ./deploy/Dockerfile
     image: ${REGISTRY_PREFIX}crane:${TAG}
     env_file:
-      - ./env_file
+      - ./env
     links:
       - crane_registry
       - crane_db
     ports:
        - "5013:5013"
+    volumes:
+      - /etc/localtime:/etc/localtime
     restart: always
   crane_db:
     build:
@@ -47,4 +50,5 @@ services:
       - MYSQL_ROOT_PASSWORD=111111
     volumes:
       - ./mysql_storage:/var/lib/mysql
+      - /etc/localtime:/etc/localtime
     restart: always
