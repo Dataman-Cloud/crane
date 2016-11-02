@@ -44,14 +44,14 @@ func TestStackLess(t *testing.T) {
 	stacks := Stacks{
 		Stack{
 			Services: []ServiceStatus{
-				ServiceStatus{
+				{
 					CreatedAt: t0,
 				},
 			},
 		},
 		Stack{
 			Services: []ServiceStatus{
-				ServiceStatus{
+				{
 					CreatedAt: t1,
 				},
 			},
@@ -66,7 +66,7 @@ func TestGetStackGroup(t *testing.T) {
 	bundle := model.Bundle{
 		Stack: model.BundleService{
 			Services: map[string]model.CraneServiceSpec{
-				"service1": model.CraneServiceSpec{
+				"service1": {
 					Labels: map[string]string{
 						"com.crane.permissions.1": "rw",
 					},
@@ -148,7 +148,7 @@ func TestDeployStack(t *testing.T) {
 		EndpointSpec: &swarm.EndpointSpec{
 			Mode: "vip",
 			Ports: []swarm.PortConfig{
-				swarm.PortConfig{
+				{
 					Name:          "stack11",
 					Protocol:      swarm.PortConfigProtocolTCP,
 					TargetPort:    8888,

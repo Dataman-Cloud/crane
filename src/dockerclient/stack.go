@@ -254,7 +254,7 @@ func (client *CraneDockerClient) FilterServiceByStack(namespace string, opts typ
 
 func (client *CraneDockerClient) GetStackGroup(bundle *model.Bundle) (uint64, error) {
 	for _, service := range bundle.Stack.Services {
-		for k, _ := range service.Labels {
+		for k := range service.Labels {
 			if strings.HasPrefix(k, "com.crane.permissions") {
 				groupId, err := strconv.ParseUint(strings.Split(k, ".")[3], 10, 64)
 				if err == nil {

@@ -50,7 +50,7 @@ func (client *CraneDockerClient) CreateService(service swarm.ServiceSpec, option
 
 	if options.EncodedRegistryAuth != "" {
 		headers = map[string][]string{
-			"X-Registry-Auth": []string{options.EncodedRegistryAuth},
+			"X-Registry-Auth": {options.EncodedRegistryAuth},
 		}
 	}
 
@@ -198,7 +198,7 @@ func (client *CraneDockerClient) UpdateService(serviceID string, version swarm.V
 	var headers map[string][]string
 	if options.EncodedRegistryAuth != "" {
 		headers = map[string][]string{
-			"X-Registry-Auth": []string{options.EncodedRegistryAuth},
+			"X-Registry-Auth": {options.EncodedRegistryAuth},
 		}
 	}
 

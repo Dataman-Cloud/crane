@@ -141,7 +141,7 @@ func TestValidateEndpointSpec(t *testing.T) {
 
 	err = validateEndpointSpec(&swarm.EndpointSpec{
 		Mode: swarm.ResolutionModeDNSRR,
-		Ports: []swarm.PortConfig{swarm.PortConfig{
+		Ports: []swarm.PortConfig{{
 			Name:          "test",
 			Protocol:      swarm.PortConfigProtocolTCP,
 			TargetPort:    uint32(8080),
@@ -153,13 +153,13 @@ func TestValidateEndpointSpec(t *testing.T) {
 	err = validateEndpointSpec(&swarm.EndpointSpec{
 		Mode: swarm.ResolutionModeDNSRR,
 		Ports: []swarm.PortConfig{
-			swarm.PortConfig{
+			{
 				Name:          "test",
 				Protocol:      swarm.PortConfigProtocolTCP,
 				TargetPort:    uint32(8080),
 				PublishedPort: uint32(8080),
 			},
-			swarm.PortConfig{
+			{
 				Name:          "test1",
 				Protocol:      swarm.PortConfigProtocolTCP,
 				TargetPort:    uint32(8080),
@@ -217,7 +217,7 @@ func TestValidateCraneServiceSpec(t *testing.T) {
 		Name: "test",
 		EndpointSpec: &swarm.EndpointSpec{
 			Mode: swarm.ResolutionModeDNSRR,
-			Ports: []swarm.PortConfig{swarm.PortConfig{
+			Ports: []swarm.PortConfig{{
 				Name:          "test",
 				Protocol:      swarm.PortConfigProtocolTCP,
 				TargetPort:    uint32(8080),
@@ -259,11 +259,11 @@ func TestValidateImageName(t *testing.T) {
 
 func TestCheckPortConflicts(t *testing.T) {
 	err := checkPortConflicts(map[string]bool{"test": true}, "test", []swarm.Service{
-		swarm.Service{
+		{
 			ID: "test1",
 			Spec: swarm.ServiceSpec{
 				EndpointSpec: &swarm.EndpointSpec{
-					Ports: []swarm.PortConfig{swarm.PortConfig{
+					Ports: []swarm.PortConfig{{
 						Protocol:      swarm.PortConfigProtocolTCP,
 						TargetPort:    uint32(8080),
 						PublishedPort: uint32(8080),
@@ -275,11 +275,11 @@ func TestCheckPortConflicts(t *testing.T) {
 	assert.Nil(t, err)
 
 	err = checkPortConflicts(map[string]bool{"8080/tcp": true}, "", []swarm.Service{
-		swarm.Service{
+		{
 			ID: "test1",
 			Spec: swarm.ServiceSpec{
 				EndpointSpec: &swarm.EndpointSpec{
-					Ports: []swarm.PortConfig{swarm.PortConfig{
+					Ports: []swarm.PortConfig{{
 						Protocol:      swarm.PortConfigProtocolTCP,
 						TargetPort:    uint32(8080),
 						PublishedPort: uint32(8080),
@@ -291,10 +291,10 @@ func TestCheckPortConflicts(t *testing.T) {
 	assert.NotNil(t, err)
 
 	err = checkPortConflicts(map[string]bool{"8080/tcp": true}, "", []swarm.Service{
-		swarm.Service{
+		{
 			ID: "test1",
 			Endpoint: swarm.Endpoint{
-				Ports: []swarm.PortConfig{swarm.PortConfig{
+				Ports: []swarm.PortConfig{{
 					Protocol:      swarm.PortConfigProtocolTCP,
 					TargetPort:    uint32(8080),
 					PublishedPort: uint32(8080),
@@ -326,7 +326,7 @@ func TestCheckServicePortConflictsNoServer(t *testing.T) {
 	endPointSpecNoPublishedPort := &model.CraneServiceSpec{
 		EndpointSpec: &swarm.EndpointSpec{
 			Ports: []swarm.PortConfig{
-				swarm.PortConfig{
+				{
 					PublishedPort: 0,
 				},
 			},
@@ -354,7 +354,7 @@ func TestCheckServicePortConflicts(t *testing.T) {
 
 	endPointSpec80 := &swarm.EndpointSpec{
 		Ports: []swarm.PortConfig{
-			swarm.PortConfig{
+			{
 				PublishedPort: 80,
 			},
 		},
@@ -363,7 +363,7 @@ func TestCheckServicePortConflicts(t *testing.T) {
 		EndpointSpec: endPointSpec80,
 	}
 	servicesExisted := []swarm.Service{
-		swarm.Service{
+		{
 			ID: "serviceid",
 			Spec: swarm.ServiceSpec{
 				EndpointSpec: endPointSpec80,

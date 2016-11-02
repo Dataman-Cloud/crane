@@ -37,7 +37,7 @@ func (storage *DocumentStorage) Copy() *DocumentStorage {
 
 func (storage *DocumentStorage) Indices() []string {
 	indices := make([]string, 0)
-	for i, _ := range storage.Store {
+	for i := range storage.Store {
 		indices = append(indices, i)
 	}
 	return indices
