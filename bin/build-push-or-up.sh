@@ -3,7 +3,11 @@
 set -e
 
 export REGISTRY_PREFIX=${REGISTRY_PREFIX:-""}
-export DEFAULT_TAG=`git log --pretty=format:'%h' -n 1`
+export DEFAULT_TAG=`git log --pretty=format:'%h' -n 1 2>/dev/null`
+if [ "x$DEFAULT_TAG" = "x" ]
+then
+    DEFAULT_TAG="emptytag"
+fi
 export TAG=${VERSION:-$DEFAULT_TAG}
 
 up_or_push=$1
