@@ -7,7 +7,7 @@
         <div class="form-control">
             <input id="node-add-name" type="text" name="name"
                    data-ng-model="nodeCreateVolumeCtrl.form.Name"
-                   data-ng-pattern="/^[A-Za-z0-9]+$/"
+                   data-ng-pattern="/^\w[\w_.-]+\w$/"
                    data-required="required">
         </div>
         <div ng-messages="createVolume.name.$error" ng-if="createVolume.name.$dirty"

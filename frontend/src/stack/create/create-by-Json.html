@@ -6,7 +6,7 @@
         <div class="form-control">
             <input id="json-create-Namespace" type="text" data-ng-model="stackCreateByJsonCtrl.form.Namespace"
                    data-required="required" name="Name"
-                   data-ng-pattern="/^[A-Za-z0-9]+$/" focus-me>
+                   data-ng-pattern="/^\w[\w_.-]+\w$/" focus-me>
         </div>
         <div ng-messages="staticForm.Name.$error" ng-if="staticForm.Name.$dirty" role="alert">
             <p class="text-danger help-text" ng-message="required">{/'Name field is required' | translate/}</p>

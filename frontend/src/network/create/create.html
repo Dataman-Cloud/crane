@@ -4,7 +4,7 @@
         <div class="form-control">
             <input id="net-create-name" type="text" data-ng-model="networkCreateCtrl.form.Name" focus-me
                    data-required="required" name="name"
-                   data-ng-pattern="/^[A-Za-z0-9]+$/">
+                   data-ng-pattern="/^\w[\w_.-]+\w$/">
         </div>
         <div ng-messages="createNetwork.name.$error" ng-if="createNetwork.name.$dirty" role="alert">
             <p class="help-text"
