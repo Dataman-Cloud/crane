@@ -5,7 +5,7 @@
         </label>
         <div class="form-control">
             <input id="image-catalog-name" type="text" data-ng-model="createUpdateCatalog.form.Name" data-required="required" name="Name"
-                   data-ng-pattern="/^\w[\w_.-]+\w$/" focus-me>
+                   data-ng-pattern="/^\w[\w_.-]*\w$/" focus-me>
         </div>
         <div ng-messages="staticForm.Name.$error" ng-if="staticForm.Name.$dirty" role="alert">
             <p class="text-danger help-text" ng-message="required">{/'Name field is required' | translate/}</p>
