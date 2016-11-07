@@ -10,7 +10,7 @@
             <div class="form-control">
                 <input id="createByForm-Namespace" type="text" data-ng-model="stackCreateByFormCtrl.form.Namespace"
                        data-required="required" name="Name" focus-me
-                       data-ng-pattern="/^\w[\w_.-]+\w$/">
+                       data-ng-pattern="/^[a-zA-Z0-9][a-zA-Z0-9.-]*[a-zA-Z0-9]$/">
             </div>
             <div ng-messages="stepOneForm.Name.$error" ng-if="stepOneForm.Name.$dirty"
                  role="alert">
@@ -49,7 +49,7 @@
                         <div class="form-control">
                             <input id="service{/$index/}-Name" type="text" data-ng-model="serve.Name"
                                    data-required="required" name="name"
-                                   data-ng-pattern="/^\w[\w_.-]+\w$/"
+                                   data-ng-pattern="/^[a-zA-Z0-9][a-zA-Z0-9.-]*[a-zA-Z0-9]$/"
                                    dm-check-include="stackCreateByFormCtrl.listNames($index)">
                         </div>
                         <div ng-messages="staticForm.name.$error" ng-if="staticForm.name.$dirty"
