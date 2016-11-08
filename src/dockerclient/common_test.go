@@ -106,7 +106,7 @@ func TestGetServicesNamespace(t *testing.T) {
 
 	spec := swarm.ServiceSpec{}
 	spec.Annotations.Labels = map[string]string{
-		labelNamespace: "value",
+		LabelNamespace: "value",
 	}
 	namespace = GetServicesNamespace(spec)
 	assert.Equal(t, namespace, "value")

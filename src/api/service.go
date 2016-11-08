@@ -262,7 +262,7 @@ func (api *Api) LogsService(ctx *gin.Context) {
 	for {
 		select {
 		case data := <-message:
-			ctx.SSEvent(dockerclient.SseTypeServiceLogs, data)
+			ctx.SSEvent(dockerclient.SSETypeServiceLogs, data)
 			w.Flush()
 		case <-clientGone:
 			return
@@ -319,7 +319,7 @@ func (api *Api) StatsService(ctx *gin.Context) {
 			}
 		case data := <-chnMsg:
 			if !clientClosed {
-				ctx.SSEvent(dockerclient.SseTypeServiceStats, data)
+				ctx.SSEvent(dockerclient.SSETypeServiceStats, data)
 				w.Flush()
 			}
 		case err := <-chnErr:

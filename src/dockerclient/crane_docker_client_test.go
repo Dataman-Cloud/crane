@@ -29,7 +29,7 @@ func TestNewHttpClient(t *testing.T) {
 	client, err := NewHttpClient()
 	assert.Nil(t, err)
 
-	assert.Equal(t, client.HttpClient.Timeout, defaultHttpRequestTimeout)
+	assert.Equal(t, client.HttpClient.Timeout, DefaultHttpRequestTimeout)
 }
 
 func TestNewHttpClientError(t *testing.T) {
