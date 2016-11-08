@@ -200,7 +200,7 @@ func TestStack(t *testing.T) {
 				Spec: swarm.ServiceSpec{
 					Annotations: swarm.Annotations{
 						Name:   "service1",
-						Labels: map[string]string{labelNamespace: "stack1"},
+						Labels: map[string]string{LabelNamespace: "stack1"},
 					},
 				},
 			}
@@ -211,7 +211,7 @@ func TestStack(t *testing.T) {
 				Spec: swarm.ServiceSpec{
 					Annotations: swarm.Annotations{
 						Name:   "service1",
-						Labels: map[string]string{labelNamespace: "stack1"},
+						Labels: map[string]string{LabelNamespace: "stack1"},
 					},
 				},
 			}
@@ -232,13 +232,13 @@ func TestStack(t *testing.T) {
 			network1 := docker.Network{
 				ID:     "test1",
 				Name:   "network1",
-				Labels: map[string]string{labelNamespace: "stack1"},
+				Labels: map[string]string{LabelNamespace: "stack1"},
 			}
 			networks = append(networks, network1)
 			network2 := docker.Network{
 				ID:     "test2",
 				Name:   "network2",
-				Labels: map[string]string{labelNamespace: "stack2"},
+				Labels: map[string]string{LabelNamespace: "stack2"},
 			}
 			networks = append(networks, network2)
 			network3 := docker.Network{

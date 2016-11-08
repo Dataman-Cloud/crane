@@ -92,5 +92,5 @@ func GetServicesNamespace(spec swarm.ServiceSpec) string {
 		return ""
 	}
 
-	return spec.Annotations.Labels[labelNamespace]
+	return spec.Annotations.Labels[LabelNamespace]
 }
