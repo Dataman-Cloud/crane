@@ -23,17 +23,17 @@
               </md-button>
             </div>
             <h3 class="ng-binding">
-              {/'2. Docker Daemon TCP Socket required' | translate/}
+              2. {/'Docker Daemon TCP Socket required' | translate/}
               <span class="required">*</span>
             </h3>
             <p>{/'Docker TCP Socket Addrs' | translate/}</p>
-            <input id="node-nodeip-endpoint" type="text" name="endpoint" aria-label="endpoint" placeholder="http://192.168.59.105:2375"
+            <input id="node-nodeip-endpoint" type="text" name="endpoint" aria-label="endpoint" placeholder="192.168.59.105:2375"
                    data-ng-model="formCtrl.data.endpoint" data-required="required" md-autofocus>
             <div ng-messages="staticForm.endpoint.$error" ng-if="staticForm.endpoint.$dirty" role="alert">
                 <p class="help-info text-danger" ng-message="required"><small>{/'Address Required' | translate/}</small></p>
             </div>
             <p>
-              <a style="color:#333" href="https://docs.docker.com/engine/reference/commandline/dockerd/#/daemon-socket-option">{/'How to configure Docker Daemon Socket Addrs' | translate/}</a>
+              <a href="https://docs.docker.com/engine/reference/commandline/dockerd/#/daemon-socket-option">{/'How to configure Docker Daemon Socket Addrs' | translate/}</a>
             </p>
         </md-dialog-content>
         <md-dialog-actions layout="row">
