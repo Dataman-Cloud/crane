@@ -1155,6 +1155,16 @@ md-dialog md-dialog-content input[type="number"], md-dialog md-dialog-content in
     color: #333;
 }
 
+#node-nodeip-endpoint {
+    width: auto;
+    background-color: rgb(255, 255, 255);
+    color: #333;
+}
+
+md-dialog .ng-binding {
+    color: #333;
+}
+
 md-dialog md-dialog-content label {
     color: #354052;
 }
