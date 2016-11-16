@@ -35,6 +35,7 @@
             "Task": "Task",
             "Basic Information": 'Basic Information',
             "Not configured": 'Not configured',
+            "No port export": 'No port export',
             "No information": 'No information',
             "Core": 'Core',
             "Memory": 'Memory',
