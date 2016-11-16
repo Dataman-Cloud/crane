@@ -119,7 +119,7 @@ func (client *CraneDockerClient) PretreatmentStack(bundle model.Bundle) (map[str
 // list all stack
 func (client *CraneDockerClient) ListStack() (Stacks, error) {
 	filter := filters.NewArgs()
-	filter.Add("label", labelNamespace)
+	filter.Add("label", LabelNamespace)
 	services, err := client.ListServiceSpec(types.ServiceListOptions{Filter: filter})
 	if err != nil {
 		return nil, err
@@ -128,9 +128,9 @@ func (client *CraneDockerClient) ListStack() (Stacks, error) {
 	stackMap := make(map[string]*Stack, 0)
 	for _, service := range services {
 		labels := service.Spec.Labels
-		name, ok := labels[labelNamespace]
+		name, ok := labels[LabelNamespace]
 		if !ok {
-			log.Warnf("Cannot get label %s for service %s", labelNamespace, service.ID)
+			log.Warnf("Cannot get label %s for service %s", LabelNamespace, service.ID)
 			continue
 		}
 
@@ -227,7 +227,7 @@ func (client *CraneDockerClient) FilterServiceByStack(namespace string, opts typ
 	if opts.Filter.Len() == 0 {
 		opts.Filter = filters.NewArgs()
 	}
-	opts.Filter.Add("label", labelNamespace)
+	opts.Filter.Add("label", LabelNamespace)
 	services, err := client.ListServiceSpec(opts)
 	if err != nil {
 		return nil, err
@@ -236,9 +236,9 @@ func (client *CraneDockerClient) FilterServiceByStack(namespace string, opts typ
 	var stackServices []swarm.Service
 	for _, service := range services {
 		labels := service.Spec.Labels
-		name, ok := labels[labelNamespace]
+		name, ok := labels[LabelNamespace]
 		if !ok {
-			log.Warnf("Cannot get label %s for service %s", labelNamespace, service.ID)
+			log.Warnf("Cannot get label %s for service %s", LabelNamespace, service.ID)
 			continue
 		}
 
@@ -279,7 +279,7 @@ func (client *CraneDockerClient) updateNetworks(networks map[string]bool, namesp
 
 	createOpts := &docker.CreateNetworkOptions{
 		Labels: client.getStackLabels(namespace, nil),
-		Driver: defaultNetworkDriver,
+		Driver: DefaultNetworkDriver,
 		// docker TODO: remove when engine-api uses omitempty for IPAM
 		IPAM: docker.IPAMOptions{Driver: "default"},
 	}
@@ -404,14 +404,14 @@ func (client *CraneDockerClient) getStackLabels(namespace string, labels map[str
 		labels = make(map[string]string)
 	}
 
-	labels[labelNamespace] = namespace
+	labels[LabelNamespace] = namespace
 	return labels
 }
 
 // split joint stack filter
 func (client *CraneDockerClient) getStackFilter(namespace string) filters.Args {
 	filter := filters.NewArgs()
-	filter.Add("label", labelNamespace+"="+namespace)
+	filter.Add("label", LabelNamespace+"="+namespace)
 	return filter
 }
 
@@ -422,7 +422,7 @@ func (client *CraneDockerClient) filterStackServices(namespace string) ([]swarm.
 
 // get network by default filter
 func (client *CraneDockerClient) filterStackNetwork(namespace string) ([]docker.Network, error) {
-	filter := docker.NetworkFilterOpts{"label": map[string]bool{labelNamespace: true}}
+	filter := docker.NetworkFilterOpts{"label": map[string]bool{LabelNamespace: true}}
 	networks, err := client.ListNetworks(filter)
 	if err != nil {
 		return nil, err
@@ -434,7 +434,7 @@ func (client *CraneDockerClient) filterStackNetwork(namespace string) ([]docker.
 			continue
 		}
 
-		if name, ok := network.Labels[labelNamespace]; !ok || name != namespace {
+		if name, ok := network.Labels[LabelNamespace]; !ok || name != namespace {
 			continue
 		}
 

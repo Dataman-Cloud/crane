@@ -4,25 +4,23 @@ import "time"
 
 const (
 	// service running state format string
-	TaskRunningState = "running"
-
-	defaultNetworkDriver = "overlay"
-
-	defaultHttpRequestTimeout = time.Second * 10
+	TaskRunningState          = "running"
+	DefaultNetworkDriver      = "overlay"
+	DefaultHttpRequestTimeout = time.Second * 10
 )
 
 const (
-	labelNamespace    = "com.docker.stack.namespace"
+	LabelNamespace    = "com.docker.stack.namespace"
 	LabelRegistryAuth = "crane.reserved.registry.auth"
-	labelNodeEndpoint = "crane.reserved.node.endpoint"
+	LabelNodeEndpoint = "crane.reserved.node.endpoint"
 )
 
 // sse event type
 const (
-	SseTypeContainerLogs  = "container-logs"
-	SseTypeContainerStats = "container-stats"
-	SseTypeServiceLogs    = "service-logs"
-	SseTypeServiceStats   = "service-stats"
+	SSETypeContainerLogs  = "container-logs"
+	SSETypeContainerStats = "container-stats"
+	SSETypeServiceLogs    = "service-logs"
+	SSETypeServiceStats   = "service-stats"
 )
 
 const (

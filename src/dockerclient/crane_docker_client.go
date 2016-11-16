@@ -157,13 +157,13 @@ func NewGoDockerClientTls(endpoint string, config *config.Config) (*docker.Clien
 }
 
 func NewHttpClient() (*httpclient.Client, error) {
-	httpClient := &http.Client{Timeout: defaultHttpRequestTimeout}
+	httpClient := &http.Client{Timeout: DefaultHttpRequestTimeout}
 	return httpclient.NewClient(httpClient, nil)
 }
 
 func NewHttpClientTls(config *config.Config) (*httpclient.Client, error) {
 	tlsCaCert, tlsCert, tlsKey := SharedClientCertFiles(config)
-	httpClient := &http.Client{Timeout: defaultHttpRequestTimeout}
+	httpClient := &http.Client{Timeout: DefaultHttpRequestTimeout}
 	return httpclient.NewTLSClient(tlsCaCert, tlsCert, tlsKey, httpClient, nil)
 }
 

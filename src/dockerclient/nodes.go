@@ -116,7 +116,7 @@ func (client *CraneDockerClient) CreateNode(joiningNode model.JoiningNode) error
 	if node.Spec.Annotations.Labels == nil {
 		node.Spec.Annotations.Labels = make(map[string]string)
 	}
-	node.Spec.Annotations.Labels[labelNodeEndpoint] = joiningNode.Endpoint
+	node.Spec.Annotations.Labels[LabelNodeEndpoint] = joiningNode.Endpoint
 	query := url.Values{}
 	query.Set("version", strconv.FormatUint(node.Version.Index, 10))
 	_, err = client.sharedHttpClient.POST(nil, client.swarmManagerHttpEndpoint+"/"+path.Join("nodes", nodeId, "update"), query, node.Spec, nil)
@@ -294,7 +294,7 @@ func (client *CraneDockerClient) nodeUpdateEndpoint(nodeId string, spec *swarm.N
 		spec.Annotations.Labels = make(map[string]string)
 	}
 
-	spec.Annotations.Labels[labelNodeEndpoint] = endpoint
+	spec.Annotations.Labels[LabelNodeEndpoint] = endpoint
 	return nil
 }
 
@@ -315,7 +315,7 @@ func (client *CraneDockerClient) GetDaemonUrlById(nodeId string) (*url.URL, erro
 		return nil, &cranerror.CraneError{Code: CodeGetNodeEndpointError, Err: nodeConnErr}
 	}
 
-	endpoint, ok := node.Spec.Annotations.Labels[labelNodeEndpoint]
+	endpoint, ok := node.Spec.Annotations.Labels[LabelNodeEndpoint]
 	if !ok {
 		nodeConnErr = &cranerror.NodeConnError{ID: nodeId, Endpoint: endpoint, Err: err}
 		return nil, &cranerror.CraneError{Code: CodeGetNodeEndpointError, Err: nodeConnErr}

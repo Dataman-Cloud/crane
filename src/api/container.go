@@ -214,7 +214,7 @@ func (api *Api) LogsContainer(ctx *gin.Context) {
 	for {
 		select {
 		case data := <-message:
-			ctx.SSEvent(dockerclient.SseTypeContainerLogs, data)
+			ctx.SSEvent(dockerclient.SSETypeContainerLogs, data)
 			w.Flush()
 		case <-clientGone:
 			return
@@ -258,7 +258,7 @@ func (api *Api) StatsContainer(ctx *gin.Context) {
 			chnDone <- true
 		case data := <-chnMsg:
 			if !clientClosed {
-				ctx.SSEvent(dockerclient.SseTypeContainerStats, data)
+				ctx.SSEvent(dockerclient.SSETypeContainerStats, data)
 				w.Flush()
 			}
 		case err := <-chnErr:
