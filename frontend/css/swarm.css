@@ -1310,3 +1310,12 @@ md-menu-item > a.md-button {
     height : 600px;
     width: 80%;
 }
+
+.registry-link, .registry-link:active, .registry-link:visited {
+    color: rgba(0,0,0,0.87);
+}
+
+.registry-link:hover {
+    color: rgba(0,0,0,1);
+    text-decoration: none;
+}
