@@ -3,7 +3,7 @@
         <md-card>
             <md-card-title>
                 <md-card-title-text>
-                    <span class="md-headline">{/catalog.Name/}</span>
+                    <a class="md-headline registry-link" data-ui-sref="registry.updateCatalog({catalog_id: catalog.Id})" href="/registry/updateCatalog/{/catalog.Id/}">{/catalog.Name/}</a>
                     <span class="md-subhead">{/catalog.Description | limitTo: 25/}</span>
                 </md-card-title-text>
                 <md-card-title-media>
