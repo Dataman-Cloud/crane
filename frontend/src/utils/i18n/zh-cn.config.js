@@ -35,6 +35,7 @@
             "Task": "任务",
             "Basic Information": '基本信息',
             "Not configured": '未配置',
+            "No port export": '未暴露端口',
             "No information": '暂无信息',
             "Core": '核',
             "Memory": '内存',
