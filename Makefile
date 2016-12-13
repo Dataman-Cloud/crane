@@ -1,6 +1,6 @@
 PACKAGES = $(shell go list ./src/...)
 
-.PHONY: build doc fmt lint run test vet test-cover-html test-cover-func collect-cover-data
+.PHONY: build doc fmt lint run test vet test-cover-html test-cover-func collect-cover-data AUTHORS
 
 ## OS checking
 OS := $(shell uname)
@@ -85,4 +85,4 @@ test-cover-func:
 
 AUTHORS: .mailmap .git/HEAD
 	@echo "🐳  $@"
-		git log --format='%aN <%aE>' | LC_ALL=C.UTF-8 sort -fu > $@
+	git log --format='%aN <%aE>' | LC_ALL=C.UTF-8 sort -uf > $@
