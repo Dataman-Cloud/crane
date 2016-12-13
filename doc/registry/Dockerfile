@@ -1,4 +1,4 @@
-FROM demoregistry.dataman-inc.com/srypoc/registry:2.3.0
+FROM registry:2.5.1
 
 MAINTAINER weitao zhou <wtzhou@dataman-inc.com>
 

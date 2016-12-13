@@ -5,7 +5,7 @@
 
 . ./misc_v1_help.sh
 . ./misc_v1_config.sh
-. ./misc_v1_health.sh
+# . ./misc_v1_health.sh
 
 . ./account_v1_login.sh
 . ./api_v1_nodes.sh
