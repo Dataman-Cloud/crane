@@ -1,6 +1,6 @@
 PACKAGES = $(shell go list ./src/...)
 
-.PHONY: build doc fmt lint run test vet test-cover-html test-cover-func collect-cover-data AUTHORS
+.PHONY: setup build doc check fmt lint run test vet test-cover-html test-cover-func collect-cover-data AUTHORS
 
 ## OS checking
 OS := $(shell uname)
@@ -23,6 +23,15 @@ BUILD_TIME=$(shell date -u +%Y-%m-%d:%H-%M-%S)
 GO_LDFLAGS=-ldflags "-X `go list ./src/version`.Version=$(VERSION) -X `go list ./src/version`.BuildTime=$(BUILD_TIME)"
 
 default: build
+
+setup: ## install dependencies
+	@echo "🐳 $@"
+	# TODO(stevvooe): Install these from the vendor directory
+	@go get -u github.com/golang/lint/golint
+	@go get -u github.com/golang/mock/mockgen
+	@go get -u github.com/gordonklaus/ineffassign
+
+check: fmt vet lint ineffassign ## run fmt, vet, lint, ineffassign
 
 build: fmt
 	@echo "🐳 $@"
@@ -47,6 +56,10 @@ lint:
 	@echo "🐳  $@"
 	@test -z "$$(golint ./src/... | tee /dev/stderr)"
 
+ineffassign: ## run ineffassign
+	@echo "🐳 $@"
+	@test -z "$$(ineffassign . | grep -v vendor/ | grep -v ".pb.go:" | grep -v ".mock.go" | tee /dev/stderr)"
+
 run: build
 	@echo "🐳 $@"
 	./bin/crane
@@ -58,8 +71,8 @@ test:
 # http://godoc.org/code.google.com/p/go.tools/cmd/vet
 # go get code.google.com/p/go.tools/cmd/vet
 vet:
-#	go vet ./src/...
-#
+	@echo "🐳 $@"
+	@test -z "$$(go vet ${PACKAGES} 2>&1 | tee /dev/stderr)"
 
 clean:
 	@echo "🐳 $@"
