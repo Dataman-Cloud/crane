@@ -6,7 +6,7 @@ export REGISTRY_PREFIX=${REGISTRY_PREFIX:-""}
 export DEFAULT_TAG=`git log --pretty=format:'%h' -n 1 2>/dev/null`
 if [ "x$DEFAULT_TAG" = "x" ]
 then
-    // local build image with devel tag
+    # local build image with devel tag
     DEFAULT_TAG="dev"
 fi
 export TAG=${VERSION:-$DEFAULT_TAG}
