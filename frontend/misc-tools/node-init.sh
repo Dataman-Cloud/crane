@@ -356,7 +356,7 @@ have_a_init()
             ;;
         ubuntu|debian)
             (
-            apparmor_required_on_ubuntu
+            # apparmor_required_on_ubuntu
             ntp_is_enabled_on_ubuntu
             )
             exit 0

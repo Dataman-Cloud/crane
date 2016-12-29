@@ -2,6 +2,8 @@
 
 set -e
 
+export GO_VERSION=${GO_VERSION:-"1.7.4"}
+export CRANE_IP=${CRANE_IP:-"127.0.0.1"}
 export REGISTRY_PREFIX=${REGISTRY_PREFIX:-""}
 export DEFAULT_TAG=`git log --pretty=format:'%h' -n 1 2>/dev/null`
 if [ "x$DEFAULT_TAG" = "x" ]
@@ -19,7 +21,7 @@ then
 fi
 
 docker run --rm -v $(pwd)/frontend:/data digitallyseamless/nodejs-bower-grunt:5 bower install
-docker run --rm -w /go/src/github.com/Dataman-Cloud/crane -v $(pwd):/go/src/github.com/Dataman-Cloud/crane golang:1.5.4 make
+docker run --rm -w /go/src/github.com/Dataman-Cloud/crane -v $(pwd):/go/src/github.com/Dataman-Cloud/crane golang:$GO_VERSION make
 
 if [ ! -f docker/docker ]; then
     curl https://get.docker.com/builds/Linux/x86_64/docker-latest.tgz | tar xzv
@@ -53,5 +55,5 @@ then
     docker-compose -p crane -f deploy/docker-compose.yml stop
     docker-compose -p crane -f deploy/docker-compose.yml rm -f
 
-    CRANE_SWARM_MANAGER_IP=${CRANE_IP} docker-compose -p crane -f deploy/docker-compose.yml up -d
+    CRANE_SWARM_MANAGER_IP=$CRANE_IP docker-compose -p crane -f deploy/docker-compose.yml up -d
 fi

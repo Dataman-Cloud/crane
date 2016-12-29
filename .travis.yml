@@ -1,17 +1,34 @@
 sudo: required
+dist: trusty
 
 services:
   - docker
 
 language: go
+
 go:
-  - 1.5.4
+  - 1.7.4
+
+env:
+  global:
+    - GO_VERSION=1.7.4
 
 script:
-  - docker run -i --rm -w /go/src/github.com/Dataman-Cloud/crane -v $(pwd):/go/src/github.com/Dataman-Cloud/crane golang:1.5.4 make
-  - docker run -i --rm -w /go/src/github.com/Dataman-Cloud/crane -v $(pwd):/go/src/github.com/Dataman-Cloud/crane golang:1.5.4 make collect-cover-data
-  - docker run -i --rm -w /go/src/github.com/Dataman-Cloud/crane -v $(pwd):/go/src/github.com/Dataman-Cloud/crane golang:1.5.4 make test-cover-html
-  - docker run -i --rm -w /go/src/github.com/Dataman-Cloud/crane -v $(pwd):/go/src/github.com/Dataman-Cloud/crane golang:1.5.4 make test-cover-func
+  - docker run -i --rm -w /go/src/github.com/Dataman-Cloud/crane -v $(pwd):/go/src/github.com/Dataman-Cloud/crane golang:1.7.4 make
+  - docker run -i --rm -w /go/src/github.com/Dataman-Cloud/crane -v $(pwd):/go/src/github.com/Dataman-Cloud/crane golang:1.7.4 make collect-cover-data
+  - docker run -i --rm -w /go/src/github.com/Dataman-Cloud/crane -v $(pwd):/go/src/github.com/Dataman-Cloud/crane golang:1.7.4 make test-cover-html
+  - docker run -i --rm -w /go/src/github.com/Dataman-Cloud/crane -v $(pwd):/go/src/github.com/Dataman-Cloud/crane golang:1.7.4 make test-cover-func
+  - export CRANE_IP=`ip addr s eth0 |grep "inet "|awk '{print $2}' |awk -F "/" '{print $1}'`
+  - sudo echo 'DOCKER_OPTS="-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock -s overlay"' | sudo tee /etc/default/docker > /dev/null
+  - sudo cat /etc/default/docker
+  - sudo service docker restart
+  - sudo apt-get update
+  - sudo apt-get -y install httpie
+  - sleep 5
+  - ping $CRANE_IP -c 4
+  - ./bin/build-push-or-up.sh up
+  - sleep 20
+  - cd api_test && ./run.sh
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)

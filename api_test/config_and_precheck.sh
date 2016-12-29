@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SERVER_PATH=localhost:5013
+export SERVER_PATH=$CRANE_IP:5013
 
 if ! command -v http &>/dev/null ; then
   echo "httpie not installed, 'apt-get install httpie', 'yum install -y httpie' or  'brew install httpie'"
