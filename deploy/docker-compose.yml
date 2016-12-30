@@ -14,7 +14,7 @@ services:
     restart: always
   crane_registry:
     build:
-      context: ../doc/registry
+      context: ./registry
       dockerfile: ./Dockerfile
     image: ${REGISTRY_PREFIX}registry:crane${TAG}
     ports:

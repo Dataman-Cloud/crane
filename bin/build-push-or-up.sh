@@ -14,21 +14,20 @@ fi
 export TAG=${VERSION:-$DEFAULT_TAG}
 
 up_or_push=$1
-if [ "x$up_or_push" != "xpush" ] && [ "x$up_or_push" != "xup" ]
+if [ "x$up_or_push" != "xpush" ] && [ "x$up_or_push" != "xup" ] && [ "x$up_or_push" != "xdown" ] && [ "x$up_or_push" != "xbuild" ]
 then
     echo "run me like this: CRANE_IP=X.X.X.X $0 push or CRANE_IP=X.X.X.X $0 up"
     exit 1
 fi
 
+if [ "x$up_or_push" = "xbuild" ]
+then
 docker run --rm -v $(pwd)/frontend:/data digitallyseamless/nodejs-bower-grunt:5 bower install
 docker run --rm -w /go/src/github.com/Dataman-Cloud/crane -v $(pwd):/go/src/github.com/Dataman-Cloud/crane golang:$GO_VERSION make
 
-if [ ! -f docker/docker ]; then
-    curl https://get.docker.com/builds/Linux/x86_64/docker-latest.tgz | tar xzv
-fi
-
 # build crane
 docker-compose -p crane -f deploy/docker-compose.yml build
+fi
 
 if [ "x$up_or_push" = "xpush" ]
 then
@@ -56,4 +55,11 @@ then
     docker-compose -p crane -f deploy/docker-compose.yml rm -f
 
     CRANE_SWARM_MANAGER_IP=$CRANE_IP docker-compose -p crane -f deploy/docker-compose.yml up -d
+fi
+
+if [ "x$up_or_push" = "xdown" ]
+then
+  echo "stop crane service and remove unused containers"
+  docker-compose -p crane -f deploy/docker-compose.yml stop
+  docker-compose -p crane -f deploy/docker-compose.yml rm -f
 fi

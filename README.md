@@ -41,13 +41,15 @@ Crane, maintained by [dataman-cloud](https://github.com/Dataman-Cloud), is a doc
 
  Please read the [release/v1.0.6/README.md](release/v1.0.6/README.md)
 
-### Option 2: Latest or development from docker build
+### Option 2: development workflow from docker build
 
   ```bash
-  CRANE_IP=<your eth0 ip> ./bin/build-push-or-up.sh up
+  > ./bin/build-push-or-up.sh build  # build crane image
+  > CRANE_IP=`ip addr s eth0 |grep "inet "|awk '{print $2}' |awk -F "/" '{print $1}'` ./bin/build-push-or-up.sh up # compose crame service
+  > ./bin/build-push-or-up.sh down  # remove crane container
   ```
 
-CRANE_IP is the ip address(don't use 0.0.0.0 because we are using container in network bridge mode) of the running Crane host which is the swarm manager also.
+CRANE_IP should be assigned the eth0 ip address of the running Crane host which is the swarm manager also.
 
 ## How to use it
 
