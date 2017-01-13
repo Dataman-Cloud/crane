@@ -5,7 +5,7 @@ set -e
 export GO_VERSION=${GO_VERSION:-"1.7.4"}
 export CRANE_IP=${CRANE_IP:-"127.0.0.1"}
 export REGISTRY_PREFIX=${REGISTRY_PREFIX:-""}
-export DEFAULT_TAG=`git log --pretty=format:'%h' -n 1 2>/dev/null`
+export DEFAULT_TAG=`git rev-parse --short HEAD`
 if [ "x$DEFAULT_TAG" = "x" ]
 then
     # local build image with devel tag
