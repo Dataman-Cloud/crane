@@ -10,7 +10,7 @@ import (
 	"time"
 
 	"github.com/Dataman-Cloud/crane/src/plugins/auth"
-
+	log "github.com/Sirupsen/logrus"
 	"github.com/docker/distribution/registry/auth/token"
 	"github.com/docker/libtrust"
 )
@@ -52,6 +52,7 @@ func (registry *Registry) FilterAccess(username string, authenticated bool, a *t
 			namespace := strings.Split(a.Name, "/")[0]
 			image := strings.Split(a.Name, "/")[1]
 
+			log.Infof("username: %s, namespace: %s, image: %s", username, namespace, image)
 			permission := registry.GetPermission(username, namespace, image)
 			if strings.Contains(permission, "W") {
 				a.Actions = append(a.Actions, "push")
@@ -151,9 +152,8 @@ func base64UrlEncode(b []byte) string {
 	return strings.TrimRight(base64.URLEncoding.EncodeToString(b), "=")
 }
 
-func (registry *Registry) GetPermission(username, namespace, image string) string {
-	if namespace == "library" && len(registry.Authenticator.GetDefaultAccounts()) > 0 &&
-		registry.Authenticator.GetDefaultAccounts()[0].Email == username {
+func (registry *Registry) GetPermission(principal, namespace, image string) string {
+	if namespace == "library" && len(registry.Authenticator.GetDefaultAccounts()) > 0 {
 		return "RW"
 	}
 
@@ -161,13 +161,14 @@ func (registry *Registry) GetPermission(username, namespace, image string) strin
 		return "R"
 	}
 
-	if registry.registryNamespaceForEmail(username) == namespace { // for user access himself's repository
-		return "RWM"
+	// for user access himself's repository
+	var namespaceEmail NamespaceEmail
+	if err := registry.DbClient.Where("namespace = ?", principal).Find(&namespaceEmail).Error; err != nil {
+		return ""
 	}
 
 	var modelImage Image
-	err := registry.DbClient.Where("namespace = ? AND image = ?", namespace, image).Find(&modelImage)
-	if err != nil {
+	if err := registry.DbClient.Where("namespace = ? AND image = ?", namespace, image).Find(&modelImage).Error; err != nil {
 		return ""
 	}
 
@@ -175,7 +176,7 @@ func (registry *Registry) GetPermission(username, namespace, image string) strin
 		return "R"
 	}
 
-	return ""
+	return "RWM"
 }
 
 func (registry *Registry) GenTokenForUI(username, service, scope string) (string, error) {
