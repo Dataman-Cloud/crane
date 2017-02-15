@@ -15,7 +15,7 @@ Deploy guide
 3. Enable the Docker tcp Socket on port: 2375 [how to config](https://docs.docker.com/engine/reference/commandline/dockerd/#/daemon-socket-option)
 4. Start ntp service
 5. You'd better `setenforce 0`
-6. `CRANE_IP=X.X.X.X VERSION=v1.0.6 REGISTRY_PREFIX=2breakfast/ ./deploy.sh`
+6. `CRANE_IP=X.X.X.X VERSION=v1.0.6 ./deploy.sh`
 7. Browser http://$CRANE_IP
 
    * username: `admin@admin.com`
