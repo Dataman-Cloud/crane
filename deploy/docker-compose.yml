@@ -16,7 +16,7 @@ services:
     build:
       context: ./registry
       dockerfile: ./Dockerfile
-    image: ${REGISTRY_PREFIX}registry:crane${TAG}
+    image: ${REGISTRY_PREFIX}registry:${TAG}
     ports:
       - "5000:5000"
       - "5001:5001"
@@ -45,7 +45,7 @@ services:
     build:
       context: ./mysql
       dockerfile: ./Dockerfile
-    image: ${REGISTRY_PREFIX}mysql:crane${TAG}
+    image: ${REGISTRY_PREFIX}mysql:${TAG}
     environment:
       - MYSQL_ROOT_PASSWORD=111111
     volumes:
