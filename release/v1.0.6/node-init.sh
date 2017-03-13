@@ -18,6 +18,7 @@ set -e
 
 # Suppose the major version=1
 # The following represents the acturally desired version is 1.12.0
+DOCKER_MAJOR_VERSION_REQUIRED=1
 DOCKER_MINOR_VERSION_REQUIRED=12
 
 # docker convention:
@@ -80,16 +81,17 @@ docker_required() {
         echo "-> Checking docker runtime environment..."
       else
         echo "********************************************************"
-        printf "\033[41mERROR:\033[0m command **dockerd** is NOT FOUND! Please make sure docker-engine>=1.$DOCKER_MINOR_VERSION_REQUIRED is installed!\n"
+        printf "\033[41mERROR:\033[0m command **dockerd** is NOT FOUND! Please make sure docker-engine>=$DOCKER_MAJOR_VERSION_REQUIRED.$DOCKER_MINOR_VERSION_REQUIRED is installed!\n"
         echo "********************************************************"
         exit 1
       fi
       ;;
   esac
 
-  docker_version="$(docker version --format '{{.Server.Version}}' | awk -F. '{print $2}')"
+  docker_major_version="$(docker version --format '{{.Server.Version}}' | awk -F. '{print $1}')"
+  docker_minor_version="$(docker version --format '{{.Server.Version}}' | awk -F. '{print $2}')"
 
-  if [ -z $docker_version ];then
+  if [ -z $docker_minor_version ];then
       echo "***********************************************************************"
       printf "\033[41mERROR:\033[0m Docker daemon is NOT STARTED! Run it manually:\n"
       printf "\n"
@@ -107,8 +109,8 @@ docker_required() {
       echo "***********************************************************************"
       exit 1
   fi
-
-  if [ $docker_version -lt $DOCKER_MINOR_VERSION_REQUIRED ]; then
+  
+  if [ $docker_major_version -lt $DOCKER_MAJOR_VERSION_REQUIRED ] && [ $docker_minor_version -lt $DOCKER_MINOR_VERSION_REQUIRED ]; then
       echo "********************************************************"
       printf "\033[41mERROR:\033[0m docker-engine>=1.$DOCKER_MINOR_VERSION_REQUIRED is required, current version: 1.$docker_version\n"
       echo "********************************************************"
