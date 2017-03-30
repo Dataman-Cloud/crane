@@ -5,7 +5,7 @@ set -o errexit
 
 export CRANE_SWARM_MANAGER_IP=$CRANE_IP
 export TAG=${VERSION:-1.0}
-export REGISTRY_PREFIX=${REGISTRY_PREFIX:-catalog.shurenyun.com/library/}
+export REGISTRY_PREFIX=${REGISTRY_PREFIX:-demoregistry.dataman-inc.com/crane/}
 
 # node env check
 echo "Checking the node status"
