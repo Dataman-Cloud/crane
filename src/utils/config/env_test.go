@@ -222,7 +222,7 @@ func ExampleParse() {
 	// Output: {/tmp/fakehome 3000 false}
 }
 
-func ExampleParseRequiredField() {
+func Example_parseRequiredField() {
 	type config struct {
 		Home         string `env:"HOME"`
 		Port         int    `env:"PORT" envDefault:"3000"`
@@ -236,7 +236,7 @@ func ExampleParseRequiredField() {
 	// Output: Required environment variable SECRET_KEY is not set
 }
 
-func ExampleParseMultipleOptions() {
+func Example_parseMultipleOptions() {
 	type config struct {
 		Home         string `env:"HOME"`
 		Port         int    `env:"PORT" envDefault:"3000"`

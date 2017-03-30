@@ -81,7 +81,7 @@ func TestParseEndpoint(t *testing.T) {
 	assert.NotNil(t, err)
 }
 
-func TestgetAdvertiseAddrByEndpoint(t *testing.T) {
+func TestGetAdvertiseAddrByEndpoint(t *testing.T) {
 	var host string
 	var err error
 	host, err = getAdvertiseAddrByEndpoint("localhost:2375")

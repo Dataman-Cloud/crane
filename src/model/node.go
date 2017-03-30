@@ -11,6 +11,6 @@ type UpdateOptions struct {
 }
 
 type JoiningNode struct {
-	Role     swarm.NodeRole `json:"Role", required:"true"`
-	Endpoint string         `json:"Endpoint", required:"true"`
+	Role     swarm.NodeRole `json:"Role" required:"true"`
+	Endpoint string         `json:"Endpoint" required:"true"`
 }
