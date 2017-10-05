@@ -290,9 +290,7 @@ func (cli *Client) newRequest(method, path string, query url.Values, body io.Rea
 // returns the versioned request path to call the api.
 // It appends the query parameters to the path if they are not empty.
 func getAPIPath(apiPath string, query url.Values) string {
-	u := &url.URL{
-		Path: apiPath,
-	}
+	u, _ := url.Parse(apiPath)
 	if len(query) > 0 {
 		u.RawQuery = query.Encode()
 	}

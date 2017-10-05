@@ -87,9 +87,10 @@ docker_required() {
       ;;
   esac
 
-  docker_version="$(docker version --format '{{.Server.Version}}' | awk -F. '{print $2}')"
+  docker_version_major="$(docker version --format '{{.Server.Version}}' | awk -F. '{print $1}')"
+  docker_version_minor="$(docker version --format '{{.Server.Version}}' | awk -F. '{print $2}')"
 
-  if [ -z $docker_version ];then
+  if [ -z $docker_version_major ];then
       echo "***********************************************************************"
       printf "\033[41mERROR:\033[0m Docker daemon is NOT STARTED! Run it manually:\n"
       printf "\n"
@@ -108,7 +109,7 @@ docker_required() {
       exit 1
   fi
 
-  if [ $docker_version -lt $DOCKER_MINOR_VERSION_REQUIRED ]; then
+  if [ $docker_version_major -eq 1 -a $docker_version_minor -lt $DOCKER_MINOR_VERSION_REQUIRED ]; then
       echo "********************************************************"
       printf "\033[41mERROR:\033[0m docker-engine>=1.$DOCKER_MINOR_VERSION_REQUIRED is required, current version: 1.$docker_version\n"
       echo "********************************************************"

@@ -15,7 +15,7 @@ type Config struct {
 	DbDriver          string   `env:"CRANE_DB_DRIVER,required"`
 	DbDSN             string   `env:"CRANE_DB_DSN,required"`
 	FeatureFlags      []string `env:"CRANE_FEATURE_FLAGS,required"`
-	DockerTlsVerify   bool     `env:"CRANE_DOCKER_TLS_VERIFY envDefault:"false"`
+	DockerTlsVerify   bool     `env:"CRANE_DOCKER_TLS_VERIFY" envDefault:"false"`
 
 	// registry
 	RegistryPrivateKeyPath string `env:"CRANE_REGISTRY_PRIVATE_KEY_PATH,required"`
