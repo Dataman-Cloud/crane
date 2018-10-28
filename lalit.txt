@@ -1,0 +1,45 @@
+// Returns count of Parallelograms possible 
+// from given points 
+int countOfParallelograms(int x[], int y[], int N) 
+{ 
+    // Map to store frequency of mid points 
+    map<pair<int, int>, int> cnt; 
+    for (int i=0; i<N; i++) 
+    { 
+        for (int j=i+1; j<N; j++) 
+        { 
+            // division by 2 is ignored, to get 
+            // rid of doubles 
+            int midX = x[i] + x[j]; 
+            int midY = y[i] + y[j]; 
+  
+            // increase the frequency of mid point 
+            cnt[make_pair(midX, midY)]++; 
+        } 
+    } 
+  
+    // Iterating through all mid points 
+    int res = 0; 
+    for (auto it = cnt.begin(); it != cnt.end(); it++) 
+    { 
+        int freq = it->second; 
+  
+        // Increase the count of Parallelograms by 
+        // applying function on frequency of mid point 
+        res += freq*(freq - 1)/2 
+    } 
+  
+    return res; 
+} 
+  
+//  Driver code to test above methods 
+int main() 
+{ 
+    int x[] = {0, 0, 2, 4, 1, 3}; 
+    int y[] = {0, 2, 2, 2, 4, 4}; 
+    int N = sizeof(x) / sizeof(int); 
+  
+    cout << countOfParallelograms(x, y, N) << endl; 
+  
+    return 0; 
+} 
