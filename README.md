@@ -93,7 +93,7 @@ Please click [Crane User Guide in Chinese](https://dataman.gitbooks.io/crane/con
 ## Conventions
 
 ### repo branch
-  * [master](https://github.com/Dataman-Cloud/crane/tree/master):  actively moving foward. PR will be merged into this `master` branch.
+  * [master](https://github.com/Dataman-Cloud/crane/tree/master):  actively moving forward. PR will be merged into this `master` branch.
   * [release](https://github.com/Dataman-Cloud/crane/tree/release): Released versions. Tagged commits or hotfix PR will be pushed here. Maintained by the repo owners.
 
 ## Trouble-shooting
